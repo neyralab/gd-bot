@@ -1,7 +1,8 @@
 import { useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
 
-import { WelcomePage, UploadPage } from "./components/pages";
+import { WelcomePage, UploadPage, FilesSystemPage } from "./components/pages";
+import { UpgradeStoragePage } from "./components/upgradeStorage";
 
 import "./App.css";
 
@@ -21,6 +22,8 @@ function App() {
       <Routes>
         <Route path="/" exact element={<WelcomePage />} />
         <Route path="/upload" exact element={<UploadPage />} />
+        <Route path="/file-upload" exact element={<FilesSystemPage />} />
+        <Route path="/upgrade" exact element={<UpgradeStoragePage />} />
       </Routes>
     </div>
   );

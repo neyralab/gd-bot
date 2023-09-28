@@ -36,6 +36,7 @@
 
 .wrapper {
   width: 100%;
+  max-width: 370px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -75,6 +76,18 @@
   font-size: 11px;
 }
 
+.wrapper__list__title {
+  align-self: flex-start;
+  color: #98989f;
+  font-family: "Open Sans";
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 150%;
+  letter-spacing: 0.24px;
+  text-transform: uppercase;
+  margin-top: 32px;
+}
+
 .options {
   list-style: none;
   margin: 0;
@@ -86,8 +99,52 @@
   width: 100%;
 }
 
+.filesList {
+  margin-top: 9px;
+}
+
 .options__item {
   width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.fileItem {
+  display: flex;
+  gap: 16px;
+  justify-content: flex-start;
+  width: 100%;
+  height: 60px;
+  padding: 0 16px;
+  border-radius: 8px;
+  background: #1c1c1e;
+}
+
+.fileItem div h3 {
+  color: #fff;
+  text-overflow: ellipsis;
+  font-family: "Open Sans";
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 150%;
+  letter-spacing: 0.14px;
+}
+
+.fileItem div p {
+  color: #7d7d7d;
+  font-family: "Open Sans";
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 150%;
+  letter-spacing: 0.11px;
+}
+
+.fileItem__icon {
+  max-width: 30px;
+  max-height: 40px;
+  width: 100%;
+  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -120,6 +177,14 @@
 .uploadOptionButton {
   border-radius: 16px;
   border: 0.5px dashed #fff;
+}
+
+.selectFileButton {
+  border: none;
+  background-color: #1c1c1e;
+  height: 43px;
+  gap: 8px;
+  padding: 0 16px;
 }
 
 .startButton {
