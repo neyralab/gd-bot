@@ -1,0 +1,41 @@
+name: Deploy DEV
+
+on:
+  workflow_dispatch:
+
+env:
+  GIT_BRANCH: ${{ github.ref_name }}
+  PROJECT_NAME: telegram-bot-front
+  PROJECT_DIR: /home/ec2-user/telegram-bot
+  SSH_HOST: ${{ secrets.DEV_SSH_HOST }}
+  SSH_USER: ec2-user
+  SSH_KEY: ${{ secrets.DEV_SSH_KEY }}
+
+jobs:
+  build:
+    name: Deploy to DEV
+    runs-on: ubuntu-latest
+    steps:
+    - name: Get Code
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ env.SSH_HOST }}
+        username: ${{ env.SSH_USER }}
+        key: ${{ env.SSH_KEY }}
+        script: |
+           cd ${{ env.PROJECT_DIR}}/${{ env.PROJECT_NAME }}
+           git fetch --all
+           git reset --hard origin/${{ env.GIT_BRANCH }}
+
+    - name: Docker Build
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ env.SSH_HOST }}
+        username: ${{ env.SSH_USER }}
+        key: ${{ env.SSH_KEY }}
+        script: |
+          cd ${{ env.PROJECT_DIR}}/${{ env.PROJECT_NAME }}
+          docker system prune -f
+          docker-compose -f docker-compose.yml build ${{ env.PROJECT_NAME }}
+          docker-compose -f docker-compose.yml stop ${{ env.PROJECT_NAME }}
+          docker-compose -f docker-compose.yml up -d ${{ env.PROJECT_NAME }}

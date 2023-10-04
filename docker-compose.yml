@@ -1,0 +1,8 @@
+version: '2'
+services:
+  telegram-bot-front:
+    build:
+      context: .
+    container_name: telegram-bot-front
+    ports:
+    - "3002:3000"
