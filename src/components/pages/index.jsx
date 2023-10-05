@@ -8,18 +8,28 @@ import { ReactComponent as ArrowIcon } from "../../assets/arrow_right.svg";
 import { ReactComponent as CircleCloudIcon } from "../../assets/cloud_circle.svg";
 import { ReactComponent as CircleLogoIcon } from "../../assets/logo_circle.svg";
 import { ReactComponent as CirclePictureIcon } from "../../assets/picture_circle.svg";
+import { ReactComponent as DotsIcon } from "../../assets/dots.svg";
+import { ReactComponent as SearchIcon } from "../../assets/search.svg";
 import uploadLogo from "../../assets/upload_logo.png";
 import welcomeLogo from "../../assets/welcome_logo.png";
 import placeholder_image from "../../assets/upload_bg.png";
 
 import style from "./style.module.css";
 
-export const WelcomePage = () => {
+export const WelcomePage = ({ onClose }) => {
   const navigate = useNavigate();
   return (
     <div className={`${style.container} ${style.welcomeContainer}`}>
       <header className={style.header}>
-        <h2 className={style.header__title}>GhostDrive</h2>
+        <button className={style.header__cancelBtn} onClick={onClose}>
+          Cancel
+        </button>
+        <h2 className={`${style.header__title} ${style.centeredTitle}`}>
+          GhostDrive
+        </h2>
+        <button>
+          <DotsIcon />
+        </button>
       </header>
       <section className={style.wrapper}>
         <div className={style.wrapper__content}>
@@ -64,7 +74,10 @@ export const UploadPage = () => {
   return (
     <div className={`${style.container} ${style.uploadContainer}`}>
       <header className={style.header}>
-        <h2 className={style.wrapper__content__description}>GhostDrive</h2>
+        <h2 className={style.uploadContainer__title}>GhostDrive</h2>
+        <button className={style.uploadContainer__dots}>
+          <DotsIcon />
+        </button>
       </header>
       <section className={style.wrapper}>
         <div className={style.wrapper__content}>
@@ -116,11 +129,19 @@ export const UploadPage = () => {
   );
 };
 
-export const FilesSystemPage = () => {
+export const FilesSystemPage = ({ onClose }) => {
   return (
     <div className={style.container}>
-      <header>
-        <h2 className={style.wrapper__content__description}>Files System</h2>
+      <header className={style.filesHeader}>
+        <button className={style.header__cancelBtnBlue} onClick={onClose}>
+          Cancel
+        </button>
+        <h2 className={`${style.header__title} ${style.centeredTitle}`}>
+          Files System
+        </h2>
+        <button>
+          <SearchIcon />
+        </button>
       </header>
       <section className={style.wrapper}>
         <ul className={style.options}>

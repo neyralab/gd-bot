@@ -18,11 +18,14 @@ function App() {
   };
   return (
     <div className="App">
-      <button onClick={onClose}>Закрити</button>
       <Routes>
-        <Route path="/" exact element={<WelcomePage />} />
+        <Route path="/" exact element={<WelcomePage onClose={onClose} />} />
         <Route path="/upload" exact element={<UploadPage />} />
-        <Route path="/file-upload" exact element={<FilesSystemPage />} />
+        <Route
+          path="/file-upload"
+          exact
+          element={<FilesSystemPage onClose={onClose} />}
+        />
         <Route path="/upgrade" exact element={<UpgradeStoragePage />} />
       </Routes>
     </div>

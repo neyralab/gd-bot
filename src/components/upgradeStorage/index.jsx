@@ -1,12 +1,16 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import { ReactComponent as CoinIcon } from "../../assets/coin.svg";
 
 import s from "./style.module.css";
 
 export const UpgradeStoragePage = () => {
+  const navigate = useNavigate();
   const [checked, setChecked] = useState(false);
   const [plan, setPlan] = useState(null);
+
+  const onBackButtonClick = () => navigate(-1);
 
   const onPlanClick = (e) => {
     const element = e.target.closest("li");
@@ -41,6 +45,12 @@ export const UpgradeStoragePage = () => {
 
   return (
     <div className={s.wrapper}>
+      <header className={s.header}>
+        <button className={s.header__backBtn} onClick={onBackButtonClick}>
+          Back
+        </button>
+        <button className={s.header__upgradeBtn}>Upgrade Storage</button>
+      </header>
       <p className={s.headingText}>
         You will be charged immediately and each payment period until you change
         or cancel your plan.
