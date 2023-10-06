@@ -11,63 +11,9 @@ import { ReactComponent as CirclePictureIcon } from "../../assets/picture_circle
 import { ReactComponent as DotsIcon } from "../../assets/dots.svg";
 import { ReactComponent as SearchIcon } from "../../assets/search.svg";
 import uploadLogo from "../../assets/upload_logo.png";
-import welcomeLogo from "../../assets/welcome_logo.png";
 import placeholder_image from "../../assets/upload_bg.png";
 
 import style from "./style.module.css";
-
-export const WelcomePage = ({ onClose }) => {
-  const navigate = useNavigate();
-  return (
-    <div className={`${style.container} ${style.welcomeContainer}`}>
-      <header className={style.header}>
-        <button className={style.header__cancelBtn} onClick={onClose}>
-          Cancel
-        </button>
-        <h2 className={`${style.header__title} ${style.centeredTitle}`}>
-          GhostDrive
-        </h2>
-        <button>
-          <DotsIcon />
-        </button>
-      </header>
-      <section className={style.wrapper}>
-        <div className={style.wrapper__content}>
-          <img src={welcomeLogo} alt="logo" width={93} height={93} />
-          <h2 className={style.wrapper__content__title}>Welcome</h2>
-          <p className={style.wrapper__content__description}>
-            Ghostdrive Storage Network
-          </p>
-          <p className={style.wrapper__content__description}>
-            Powered by Filecoin
-          </p>
-        </div>
-        <ul className={style.options}>
-          <li className={style.options__item}>
-            <button
-              onClick={() => {
-                navigate("/upload");
-              }}
-              className={style.options__item__button}>
-              <UploadIcon /> Upload Files
-            </button>
-          </li>
-          <li className={style.options__item}>
-            <button className={style.options__item__button}>
-              <GhostIcon /> Client-side Encryption
-            </button>
-          </li>
-          <li className={style.options__item}>
-            <button className={style.options__item__button}>
-              <UpgradeIcon /> Secured Sharing
-            </button>
-          </li>
-        </ul>
-        <button className={style.startButton}>Start</button>
-      </section>
-    </div>
-  );
-};
 
 export const UploadPage = () => {
   const navigate = useNavigate();
