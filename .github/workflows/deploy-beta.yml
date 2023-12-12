@@ -1,4 +1,4 @@
-name: Deploy Dev
+name: Deploy Beta
 
 on:
   workflow_dispatch:
@@ -7,13 +7,13 @@ env:
   GIT_BRANCH: ${{ github.ref_name }}
   PROJECT_NAME: telegram-bot-front
   PROJECT_DIR: /home/ec2-user/telegram-bot
-  SSH_HOST: ${{ vars.DEV_SSH_HOST }}
+  SSH_HOST: ${{ vars.BETA_SSH_HOST }}
   SSH_USER: ec2-user
-  SSH_KEY: ${{ secrets.DEV_SSH_KEY }}
+  SSH_KEY: ${{ secrets.BETA_SSH_KEY }}
 
 jobs:
   build:
-    name: Deploy to Dev
+    name: Deploy to Beta
     runs-on: ubuntu-latest
     steps:
     - name: Get Code
