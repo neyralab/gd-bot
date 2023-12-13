@@ -70,7 +70,7 @@ export const UpgradeStoragePage = () => {
           time. <a href="/">Learn more</a>
         </p>
       </div>
-      <div>
+      <div className={s.options}>
         <div className={s.upgradeOptionsHeader}>
           <h3>Ghostdrive+</h3>
           <p>Yearly</p>
