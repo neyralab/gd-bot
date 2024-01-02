@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "nodemon app.js"
+    "serve": "nodemon app.js"
   },
   "author": "",
   "license": "ISC",
