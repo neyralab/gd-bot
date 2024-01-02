@@ -6,3 +6,13 @@ services:
     container_name: telegram-bot-front
     ports:
     - "3002:3000"
+    command: npm start
+
+  telegram-bot-back:
+    build:
+      context: backend
+      dockerfile: ../Dockerfile
+    container_name: telegram-bot-back
+    ports:
+    - "3003:3000"
+    command: npm run serve
