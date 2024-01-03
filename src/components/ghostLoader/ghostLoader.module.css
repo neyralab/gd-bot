@@ -1,0 +1,61 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
+}
+
+.textWrapper {
+  display: flex;
+}
+
+.blinkingPipe {
+  position: relative;
+  right: 3px;
+  bottom: 0px;
+  animation-delay: 1s;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 20px;
+  animation: blinkAnimation 0.75s infinite;
+}
+
+.textContent,
+.blinkingPipe {
+  font-family: "IBM Plex Mono";
+  text-transform: uppercase;
+  background: linear-gradient(90deg, #e55d87 0%, #5fc3e4 100%);
+  color: transparent;
+  background-clip: text;
+  -webkit-background-clip: text;
+}
+.textContent {
+  margin: 0 0 0 10px;
+  font-size: 16px;
+  font-weight: 400;
+  white-space: nowrap;
+  overflow: hidden;
+  animation: typingAnimation 3s steps(50);
+  &_isOnePhrase {
+    animation: typingAnimation 5s steps(50) infinite;
+  }
+}
+@keyframes typingAnimation {
+  0% {
+    width: 0;
+  }
+  20% {
+    width: 100%;
+  }
+}
+@keyframes blinkAnimation {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
