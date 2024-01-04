@@ -23,13 +23,14 @@ jobs:
         host: ${{ env.SSH_HOST }}
         username: ${{ env.SSH_USER }}
         key: ${{ env.SSH_KEY }}
+        envs: ENV_BACK
         script_stop: true
         script: |
           cd ${{ env.PROJECT_DIR}}/${{ env.PROJECT_NAME }}
           git fetch --all
           git reset --hard origin/${{ env.GIT_BRANCH }}
 
-          echo ${{ env.ENV_BACK }} > backend/.env
+          echo "${ENV_BACK}" > backend/.env
 
           docker system prune -f
           docker-compose -f docker-compose.yml build
