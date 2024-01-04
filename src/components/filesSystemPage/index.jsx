@@ -1,4 +1,6 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 
 import { ReactComponent as ArrowIcon } from "../../assets/arrow_right.svg";
 import { ReactComponent as CircleCloudIcon } from "../../assets/cloud_circle.svg";
@@ -8,17 +10,23 @@ import { ReactComponent as SearchIcon } from "../../assets/search.svg";
 
 import placeholder_image from "../../assets/upload_bg.png";
 
+import { uploadFileEffect } from "./uploadFileEffect";
+
 import style from "./style.module.css";
 
 export const FilesSystemPage = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const uploadedFiles = useSelector((state) => state.files);
+  const [areFilesLoading, setAreFilesLoading] = useState(false);
 
   const onBackButtonClick = () => navigate(-1);
 
-  const filesLength = 0;
-
   const handleFileUpload = async (event) => {
-    // To do upload
+    setAreFilesLoading(true);
+    const files = event.target.files;
+    await uploadFileEffect({ files, dispatch });
+    setAreFilesLoading(false);
   };
 
   return (
@@ -26,7 +34,8 @@ export const FilesSystemPage = () => {
       <header className={style.filesHeader}>
         <button
           className={style.header__cancelBtnBlue}
-          onClick={onBackButtonClick}>
+          onClick={onBackButtonClick}
+        >
           Back
         </button>
         <h2 className={`${style.header__title} ${style.centeredTitle}`}>
@@ -40,7 +49,8 @@ export const FilesSystemPage = () => {
         <ul className={style.options}>
           <li className={style.options__item}>
             <button
-              className={`${style.options__item__button} ${style.selectFileButton}`}>
+              className={`${style.options__item__button} ${style.selectFileButton}`}
+            >
               <CirclePictureIcon /> From Gallery{" "}
               <ArrowIcon className={style.arrowIcon} />
             </button>
@@ -49,11 +59,13 @@ export const FilesSystemPage = () => {
               accept="image/*,video/*"
               className={style.hiddenInput}
               onChange={handleFileUpload}
+              multiple
             />
           </li>
           <li className={style.options__item}>
             <button
-              className={`${style.options__item__button} ${style.selectFileButton}`}>
+              className={`${style.options__item__button} ${style.selectFileButton}`}
+            >
               <CircleCloudIcon /> From Files{" "}
               <ArrowIcon className={style.arrowIcon} />
             </button>
@@ -62,26 +74,35 @@ export const FilesSystemPage = () => {
               accept=".pdf,.doc,.txt,.zip,.rar"
               className={style.hiddenInput}
               onChange={handleFileUpload}
+              multiple
             />
           </li>
         </ul>
-        <p className={style.wrapper__list__title}>Recently sent files</p>
-        {filesLength ? (
+        <p className={style.wrapper__list__title}>
+          Recently sent files
+          {areFilesLoading && <span>{/* To do loader */}</span>}
+        </p>
+        {uploadedFiles.length ? (
           <ul className={`${style.options} ${style.filesList}`}>
-            <li className={`${style.options__item} ${style.fileItem}`}>
-              <div className={style.fileItem__icon}>
-                <img
-                  src={placeholder_image}
-                  alt="file"
-                  width={30}
-                  height={40}
-                />
-              </div>
-              <div>
-                <h3>File name</h3>
-                <p>Mar 21, 2021, 3:30pm</p>
-              </div>
-            </li>
+            {uploadedFiles.map((file) => (
+              <li
+                className={`${style.options__item} ${style.fileItem}`}
+                key={file.id}
+              >
+                <div className={style.fileItem__icon}>
+                  <img
+                    src={placeholder_image}
+                    alt="file"
+                    width={30}
+                    height={40}
+                  />
+                </div>
+                <div>
+                  <h3>{file.name}</h3>
+                  <p>{file.created_at}</p>
+                </div>
+              </li>
+            ))}
           </ul>
         ) : (
           <div className={style.emptyFilesPage}>
