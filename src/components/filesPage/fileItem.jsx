@@ -1,11 +1,15 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { TelegramShareButton } from "react-share";
 
 import moment from "moment";
 import cn from "classnames";
 
 import { selectFileView } from "../../store/reducers/filesSlice";
-import { getFilePreviewEffect } from "../../effects/filesEffects";
+import {
+  getFilePreviewEffect,
+  updateShareEffect,
+} from "../../effects/filesEffects";
 import videoFileExtensions from "../../config/video-file-extensions";
 import imageFileExtensions, {
   imageMediaTypesPreview,
@@ -13,12 +17,14 @@ import imageFileExtensions, {
 
 import CustomFileIcon from "../customFileIcon";
 import CustomFileSmallIcon from "../customFileIcon/CustomFileSmallIcon";
+import { ReactComponent as ShareArrowIcon } from "../../assets/arrow_share.svg";
 
 import style from "./style.module.css";
 
 export const FileItem = ({ file, callback, isFileChecked }) => {
   const view = useSelector(selectFileView);
   const [preview, setPreview] = useState(null);
+  const url = `https://dev.ghostdrive.com/file/${file.slug}`;
   const formattedDate = (dateCreated) =>
     moment.unix(dateCreated).format("MMM DD, YYYY, h:mma");
 
@@ -34,6 +40,21 @@ export const FileItem = ({ file, callback, isFileChecked }) => {
     }
   }, []);
 
+  const onShareClick = async (e) => {
+    e.stopPropagation();
+    await updateShareEffect(file.slug);
+  };
+
+  const ShareButton = (
+    <TelegramShareButton
+      url={url}
+      title={`Tap this link to see the file "${file.name}"`}
+      className={style.shareButton}
+      onClick={onShareClick}>
+      <ShareArrowIcon />
+    </TelegramShareButton>
+  );
+
   return (
     <>
       {view === "grid" ? (
@@ -45,7 +66,7 @@ export const FileItem = ({ file, callback, isFileChecked }) => {
             className={style.checkbox}
             type="checkbox"
             checked={isFileChecked(file.id)}></input>
-
+          {ShareButton}
           <div className={style.previewWrapper}>
             {preview ? (
               <img
@@ -74,6 +95,7 @@ export const FileItem = ({ file, callback, isFileChecked }) => {
             className={cn(style.checkbox, style.checkbox__right)}
             type="checkbox"
             checked={isFileChecked(file.id)}></input>
+          {ShareButton}
           <div className={style.fileItem__icon}>
             {preview ? (
               <img src={preview} alt="file" width={30} height={40} />

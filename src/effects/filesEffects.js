@@ -121,3 +121,26 @@ export const getFileInfoEffect = async (id) => {
       console.error(error);
     });
 };
+
+export const updateShareEffect = async (
+  fileId,
+  shareId = 1,
+  canComment = false,
+  canEdit = false,
+  expiredAt = 0
+) => {
+  const url = `${process.env.REACT_APP_API_PATH}/files/${fileId}/share/${shareId}`;
+
+  return axiosInstance
+    .post(url, {
+      canComment: canEdit || canComment,
+      canEdit,
+      expiredAt,
+    })
+    .then((response) => {
+      return response.data;
+    })
+    .catch((response) => {
+      throw response;
+    });
+};

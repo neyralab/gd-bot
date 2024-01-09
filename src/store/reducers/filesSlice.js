@@ -16,7 +16,7 @@ const filesSlice = createSlice({
       state.searchAutocomplete = [...payload];
     },
     addUploadedFile: (state, { payload }) => {
-      state.files = [...state.files, ...payload];
+      state.files = [...payload, ...state.files];
     },
     changeDirection: (state, { payload }) => {
       state.direction = payload;

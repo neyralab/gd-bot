@@ -163,11 +163,11 @@
   top: 8px;
   right: 8px;
   border-radius: 5px;
-  background: #303030;
+  background: #303030 !important;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 2px;
+  padding: 2px !important;
 }
 
 .emptyFilesPage {
@@ -235,7 +235,10 @@
 
 .checkbox__right {
   left: auto;
-  right: 8px;
+  right: 45px;
+  width: 18px;
+  height: 18px;
+  opacity: 0.7;
 }
 
 .checkbox:checked {
@@ -272,6 +275,7 @@
 }
 
 .fileItem {
+  cursor: pointer;
   display: flex;
   gap: 16px;
   justify-content: flex-start;
@@ -280,6 +284,7 @@
   padding: 0 16px;
   border-radius: 8px;
   background: #1c1c1e;
+  padding-right: 100px;
 }
 .fileItem div {
   overflow: hidden;
