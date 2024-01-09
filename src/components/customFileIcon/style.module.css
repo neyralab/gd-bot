@@ -139,3 +139,108 @@
   width: 55px;
   height: 72px;
 }
+
+/* small icons */
+
+.smallMediaIconWrapper {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.smallMediaIconWrapper svg:nth-child(1) {
+  fill: none;
+  stroke: #ffffff;
+  width: 30px;
+  max-width: 30px;
+  height: 40px;
+  max-height: 40px;
+}
+
+.smallMediaIconWrapper img {
+  position: absolute;
+}
+.smallMediaIconWrapper img + svg {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+
+  fill: #ffffff;
+  width: 13px;
+  height: 13px;
+  max-width: 13px;
+  max-height: 13px;
+  transition: fill 200ms linear, transform 0.7s ease;
+}
+
+.smallMediaIconWrapper .audioImage {
+  width: 22px;
+  height: 22px;
+}
+.smallMediaIconWrapper .videoImage {
+  width: 25px;
+  height: 23px;
+}
+
+.smallInternalIconWrapper {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.smallInternalIconWrapper svg:nth-child(1) {
+  fill: none;
+  stroke: #ffffff;
+  width: 30px;
+  max-width: 30px;
+  height: 40px;
+  max-height: 40px;
+}
+.smallInternalIconWrapper svg:nth-child(2) {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-width: 20px;
+  max-height: 23px;
+
+  fill: #ffffff;
+}
+.smallDocIconWrapper {
+  box-sizing: border-box;
+  position: relative;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.smallDocIconWrapper svg {
+  width: 30px;
+  height: 40px;
+  max-width: 30px;
+  max-height: 40px;
+}
+.smallDocIconWrapper span {
+  position: absolute;
+  color: white;
+
+  font-style: normal;
+  font-weight: 600;
+  font-size: 8px;
+  line-height: 0.78;
+  text-align: center;
+
+  top: 3px;
+  text-transform: uppercase;
+}
+.smallDocIconWrapper img {
+  position: absolute;
+  width: 26px;
+  height: 25px;
+  bottom: 4px;
+  left: 1.5px;
+}

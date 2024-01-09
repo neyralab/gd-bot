@@ -1,24 +1,111 @@
+import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import moment from "moment";
+import { useDispatch, useSelector } from "react-redux";
+import cn from "classnames";
 
-import { files } from "./mockup";
+import {
+  changeDirection,
+  changeFileView,
+  selectDirection,
+  selectFileView,
+  selectFiles,
+  selectSearchAutocomplete,
+  setSearchAutocomplete,
+} from "../../store/reducers/filesSlice";
+import {
+  autoCompleteSearchEffect,
+  downloadFileEffect,
+  getFileInfoEffect,
+} from "../../effects/filesEffects";
+import { useClickOutside } from "../../utils/useClickOutside";
 
-import CustomFileIcon from "../customFileIcon";
+import { FileItem } from "./fileItem";
+import { Loader } from "../loader";
+import CustomFileSmallIcon from "../customFileIcon/CustomFileSmallIcon";
+
 import { ReactComponent as SearchIcon } from "../../assets/search_input.svg";
 import { ReactComponent as GridIcon } from "../../assets/grid_view.svg";
+import { ReactComponent as ListIcon } from "../../assets/list_view.svg";
 import { ReactComponent as ArrowIcon } from "../../assets/arrow_up.svg";
-import { ReactComponent as ShareArrowIcon } from "../../assets/arrow_share.svg";
 import { ReactComponent as FileIcon } from "../../assets/file_draft.svg";
 
 import style from "./style.module.css";
 
-export const FilesPage = ({ initiator }) => {
+export const FilesPage = ({}) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const files = useSelector(selectFiles);
+  const searchFiles = useSelector(selectSearchAutocomplete);
+  const dir = useSelector(selectDirection);
+  const view = useSelector(selectFileView);
+  const [checkedFiles, setCheckedFiles] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const inputRef = useRef(null);
+  const searchRef = useRef(null);
+  const isFileChecked = (id) => {
+    return checkedFiles.some((file) => file.id === id);
+  };
+  const handleClickOutside = () => {
+    setIsPopupOpen(false);
+    setCheckedFiles((prevFiles) => prevFiles.filter((file) => !file.is_search));
+  };
+
+  useClickOutside(searchRef, handleClickOutside);
 
   const onBackButtonClick = () => navigate(-1);
 
-  const formattedDate = (dateCreated) =>
-    moment.unix(dateCreated).format("MMM DD, YYYY, h:mma");
+  const onFileSelect = (file) => {
+    if (isFileChecked(file.id)) {
+      setCheckedFiles((files) => files.filter((el) => el.id !== file.id));
+    } else {
+      setCheckedFiles((files) => [...files, file]);
+    }
+  };
+
+  const handleFileDownload = async () => {
+    setLoading(true);
+    for (const file of checkedFiles) {
+      await downloadFileEffect(file);
+    }
+    setCheckedFiles([]);
+    setLoading(false);
+  };
+
+  const onDirectionChange = () => {
+    if (dir === "asc") {
+      dispatch(changeDirection("desc"));
+    } else {
+      dispatch(changeDirection("asc"));
+    }
+  };
+
+  const onFileViewChange = () => {
+    if (view === "grid") {
+      dispatch(changeFileView("list"));
+    } else {
+      dispatch(changeFileView("grid"));
+    }
+  };
+
+  const handleInputChange = async (e) => {
+    const query = e.target.value;
+    dispatch(setSearchAutocomplete([]));
+    await autoCompleteSearchEffect(query).then((data) => {
+      if (data.length > 0) {
+        setIsPopupOpen(true);
+        dispatch(setSearchAutocomplete(data));
+      } else {
+        dispatch(setSearchAutocomplete([]));
+      }
+    });
+  };
+
+  const handleSearchClick = async (file) => {
+    await getFileInfoEffect(file.slug).then((data) =>
+      onFileSelect({ ...data, id: file.id, is_search: true })
+    );
+  };
 
   return (
     <div className={style.container}>
@@ -28,40 +115,76 @@ export const FilesPage = ({ initiator }) => {
         </button>
         <h2 className={style.header__title}>Files</h2>y
       </header>
-      <div className={style.inputWrapper}>
+      <div className={style.inputWrapper} ref={searchRef}>
         <SearchIcon className={style.inputWrapper__icon} />
-        <input placeholder="Search" className={style.inputWrapper__input} />
+        <input
+          ref={inputRef}
+          placeholder="Search"
+          className={style.inputWrapper__input}
+          onChange={handleInputChange}
+        />
+        {isPopupOpen && (
+          <ul className={style.autocompleteWrapper}>
+            {searchFiles.map((file) => (
+              <li
+                key={file.id}
+                className={cn(style.options__item, style.fileItem)}
+                onClick={() => {
+                  handleSearchClick(file);
+                }}>
+                <input
+                  className={cn(style.checkbox, style.checkbox__right)}
+                  type="checkbox"
+                  checked={isFileChecked(file.id)}></input>
+                <div className={style.fileItem__icon}>
+                  <CustomFileSmallIcon type={file.extension} />
+                </div>
+                <div>
+                  <h3>{file.title}</h3>
+                  <p>{file.updated}</p>
+                </div>
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
       <div className={style.actionButtons}>
-        <button className={style.actionButtons__sort}>
+        <button
+          className={cn(
+            style.actionButtons__sort,
+            dir === "desc" && style.descending__dir
+          )}
+          onClick={onDirectionChange}>
           Created
           <ArrowIcon />
         </button>
-        <button className={style.actionButtons__view}>
-          <GridIcon />
+        <button
+          className={style.actionButtons__view}
+          onClick={onFileViewChange}>
+          {view === "grid" ? <ListIcon /> : <GridIcon />}
         </button>
       </div>
-      {initiator !== "upload" ? (
-        <ul className={style.filesList}>
-          {files.map((file) => (
-            <li className={style.fileWrapper} key={file.name}>
-              <button className={style.shareButton}>
-                <ShareArrowIcon />
-              </button>
-              <CustomFileIcon
-                extension={file.extension}
-                color={file.color}
-                dateCreated={file.dateCreated}
+      {files.length > 0 ? (
+        <>
+          <ul className={style.filesList}>
+            {files.map((file) => (
+              <FileItem
+                file={file}
+                isFileChecked={isFileChecked}
+                callback={onFileSelect}
+                key={file.id}
               />
-              <div className={style.info}>
-                <p className={style.info__name}>{file.name}</p>
-                <p className={style.info__date}>
-                  {formattedDate(file.dateCreated)}
-                </p>
-              </div>
-            </li>
-          ))}
-        </ul>
+            ))}
+          </ul>
+          {checkedFiles.length > 0 && (
+            <button
+              className={style.uploadBtn}
+              onClick={handleFileDownload}
+              ref={searchRef}>
+              {loading ? <Loader /> : "Download"}
+            </button>
+          )}
+        </>
       ) : (
         <>
           <div className={style.emptyFilesPage}>
@@ -71,7 +194,11 @@ export const FilesPage = ({ initiator }) => {
               This page is empty, upload your first files.
             </p>
           </div>
-          <button className={style.uploadBtn}>Upload</button>
+          <button
+            className={style.uploadBtn}
+            onClick={() => navigate("/file-upload")}>
+            Upload
+          </button>
         </>
       )}
     </div>

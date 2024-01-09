@@ -1,4 +1,3 @@
-// Refactoring №3
 import React, { useEffect, useState } from "react";
 
 import { ReactComponent as GhostLogoLoader } from "./svg/ghost-logo-loader.svg";

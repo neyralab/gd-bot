@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Route, Routes } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import { setUser } from "./store/reducers/userSlice";
 import {
@@ -8,11 +8,14 @@ import {
   setCurrentWorkspace,
   setWorkspacePlan,
 } from "./store/reducers/workspaceSlice";
+import { selectDirection, setFiles } from "./store/reducers/filesSlice";
 
 import { getUserEffect } from "./effects/userEffects";
 import { getWorkspacesEffect } from "./effects/workspaceEffects";
 import { authorizeUser } from "./effects/authorizeUser";
 import { storageListEffect } from "./effects/storageEffects";
+import setToken from "./effects/set-token";
+import { getFilesEffect } from "./effects/filesEffects";
 
 import { StartPage } from "./components/startPage";
 import { FilesSystemPage } from "./components/filesSystemPage";
@@ -26,12 +29,12 @@ const tg = window.Telegram.WebApp;
 function App() {
   const dispatch = useDispatch();
   const [tariffs, setTariffs] = useState(null);
+  const fileDirection = useSelector(selectDirection);
   const currentUser = {
-    // id: tg.initDataUnsafe.user.id,
-    // username: tg.initDataUnsafe.user.username,
-    // first_name: tg.initDataUnsafe.user.first_name,
-    // last_name: tg.initDataUnsafe.user.last_name,
-    // hardcode for local
+    //   id: tg.initDataUnsafe.user.id,
+    //   username: tg.initDataUnsafe.user.username,
+    //   first_name: tg.initDataUnsafe.user.first_name,
+    //   last_name: tg.initDataUnsafe.user.last_name,
     id: 769774901,
     username: "sir_Malinfield",
   };
@@ -39,8 +42,8 @@ function App() {
   const onPageLoad = async () => {
     try {
       const { token } = await authorizeUser(currentUser);
-      localStorage.setItem("token", token);
-      await getUserEffect(token).then((data) => {
+      setToken(token);
+      await getUserEffect().then((data) => {
         dispatch(setUser(data.user));
         dispatch(setCurrentWorkspace(data.current_workspace));
         dispatch(setWorkspacePlan(data.workspace_plan));
@@ -57,6 +60,12 @@ function App() {
   };
 
   useEffect(() => {
+    getFilesEffect(1, fileDirection).then((data) => {
+      dispatch(setFiles(data.data));
+    });
+  }, [fileDirection]);
+
+  useEffect(() => {
     tg.ready();
     onPageLoad();
   }, []);
@@ -70,11 +79,7 @@ function App() {
       <Routes>
         <Route path="/" exact element={<StartPage onClose={onClose} />} />
         <Route path="/file-upload" exact element={<FilesSystemPage />} />
-        <Route
-          path="/ghostdrive-upload"
-          exact
-          element={<FilesPage initiator={"upload"} />}
-        />
+        <Route path="/ghostdrive-upload" exact element={<FilesPage />} />
         <Route path="/files" exact element={<FilesPage />} />
         <Route
           path="/upgrade"

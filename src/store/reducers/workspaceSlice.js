@@ -29,3 +29,5 @@ export default workspaceSlice.reducer;
 export const selectCurrentWorkspace = (state) =>
   state.workspace.currentWorkspace;
 export const selectWorkspacePlan = (state) => state.workspace.workspacePlan;
+export const selectTotalWsCount = (state) => state.workspace.totalWsCount;
+export const selectAllWorkspaces = (state) => state.workspace.allWorkspaces;

@@ -1,12 +1,13 @@
-import moment from 'moment';
-import { uploadFile, LocalFileBuffer } from 'gdgateway-client/lib/es5';
+import { uploadFile, LocalFileBuffer } from "gdgateway-client/lib/es5";
 
-import { getOneTimeToken } from '../../effects/getOneTimeToken';
-import { uploadFileData } from '../../config/upload-file-data';
-import { setFiles } from '../../store/reducers/filesSlice';
+import { getOneTimeToken } from "./getOneTimeToken";
+import { uploadFileData } from "../config/upload-file-data";
+import { addUploadedFile } from "../store/reducers/filesSlice";
 
-const formattedDate = (dateCreated) =>
-  moment.unix(dateCreated).format('MMM DD, YYYY, h:mma');
+const setTelegramFiles = (fileID) => {
+  const files = JSON.parse(localStorage.getItem("telegram_files")) ?? [];
+  localStorage.setItem("telegram_files", JSON.stringify([...files, fileID]));
+};
 
 export const uploadFileEffect = async ({ files, dispatch }) => {
   let progresses = {};
@@ -60,12 +61,11 @@ export const uploadFileEffect = async ({ files, dispatch }) => {
           startedAt: file?.startedAt,
         });
         const uploadedFile = result.data.data;
-        uploadedFile.created_at = formattedDate(uploadedFile.created_at);
 
-        dispatch(setFiles(uploadedFile));
-
+        dispatch(addUploadedFile([uploadedFile]));
+        setTelegramFiles(uploadedFile.id);
         if (!result) {
-          console.log('error', error);
+          console.log("error", error);
         }
 
         if (index < files.length) await multiUploadFile(index);
@@ -73,7 +73,7 @@ export const uploadFileEffect = async ({ files, dispatch }) => {
           progresses[file?.folderData?.uploadId] += file.size;
         }
       } catch (e) {
-        console.log('error', e);
+        console.log("error", e);
       }
     };
 

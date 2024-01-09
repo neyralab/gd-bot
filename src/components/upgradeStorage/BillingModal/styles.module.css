@@ -1,0 +1,142 @@
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #1b1919;
+  z-index: 1005;
+}
+
+.modal {
+  position: absolute;
+  width: 320px;
+  height: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.logo {
+  color: #fff;
+}
+
+.header {
+  margin: 20px 0 0 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.close {
+  cursor: pointer;
+  color: #fff;
+}
+
+.content {
+  font-family: "Open Sans";
+}
+
+.paymenForm {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  max-width: 600px;
+  min-height: 400px;
+  padding: 0 24px 40px 24px;
+  text-align: center;
+  background: #242424;
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  padding: 0 30px 30px 30px;
+}
+
+.loader {
+  display: flex;
+  justify-content: center;
+  height: 380px;
+  align-items: center;
+}
+
+.titleFixed {
+  font-family: "Open Sans";
+  padding-top: 36px;
+  width: calc(100% - 58px);
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 23px;
+  letter-spacing: 0.5px;
+  text-align: center;
+  margin-top: 0;
+  margin-bottom: 0;
+  position: fixed;
+  z-index: 1;
+  height: 66px;
+  background-color: #242424;
+  color: #ffffff;
+  text-transform: uppercase;
+}
+
+.title {
+  font-family: "Open Sans";
+  padding-top: 26px;
+  padding-bottom: 26px;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 23px;
+  letter-spacing: 0.5px;
+  text-align: center;
+  margin-top: 0;
+  margin-bottom: 0;
+  height: 66px;
+  background-color: #242424;
+  color: #ffffff;
+  text-transform: uppercase;
+}
+
+.form {
+  min-height: 280px;
+}
+
+.footer {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.footer > button {
+  width: 100%;
+  position: relative;
+  height: 48px;
+  min-width: 132px;
+  text-transform: uppercase;
+  font-family: sf pro text, sans-serif;
+  letter-spacing: 0.2em;
+  font-size: 12px;
+  line-height: 12px;
+  font-weight: 400;
+  cursor: pointer;
+}
+
+.payButton {
+  background-color: #fff;
+  text-transform: uppercase;
+  color: #202124;
+  min-height: 40px;
+}
+
+.cancelButton {
+  display: inline-block;
+  background-color: initial;
+  color: #fff;
+  border: none;
+  padding: 0;
+  min-height: auto;
+}
+
+.error {
+  color: #df1b41;
+}
