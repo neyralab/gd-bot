@@ -113,7 +113,7 @@ export const FilesPage = ({}) => {
         <button className={style.header__backBtn} onClick={onBackButtonClick}>
           Back
         </button>
-        <h2 className={style.header__title}>Files</h2>y
+        <h2 className={style.header__title}>Files</h2>
       </header>
       <div className={style.inputWrapper} ref={searchRef}>
         <SearchIcon className={style.inputWrapper__icon} />
