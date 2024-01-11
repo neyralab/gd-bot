@@ -31,10 +31,13 @@ function App() {
   const [tariffs, setTariffs] = useState(null);
   const fileDirection = useSelector(selectDirection);
   const currentUser = {
-    id: tg.initDataUnsafe.user.id,
-    username: tg.initDataUnsafe.user.username,
-    first_name: tg.initDataUnsafe.user.first_name,
-    last_name: tg.initDataUnsafe.user.last_name,
+    // id: tg.initDataUnsafe.user.id,
+    // username: tg.initDataUnsafe.user.username,
+    // first_name: tg.initDataUnsafe.user.first_name,
+    // last_name: tg.initDataUnsafe.user.last_name,
+    // hardcode for local
+    id: 769774901,
+    username: "sir_Malinfield",
   };
 
   const onPageLoad = async () => {
