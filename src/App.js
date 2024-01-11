@@ -41,7 +41,7 @@ function App() {
     try {
       const { token } = await authorizeUser(currentUser);
       setToken(token);
-      await getUserEffect().then((data) => {
+      await getUserEffect(token).then((data) => {
         dispatch(setUser(data.user));
         dispatch(setCurrentWorkspace(data.current_workspace));
         dispatch(setWorkspacePlan(data.workspace_plan));
@@ -49,7 +49,7 @@ function App() {
       await getWorkspacesEffect(token).then((data) =>
         dispatch(setAllWorkspaces(data))
       );
-      await storageListEffect().then((data) => {
+      await storageListEffect(token).then((data) => {
         setTariffs(data);
       });
     } catch (error) {
@@ -57,16 +57,21 @@ function App() {
     }
   };
 
-  useEffect(() => {
-    getFilesEffect(1, fileDirection).then((data) => {
+  const getFiles = async () => {
+    const { token } = await authorizeUser(currentUser);
+    getFilesEffect(1, fileDirection, token).then((data) => {
       dispatch(setFiles(data.data));
     });
-  }, [fileDirection]);
+  };
 
   useEffect(() => {
     tg.ready();
     onPageLoad();
   }, []);
+
+  useEffect(() => {
+    getFiles();
+  }, [fileDirection]);
 
   const onClose = () => {
     tg.close();

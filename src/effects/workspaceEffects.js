@@ -9,8 +9,13 @@ export const getIsWorkspaceSelected = () => {
   return JSON.parse(sessionStorage.getItem("ws_selected"));
 };
 
-export const getWorkspacesEffect = async () => {
+export const getWorkspacesEffect = async (token) => {
   return await axiosInstance
+    .create({
+      headers: {
+        "X-Token": `Bearer ${token}`,
+      },
+    })
     .get(`${process.env.REACT_APP_API_PATH}/user/workspaces`)
     .then((response) => response.data.data)
     .catch((err) => err);

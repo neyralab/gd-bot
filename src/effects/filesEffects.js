@@ -6,10 +6,17 @@ export const getDownloadOTT = (body) => {
   return axiosInstance.post(url, body);
 };
 
-export const getFilesEffect = async (page = 1, order = "desc") => {
+export const getFilesEffect = async (page = 1, order = "asc", token) => {
   const url = `${process.env.REACT_APP_API_PATH}/files?page=${page}&order_by=createdAt&order=${order}`;
 
-  return await axiosInstance.get(url).then((result) => result.data);
+  return await axiosInstance
+    .create({
+      headers: {
+        "X-Token": `Bearer ${token}`,
+      },
+    })
+    .get(url)
+    .then((result) => result.data);
 };
 
 export const getFilePreviewEffect = async (
