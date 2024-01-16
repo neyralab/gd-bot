@@ -35,6 +35,7 @@ function App() {
     // username: tg.initDataUnsafe.user.username,
     // first_name: tg.initDataUnsafe.user.first_name,
     // last_name: tg.initDataUnsafe.user.last_name,
+    // hash: tg.initDataUnsafe.hash,
     // hardcode for local
     id: 769774901,
     username: "sir_Malinfield",
