@@ -31,13 +31,12 @@ function App() {
   const [tariffs, setTariffs] = useState(null);
   const fileDirection = useSelector(selectDirection);
   const currentUser = {
-    id: tg.initDataUnsafe.user.id,
-    username: tg.initDataUnsafe.user.username,
-    first_name: tg.initDataUnsafe.user.first_name,
-    last_name: tg.initDataUnsafe.user.last_name,
-    hash: tg.initDataUnsafe.hash,
-    auth_date: tg.initDataUnsafe.auth_date,
-    tg,
+    "id": 461882488,
+    "username": "BrendonHit0",
+    "first_name": "Vasya",
+    "last_name": "Popovych",
+    "hash": "b0f5badd05bf2ef3ed0ca8f6ca68cfc7773bedfeb0278e069d298d8b268dfb81",
+    "auth_date": 1705610160
     // hardcode for local
     // id: 769774901,
     // username: "sir_Malinfield",
