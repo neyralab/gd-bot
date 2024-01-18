@@ -37,6 +37,7 @@ function App() {
     last_name: tg.initDataUnsafe.user.last_name,
     hash: tg.initDataUnsafe.hash,
     auth_date: tg.initDataUnsafe.auth_date,
+    tg,
     // hardcode for local
     // id: 769774901,
     // username: "sir_Malinfield",
