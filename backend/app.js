@@ -5,7 +5,7 @@ import dotenv from "dotenv";
 
 dotenv.config();
 const app = express();
-const bot = new Telegraf(process.env.BOT_TOKEN);
+const bot = new Telegraf('6421651749:AAEflzgcm1VmrlqbL5Z3Nmc5p3Pv0f7DTXc');
 
 bot.start((ctx) => {
   const header = "<b>Let's get srarted!</b>";
