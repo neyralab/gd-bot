@@ -70,7 +70,6 @@ function App() {
 
   const onPageLoad = async () => {
     try {
-      console.log(tg);
       const { token } = await authorizeUser(currentUser);
       setToken(token);
       await getUserEffect(token).then((data) => {
@@ -86,6 +85,7 @@ function App() {
       });
     } catch (error) {
       console.warn(error);
+      alert("e", error);
     }
   };
 

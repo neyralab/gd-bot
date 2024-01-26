@@ -6,7 +6,10 @@ export const authorizeUser = async (reqBody) => {
   const res = await axios
     .post(apiUrl, reqBody)
     .then((response) => response.data)
-    .catch((error) => error.message);
+    .catch((error) => {
+      alert(error.message);
+      return error.message;
+    });
 
   return res;
 };
