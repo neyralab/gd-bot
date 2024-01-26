@@ -59,12 +59,12 @@ function App() {
   };
 
   const currentUser = {
-    id: 461882488,
-    username: "BrendonHit0",
-    first_name: "Vasya",
-    last_name: "Popovych",
-    hash: "b0f5badd05bf2ef3ed0ca8f6ca68cfc7773bedfeb0278e069d298d8b268dfb81",
-    auth_date: 1705610160,
+    id: 5431683983,
+    first_name: "Brendon",
+    last_name: "Hit",
+    username: "Brendon_Hit",
+    auth_date: 1706279902,
+    hash: "bae649ab3bbb13eefede30ae08c3a7e9945594e9276a3af25de043274add61a2",
   };
 
   const onPageLoad = async () => {
