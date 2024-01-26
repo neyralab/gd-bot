@@ -5,13 +5,13 @@ import dotenv from "dotenv";
 
 dotenv.config();
 const app = express();
-const bot = new Telegraf('6421651749:AAEflzgcm1VmrlqbL5Z3Nmc5p3Pv0f7DTXc');
+const bot = new Telegraf(process.env.BOT_TOKEN);
 
 bot.start((ctx) => {
   const header = "<b>Let's get srarted!</b>";
   const additionalText =
     "Please tap the below to start Upload files to/from GhostDrive.";
-  const buttonUrl = "https://tg.beta.ghostdrive.com/";
+  const buttonUrl = "https://tg.dev.ghostdrive.com/";
   const buttonText = "Open GhostDrive";
   const button = Markup.button.webApp(buttonText, buttonUrl);
 
