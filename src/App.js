@@ -30,21 +30,47 @@ function App() {
   const dispatch = useDispatch();
   const [tariffs, setTariffs] = useState(null);
   const fileDirection = useSelector(selectDirection);
+
+  const getHash = () => {
+    const data = tg.initData;
+    const hashRegex = /&hash=([a-zA-Z0-9]+)/;
+    const match = data.match(hashRegex);
+
+    if (match && match[1]) {
+      const hash = match[1];
+      return hash;
+    } else {
+      alert("Something is wrong, please try again later");
+    }
+  };
+
+  const getAuthDate = () => {
+    const data = tg.initData;
+
+    const authDateRegex = /&auth_date=(\d+)/;
+    const authDateMatch = data.match(authDateRegex);
+
+    if (authDateMatch && authDateMatch[1]) {
+      const authDate = parseInt(authDateMatch[1]);
+      return authDate;
+    } else {
+      alert("Something is wrong, please try again later");
+    }
+  };
+
   const currentUser = {
-    "id": 461882488,
-    "username": "BrendonHit0",
-    "first_name": "Vasya",
-    "last_name": "Popovych",
-    "hash": "b0f5badd05bf2ef3ed0ca8f6ca68cfc7773bedfeb0278e069d298d8b268dfb81",
-    "auth_date": 1705610160
-    // hardcode for local
-    // id: 769774901,
-    // username: "sir_Malinfield",
+    id: tg.initDataUnsafe.user.id,
+    username: tg.initDataUnsafe.user.username,
+    first_name: tg.initDataUnsafe.user.first_name,
+    last_name: tg.initDataUnsafe.user.last_name,
+    hash: getHash(),
+    auth_date: getAuthDate(),
+    logo: null,
   };
 
   const onPageLoad = async () => {
     try {
-      console.log(tg)
+      console.log(tg);
       const { token } = await authorizeUser(currentUser);
       setToken(token);
       await getUserEffect(token).then((data) => {
