@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const authorizeUser = async (reqBody) => {
-  alert("body: ", JSON.stringify(reqBody));
+  alert(JSON.stringify(reqBody));
   const apiUrl = process.env.REACT_APP_AUTHORIZATION;
 
   const res = await axios
