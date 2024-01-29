@@ -62,14 +62,13 @@ function App() {
     id: tg.initDataUnsafe.user.id,
     username: tg.initDataUnsafe.user.username,
     first_name: tg.initDataUnsafe.user.first_name,
-    last_name: tg.initDataUnsafe.user.last_name,
+    // last_name: tg.initDataUnsafe.user.last_name,
     hash: getHash(),
     auth_date: getAuthDate(),
-    photo_url: null,
+    // photo_url: null,
   };
 
   const onPageLoad = async () => {
-    alert(JSON.stringify(tg));
     try {
       const { token } = await authorizeUser(currentUser);
       setToken(token);
