@@ -69,6 +69,7 @@ function App() {
   };
 
   const onPageLoad = async () => {
+    alert(JSON.stringify(tg));
     try {
       const { token } = await authorizeUser(currentUser);
       setToken(token);
