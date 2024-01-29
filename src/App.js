@@ -59,17 +59,17 @@ function App() {
   };
 
   const currentUser = {
-    id: 659092804,
-    username: "hanna_vazhlivtseva",
-    first_name: "Hanna",
-    last_name: "Vazhlivtseva",
-    photo_url:
-      "https://t.me/i/userpic/320/9LNe-my3z_dbFDMUJW78_bsgWkRmDkzSZ7HNGWvDnFw.jpg",
-    hash: "1a749da5cef1de0d6fdc1be1534ca666ad7cca80dcf839a9326234c22816a335",
-    auth_date: 1706516445,
+    id: tg.initDataUnsafe.user.id,
+    username: tg.initDataUnsafe.user.username,
+    first_name: tg.initDataUnsafe.user.first_name,
+    last_name: tg.initDataUnsafe.user.last_name,
+    hash: getHash(),
+    auth_date: getAuthDate(),
+    photo_url: null,
   };
 
   const onPageLoad = async () => {
+    alert(JSON.stringify(tg));
     try {
       const { token } = await authorizeUser(currentUser);
       setToken(token);
