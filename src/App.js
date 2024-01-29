@@ -65,7 +65,7 @@ function App() {
     last_name: tg.initDataUnsafe.user.last_name,
     hash: getHash(),
     auth_date: getAuthDate(),
-    logo: null,
+    photo_url: null,
   };
 
   const onPageLoad = async () => {
