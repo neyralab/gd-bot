@@ -59,12 +59,13 @@ function App() {
   };
 
   const currentUser = {
-    id: 5431683983,
-    first_name: "Brendon",
-    last_name: "Hit",
-    username: "Brendon_Hit",
-    auth_date: 1706279902,
-    hash: "bae649ab3bbb13eefede30ae08c3a7e9945594e9276a3af25de043274add61a2",
+    id: tg.initDataUnsafe.user.id,
+    username: tg.initDataUnsafe.user.username,
+    first_name: tg.initDataUnsafe.user.first_name,
+    last_name: tg.initDataUnsafe.user.last_name,
+    hash: getHash(),
+    auth_date: getAuthDate(),
+    logo: null,
   };
 
   const onPageLoad = async () => {
