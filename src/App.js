@@ -60,9 +60,9 @@ function App() {
 
   const currentUser = {
     id: tg.initDataUnsafe.user.id,
-    username: tg.initDataUnsafe.user.username,
-    first_name: tg.initDataUnsafe.user.first_name,
-    last_name: tg.initDataUnsafe.user.last_name,
+    username: tg.initDataUnsafe.user.username ?? null,
+    first_name: tg.initDataUnsafe.user.first_name ?? null,
+    last_name: tg.initDataUnsafe.user.last_name ?? null,
     hash: getHash(),
     auth_date: getAuthDate(),
     photo_url: null,
@@ -72,6 +72,7 @@ function App() {
     try {
       const { token } = await authorizeUser(currentUser);
       setToken(token);
+      alert(token);
       await getUserEffect(token).then((data) => {
         dispatch(setUser(data.user));
         dispatch(setCurrentWorkspace(data.current_workspace));
