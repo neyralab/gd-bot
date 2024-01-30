@@ -31,49 +31,19 @@ function App() {
   const [tariffs, setTariffs] = useState(null);
   const fileDirection = useSelector(selectDirection);
 
-  const getHash = () => {
-    const data = tg.initData;
-    const hashRegex = /&hash=([a-zA-Z0-9]+)/;
-    const match = data.match(hashRegex);
-
-    if (match && match[1]) {
-      const hash = match[1];
-      return hash;
-    } else {
-      alert("Something is wrong, please try again later");
-    }
-  };
-
-  const getAuthDate = () => {
-    const data = tg.initData;
-
-    const authDateRegex = /&auth_date=(\d+)/;
-    const authDateMatch = data.match(authDateRegex);
-
-    if (authDateMatch && authDateMatch[1]) {
-      const authDate = parseInt(authDateMatch[1]);
-      return authDate;
-    } else {
-      alert("Something is wrong, please try again later");
-    }
-  };
-
   const currentUser = {
     id: tg.initDataUnsafe.user.id,
     username: tg.initDataUnsafe.user.username,
     first_name: tg.initDataUnsafe.user.first_name,
     last_name: tg.initDataUnsafe.user.last_name,
-    hash: getHash(),
-    auth_date: getAuthDate(),
-    // photo_url: null,
+    hash: tg.initDataUnsafe.hash,
+    auth_date: tg.initDataUnsafe.auth_date,
   };
 
   const onPageLoad = async () => {
-    alert(JSON.stringify(tg));
     try {
       const { token } = await authorizeUser(currentUser);
       setToken(token);
-      alert(token);
       await getUserEffect(token).then((data) => {
         dispatch(setUser(data.user));
         dispatch(setCurrentWorkspace(data.current_workspace));
