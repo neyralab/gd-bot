@@ -38,7 +38,6 @@ export const UpgradeStoragePage = ({ tariffs }) => {
   const ws = useSelector(selectCurrentWorkspace);
   const currentPlan = useSelector(selectWorkspacePlan) || {};
   const [duration, setDuration] = useState(1);
-  const [checked, setChecked] = useState(false);
   const [plan, setPlan] = useState(null);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [subscription, setSubscription] = useState(null);
@@ -111,23 +110,6 @@ export const UpgradeStoragePage = ({ tariffs }) => {
     setPlan(id);
   };
 
-  const Switch = () => {
-    const handleChange = (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      setChecked(e.target.checked);
-      setDuration((prev) => (prev === 1 ? 12 : 1));
-    };
-    return (
-      <label className={s.switchWrapper}>
-        <input onChange={handleChange} type="checkbox" checked={checked} />
-        <span className={s.switch}>
-          <span className={s.button}></span>
-        </span>
-      </label>
-    );
-  };
-
   const onClosePaymentModal = () => {
     setShowPaymentModal(false);
   };
@@ -181,7 +163,7 @@ export const UpgradeStoragePage = ({ tariffs }) => {
         <button className={s.header__backBtn} onClick={onBackButtonClick}>
           Back
         </button>
-        <button className={s.header__upgradeBtn}>Upgrade Storage</button>
+        <h2 className={s.header__upgradeBtn}>Upgrade Storage</h2>
       </header>
       <p className={s.headingText}>
         You will be charged immediately and each payment period until you change
@@ -221,8 +203,6 @@ export const UpgradeStoragePage = ({ tariffs }) => {
       <div className={s.options}>
         <div className={s.upgradeOptionsHeader}>
           <h3>Ghostdrive+</h3>
-          <p>Yearly</p>
-          <Switch />
         </div>
         <ul className={s.optionsList} onClick={onPlanClick}>
           {tariffList.map((tariffPlan) => (
