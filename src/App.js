@@ -42,9 +42,17 @@ function App() {
     initData: tg.initData,
   };
 
+  function splitString(str) {
+    const halfLength = Math.floor(str.length / 2);
+    return [str.substring(0, halfLength), str.substring(halfLength)];
+  }
+
   const onPageLoad = async () => {
     try {
+      const [part1, part2] = splitString(JSON.stringify(currentUser));
       Sentry.captureMessage(`currentUser: ${JSON.stringify(currentUser)}`);
+      Sentry.captureMessage(`currentUser1: ${JSON.stringify(part1)}`);
+      Sentry.captureMessage(`currentUser2: ${JSON.stringify(part2)}`);
       const { token } = await authorizeUser(currentUser);
       if (!token) throw new Error("token not found");
       Sentry.captureMessage(`token: ${token}`);
