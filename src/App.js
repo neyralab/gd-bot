@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import * as Sentry from "@sentry/react";
+import { BrowserTracing } from "@sentry/tracing";
 
 import { setUser } from "./store/reducers/userSlice";
 import {
@@ -26,6 +28,11 @@ import "./App.css";
 
 const tg = window.Telegram.WebApp;
 
+Sentry.init({
+  dsn: "https://90a01121ff787d65425233b65fae9085@o4506717537042432.ingest.sentry.io/4506717540384768",
+  integrations: [new BrowserTracing()],
+});
+
 function App() {
   const dispatch = useDispatch();
   const [tariffs, setTariffs] = useState(null);
@@ -38,6 +45,7 @@ function App() {
   const onPageLoad = async () => {
     try {
       const { token } = await authorizeUser(currentUser);
+      if (!token) throw new Error("token not found");
       setToken(token);
       await getUserEffect(token).then((data) => {
         dispatch(setUser(data.user));
@@ -52,6 +60,7 @@ function App() {
       });
     } catch (error) {
       console.warn(error);
+      Sentry.captureException(error);
     }
   };
 

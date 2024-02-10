@@ -1,4 +1,5 @@
 import axiosInstance from "./axiosInstance";
+import * as Sentry from "@sentry/react";
 import setToken from "./set-token";
 
 export const setIsWorkspaceSelected = (bool) => {
@@ -18,7 +19,10 @@ export const getWorkspacesEffect = async (token) => {
     })
     .get(`${process.env.REACT_APP_API_PATH}/user/workspaces`)
     .then((response) => response.data.data)
-    .catch((err) => err);
+    .catch((err) => {
+      Sentry.captureMessage(`Error in getWorkspacesEffect: ${err.message}`);
+      return err;
+    });
 };
 
 export const switchWorkspace = async (workspace_id) => {
