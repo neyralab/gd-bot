@@ -44,20 +44,32 @@ function App() {
 
   const onPageLoad = async () => {
     try {
+      Sentry.captureMessage(`currentUser: ${JSON.stringify(currentUser)}`);
       const { token } = await authorizeUser(currentUser);
       if (!token) throw new Error("token not found");
+      Sentry.captureMessage(`token: ${token}`);
       setToken(token);
       await getUserEffect(token).then((data) => {
+        Sentry.captureMessage(
+          `getUserEffect response: ${JSON.stringify(data)}`
+        );
         dispatch(setUser(data.user));
         dispatch(setCurrentWorkspace(data.current_workspace));
         dispatch(setWorkspacePlan(data.workspace_plan));
       });
-      await getWorkspacesEffect(token).then((data) =>
-        dispatch(setAllWorkspaces(data))
-      );
+      await getWorkspacesEffect(token).then((data) => {
+        Sentry.captureMessage(
+          `getWorkspacesEffect response: ${JSON.stringify(data)}`
+        );
+        dispatch(setAllWorkspaces(data));
+      });
       await storageListEffect(token).then((data) => {
+        Sentry.captureMessage(
+          `storageListEffect response: ${JSON.stringify(data)}`
+        );
         setTariffs(data);
       });
+      Sentry.captureMessage(`App is successfully running`);
     } catch (error) {
       console.warn(error);
       Sentry.captureException(error);
