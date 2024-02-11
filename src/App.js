@@ -86,7 +86,7 @@ function App() {
 
   const getFiles = async () => {
     const { token } = await authorizeUser(currentUser);
-    getFilesEffect(1, fileDirection, token).then((data) => {
+    await getFilesEffect(1, fileDirection, token).then((data) => {
       dispatch(setFiles(data.data));
     });
   };
