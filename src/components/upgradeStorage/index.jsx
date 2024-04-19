@@ -37,7 +37,7 @@ export const UpgradeStoragePage = ({ tariffs }) => {
   const navigate = useNavigate();
   const ws = useSelector(selectCurrentWorkspace);
   const currentPlan = useSelector(selectWorkspacePlan) || {};
-  const [duration, setDuration] = useState(1);
+  const [duration, setDuration] = useState(12);
   const [checked, setChecked] = useState(false);
   const [plan, setPlan] = useState(null);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
@@ -222,11 +222,11 @@ export const UpgradeStoragePage = ({ tariffs }) => {
         <div className={s.upgradeOptionsHeader}>
           <h3>Ghostdrive+</h3>
           <p>Yearly</p>
-          <Switch />
+          {/* <Switch /> */}
         </div>
         <ul className={s.optionsList} onClick={onPlanClick}>
           {tariffList.map((tariffPlan) => (
-            <li id={tariffPlan.priceId}>
+            <li id={tariffPlan.priceId} key={tariffPlan.priceId}>
               <div
                 className={`${s.optionsList__card} ${
                   plan === "100GB" ? s.active : ""
