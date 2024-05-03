@@ -62,7 +62,6 @@ function App() {
       const { token } = await authorizeUser(currentUser);
       if (!token) throw new Error("token not found");
       Sentry.captureMessage(`token: ${token}`);
-      await connectUserV8(tg.initDataUnsafe);
       setToken(token);
       await getUserEffect(token).then((data) => {
         Sentry.captureMessage(
