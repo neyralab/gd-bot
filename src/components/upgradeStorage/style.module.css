@@ -202,6 +202,10 @@
   background: #efefef;
 }
 
+.payButton:nth-of-type(2) {
+  margin-top: 8px;
+}
+
 .checkbox {
   cursor: pointer;
   position: absolute;

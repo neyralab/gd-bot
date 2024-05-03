@@ -46,3 +46,32 @@ export const updateWsStorage = async (price, subscription) => {
     console.error(error);
   }
 };
+export const updateWsStorageTON = async (
+  storage,
+  workspace_id,
+  duration = 1
+) => {
+  try {
+    const url = `https://api.dev.ghostdrive.com/api/apiv2/update/storage`;
+    const body = {
+      storage,
+      user: "neyra_id",
+      workspace: workspace_id,
+      duration,
+    };
+    const data = await axiosInstance.post(url, body);
+    return data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const getTonWallet = async (user_id, workspace_id) => {
+  const data = await axiosInstance.post(
+    "https://api.neyra.ai/api/gateway/billing/retrieve_crypto",
+    {
+      symbol: "ton",
+    }
+  );
+  console.log("data", data);
+};

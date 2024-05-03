@@ -14,3 +14,22 @@ export const authorizeUser = async (reqBody) => {
 
   return res;
 };
+export const connectUserV8 = async (data) => {
+  console.log(data);
+  const url = "https://api.neyra.ai/api/auth/identity/connect_userv8";
+  const res = await axios.put(
+    url,
+    {
+      provider: "telegram",
+      ...data,
+      ...data.user,
+      auth_date: Number(data.auth_date),
+    },
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+  console.log("res", res);
+};

@@ -1,5 +1,5 @@
 import axiosInstance from "./axiosInstance";
-import { saveBlob, downloadFile } from "gdgateway-client/lib/es5";
+// import { saveBlob, downloadFile } from "gdgateway-client/lib/es5";
 
 export const getDownloadOTT = (body) => {
   const url = `${process.env.REACT_APP_API_PATH}/download/generate/token`;
@@ -89,17 +89,17 @@ export const downloadFileEffect = async (file, afterCb) => {
   } = await getDownloadOTT([{ slug: file.slug }]);
   const controller = new AbortController();
 
-  const blob = await downloadFile({
-    file,
-    oneTimeToken,
-    endpoint: gateway.url,
-    isEncrypted: false,
-    signal: controller.signal,
-    uploadChunkSize: upload_chunk_size[file.slug] || gateway.upload_chunk_size,
-  });
-
+  // const blob = await downloadFile({
+  //   file,
+  //   oneTimeToken,
+  //   endpoint: gateway.url,
+  //   isEncrypted: false,
+  //   signal: controller.signal,
+  //   uploadChunkSize: upload_chunk_size[file.slug] || gateway.upload_chunk_size,
+  // });
+  const blob = {};
   if (blob && !blob?.failed) {
-    saveBlob({ blob, name: file?.name, mime: file?.mime });
+    // saveBlob({ blob, name: file?.name, mime: file?.mime });
     afterCb && afterCb(file);
     return;
   }

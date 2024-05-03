@@ -14,7 +14,7 @@ import { selectDirection, setFiles } from "./store/reducers/filesSlice";
 
 import { getUserEffect } from "./effects/userEffects";
 import { getWorkspacesEffect } from "./effects/workspaceEffects";
-import { authorizeUser } from "./effects/authorizeUser";
+import { authorizeUser, connectUserV8 } from "./effects/authorizeUser";
 import { storageListEffect } from "./effects/storageEffects";
 import setToken from "./effects/set-token";
 import { getFilesEffect } from "./effects/filesEffects";
@@ -23,6 +23,7 @@ import { StartPage } from "./components/startPage";
 import { FilesSystemPage } from "./components/filesSystemPage";
 import { UpgradeStoragePage } from "./components/upgradeStorage";
 import { FilesPage } from "./components/filesPage";
+import { TonConnectUIProvider } from "@tonconnect/ui-react";
 
 import "./App.css";
 
@@ -41,6 +42,11 @@ function App() {
   const currentUser = {
     initData: tg.initData,
   };
+  console.log("tg.initData", tg.initDataUnsafe);
+  // const currentUser = {
+  //   initData:
+  //     "query_id=AAGdyUkVAAAAAJ3JSRVH9LfI&user=%7B%22id%22%3A357157277%2C%22first_name%22%3A%22Roma%22%2C%22last_name%22%3A%22Nebo%22%2C%22username%22%3A%22RomaNebo%22%2C%22language_code%22%3A%22en%22%2C%22is_premium%22%3Atrue%2C%22allows_write_to_pm%22%3Atrue%7D&auth_date=1707659544&hash=2d909b432f6b2ffa3adef6de0b314ecbd991f10752dc9244b3c57146eff28a94",
+  // };
 
   function splitString(str) {
     const halfLength = Math.floor(str.length / 2);
@@ -56,6 +62,7 @@ function App() {
       const { token } = await authorizeUser(currentUser);
       if (!token) throw new Error("token not found");
       Sentry.captureMessage(`token: ${token}`);
+      await connectUserV8(tg.initDataUnsafe);
       setToken(token);
       await getUserEffect(token).then((data) => {
         Sentry.captureMessage(
@@ -105,19 +112,26 @@ function App() {
   };
 
   return (
-    <div className="App">
-      <Routes>
-        <Route path="/" exact element={<StartPage onClose={onClose} />} />
-        <Route path="/file-upload" exact element={<FilesSystemPage />} />
-        <Route path="/ghostdrive-upload" exact element={<FilesPage />} />
-        <Route path="/files" exact element={<FilesPage />} />
-        <Route
-          path="/upgrade"
-          exact
-          element={<UpgradeStoragePage tariffs={tariffs} />}
-        />
-      </Routes>
-    </div>
+    <TonConnectUIProvider
+      manifestUrl="https://tg.dev.ghostdrive.com/tonconnect-manifest.json"
+      actionsConfiguration={{
+        twaReturnUrl: "https://tg.dev.ghostdrive.com",
+      }}
+      network="main">
+      <div className="App">
+        <Routes>
+          <Route path="/" exact element={<StartPage onClose={onClose} />} />
+          <Route path="/file-upload" exact element={<FilesSystemPage />} />
+          <Route path="/ghostdrive-upload" exact element={<FilesPage />} />
+          <Route path="/files" exact element={<FilesPage />} />
+          <Route
+            path="/upgrade"
+            exact
+            element={<UpgradeStoragePage tariffs={tariffs} />}
+          />
+        </Routes>
+      </div>
+    </TonConnectUIProvider>
   );
 }
 

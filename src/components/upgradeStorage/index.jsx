@@ -1,14 +1,25 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import {
+  useTonConnectUI,
+  useTonWallet,
+  TonConnectButton,
+  useTonConnectModal,
+} from "@tonconnect/ui-react";
 
-import { createStripeSorageSub, updateWsStorage } from "../../effects/stripe";
+import {
+  createStripeSorageSub,
+  getTonWallet,
+  updateWsStorage,
+  updateWsStorageTON,
+} from "../../effects/paymentEffect";
 import { sidebarSizeTransformer } from "../../utils/storage";
 import {
   selectCurrentWorkspace,
   selectWorkspacePlan,
 } from "../../store/reducers/workspaceSlice";
-
+import { SuccessPopup } from "./SuccessPopup";
 import BillingModal from "./BillingModal";
 
 import { ReactComponent as CoinIcon } from "../../assets/coin.svg";
@@ -40,8 +51,14 @@ export const UpgradeStoragePage = ({ tariffs }) => {
   const [duration, setDuration] = useState(1);
   const [plan, setPlan] = useState(null);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
+  const [showTonPaymentModal, setShowTonPaymentModal] = useState(false);
   const [subscription, setSubscription] = useState(null);
   const [availableTariffs, setAvailableTariffs] = useState(null);
+  const [isTonCheckComplete, setIsTonCheckComplete] = useState(false);
+  const [isTonPaymentSuccess, setIsTonPaymentSuccess] = useState(false);
+  const [tonConnectUI] = useTonConnectUI();
+  const wallet = useTonWallet();
+  const { open } = useTonConnectModal();
 
   const convertBytesToKibibytes = (size) => {
     return size / 1024 ** 3;
@@ -69,6 +86,8 @@ export const UpgradeStoragePage = ({ tariffs }) => {
           tarifStorage: node.storage,
           kibibytes: convertBytesToKibibytes(node.storage),
           priceId: node.stripe_price,
+          tonPrice: node.ton_price,
+          nanoTonPrice: node.ton_price * 1000000000,
         });
       }
     }
@@ -139,6 +158,49 @@ export const UpgradeStoragePage = ({ tariffs }) => {
     }
   };
 
+  const payByTON = async () => {
+    // await getTonWallet();
+    const selectedTariff = tariffList.filter(
+      (tariff) => tariff.priceId === plan
+    )[0];
+
+    if (wallet) {
+      try {
+        const transaction = {
+          messages: [
+            {
+              address: "0QD-damUbEa4GSB3gUqAJjp5fSxCbejW1a9OpBw5cIwa1tYl",
+              amount: selectedTariff.nanoTonPrice,
+            },
+          ],
+        };
+        await tonConnectUI.sendTransaction(transaction, {
+          modals: ["before", "error"],
+          notifications: [],
+        });
+        await setIsTonCheckComplete(false);
+        await setShowTonPaymentModal(true);
+        // await updateWsStorageTON(selectedTariff.tarifStorage, ws.id, duration)
+        //   .then(() => {
+        //     setIsTonPaymentSuccess(true);
+        //     // setTimeout(() => {
+        //     //   window.location.reload();
+        //     // }, 1000);
+        //   })
+        //   .catch(() => {
+        //     setIsTonPaymentSuccess(false);
+        //   })
+        //   .finally(() => {
+        //     setIsTonCheckComplete(true);
+        //   });
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      open();
+    }
+  };
+
   const getTariffMonthlyPrice = (price) => {
     return `${(price / duration / 100).toFixed(2)}`;
   };
@@ -163,7 +225,8 @@ export const UpgradeStoragePage = ({ tariffs }) => {
         <button className={s.header__backBtn} onClick={onBackButtonClick}>
           Back
         </button>
-        <h2 className={s.header__upgradeBtn}>Upgrade Storage</h2>
+        {/* <h2 className={s.header__upgradeBtn}>Upgrade Storage</h2> */}
+        <TonConnectButton />
       </header>
       <p className={s.headingText}>
         You will be charged immediately and each payment period until you change
@@ -179,9 +242,10 @@ export const UpgradeStoragePage = ({ tariffs }) => {
                 <p>{`$${
                   getCurrentPlanPrice(currentPlan?.price).monthlyPrice
                 } per month`}</p>
-                <span>{`$${
+                {/* <span>{`$${
                   getCurrentPlanPrice(currentPlan?.price).yearlyPrice
-                } per year`}</span>
+                } per year`}</span> */}
+                <span>{currentPlan.ton_price} TON per month</span>
               </div>
             </>
           ) : (
@@ -216,12 +280,13 @@ export const UpgradeStoragePage = ({ tariffs }) => {
                   <p>{`$${getTariffMonthlyPrice(
                     tariffPlan.price
                   )} per month`}</p>
-                  <span>
+                  {/* <span>
                     {`$${getTariffYearlyPrice(tariffPlan.price)} per year`}{" "}
                     {duration > 1 && (
                       <span>{yearlyDiscount[tariffPlan.tarifStorage]}</span>
                     )}
-                  </span>
+                  </span> */}
+                  <span>{tariffPlan.tonPrice} TON per month</span>
                 </div>
                 <input
                   className={s.checkbox}
@@ -232,12 +297,22 @@ export const UpgradeStoragePage = ({ tariffs }) => {
           ))}
         </ul>
       </div>
+      <button className={s.payButton} onClick={payByTON}>
+        Pay with TON
+      </button>
       <button
         className={s.payButton}
         onClick={payByCreditCard}
         disabled={!!!plan}>
         Pay <CoinIcon />
       </button>
+      {showTonPaymentModal && (
+        <SuccessPopup
+          onClose={() => showTonPaymentModal(false)}
+          isLoading={!isTonCheckComplete}
+          isPaymentSuccess={isTonPaymentSuccess}
+        />
+      )}
       {showPaymentModal && (
         <BillingModal
           isOpen={showPaymentModal}
