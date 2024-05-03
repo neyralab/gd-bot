@@ -1,4 +1,4 @@
-import React, { FormEvent, useState } from "react";
+import React, { useState } from "react";
 
 import {
   useElements,
@@ -6,7 +6,7 @@ import {
   PaymentElement,
 } from "@stripe/react-stripe-js";
 
-import { checkPayment } from "../../../effects/stripe";
+import { checkPayment } from "../../../effects/paymentEffect";
 
 import styles from "./styles.module.css";
 

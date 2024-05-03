@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Elements } from "@stripe/react-stripe-js";
 import Modal from "react-modal";
 
-import { getStripe } from "../../../effects/stripe";
+import { getStripe } from "../../../effects/paymentEffect";
 
 import CheckoutForm from "./CheckoutForm";
 import GhostLoader from "../../ghostLoader";
