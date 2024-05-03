@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -159,7 +160,6 @@ export const UpgradeStoragePage = ({ tariffs }) => {
   };
 
   const payByTON = async () => {
-    // await getTonWallet();
     const selectedTariff = tariffList.filter(
       (tariff) => tariff.priceId === plan
     )[0];
@@ -169,30 +169,15 @@ export const UpgradeStoragePage = ({ tariffs }) => {
         const transaction = {
           messages: [
             {
-              address: "0QD-damUbEa4GSB3gUqAJjp5fSxCbejW1a9OpBw5cIwa1tYl",
+              address: "",
               amount: selectedTariff.nanoTonPrice,
             },
           ],
         };
         await tonConnectUI.sendTransaction(transaction, {
-          modals: ["before", "error"],
+          modals: ["before", "success", "error"],
           notifications: [],
         });
-        await setIsTonCheckComplete(false);
-        await setShowTonPaymentModal(true);
-        // await updateWsStorageTON(selectedTariff.tarifStorage, ws.id, duration)
-        //   .then(() => {
-        //     setIsTonPaymentSuccess(true);
-        //     // setTimeout(() => {
-        //     //   window.location.reload();
-        //     // }, 1000);
-        //   })
-        //   .catch(() => {
-        //     setIsTonPaymentSuccess(false);
-        //   })
-        //   .finally(() => {
-        //     setIsTonCheckComplete(true);
-        //   });
       } catch (error) {
         console.log(error);
       }
@@ -297,7 +282,7 @@ export const UpgradeStoragePage = ({ tariffs }) => {
           ))}
         </ul>
       </div>
-      <button className={s.payButton} onClick={payByTON}>
+      <button className={s.payButton} onClick={payByTON} disabled>
         Pay with TON
       </button>
       <button
