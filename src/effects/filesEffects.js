@@ -151,3 +151,16 @@ export const updateShareEffect = async (
       throw response;
     });
 };
+
+export const updateEntrySorting = async (direction) => {
+  const body = {
+    orderBy: "createdAt",
+    orderDirection: direction,
+    page: "root_files",
+  };
+  return axiosInstance
+    .post(`${process.env.REACT_APP_API_PATH}/entry-sorting`, body)
+    .catch((e) => {
+      throw e;
+    });
+};
