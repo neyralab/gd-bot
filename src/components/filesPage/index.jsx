@@ -74,10 +74,11 @@ export const FilesPage = ({}) => {
   };
 
   const onDirectionChange = async () => {
-    await updateEntrySorting(dir);
     if (dir === "asc") {
+      await updateEntrySorting("desc");
       dispatch(changeDirection("desc"));
     } else {
+      await updateEntrySorting("asc");
       dispatch(changeDirection("asc"));
     }
   };
