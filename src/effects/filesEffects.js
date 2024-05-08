@@ -65,6 +65,9 @@ export const getFilePreviewEffect = async (
       .then((blob) => {
         const urlCreator = window.URL || window.webkitURL;
         return urlCreator.createObjectURL(blob);
+      })
+      .catch(() => {
+        return null;
       });
 
     return blob;
