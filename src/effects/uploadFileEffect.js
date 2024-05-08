@@ -1,4 +1,4 @@
-// import { uploadFile, LocalFileBuffer } from "gdgateway-client/lib/es5";
+import { uploadFile, LocalFileBuffer } from "gdgateway-client";
 
 import { getOneTimeToken } from "./getOneTimeToken";
 import { uploadFileData } from "../config/upload-file-data";
@@ -41,26 +41,24 @@ export const uploadFileEffect = async ({ files, dispatch }) => {
             console.error(`Handler "${type}" isn't provided`);
           }
         };
-        // const localFileBuffer = new LocalFileBuffer(
-        //   file.size,
-        //   file.name,
-        //   file.mime,
-        //   file.folderId,
-        //   file.uploadId,
-        //   async () => file.arrayBuffer()
-        // );
-        const localFileBuffer = {};
-        // result = await uploadFile({
-        //   file: localFileBuffer,
-        //   oneTimeToken,
-        //   gateway,
-        //   callback,
-        //   handlers,
-        //   progress: progresses[file?.folderData?.uploadId],
-        //   totalSize: file?.folderSize,
-        //   startedAt: file?.startedAt,
-        // });
-        result = {};
+        const localFileBuffer = new LocalFileBuffer(
+          file.size,
+          file.name,
+          file.mime,
+          file.folderId,
+          file.uploadId,
+          async () => file.arrayBuffer()
+        );
+        result = await uploadFile({
+          file: localFileBuffer,
+          oneTimeToken,
+          gateway,
+          callback,
+          handlers,
+          progress: progresses[file?.folderData?.uploadId],
+          totalSize: file?.folderSize,
+          startedAt: file?.startedAt,
+        });
         const uploadedFile = result.data.data;
 
         dispatch(addUploadedFile([uploadedFile]));
