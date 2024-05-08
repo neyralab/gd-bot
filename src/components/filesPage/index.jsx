@@ -16,6 +16,7 @@ import {
   autoCompleteSearchEffect,
   downloadFileEffect,
   getFileInfoEffect,
+  updateEntrySorting,
 } from "../../effects/filesEffects";
 import { useClickOutside } from "../../utils/useClickOutside";
 
@@ -72,7 +73,8 @@ export const FilesPage = ({}) => {
     setLoading(false);
   };
 
-  const onDirectionChange = () => {
+  const onDirectionChange = async () => {
+    await updateEntrySorting(dir);
     if (dir === "asc") {
       dispatch(changeDirection("desc"));
     } else {
