@@ -14,7 +14,7 @@ import { selectDirection, setFiles } from "./store/reducers/filesSlice";
 
 import { getUserEffect } from "./effects/userEffects";
 import { getWorkspacesEffect } from "./effects/workspaceEffects";
-import { authorizeUser } from "./effects/authorizeUser";
+import { authorizeUser, connectUserV8 } from "./effects/authorizeUser";
 import { storageListEffect } from "./effects/storageEffects";
 import setToken from "./effects/set-token";
 import { getFilesEffect } from "./effects/filesEffects";
@@ -47,7 +47,7 @@ function App() {
     const halfLength = Math.floor(str.length / 2);
     return [str.substring(0, halfLength), str.substring(halfLength)];
   }
-
+  console.log("tg.initDataUnsafe", tg.initDataUnsafe);
   const onPageLoad = async () => {
     try {
       const [part1, part2] = splitString(JSON.stringify(currentUser));
@@ -79,6 +79,7 @@ function App() {
         setTariffs(data);
       });
       Sentry.captureMessage(`App is successfully running`);
+      await connectUserV8(tg.initDataUnsafe);
     } catch (error) {
       console.warn(error);
       Sentry.captureException(error);
