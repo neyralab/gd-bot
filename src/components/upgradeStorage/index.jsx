@@ -43,6 +43,7 @@ export const UpgradeStoragePage = ({ tariffs }) => {
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [subscription, setSubscription] = useState(null);
   const [availableTariffs, setAvailableTariffs] = useState(null);
+  const storageType = ws?.gateway?.type;
 
   const convertBytesToKibibytes = (size) => {
     return size / 1024 ** 3;
@@ -87,17 +88,16 @@ export const UpgradeStoragePage = ({ tariffs }) => {
   const tariffList = useMemo(() => {
     if (!availableTariffs) return [];
 
-    const filteredTariffs = availableTariffs[ws?.storage][duration].filter(
+    const filteredTariffs = availableTariffs[storageType][duration].filter(
       (tf) => tf.tarifStorage > currentPlan?.storage
     );
-
     const choosenTariffs = currentPlan?.duration
       ? filteredTariffs
-      : availableTariffs[ws?.storage][duration];
+      : availableTariffs[storageType][duration];
     const sortedTariffs = choosenTariffs.sort((a, b) => a.price - b.price);
 
     return sortedTariffs;
-  }, [tariffs, availableTariffs, currentPlan?.storage, ws?.storage, duration]);
+  }, [tariffs, availableTariffs, currentPlan?.storage, storageType, duration]);
 
   const onPlanClick = (e) => {
     const element = e.target.closest("li");
@@ -245,8 +245,10 @@ export const UpgradeStoragePage = ({ tariffs }) => {
                 </div>
                 <input
                   className={s.checkbox}
+                  readOnly
                   type="checkbox"
-                  checked={plan === tariffPlan.priceId}></input>
+                  checked={plan === tariffPlan.priceId}
+                />
               </div>
             </li>
           ))}
