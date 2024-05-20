@@ -43,7 +43,7 @@ export const UpgradeStoragePage = ({ tariffs }) => {
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [subscription, setSubscription] = useState(null);
   const [availableTariffs, setAvailableTariffs] = useState(null);
-  const storageType = ws?.gateway?.type;
+  const storageType = "node";
 
   const convertBytesToKibibytes = (size) => {
     return size / 1024 ** 3;
