@@ -6,17 +6,9 @@ export const getDownloadOTT = (body) => {
   return axiosInstance.post(url, body);
 };
 
-export const getFilesEffect = async (page = 1, order = "asc", token) => {
+export const getFilesEffect = async (page = 1, order = "asc") => {
   const url = `${process.env.REACT_APP_API_PATH}/files?page=${page}&order_by=createdAt&order=${order}`;
-
-  return await axiosInstance
-    .create({
-      headers: {
-        "X-Token": `Bearer ${token}`,
-      },
-    })
-    .get(url)
-    .then((result) => result.data);
+  return await axiosInstance.get(url).then((result) => result.data);
 };
 
 export const getFilePreviewEffect = async (
@@ -56,21 +48,25 @@ export const getFilePreviewEffect = async (
   } else {
     url = `${gateway.url}/preview/${fileId}`;
 
-    const blob = fetch(url, {
-      headers: {
-        "One-Time-Token": oneTimeToken,
-      },
-    })
-      .then((response) => response.blob())
-      .then((blob) => {
+    return axiosInstance
+      .create({
+        headers: {
+          "one-time-token": oneTimeToken,
+        },
+      })
+      .get(url, null, {
+        options: {
+          responseType: "blob",
+          cancelToken,
+        },
+      })
+      .then((response) => {
         const urlCreator = window.URL || window.webkitURL;
-        return urlCreator.createObjectURL(blob);
+        return urlCreator.createObjectURL(response.data);
       })
       .catch(() => {
         return null;
       });
-
-    return blob;
   }
 };
 
