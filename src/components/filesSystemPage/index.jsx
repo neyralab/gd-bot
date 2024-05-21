@@ -1,12 +1,19 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
-import { selectFiles } from "../../store/reducers/filesSlice";
+import {
+  selectFilesCount,
+  selectFilesPage,
+  setCount,
+  setPage,
+} from "../../store/reducers/filesSlice";
 import { uploadFileEffect } from "../../effects/uploadFileEffect";
+import { getFilesEffect } from "../../effects/filesEffects";
 
 import { FileItem } from "./fileItem";
 import GhostLoader from "../ghostLoader";
+import InfiniteScrollComponent from "../infiniteScrollComponent";
 
 import { ReactComponent as ArrowIcon } from "../../assets/arrow_right.svg";
 import { ReactComponent as CircleCloudIcon } from "../../assets/cloud_circle.svg";
@@ -18,7 +25,9 @@ import style from "./style.module.css";
 export const FilesSystemPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const uploadedFiles = useSelector(selectFiles);
+  const [files, setFiles] = useState([]);
+  const filesCount = useSelector(selectFilesCount);
+  const filesPage = useSelector(selectFilesPage);
   const [areFilesLoading, setAreFilesLoading] = useState(false);
 
   const onBackButtonClick = () => navigate(-1);
@@ -28,6 +37,22 @@ export const FilesSystemPage = () => {
     const files = event.target.files;
     await uploadFileEffect({ files, dispatch });
     setAreFilesLoading(false);
+  };
+
+  useEffect(() => {
+    getFilesEffect(filesPage).then(({ data, count }) => {
+      setFiles(data);
+      dispatch(setCount(count));
+    });
+    return () => {
+      dispatch(setPage(1));
+    };
+  }, []);
+
+  const fetchMoreFiles = (page) => {
+    getFilesEffect(page).then(({ data }) => {
+      setFiles((prev) => [...prev, ...data]);
+    });
   };
 
   return (
@@ -78,11 +103,15 @@ export const FilesSystemPage = () => {
           <div className={style.loaderWrapper}>
             <GhostLoader texts={["Uploading"]} />
           </div>
-        ) : uploadedFiles.length ? (
+        ) : files.length ? (
           <ul className={`${style.options} ${style.filesList}`}>
-            {uploadedFiles.map((file) => (
-              <FileItem file={file} key={file.id} />
-            ))}
+            <InfiniteScrollComponent
+              totalItems={filesCount}
+              fetchMoreFiles={fetchMoreFiles}>
+              {files.map((file) => (
+                <FileItem file={file} key={file.id} />
+              ))}
+            </InfiniteScrollComponent>
           </ul>
         ) : (
           <div className={style.emptyFilesPage}>

@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import cn from "classnames";
@@ -8,14 +8,18 @@ import {
   changeFileView,
   selectDirection,
   selectFileView,
-  selectFiles,
+  selectFilesCount,
+  selectFilesPage,
   selectSearchAutocomplete,
+  setCount,
+  setPage,
   setSearchAutocomplete,
 } from "../../store/reducers/filesSlice";
 import {
   autoCompleteSearchEffect,
   downloadFileEffect,
   getFileInfoEffect,
+  getFilesEffect,
   updateEntrySorting,
 } from "../../effects/filesEffects";
 import { useClickOutside } from "../../utils/useClickOutside";
@@ -23,6 +27,7 @@ import { useClickOutside } from "../../utils/useClickOutside";
 import { FileItem } from "./fileItem";
 import { Loader } from "../loader";
 import CustomFileSmallIcon from "../customFileIcon/CustomFileSmallIcon";
+import InfiniteScrollComponent from "../infiniteScrollComponent";
 
 import { ReactComponent as SearchIcon } from "../../assets/search_input.svg";
 import { ReactComponent as GridIcon } from "../../assets/grid_view.svg";
@@ -35,7 +40,9 @@ import style from "./style.module.css";
 export const FilesPage = ({}) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const files = useSelector(selectFiles);
+  const [files, setFiles] = useState([]);
+  const filesCount = useSelector(selectFilesCount);
+  const filesPage = useSelector(selectFilesPage);
   const searchFiles = useSelector(selectSearchAutocomplete);
   const dir = useSelector(selectDirection);
   const view = useSelector(selectFileView);
@@ -44,6 +51,23 @@ export const FilesPage = ({}) => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const inputRef = useRef(null);
   const searchRef = useRef(null);
+
+  useEffect(() => {
+    getFilesEffect(filesPage, dir).then(({ data, count }) => {
+      setFiles(data);
+      dispatch(setCount(count));
+    });
+    return () => {
+      dispatch(setPage(1));
+    };
+  }, []);
+
+  const fetchMoreFiles = (page) => {
+    getFilesEffect(page, dir).then(({ data }) => {
+      setFiles((prev) => [...prev, ...data]);
+    });
+  };
+
   const isFileChecked = (id) => {
     return checkedFiles.some((file) => file.id === id);
   };
@@ -169,16 +193,20 @@ export const FilesPage = ({}) => {
       </div>
       {files.length > 0 ? (
         <>
-          <ul className={style.filesList}>
-            {files.map((file) => (
-              <FileItem
-                file={file}
-                isFileChecked={isFileChecked}
-                callback={onFileSelect}
-                key={file.id}
-              />
-            ))}
-          </ul>
+          <InfiniteScrollComponent
+            totalItems={filesCount}
+            fetchMoreFiles={fetchMoreFiles}>
+            <ul className={style.filesList}>
+              {files.map((file) => (
+                <FileItem
+                  file={file}
+                  isFileChecked={isFileChecked}
+                  callback={onFileSelect}
+                  key={file.id}
+                />
+              ))}
+            </ul>
+          </InfiniteScrollComponent>
           {checkedFiles.length > 0 && (
             <button
               className={style.uploadBtn}

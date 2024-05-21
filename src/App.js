@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Route, Routes } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import * as Sentry from "@sentry/react";
 import { BrowserTracing } from "@sentry/tracing";
 
@@ -10,14 +10,12 @@ import {
   setCurrentWorkspace,
   setWorkspacePlan,
 } from "./store/reducers/workspaceSlice";
-import { selectDirection, setFiles } from "./store/reducers/filesSlice";
 
 import { getUserEffect } from "./effects/userEffects";
 import { getWorkspacesEffect } from "./effects/workspaceEffects";
 import { authorizeUser, connectUserV8 } from "./effects/authorizeUser";
 import { storageListEffect } from "./effects/storageEffects";
 import setToken from "./effects/set-token";
-import { getFilesEffect } from "./effects/filesEffects";
 
 import { StartPage } from "./components/startPage";
 import { FilesSystemPage } from "./components/filesSystemPage";
@@ -37,7 +35,6 @@ Sentry.init({
 function App() {
   const dispatch = useDispatch();
   const [tariffs, setTariffs] = useState(null);
-  const fileDirection = useSelector(selectDirection);
 
   const currentUser = {
     initData: tg.initData,
@@ -47,7 +44,6 @@ function App() {
     const halfLength = Math.floor(str.length / 2);
     return [str.substring(0, halfLength), str.substring(halfLength)];
   }
-  console.log("tg.initDataUnsafe", tg.initDataUnsafe);
   const onPageLoad = async () => {
     try {
       const [part1, part2] = splitString(JSON.stringify(currentUser));
@@ -86,21 +82,11 @@ function App() {
     }
   };
 
-  const getFiles = async () => {
-    const { token } = await authorizeUser(currentUser);
-    await getFilesEffect(1, fileDirection, token).then((data) => {
-      dispatch(setFiles(data.data));
-    });
-  };
-
   useEffect(() => {
     tg.ready();
+    console.log("tg:", tg);
     onPageLoad();
   }, []);
-
-  useEffect(() => {
-    getFiles();
-  }, [fileDirection]);
 
   const onClose = () => {
     tg.close();
