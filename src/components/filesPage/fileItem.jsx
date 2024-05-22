@@ -24,7 +24,7 @@ import style from "./style.module.css";
 export const FileItem = ({ file, callback, isFileChecked }) => {
   const view = useSelector(selectFileView);
   const [preview, setPreview] = useState(null);
-  const url = `https://dev.ghostdrive.com/file/${file.slug}?is_telegram=true`;
+  const url = `https://neyratech.com/file/${file.slug}?is_telegram=true`;
   const formattedDate = (dateCreated) =>
     moment.unix(dateCreated).format("MMM DD, YYYY, h:mma");
 
