@@ -285,3 +285,7 @@
   border-radius: 32px;
   background-color: rgba(57, 57, 61, 1);
 }
+
+.disabled{
+  background: #7d7d7d;
+}
