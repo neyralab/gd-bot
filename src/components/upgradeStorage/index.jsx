@@ -163,7 +163,7 @@ export const UpgradeStoragePage = ({ tariffs }) => {
     return tariffList.find(
         (tariff) => tariff.priceId === plan
     );
-  },[plan])
+  }, [plan, tariffList])
 
   const payByTON = async () => {
     if (!selectedTariff){
