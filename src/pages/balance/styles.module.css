@@ -1,0 +1,38 @@
+.container {
+    /*max-width: 391px;*/
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 16px;
+    padding-bottom: 8px;
+}
+
+.mainText {
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 8px;
+}
+
+.text {
+    font-size: 12px;
+    font-weight: 400;
+    opacity: 0.6;
+    max-width: calc(100% - 30px);
+}
+
+.footer {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+    flex-direction: column;
+}
+
+.blue_btn {
+    background-color: #0a84ff;
+    color: white;
+}
+
+.white_btn {
+    background-color: white;
+    color: black;
+}
