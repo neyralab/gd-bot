@@ -22,6 +22,7 @@ import { FilesSystemPage } from "./pages/filesSystemPage";
 import { UpgradeStoragePage } from "./pages/upgradeStorage";
 import { FilesPage } from "./pages/filesPage";
 import {Balance} from "./pages/balance";
+import { Referral } from './pages/referral';
 
 import { TonConnectUIProvider } from "@tonconnect/ui-react";
 
@@ -114,6 +115,7 @@ function App() {
             element={<UpgradeStoragePage tariffs={tariffs} />}
           />
           <Route path="/balance" exact element={<Balance />} />
+          <Route path="/ref" exact element={<Referral />} />
         </Routes>
       </div>
     </TonConnectUIProvider>

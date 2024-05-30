@@ -19,6 +19,7 @@ import { ReactComponent as GhostIcon } from "../../assets/ghost.svg";
 import { ReactComponent as ArrowIcon } from "../../assets/arrow_right.svg";
 import { ReactComponent as HardDriveIcon } from "../../assets/hard_drive.svg";
 import { ReactComponent as MoneyIcon } from "../../assets/money.svg";
+import { ReactComponent as RefIcon } from "../../assets/ref.svg";
 import uploadLogo from "../../assets/upload_logo.png";
 
 import style from "./style.module.css";
@@ -88,7 +89,17 @@ export const StartPage = ({ onClose }) => {
             navigate("/balance");
           }}
           className={`${style.options__item__button} ${style.uploadOptionButton}`}>
-          <MoneyIcon /> GDP
+          <MoneyIcon /> Point Balance
+          <ArrowIcon className={style.arrowIcon} />
+        </button>
+      </li>
+      <li className={style.options__item}>
+        <button
+          onClick={() => {
+            navigate("/ref");
+          }}
+          className={`${style.options__item__button} ${style.uploadOptionButton}`}>
+          <RefIcon /> Referral System
           <ArrowIcon className={style.arrowIcon} />
         </button>
       </li>
