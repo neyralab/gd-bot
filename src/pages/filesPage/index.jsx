@@ -1,7 +1,7 @@
-import { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import cn from "classnames";
+import { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import cn from 'classnames';
 
 import {
   changeDirection,
@@ -10,37 +10,39 @@ import {
   selectFileView,
   selectFilesCount,
   selectFilesPage,
+  selectGhostdriveFiles,
   selectSearchAutocomplete,
   setCount,
+  setGhostdriveFiles,
   setPage,
-  setSearchAutocomplete,
-} from "../../store/reducers/filesSlice";
+  setSearchAutocomplete
+} from '../../store/reducers/filesSlice';
 import {
   autoCompleteSearchEffect,
   downloadFileEffect,
   getFileInfoEffect,
   getFilesEffect,
-  updateEntrySorting,
-} from "../../effects/filesEffects";
-import { useClickOutside } from "../../utils/useClickOutside";
+  updateEntrySorting
+} from '../../effects/filesEffects';
+import { useClickOutside } from '../../utils/useClickOutside';
 
-import { FileItem } from "./fileItem";
-import CustomFileSmallIcon from "../../components/customFileIcon/CustomFileSmallIcon";
-import InfiniteScrollComponent from "../../components/infiniteScrollComponent";
-import {Loader} from "../../components/loader";
+import { FileItem } from './fileItem';
+import CustomFileSmallIcon from '../../components/customFileIcon/CustomFileSmallIcon';
+import InfiniteScrollComponent from '../../components/infiniteScrollComponent';
+import { Loader } from '../../components/loader';
 
-import { ReactComponent as SearchIcon } from "../../assets/search_input.svg";
-import { ReactComponent as GridIcon } from "../../assets/grid_view.svg";
-import { ReactComponent as ListIcon } from "../../assets/list_view.svg";
-import { ReactComponent as ArrowIcon } from "../../assets/arrow_up.svg";
-import { ReactComponent as FileIcon } from "../../assets/file_draft.svg";
+import { ReactComponent as SearchIcon } from '../../assets/search_input.svg';
+import { ReactComponent as GridIcon } from '../../assets/grid_view.svg';
+import { ReactComponent as ListIcon } from '../../assets/list_view.svg';
+import { ReactComponent as ArrowIcon } from '../../assets/arrow_up.svg';
+import { ReactComponent as FileIcon } from '../../assets/file_draft.svg';
 
-import style from "./style.module.css";
+import style from './style.module.css';
 
 export const FilesPage = ({}) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [files, setFiles] = useState([]);
+  const files = useSelector(selectGhostdriveFiles);
   const filesCount = useSelector(selectFilesCount);
   const filesPage = useSelector(selectFilesPage);
   const searchFiles = useSelector(selectSearchAutocomplete);
@@ -54,17 +56,17 @@ export const FilesPage = ({}) => {
 
   useEffect(() => {
     getFilesEffect(filesPage, dir).then(({ data, count }) => {
-      setFiles(data);
+      dispatch(setGhostdriveFiles(data));
       dispatch(setCount(count));
     });
     return () => {
       dispatch(setPage(1));
     };
-  }, []);
+  }, [dir]);
 
   const fetchMoreFiles = (page) => {
     getFilesEffect(page, dir).then(({ data }) => {
-      setFiles((prev) => [...prev, ...data]);
+      dispatch(setGhostdriveFiles(data));
     });
   };
 
@@ -98,20 +100,20 @@ export const FilesPage = ({}) => {
   };
 
   const onDirectionChange = async () => {
-    if (dir === "asc") {
-      await updateEntrySorting("desc");
-      dispatch(changeDirection("desc"));
+    if (dir === 'asc') {
+      await updateEntrySorting('desc');
+      dispatch(changeDirection('desc'));
     } else {
-      await updateEntrySorting("asc");
-      dispatch(changeDirection("asc"));
+      await updateEntrySorting('asc');
+      dispatch(changeDirection('asc'));
     }
   };
 
   const onFileViewChange = () => {
-    if (view === "grid") {
-      dispatch(changeFileView("list"));
+    if (view === 'grid') {
+      dispatch(changeFileView('list'));
     } else {
-      dispatch(changeFileView("grid"));
+      dispatch(changeFileView('grid'));
     }
   };
 
@@ -119,7 +121,7 @@ export const FilesPage = ({}) => {
     const query = e.target.value;
     dispatch(setSearchAutocomplete([]));
     await autoCompleteSearchEffect(query).then((data) => {
-      if (data.length > 0) {
+      if (data?.length > 0) {
         setIsPopupOpen(true);
         dispatch(setSearchAutocomplete(data));
       } else {
@@ -179,7 +181,7 @@ export const FilesPage = ({}) => {
         <button
           className={cn(
             style.actionButtons__sort,
-            dir === "desc" && style.descending__dir
+            dir === 'desc' && style.descending__dir
           )}
           onClick={onDirectionChange}>
           Created
@@ -188,13 +190,14 @@ export const FilesPage = ({}) => {
         <button
           className={style.actionButtons__view}
           onClick={onFileViewChange}>
-          {view === "grid" ? <ListIcon /> : <GridIcon />}
+          {view === 'grid' ? <ListIcon /> : <GridIcon />}
         </button>
       </div>
       {files.length > 0 ? (
         <>
           <InfiniteScrollComponent
             totalItems={filesCount}
+            files={files}
             fetchMoreFiles={fetchMoreFiles}>
             <ul className={style.filesList}>
               {files.map((file) => (
@@ -212,7 +215,7 @@ export const FilesPage = ({}) => {
               className={style.uploadBtn}
               onClick={handleFileDownload}
               ref={searchRef}>
-              {loading ? <Loader /> : "Download"}
+              {loading ? <Loader /> : 'Download'}
             </button>
           )}
         </>
@@ -227,7 +230,7 @@ export const FilesPage = ({}) => {
           </div>
           <button
             className={style.uploadBtn}
-            onClick={() => navigate("/file-upload")}>
+            onClick={() => navigate('/file-upload')}>
             Upload
           </button>
         </>

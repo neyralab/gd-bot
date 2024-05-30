@@ -1,17 +1,19 @@
-import React from "react";
-import InfiniteScroll from "react-infinite-scroll-component";
-import { useDispatch, useSelector } from "react-redux";
+import React from 'react';
+import InfiniteScroll from 'react-infinite-scroll-component';
+import { useDispatch, useSelector } from 'react-redux';
 
-import {
-  selectFiles,
-  selectFilesPage,
-  setPage,
-} from "../../store/reducers/filesSlice";
+import { selectFilesPage, setPage } from '../../store/reducers/filesSlice';
 
-const InfiniteScrollComponent = ({ totalItems, children, fetchMoreFiles }) => {
+import s from './style.module.css';
+
+const InfiniteScrollComponent = ({
+  totalItems,
+  children,
+  fetchMoreFiles,
+  files
+}) => {
   const dispatch = useDispatch();
   const currentPage = useSelector(selectFilesPage);
-  const files = useSelector(selectFiles);
   const hasMore = totalItems - files.length > 0;
 
   const fetchMoreData = () => {
@@ -20,12 +22,14 @@ const InfiniteScrollComponent = ({ totalItems, children, fetchMoreFiles }) => {
   };
 
   return (
-    <InfiniteScroll
-      dataLength={totalItems}
-      next={fetchMoreData}
-      hasMore={hasMore}>
-      {children}
-    </InfiniteScroll>
+    <div className={s.infiniteScroll}>
+      <InfiniteScroll
+        dataLength={totalItems}
+        next={fetchMoreData}
+        hasMore={hasMore}>
+        {children}
+      </InfiniteScroll>
+    </div>
   );
 };
 
