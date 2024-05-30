@@ -1,13 +1,14 @@
+import { API_PATH } from "../utils/api-urls";
 import axiosInstance from "./axiosInstance";
 import { saveBlob, downloadFile } from "gdgateway-client";
 
 export const getDownloadOTT = (body) => {
-  const url = `${process.env.REACT_APP_API_PATH}/download/generate/token`;
+  const url = `${API_PATH}/download/generate/token`;
   return axiosInstance.post(url, body);
 };
 
 export const getFilesEffect = async (page = 1, order = "asc") => {
-  const url = `${process.env.REACT_APP_API_PATH}/files?page=${page}&order_by=createdAt&order=${order}`;
+  const url = `${API_PATH}/files?page=${page}&order_by=createdAt&order=${order}`;
   return await axiosInstance.get(url).then((result) => result.data);
 };
 
@@ -105,7 +106,7 @@ export const downloadFileEffect = async (file, afterCb) => {
 };
 
 export const autoCompleteSearchEffect = async (term = "") => {
-  const url = `${process.env.REACT_APP_API_PATH}/search/autocomplete?term=${term}`;
+  const url = `${API_PATH}/search/autocomplete?term=${term}`;
   return await axiosInstance
     .get(url)
     .then(({ data }) => {
@@ -117,7 +118,7 @@ export const autoCompleteSearchEffect = async (term = "") => {
 };
 
 export const getFileInfoEffect = async (id) => {
-  const url = `${process.env.REACT_APP_API_PATH}/files/file/${id}`;
+  const url = `${API_PATH}/files/file/${id}`;
   return await axiosInstance
     .get(url)
     .then(({ data }) => {
@@ -135,7 +136,7 @@ export const updateShareEffect = async (
   canEdit = false,
   expiredAt = 0
 ) => {
-  const url = `${process.env.REACT_APP_API_PATH}/files/${fileId}/share/${shareId}`;
+  const url = `${API_PATH}/files/${fileId}/share/${shareId}`;
 
   return axiosInstance
     .post(url, {
@@ -157,9 +158,7 @@ export const updateEntrySorting = async (direction) => {
     orderDirection: direction,
     page: "root_files",
   };
-  return axiosInstance
-    .post(`${process.env.REACT_APP_API_PATH}/entry-sorting`, body)
-    .catch((e) => {
-      throw e;
-    });
+  return axiosInstance.post(`${API_PATH}/entry-sorting`, body).catch((e) => {
+    throw e;
+  });
 };
