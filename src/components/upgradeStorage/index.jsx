@@ -159,17 +159,24 @@ export const UpgradeStoragePage = ({ tariffs }) => {
     }
   };
 
+  const selectedTariff = useMemo(()=>{
+    return tariffList.find(
+        (tariff) => tariff.priceId === plan
+    );
+  }, [plan, tariffList])
+
   const payByTON = async () => {
-    const selectedTariff = tariffList.filter(
-      (tariff) => tariff.priceId === plan
-    )[0];
+    if (!selectedTariff){
+      return
+    }
 
     if (wallet) {
       try {
         const transaction = {
+          validUntil: Math.floor(Date.now() / 1000) + 60, // 60 sec
           messages: [
             {
-              address: "",
+              address: "UQBRGbB8_Sq8wPcic3JXjr6ZxTymQjuZdy36UQJoLHiweGtp",
               amount: selectedTariff.nanoTonPrice,
             },
           ],
@@ -284,7 +291,10 @@ export const UpgradeStoragePage = ({ tariffs }) => {
           ))}
         </ul>
       </div>
-      <button className={s.payButton} onClick={payByTON} disabled>
+      <button
+          disabled={!selectedTariff}
+          className={`${s.payButton} ${!selectedTariff?s.disabled:''}`}
+          onClick={payByTON}>
         Pay with TON
       </button>
       <button
