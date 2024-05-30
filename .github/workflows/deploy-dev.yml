@@ -10,6 +10,7 @@ env:
   SSH_HOST: ${{ vars.DEV_SSH_HOST }}
   SSH_USER: ec2-user
   SSH_KEY: ${{ secrets.DEV_SSH_KEY }}
+  ENV_FRONT: ${{ secrets.DEV_ENV_FRONT }}
   ENV_BACK: ${{ secrets.DEV_ENV_BACK }}
 
 jobs:
@@ -30,6 +31,7 @@ jobs:
           git fetch --all
           git reset --hard origin/${{ env.GIT_BRANCH }}
 
+          echo "${ENV_FRONT}" > .env
           echo "${ENV_BACK}" > backend/.env
 
           docker system prune -f
