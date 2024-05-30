@@ -1,3 +1,4 @@
+import { API_PATH } from "../utils/api-urls";
 import axiosInstance from "./axiosInstance";
 
 export const storageListEffect = async (token) => {
@@ -7,7 +8,7 @@ export const storageListEffect = async (token) => {
         "X-Token": `Bearer ${token}`,
       },
     })
-    .get(`${process.env.REACT_APP_API_PATH}/workspace/storage/list`)
+    .get(`${API_PATH}/workspace/storage/list`)
     .then((response) => {
       return response.data;
     })

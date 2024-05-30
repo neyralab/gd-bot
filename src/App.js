@@ -78,7 +78,7 @@ function App() {
         setTariffs(data);
       });
       Sentry.captureMessage(`App is successfully running`);
-      await connectUserV8(tg.initDataUnsafe);
+      await connectUserV8(tg.initData);
     } catch (error) {
       console.warn(error);
       Sentry.captureException(error);

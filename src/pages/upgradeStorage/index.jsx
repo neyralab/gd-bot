@@ -242,7 +242,7 @@ export const UpgradeStoragePage = ({ tariffs }) => {
             </>
           ) : (
             <>
-              <span>5GB</span>
+              <span>1GB</span>
               <div>
                 <p>$0.00 per month</p>
                 <span>free forever</span>
