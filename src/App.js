@@ -17,10 +17,12 @@ import { authorizeUser, connectUserV8 } from "./effects/authorizeUser";
 import { storageListEffect } from "./effects/storageEffects";
 import setToken from "./effects/set-token";
 
-import { StartPage } from "./components/startPage";
-import { FilesSystemPage } from "./components/filesSystemPage";
-import { UpgradeStoragePage } from "./components/upgradeStorage";
-import { FilesPage } from "./components/filesPage";
+import { StartPage } from "./pages/startPage";
+import { FilesSystemPage } from "./pages/filesSystemPage";
+import { UpgradeStoragePage } from "./pages/upgradeStorage";
+import { FilesPage } from "./pages/filesPage";
+import {Balance} from "./pages/balance";
+
 import { TonConnectUIProvider } from "@tonconnect/ui-react";
 
 import "./App.css";
@@ -37,7 +39,8 @@ function App() {
   const [tariffs, setTariffs] = useState(null);
 
   const currentUser = {
-    initData: tg.initData,
+    initData:
+        "query_id=AAGdyUkVAAAAAJ3JSRVH9LfI&user=%7B%22id%22%3A357157277%2C%22first_name%22%3A%22Roma%22%2C%22last_name%22%3A%22Nebo%22%2C%22username%22%3A%22RomaNebo%22%2C%22language_code%22%3A%22en%22%2C%22is_premium%22%3Atrue%2C%22allows_write_to_pm%22%3Atrue%7D&auth_date=1707659544&hash=2d909b432f6b2ffa3adef6de0b314ecbd991f10752dc9244b3c57146eff28a94",
   };
 
   function splitString(str) {
@@ -110,6 +113,7 @@ function App() {
             exact
             element={<UpgradeStoragePage tariffs={tariffs} />}
           />
+          <Route path="/balance" exact element={<Balance />} />
         </Routes>
       </div>
     </TonConnectUIProvider>

@@ -1,0 +1,11 @@
+.btn {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    font-family: "SF Pro Text", sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 8px;
+    cursor: pointer;
+}
