@@ -9,7 +9,7 @@
 
 .uploadContainer {
   position: relative;
-  background-image: url("../../assets/welcome_bg.png");
+  background-image: url('../../assets/welcome_bg.png');
   background-repeat: no-repeat;
   background-size: cover;
 }
@@ -33,7 +33,7 @@
 
 .header__cancelBtn {
   color: #fff;
-  font-family: "Open Sans";
+  font-family: 'Open Sans';
   font-size: 17px;
   line-height: 150%;
   opacity: 0.7;
@@ -41,7 +41,7 @@
 
 .header__cancelBtnBlue {
   color: #3d88f6;
-  font-family: "Open Sans";
+  font-family: 'Open Sans';
   font-size: 15px;
   font-weight: 600;
   line-height: 150%;
@@ -50,7 +50,7 @@
 .header__title {
   margin: 0;
   color: #fff;
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Open Sans', sans-serif;
   font-size: 18px;
   font-weight: 600;
   line-height: 150%;
@@ -80,7 +80,7 @@
 
 .wrapper__content__title {
   margin: 32px 0 8px 0;
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Open Sans', sans-serif;
   font-size: 24px;
   font-weight: 600;
   line-height: 28px;
@@ -93,7 +93,7 @@
   max-width: 260px;
   margin: 0;
   text-align: center;
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Open Sans', sans-serif;
   font-size: 15px;
   font-weight: 400;
   line-height: 20px;
@@ -118,7 +118,7 @@
 .wrapper__list__title {
   align-self: flex-start;
   color: #98989f;
-  font-family: "Open Sans";
+  font-family: 'Open Sans';
   font-size: 12px;
   font-weight: 400;
   line-height: 150%;
@@ -143,6 +143,7 @@
   max-height: 550px;
   overflow-y: scroll;
   overflow-x: hidden;
+  scrollbar-width: 1px;
 }
 .filesList::-webkit-scrollbar {
   width: 1px;
@@ -186,7 +187,7 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  font-family: "Open Sans";
+  font-family: 'Open Sans';
   font-size: 14px;
   font-weight: 400;
   line-height: 150%;
@@ -195,7 +196,7 @@
 
 .fileItem div p {
   color: #7d7d7d;
-  font-family: "Open Sans";
+  font-family: 'Open Sans';
   font-size: 11px;
   font-weight: 400;
   line-height: 150%;
@@ -257,7 +258,7 @@
   margin-top: 110px;
 
   color: #7d7d7d;
-  font-family: "Open Sans";
+  font-family: 'Open Sans';
   font-size: 14px;
   font-weight: 600;
   line-height: 150%;
@@ -296,7 +297,7 @@
 
 .emptyFilesPage_title {
   color: #fff;
-  font-family: "Open Sans";
+  font-family: 'Open Sans';
   font-size: 18px;
   font-weight: 600;
   line-height: 150%;
@@ -307,7 +308,7 @@
 
 .emptyFilesPage_desc {
   color: rgba(255, 255, 255, 0.7);
-  font-family: "Open Sans";
+  font-family: 'Open Sans';
   font-size: 12px;
   font-weight: 400;
   line-height: 150%;

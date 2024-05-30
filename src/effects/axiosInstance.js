@@ -1,12 +1,12 @@
-import axios from "axios";
+import axios from 'axios';
+import { getToken } from './set-token';
 
 const instance = axios.create();
 
-const token = localStorage.getItem("token");
-
 instance.interceptors.request.use(
-  function (config) {
-    config.headers["X-Token"] = `Bearer ${token}`;
+  async function (config) {
+    const token = await getToken();
+    config.headers['X-Token'] = `Bearer ${token}`;
     return config;
   },
   function (error) {

@@ -1,32 +1,35 @@
-import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 import {
   selectAllWorkspaces,
-  selectTotalWsCount,
-} from "../../store/reducers/workspaceSlice";
+  selectCurrentWorkspace,
+  selectTotalWsCount
+} from '../../store/reducers/workspaceSlice';
 import {
   getIsWorkspaceSelected,
   setIsWorkspaceSelected,
-  switchWorkspace,
-} from "../../effects/workspaceEffects";
+  switchWorkspace
+} from '../../effects/workspaceEffects';
 
-import GhostLoader from "../../components/ghostLoader";
+import GhostLoader from '../../components/ghostLoader';
 
-import { ReactComponent as UploadIcon } from "../../assets/upload.svg";
-import { ReactComponent as UpgradeIcon } from "../../assets/upgrade.svg";
-import { ReactComponent as GhostIcon } from "../../assets/ghost.svg";
-import { ReactComponent as ArrowIcon } from "../../assets/arrow_right.svg";
-import { ReactComponent as HardDriveIcon } from "../../assets/hard_drive.svg";
-import { ReactComponent as MoneyIcon } from "../../assets/money.svg";
-import { ReactComponent as RefIcon } from "../../assets/ref.svg";
-import uploadLogo from "../../assets/upload_logo.png";
+import { ReactComponent as UploadIcon } from '../../assets/upload.svg';
+import { ReactComponent as UpgradeIcon } from '../../assets/upgrade.svg';
+import { ReactComponent as GhostIcon } from '../../assets/ghost.svg';
+import { ReactComponent as ArrowIcon } from '../../assets/arrow_right.svg';
+import { ReactComponent as HardDriveIcon } from '../../assets/hard_drive.svg';
+import { ReactComponent as MoneyIcon } from '../../assets/money.svg';
+import { ReactComponent as RefIcon } from '../../assets/ref.svg';
+import uploadLogo from '../../assets/upload_logo.png';
 
-import style from "./style.module.css";
+import style from './style.module.css';
 
 export const StartPage = ({ onClose }) => {
   const totalWsCount = useSelector(selectTotalWsCount);
   const allWorkspaces = useSelector(selectAllWorkspaces);
+  const currentWorkspace = useSelector(selectCurrentWorkspace);
   const navigate = useNavigate();
   const isWsSelected = getIsWorkspaceSelected();
 
@@ -37,27 +40,29 @@ export const StartPage = ({ onClose }) => {
     });
   };
 
-  const workspaceslist =
-    allWorkspaces &&
-    allWorkspaces.map((ws) => (
-      <li className={style.options__item} key={ws.workspace.id}>
-        <button
-          onClick={() => {
-            handleWsSelection(ws);
-          }}
-          className={`${style.options__item__button} ${style.workspaceOptionButton}`}>
-          <HardDriveIcon /> {ws.workspace.name}{" "}
-          <ArrowIcon className={style.arrowIcon} />
-        </button>
-      </li>
-    ));
+  const workspaceslist = useMemo(() => {
+    if (allWorkspaces) {
+      return allWorkspaces.map((ws) => (
+        <li className={style.options__item} key={ws.workspace.id}>
+          <button
+            onClick={() => {
+              handleWsSelection(ws);
+            }}
+            className={`${style.options__item__button} ${style.workspaceOptionButton}`}>
+            <HardDriveIcon /> {ws.workspace.name}{' '}
+            <ArrowIcon className={style.arrowIcon} />
+          </button>
+        </li>
+      ));
+    }
+  }, [allWorkspaces]);
 
   const optionslist = (
     <>
       <li className={style.options__item}>
         <button
           onClick={() => {
-            navigate("/file-upload");
+            navigate('/file-upload');
           }}
           className={`${style.options__item__button} ${style.uploadOptionButton}`}>
           <UploadIcon /> Upload File <ArrowIcon className={style.arrowIcon} />
@@ -66,27 +71,27 @@ export const StartPage = ({ onClose }) => {
       <li className={style.options__item}>
         <button
           onClick={() => {
-            navigate("/ghostdrive-upload");
+            navigate('/ghostdrive-upload');
           }}
           className={`${style.options__item__button} ${style.uploadOptionButton}`}>
-          <GhostIcon /> From Ghostdrive{" "}
+          <GhostIcon /> From Ghostdrive{' '}
           <ArrowIcon className={style.arrowIcon} />
         </button>
       </li>
       <li className={style.options__item}>
         <button
           onClick={() => {
-            navigate("/upgrade");
+            navigate('/upgrade');
           }}
           className={`${style.options__item__button} ${style.uploadOptionButton}`}>
-          <UpgradeIcon /> Upgrade Storage{" "}
+          <UpgradeIcon /> Upgrade Storage{' '}
           <ArrowIcon className={style.arrowIcon} />
         </button>
       </li>
-        <li className={style.options__item}>
+      <li className={style.options__item}>
         <button
           onClick={() => {
-            navigate("/balance");
+            navigate('/balance');
           }}
           className={`${style.options__item__button} ${style.uploadOptionButton}`}>
           <MoneyIcon /> Point Balance
@@ -96,7 +101,7 @@ export const StartPage = ({ onClose }) => {
       <li className={style.options__item}>
         <button
           onClick={() => {
-            navigate("/ref");
+            navigate('/ref');
           }}
           className={`${style.options__item__button} ${style.uploadOptionButton}`}>
           <RefIcon /> Referral System
@@ -106,7 +111,7 @@ export const StartPage = ({ onClose }) => {
     </>
   );
 
-  if (!allWorkspaces) {
+  if (!allWorkspaces && !currentWorkspace) {
     return (
       <div className={style.home_container}>
         <GhostLoader />

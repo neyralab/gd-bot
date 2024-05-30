@@ -1,13 +1,13 @@
-import { API_PATH } from "../utils/api-urls";
-import axiosInstance from "./axiosInstance";
-import { saveBlob, downloadFile } from "gdgateway-client";
+import { API_PATH } from '../utils/api-urls';
+import axiosInstance from './axiosInstance';
+import { saveBlob, downloadFile } from 'gdgateway-client';
 
 export const getDownloadOTT = (body) => {
   const url = `${API_PATH}/download/generate/token`;
   return axiosInstance.post(url, body);
 };
 
-export const getFilesEffect = async (page = 1, order = "asc") => {
+export const getFilesEffect = async (page = 1, order = 'asc') => {
   const url = `${API_PATH}/files?page=${page}&order_by=createdAt&order=${order}`;
   return await axiosInstance.get(url).then((result) => result.data);
 };
@@ -20,24 +20,24 @@ export const getFilePreviewEffect = async (
   const {
     data: {
       user_tokens: { token: oneTimeToken },
-      gateway,
-    },
+      gateway
+    }
   } = await getDownloadOTT([{ slug: fileId }]);
 
   let url;
-  if (type.includes("doc")) {
+  if (type.includes('doc')) {
     url = `${gateway.url}/doc/preview/${fileId}`;
     return axiosInstance
       .create({
         headers: {
-          "One-Time-Token": oneTimeToken,
-        },
+          'One-Time-Token': oneTimeToken
+        }
       })
       .get(url, null, {
         options: {
-          responseType: "blob",
-          cancelToken,
-        },
+          responseType: 'blob',
+          cancelToken
+        }
       })
       .then((response) => {
         const urlCreator = window.URL || window.webkitURL;
@@ -52,14 +52,14 @@ export const getFilePreviewEffect = async (
     return axiosInstance
       .create({
         headers: {
-          "one-time-token": oneTimeToken,
-        },
+          'one-time-token': oneTimeToken
+        }
       })
       .get(url, null, {
         options: {
-          responseType: "blob",
-          cancelToken,
-        },
+          responseType: 'blob',
+          cancelToken
+        }
       })
       .then((response) => {
         const urlCreator = window.URL || window.webkitURL;
@@ -84,8 +84,8 @@ export const downloadFileEffect = async (file, afterCb) => {
     data: {
       user_tokens: { token: oneTimeToken },
       gateway,
-      upload_chunk_size,
-    },
+      upload_chunk_size
+    }
   } = await getDownloadOTT([{ slug: file.slug }]);
   const controller = new AbortController();
 
@@ -95,7 +95,7 @@ export const downloadFileEffect = async (file, afterCb) => {
     endpoint: gateway.url,
     isEncrypted: false,
     signal: controller.signal,
-    uploadChunkSize: upload_chunk_size[file.slug] || gateway.upload_chunk_size,
+    uploadChunkSize: upload_chunk_size[file.slug] || gateway.upload_chunk_size
   });
   if (blob && !blob?.failed) {
     const realBlob = new Blob([blob]);
@@ -105,7 +105,7 @@ export const downloadFileEffect = async (file, afterCb) => {
   }
 };
 
-export const autoCompleteSearchEffect = async (term = "") => {
+export const autoCompleteSearchEffect = async (term = '') => {
   const url = `${API_PATH}/search/autocomplete?term=${term}`;
   return await axiosInstance
     .get(url)
@@ -142,23 +142,23 @@ export const updateShareEffect = async (
     .post(url, {
       canComment: canEdit || canComment,
       canEdit,
-      expiredAt,
+      expiredAt
     })
     .then((response) => {
       return response.data;
     })
     .catch((response) => {
-      throw response;
+      console.error(response);
     });
 };
 
 export const updateEntrySorting = async (direction) => {
   const body = {
-    orderBy: "createdAt",
+    orderBy: 'createdAt',
     orderDirection: direction,
-    page: "root_files",
+    page: 'root_files'
   };
   return axiosInstance.post(`${API_PATH}/entry-sorting`, body).catch((e) => {
-    throw e;
+    console.error(e);
   });
 };

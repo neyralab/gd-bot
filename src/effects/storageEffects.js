@@ -1,12 +1,12 @@
-import { API_PATH } from "../utils/api-urls";
-import axiosInstance from "./axiosInstance";
+import { API_PATH } from '../utils/api-urls';
+import axiosInstance from './axiosInstance';
 
 export const storageListEffect = async (token) => {
   return axiosInstance
     .create({
       headers: {
-        "X-Token": `Bearer ${token}`,
-      },
+        'X-Token': `Bearer ${token}`
+      }
     })
     .get(`${API_PATH}/workspace/storage/list`)
     .then((response) => {

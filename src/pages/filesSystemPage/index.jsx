@@ -1,31 +1,33 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 
 import {
   selectFilesCount,
   selectFilesPage,
+  selectSystemFiles,
   setCount,
   setPage,
-} from "../../store/reducers/filesSlice";
-import { uploadFileEffect } from "../../effects/uploadFileEffect";
-import { getFilesEffect } from "../../effects/filesEffects";
+  setSystemFiles
+} from '../../store/reducers/filesSlice';
+import { uploadFileEffect } from '../../effects/uploadFileEffect';
+import { getFilesEffect } from '../../effects/filesEffects';
 
-import { FileItem } from "./fileItem";
-import GhostLoader from "../../components/ghostLoader";
-import InfiniteScrollComponent from "../../components/infiniteScrollComponent";
+import { FileItem } from './fileItem';
+import GhostLoader from '../../components/ghostLoader';
+import InfiniteScrollComponent from '../../components/infiniteScrollComponent';
 
-import { ReactComponent as ArrowIcon } from "../../assets/arrow_right.svg";
-import { ReactComponent as CircleCloudIcon } from "../../assets/cloud_circle.svg";
-import { ReactComponent as CirclePictureIcon } from "../../assets/picture_circle.svg";
-import { ReactComponent as FileIcon } from "../../assets/file_draft.svg";
+import { ReactComponent as ArrowIcon } from '../../assets/arrow_right.svg';
+import { ReactComponent as CircleCloudIcon } from '../../assets/cloud_circle.svg';
+import { ReactComponent as CirclePictureIcon } from '../../assets/picture_circle.svg';
+import { ReactComponent as FileIcon } from '../../assets/file_draft.svg';
 
-import style from "./style.module.css";
+import style from './style.module.css';
 
 export const FilesSystemPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [files, setFiles] = useState([]);
+  const files = useSelector(selectSystemFiles);
   const filesCount = useSelector(selectFilesCount);
   const filesPage = useSelector(selectFilesPage);
   const [areFilesLoading, setAreFilesLoading] = useState(false);
@@ -41,7 +43,7 @@ export const FilesSystemPage = () => {
 
   useEffect(() => {
     getFilesEffect(filesPage).then(({ data, count }) => {
-      setFiles(data);
+      dispatch(setSystemFiles(data));
       dispatch(setCount(count));
     });
     return () => {
@@ -51,7 +53,7 @@ export const FilesSystemPage = () => {
 
   const fetchMoreFiles = (page) => {
     getFilesEffect(page).then(({ data }) => {
-      setFiles((prev) => [...prev, ...data]);
+      dispatch(setSystemFiles(data));
     });
   };
 
@@ -72,7 +74,7 @@ export const FilesSystemPage = () => {
           <li className={style.options__item}>
             <button
               className={`${style.options__item__button} ${style.selectFileButton}`}>
-              <CirclePictureIcon /> From Gallery{" "}
+              <CirclePictureIcon /> From Gallery{' '}
               <ArrowIcon className={style.arrowIcon} />
             </button>
             <input
@@ -86,7 +88,7 @@ export const FilesSystemPage = () => {
           <li className={style.options__item}>
             <button
               className={`${style.options__item__button} ${style.selectFileButton}`}>
-              <CircleCloudIcon /> From Files{" "}
+              <CircleCloudIcon /> From Files{' '}
               <ArrowIcon className={style.arrowIcon} />
             </button>
             <input
@@ -101,12 +103,13 @@ export const FilesSystemPage = () => {
         <p className={style.wrapper__list__title}>Recently sent files</p>
         {areFilesLoading ? (
           <div className={style.loaderWrapper}>
-            <GhostLoader texts={["Uploading"]} />
+            <GhostLoader texts={['Uploading']} />
           </div>
         ) : files.length ? (
           <ul className={`${style.options} ${style.filesList}`}>
             <InfiniteScrollComponent
               totalItems={filesCount}
+              files={files}
               fetchMoreFiles={fetchMoreFiles}>
               {files.map((file) => (
                 <FileItem file={file} key={file.id} />
