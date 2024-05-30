@@ -1,11 +1,10 @@
 import axios from "axios";
 import * as Sentry from "@sentry/react";
+import { API_AUTHORIZATION } from "../utils/api-urls";
 
 export const authorizeUser = async (reqBody) => {
-  const apiUrl = process.env.REACT_APP_AUTHORIZATION;
-
   const res = await axios
-    .post(apiUrl, reqBody)
+    .post(API_AUTHORIZATION, reqBody)
     .then((response) => response.data)
     .catch((error) => {
       Sentry.captureMessage(`Error in authorizeUser: ${error.message}`);
@@ -16,20 +15,16 @@ export const authorizeUser = async (reqBody) => {
 };
 export const connectUserV8 = async (data) => {
   console.log(data);
-  const url = "https://api.neyra.ai/api/auth/identity/connect_userv8";
-  const res = await axios.put(
-    url,
-    {
-      provider: "telegram",
-      ...data,
-      ...data.user,
-      auth_date: Number(data.auth_date),
+  const url =
+    "https://ab63-180-254-224-67.ngrok-free.app/api/auth/identity/connect_userv8";
+  const body = {
+    provider: "telegram",
+    initData: data,
+  };
+  const res = await axios.put(url, body, {
+    headers: {
+      "Content-Type": "application/json",
     },
-    {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }
-  );
+  });
   console.log("res", res);
 };

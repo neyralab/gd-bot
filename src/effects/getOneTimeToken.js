@@ -1,6 +1,7 @@
-import axiosInstance from './axiosInstance';
+import axiosInstance from "./axiosInstance";
+import { API_PATH } from "../utils/api-urls";
 
-export const getOneTimeToken = ({ filesize = '', filename = '' }) => {
-  const url = `${process.env.REACT_APP_API_PATH}/user/generate/token`;
+export const getOneTimeToken = ({ filesize = "", filename = "" }) => {
+  const url = `${API_PATH}/user/generate/token`;
   return axiosInstance.post(url, { filesize, filename });
 };

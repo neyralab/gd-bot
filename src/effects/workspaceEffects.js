@@ -1,6 +1,7 @@
 import axiosInstance from "./axiosInstance";
 import * as Sentry from "@sentry/react";
 import setToken from "./set-token";
+import { API_PATH } from "../utils/api-urls";
 
 export const setIsWorkspaceSelected = (bool) => {
   sessionStorage.setItem("ws_selected", bool);
@@ -17,7 +18,7 @@ export const getWorkspacesEffect = async (token) => {
         "X-Token": `Bearer ${token}`,
       },
     })
-    .get(`${process.env.REACT_APP_API_PATH}/user/workspaces`)
+    .get(`${API_PATH}/user/workspaces`)
     .then((response) => response.data.data)
     .catch((err) => {
       Sentry.captureMessage(`Error in getWorkspacesEffect: ${err.message}`);
@@ -27,9 +28,7 @@ export const getWorkspacesEffect = async (token) => {
 
 export const switchWorkspace = async (workspace_id) => {
   return await axiosInstance
-    .get(
-      `${process.env.REACT_APP_API_PATH}/workspace/switch?workspace_id=${workspace_id}`
-    )
+    .get(`${API_PATH}/workspace/switch?workspace_id=${workspace_id}`)
     .then((response) => {
       setToken(response.data.token);
       return response.data;

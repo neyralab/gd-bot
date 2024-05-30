@@ -1,5 +1,6 @@
 import { loadStripe } from "@stripe/stripe-js/pure";
 import axiosInstance from "./axiosInstance";
+import { API_PATH } from "../utils/api-urls";
 
 let stripePromise;
 
@@ -13,7 +14,7 @@ export const getStripe = () => {
 export const createStripeSorageSub = async (priceId, quantity = 1) => {
   try {
     const { data } = await axiosInstance.post(
-      `${process.env.REACT_APP_API_PATH}/workspace/storage/create/subscription`,
+      `${API_PATH}/workspace/storage/create/subscription`,
       [{ price: priceId, quantity }]
     );
 
@@ -26,7 +27,7 @@ export const createStripeSorageSub = async (priceId, quantity = 1) => {
 export const checkPayment = async (payId) => {
   try {
     const { data } = await axiosInstance.post(
-      `${process.env.REACT_APP_API_PATH}/workspace/storage/check/payment`,
+      `${API_PATH}/workspace/storage/check/payment`,
       { payment: payId }
     );
 
@@ -38,7 +39,7 @@ export const checkPayment = async (payId) => {
 
 export const updateWsStorage = async (price, subscription) => {
   try {
-    const url = `${process.env.REACT_APP_API_PATH}/workspace/update/storage`;
+    const url = `${API_PATH}/workspace/update/storage`;
     const body = { price, stripe_sub_id: subscription };
     const data = await axiosInstance.post(url, body);
     return data;
