@@ -27,10 +27,9 @@ import {
 } from '../../effects/filesEffects';
 import { useClickOutside } from '../../utils/useClickOutside';
 
-import { FileItem } from './fileItem';
-import CustomFileSmallIcon from '../../components/customFileIcon/CustomFileSmallIcon';
+import { FileItem } from '../../components/fileItem';
 import InfiniteScrollComponent from '../../components/infiniteScrollComponent';
-import { Loader } from '../../components/loader';
+import { FileMenu } from '../../components/fileMenu';
 
 import { ReactComponent as SearchIcon } from '../../assets/search_input.svg';
 import { ReactComponent as GridIcon } from '../../assets/grid_view.svg';
@@ -49,9 +48,10 @@ export const FilesPage = ({}) => {
   const searchFiles = useSelector(selectSearchAutocomplete);
   const dir = useSelector(selectDirection);
   const view = useSelector(selectFileView);
-  const [checkedFiles, setCheckedFiles] = useState([]);
+  const [checkedFile, setCheckedFile] = useState({});
   const [loading, setLoading] = useState(false);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [isFileMenuOpen, setFileMenuOpen] = useState(false);
   const inputRef = useRef(null);
   const searchRef = useRef(null);
 
@@ -72,12 +72,9 @@ export const FilesPage = ({}) => {
     });
   };
 
-  const isFileChecked = (id) => {
-    return checkedFiles.some((file) => file.id === id);
-  };
   const handleClickOutside = () => {
     setIsPopupOpen(false);
-    setCheckedFiles((prevFiles) => prevFiles.filter((file) => !file.is_search));
+    setCheckedFile((prevFile) => (prevFile.is_search ? {} : prevFile));
   };
 
   useClickOutside(searchRef, handleClickOutside);
@@ -85,19 +82,19 @@ export const FilesPage = ({}) => {
   const onBackButtonClick = () => navigate(-1);
 
   const onFileSelect = (file) => {
-    if (isFileChecked(file.id)) {
-      setCheckedFiles((files) => files.filter((el) => el.id !== file.id));
+    if (file.id === checkedFile.id) {
+      setCheckedFile({});
+      setFileMenuOpen(false);
     } else {
-      setCheckedFiles((files) => [...files, file]);
+      setFileMenuOpen(true);
+      setCheckedFile(file);
     }
   };
 
   const handleFileDownload = async () => {
     setLoading(true);
-    for (const file of checkedFiles) {
-      await downloadFileEffect(file);
-    }
-    setCheckedFiles([]);
+    await downloadFileEffect(checkedFile);
+    setCheckedFile({});
     setLoading(false);
   };
 
@@ -132,10 +129,16 @@ export const FilesPage = ({}) => {
     });
   };
 
-  const handleSearchClick = async (file) => {
+  // Get all file info from search file
+  const handleSearchFileClick = async (file) => {
     await getFileInfoEffect(file.slug).then((data) =>
       onFileSelect({ ...data, id: file.id, is_search: true })
     );
+  };
+
+  const onFileMenuClose = () => {
+    setFileMenuOpen(false);
+    setCheckedFile({});
   };
 
   return (
@@ -157,24 +160,14 @@ export const FilesPage = ({}) => {
         {isPopupOpen && (
           <ul className={style.autocompleteWrapper}>
             {searchFiles.map((file) => (
-              <li
+              <FileItem
+                file={file}
+                checkedFile={checkedFile}
+                callback={onFileSelect}
                 key={file.id}
-                className={cn(style.options__item, style.fileItem)}
-                onClick={() => {
-                  handleSearchClick(file);
-                }}>
-                <input
-                  className={cn(style.checkbox, style.checkbox__right)}
-                  type="checkbox"
-                  checked={isFileChecked(file.id)}></input>
-                <div className={style.fileItem__icon}>
-                  <CustomFileSmallIcon type={file.extension} />
-                </div>
-                <div>
-                  <h3>{file.title}</h3>
-                  <p>{file.updated}</p>
-                </div>
-              </li>
+                fileView={'list'}
+                isSearch={true}
+              />
             ))}
           </ul>
         )}
@@ -205,21 +198,13 @@ export const FilesPage = ({}) => {
               {files.map((file) => (
                 <FileItem
                   file={file}
-                  isFileChecked={isFileChecked}
+                  checkedFile={checkedFile}
                   callback={onFileSelect}
                   key={file.id}
                 />
               ))}
             </ul>
           </InfiniteScrollComponent>
-          {checkedFiles.length > 0 && (
-            <button
-              className={style.uploadBtn}
-              onClick={handleFileDownload}
-              ref={searchRef}>
-              {loading ? <Loader /> : 'Download'}
-            </button>
-          )}
         </>
       ) : (
         <>
@@ -237,6 +222,11 @@ export const FilesPage = ({}) => {
           </button>
         </>
       )}
+      <FileMenu
+        onClose={onFileMenuClose}
+        isOpen={isFileMenuOpen}
+        file={checkedFile}
+      />
     </div>
   );
 };

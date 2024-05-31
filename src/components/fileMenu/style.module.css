@@ -1,0 +1,32 @@
+.menu {
+  padding: 0 16px 10px;
+}
+
+.menu__item,
+.shareOption {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 12px 8px;
+  gap: 8px;
+}
+.shareOption {
+  width: 100%;
+}
+
+.menu__item:not(:last-of-type) {
+  border-bottom: 1px solid #585858;
+}
+
+.menu__item__title {
+  color: #fff;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 150%;
+  letter-spacing: 0.14px;
+}
+
+.deleteTitle {
+  color: #ff453a;
+}

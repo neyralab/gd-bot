@@ -19,7 +19,7 @@
 
 .header__backBtn {
   color: #fff;
-  font-family: "Open Sans";
+  font-family: 'Open Sans';
   font-size: 17px;
   font-weight: 400;
   line-height: 150%;
@@ -30,7 +30,7 @@
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  font-family: "Open Sans";
+  font-family: 'Open Sans';
   font-size: 18px;
   font-weight: 600;
   line-height: 150%;
@@ -62,7 +62,7 @@
 
 .inputWrapper__input::placeholder {
   color: #9b9b9b;
-  font-family: "Open Sans";
+  font-family: 'Open Sans';
   font-size: 16px;
   font-style: normal;
   font-weight: 400;
@@ -95,7 +95,7 @@
   padding: 2px 4px 2px 8px;
 
   color: #fff;
-  font-family: "Open Sans";
+  font-family: 'Open Sans';
   font-size: 12px;
   font-weight: 400;
   line-height: 130%;
@@ -114,63 +114,6 @@
   justify-content: center;
 }
 
-.fileWrapper {
-  cursor: pointer;
-  position: relative;
-  height: 179px;
-  width: 171px;
-  border-radius: 10px;
-  background: #1c1c1e;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  padding: 0 0 8px;
-}
-
-.info {
-  width: 100%;
-  border-top: 0.5px solid rgba(84, 84, 88, 0.65);
-  padding: 12px 8px 0;
-  text-align: center;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.info__name {
-  color: #fff;
-  text-align: center;
-  font-family: "Open Sans";
-  font-size: 14px;
-  font-weight: 400;
-  line-height: 150%;
-  letter-spacing: 0.14px;
-
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.info__date {
-  color: #7d7d7d;
-  font-family: "Open Sans";
-  font-size: 11px;
-  font-weight: 400;
-  line-height: 150%;
-}
-
-.shareButton {
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  border-radius: 5px;
-  background: #303030 !important;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 2px !important;
-}
-
 .emptyFilesPage {
   width: 100%;
   display: flex;
@@ -183,7 +126,7 @@
 
 .emptyFilesPage_title {
   color: #fff;
-  font-family: "Open Sans";
+  font-family: 'Open Sans';
   font-size: 18px;
   font-weight: 600;
   line-height: 150%;
@@ -194,7 +137,7 @@
 
 .emptyFilesPage_desc {
   color: rgba(255, 255, 255, 0.7);
-  font-family: "Open Sans";
+  font-family: 'Open Sans';
   font-size: 12px;
   font-weight: 400;
   line-height: 150%;
@@ -208,7 +151,7 @@
   background: #0a84ff;
   padding: 10px 20px;
   color: #fff;
-  font-family: "Open Sans";
+  font-family: 'Open Sans';
   font-size: 14px;
   font-weight: 500;
   line-height: 150%;
@@ -219,109 +162,6 @@
 
 .uploadBtn:hover {
   background: #0f73ef;
-}
-
-.checkbox {
-  cursor: pointer;
-  position: absolute;
-  top: 10px;
-  left: 8px;
-  appearance: none;
-  width: 15px;
-  height: 15px;
-  background-image: url("../../assets/checkbox_circle.svg");
-  background-position: center center;
-  background-size: cover;
-}
-
-.checkbox__right {
-  left: auto;
-  right: 45px;
-  width: 18px;
-  height: 18px;
-  opacity: 0.7;
-}
-
-.checkbox:checked {
-  background-image: url("../../assets/checkbox.svg");
-  background-position: center center;
-  background-size: cover;
-}
-
-.active {
-  border: 0.5px solid #303030;
-}
-
-.previewWrapper {
-  height: 121px;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.previewImage {
-  width: 100%;
-  height: 100%;
-}
-
-/* list view */
-
-.options__item {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-}
-
-.fileItem {
-  cursor: pointer;
-  display: flex;
-  gap: 16px;
-  justify-content: flex-start;
-  width: 100%;
-  min-height: 60px;
-  padding: 0 16px;
-  border-radius: 8px;
-  background: #1c1c1e;
-  padding-right: 100px;
-}
-.fileItem div {
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.fileItem div h3 {
-  color: #fff;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-
-  font-family: "Open Sans";
-  font-size: 14px;
-  font-weight: 400;
-  line-height: 150%;
-  letter-spacing: 0.14px;
-}
-
-.fileItem div p {
-  color: #7d7d7d;
-  font-family: "Open Sans";
-  font-size: 11px;
-  font-weight: 400;
-  line-height: 150%;
-  letter-spacing: 0.11px;
-}
-
-.fileItem__icon {
-  max-width: 30px;
-  max-height: 40px;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 
 .autocompleteWrapper {
