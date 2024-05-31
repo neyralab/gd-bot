@@ -25,9 +25,13 @@ export const Balance = () => {
 
     useEffect(() => {
         (async ()=>{
-            const {data} = await getBalanceEffect()
-            setBalance(prevState => ({...prevState,points: data.points,fileCnt:data.fileCnt}))
-            console.log({getBalanceEffect:data});
+            try {
+                const {data} = await getBalanceEffect()
+                setBalance(prevState => ({...prevState,points: data.points,fileCnt:data.fileCnt}))
+                console.log({getBalanceEffect:data});
+            } catch (e) {
+                console.log({getBalanceEffectError:e});
+            }
         })()
     }, []);
 
