@@ -2,7 +2,10 @@ import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
-import { createStripeSorageSub, updateWsStorage } from '../../effects/stripe';
+import {
+  createStripeSorageSub,
+  updateWsStorage
+} from '../../effects/paymentEffect';
 import { sidebarSizeTransformer } from '../../utils/storage';
 import {
   selectCurrentWorkspace,
