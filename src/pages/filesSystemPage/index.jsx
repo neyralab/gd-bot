@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 import {
+  clearFiles,
   selectFilesCount,
   selectFilesPage,
   selectSystemFiles,
@@ -48,6 +49,7 @@ export const FilesSystemPage = () => {
     });
     return () => {
       dispatch(setPage(1));
+      dispatch(clearFiles());
     };
   }, []);
 
