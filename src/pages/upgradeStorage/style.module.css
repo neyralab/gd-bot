@@ -17,7 +17,7 @@
 
 .header__backBtn {
   color: #fff;
-  font-family: "Open Sans";
+  font-family: 'Open Sans';
   font-size: 17px;
   line-height: 150%;
   opacity: 0.7;
@@ -26,7 +26,7 @@
 .header__upgradeBtn {
   color: #3d88f6;
   text-align: center;
-  font-family: "Open Sans";
+  font-family: 'Open Sans';
   font-size: 15px;
   font-weight: 600;
   line-height: 150%;
@@ -34,7 +34,7 @@
 
 .headingText {
   color: #98989f;
-  font-family: "Open Sans";
+  font-family: 'Open Sans';
   font-size: 12px;
   line-height: 150%;
   letter-spacing: 0.12px;
@@ -42,7 +42,7 @@
 
 .currentPlanTitle {
   color: #98989f;
-  font-family: "Open Sans";
+  font-family: 'Open Sans';
   font-size: 12px;
   line-height: 150%;
   letter-spacing: 0.24px;
@@ -78,7 +78,7 @@
   justify-content: center;
   align-items: center;
   color: #1a1a1a;
-  font-family: "Open Sans";
+  font-family: 'Open Sans';
   font-size: 20px;
   font-weight: 600;
   line-height: 150%;
@@ -86,7 +86,7 @@
 
 .upgradeOptionCard > div > p {
   color: #24adfa;
-  font-family: "Open Sans";
+  font-family: 'Open Sans';
   font-size: 16px;
   font-weight: 400;
   line-height: 150%;
@@ -94,7 +94,7 @@
 
 .upgradeOptionCard > div > span {
   color: #fff;
-  font-family: "Open Sans";
+  font-family: 'Open Sans';
   font-size: 12px;
   line-height: 150%;
   letter-spacing: 0.12px;
@@ -102,7 +102,7 @@
 
 .upgradeText {
   color: #98989f;
-  font-family: "Open Sans";
+  font-family: 'Open Sans';
   font-size: 12px;
   font-weight: 300;
   line-height: 150%;
@@ -118,7 +118,7 @@
 
 .upgradeOptionsHeader {
   color: #98989f;
-  font-family: "Open Sans";
+  font-family: 'Open Sans';
   font-size: 12px;
   line-height: 150%;
   letter-spacing: 0.24px;
@@ -162,10 +162,14 @@
   line-height: 150%;
 }
 .optionsList__card > div > span {
-  color: #fff;
-  font-size: 12px;
+  color: rgba(255, 255, 255, 0.3);
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 400;
   line-height: 150%;
-  letter-spacing: 0.12px;
+  letter-spacing: 0.03rem;
+  max-width: 167px;
+  display: block;
 }
 
 .optionsList__card > div > span > span {
@@ -186,7 +190,7 @@
   background: #fff;
   margin-top: 24px;
   color: #000;
-  font-family: "Open Sans";
+  font-family: 'Open Sans';
   font-size: 20px;
   font-weight: 600;
   display: flex;
@@ -213,13 +217,13 @@
   appearance: none;
   width: 18px;
   height: 18px;
-  background-image: url("../../assets/checkbox_circle.svg");
+  background-image: url('../../assets/checkbox_circle.svg');
   background-position: center center;
   background-size: cover;
 }
 
 .checkbox:checked {
-  background-image: url("../../assets/checkbox.svg");
+  background-image: url('../../assets/checkbox.svg');
   background-position: center center;
   background-size: cover;
 }
@@ -285,6 +289,6 @@
   background-color: rgba(57, 57, 61, 1);
 }
 
-.disabled{
+.disabled {
   background: #7d7d7d;
 }
