@@ -1,0 +1,71 @@
+.history {
+    margin-bottom: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #fff;
+}
+
+.list {
+    max-height: calc(100vh - 283px);
+    height: 100%;
+    overflow: auto;
+    scrollbar-width: none;
+}
+
+.item {
+    list-style: none;
+    display: flex;
+    flex-direction: row;
+    padding: 12px 16px;
+    border: 1px solid #303030;
+    border-radius: 10px;
+    margin-bottom: 8px;
+}
+
+.list:last-of-type(.item) {
+    margin-bottom: 0;
+}
+
+.value {
+    font-weight: 500;
+    font-size: 16px;
+    font-family: "SF Pro Text", sans-serif;
+    color: #fff;
+}
+
+.text_container {
+    margin-left: 16px;
+}
+
+.text {
+    font-weight: 400;
+    font-size: 11px;
+    opacity: 0.7;
+}
+
+.container {
+    flex: 1;
+}
+
+.empty_container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+}
+
+.header {
+    font-size: 18px;
+    font-weight: 600;
+    font-family: "SF Pro Text", sans-serif;
+    margin-top: 8px;
+    color: white;
+}
+
+.text {
+    font-size: 12px;
+    font-weight: 400;
+    font-family: "SF Pro Text", sans-serif;
+    color: white;
+}

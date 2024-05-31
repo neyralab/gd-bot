@@ -1,33 +1,35 @@
-import axiosInstance from "./axiosInstance";
-import setToken from "./set-token";
+import axiosInstance from './axiosInstance';
+import { setToken } from './set-token';
+import { API_PATH } from '../utils/api-urls';
 
 export const setIsWorkspaceSelected = (bool) => {
-  sessionStorage.setItem("ws_selected", bool);
+  sessionStorage.setItem('ws_selected', bool);
 };
 
 export const getIsWorkspaceSelected = () => {
-  return JSON.parse(sessionStorage.getItem("ws_selected"));
+  return JSON.parse(sessionStorage.getItem('ws_selected'));
 };
 
 export const getWorkspacesEffect = async (token) => {
   return await axiosInstance
     .create({
       headers: {
-        "X-Token": `Bearer ${token}`,
-      },
+        'X-Token': `Bearer ${token}`
+      }
     })
-    .get(`${process.env.REACT_APP_API_PATH}/user/workspaces`)
+    .get(`${API_PATH}/user/workspaces`)
     .then((response) => response.data.data)
-    .catch((err) => err);
+    .catch((err) => {
+      console.error(err);
+      return null;
+    });
 };
 
 export const switchWorkspace = async (workspace_id) => {
   return await axiosInstance
-    .get(
-      `${process.env.REACT_APP_API_PATH}/workspace/switch?workspace_id=${workspace_id}`
-    )
-    .then((response) => {
-      setToken(response.data.token);
+    .get(`${API_PATH}/workspace/switch?workspace_id=${workspace_id}`)
+    .then(async (response) => {
+      await setToken(response.data.token);
       return response.data;
     })
     .catch((response) => {

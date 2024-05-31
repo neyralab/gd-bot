@@ -1,4 +1,4 @@
-import { uploadFile, LocalFileBuffer } from "gdgateway-client/lib/es5";
+import { uploadFile, LocalFileBuffer } from "gdgateway-client";
 
 import { getOneTimeToken } from "./getOneTimeToken";
 import { uploadFileData } from "../config/upload-file-data";
@@ -49,7 +49,6 @@ export const uploadFileEffect = async ({ files, dispatch }) => {
           file.uploadId,
           async () => file.arrayBuffer()
         );
-
         result = await uploadFile({
           file: localFileBuffer,
           oneTimeToken,

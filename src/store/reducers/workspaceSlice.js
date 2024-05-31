@@ -1,12 +1,12 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
 const workspaceSlice = createSlice({
-  name: "workspace",
+  name: 'workspace',
   initialState: {
     currentWorkspace: null,
     allWorkspaces: null,
     workspacePlan: null,
-    totalWsCount: 1,
+    totalWsCount: 1
   },
   reducers: {
     setCurrentWorkspace: (state, { payload }) => {
@@ -14,12 +14,12 @@ const workspaceSlice = createSlice({
     },
     setAllWorkspaces: (state, { payload }) => {
       state.allWorkspaces = payload;
-      state.totalWsCount = payload.length;
+      state.totalWsCount = payload ? payload.length : 1;
     },
     setWorkspacePlan: (state, { payload }) => {
       state.workspacePlan = payload;
-    },
-  },
+    }
+  }
 });
 
 export const { setCurrentWorkspace, setAllWorkspaces, setWorkspacePlan } =

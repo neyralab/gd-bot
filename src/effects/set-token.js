@@ -1,7 +1,6 @@
-export default function (token) {
-  localStorage.setItem("token", token);
-}
-
-export const getToken = () => {
-  return localStorage.getItem("token");
+export const getToken = async () => {
+  return await localStorage.getItem('token');
+};
+export const setToken = async (token) => {
+  localStorage.setItem('token', token);
 };

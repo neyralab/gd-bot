@@ -1,0 +1,10 @@
+.btn {
+    background-color: transparent;
+    border: none;
+    color: #3d88f6;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    flex: 1;
+    text-align: left;
+}
