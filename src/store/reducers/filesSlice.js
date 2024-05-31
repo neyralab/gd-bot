@@ -18,6 +18,10 @@ const filesSlice = createSlice({
     setGhostdriveFiles: (state, { payload }) => {
       state.ghostdriveFiles = [...state.ghostdriveFiles, ...payload];
     },
+    clearFiles: (state) => {
+      state.ghostdriveFiles = [];
+      state.systemFiles = [];
+    },
     setCount: (state, { payload }) => {
       state.count = payload;
     },
@@ -37,9 +41,6 @@ const filesSlice = createSlice({
     },
     changeFileView: (state, { payload }) => {
       state.view = payload;
-    },
-    addFiles: (state, { payload }) => {
-      state.files = [...state.files, ...payload];
     }
   }
 });
@@ -53,7 +54,7 @@ export const {
   setSearchAutocomplete,
   setCount,
   setPage,
-  addFiles
+  clearFiles
 } = filesSlice.actions;
 export default filesSlice.reducer;
 

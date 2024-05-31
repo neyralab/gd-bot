@@ -6,6 +6,7 @@ import cn from 'classnames';
 import {
   changeDirection,
   changeFileView,
+  clearFiles,
   selectDirection,
   selectFileView,
   selectFilesCount,
@@ -61,6 +62,7 @@ export const FilesPage = ({}) => {
     });
     return () => {
       dispatch(setPage(1));
+      dispatch(clearFiles());
     };
   }, [dir]);
 
