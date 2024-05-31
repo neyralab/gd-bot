@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { referralEffect } from '../../effects/referralEffect';
 
 import styles from './styles.module.css';
 import { Header } from '../../components/header';
@@ -9,20 +10,35 @@ import {History} from '../../components/history'
 const tabs = [
   {
     number: 0,
-    name: 'users'
+    name: 'users',
+    key: 'users'
   },
   {
     number: 0,
-    name: 'referral files'
+    name: 'referral files',
+    key:'refFiles'
   },
   {
     number: 0,
-    name: 'earn'
+    name: 'earn',
+    key: 'earn'
   },
 ]
 
 export const Referral = () => {
-  const [activeTab, setActiveTab] = useState(tabs[0]);
+  const [tabList, setTabs] = useState({users:0, refFiles:0, earn:0});
+
+  useEffect(() => {
+    (async ()=>{
+      try {
+      const {data} = await referralEffect();
+      setTabs(prevState => ({...prevState, users: data?.data?.current_usage}))
+      console.log({referralEffect:data});
+      }catch(error){
+        console.log({referralEffectErr:error});
+      }
+    })()
+  }, []);
 
   const copyMe = () => {
     const url = window.location.href;
@@ -33,7 +49,12 @@ export const Referral = () => {
     <div className={styles.container}>
       <Header label='Referral System'/>
       <div className={styles.tabs}>
-        {tabs.map((el, index)=> <Tab active={el.name === activeTab.name} tab={el} key={index} onClick={()=>setActiveTab(el)}/>)}
+        {Object.keys(tabList).map((el, index)=>
+          <Tab active={!index}
+               tab={{ number: tabList[el] || 0, name: tabs.find(tab=>tab.key === el)?.name }}
+               key={index}
+               onClick={()=>{}}/>)
+        }
       </div>
       <History />
       <footer >
