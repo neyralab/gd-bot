@@ -40,7 +40,6 @@ export const authorizeUser = async (reqBody, ref) => {
 };
 export const connectUserV8 = () => async (_, getState) => {
   const initData = await getState().user.initData;
-  console.log('connectUserV8', initData);
   const url = 'https://api.neyra.ai/api/auth/identity/connect_userv8';
   const body = {
     provider: 'telegram',
@@ -52,8 +51,7 @@ export const connectUserV8 = () => async (_, getState) => {
         'Content-Type': 'application/json'
       }
     })
-    .then(({ data }) => data?.access_token)
+    .then(({ data }) => data?.data?.access_token)
     .catch(() => null);
-  console.log('res in connectUserV8', res);
   return res;
 };

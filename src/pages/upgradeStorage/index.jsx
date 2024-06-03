@@ -168,15 +168,14 @@ export const UpgradeStoragePage = ({ tariffs }) => {
     if (!selectedTariff) {
       return;
     }
-
-    if (wallet) {
+    const recipientWallet = await getTonWallet(dispatch);
+    if (wallet && recipientWallet) {
       try {
-        const recipientWallet = await getTonWallet(dispatch);
         const transaction = {
           validUntil: Math.floor(Date.now() / 1000) + 60, // 60 sec
           messages: [
             {
-              address: '',
+              address: recipientWallet,
               amount: selectedTariff.nanoTonPrice
             }
           ]
