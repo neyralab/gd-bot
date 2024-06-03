@@ -68,7 +68,7 @@ function App() {
         setTariffs(data);
       });
       Sentry.captureMessage(`App is successfully running`);
-      // await connectUserV8(tg.initData);
+      await connectUserV8(tg.initData);
     } catch (error) {
       Sentry.captureMessage(
         `Error ${error?.response?.status} in App in request '${error?.response?.config?.url}': ${error?.response?.data?.message}`

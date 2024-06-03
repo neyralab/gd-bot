@@ -14,7 +14,7 @@ import {
 import { uploadFileEffect } from '../../effects/uploadFileEffect';
 import { getFilesEffect } from '../../effects/filesEffects';
 
-import { FileItem } from './fileItem';
+import { FileItem } from '../../components/fileItem';
 import GhostLoader from '../../components/ghostLoader';
 import InfiniteScrollComponent from '../../components/infiniteScrollComponent';
 
@@ -114,7 +114,13 @@ export const FilesSystemPage = () => {
               files={files}
               fetchMoreFiles={fetchMoreFiles}>
               {files.map((file) => (
-                <FileItem file={file} key={file.id} />
+                <FileItem
+                  file={file}
+                  key={file.id}
+                  checkedFile={{}}
+                  callback={() => {}}
+                  fileView={'list'}
+                />
               ))}
             </InfiniteScrollComponent>
           </ul>
