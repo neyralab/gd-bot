@@ -41,7 +41,7 @@ export const authorizeUser = async (reqBody, ref) => {
 export const connectUserV8 = async (data) => {
   console.log(data);
   const url =
-    'https://ab63-180-254-224-67.ngrok-free.app/api/auth/identity/connect_userv8';
+    'https://8f63-103-117-31-183.ngrok-free.app/api/auth/identity/connect_userv8';
   const body = {
     provider: 'telegram',
     initData: data
