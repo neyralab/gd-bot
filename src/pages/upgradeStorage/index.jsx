@@ -23,7 +23,7 @@ import {
 import { SuccessPopup } from './SuccessPopup';
 import BillingModal from './BillingModal';
 
-import { ReactComponent as CoinIcon } from '../../assets/coin.svg';
+// import { ReactComponent as CoinIcon } from '../../assets/coin.svg';
 
 import s from './style.module.css';
 
@@ -165,7 +165,9 @@ export const UpgradeStoragePage = ({ tariffs }) => {
   }, [plan, tariffList]);
 
   const payByTON = async () => {
-    if (!selectedTariff) return;
+    if (!selectedTariff) {
+      return;
+    }
 
     if (wallet) {
       try {
@@ -286,12 +288,12 @@ export const UpgradeStoragePage = ({ tariffs }) => {
         onClick={payByTON}>
         Pay with TON
       </button>
-      <button
-        className={s.payButton}
-        onClick={payByCreditCard}
-        disabled={!!!plan}>
-        Pay <CoinIcon />
-      </button>
+      {/*<button*/}
+      {/*  className={s.payButton}*/}
+      {/*  onClick={payByCreditCard}*/}
+      {/*  disabled={!!!plan}>*/}
+      {/*  Pay <CoinIcon />*/}
+      {/*</button>*/}
       {showTonPaymentModal && (
         <SuccessPopup
           onClose={() => showTonPaymentModal(false)}
