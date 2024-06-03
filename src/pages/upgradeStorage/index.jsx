@@ -1,7 +1,7 @@
 /* eslint-disable */
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   useTonConnectUI,
   useTonWallet,
@@ -61,6 +61,7 @@ export const UpgradeStoragePage = ({ tariffs }) => {
   const wallet = useTonWallet();
   const { open } = useTonConnectModal();
   const storageType = 'node';
+  const dispatch = useDispatch();
 
   const convertBytesToKibibytes = (size) => {
     return size / 1024 ** 3;
@@ -164,12 +165,11 @@ export const UpgradeStoragePage = ({ tariffs }) => {
   }, [plan, tariffList]);
 
   const payByTON = async () => {
-    if (!selectedTariff) {
-      return;
-    }
+    if (!selectedTariff) return;
 
     if (wallet) {
       try {
+        const recipientWallet = await getTonWallet(dispatch);
         const transaction = {
           validUntil: Math.floor(Date.now() / 1000) + 60, // 60 sec
           messages: [

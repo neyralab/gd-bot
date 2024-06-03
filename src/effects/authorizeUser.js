@@ -38,18 +38,22 @@ export const authorizeUser = async (reqBody, ref) => {
 
   return res;
 };
-export const connectUserV8 = async (data) => {
-  console.log(data);
-  const url =
-    'https://8f63-103-117-31-183.ngrok-free.app/api/auth/identity/connect_userv8';
+export const connectUserV8 = () => async (_, getState) => {
+  const initData = await getState().user.initData;
+  console.log('connectUserV8', initData);
+  const url = 'https://api.neyra.ai/api/auth/identity/connect_userv8';
   const body = {
     provider: 'telegram',
-    initData: data
+    initData
   };
-  const res = await axios.put(url, body, {
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  });
-  console.log('res', res);
+  const res = await axios
+    .put(url, body, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    .then(({ data }) => data?.access_token)
+    .catch(() => null);
+  console.log('res in connectUserV8', res);
+  return res;
 };
