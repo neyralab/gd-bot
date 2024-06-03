@@ -1,7 +1,10 @@
 // Refactoring №3
-import React from "react";
+import React from 'react';
 
-const CustomWrapper = ({ className, color }) => (
+const CustomWrapper = ({
+  className,
+  color = '#1C1C1E'
+}) => (
   <svg
     className={className}
     width="63"
@@ -35,9 +38,5 @@ const CustomWrapper = ({ className, color }) => (
     />
   </svg>
 );
-
-CustomWrapper.defaultProps = {
-  color: "#1C1C1E",
-};
 
 export default CustomWrapper;

@@ -7,9 +7,14 @@ export const getDownloadOTT = (body) => {
   return axiosInstance.post(url, body);
 };
 
-export const getFilesEffect = async (page = 1, order = 'asc') => {
+export const getFilesEffect = async (
+  page = 1,
+  order = 'asc'
+) => {
   const url = `${API_PATH}/files?page=${page}&order_by=createdAt&order=${order}`;
-  return await axiosInstance.get(url).then((result) => result.data);
+  return await axiosInstance
+    .get(url)
+    .then((result) => result.data);
 };
 
 export const getFilePreviewEffect = async (
@@ -55,17 +60,14 @@ export const getFilePreviewEffect = async (
           'one-time-token': oneTimeToken
         }
       })
-      .get(url, null, {
-        options: {
-          responseType: 'blob',
-          cancelToken
-        }
+      .get(url, {
+        cancelToken
       })
       .then((response) => {
-        const urlCreator = window.URL || window.webkitURL;
-        return urlCreator.createObjectURL(response.data);
+        return response.data;
       })
-      .catch(() => {
+      .catch((err) => {
+        console.log({ downloadErr: err });
         return null;
       });
   }
@@ -95,17 +97,25 @@ export const downloadFileEffect = async (file, afterCb) => {
     endpoint: gateway.url,
     isEncrypted: false,
     signal: controller.signal,
-    uploadChunkSize: upload_chunk_size[file.slug] || gateway.upload_chunk_size
+    uploadChunkSize:
+      upload_chunk_size[file.slug] ||
+      gateway.upload_chunk_size
   });
   if (blob && !blob?.failed) {
     const realBlob = new Blob([blob]);
-    saveBlob({ blob: realBlob, name: file?.name, mime: file?.mime });
+    saveBlob({
+      blob: realBlob,
+      name: file?.name,
+      mime: file?.mime
+    });
     afterCb && afterCb(file);
     return;
   }
 };
 
-export const autoCompleteSearchEffect = async (term = '') => {
+export const autoCompleteSearchEffect = async (
+  term = ''
+) => {
   const url = `${API_PATH}/search/autocomplete?term=${term}`;
   return await axiosInstance
     .get(url)
@@ -158,7 +168,9 @@ export const updateEntrySorting = async (direction) => {
     orderDirection: direction,
     page: 'root_files'
   };
-  return axiosInstance.post(`${API_PATH}/entry-sorting`, body).catch((e) => {
-    console.error(e);
-  });
+  return axiosInstance
+    .post(`${API_PATH}/entry-sorting`, body)
+    .catch((e) => {
+      console.error(e);
+    });
 };
