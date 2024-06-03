@@ -1,12 +1,16 @@
-import { uploadFile, LocalFileBuffer } from "gdgateway-client";
+import {
+  uploadFile,
+  LocalFileBuffer,
+  getThumbnailImage
+} from 'gdgateway-client';
 
-import { getOneTimeToken } from "./getOneTimeToken";
-import { uploadFileData } from "../config/upload-file-data";
-import { addUploadedFile } from "../store/reducers/filesSlice";
+import { getOneTimeToken } from './getOneTimeToken';
+import { uploadFileData } from '../config/upload-file-data';
+import { addUploadedFile } from '../store/reducers/filesSlice';
 
 const setTelegramFiles = (fileID) => {
-  const files = JSON.parse(localStorage.getItem("telegram_files")) ?? [];
-  localStorage.setItem("telegram_files", JSON.stringify([...files, fileID]));
+  const files = JSON.parse(localStorage.getItem('telegram_files')) ?? [];
+  localStorage.setItem('telegram_files', JSON.stringify([...files, fileID]));
 };
 
 export const uploadFileEffect = async ({ files, dispatch }) => {
@@ -25,11 +29,11 @@ export const uploadFileEffect = async ({ files, dispatch }) => {
         const {
           data: {
             user_token: { token: oneTimeToken },
-            gateway,
-          },
+            gateway
+          }
         } = await getOneTimeToken({
           filesize: file.size,
-          filename: file.name,
+          filename: file.name
         });
         let result;
         const { handlers, callbacks } = uploadFileData;
@@ -57,14 +61,21 @@ export const uploadFileEffect = async ({ files, dispatch }) => {
           handlers,
           progress: progresses[file?.folderData?.uploadId],
           totalSize: file?.folderSize,
-          startedAt: file?.startedAt,
+          startedAt: file?.startedAt
         });
         const uploadedFile = result.data.data;
+        await getThumbnailImage({
+          file,
+          quality: 3,
+          oneTimeToken,
+          endpoint: gateway.url,
+          slug: uploadedFile?.slug
+        });
 
         dispatch(addUploadedFile([uploadedFile]));
         setTelegramFiles(uploadedFile.id);
         if (!result) {
-          console.log("error", error);
+          console.log('error', error);
         }
 
         if (index < files.length) await multiUploadFile(index);
@@ -72,7 +83,7 @@ export const uploadFileEffect = async ({ files, dispatch }) => {
           progresses[file?.folderData?.uploadId] += file.size;
         }
       } catch (e) {
-        console.log("error", e);
+        console.log('error', e);
       }
     };
 
