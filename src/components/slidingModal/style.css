@@ -1,0 +1,9 @@
+.react-modal-sheet-header > div {
+  height: 20px !important;
+}
+
+.react-modal-sheet-container {
+  background: rgba(37, 37, 37, 1) !important;
+  border-top-right-radius: 16px !important;
+  border-top-left-radius: 16px !important;
+}
