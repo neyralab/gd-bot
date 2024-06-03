@@ -84,7 +84,6 @@ export const FilesSystemPage = () => {
               accept="image/*,video/*"
               className={style.hiddenInput}
               onChange={handleFileUpload}
-              multiple
             />
           </li>
           <li className={style.options__item}>
@@ -95,10 +94,8 @@ export const FilesSystemPage = () => {
             </button>
             <input
               type="file"
-              accept=".pdf,.doc,.txt,.zip,.rar"
               className={style.hiddenInput}
               onChange={handleFileUpload}
-              multiple
             />
           </li>
         </ul>
