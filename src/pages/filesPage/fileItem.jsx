@@ -1,40 +1,50 @@
-import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import { TelegramShareButton } from "react-share";
+import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { TelegramShareButton } from 'react-share';
 
-import moment from "moment";
-import cn from "classnames";
+import moment from 'moment';
+import cn from 'classnames';
 
-import { selectFileView } from "../../store/reducers/filesSlice";
+import { selectFileView } from '../../store/reducers/filesSlice';
 import {
   getFilePreviewEffect,
-  updateShareEffect,
-} from "../../effects/filesEffects";
-import videoFileExtensions from "../../config/video-file-extensions";
+  updateShareEffect
+} from '../../effects/filesEffects';
+import videoFileExtensions from '../../config/video-file-extensions';
 import imageFileExtensions, {
-  imageMediaTypesPreview,
-} from "../../config/image-file-extensions";
+  imageMediaTypesPreview
+} from '../../config/image-file-extensions';
 
-import CustomFileSmallIcon from "../../components/customFileIcon/CustomFileSmallIcon";
-import CustomFileIcon from "../../components/customFileIcon";
-import { ReactComponent as ShareArrowIcon } from "../../assets/arrow_share.svg";
+import CustomFileSmallIcon from '../../components/customFileIcon/CustomFileSmallIcon';
+import CustomFileIcon from '../../components/customFileIcon';
+import { ReactComponent as ShareArrowIcon } from '../../assets/arrow_share.svg';
 
-import style from "./style.module.css";
+import style from './style.module.css';
 
-export const FileItem = ({ file, callback, isFileChecked }) => {
+export const FileItem = ({
+  file,
+  callback,
+  isFileChecked
+}) => {
   const view = useSelector(selectFileView);
   const [preview, setPreview] = useState(null);
   const url = `https://neyratech.com/file/${file.slug}?is_telegram=true`;
   const formattedDate = (dateCreated) =>
-    moment.unix(dateCreated).format("MMM DD, YYYY, h:mma");
+    moment.unix(dateCreated).format('MMM DD, YYYY, h:mma');
 
   useEffect(() => {
     if (
       (imageMediaTypesPreview.includes(file.mime) &&
-        imageFileExtensions.includes(`.${file.extension}`)) ||
+        imageFileExtensions.includes(
+          `.${file.extension}`
+        )) ||
       videoFileExtensions.includes(`.${file.extension}`)
     ) {
-      getFilePreviewEffect(file.slug, null, file.extension).then((res) => {
+      getFilePreviewEffect(
+        file.slug,
+        null,
+        file.extension
+      ).then((res) => {
         setPreview(res);
       });
     }
@@ -57,7 +67,7 @@ export const FileItem = ({ file, callback, isFileChecked }) => {
 
   return (
     <>
-      {view === "grid" ? (
+      {view === 'grid' ? (
         <li
           className={style.fileWrapper}
           id={file.id}
@@ -65,6 +75,7 @@ export const FileItem = ({ file, callback, isFileChecked }) => {
           <input
             className={style.checkbox}
             type="checkbox"
+            readOnly
             checked={isFileChecked(file.id)}></input>
           {ShareButton}
           <div className={style.previewWrapper}>
@@ -84,21 +95,34 @@ export const FileItem = ({ file, callback, isFileChecked }) => {
           </div>
           <div className={style.info}>
             <p className={style.info__name}>{file.name}</p>
-            <p className={style.info__date}>{formattedDate(file.created_at)}</p>
+            <p className={style.info__date}>
+              {formattedDate(file.created_at)}
+            </p>
           </div>
         </li>
       ) : (
         <li
-          className={cn(style.options__item, style.fileItem)}
+          className={cn(
+            style.options__item,
+            style.fileItem
+          )}
           onClick={() => callback(file)}>
           <input
-            className={cn(style.checkbox, style.checkbox__right)}
+            className={cn(
+              style.checkbox,
+              style.checkbox__right
+            )}
             type="checkbox"
             checked={isFileChecked(file.id)}></input>
           {ShareButton}
           <div className={style.fileItem__icon}>
             {preview ? (
-              <img src={preview} alt="file" width={30} height={40} />
+              <img
+                src={preview}
+                alt="file"
+                width={30}
+                height={40}
+              />
             ) : (
               <CustomFileSmallIcon type={file.extension} />
             )}
