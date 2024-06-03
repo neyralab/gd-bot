@@ -5,7 +5,7 @@ import * as Sentry from '@sentry/react';
 import { BrowserTracing } from '@sentry/tracing';
 import { TonConnectUIProvider } from '@tonconnect/ui-react';
 
-import { setUser } from './store/reducers/userSlice';
+import { setInitData, setUser } from './store/reducers/userSlice';
 import {
   setAllWorkspaces,
   setCurrentWorkspace,
@@ -14,7 +14,7 @@ import {
 
 import { getUserEffect } from './effects/userEffects';
 import { getWorkspacesEffect } from './effects/workspaceEffects';
-import { authorizeUser, connectUserV8 } from './effects/authorizeUser';
+import { authorizeUser } from './effects/authorizeUser';
 import { storageListEffect } from './effects/storageEffects';
 
 import { StartPage } from './pages/startPage';
@@ -47,6 +47,7 @@ function App() {
   }
   const onPageLoad = async () => {
     try {
+      dispatch(setInitData(tg.initData));
       const [part1, part2] = splitString(JSON.stringify(currentUser));
       Sentry.captureMessage(`currentUser: ${JSON.stringify(currentUser)}`);
       Sentry.captureMessage(`currentUser1: ${JSON.stringify(part1)}`);
@@ -68,7 +69,6 @@ function App() {
         setTariffs(data);
       });
       Sentry.captureMessage(`App is successfully running`);
-      await connectUserV8(tg.initData);
     } catch (error) {
       Sentry.captureMessage(
         `Error ${error?.response?.status} in App in request '${error?.response?.config?.url}': ${error?.response?.data?.message}`
