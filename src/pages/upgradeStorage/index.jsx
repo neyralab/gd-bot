@@ -1,48 +1,48 @@
 /* eslint-disable */
-import { useEffect, useMemo, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useEffect, useMemo, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import {
   useTonConnectUI,
   useTonWallet,
   TonConnectButton,
-  useTonConnectModal,
-} from "@tonconnect/ui-react";
+  useTonConnectModal
+} from '@tonconnect/ui-react';
 
 import {
   createStripeSorageSub,
   getTonWallet,
   updateWsStorage,
-  updateWsStorageTON,
-} from "../../effects/paymentEffect";
-import { sidebarSizeTransformer } from "../../utils/storage";
+  updateWsStorageTON
+} from '../../effects/paymentEffect';
+import { sidebarSizeTransformer } from '../../utils/storage';
 import {
   selectCurrentWorkspace,
-  selectWorkspacePlan,
-} from "../../store/reducers/workspaceSlice";
-import { SuccessPopup } from "./SuccessPopup";
-import BillingModal from "./BillingModal";
+  selectWorkspacePlan
+} from '../../store/reducers/workspaceSlice';
+import { SuccessPopup } from './SuccessPopup';
+import BillingModal from './BillingModal';
 
-import { ReactComponent as CoinIcon } from "../../assets/coin.svg";
+// import { ReactComponent as CoinIcon } from '../../assets/coin.svg';
 
-import s from "./style.module.css";
+import s from './style.module.css';
 
 export const DEFAULT_TARIFFS_NAMES = {
-  107374182400: "100GB",
-  137438953472: "128GB",
-  274877906944: "256GB",
-  549755813888: "512GB",
-  1099511627776: "1TB",
-  2199023255552: "2TB",
-  5497558138880: "5TB",
-  10995116277760: "10TB",
-  109951162777600: "100TB",
+  107374182400: '100GB',
+  137438953472: '128GB',
+  274877906944: '256GB',
+  549755813888: '512GB',
+  1099511627776: '1TB',
+  2199023255552: '2TB',
+  5497558138880: '5TB',
+  10995116277760: '10TB',
+  109951162777600: '100TB'
 };
 
 const yearlyDiscount = {
-  107374182400: "-50%",
-  1099511627776: "-33%",
-  2199023255552: "-15%",
+  107374182400: '-50%',
+  1099511627776: '-33%',
+  2199023255552: '-15%'
 };
 
 export const UpgradeStoragePage = ({ tariffs }) => {
@@ -89,7 +89,7 @@ export const UpgradeStoragePage = ({ tariffs }) => {
           kibibytes: convertBytesToKibibytes(node.storage),
           priceId: node.stripe_price,
           tonPrice: node.ton_price,
-          nanoTonPrice: node.ton_price * 1000000000,
+          nanoTonPrice: node.ton_price * 1000000000
         });
       }
     }
@@ -119,7 +119,7 @@ export const UpgradeStoragePage = ({ tariffs }) => {
   }, [tariffs, availableTariffs, currentPlan?.storage, storageType, duration]);
 
   const onPlanClick = (e) => {
-    const element = e.target.closest("li");
+    const element = e.target.closest('li');
     if (!element) return;
 
     const id = element.id;
@@ -145,7 +145,7 @@ export const UpgradeStoragePage = ({ tariffs }) => {
         window.location.reload();
       }, 1000);
     } catch (error) {
-      console.warn("something wrong");
+      console.warn('something wrong');
     }
   };
 
@@ -159,15 +159,13 @@ export const UpgradeStoragePage = ({ tariffs }) => {
     }
   };
 
-  const selectedTariff = useMemo(()=>{
-    return tariffList.find(
-        (tariff) => tariff.priceId === plan
-    );
-  }, [plan, tariffList])
+  const selectedTariff = useMemo(() => {
+    return tariffList.find((tariff) => tariff.priceId === plan);
+  }, [plan, tariffList]);
 
   const payByTON = async () => {
-    if (!selectedTariff){
-      return
+    if (!selectedTariff) {
+      return;
     }
 
     if (wallet) {
@@ -176,14 +174,14 @@ export const UpgradeStoragePage = ({ tariffs }) => {
           validUntil: Math.floor(Date.now() / 1000) + 60, // 60 sec
           messages: [
             {
-              address: "UQBRGbB8_Sq8wPcic3JXjr6ZxTymQjuZdy36UQJoLHiweGtp",
-              amount: selectedTariff.nanoTonPrice,
-            },
-          ],
+              address: 'UQBRGbB8_Sq8wPcic3JXjr6ZxTymQjuZdy36UQJoLHiweGtp',
+              amount: selectedTariff.nanoTonPrice
+            }
+          ]
         };
         await tonConnectUI.sendTransaction(transaction, {
-          modals: ["before", "success", "error"],
-          notifications: [],
+          modals: ['before', 'success', 'error'],
+          notifications: []
         });
       } catch (error) {
         console.log(error);
@@ -265,7 +263,7 @@ export const UpgradeStoragePage = ({ tariffs }) => {
             <li id={tariffPlan.priceId} key={tariffPlan.priceId}>
               <div
                 className={`${s.optionsList__card} ${
-                  plan === "100GB" ? s.active : ""
+                  plan === '100GB' ? s.active : ''
                 }`}>
                 <span>{tariffPlan.value}</span>
                 <div>
@@ -292,17 +290,17 @@ export const UpgradeStoragePage = ({ tariffs }) => {
         </ul>
       </div>
       <button
-          disabled={!selectedTariff}
-          className={`${s.payButton} ${!selectedTariff?s.disabled:''}`}
-          onClick={payByTON}>
+        disabled={!selectedTariff}
+        className={`${s.payButton} ${!selectedTariff ? s.disabled : ''}`}
+        onClick={payByTON}>
         Pay with TON
       </button>
-      <button
-        className={s.payButton}
-        onClick={payByCreditCard}
-        disabled={!!!plan}>
-        Pay <CoinIcon />
-      </button>
+      {/*<button*/}
+      {/*  className={s.payButton}*/}
+      {/*  onClick={payByCreditCard}*/}
+      {/*  disabled={!!!plan}>*/}
+      {/*  Pay <CoinIcon />*/}
+      {/*</button>*/}
       {showTonPaymentModal && (
         <SuccessPopup
           onClose={() => showTonPaymentModal(false)}
