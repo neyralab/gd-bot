@@ -79,6 +79,9 @@ export const getTonWallet = async (dispatch) => {
     })
     .post('https://api.neyra.ai/api/gateway/billing/retrieve_crypto', {
       symbol: 'ton'
-    });
-  console.log('data', data);
+    })
+    .then(({ data }) => data?.data?.address)
+    .catch(() => null);
+
+  return data;
 };
