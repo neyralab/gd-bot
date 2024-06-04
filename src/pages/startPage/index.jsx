@@ -1,6 +1,9 @@
 import { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import CN from 'classnames';
+import CountUp from 'react-countup';
+import { useTonAddress, useTonConnectModal } from '@tonconnect/ui-react';
 
 import {
   selectAllWorkspaces,
@@ -12,6 +15,11 @@ import {
   setIsWorkspaceSelected,
   switchWorkspace
 } from '../../effects/workspaceEffects';
+import {
+  DEFAULT_MULTIPLIER_NAMES,
+  DEFAULT_TARIFFS_NAMES
+} from '../upgradeStorage';
+import { useBalance } from '../../hooks/useBalance';
 
 import GhostLoader from '../../components/ghostLoader';
 
@@ -31,13 +39,6 @@ import { ReactComponent as HelpIcon } from '../../assets/help.svg';
 import { ReactComponent as LeadboardIcon } from '../../assets/leadboard.svg';
 
 import style from './style.module.css';
-import CN from 'classnames';
-import { useTonAddress, useTonConnectModal } from '@tonconnect/ui-react';
-import {
-  DEFAULT_MULTIPLIER_NAMES,
-  DEFAULT_TARIFFS_NAMES
-} from '../upgradeStorage';
-import { useBalance } from '../../hooks/useBalance';
 
 export const StartPage = ({ onClose }) => {
   const totalWsCount = useSelector(selectTotalWsCount);
@@ -145,7 +146,9 @@ export const StartPage = ({ onClose }) => {
       </header>
       <section className={style.wrapper}>
         <div className={style.wallet_balance}>
-          <p className={style.wallet}>{balance.points}</p>
+          <p className={style.wallet}>
+            <CountUp end={balance.points} />
+          </p>
         </div>
         <span className={style.balance}>Balance</span>
       </section>
