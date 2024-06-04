@@ -25,6 +25,7 @@ import { Balance } from './pages/balance';
 import { Referral } from './pages/referral';
 
 import './App.css';
+import { TaskPage } from './pages/Task';
 
 const tg = window.Telegram.WebApp;
 
@@ -107,6 +108,7 @@ function App() {
           />
           <Route path="/balance" exact element={<Balance />} />
           <Route path="/ref" exact element={<Referral />} />
+          <Route path="/task" exact element={<TaskPage />} />
         </Routes>
       </div>
     </TonConnectUIProvider>
