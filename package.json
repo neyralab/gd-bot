@@ -16,6 +16,7 @@
     "classnames": "^2.5.1",
     "framer-motion": "^11.2.10",
     "gdgateway-client": "github:neyralab/gdgateway-client#1.3.5",
+    "mobile-detect": "^1.4.5",
     "moment": "^2.30.1",
     "ramda": "^0.30.0",
     "react": "^18.2.0",
