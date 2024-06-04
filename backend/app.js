@@ -10,7 +10,7 @@ const bot = new Telegraf(process.env.BOT_TOKEN);
 bot.start((ctx) => {
   const header = "<b>Let's get srarted!</b>";
   const additionalText =
-    "Please tap the below to start Upload files to/from GhostDrive. " + ctx.startPayload;
+    "Please tap the below to start Upload files to/from GhostDrive. Otakoi. " + ctx.startPayload;
   const buttonUrl = "https://tg.dev.ghostdrive.com/";
   const buttonText = "Open GhostDrive";
   const button = Markup.button.webApp(buttonText, buttonUrl);
