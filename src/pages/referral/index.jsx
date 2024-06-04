@@ -56,8 +56,12 @@ export const Referral = () => {
     return { copy: botUrl, send: url };
   }, [user?.referral?.code]);
 
-  const copyMe = () => {
-    navigator.clipboard.writeText(link.copy);
+  const copyMe = async () => {
+    try {
+      await navigator.clipboard.writeText(link.copy);
+    } catch (e) {
+      console.log({ e });
+    }
   };
 
   const sendLink = () => {
