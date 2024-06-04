@@ -69,17 +69,19 @@ export const updateWsStorageTON = async (
   }
 };
 
-export const getTonWallet = async (dispatch) => {
+export const getTonWallet = async (dispatch, comment) => {
   const token = await dispatch(connectUserV8());
+  const body = {
+    symbol: 'ton',
+    comment
+  };
   const data = await axios
     .create({
       headers: {
         Authorization: `Bearer ${token}`
       }
     })
-    .post('https://api.neyra.ai/api/gateway/billing/retrieve_crypto', {
-      symbol: 'ton'
-    })
+    .post('https://api.neyra.ai/api/gateway/billing/retrieve_crypto', body)
     .then(({ data }) => data?.data?.address)
     .catch(() => null);
 

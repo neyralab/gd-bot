@@ -10,7 +10,7 @@ export const storageListEffect = async (token) => {
     })
     .get(`${API_PATH}/storage/ton`)
     .then((response) => {
-      return response.data;
+      return response.data.data;
     })
     .catch((e) => {
       throw e;

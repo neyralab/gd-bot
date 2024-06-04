@@ -174,7 +174,11 @@ export const StartPage = ({ onClose }) => {
           <HelpIcon />
           <span className={style.footer_item_text}>Rules</span>
         </div>
-        <div className={style.footer_item}>
+        <div
+          className={style.footer_item}
+          onClick={() => {
+            navigate('/leadboard');
+          }}>
           <LeadboardIcon />
           <span className={style.footer_item_text}>Leadboard</span>
         </div>
