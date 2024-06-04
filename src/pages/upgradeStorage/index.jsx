@@ -27,7 +27,15 @@ import BillingModal from './BillingModal';
 
 import s from './style.module.css';
 
+export const DEFAULT_MULTIPLIER_NAMES = {
+  '1GB': 1,
+  '50GB': 3,
+  '500GB': 5,
+  '1TB': 10
+};
+
 export const DEFAULT_TARIFFS_NAMES = {
+  1073741824: '1GB',
   107374182400: '100GB',
   137438953472: '128GB',
   274877906944: '256GB',

@@ -33,16 +33,32 @@ import { ReactComponent as LeadboardIcon } from '../../assets/leadboard.svg';
 import style from './style.module.css';
 import CN from 'classnames';
 import { useTonAddress, useTonConnectModal } from '@tonconnect/ui-react';
+import {
+  DEFAULT_MULTIPLIER_NAMES,
+  DEFAULT_TARIFFS_NAMES
+} from '../upgradeStorage';
+import { useBalance } from '../../hooks/useBalance';
 
 export const StartPage = ({ onClose }) => {
   const totalWsCount = useSelector(selectTotalWsCount);
   const allWorkspaces = useSelector(selectAllWorkspaces);
   const currentWorkspace = useSelector(selectCurrentWorkspace);
+  const user = useSelector((state) => state?.user?.data);
   const navigate = useNavigate();
   const isWsSelected = getIsWorkspaceSelected();
   const { open } = useTonConnectModal();
   const address = useTonAddress(true);
-  console.log({ address });
+  const balance = useBalance();
+
+  const storage = useMemo(() => {
+    const size =
+      DEFAULT_TARIFFS_NAMES[user?.subscription?.subscription?.storage_size] ||
+      '1GB';
+    return {
+      size,
+      multiplier: DEFAULT_MULTIPLIER_NAMES[size]
+    };
+  }, []);
 
   const list = useMemo(() => {
     return [
@@ -57,7 +73,7 @@ export const StartPage = ({ onClose }) => {
       {
         Icon: DriveIcon,
         text: 'Drive',
-        amount: '1GB',
+        amount: storage.size,
         onClick: () => {
           navigate('/ghostdrive-upload');
         }
@@ -65,7 +81,7 @@ export const StartPage = ({ onClose }) => {
       {
         Icon: BoostIcon,
         text: 'Boost',
-        amount: 'X1',
+        amount: `X${storage.multiplier}`,
         onClick: () => {
           navigate('/balance');
         }
@@ -75,11 +91,11 @@ export const StartPage = ({ onClose }) => {
         text: 'Task',
         amount: '5',
         onClick: () => {
-          navigate('/ref');
+          navigate('/task');
         }
       }
     ];
-  }, []);
+  }, [storage]);
 
   const handleWsSelection = async (ws) => {
     await switchWorkspace(ws.workspace.id).then(() => {
@@ -129,13 +145,13 @@ export const StartPage = ({ onClose }) => {
       </header>
       <section className={style.wrapper}>
         <div className={style.wallet_balance}>
-          <p className={style.wallet}>100500</p>
+          <p className={style.wallet}>{balance.points}</p>
         </div>
         <span className={style.balance}>Balance</span>
       </section>
       <div className={style.list}>
         {list.map((el) => (
-          <div className={style.list_element}>
+          <div key={el.text} className={style.list_element}>
             <button onClick={el?.onClick} className={style.list_element_button}>
               <el.Icon />
               <p className={style.list_element_text}>{el.text}</p>
