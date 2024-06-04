@@ -23,6 +23,7 @@ import { UpgradeStoragePage } from './pages/upgradeStorage';
 import { FilesPage } from './pages/filesPage';
 import { Balance } from './pages/balance';
 import { Referral } from './pages/referral';
+import { Leaderboard } from './pages/leaderboard';
 
 import './App.css';
 import { TaskPage } from './pages/Task';
@@ -109,6 +110,7 @@ function App() {
           <Route path="/balance" exact element={<Balance />} />
           <Route path="/ref" exact element={<Referral />} />
           <Route path="/task" exact element={<TaskPage />} />
+          <Route path="/leadboard" exact element={<Leaderboard />} />
         </Routes>
       </div>
     </TonConnectUIProvider>
