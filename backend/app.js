@@ -37,20 +37,25 @@ bot.start(async (ctx) => {
     }
 
     const data = await response.json();
-    // const coupon = data.coupon;
+    const referralLink = `https://t.me/@GhostDrivebotbot?start=${data.coupon}`;
 
-    const additionalText = `Here is your coupon code: ${JSON.stringify(data)} payload: ${ctx.startPayload}`;
-    const buttonUrl = process.env.APP_FRONTEND_URL;
+    const welcomeText = "Hello, welcome to GhostDrive!";
+    const activitiesText = "Here you can use many activities to mine GD Points that would help you in Airdrop.";
+    const referralText = "To earn even more, invite your friends: get a reward for yourself and for your friend!";
+    const noCommunityText = "We don't have our Telegram community yet, stay tuned!";
     const buttonText = "Open GhostDrive";
+    const buttonUrl = process.env.APP_FRONTEND_URL;
     const button = Markup.button.webApp(buttonText, buttonUrl);
+    const shareButtonText = "Share Referral Link";
+    const shareButton = Markup.button.switchToChat(shareButtonText, referralLink);
 
     ctx.replyWithPhoto(
       { source: fs.createReadStream("./assets/start.png") },
       {
-        caption: `${header}\n\n${additionalText}`,
+        caption: `${header}\n\n${welcomeText}\n\n${activitiesText}\n\n${referralText}\n\n${noCommunityText}\n\nSend this referral link to your friends ⤵️\n${referralLink}`,
         parse_mode: "HTML",
         reply_markup: {
-          inline_keyboard: [[button]],
+          inline_keyboard: [[button], [shareButton]],
         },
       }
     );
