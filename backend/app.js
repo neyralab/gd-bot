@@ -37,7 +37,7 @@ bot.start(async (ctx) => {
     }
 
     const data = await response.json();
-    const referralLink = `https://t.me/@GhostDrivebotbot?start=${data.coupon}`;
+    const referralLink = `https://t.me/GhostDrivebotbot?start=${data.coupon}`;
 
     const welcomeText = "Hello, welcome to GhostDrive!";
     const activitiesText = "Here you can use many activities to mine GD Points that would help you in Airdrop.";
