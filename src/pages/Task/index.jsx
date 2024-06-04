@@ -14,7 +14,7 @@ const data = [
       const md = new MobileDetect(window.navigator.userAgent);
       const os = md.mobile();
       const url =
-        os.toLowerCase() === 'iphone'
+        os?.toLowerCase() === 'iphone'
           ? 'https://apps.apple.com/ua/app/ghostdrive-app/id6475002179'
           : 'https://play.google.com/store/apps/details?id=com.wise.data.ghostdrive';
       window.open(url);
