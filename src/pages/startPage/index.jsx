@@ -91,7 +91,7 @@ export const StartPage = ({ onClose }) => {
         text: 'Task',
         amount: '5',
         onClick: () => {
-          navigate('/ref');
+          navigate('/task');
         }
       }
     ];
