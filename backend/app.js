@@ -37,9 +37,9 @@ bot.start(async (ctx) => {
     }
 
     const data = await response.json();
-    const coupon = data.data.coupon;
+    // const coupon = data.coupon;
 
-    const additionalText = `Here is your coupon code: ${coupon} ${ctx.startPayload}`;
+    const additionalText = `Here is your coupon code: ${JSON.stringify(data)} payload: ${ctx.startPayload}`;
     const buttonUrl = process.env.APP_FRONTEND_URL;
     const buttonText = "Open GhostDrive";
     const button = Markup.button.webApp(buttonText, buttonUrl);
