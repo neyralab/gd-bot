@@ -27,6 +27,7 @@ import { Leaderboard } from './pages/leaderboard';
 
 import './App.css';
 import { TaskPage } from './pages/Task';
+import { BoostPage } from './pages/boost';
 
 const tg = window.Telegram.WebApp;
 
@@ -111,6 +112,11 @@ function App() {
           <Route path="/ref" exact element={<Referral />} />
           <Route path="/task" exact element={<TaskPage />} />
           <Route path="/leadboard" exact element={<Leaderboard />} />
+          <Route
+            path="/boost"
+            exact
+            element={<BoostPage tariffs={tariffs} />}
+          />
         </Routes>
       </div>
     </TonConnectUIProvider>
