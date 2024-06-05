@@ -84,7 +84,7 @@ export const StartPage = ({ onClose }) => {
         text: 'Boost',
         amount: `X${storage.multiplier}`,
         onClick: () => {
-          navigate('/balance');
+          navigate('/boost');
         }
       },
       {

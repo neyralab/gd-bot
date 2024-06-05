@@ -48,7 +48,6 @@ export const BoostPage = ({ tariffs }) => {
   const { open } = useTonConnectModal();
   const dispatch = useDispatch();
 
-  console.log({ activeMultiplier });
   const payByTON = async () => {
     if (!activeMultiplier) {
       return;
@@ -59,23 +58,27 @@ export const BoostPage = ({ tariffs }) => {
       storage_id: activeMultiplier?.id
     };
     const recipientWallet = await getTonWallet(dispatch, paymentInfo);
-    if (wallet && recipientWallet) {
-      try {
-        const transaction = {
-          validUntil: Math.floor(Date.now() / 1000) + 60, // 60 sec
-          messages: [
-            {
-              address: recipientWallet,
-              amount: activeMultiplier?.ton_price * 1000000000
-            }
-          ]
-        };
-        await tonConnectUI.sendTransaction(transaction, {
-          modals: ['before', 'success', 'error'],
-          notifications: []
-        });
-      } catch (error) {
-        console.log(error);
+    if (wallet) {
+      if (recipientWallet) {
+        try {
+          const transaction = {
+            validUntil: Math.floor(Date.now() / 1000) + 60, // 60 sec
+            messages: [
+              {
+                address: recipientWallet,
+                amount: activeMultiplier?.ton_price * 1000000000
+              }
+            ]
+          };
+          await tonConnectUI.sendTransaction(transaction, {
+            modals: ['before', 'success', 'error'],
+            notifications: []
+          });
+        } catch (error) {
+          console.log(error);
+        }
+      } else {
+        setActiveMultiplier(undefined);
       }
     } else {
       open();

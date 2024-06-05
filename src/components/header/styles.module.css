@@ -1,16 +1,16 @@
 .header {
-    display: flex;
-    color: white;
-    margin-bottom: 32px;
-    margin-left: 10px;
+  display: flex;
+  color: white;
+  margin-bottom: 32px;
+  margin-left: 10px;
 }
 
 .head {
-    flex: 1;
-    font-size: 18px;
-    text-align: center;
+  flex: 2;
+  font-size: 18px;
+  text-align: center;
 }
 
-.empty{
-    flex:1
+.empty {
+  flex: 1;
 }
