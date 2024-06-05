@@ -17,6 +17,7 @@ import { getWorkspacesEffect } from './effects/workspaceEffects';
 import { authorizeUser } from './effects/authorizeUser';
 import { storageListEffect } from './effects/storageEffects';
 
+import SharedLayout from './components/sharedLayout';
 import { StartPage } from './pages/startPage';
 import { FilesSystemPage } from './pages/filesSystemPage';
 import { UpgradeStoragePage } from './pages/upgradeStorage';
@@ -24,10 +25,10 @@ import { FilesPage } from './pages/filesPage';
 import { Balance } from './pages/balance';
 import { Referral } from './pages/referral';
 import { Leaderboard } from './pages/leaderboard';
-
-import './App.css';
 import { TaskPage } from './pages/Task';
 import { BoostPage } from './pages/boost';
+
+import './App.css';
 
 const tg = window.Telegram.WebApp;
 
@@ -107,7 +108,7 @@ function App() {
         twaReturnUrl: 'https://tg.beta.ghostdrive.com'
       }}
       network="main">
-      <div className="App">
+      <SharedLayout>
         <Routes>
           <Route path="/" exact element={<StartPage onClose={onClose} />} />
           <Route path="/file-upload" exact element={<FilesSystemPage />} />
@@ -128,7 +129,7 @@ function App() {
             element={<BoostPage tariffs={tariffs} />}
           />
         </Routes>
-      </div>
+      </SharedLayout>
     </TonConnectUIProvider>
   );
 }

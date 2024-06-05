@@ -4,15 +4,18 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import {
   clearFiles,
+  selecSelectedFile,
+  selectFiles,
   selectFilesCount,
   selectFilesPage,
-  selectSystemFiles,
   setCount,
+  setFiles,
   setPage,
-  setSystemFiles
+  setSelectedFile
 } from '../../store/reducers/filesSlice';
 import { uploadFileEffect } from '../../effects/uploadFileEffect';
 import { getFilesEffect } from '../../effects/filesEffects';
+import { handleFileMenu } from '../../store/reducers/modalSlice';
 
 import { FileItem } from '../../components/fileItem';
 import GhostLoader from '../../components/ghostLoader';
@@ -28,10 +31,11 @@ import style from './style.module.css';
 export const FilesSystemPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const files = useSelector(selectSystemFiles);
+  const files = useSelector(selectFiles);
   const filesCount = useSelector(selectFilesCount);
   const filesPage = useSelector(selectFilesPage);
   const [areFilesLoading, setAreFilesLoading] = useState(false);
+  const checkedFile = useSelector(selecSelectedFile);
 
   const onBackButtonClick = () => navigate(-1);
 
@@ -44,7 +48,7 @@ export const FilesSystemPage = () => {
 
   useEffect(() => {
     getFilesEffect(filesPage).then(({ data, count }) => {
-      dispatch(setSystemFiles(data));
+      dispatch(setFiles(data));
       dispatch(setCount(count));
     });
     return () => {
@@ -55,8 +59,18 @@ export const FilesSystemPage = () => {
 
   const fetchMoreFiles = (page) => {
     getFilesEffect(page).then(({ data }) => {
-      dispatch(setSystemFiles(data));
+      dispatch(setFiles(data));
     });
+  };
+
+  const onFileSelect = (file) => {
+    if (file.id === checkedFile.id) {
+      dispatch(setSelectedFile({}));
+      dispatch(handleFileMenu(false));
+    } else {
+      dispatch(handleFileMenu(true));
+      dispatch(setSelectedFile(file));
+    }
   };
 
   return (
@@ -114,8 +128,8 @@ export const FilesSystemPage = () => {
                 <FileItem
                   file={file}
                   key={file.id}
-                  checkedFile={{}}
-                  callback={() => {}}
+                  checkedFile={checkedFile}
+                  callback={onFileSelect}
                   fileView={'list'}
                 />
               ))}
