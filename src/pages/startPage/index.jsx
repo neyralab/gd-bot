@@ -52,7 +52,6 @@ export const StartPage = ({ onClose }) => {
   const { open } = useTonConnectModal();
   const address = useTonAddress(true);
   const link = useSelector((state) => state.user.link);
-  console.log({ link });
 
   const storage = useMemo(() => {
     const size =
