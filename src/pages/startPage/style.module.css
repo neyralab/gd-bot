@@ -535,3 +535,12 @@
   line-height: 150%; /* 30px */
   letter-spacing: 0.2px;
 }
+
+@media screen and (max-height: 700px) {
+  .list_element {
+    padding: 8px 16px;
+  }
+  .list, .wrapper{
+    padding-top: 12px;
+  }
+}
