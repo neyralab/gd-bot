@@ -463,3 +463,74 @@
   max-width: 150px;
   margin: 0 auto;
 }
+
+.invite_button {
+  width: 100%;
+  margin-top: 90px;
+  border-radius: 16px;
+  background: #125eb2;
+  position: relative;
+  overflow: hidden;
+}
+
+.invite_background {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.invite_block {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  padding: 24px 24px 8px 24px;
+}
+
+.invite_right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 16px;
+}
+
+.invite_left {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.invite_link {
+  color: #fff;
+  text-align: right;
+  font-feature-settings: 'case' on;
+  font-family: 'SF Pro Text', serif;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 110%; /* 13.2px */
+  letter-spacing: 0.12px;
+  text-transform: uppercase;
+}
+
+.invite_points {
+  text-align: left;
+  margin-top: 8px;
+}
+
+.invite_amount {
+  text-align: left;
+  font-size: 33.333px;
+  font-weight: 600;
+  letter-spacing: 0.333px;
+  text-transform: uppercase;
+}
+
+.invite_get {
+  text-align: left;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 150%; /* 30px */
+  letter-spacing: 0.2px;
+}

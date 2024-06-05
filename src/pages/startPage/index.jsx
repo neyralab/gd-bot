@@ -37,6 +37,8 @@ import { ReactComponent as BoostIcon } from '../../assets/boost.svg';
 import { ReactComponent as TaskIcon } from '../../assets/task.svg';
 import { ReactComponent as HelpIcon } from '../../assets/help.svg';
 import { ReactComponent as LeadboardIcon } from '../../assets/leadboard.svg';
+import { ReactComponent as LargeTelegramIcon } from '../../assets/large_telegram.svg';
+import { ReactComponent as InviteBackgroundIcon } from '../../assets/invite_background.svg';
 
 import style from './style.module.css';
 
@@ -49,6 +51,8 @@ export const StartPage = ({ onClose }) => {
   const isWsSelected = getIsWorkspaceSelected();
   const { open } = useTonConnectModal();
   const address = useTonAddress(true);
+  const link = useSelector((state) => state.user.link);
+  console.log({ link });
 
   const storage = useMemo(() => {
     const size =
@@ -64,23 +68,23 @@ export const StartPage = ({ onClose }) => {
     return [
       {
         Icon: UploadFileIcon,
-        text: 'Upload File',
+        text: 'Upload & Reward',
         amount: '+50',
         onClick: () => {
           navigate('/file-upload');
         }
       },
-      {
-        Icon: DriveIcon,
-        text: 'Drive',
-        amount: storage.size,
-        onClick: () => {
-          navigate('/ghostdrive-upload');
-        }
-      },
+      // {
+      //   Icon: DriveIcon,
+      //   text: 'Drive',
+      //   amount: storage.size,
+      //   onClick: () => {
+      //     navigate('/ghostdrive-upload');
+      //   }
+      // },
       {
         Icon: BoostIcon,
-        text: 'Boost',
+        text: 'Multiplier',
         amount: `X${storage.multiplier}`,
         onClick: () => {
           navigate('/boost');
@@ -88,7 +92,7 @@ export const StartPage = ({ onClose }) => {
       },
       {
         Icon: TaskIcon,
-        text: 'Task',
+        text: 'Tasks',
         amount: '5',
         onClick: () => {
           navigate('/task');
@@ -129,6 +133,10 @@ export const StartPage = ({ onClose }) => {
     );
   }
 
+  const onInvite = () => {
+    window.open(link.send);
+  };
+
   return (
     <div className={`${style.container} ${style.uploadContainer}`}>
       <header onClick={open} className={style.header_new}>
@@ -168,6 +176,27 @@ export const StartPage = ({ onClose }) => {
           </div>
         ))}
       </div>
+      <button onClick={onInvite} className={style.invite_button}>
+        <InviteBackgroundIcon className={style.invite_background} />
+        <div className={style.invite_block}>
+          <div className={style.invite_left}>
+            <h3 className={CN(style.invite_link, style.invite_get)}>
+              Invite & Get
+            </h3>
+            <h2 className={CN(style.invite_link, style.invite_amount)}>
+              1,000
+            </h2>
+            <h4 className={CN(style.invite_link, style.invite_points)}>
+              points
+            </h4>
+          </div>
+          <div className={style.invite_right}>
+            <LargeTelegramIcon />
+            <span className={style.invite_link}>{link?.label}</span>
+          </div>
+        </div>
+      </button>
+
       <footer className={style.footer}>
         <div className={style.footer_item}>
           <HelpIcon />
