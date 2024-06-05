@@ -61,7 +61,7 @@ function App() {
       );
       if (!token) throw new Error('token not found');
       await getUserEffect(token).then((data) => {
-        dispatch(setUser(data.user));
+        dispatch(setUser({ ...data.user, points: data?.points || 0 }));
         dispatch(setCurrentWorkspace(data.current_workspace));
         dispatch(setWorkspacePlan(data.workspace_plan));
       });

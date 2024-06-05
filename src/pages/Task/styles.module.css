@@ -70,3 +70,12 @@
   line-height: 150%; /* 21px */
   letter-spacing: 0.14px;
 }
+
+.done {
+  text-decoration-line: line-through;
+  color: #00df06;
+  border: 0.5px dotted #00df06;
+}
+.done p {
+  color: #00df06;
+}

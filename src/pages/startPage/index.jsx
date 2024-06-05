@@ -49,7 +49,6 @@ export const StartPage = ({ onClose }) => {
   const isWsSelected = getIsWorkspaceSelected();
   const { open } = useTonConnectModal();
   const address = useTonAddress(true);
-  const balance = useBalance();
 
   const storage = useMemo(() => {
     const size =
@@ -147,7 +146,7 @@ export const StartPage = ({ onClose }) => {
       <section className={style.wrapper}>
         <div className={style.wallet_balance}>
           <p className={style.wallet}>
-            <CountUp end={balance.points} />
+            <CountUp end={user.points} />
           </p>
         </div>
         <span className={style.balance}>Balance</span>
