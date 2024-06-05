@@ -444,7 +444,7 @@
   width: 100%;
   align-self: flex-end;
   position: fixed;
-  bottom: 36px;
+  bottom: 24px;
   right: 0;
 }
 
@@ -470,7 +470,8 @@
   background: #125eb2;
   position: relative;
   overflow: hidden;
-  margin: auto 0;
+  margin-top: auto;
+  margin-bottom: 16px;
 }
 
 .invite_background {
