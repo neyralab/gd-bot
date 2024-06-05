@@ -27,6 +27,7 @@ import { Leaderboard } from './pages/leaderboard';
 
 import './App.css';
 import { TaskPage } from './pages/Task';
+import { BoostPage } from './pages/boost';
 
 const tg = window.Telegram.WebApp;
 
@@ -60,7 +61,7 @@ function App() {
       );
       if (!token) throw new Error('token not found');
       await getUserEffect(token).then((data) => {
-        dispatch(setUser(data.user));
+        dispatch(setUser({ ...data.user, points: data?.points || 0 }));
         dispatch(setCurrentWorkspace(data.current_workspace));
         dispatch(setWorkspacePlan(data.workspace_plan));
       });
@@ -111,6 +112,11 @@ function App() {
           <Route path="/ref" exact element={<Referral />} />
           <Route path="/task" exact element={<TaskPage />} />
           <Route path="/leadboard" exact element={<Leaderboard />} />
+          <Route
+            path="/boost"
+            exact
+            element={<BoostPage tariffs={tariffs} />}
+          />
         </Routes>
       </div>
     </TonConnectUIProvider>

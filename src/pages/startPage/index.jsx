@@ -49,7 +49,6 @@ export const StartPage = ({ onClose }) => {
   const isWsSelected = getIsWorkspaceSelected();
   const { open } = useTonConnectModal();
   const address = useTonAddress(true);
-  const balance = useBalance();
 
   const storage = useMemo(() => {
     const size =
@@ -84,7 +83,7 @@ export const StartPage = ({ onClose }) => {
         text: 'Boost',
         amount: `X${storage.multiplier}`,
         onClick: () => {
-          navigate('/balance');
+          navigate('/boost');
         }
       },
       {
@@ -125,7 +124,7 @@ export const StartPage = ({ onClose }) => {
   if (!allWorkspaces && !currentWorkspace) {
     return (
       <div className={style.home_container}>
-        <GhostLoader />
+        <GhostLoader startup />
       </div>
     );
   }
@@ -147,7 +146,7 @@ export const StartPage = ({ onClose }) => {
       <section className={style.wrapper}>
         <div className={style.wallet_balance}>
           <p className={style.wallet}>
-            <CountUp end={balance.points} />
+            <CountUp delay={1} end={user?.points} />
           </p>
         </div>
         <span className={style.balance}>Balance</span>
