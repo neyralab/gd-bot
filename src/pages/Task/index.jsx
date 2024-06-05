@@ -32,7 +32,7 @@ export const TaskPage = () => {
           : { ...task, done: false }
       );
       console.log({ realTasks });
-      setTasks(realTasks);
+      setTasks(realTasks.sort((a, b) => a.amount - b.amount));
     })();
   }, []);
 
@@ -58,7 +58,7 @@ export const TaskPage = () => {
               }
               key={index}
               className={CN(el?.done && styles.done, styles.item)}>
-              <p className={styles.item_text}>{el?.action}</p>
+              <p className={styles.item_text}>{el?.action_text}</p>
               <p
                 className={
                   styles.point
