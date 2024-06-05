@@ -146,7 +146,7 @@ export const StartPage = ({ onClose }) => {
       <section className={style.wrapper}>
         <div className={style.wallet_balance}>
           <p className={style.wallet}>
-            <CountUp end={user.points} />
+            <CountUp delay={1} end={user.points} />
           </p>
         </div>
         <span className={style.balance}>Balance</span>
