@@ -5,22 +5,21 @@ const filesSlice = createSlice({
   initialState: {
     count: 0,
     page: 1,
-    systemFiles: [],
-    ghostdriveFiles: [],
+    files: [],
     searchAutocomplete: [],
+    selectedFile: {},
     direction: 'asc',
     view: 'grid'
   },
   reducers: {
-    setSystemFiles: (state, { payload }) => {
-      state.systemFiles = [...state.systemFiles, ...payload];
+    setFiles: (state, { payload }) => {
+      state.files = [...state.files, ...payload];
     },
-    setGhostdriveFiles: (state, { payload }) => {
-      state.ghostdriveFiles = [...state.ghostdriveFiles, ...payload];
+    setSelectedFile: (state, { payload }) => {
+      state.selectedFile = payload;
     },
     clearFiles: (state) => {
-      state.ghostdriveFiles = [];
-      state.systemFiles = [];
+      state.files = [];
     },
     setCount: (state, { payload }) => {
       state.count = payload;
@@ -32,37 +31,41 @@ const filesSlice = createSlice({
       state.searchAutocomplete = [...payload];
     },
     addUploadedFile: (state, { payload }) => {
-      state.systemFiles = [...payload, ...state.systemFiles];
-      state.ghostdriveFiles = [...payload, ...state.ghostdriveFiles];
+      state.files = [...payload, ...state.files];
     },
     changeDirection: (state, { payload }) => {
-      state.ghostdriveFiles = [];
+      state.files = [];
       state.direction = payload;
     },
     changeFileView: (state, { payload }) => {
       state.view = payload;
+    },
+    deleteFile: (state, { payload }) => {
+      const files = state.files.filter((file) => file.slug !== payload);
+      state.files = files;
     }
   }
 });
 
 export const {
-  setSystemFiles,
-  setGhostdriveFiles,
   addUploadedFile,
   changeDirection,
   changeFileView,
   setSearchAutocomplete,
   setCount,
   setPage,
-  clearFiles
+  clearFiles,
+  setSelectedFile,
+  setFiles,
+  deleteFile
 } = filesSlice.actions;
 export default filesSlice.reducer;
 
-export const selectSystemFiles = (state) => state.files.systemFiles;
-export const selectGhostdriveFiles = (state) => state.files.ghostdriveFiles;
+export const selectFiles = (state) => state.files.files;
 export const selectFilesCount = (state) => state.files.count;
 export const selectFilesPage = (state) => state.files.page;
 export const selectSearchAutocomplete = (state) =>
   state.files.searchAutocomplete;
 export const selectDirection = (state) => state.files.direction;
 export const selectFileView = (state) => state.files.view;
+export const selecSelectedFile = (state) => state.files.selectedFile;

@@ -7,16 +7,18 @@ import {
   changeDirection,
   changeFileView,
   clearFiles,
+  selecSelectedFile,
   selectDirection,
   selectFileView,
+  selectFiles,
   selectFilesCount,
   selectFilesPage,
-  selectGhostdriveFiles,
   selectSearchAutocomplete,
   setCount,
-  setGhostdriveFiles,
+  setFiles,
   setPage,
-  setSearchAutocomplete
+  setSearchAutocomplete,
+  setSelectedFile
 } from '../../store/reducers/filesSlice';
 import {
   autoCompleteSearchEffect,
@@ -25,11 +27,11 @@ import {
   getFilesEffect,
   updateEntrySorting
 } from '../../effects/filesEffects';
+import { handleFileMenu } from '../../store/reducers/modalSlice';
 import { useClickOutside } from '../../utils/useClickOutside';
 
 import { FileItem } from '../../components/fileItem';
 import InfiniteScrollComponent from '../../components/infiniteScrollComponent';
-import { FileMenu } from '../../components/fileMenu';
 
 import { ReactComponent as SearchIcon } from '../../assets/search_input.svg';
 import { ReactComponent as GridIcon } from '../../assets/grid_view.svg';
@@ -42,22 +44,21 @@ import style from './style.module.css';
 export const FilesPage = ({}) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const files = useSelector(selectGhostdriveFiles);
+  const files = useSelector(selectFiles);
   const filesCount = useSelector(selectFilesCount);
   const filesPage = useSelector(selectFilesPage);
   const searchFiles = useSelector(selectSearchAutocomplete);
   const dir = useSelector(selectDirection);
   const view = useSelector(selectFileView);
-  const [checkedFile, setCheckedFile] = useState({});
+  const checkedFile = useSelector(selecSelectedFile);
   const [loading, setLoading] = useState(false);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
-  const [isFileMenuOpen, setFileMenuOpen] = useState(false);
   const inputRef = useRef(null);
   const searchRef = useRef(null);
 
   useEffect(() => {
     getFilesEffect(filesPage, dir).then(({ data, count }) => {
-      dispatch(setGhostdriveFiles(data));
+      dispatch(setFiles(data));
       dispatch(setCount(count));
     });
     return () => {
@@ -68,13 +69,14 @@ export const FilesPage = ({}) => {
 
   const fetchMoreFiles = (page) => {
     getFilesEffect(page, dir).then(({ data }) => {
-      dispatch(setGhostdriveFiles(data));
+      dispatch(setFiles(data));
     });
   };
 
   const handleClickOutside = () => {
     setIsPopupOpen(false);
-    setCheckedFile((prevFile) => (prevFile.is_search ? {} : prevFile));
+    const file = checkedFile?.is_search ? {} : checkedFile;
+    dispatch(setSelectedFile(file));
   };
 
   useClickOutside(searchRef, handleClickOutside);
@@ -83,18 +85,18 @@ export const FilesPage = ({}) => {
 
   const onFileSelect = (file) => {
     if (file.id === checkedFile.id) {
-      setCheckedFile({});
-      setFileMenuOpen(false);
+      dispatch(setSelectedFile({}));
+      dispatch(handleFileMenu(false));
     } else {
-      setFileMenuOpen(true);
-      setCheckedFile(file);
+      dispatch(handleFileMenu(true));
+      dispatch(setSelectedFile(file));
     }
   };
 
   const handleFileDownload = async () => {
     setLoading(true);
     await downloadFileEffect(checkedFile);
-    setCheckedFile({});
+    dispatch(setSelectedFile({}));
     setLoading(false);
   };
 
@@ -134,11 +136,6 @@ export const FilesPage = ({}) => {
     await getFileInfoEffect(file.slug).then((data) =>
       onFileSelect({ ...data, id: file.id, is_search: true })
     );
-  };
-
-  const onFileMenuClose = () => {
-    setFileMenuOpen(false);
-    setCheckedFile({});
   };
 
   return (
@@ -222,11 +219,6 @@ export const FilesPage = ({}) => {
           </button>
         </>
       )}
-      <FileMenu
-        onClose={onFileMenuClose}
-        isOpen={isFileMenuOpen}
-        file={checkedFile}
-      />
     </div>
   );
 };

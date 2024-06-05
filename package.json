@@ -29,6 +29,7 @@
     "react-router-dom": "^6.23.0",
     "react-scripts": "^5.0.1",
     "react-share": "^5.1.0",
+    "react-toastify": "^10.0.5",
     "stream-browserify": "^3.0.0",
     "util": "^0.12.5"
   },
