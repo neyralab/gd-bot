@@ -25,7 +25,9 @@ export default function GhostLoader({
   }, [texts]);
 
   return (
-    <div className={s.wrapper} key={texts[currentIndex]}>
+    <div
+      className={classNames(startup ? s.startupWrapper : s.wrapper)}
+      key={texts[currentIndex]}>
       <GhostLogoLoader />
       {startup && (
         <p className={s.startup}>

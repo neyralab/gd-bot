@@ -1,9 +1,12 @@
-.wrapper {
+.wrapper,
+.startupWrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 32px;
+}
+.startupWrapper {
   background-image: url('../../assets/background.png');
   background-repeat: no-repeat;
   background-size: cover;
