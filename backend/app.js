@@ -37,7 +37,7 @@ bot.start(async (ctx) => {
     }
 
     const data = await response.json();
-    const referralLink = `https://t.me/GhostDrivebotbot?start=${data.coupon}`;
+    const referralLink = `https://t.me/${process.env.BOT_NAME}?start=${data?.coupon?.code}`;
 
     const welcomeText = "Hello, welcome to GhostDrive!";
     const activitiesText = "Here you can use many activities to mine GD Points that would help you in Airdrop.";
@@ -64,8 +64,67 @@ bot.start(async (ctx) => {
   }
 });
 
-bot.on('text', (ctx) => {
-  ctx.reply('Sorry, command is not recognized');
+let cachedPointsData = null;
+let lastFetchTime = null;
+
+async function fetchPointsData() {
+  if (!cachedPointsData || (Date.now() - lastFetchTime) > 600000) { // 10 minutes in milliseconds
+    const response = await fetch(`${process.env.GD_BACKEND_URL}/api/gd/points`);
+    if (!response.ok) {
+      throw new Error('Failed to fetch points data');
+    }
+    cachedPointsData = await response.json();
+    lastFetchTime = Date.now();
+  }
+  return cachedPointsData;
+}
+
+bot.on("terms", async (ctx) => {
+  try {
+    const pointsData = await fetchPointsData();
+    const pointsActions = pointsData.data.map(action => {
+      return `- ${action.action_text}: ${action.amount} Points`;
+    }).join('\n\n');
+
+    const termsMessage = `## Community-Focused Airdrop: GD Token on TON Blockchain
+
+Welcome to GhostDrive Community Airdrop for the GD Token on the Ton Blockchain! Our goal is to reward active users with GD points for their actions and tasks, fostering a vibrant and engaged community.
+
+How It Works:
+
+1. Join the Telegram Program
+   - Connect with our bot: [@${process.env.BOT_NAME}](#).
+   - Engage with the community and stay updated with the latest announcements.
+
+2. Launch GhostDrive Telegram Mini App
+   - Click the "Open GhostDrive" button to launch the app directly within Telegram.
+   - Seamlessly access and manage your GD points and rewards.
+
+3. Start Point Mining
+   - Begin earning GD Points through various activities and tasks.
+   - Track your progress and points accumulation through the bot.
+
+Earning GD Points:
+
+${pointsActions}
+
+Points Booster:
+
+We also offer a Points Booster packages that includes additional storage space for one year. Enhance your earning potential and enjoy expanded storage capabilities:
+
+- Points Booster with Storage Space:
+  - Unlock increased storage capacity for 12 months.
+  - Boost your GD Points earnings with exclusive benefits.
+
+Ends by Aug 16`;
+
+    const openAppButton = Markup.button.webApp("Open GhostDrive", process.env.APP_FRONTEND_URL);
+    const extra = Markup.inlineKeyboard([openAppButton]);
+
+    ctx.reply(termsMessage, extra);
+  } catch (e) {
+    console.error(`Error handling terms command: ${e.message}`);
+  }
 });
 
 bot.launch();
