@@ -32,7 +32,7 @@ export const Referral = () => {
     refFiles: 0,
     earn: 0
   });
-  const user = useSelector((state) => state.user.data);
+  const link = useSelector((state) => state.user.link);
 
   useEffect(() => {
     (async () => {
@@ -48,13 +48,6 @@ export const Referral = () => {
       }
     })();
   }, []);
-
-  const link = useMemo(() => {
-    const prefix = 'https://t.me/share/';
-    const botUrl = `https://t.me/ghostdrive_bot/ghostdrive?startapp=${user?.referral?.code}`;
-    const url = `${prefix}?url=${botUrl}`;
-    return { copy: botUrl, send: url };
-  }, [user?.referral?.code]);
 
   const copyMe = async () => {
     try {

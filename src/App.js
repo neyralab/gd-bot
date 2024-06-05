@@ -5,7 +5,7 @@ import * as Sentry from '@sentry/react';
 import { BrowserTracing } from '@sentry/tracing';
 import { TonConnectUIProvider } from '@tonconnect/ui-react';
 
-import { setInitData, setUser } from './store/reducers/userSlice';
+import { setInitData, setLink, setUser } from './store/reducers/userSlice';
 import {
   setAllWorkspaces,
   setCurrentWorkspace,
@@ -61,6 +61,16 @@ function App() {
       );
       if (!token) throw new Error('token not found');
       await getUserEffect(token).then((data) => {
+        const code = data.user?.referral?.code;
+        const prefix = 'https://t.me/share/';
+        const botUrl = `https://t.me/ghostdrive_bot/ghostdrive?startapp=${code}`;
+        const url = `${prefix}?url=${botUrl}`;
+        const linkPayload = {
+          copy: botUrl,
+          send: url,
+          label: `@t.me/${code}`
+        };
+        dispatch(setLink(linkPayload));
         dispatch(setUser({ ...data.user, points: data?.points || 0 }));
         dispatch(setCurrentWorkspace(data.current_workspace));
         dispatch(setWorkspacePlan(data.workspace_plan));
