@@ -1,11 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 
-import { ReactComponent as GhostLogoLoader } from "./svg/ghost-logo-loader.svg";
+import { ReactComponent as GhostLogoLoader } from './svg/ghost-logo-loader.svg';
 
-import classNames from "classnames";
-import s from "./ghostLoader.module.css";
+import classNames from 'classnames';
+import s from './ghostLoader.module.css';
 
-export default function GhostLoader({ texts = [], flashing = true }) {
+export default function GhostLoader({
+  texts = [],
+  flashing = true,
+  startup = false
+}) {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
@@ -23,11 +27,17 @@ export default function GhostLoader({ texts = [], flashing = true }) {
   return (
     <div className={s.wrapper} key={texts[currentIndex]}>
       <GhostLogoLoader />
+      {startup && (
+        <p className={s.startup}>
+          Please wait
+          <br /> the system is loading...
+        </p>
+      )}
       {texts.length > 0 && (
         <div className={s.textWrapper}>
           <p
             className={classNames(s.textContent, {
-              [s.textContent_isOnePhrase]: texts.length === 1,
+              [s.textContent_isOnePhrase]: texts.length === 1
             })}>
             {texts[currentIndex]}
           </p>

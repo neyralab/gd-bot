@@ -124,7 +124,7 @@ export const StartPage = ({ onClose }) => {
   if (!allWorkspaces && !currentWorkspace) {
     return (
       <div className={style.home_container}>
-        <GhostLoader />
+        <GhostLoader startup />
       </div>
     );
   }
