@@ -1,7 +1,7 @@
-import express from "express";
-import { Telegraf, Markup } from "telegraf";
-import fs from "fs";
-import dotenv from "dotenv";
+import express from 'express';
+import { Telegraf, Markup } from 'telegraf';
+import fs from 'fs';
+import dotenv from 'dotenv';
 import fetch from "node-fetch"; // Import node-fetch to make fetch work in Node.js
 
 dotenv.config();
@@ -64,8 +64,8 @@ bot.start(async (ctx) => {
   }
 });
 
-bot.on("text", (ctx) => {
-  ctx.reply("Sorry, command is not recognized");
+bot.on('text', (ctx) => {
+  ctx.reply('Sorry, command is not recognized');
 });
 
 bot.launch();

@@ -10,13 +10,13 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 20px 16px 50px;
   height: 100%;
+  width: 100%;
 }
 
 .uploadContainer {
   position: relative;
-  background-image: url("../../assets/welcome_bg.png");
+  background-image: url('../../assets/welcome_bg.png');
   background-repeat: no-repeat;
   background-size: cover;
   width: 100%;
@@ -32,7 +32,10 @@
 }
 
 .header {
-  margin-bottom: 85px;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  /*margin-bottom: 85px;*/
 }
 
 .filesHeader {
@@ -41,7 +44,7 @@
 
 .header__cancelBtn {
   color: #fff;
-  font-family: "Open Sans";
+  font-family: 'Open Sans';
   font-size: 17px;
   line-height: 150%;
   opacity: 0.7;
@@ -49,7 +52,7 @@
 
 .header__cancelBtnBlue {
   color: #3d88f6;
-  font-family: "Open Sans";
+  font-family: 'Open Sans';
   font-size: 15px;
   font-weight: 600;
   line-height: 150%;
@@ -58,7 +61,7 @@
 .header__title {
   margin: 0;
   color: #fff;
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Open Sans', sans-serif;
   font-size: 18px;
   font-weight: 600;
   line-height: 150%;
@@ -77,6 +80,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  padding-top: 42px;
 }
 
 .wrapper__content {
@@ -88,7 +92,7 @@
 
 .wrapper__content__title {
   margin: 32px 0 8px 0;
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Open Sans', sans-serif;
   font-size: 24px;
   font-weight: 600;
   line-height: 28px;
@@ -101,7 +105,7 @@
   max-width: 260px;
   margin: 0;
   text-align: center;
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Open Sans', sans-serif;
   font-size: 15px;
   font-weight: 400;
   line-height: 20px;
@@ -126,7 +130,7 @@
 .wrapper__list__title {
   align-self: flex-start;
   color: #98989f;
-  font-family: "Open Sans";
+  font-family: 'Open Sans';
   font-size: 12px;
   font-weight: 400;
   line-height: 150%;
@@ -172,7 +176,7 @@
 .fileItem div h3 {
   color: #fff;
   text-overflow: ellipsis;
-  font-family: "Open Sans";
+  font-family: 'Open Sans';
   font-size: 14px;
   font-weight: 400;
   line-height: 150%;
@@ -181,7 +185,7 @@
 
 .fileItem div p {
   color: #7d7d7d;
-  font-family: "Open Sans";
+  font-family: 'Open Sans';
   font-size: 11px;
   font-weight: 400;
   line-height: 150%;
@@ -249,7 +253,7 @@
   margin-top: 110px;
 
   color: #7d7d7d;
-  font-family: "Open Sans";
+  font-family: 'Open Sans';
   font-size: 14px;
   font-weight: 600;
   line-height: 150%;
@@ -288,7 +292,7 @@
 
 .emptyFilesPage_title {
   color: #fff;
-  font-family: "Open Sans";
+  font-family: 'Open Sans';
   font-size: 18px;
   font-weight: 600;
   line-height: 150%;
@@ -299,7 +303,7 @@
 
 .emptyFilesPage_desc {
   color: rgba(255, 255, 255, 0.7);
-  font-family: "Open Sans";
+  font-family: 'Open Sans';
   font-size: 12px;
   font-weight: 400;
   line-height: 150%;
@@ -312,4 +316,150 @@
   position: absolute;
   width: 100%;
   height: 100%;
+}
+
+.header__title_new {
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  color: var(--FFFFFF, #fff);
+  font-feature-settings: 'case' on;
+  font-family: 'SF Pro Text', serif;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.24px;
+}
+
+.header_new {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
+}
+
+.wallet_balance {
+  border-radius: 7px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(3.65px);
+  padding: 0 16px;
+}
+
+.wallet {
+  color: var(--Labels-Dark-Primary, #fff);
+  text-align: center;
+  font-feature-settings:
+    'clig' off,
+    'liga' off;
+  font-family: 'SF Pro Text';
+  font-size: 64px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 120%; /* 76.8px */
+}
+
+.balance {
+  color: var(--FFFFFF, #fff);
+  font-feature-settings: 'case' on;
+  font-family: 'SF Pro Text';
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 150%; /* 24px */
+  letter-spacing: 0.16px;
+  opacity: 0.7;
+  padding-top: 12px;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 12px;
+  padding-top: 40px;
+}
+
+.list_element {
+  padding: 16px 24px;
+  border-radius: 16px;
+  border: 0.5px dashed #fff;
+}
+
+.list_element_text {
+  color: #fff;
+  font-feature-settings: 'case' on;
+  font-family: 'SF Pro Text';
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 150%; /* 21px */
+  letter-spacing: 0.14px;
+  text-align: left;
+  flex: 1 0 0;
+}
+
+.list_element_amount {
+  opacity: 0.6;
+  text-align: right;
+  font-family: Nunito;
+  font-size: 24px;
+  font-weight: 300;
+  letter-spacing: 0.24px;
+  text-transform: uppercase;
+}
+
+.list_element_button {
+  border: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+}
+
+.footer_item_text {
+  color: rgba(255, 255, 255, 0.6);
+  font-feature-settings: 'case' on;
+  font-family: 'SF Pro Text';
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 150%; /* 21px */
+  letter-spacing: 0.14px;
+}
+
+.footer_item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  flex: 1 0;
+  gap: 12px;
+}
+
+.footer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+  width: 100%;
+  align-self: flex-end;
+  position: fixed;
+  bottom: 36px;
+  right: 0;
+}
+
+.address {
+  color: var(--FFFFFF, #fff);
+  font-feature-settings: 'case' on;
+  font-family: 'SF Pro Text';
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 150%; /* 27px */
+  letter-spacing: 0.18px;
+  text-overflow: ellipsis;
+  overflow: clip;
+  white-space: nowrap;
+  max-width: 150px;
+  margin: 0 auto;
 }

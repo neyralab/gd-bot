@@ -5,7 +5,7 @@ import * as Sentry from '@sentry/react';
 import { BrowserTracing } from '@sentry/tracing';
 import { TonConnectUIProvider } from '@tonconnect/ui-react';
 
-import { setUser } from './store/reducers/userSlice';
+import { setInitData, setUser } from './store/reducers/userSlice';
 import {
   setAllWorkspaces,
   setCurrentWorkspace,
@@ -14,7 +14,7 @@ import {
 
 import { getUserEffect } from './effects/userEffects';
 import { getWorkspacesEffect } from './effects/workspaceEffects';
-import { authorizeUser, connectUserV8 } from './effects/authorizeUser';
+import { authorizeUser } from './effects/authorizeUser';
 import { storageListEffect } from './effects/storageEffects';
 
 import { StartPage } from './pages/startPage';
@@ -23,8 +23,11 @@ import { UpgradeStoragePage } from './pages/upgradeStorage';
 import { FilesPage } from './pages/filesPage';
 import { Balance } from './pages/balance';
 import { Referral } from './pages/referral';
+import { Leaderboard } from './pages/leaderboard';
 
 import './App.css';
+import { TaskPage } from './pages/Task';
+import { BoostPage } from './pages/boost';
 
 const tg = window.Telegram.WebApp;
 
@@ -47,6 +50,7 @@ function App() {
   }
   const onPageLoad = async () => {
     try {
+      dispatch(setInitData(tg.initData));
       const [part1, part2] = splitString(JSON.stringify(currentUser));
       Sentry.captureMessage(`currentUser: ${JSON.stringify(currentUser)}`);
       Sentry.captureMessage(`currentUser1: ${JSON.stringify(part1)}`);
@@ -57,7 +61,7 @@ function App() {
       );
       if (!token) throw new Error('token not found');
       await getUserEffect(token).then((data) => {
-        dispatch(setUser(data.user));
+        dispatch(setUser({ ...data.user, points: data?.points || 0 }));
         dispatch(setCurrentWorkspace(data.current_workspace));
         dispatch(setWorkspacePlan(data.workspace_plan));
       });
@@ -68,7 +72,6 @@ function App() {
         setTariffs(data);
       });
       Sentry.captureMessage(`App is successfully running`);
-      await connectUserV8(tg.initData);
     } catch (error) {
       Sentry.captureMessage(
         `Error ${error?.response?.status} in App in request '${error?.response?.config?.url}': ${error?.response?.data?.message}`
@@ -89,9 +92,9 @@ function App() {
 
   return (
     <TonConnectUIProvider
-      manifestUrl="https://tg.dev.ghostdrive.com/tonconnect-manifest.json"
+      manifestUrl="https://tg.beta.ghostdrive.com/tonconnect-manifest.json"
       actionsConfiguration={{
-        twaReturnUrl: 'https://tg.dev.ghostdrive.com'
+        twaReturnUrl: 'https://tg.beta.ghostdrive.com'
       }}
       network="main">
       <div className="App">
@@ -107,6 +110,13 @@ function App() {
           />
           <Route path="/balance" exact element={<Balance />} />
           <Route path="/ref" exact element={<Referral />} />
+          <Route path="/task" exact element={<TaskPage />} />
+          <Route path="/leadboard" exact element={<Leaderboard />} />
+          <Route
+            path="/boost"
+            exact
+            element={<BoostPage tariffs={tariffs} />}
+          />
         </Routes>
       </div>
     </TonConnectUIProvider>

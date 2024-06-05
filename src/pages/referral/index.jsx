@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { referralEffect } from '../../effects/referralEffect';
 
 import styles from './styles.module.css';
@@ -31,6 +32,7 @@ export const Referral = () => {
     refFiles: 0,
     earn: 0
   });
+  const user = useSelector((state) => state.user.data);
 
   useEffect(() => {
     (async () => {
@@ -47,9 +49,23 @@ export const Referral = () => {
     })();
   }, []);
 
-  const copyMe = () => {
-    const url = window.location.href;
-    console.log(url);
+  const link = useMemo(() => {
+    const prefix = 'https://t.me/share/';
+    const botUrl = `https://t.me/ghostdrive_bot/ghostdrive?startapp=${user?.referral?.code}`;
+    const url = `${prefix}?url=${botUrl}`;
+    return { copy: botUrl, send: url };
+  }, [user?.referral?.code]);
+
+  const copyMe = async () => {
+    try {
+      await navigator.clipboard.writeText(link.copy);
+    } catch (e) {
+      console.log({ e });
+    }
+  };
+
+  const sendLink = () => {
+    window.open(link.send);
   };
 
   return (
@@ -77,7 +93,7 @@ export const Referral = () => {
         />
         <Button
           label="Send link"
-          onClick={() => console.log('send')}
+          onClick={sendLink}
           className={styles.black_btn}
         />
       </footer>

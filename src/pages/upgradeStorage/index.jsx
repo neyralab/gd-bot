@@ -1,7 +1,7 @@
 /* eslint-disable */
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   useTonConnectUI,
   useTonWallet,
@@ -12,8 +12,7 @@ import {
 import {
   createStripeSorageSub,
   getTonWallet,
-  updateWsStorage,
-  updateWsStorageTON
+  updateWsStorage
 } from '../../effects/paymentEffect';
 import { sidebarSizeTransformer } from '../../utils/storage';
 import {
@@ -27,7 +26,17 @@ import BillingModal from './BillingModal';
 
 import s from './style.module.css';
 
+export const DEFAULT_MULTIPLIER_NAMES = {
+  '1GB': 1,
+  '50GB': 3,
+  '500GB': 5,
+  '1TB': 10
+};
+
 export const DEFAULT_TARIFFS_NAMES = {
+  1073741824: '1GB',
+  53687091200: '50GB',
+  536870912000: '500GB',
   107374182400: '100GB',
   137438953472: '128GB',
   274877906944: '256GB',
@@ -48,8 +57,9 @@ const yearlyDiscount = {
 export const UpgradeStoragePage = ({ tariffs }) => {
   const navigate = useNavigate();
   const ws = useSelector(selectCurrentWorkspace);
+  const user = useSelector((state) => state.user.data);
   const currentPlan = useSelector(selectWorkspacePlan) || {};
-  const [duration, setDuration] = useState(1);
+  const [duration, setDuration] = useState(12);
   const [plan, setPlan] = useState(null);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [showTonPaymentModal, setShowTonPaymentModal] = useState(false);
@@ -60,45 +70,11 @@ export const UpgradeStoragePage = ({ tariffs }) => {
   const [tonConnectUI] = useTonConnectUI();
   const wallet = useTonWallet();
   const { open } = useTonConnectModal();
-  const storageType = ws?.gateway?.type;
-
-  const convertBytesToKibibytes = (size) => {
-    return size / 1024 ** 3;
-  };
-
-  const getTariffs = (data) => {
-    const storageTypes = Object.keys(data);
-    const transformedObject = {};
-
-    for (const type of storageTypes) {
-      for (const node of data[type]) {
-        const duration = node.duration;
-
-        if (!transformedObject[type]) {
-          transformedObject[type] = {};
-        }
-
-        if (!transformedObject[type][duration]) {
-          transformedObject[type][duration] = [];
-        }
-
-        transformedObject[type][duration].push({
-          value: sidebarSizeTransformer(node.storage),
-          price: node.price,
-          tarifStorage: node.storage,
-          kibibytes: convertBytesToKibibytes(node.storage),
-          priceId: node.stripe_price,
-          tonPrice: node.ton_price,
-          nanoTonPrice: node.ton_price * 1000000000
-        });
-      }
-    }
-    setAvailableTariffs(transformedObject);
-  };
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (tariffs) {
-      getTariffs(tariffs);
+      setAvailableTariffs(tariffs);
     }
   }, [tariffs]);
 
@@ -107,22 +83,22 @@ export const UpgradeStoragePage = ({ tariffs }) => {
   const tariffList = useMemo(() => {
     if (!availableTariffs) return [];
 
-    const filteredTariffs = availableTariffs[storageType][duration].filter(
-      (tf) => tf.tarifStorage > currentPlan?.storage
+    const filteredTariffs = availableTariffs.filter(
+      (tf) => tf.storage > currentPlan?.storage
     );
     const choosenTariffs = currentPlan?.duration
       ? filteredTariffs
-      : availableTariffs[storageType][duration];
+      : availableTariffs;
     const sortedTariffs = choosenTariffs.sort((a, b) => a.price - b.price);
 
     return sortedTariffs;
-  }, [tariffs, availableTariffs, currentPlan?.storage, storageType, duration]);
+  }, [tariffs, availableTariffs, currentPlan?.storage]);
 
   const onPlanClick = (e) => {
     const element = e.target.closest('li');
     if (!element) return;
 
-    const id = element.id;
+    const id = Number(element.id);
     if (id === plan) {
       setPlan(null);
       return;
@@ -160,22 +136,27 @@ export const UpgradeStoragePage = ({ tariffs }) => {
   };
 
   const selectedTariff = useMemo(() => {
-    return tariffList.find((tariff) => tariff.priceId === plan);
+    return tariffList.find((tariff) => tariff.id === plan);
   }, [plan, tariffList]);
 
   const payByTON = async () => {
     if (!selectedTariff) {
       return;
     }
-
-    if (wallet) {
+    const paymentInfo = {
+      user_id: user.id,
+      workspace_id: ws.id,
+      storage_id: selectedTariff.id
+    };
+    const recipientWallet = await getTonWallet(dispatch, paymentInfo);
+    if (wallet && recipientWallet) {
       try {
         const transaction = {
           validUntil: Math.floor(Date.now() / 1000) + 60, // 60 sec
           messages: [
             {
-              address: 'UQBRGbB8_Sq8wPcic3JXjr6ZxTymQjuZdy36UQJoLHiweGtp',
-              amount: selectedTariff.nanoTonPrice
+              address: recipientWallet,
+              amount: selectedTariff.ton_price * 1000000000
             }
           ]
         };
@@ -229,13 +210,8 @@ export const UpgradeStoragePage = ({ tariffs }) => {
             <>
               <span>{DEFAULT_TARIFFS_NAMES[currentPlan?.storage]}</span>
               <div>
-                <p>{`$${
-                  getCurrentPlanPrice(currentPlan?.price).monthlyPrice
-                } per month`}</p>
-                {/* <span>{`$${
-                  getCurrentPlanPrice(currentPlan?.price).yearlyPrice
-                } per year`}</span> */}
-                <span>{currentPlan.ton_price} TON per month</span>
+                <p>{currentPlan?.ton_price ?? '0'} TON per year</p>
+                <span>One-time payment for annual subscription</span>
               </div>
             </>
           ) : (
@@ -260,29 +236,21 @@ export const UpgradeStoragePage = ({ tariffs }) => {
         </div>
         <ul className={s.optionsList} onClick={onPlanClick}>
           {tariffList.map((tariffPlan) => (
-            <li id={tariffPlan.priceId} key={tariffPlan.priceId}>
+            <li id={tariffPlan.id} key={tariffPlan.id}>
               <div
                 className={`${s.optionsList__card} ${
                   plan === '100GB' ? s.active : ''
                 }`}>
-                <span>{tariffPlan.value}</span>
+                <span>{sidebarSizeTransformer(tariffPlan.storage)}</span>
                 <div>
-                  <p>{`$${getTariffMonthlyPrice(
-                    tariffPlan.price
-                  )} per month`}</p>
-                  {/* <span>
-                    {`$${getTariffYearlyPrice(tariffPlan.price)} per year`}{" "}
-                    {duration > 1 && (
-                      <span>{yearlyDiscount[tariffPlan.tarifStorage]}</span>
-                    )}
-                  </span> */}
-                  <span>{tariffPlan.tonPrice} TON per month</span>
+                  <p>{`${tariffPlan.ton_price} TON per year`}</p>
+                  <span>One-time payment for annual subscription</span>
                 </div>
                 <input
                   className={s.checkbox}
                   readOnly
                   type="checkbox"
-                  checked={plan === tariffPlan.priceId}
+                  checked={plan === tariffPlan.id}
                 />
               </div>
             </li>

@@ -1,4 +1,10 @@
 @import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
+
+@font-face {
+  font-family: 'SF Pro Text';
+  src: local('SF Pro Text'), url(./assets/fonts/sf-pro-text.woff) format('woff');
+}
 
 * {
   margin: 0;

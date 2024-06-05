@@ -8,9 +8,9 @@ export const storageListEffect = async (token) => {
         'X-Token': `Bearer ${token}`
       }
     })
-    .get(`${API_PATH}/workspace/storage/list`)
+    .get(`${API_PATH}/storage/ton`)
     .then((response) => {
-      return response.data;
+      return response.data.data;
     })
     .catch((e) => {
       throw e;
