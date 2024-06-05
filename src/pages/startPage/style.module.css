@@ -80,7 +80,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding-top: 42px;
+  padding-top: 36px;
 }
 
 .wrapper__content {
@@ -466,11 +466,11 @@
 
 .invite_button {
   width: 100%;
-  margin-top: 90px;
   border-radius: 16px;
   background: #125eb2;
   position: relative;
   overflow: hidden;
+  margin: auto 0;
 }
 
 .invite_background {
