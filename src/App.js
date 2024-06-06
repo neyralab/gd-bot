@@ -103,9 +103,9 @@ function App() {
 
   return (
     <TonConnectUIProvider
-      manifestUrl="https://tg.beta.ghostdrive.com/tonconnect-manifest.json"
+      manifestUrl="https://tg.dev.ghostdrive.com/tonconnect-manifest.json"
       actionsConfiguration={{
-        twaReturnUrl: 'https://tg.beta.ghostdrive.com'
+        twaReturnUrl: 'https://tg.dev.ghostdrive.com'
       }}
       network="main">
       <SharedLayout>

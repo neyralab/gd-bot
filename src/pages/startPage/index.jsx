@@ -101,6 +101,7 @@ export const StartPage = ({ onClose }) => {
   }, [storage]);
 
   const human = useMemo(() => {
+    if (!user) return;
     const { space_total, storage } = user;
     const percent = Math.round(
       (Number(storage) / space_total + Number.EPSILON) * 100
