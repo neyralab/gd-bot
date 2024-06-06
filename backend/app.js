@@ -6,7 +6,7 @@ import fetch from "node-fetch"; // Import node-fetch to make fetch work in Node.
 
 dotenv.config();
 const app = express();
-const bot = new Telegraf(process.env.BOT_TOKEN);
+const bot = new Telegraf(process.env.BOT_TOKEN_SECRET);
 
 bot.start(async (ctx) => {
   const header = "<b>Let's get started!</b>";
