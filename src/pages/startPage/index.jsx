@@ -19,6 +19,7 @@ import {
   DEFAULT_MULTIPLIER_NAMES,
   DEFAULT_TARIFFS_NAMES
 } from '../upgradeStorage';
+import { transformSize } from '../../utils/transformSize';
 
 import GhostLoader from '../../components/ghostLoader';
 
@@ -99,6 +100,19 @@ export const StartPage = ({ onClose }) => {
     ];
   }, [storage]);
 
+  const human = useMemo(() => {
+    const { space_total, storage } = user;
+    const percent = Math.round(
+      (Number(storage) / space_total + Number.EPSILON) * 100
+    );
+
+    return {
+      total: `${transformSize(String(space_total), 0)}`,
+      used: `${transformSize(storage, 1)}`,
+      percent: { label: `${percent || 1}%`, value: percent }
+    };
+  }, [user]);
+
   const handleWsSelection = async (ws) => {
     await switchWorkspace(ws.workspace.id).then(() => {
       setIsWorkspaceSelected(true);
@@ -134,6 +148,8 @@ export const StartPage = ({ onClose }) => {
   const onInvite = () => {
     window.open(link.copy);
   };
+
+  const percentUsage = '20%';
 
   return (
     <div className={`${style.container} ${style.uploadContainer}`}>
@@ -178,22 +194,29 @@ export const StartPage = ({ onClose }) => {
         <InviteBackgroundIcon className={style.invite_background} />
         <div className={style.invite_block}>
           <div className={style.invite_left}>
-            <h3 className={CN(style.invite_link, style.invite_get)}>
-              Invite & Get
-            </h3>
-            <h2 className={CN(style.invite_link, style.invite_amount)}>
-              1,000
-            </h2>
-            <h4 className={CN(style.invite_link, style.invite_points)}>
-              points
-            </h4>
+            <h4 className={CN(style.invite_get)}>Invite & Get Points</h4>
+            <span className={style.invite_amount}>1,000</span>
           </div>
           <div className={style.invite_right}>
             <LargeTelegramIcon />
-            <span className={style.invite_link}>{link?.label}</span>
           </div>
         </div>
       </button>
+
+      <div className={style.storage_block}>
+        <div className={style.storage_text_container}>
+          <p className={style.storage_text}>Storage</p>
+          <p className={style.storage_text}>
+            {human.used} of {human.total}
+          </p>
+        </div>
+        <div className={style.storage_usage_container}>
+          <div
+            className={style.storage_usage}
+            style={{ width: human.percent.label }}
+          />
+        </div>
+      </div>
 
       <footer className={style.footer}>
         <div className={style.footer_item}>

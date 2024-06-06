@@ -467,7 +467,8 @@
 .invite_button {
   width: 100%;
   border-radius: 16px;
-  background: #125eb2;
+  background: black;
+  border: 1px solid white;
   position: relative;
   overflow: hidden;
   margin-top: auto;
@@ -484,21 +485,23 @@
   width: 100%;
   display: flex;
   flex-direction: row;
-  padding: 24px 24px 8px 24px;
+  padding: 10px 24px;
 }
 
 .invite_right {
-  flex: 1;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
+  justify-content: center;
   gap: 16px;
 }
 
 .invite_left {
   flex: 1;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
 }
 
 .invite_link {
@@ -520,27 +523,79 @@
 }
 
 .invite_amount {
-  text-align: left;
-  font-size: 33.333px;
+  color: #fff;
+  text-align: right;
+  font-feature-settings: 'case' on;
+  font-family: 'SF Pro Text', serif;
+  font-size: 32px;
+  font-style: normal;
   font-weight: 600;
-  letter-spacing: 0.333px;
+  letter-spacing: 1px;
   text-transform: uppercase;
 }
 
 .invite_get {
-  text-align: left;
-  font-size: 20px;
+  color: #fff;
+  font-feature-settings: 'case' on;
+  font-family: 'SF Pro Text', serif;
+  font-size: 15px;
   font-style: normal;
-  font-weight: 500;
-  line-height: 150%; /* 30px */
-  letter-spacing: 0.2px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-align: left;
 }
 
 @media screen and (max-height: 700px) {
   .list_element {
     padding: 8px 16px;
   }
-  .list, .wrapper{
+  .list,
+  .wrapper {
     padding-top: 12px;
   }
+}
+
+.storage_block {
+  border-radius: 8px;
+  background: #1c1c1e;
+  width: 100%;
+
+  display: flex;
+  padding: 8px 27px 12px 27px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.storage_text_container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.storage_text {
+  color: var(--White, #fff);
+  leading-trim: both;
+  text-edge: cap;
+  font-family: 'SF Pro Text', serif;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 150%; /* 18px */
+  letter-spacing: 0.24px;
+}
+
+.storage_usage {
+  height: 8px;
+  background: #0062e2;
+}
+
+.storage_usage_container {
+  overflow: hidden;
+  height: 8px;
+  width: 100%;
+  border-radius: 24px;
+  background: #28282a;
 }
