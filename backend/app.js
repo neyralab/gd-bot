@@ -123,7 +123,7 @@ Ends by Aug 16`;
 
     ctx.reply(termsMessage, extra);
   } catch (e) {
-    console.error(`Error handling terms command: ${e.message}`);
+    ctx.reply(`Error: ${error.message}`);
   }
 });
 
