@@ -16,6 +16,7 @@ import { getUserEffect } from './effects/userEffects';
 import { getWorkspacesEffect } from './effects/workspaceEffects';
 import { authorizeUser } from './effects/authorizeUser';
 import { storageListEffect } from './effects/storageEffects';
+import { API_WEB_APP_URL } from './utils/api-urls';
 
 import SharedLayout from './components/sharedLayout';
 import { StartPage } from './pages/startPage';
@@ -103,9 +104,9 @@ function App() {
 
   return (
     <TonConnectUIProvider
-      manifestUrl="https://tg.dev.ghostdrive.com/tonconnect-manifest.json"
+      manifestUrl={`${API_WEB_APP_URL}/tonconnect-manifest.json`}
       actionsConfiguration={{
-        twaReturnUrl: 'https://tg.dev.ghostdrive.com'
+        twaReturnUrl: API_WEB_APP_URL
       }}
       network="main">
       <SharedLayout>

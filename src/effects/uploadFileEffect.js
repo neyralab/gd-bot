@@ -61,7 +61,8 @@ export const uploadFileEffect = async ({ files, dispatch }) => {
           handlers,
           progress: progresses[file?.folderData?.uploadId],
           totalSize: file?.folderSize,
-          startedAt: file?.startedAt
+          startedAt: file?.startedAt,
+          is_telegram: true
         });
         const uploadedFile = result.data.data;
         await getThumbnailImage({
