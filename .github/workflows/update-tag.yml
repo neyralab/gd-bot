@@ -1,0 +1,62 @@
+name: 2. New Version
+
+on:
+  workflow_dispatch:
+    inputs:
+      increment:
+        type: choice
+        required: true
+        default: "patch"
+        options:
+          - major
+          - minor
+          - patch
+
+jobs:
+  build:
+    name: Increment Version
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Get code
+        uses: actions/checkout@v4
+        with:
+          ref: stage
+          fetch-depth: '0'
+
+      - name: Update Tag
+        run: |
+          cd src/
+          git config user.email "git@github.com"
+          git config user.name "GitHub"
+          git fetch --all
+          echo "Tag list:"
+          git tag|head -n10
+
+          GIT_SHA=$(git rev-parse HEAD)
+          GIT_TAG=$(git describe --tags --exact-match ${GIT_SHA} 2>/dev/null||true)
+          if [[ ! -z ${GIT_TAG} ]]; then
+            echo "This commit already has tag: ${GIT_TAG}. Adding more than one tag is forbidden."
+            exit 1
+          fi
+
+          VER_CURRENT=$(git tag | sort -V | tail -n1)
+          if [[ -z ${VER_CURRENT} ]]; then
+            VER_CURRENT="0.0.0.0"
+          fi
+          echo "Current tag version is: $VER_CURRENT"
+          VER_SPLIT=( ${VER_CURRENT//./ } )
+          if [[ ${{ github.event.inputs.increment }} == 'major' ]]; then
+              ((++VER_SPLIT[0]))
+              VER_SPLIT[1]=0
+              VER_SPLIT[2]=0
+          elif [[ ${{ github.event.inputs.increment }} == 'minor' ]]; then
+              ((++VER_SPLIT[1]))
+              VER_SPLIT[2]=0
+          else
+              ((++VER_SPLIT[2]))
+          fi
+          VER_INCREMENT="${VER_SPLIT[0]}.${VER_SPLIT[1]}.${VER_SPLIT[2]}"
+          git tag "${VER_INCREMENT}"
+          git push --tags

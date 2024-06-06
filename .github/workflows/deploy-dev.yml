@@ -1,40 +1,95 @@
-name: Deploy Dev
+name: 1. Deploy Dev
 
 on:
+  push:
+    branches: [ master ]
   workflow_dispatch:
 
 env:
-  GIT_BRANCH: ${{ github.ref_name }}
-  PROJECT_NAME: telegram-bot-front
-  PROJECT_DIR: /home/ec2-user/telegram-bot
+  GIT_BRANCH: master
+  PROJECT_DIR: /opt/gd-bot
   SSH_HOST: 37.27.5.165
+  SSH_PORT: 22
   SSH_USER: ec2-user
-  SSH_KEY: ${{ secrets.DEV_SSH_KEY }}
-  ENV_FRONT: ${{ secrets.DEV_ENV_FRONT }}
-  ENV_BACK: ${{ secrets.DEV_ENV_BACK }}
+  SSH_KEY: ${{ secrets.SERVER_SSH_KEY }}
+  SLACK_CHANNEL: C03PQE4EQ83
+  SLACK_BOT_TOKEN: ${{ secrets.SLACK_TOKEN }}
+  SLACK_MESSAGE: "*DEV GD Bot*"
 
 jobs:
   build:
     name: Deploy
+    environment: DEV
     runs-on: ubuntu-latest
     steps:
+    - name: Slack Start Notify
+      uses: slackapi/slack-github-action@v1.26.0
+      with:
+        channel-id: ${{ env.SLACK_CHANNEL }}
+        slack-message: "Build was run on ${{ env.SLACK_MESSAGE }}"
+
+    - name: Get Code
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ env.SSH_HOST }}
+        port: ${{ env.SSH_PORT }}
+        username: ${{ env.SSH_USER }}
+        key: ${{ env.SSH_KEY }}
+        script_stop: false
+        script: |
+          echo "# Getting code"
+          cd ${{ env.PROJECT_DIR}}/src
+          git fetch --all
+          git reset --hard origin/${{ env.GIT_BRANCH }}
+
+          cp .github/docker-compose.yml ../docker-compose.yml
+
+          echo "# Building .env"
+          jq -sr '.[0] * .[1] | to_entries[] | .key + "=\"" + (.value | gsub("[\\n]"; "")) + "\""' <(echo '${{ toJson(vars) }}'|jq -r .) <(echo '${{ toJson(secrets) }}'|jq -r .) | sed -e "s/\"/'/g" | grep -v -e 'SERVER_SSH_KEY' -e 'SLACK_TOKEN'> .env
+          cp .env backup/.env
+
+          echo "# Vadidating .env"
+          VAR_DIFF=$(comm -13 <(grep -v -e "^$" -e "^#" .env|awk -F '=' '{print $1}'|sort) <(grep -v -e "^$" -e "^#" .env.example|awk -F '=' '{print $1}'|sort))
+          if [ ! -z "${VAR_DIFF}" ]; then
+              echo "Lack of variables in .env file:"
+              echo "$VAR_DIFF"
+              exit 1
+          else
+              echo "Variable file .env is ok"
+          fi
+
     - name: Deploy
       uses: appleboy/ssh-action@master
       with:
         host: ${{ env.SSH_HOST }}
+        port: ${{ env.SSH_PORT }}
         username: ${{ env.SSH_USER }}
         key: ${{ env.SSH_KEY }}
-        envs: ENV_FRONT,ENV_BACK
         script_stop: true
         script: |
-          cd ${{ env.PROJECT_DIR }}/${{ env.PROJECT_NAME }}
-          git fetch --all
-          git reset --hard origin/${{ env.GIT_BRANCH }}
-
-          echo "${ENV_FRONT}" > .env
-          echo "${ENV_BACK}" > backend/.env
-
-          docker compose build
-          docker compose down
-          docker compose up -d
+          cd ${{ env.PROJECT_DIR }}
           docker system prune -f
+          docker-compose -f docker-compose.yml pull
+          docker-compose -f docker-compose.yml build
+          docker-compose -f docker-compose.yml down
+          docker-compose -f docker-compose.yml up -d
+
+    - name: Slack Result Notify
+      if: always()
+      id: slack
+      uses: slackapi/slack-github-action@v1.26.0
+      with:
+        channel-id: ${{ env.SLACK_CHANNEL }}
+        payload: |
+          {
+            "text": "Build result on ${{ env.SLACK_MESSAGE }}: *${{ job.status }}*\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}",
+            "blocks": [
+              {
+                "type": "section",
+                "text": {
+                  "type": "mrkdwn",
+                  "text": "Build result on ${{ env.SLACK_MESSAGE }}: *${{ job.status }}*\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}"
+                }
+              }
+            ]
+          }
