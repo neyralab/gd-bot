@@ -19,7 +19,6 @@ import {
   DEFAULT_MULTIPLIER_NAMES,
   DEFAULT_TARIFFS_NAMES
 } from '../upgradeStorage';
-import { useBalance } from '../../hooks/useBalance';
 
 import GhostLoader from '../../components/ghostLoader';
 
@@ -133,7 +132,7 @@ export const StartPage = ({ onClose }) => {
   }
 
   const onInvite = () => {
-    window.open(link.send);
+    window.open(link.copy);
   };
 
   return (
