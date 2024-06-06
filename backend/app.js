@@ -79,7 +79,8 @@ async function fetchPointsData() {
   return cachedPointsData;
 }
 
-bot.on("terms", async (ctx) => {
+
+bot.command("terms", async (ctx) => {
   try {
     const pointsData = await fetchPointsData();
     const pointsActions = pointsData.data.map(action => {
