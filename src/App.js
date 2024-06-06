@@ -64,7 +64,7 @@ function App() {
       await getUserEffect(token).then((data) => {
         const code = data.user?.referral?.code;
         const prefix = 'https://t.me/share/';
-        const botUrl = `https://t.me/ghostdrive_bot/ghostdrive?startapp=${code}`;
+        const botUrl = `https://t.me/${process.env.REACT_APP_BOT_NAME}?start=${code}`;
         const url = `${prefix}?url=${botUrl}`;
         const linkPayload = {
           copy: botUrl,
