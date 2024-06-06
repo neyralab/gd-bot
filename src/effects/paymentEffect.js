@@ -1,6 +1,6 @@
 import { loadStripe } from '@stripe/stripe-js/pure';
 import axiosInstance from './axiosInstance';
-import { API_PATH } from '../utils/api-urls';
+import { API_PATH, API_TON_WALLET } from '../utils/api-urls';
 import axios from 'axios';
 import { connectUserV8 } from './authorizeUser';
 
@@ -49,25 +49,6 @@ export const updateWsStorage = async (price, subscription) => {
     console.error(error);
   }
 };
-export const updateWsStorageTON = async (
-  storage,
-  workspace_id,
-  duration = 1
-) => {
-  try {
-    const url = `https://api.dev.ghostdrive.com/api/apiv2/update/storage`;
-    const body = {
-      storage,
-      user: 'neyra_id',
-      workspace: workspace_id,
-      duration
-    };
-    const data = await axiosInstance.post(url, body);
-    return data;
-  } catch (error) {
-    console.error(error);
-  }
-};
 
 export const getTonWallet = async (dispatch, comment) => {
   const token = await dispatch(connectUserV8());
@@ -81,7 +62,7 @@ export const getTonWallet = async (dispatch, comment) => {
         Authorization: `Bearer ${token}`
       }
     })
-    .post('https://api.neyra.ai/api/gateway/billing/retrieve_crypto', body)
+    .post(API_TON_WALLET, body)
     .then(({ data }) => data?.data?.address)
     .catch(() => null);
 

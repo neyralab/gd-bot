@@ -1,7 +1,11 @@
 import axios from 'axios';
 import * as Sentry from '@sentry/react';
 
-import { API_AUTHORIZATION, API_COUPON } from '../utils/api-urls';
+import {
+  API_AUTHORIZATION,
+  API_COUPON,
+  API_NEYRA_CONNECT
+} from '../utils/api-urls';
 import { setToken } from './set-token';
 import axiosInstance from './axiosInstance';
 
@@ -40,13 +44,12 @@ export const authorizeUser = async (reqBody, ref) => {
 };
 export const connectUserV8 = () => async (_, getState) => {
   const initData = await getState().user.initData;
-  const url = 'https://api.neyra.ai/api/auth/identity/connect_userv8';
   const body = {
     provider: 'telegram',
     initData
   };
   const res = await axios
-    .put(url, body, {
+    .put(API_NEYRA_CONNECT, body, {
       headers: {
         'Content-Type': 'application/json'
       }
