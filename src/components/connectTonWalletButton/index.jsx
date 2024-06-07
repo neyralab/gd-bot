@@ -20,7 +20,7 @@ export const ConnectTonWalletButton = ({ openDisconnectModal }) => {
           {address.slice(0, 3) + '...' + address.slice(-6)}
         </p>
       ) : (
-        <button onClick={open}>
+        <button className={style.connect} onClick={open}>
           <PlusIcon />
           <h2 className={style.header__title_new}>Wallet</h2>
         </button>

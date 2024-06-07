@@ -129,7 +129,7 @@ export const StartPage = ({ onClose }) => {
               handleWsSelection(ws);
             }}
             className={`${style.options__item__button} ${style.workspaceOptionButton}`}>
-            <HardDriveIcon /> {ws.workspace.name}{' '}
+            <HardDriveIcon /> {ws.workspace.name}
             <ArrowIcon className={style.arrowIcon} />
           </button>
         </li>
@@ -148,8 +148,6 @@ export const StartPage = ({ onClose }) => {
   const onInvite = () => {
     window.open(link.copy);
   };
-
-  const percentUsage = '20%';
 
   return (
     <div className={`${style.container} ${style.uploadContainer}`}>
