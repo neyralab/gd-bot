@@ -193,7 +193,7 @@ export const StartPage = ({ onClose }) => {
         ))}
       </div>
 
-      <button onClick={onInvite} className={style.invite_button}>
+      <button className={style.invite_button}>
         <TelegramShareButton
           className={style.telegram_share}
           title={'Share this link with friends'}
