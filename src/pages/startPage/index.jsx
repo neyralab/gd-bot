@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import CN from 'classnames';
 import CountUp from 'react-countup';
+import { TelegramShareButton } from 'react-share';
 
 import {
   selectAllWorkspaces,
@@ -154,13 +155,17 @@ export const StartPage = ({ onClose }) => {
     navigate('/ref');
   };
 
+  const onBalance = () => {
+    navigate('/balance');
+  };
+
   return (
     <div className={`${style.container} ${style.uploadContainer}`}>
       <header className={style.header_new}>
         <ConnectTonWalletButton
           openDisconnectModal={setDisconnectWalletModal}
         />
-        <section onClick={onRef}>
+        <section onClick={onBalance}>
           <div className={style.wallet_balance}>
             <p className={style.wallet}>
               <CountUp delay={1} end={user?.points} />
@@ -187,17 +192,23 @@ export const StartPage = ({ onClose }) => {
           </div>
         ))}
       </div>
+
       <button onClick={onInvite} className={style.invite_button}>
-        <InviteBackgroundIcon className={style.invite_background} />
-        <div className={style.invite_block}>
-          <div className={style.invite_left}>
-            <h4 className={CN(style.invite_get)}>Invite & Get Points</h4>
-            <span className={style.invite_amount}>1,000</span>
+        <TelegramShareButton
+          className={style.telegram_share}
+          title={'Share this link with friends'}
+          url={link.copy}>
+          <InviteBackgroundIcon className={style.invite_background} />
+          <div className={style.invite_block}>
+            <div className={style.invite_left}>
+              <h4 className={CN(style.invite_get)}>Invite & Get Points</h4>
+              <span className={style.invite_amount}>1,000</span>
+            </div>
+            <div className={style.invite_right}>
+              <LargeTelegramIcon />
+            </div>
           </div>
-          <div className={style.invite_right}>
-            <LargeTelegramIcon />
-          </div>
-        </div>
+        </TelegramShareButton>
       </button>
 
       <div className={style.storage_block}>
@@ -216,9 +227,9 @@ export const StartPage = ({ onClose }) => {
       </div>
 
       <footer className={style.footer}>
-        <div className={style.footer_item}>
+        <div onClick={onRef} className={style.footer_item}>
           <HelpIcon />
-          <span className={style.footer_item_text}>Rules</span>
+          <span className={style.footer_item_text}>Referral</span>
         </div>
         <div
           className={style.footer_item}
