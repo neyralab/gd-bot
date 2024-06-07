@@ -1,0 +1,28 @@
+.wrapper {
+  position: relative;
+}
+.address {
+  color: var(--FFFFFF, #fff);
+  font-feature-settings: 'case' on;
+  font-family: 'SF Pro Text';
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 150%;
+  letter-spacing: 0.18px;
+  text-overflow: ellipsis;
+  overflow: clip;
+  white-space: nowrap;
+  max-width: 150px;
+  margin: 0 auto;
+}
+.header__title_new {
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  color: var(--FFFFFF, #fff);
+  font-feature-settings: 'case' on;
+  font-family: 'SF Pro Text', serif;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.24px;
+}

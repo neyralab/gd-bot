@@ -1,9 +1,8 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import CN from 'classnames';
 import CountUp from 'react-countup';
-import { useTonAddress, useTonConnectModal } from '@tonconnect/ui-react';
 
 import {
   selectAllWorkspaces,
@@ -22,6 +21,8 @@ import {
 import { transformSize } from '../../utils/transformSize';
 
 import GhostLoader from '../../components/ghostLoader';
+import { ConnectTonWalletButton } from '../../components/connectTonWalletButton';
+import { DisconnectWalletModal } from '../../components/disconnectWalletModal';
 
 // import { ReactComponent as UploadIcon } from '../../assets/upload.svg';
 // import { ReactComponent as UpgradeIcon } from '../../assets/upgrade.svg';
@@ -30,7 +31,6 @@ import { ReactComponent as ArrowIcon } from '../../assets/arrow_right.svg';
 import { ReactComponent as HardDriveIcon } from '../../assets/hard_drive.svg';
 // import { ReactComponent as MoneyIcon } from '../../assets/money.svg';
 // import { ReactComponent as RefIcon } from '../../assets/ref.svg';
-import { ReactComponent as PlusIcon } from '../../assets/plusIcon.svg';
 import { ReactComponent as UploadFileIcon } from '../../assets/uploadFile.svg';
 import { ReactComponent as DriveIcon } from '../../assets/drive.svg';
 import { ReactComponent as BoostIcon } from '../../assets/boost.svg';
@@ -43,14 +43,13 @@ import { ReactComponent as InviteBackgroundIcon } from '../../assets/invite_back
 import style from './style.module.css';
 
 export const StartPage = ({ onClose }) => {
+  const [disconnectWalletModal, setDisconnectWalletModal] = useState(false);
   const totalWsCount = useSelector(selectTotalWsCount);
   const allWorkspaces = useSelector(selectAllWorkspaces);
   const currentWorkspace = useSelector(selectCurrentWorkspace);
   const user = useSelector((state) => state?.user?.data);
   const navigate = useNavigate();
   const isWsSelected = getIsWorkspaceSelected();
-  const { open } = useTonConnectModal();
-  const address = useTonAddress(true);
   const link = useSelector((state) => state.user.link);
 
   const storage = useMemo(() => {
@@ -154,17 +153,10 @@ export const StartPage = ({ onClose }) => {
 
   return (
     <div className={`${style.container} ${style.uploadContainer}`}>
-      <header onClick={open} className={style.header_new}>
-        {address.length ? (
-          <p className={style.address}>
-            {address.slice(0, 3) + '...' + address.slice(-6)}
-          </p>
-        ) : (
-          <>
-            <PlusIcon />
-            <h2 className={style.header__title_new}>Wallet</h2>
-          </>
-        )}
+      <header className={style.header_new}>
+        <ConnectTonWalletButton
+          openDisconnectModal={setDisconnectWalletModal}
+        />
       </header>
       <section className={style.wrapper}>
         <div className={style.wallet_balance}>
@@ -233,6 +225,12 @@ export const StartPage = ({ onClose }) => {
           <span className={style.footer_item_text}>Leadboard</span>
         </div>
       </footer>
+      {disconnectWalletModal && (
+        <DisconnectWalletModal
+          isOpen={disconnectWalletModal}
+          onClose={() => setDisconnectWalletModal(false)}
+        />
+      )}
     </div>
   );
 };
