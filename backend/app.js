@@ -4,7 +4,7 @@ import fs from 'fs';
 import dotenv from 'dotenv';
 import fetch from 'node-fetch'; // Import node-fetch to make fetch work in Node.js
 
-dotenv.config({ path: '../.env' });
+dotenv.config();
 const app = express();
 const bot = new Telegraf(process.env.BOT_TOKEN_SECRET);
 
