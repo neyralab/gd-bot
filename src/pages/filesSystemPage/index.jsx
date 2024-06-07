@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -31,6 +31,8 @@ import style from './style.module.css';
 export const FilesSystemPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const mediaRef = useRef(null);
+  const fileRef = useRef(null);
   const files = useSelector(selectFiles);
   const filesCount = useSelector(selectFilesCount);
   const filesPage = useSelector(selectFilesPage);
@@ -39,11 +41,18 @@ export const FilesSystemPage = () => {
 
   const onBackButtonClick = () => navigate(-1);
 
+  const clearInputsAfterUpload = () => {
+    const dataTransfer = new DataTransfer();
+    mediaRef.current.files = dataTransfer.files;
+    fileRef.current.files = dataTransfer.files;
+  };
+
   const handleFileUpload = async (event) => {
     setAreFilesLoading(true);
     const files = event.target.files;
     await uploadFileEffect({ files, dispatch });
     setAreFilesLoading(false);
+    clearInputsAfterUpload();
   };
 
   useEffect(() => {
@@ -94,6 +103,7 @@ export const FilesSystemPage = () => {
               <ArrowIcon className={style.arrowIcon} />
             </button>
             <input
+              ref={mediaRef}
               type="file"
               accept="image/*,video/*"
               className={style.hiddenInput}
@@ -107,6 +117,7 @@ export const FilesSystemPage = () => {
               <ArrowIcon className={style.arrowIcon} />
             </button>
             <input
+              ref={fileRef}
               type="file"
               className={style.hiddenInput}
               onChange={handleFileUpload}
