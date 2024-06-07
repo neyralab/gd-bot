@@ -1,6 +1,14 @@
 .wrapper {
   position: relative;
 }
+
+.connect {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+}
+
 .address {
   color: var(--FFFFFF, #fff);
   font-feature-settings: 'case' on;
