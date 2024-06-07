@@ -57,6 +57,7 @@ jobs:
           else
               echo "Variable file .env is ok"
           fi
+          cp .env backend/.env
 
     - name: Deploy
       uses: appleboy/ssh-action@master
