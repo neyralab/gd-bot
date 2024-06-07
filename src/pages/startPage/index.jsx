@@ -146,6 +146,8 @@ export const StartPage = ({ onClose }) => {
   }
 
   const onInvite = () => {
+    const tg = window.Telegram.WebApp;
+    tg?.close()
     window.open(link.copy);
   };
 
