@@ -157,15 +157,16 @@ export const StartPage = ({ onClose }) => {
         <ConnectTonWalletButton
           openDisconnectModal={setDisconnectWalletModal}
         />
+        <section>
+          <div className={style.wallet_balance}>
+            <p className={style.wallet}>
+              <CountUp delay={1} end={user?.points} />
+            </p>
+          </div>
+          <p className={style.balance}>Points</p>
+        </section>
       </header>
-      <section className={style.wrapper}>
-        <div className={style.wallet_balance}>
-          <p className={style.wallet}>
-            <CountUp delay={1} end={user?.points} />
-          </p>
-        </div>
-        <span className={style.balance}>Balance</span>
-      </section>
+
       <div className={style.list}>
         {list.map((el) => (
           <div key={el.text} className={style.list_element}>
