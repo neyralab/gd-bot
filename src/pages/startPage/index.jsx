@@ -32,7 +32,7 @@ import { ReactComponent as HardDriveIcon } from '../../assets/hard_drive.svg';
 // import { ReactComponent as MoneyIcon } from '../../assets/money.svg';
 // import { ReactComponent as RefIcon } from '../../assets/ref.svg';
 import { ReactComponent as UploadFileIcon } from '../../assets/uploadFile.svg';
-import { ReactComponent as DriveIcon } from '../../assets/drive.svg';
+// import { ReactComponent as DriveIcon } from '../../assets/drive.svg';
 import { ReactComponent as BoostIcon } from '../../assets/boost.svg';
 import { ReactComponent as TaskIcon } from '../../assets/task.svg';
 import { ReactComponent as HelpIcon } from '../../assets/help.svg';
@@ -146,9 +146,12 @@ export const StartPage = ({ onClose }) => {
   }
 
   const onInvite = () => {
-    const tg = window.Telegram.WebApp;
-    tg?.close()
+    onClose?.();
     window.open(link.copy);
+  };
+
+  const onRef = () => {
+    navigate('/ref');
   };
 
   return (
@@ -157,7 +160,7 @@ export const StartPage = ({ onClose }) => {
         <ConnectTonWalletButton
           openDisconnectModal={setDisconnectWalletModal}
         />
-        <section>
+        <section onClick={onRef}>
           <div className={style.wallet_balance}>
             <p className={style.wallet}>
               <CountUp delay={1} end={user?.points} />
