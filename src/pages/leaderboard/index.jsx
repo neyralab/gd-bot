@@ -15,12 +15,14 @@ export const Leaderboard = () => {
     getLeaderboardEffect().then((data) => setLeaderboard(data));
   }, []);
 
-  function anonymizeFullName(name) {
-    return name
-      .replace(/\b\w/g, (char, index) =>
-        index === 0 ? char.toUpperCase() : '*'
-      )
-      .replace(/\B\w/g, '*');
+  function anonymizeFullName(str) {
+    if (str.length <= 7) {
+      return str;
+    }
+    const start = str.slice(0, 5);
+    const end = str.slice(-2);
+    const middle = '*'.repeat(str.length - 7);
+    return `${start}${middle}${end}`;
   }
 
   const onBackButtonClick = () => navigate(-1);
