@@ -28,7 +28,6 @@ import { Referral } from './pages/referral';
 import { Leaderboard } from './pages/leaderboard';
 import { TaskPage } from './pages/Task';
 import { BoostPage } from './pages/boost';
-import { TapPage } from './pages/tap';
 
 import './App.css';
 
@@ -125,7 +124,6 @@ function App() {
           <Route path="/ref" exact element={<Referral />} />
           <Route path="/task" exact element={<TaskPage />} />
           <Route path="/leadboard" exact element={<Leaderboard />} />
-          <Route path="/tap" exact element={<TapPage />} />
           <Route
             path="/boost"
             exact
