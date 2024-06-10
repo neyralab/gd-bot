@@ -96,6 +96,14 @@ export const StartPage = ({ onClose }) => {
         onClick: () => {
           navigate('/task');
         }
+      },
+      {
+        Icon: TaskIcon,
+        text: 'Gain Points',
+        amount: '*',
+        onClick: () => {
+          navigate('/tap');
+        }
       }
     ];
   }, [storage]);

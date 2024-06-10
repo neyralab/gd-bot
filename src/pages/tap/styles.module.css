@@ -1,0 +1,134 @@
+.container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+
+  background-image: url('../../assets/welcome_bg.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.content {
+  position: relative;
+  width: 100%;
+  flex-grow: 1;
+  flex-shrink: 0;
+  height: calc(100dvh - 52px);
+
+  margin: auto;
+  overflow: hidden;
+}
+
+.content-inner-container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16px;
+  padding-top: 45px;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.balance-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.balance-container strong {
+  color: #fff;
+  font-family: 'SF Pro Text';
+  font-size: 16px;
+  font-weight: 400;
+  letter-spacing: 0.16px;
+  opacity: 0.7;
+}
+
+.balance {
+  padding: 0 16px;
+  border-radius: 7px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(3.65px);
+  color: #fff;
+  text-align: center;
+  font-family: 'SF Pro Text';
+  font-size: 64px;
+  font-weight: 600;
+  font-feature-settings:
+    'clig' off,
+    'liga' off;
+}
+
+.main-button-container {
+  width: 400px;
+  max-width: 100%;
+  flex-grow: 1;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.experience-container {
+  padding-top: 32px;
+  flex-shrink: 0;
+  width: 100%;
+  display: flex;
+  gap: 16px;
+}
+
+.progress-container {
+  display: flex;
+  gap: 8px;
+  flex-grow: 1;
+  height: 55px;
+  padding: 0px 12px;
+
+  justify-content: space-between;
+  align-items: center;
+  flex-shrink: 0;
+  border-radius: 10px;
+  border: 1px solid #303030;
+  background: #151517;
+}
+
+.progress-bar {
+  flex-grow: 1;
+  justify-content: space-between;
+  align-items: center;
+  display: flex;
+}
+
+.points {
+  color: #fff;
+  font-family: 'SF Pro Text';
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.logo {
+  width: 24px;
+  height: 24px;
+}
+
+.multiplier {
+  padding: 16px;
+  height: 55px;
+  min-width: 55px;
+  text-align: center;
+  flex-shrink: 0;
+  border-radius: 10px;
+  border: 0.5px solid #03c2fe;
+  background: linear-gradient(90deg, #00c6fb 0%, #005bea 100%);
+  box-shadow: 0px 4px 17.2px 0px #0586fe;
+  color: #fff;
+  font-family: 'SF Pro Text';
+  font-size: 16px;
+  font-weight: 500;
+  text-transform: uppercase;
+}
