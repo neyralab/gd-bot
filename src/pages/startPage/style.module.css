@@ -579,3 +579,7 @@
 .telegram_share {
   width: 100%;
 }
+
+.small {
+  font-size: 36px;
+}
