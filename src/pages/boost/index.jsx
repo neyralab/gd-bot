@@ -8,7 +8,7 @@ import {
 } from '@tonconnect/ui-react';
 
 import { Header } from '../../components/header';
-import { Button } from '../../components/button';
+// import { Button } from '../../components/button';
 import {
   selectCurrentWorkspace,
   selectWorkspacePlan
@@ -21,10 +21,11 @@ import { ReactComponent as X3 } from '../../assets/x/x3.svg';
 import { ReactComponent as X5 } from '../../assets/x/x5.svg';
 import { ReactComponent as X10 } from '../../assets/x/x10.svg';
 import { ReactComponent as Diamond } from '../../assets/diamond.svg';
-import { ReactComponent as Info } from '../../assets/info.svg';
-import { ReactComponent as PayIcon } from '../../assets/pay_ton.svg';
+// import { ReactComponent as Info } from '../../assets/info.svg';
+// import { ReactComponent as PayIcon } from '../../assets/pay_ton.svg';
 
 import styles from './styles.module.css';
+import { toast } from 'react-toastify';
 
 const multipliers = {
   1: <X3 className={styles.multiplier} />,
@@ -48,25 +49,28 @@ export const BoostPage = ({ tariffs }) => {
   const { open } = useTonConnectModal();
   const dispatch = useDispatch();
 
-  const payByTON = async () => {
-    if (!activeMultiplier) {
-      return;
-    }
-    const paymentInfo = {
-      user_id: user.id,
-      workspace_id: ws.id,
-      storage_id: activeMultiplier?.id
-    };
-    const recipientWallet = await getTonWallet(dispatch, paymentInfo);
-    if (wallet) {
-      if (recipientWallet) {
-        try {
+  const payByTON = async (el) => {
+    try {
+      setActiveMultiplier((prev) =>
+        prev?.storage === el.storage ? undefined : el
+      );
+      if (!el) {
+        return;
+      }
+      const paymentInfo = {
+        user_id: user.id,
+        workspace_id: ws.id,
+        storage_id: el?.id
+      };
+      const recipientWallet = await getTonWallet(dispatch, paymentInfo);
+      if (wallet) {
+        if (recipientWallet) {
           const transaction = {
             validUntil: Math.floor(Date.now() / 1000) + 60, // 60 sec
             messages: [
               {
                 address: recipientWallet,
-                amount: activeMultiplier?.ton_price * 1000000000
+                amount: el?.ton_price * 1000000000
               }
             ]
           };
@@ -74,14 +78,24 @@ export const BoostPage = ({ tariffs }) => {
             modals: ['before', 'success', 'error'],
             notifications: []
           });
-        } catch (error) {
-          console.log(error);
+          toast('Payment made successfully.');
+        } else {
+          setActiveMultiplier(undefined);
+          toast.error('Something went wrong', {
+            theme: 'colored',
+            position: 'bottom-center',
+            autoClose: 2500
+          });
         }
       } else {
-        setActiveMultiplier(undefined);
+        open();
       }
-    } else {
-      open();
+    } catch (e) {
+      console.log({ errrrrr: e });
+      toast.error('Something went wrong', {
+        theme: 'colored',
+        position: 'bottom-center'
+      });
     }
   };
 
@@ -112,11 +126,9 @@ export const BoostPage = ({ tariffs }) => {
           {tariffs?.map((el, index) => (
             <li key={index}>
               <button
-                onClick={() =>
-                  setActiveMultiplier((prev) =>
-                    prev?.storage === el.storage ? undefined : el
-                  )
-                }
+                onClick={async () => {
+                  await payByTON(el);
+                }}
                 className={CN(
                   styles.item,
                   activeMultiplier?.storage === el.storage && styles.active_item
@@ -138,34 +150,34 @@ export const BoostPage = ({ tariffs }) => {
             </li>
           ))}
         </ul>
-        <div>
-          <div className={styles.info_header}>
-            <Info />
-            <p className={styles.header}>How it works?</p>
-          </div>
-          <p className={styles.info_text}>
-            We also offer a Points Booster package that includes additional
-            storage space for one year. Enhance your earning potential and enjoy
-            expanded storage capabilities:
-          </p>
-          <ul className={styles.info_list}>
-            {infoData.map((el, index) => (
-              <li key={index} className={styles.info_item}>
-                {el}
-              </li>
-            ))}
-          </ul>
-        </div>
+        {/*<div>*/}
+        {/*  <div className={styles.info_header}>*/}
+        {/*    <Info />*/}
+        {/*    <p className={styles.header}>How it works?</p>*/}
+        {/*  </div>*/}
+        {/*  <p className={styles.info_text}>*/}
+        {/*    We also offer a Points Booster package that includes additional*/}
+        {/*    storage space for one year. Enhance your earning potential and enjoy*/}
+        {/*    expanded storage capabilities:*/}
+        {/*  </p>*/}
+        {/*  <ul className={styles.info_list}>*/}
+        {/*    {infoData.map((el, index) => (*/}
+        {/*      <li key={index} className={styles.info_item}>*/}
+        {/*        {el}*/}
+        {/*      </li>*/}
+        {/*    ))}*/}
+        {/*  </ul>*/}
+        {/*</div>*/}
       </div>
-      <footer className={styles.footer}>
-        <Button
-          disabled={!activeMultiplier}
-          label="Pay"
-          onClick={payByTON}
-          img={<PayIcon className={styles.pay_icon} />}
-          className={CN(styles.pay_btn, !activeMultiplier && styles.disabled)}
-        />
-      </footer>
+      {/*<footer className={styles.footer}>*/}
+      {/*  <Button*/}
+      {/*    disabled={!activeMultiplier}*/}
+      {/*    label="Pay"*/}
+      {/*    onClick={payByTON}*/}
+      {/*    img={<PayIcon className={styles.pay_icon} />}*/}
+      {/*    className={CN(styles.pay_btn, !activeMultiplier && styles.disabled)}*/}
+      {/*  />*/}
+      {/*</footer>*/}
     </div>
   );
 };
