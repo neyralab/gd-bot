@@ -318,21 +318,12 @@
   height: 100%;
 }
 
-.header__title_new {
-  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-  color: var(--FFFFFF, #fff);
-  font-feature-settings: 'case' on;
-  font-family: 'SF Pro Text', serif;
-  font-size: 24px;
-  font-style: normal;
-  font-weight: 600;
-  letter-spacing: 0.24px;
-}
-
 .header_new {
   display: flex;
   flex-direction: row;
   align-items: center;
+  justify-content: space-between;
+  width: 100%;
   gap: 12px;
 }
 
@@ -366,7 +357,8 @@
   line-height: 150%; /* 24px */
   letter-spacing: 0.16px;
   opacity: 0.7;
-  padding-top: 12px;
+  text-align: center;
+  margin: 0;
 }
 
 .list {
@@ -446,22 +438,6 @@
   position: fixed;
   bottom: 24px;
   right: 0;
-}
-
-.address {
-  color: var(--FFFFFF, #fff);
-  font-feature-settings: 'case' on;
-  font-family: 'SF Pro Text';
-  font-size: 18px;
-  font-style: normal;
-  font-weight: 600;
-  line-height: 150%; /* 27px */
-  letter-spacing: 0.18px;
-  text-overflow: ellipsis;
-  overflow: clip;
-  white-space: nowrap;
-  max-width: 150px;
-  margin: 0 auto;
 }
 
 .invite_button {
@@ -598,4 +574,8 @@
   width: 100%;
   border-radius: 24px;
   background: #28282a;
+}
+
+.telegram_share {
+  width: 100%;
 }
