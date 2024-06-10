@@ -89,7 +89,7 @@ export const BoostPage = ({ tariffs }) => {
     <div className={styles.container}>
       <Header label={'Boost Points Rewards'} className={styles.backBtn} />
       <div>
-        <p className={styles.header}>Current multiplayer</p>
+        <p className={styles.header}>Current multiplier</p>
         <div className={styles.current_item}>
           <div className={styles.flex}>
             <X1 className={styles.multiplier} />
@@ -107,7 +107,7 @@ export const BoostPage = ({ tariffs }) => {
         </div>
       </div>
       <div>
-        <p className={styles.header}>Boost multiplayer</p>
+        <p className={styles.header}>Boost multiplier</p>
         <ul className={styles.list}>
           {tariffs?.map((el, index) => (
             <li key={index}>

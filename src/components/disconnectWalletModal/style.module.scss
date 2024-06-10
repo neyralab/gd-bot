@@ -1,0 +1,59 @@
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 1005;
+}
+.modal {
+  border-radius: 16px;
+  background: #1b1b1c;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 270px;
+}
+.text {
+  color: #fff;
+  text-align: center;
+  font-family: 'SF Pro Text';
+  font-size: 17px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 22px;
+  letter-spacing: 0.408px;
+  padding: 16px;
+  border-bottom: 0.5px solid rgba(84, 84, 88, 0.65);
+}
+
+.buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.noBtn,
+.yesBtn {
+  display: flex;
+  padding: 11px 41px;
+  justify-content: center;
+  align-items: center;
+
+  text-align: center;
+  font-feature-settings: 'case' on;
+  font-family: 'SF Pro Text';
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 22px;
+  flex-grow: 1;
+}
+.noBtn {
+  color: #0f73ef;
+  border-right: 0.5px solid rgba(84, 84, 88, 0.65);
+}
+.yesBtn {
+  color: #fa2424;
+}
