@@ -38,8 +38,8 @@ const MainButton = forwardRef((_, ref) => {
     const maxOpacities = [1, 1, 1, 1, 0.5, 0.2];
     const minOpacities = [0.9, 0.9, 0.9, 0.6, 0.2, 0.1];
 
-    const durationUp = 100; // Duration for scaling up
-    const durationDown = 150; // Duration for scaling down
+    const durationUp = 100; // Duration for up phase
+    const durationDown = 150; // Duration for down phase
     const totalDuration = durationUp + durationDown;
     const delayBetweenFrames = 50; // Delay between frames
 
@@ -90,8 +90,10 @@ const MainButton = forwardRef((_, ref) => {
                 (maxOpacities[index] - minOpacities[index]) *
                   (timeScaleDown / durationDown);
             }
-            frameRef.current.style.transform = `scale(${scale})`;
-            frameRef.current.style.opacity = opacity.toString();
+            if (frameRef.current) {
+              frameRef.current.style.transform = `scale(${scale})`;
+              frameRef.current.style.opacity = opacity.toString();
+            }
           }
 
           if (timeElapsed < totalDuration) {
