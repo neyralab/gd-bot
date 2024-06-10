@@ -47,12 +47,12 @@ bot.start(async (ctx) => {
       }
 
       cachedUserData = await response.json();
-      cache.set(cacheKey, cachedUserData);
+      cache[cacheKey] = cachedUserData;
     } catch (error) {
       throw error;
     }
   }
-    const data = await response.json();
+    const data = cachedUserData;
     const referralLink = `https://t.me/${process.env.BOT_NAME}?start=${data?.coupon?.code}`;
     const welcomeText = 'Join the Ghostdrive Community!';
     const activitiesText = 'Ghostdrive is the #1 Telegram Drive – easy to use, upload files, and get rewarded!\n\n' +
