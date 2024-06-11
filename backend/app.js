@@ -29,6 +29,8 @@ bot.start(async (ctx) => {
 
   if (!cachedUserData) {
     try {
+      const requestBody = JSON.stringify(userData);
+      console.log(requestBody);
       const response = await fetch(
           `${process.env.GD_BACKEND_URL}/apiv2/user/create/telegram`,
           {
@@ -38,7 +40,7 @@ bot.start(async (ctx) => {
               'client-id': process.env.GD_CLIENT_ID,
               'client-secret': process.env.GD_CLIENT_SECRET
             },
-            body: JSON.stringify(userData)
+            body: requestBody
           }
       );
 
