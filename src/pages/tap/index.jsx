@@ -1,14 +1,16 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
+import classNames from 'classnames';
 import { Header } from '../../components/header_v2';
 import MainButton from './MainButton/MainButton';
 import ProgressBar from './ProgressBar/ProgressBar';
 import Background from './Background/Background';
-import { ReactComponent as TokenIcon } from '../../assets/logo-token.svg';
 import styles from './styles.module.css';
 
 export function TapPage() {
   const backgroundRef = useRef();
   const mainButtonRef = useRef();
+
+  const [theme, setTheme] = useState('default'); // 'default' or 'gold'; Fetch from store later
 
   const balance = 100;
   const multiplier = 5;
@@ -19,10 +21,30 @@ export function TapPage() {
     backgroundRef.current.runAnimation();
   };
 
+  /* TODO: REMOVE LATER */
+  const testButtonClickHandler = () => {
+    setTheme((value) => {
+      if (value === 'default') {
+        return 'gold';
+      } else {
+        return 'default';
+      }
+    });
+  };
+
   return (
-    <div className={styles.container}>
-      <Background ref={backgroundRef} />
+    <div
+      className={classNames(
+        styles.container,
+        theme === 'gold' ? styles.gold : styles.default
+      )}>
+      <Background ref={backgroundRef} theme={theme} />
       <Header label="GhostDrive" />
+
+      {/* TODO: REMOVE LATER */}
+      <div className={styles['test-button']} onClick={testButtonClickHandler}>
+        Click here to test theme
+      </div>
 
       <div className={styles.content}>
         <div className={styles['content-inner-container']}>
@@ -34,18 +56,16 @@ export function TapPage() {
           <div
             onClick={clickHandler}
             className={styles['main-button-container']}>
-            <MainButton ref={mainButtonRef} />
+            <MainButton ref={mainButtonRef} theme={theme} />
           </div>
 
           <div className={styles['experience-container']}>
             <div className={styles['progress-container']}>
               <div className={styles['progress-bar']}>
-                <ProgressBar percent={100} />
+                <ProgressBar percent={100} theme={theme} />
               </div>
               <span className={styles.points}>{points}</span>
-              <div className={styles.logo}>
-                <TokenIcon />
-              </div>
+              <div className={styles.logo}></div>
             </div>
 
             <div className={styles['multiplier']}>x{multiplier}</div>

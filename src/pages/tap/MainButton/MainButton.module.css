@@ -28,7 +28,7 @@
   }
 }
 
-@media (max-width: 450px) {
+@media (max-width: 350px) {
   .icon-container {
     width: 150px;
     height: 150px;
@@ -38,7 +38,15 @@
 .icon {
   width: 100%;
   height: 100%;
-  background-image: url('../../../assets/tap-page/ship-blue.png');
+
   background-repeat: no-repeat;
   background-size: contain;
+}
+
+.container.default .icon {
+  background-image: url('../../../assets/tap-page/ship-blue.png');
+}
+
+.container.gold .icon {
+  background-image: url('../../../assets/tap-page/ship-gold.png');
 }

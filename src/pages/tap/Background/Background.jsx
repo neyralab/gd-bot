@@ -4,9 +4,10 @@ import React, {
   forwardRef,
   useEffect
 } from 'react';
+import classNames from 'classnames';
 import styles from './Background.module.css';
 
-const Background = forwardRef((_, ref) => {
+const Background = forwardRef(({ theme }, ref) => {
   const starsRef = useRef(null);
   const glowRef = useRef(null);
   const object1Ref = useRef(null);
@@ -78,7 +79,11 @@ const Background = forwardRef((_, ref) => {
   }));
 
   return (
-    <div className={styles.container}>
+    <div
+      className={classNames(
+        styles.container,
+        theme === 'gold' ? styles.gold : styles.default
+      )}>
       <div ref={starsRef} className={styles.stars}></div>
       <div ref={glowRef} className={styles.glow}></div>
       <div ref={object1Ref} className={styles.object1}></div>

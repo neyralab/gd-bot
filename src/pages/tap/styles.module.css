@@ -113,6 +113,9 @@
 .logo {
   width: 24px;
   height: 24px;
+
+  background-repeat: no-repeat;
+  background-size: contain;
 }
 
 .multiplier {
@@ -122,12 +125,44 @@
   text-align: center;
   flex-shrink: 0;
   border-radius: 10px;
-  border: 0.5px solid #03c2fe;
-  background: linear-gradient(90deg, #00c6fb 0%, #005bea 100%);
-  box-shadow: 0px 4px 17.2px 0px #0586fe;
   color: #fff;
   font-family: 'SF Pro Text';
   font-size: 16px;
   font-weight: 500;
   text-transform: uppercase;
+}
+
+.container.default .multiplier {
+  border: 0.5px solid #03c2fe;
+  background: linear-gradient(90deg, #00c6fb 0%, #005bea 100%);
+  box-shadow: 0px 4px 17.2px 0px #0586fe;
+}
+
+.container.gold .multiplier {
+  border: 0.5px solid #fff1a6;
+  background: linear-gradient(90deg, #f7b50d 0%, #fee140 100%);
+  box-shadow: 0px 4px 17.2px 0px #fee140;
+}
+
+.container.default .logo {
+  background-image: url('../../assets/tap-page/token-blue.png');
+}
+
+.container.gold .logo {
+  background-image: url('../../assets/tap-page/token-gold.png');
+}
+
+
+/* TODO: REMOVE LATER  */
+.test-button {
+  position: fixed;
+  top: 70px;
+  left: 10px;
+  border-radius: 4px;
+  background: grey;
+  color: white;
+  width: 80px;
+  z-index: 1000;
+  text-align: center;
+  padding: 4px;
 }

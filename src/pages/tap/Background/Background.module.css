@@ -29,7 +29,6 @@
   top: 0;
   left: 0;
 
-  background-image: url('../../../assets/tap-page/glow-blue.png');
   background-repeat: repeat;
   background-size: 100%;
   background-position: 50% 0;
@@ -76,9 +75,24 @@
   top: 0;
   left: 0;
 
-  background-image: url('../../../assets/tap-page/planet-blue.png');
   background-repeat: repeat;
   background-size: 100%;
   background-position: 50% 0;
   transform: translateX(40%);
+}
+
+.container.default .glow {
+  background-image: url('../../../assets/tap-page/glow-blue.png');
+}
+
+.container.gold .glow {
+  background-image: url('../../../assets/tap-page/glow-gold.png');
+}
+
+.container.default .planet {
+  background-image: url('../../../assets/tap-page/planet-blue.png');
+}
+
+.container.gold .planet {
+  background-image: url('../../../assets/tap-page/planet-gold.png');
 }
