@@ -29,6 +29,7 @@ import { Leaderboard } from './pages/leaderboard';
 import { TaskPage } from './pages/Task';
 import { BoostPage } from './pages/boost';
 import { TapPage } from './pages/tap';
+import { IntroPage } from './pages/intro';
 
 import './App.css';
 
@@ -113,7 +114,12 @@ function App() {
       network="main">
       <SharedLayout>
         <Routes>
-          <Route path="/" exact element={<StartPage onClose={onClose} />} />
+          <Route path="/" exact element={<IntroPage />} />
+          <Route
+            path="/start"
+            exact
+            element={<StartPage onClose={onClose} />}
+          />
           <Route path="/file-upload" exact element={<FilesSystemPage />} />
           <Route path="/ghostdrive-upload" exact element={<FilesPage />} />
           <Route path="/files" exact element={<FilesPage />} />

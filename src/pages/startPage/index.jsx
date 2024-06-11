@@ -54,14 +54,12 @@ export const StartPage = ({ onClose }) => {
   const link = useSelector((state) => state.user.link);
 
   const storage = useMemo(() => {
-    const size =
-      DEFAULT_TARIFFS_NAMES[user?.subscription?.subscription?.storage_size] ||
-      '1GB';
+    const size = DEFAULT_TARIFFS_NAMES[user?.space_total] || '1GB';
     return {
       size,
       multiplier: DEFAULT_MULTIPLIER_NAMES[size]
     };
-  }, []);
+  }, [user?.space_total]);
 
   const list = useMemo(() => {
     return [
@@ -106,7 +104,7 @@ export const StartPage = ({ onClose }) => {
         }
       }
     ];
-  }, [storage]);
+  }, [navigate, storage.multiplier]);
 
   const human = useMemo(() => {
     if (!user) return;

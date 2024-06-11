@@ -32,8 +32,7 @@ export const History = () => {
               <Cloud width={32} height={32} />
               <div className={styles.text_container}>
                 <p className={styles.value}>{el.points}</p>
-                <p className={styles.text}>
-                  {'Points for your uploading a file.'}
+                <p className={styles.text}>{el?.point?.action_text}
                 </p>
               </div>
             </li>
