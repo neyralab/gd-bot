@@ -57,7 +57,7 @@ export const StartPage = ({ onClose }) => {
     const size = DEFAULT_TARIFFS_NAMES[user?.space_total] || '1GB';
     return {
       size,
-      multiplier: DEFAULT_MULTIPLIER_NAMES[size]
+      multiplier: DEFAULT_MULTIPLIER_NAMES[size] || 1
     };
   }, [user?.space_total]);
 
