@@ -15,7 +15,7 @@
   width: 100%;
   top: 0;
   left: 0;
-  
+
   background-image: url('../../../assets/tap-page/stars.png');
   background-repeat: repeat;
   background-size: 200%;
@@ -28,7 +28,7 @@
   width: 100%;
   top: 0;
   left: 0;
-  
+
   background-image: url('../../../assets/tap-page/glow-blue.png');
   background-repeat: repeat;
   background-size: 100%;
@@ -47,12 +47,12 @@
   width: 100%;
   top: 0;
   left: 0;
-  
+
   background-image: url('../../../assets/tap-page/object1.png');
   background-repeat: repeat;
   background-size: 100%;
   background-position: 50% 0;
-  transform: rotate(-25deg);
+  transform: rotate(-25deg) translateY(4%) scale(1.08);
 }
 
 .object2 {
@@ -61,12 +61,12 @@
   width: 100%;
   top: 0;
   left: 0;
-  
+
   background-image: url('../../../assets/tap-page/object2.png');
   background-repeat: repeat;
   background-size: 100%;
   background-position: 50% 0;
-  transform: rotate(15deg);
+  transform: rotate(15deg) translateY(3%) scale(1.05);
 }
 
 .planet {
@@ -75,7 +75,7 @@
   width: 100%;
   top: 0;
   left: 0;
-  
+
   background-image: url('../../../assets/tap-page/planet-blue.png');
   background-repeat: repeat;
   background-size: 100%;
