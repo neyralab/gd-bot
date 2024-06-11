@@ -63,7 +63,8 @@
 
 .main-button-container {
   width: 400px;
-  max-width: 100%;
+  max-width: 90vw;
+  height: auto;
   flex-grow: 1;
   flex-shrink: 0;
   display: flex;
