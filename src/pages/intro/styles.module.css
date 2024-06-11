@@ -1,0 +1,168 @@
+.background {
+  background-image: url('../../assets/welcome_bg.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 100%;
+  padding: 0 16px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.max {
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.logo {
+  padding-top: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.title {
+  color: var(--Labels-Dark-Primary, #fff);
+  font-feature-settings:
+    'clig' off,
+    'liga' off;
+  font-family: 'SF Pro Text', serif;
+  font-size: 32px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 120%;
+  padding-top: 16px;
+  text-align: center;
+}
+
+.title_ghost {
+  text-transform: uppercase;
+}
+
+.number {
+  color: var(--Labels-Dark-Primary, #fff);
+  font-feature-settings:
+    'clig' off,
+    'liga' off;
+  font-family: 'SF Pro Text', serif;
+  font-size: 40px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 120%;
+}
+
+.info {
+  padding: 24px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.info_block {
+  display: flex;
+  align-items: center;
+  transition: opacity 1s ease-in-out;
+}
+
+.info_icon {
+  padding: 16px;
+}
+
+.info_title {
+  color: var(--Labels-Dark-Primary, #fff);
+  font-feature-settings:
+    'clig' off,
+    'liga' off;
+  font-family: 'SF Pro Text', serif;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 120%; /* 21.6px */
+  text-transform: capitalize;
+}
+
+.info_text {
+  color: rgba(255, 255, 255, 0.5);
+  font-feature-settings:
+    'clig' off,
+    'liga' off;
+  font-family: 'SF Pro Text', serif;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 150%; /* 21px */
+}
+
+.join {
+  font-feature-settings:
+    'clig' off,
+    'liga' off;
+  font-family: 'SF Pro Text', serif;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 20px; /* 125% */
+  background: linear-gradient(90deg, #fbc2eb 0%, #a6c1ee 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-align: center;
+  justify-self: flex-end;
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
+}
+
+.start_button {
+  color: #000;
+  font-feature-settings:
+    'clig' off,
+    'liga' off;
+  font-family: 'SF Pro Text', serif;
+  /*font-size: 18px;*/
+  font-size: 0;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+
+  padding: 16px;
+  border-radius: 8px;
+  background: #fff;
+  margin-top: 16px;
+  margin-left: auto;
+  margin-right: auto;
+
+  display: inline-block; /* Use inline-block to handle width properly */
+  visibility: hidden; /* Initially hidden */
+  width: 0; /* Start with width 0 */
+  overflow: hidden; /* Hide the text when width is 0 */
+  white-space: nowrap; /* Prevent text from wrapping */
+  transform-origin: center center; /* Start expanding from the center */
+  transition:
+    width 0.5s ease-in-out,
+    background-color 0.5s ease-in-out,
+    visibility 0s 0s,
+    opacity 0.75s ease-in-out,
+    font-size 0.75s ease-in-out;
+}
+
+.slide_up {
+  transform: translateY(50%); /* Start position (below the container) */
+  animation: slide-up 2s ease-out forwards;
+}
+
+.bottom {
+  margin-top: auto;
+  padding-bottom: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+@keyframes slide-up {
+  0% {
+    transform: translateY(50%); /* Start below the container */
+  }
+  100% {
+    transform: translateY(0); /* End in the container */
+  }
+}

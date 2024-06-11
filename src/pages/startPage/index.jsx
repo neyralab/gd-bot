@@ -54,9 +54,7 @@ export const StartPage = ({ onClose }) => {
   const link = useSelector((state) => state.user.link);
 
   const storage = useMemo(() => {
-    const size =
-      DEFAULT_TARIFFS_NAMES[user?.space_total] ||
-      '1GB';
+    const size = DEFAULT_TARIFFS_NAMES[user?.space_total] || '1GB';
     return {
       size,
       multiplier: DEFAULT_MULTIPLIER_NAMES[size]
@@ -106,7 +104,7 @@ export const StartPage = ({ onClose }) => {
         }
       }
     ];
-  }, [storage]);
+  }, [navigate, storage.multiplier]);
 
   const human = useMemo(() => {
     if (!user) return;
