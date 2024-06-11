@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { referralEffect } from '../../effects/referralEffect';
 
@@ -63,7 +63,7 @@ export const Referral = () => {
 
   return (
     <div className={styles.container}>
-      <Header label="Referral System" />
+      <Header label="Task Center" />
       <div className={styles.tabs}>
         {Object.keys(tabList).map((el, index) => (
           <Tab

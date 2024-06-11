@@ -7,6 +7,7 @@ import fetch from 'node-fetch'; // Import node-fetch to make fetch work in Node.
 dotenv.config();
 const app = express();
 const bot = new Telegraf(process.env.BOT_TOKEN_SECRET);
+const cache = {};
 
 bot.start(async (ctx) => {
   const header = "<b>Let's get started!</b>";
@@ -21,64 +22,73 @@ bot.start(async (ctx) => {
     referral: refCode
   };
 
-  try {
-    const response = await fetch(
-      `${process.env.GD_BACKEND_URL}/apiv2/user/create/telegram`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'client-id': process.env.GD_CLIENT_ID,
-          'client-secret': process.env.GD_CLIENT_SECRET
-        },
-        body: JSON.stringify(userData)
-      }
-    );
+  // Cache userData by user.id
+  const cacheKey = userData.id;
+ 
+  let cachedUserData = cache[cacheKey];
 
-    if (!response.ok) {
-      throw new Error('Failed to create user');
+  if (!cachedUserData) {
+    try {
+      const response = await fetch(
+          `${process.env.GD_BACKEND_URL}/apiv2/user/create/telegram`,
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'client-id': process.env.GD_CLIENT_ID,
+              'client-secret': process.env.GD_CLIENT_SECRET
+            },
+            body: JSON.stringify(userData)
+          }
+      );
+
+      if (!response.ok) {
+        throw new Error('Failed to create user');
+      }
+
+      cachedUserData = await response.json();
+      cache[cacheKey] = cachedUserData;
+    } catch (error) {
+      ctx.reply(`Error: ${error.message}`);
+      return;
     }
-
-    const data = await response.json();
-    const referralLink = `https://t.me/${process.env.BOT_NAME}?start=${data?.coupon?.code}`;
-
-    const welcomeText = 'Hello, welcome to GhostDrive!';
-    const activitiesText =
-      'Here you can use many activities to mine GD Points that would help you in Airdrop.';
-    const referralText =
-      'To earn even more, invite your friends: get a reward for yourself and for your friend!';
-    const noCommunityText =
-      "We don't have our Telegram community yet, stay tuned!";
-    const buttonText = 'Open GhostDrive';
-    const buttonUrl = process.env.APP_FRONTEND_URL;
-    const button = Markup.button.webApp(buttonText, buttonUrl);
-    const shareButtonText = 'Share Referral Link';
-    const shareButton = Markup.button.switchToChat(
-      shareButtonText,
-      referralLink
-    );
-
-    ctx.replyWithPhoto(
-      { source: fs.createReadStream('./assets/start.png') },
-      {
-        caption: `${header}\n\n${welcomeText}\n\n${activitiesText}\n\n${referralText}\n\n${noCommunityText}\n\nSend this referral link to your friends ⤵️\n${referralLink}`,
-        parse_mode: 'HTML',
-        reply_markup: {
-          inline_keyboard: [[button], [shareButton]]
-        }
-      }
-    );
-  } catch (error) {
-    ctx.reply(`Error: ${error.message}`);
   }
+
+  const data = cachedUserData;
+  const referralLink = `https://t.me/${process.env.BOT_NAME}?start=${data?.coupon?.code}`;
+  const welcomeText = 'Join the Ghostdrive Community!';
+  const activitiesText = 'Ghostdrive is the #1 Telegram Drive – easy to use, upload files, and get rewarded!\n\n' +
+    '💰 $6 Million Airdrop: Earn points and upgrade your account to boost your rewards.\n' +
+    '🎮 Tap Game: Have fun and earn more points with our exciting tap game.\n' +
+    '🔗 Filecoin Integration: Enjoy seamless integration with the Filecoin network.\n' +
+    '👥 Invite Friends: Earn points for every friend you invite.\n\n' +
+    'Get started with Ghostdrive today and be part of the future of decentralized storage on Ton chain!';
+  const buttonText = 'Open GhostDrive';
+  const buttonUrl = process.env.APP_FRONTEND_URL;
+  const button = Markup.button.webApp(buttonText, buttonUrl);
+  const shareButtonText = 'Share Referral Link';
+  const shareButton = Markup.button.switchToChat(
+    shareButtonText,
+    referralLink
+  );
+
+  ctx.replyWithPhoto(
+    { source: fs.createReadStream('./assets/start.png') },
+    {
+      caption: `${header}\n\n${welcomeText}\n\n${activitiesText}\n\nSend this referral link to your friends ⤵️\n${referralLink}`,
+      parse_mode: 'HTML',
+      reply_markup: {
+        inline_keyboard: [[button], [shareButton]]
+      }
+    }
+  );
 });
 
 let cachedPointsData = null;
 let lastFetchTime = null;
 
 async function fetchPointsData() {
-  if (!cachedPointsData || Date.now() - lastFetchTime > 600000) {
-    // 10 minutes in milliseconds
+  if (!cachedPointsData || Date.now() - lastFetchTime > 600000) { // 10 minutes in milliseconds
     const response = await fetch(`${process.env.GD_BACKEND_URL}/api/gd/points`);
     if (!response.ok) {
       throw new Error('Failed to fetch points data');
@@ -98,7 +108,7 @@ bot.command('terms', async (ctx) => {
       })
       .join('\n\n');
 
-    const termsMessage = `## Community-Focused Airdrop: GD Token on TON Blockchain
+    const termsMessage = `<b>Community-Focused Airdrop: GD Token on TON Blockchain</b>
 
 Welcome to GhostDrive Community Airdrop for the GD Token on the Ton Blockchain! Our goal is to reward active users with GD points for their actions and tasks, fostering a vibrant and engaged community.
 
@@ -137,7 +147,7 @@ Ends by Aug 16`;
     const extra = Markup.inlineKeyboard([openAppButton]);
 
     ctx.reply(termsMessage, extra);
-  } catch (e) {
+  } catch (error) {
     ctx.reply(`Error: ${error.message}`);
   }
 });

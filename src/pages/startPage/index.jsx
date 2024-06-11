@@ -36,7 +36,7 @@ import { ReactComponent as UploadFileIcon } from '../../assets/uploadFile.svg';
 // import { ReactComponent as DriveIcon } from '../../assets/drive.svg';
 import { ReactComponent as BoostIcon } from '../../assets/boost.svg';
 import { ReactComponent as TaskIcon } from '../../assets/task.svg';
-import { ReactComponent as HelpIcon } from '../../assets/help.svg';
+import { ReactComponent as ReferralIcon } from '../../assets/referral.svg';
 import { ReactComponent as LeadboardIcon } from '../../assets/leadboard.svg';
 import { ReactComponent as LargeTelegramIcon } from '../../assets/large_telegram.svg';
 import { ReactComponent as InviteBackgroundIcon } from '../../assets/invite_background.svg';
@@ -54,14 +54,12 @@ export const StartPage = ({ onClose }) => {
   const link = useSelector((state) => state.user.link);
 
   const storage = useMemo(() => {
-    const size =
-      DEFAULT_TARIFFS_NAMES[user?.subscription?.subscription?.storage_size] ||
-      '1GB';
+    const size = DEFAULT_TARIFFS_NAMES[user?.space_total] || '1GB';
     return {
       size,
-      multiplier: DEFAULT_MULTIPLIER_NAMES[size]
+      multiplier: DEFAULT_MULTIPLIER_NAMES[size] || 1
     };
-  }, []);
+  }, [user?.space_total]);
 
   const list = useMemo(() => {
     return [
@@ -98,7 +96,7 @@ export const StartPage = ({ onClose }) => {
         }
       }
     ];
-  }, [storage]);
+  }, [navigate, storage.multiplier]);
 
   const human = useMemo(() => {
     if (!user) return;
@@ -167,7 +165,11 @@ export const StartPage = ({ onClose }) => {
         />
         <section onClick={onBalance}>
           <div className={style.wallet_balance}>
-            <p className={style.wallet}>
+            <p
+              className={CN(
+                style.wallet,
+                user?.points > 999999 && style.small
+              )}>
               <CountUp delay={1} end={user?.points} />
             </p>
           </div>
@@ -228,7 +230,7 @@ export const StartPage = ({ onClose }) => {
 
       <footer className={style.footer}>
         <div onClick={onRef} className={style.footer_item}>
-          <HelpIcon />
+          <ReferralIcon />
           <span className={style.footer_item_text}>Referral</span>
         </div>
         <div
