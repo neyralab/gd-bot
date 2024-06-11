@@ -55,13 +55,13 @@ export const StartPage = ({ onClose }) => {
 
   const storage = useMemo(() => {
     const size =
-      DEFAULT_TARIFFS_NAMES[user?.subscription?.subscription?.storage_size] ||
+      DEFAULT_TARIFFS_NAMES[user?.space_total] ||
       '1GB';
     return {
       size,
       multiplier: DEFAULT_MULTIPLIER_NAMES[size]
     };
-  }, []);
+  }, [user?.space_total]);
 
   const list = useMemo(() => {
     return [

@@ -1,5 +1,5 @@
 import CN from 'classnames';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   useTonConnectModal,
@@ -41,13 +41,17 @@ const infoData = [
 
 export const BoostPage = ({ tariffs }) => {
   const [activeMultiplier, setActiveMultiplier] = useState();
-  const currentPlan = useSelector(selectWorkspacePlan) || {};
   const ws = useSelector(selectCurrentWorkspace);
   const user = useSelector((state) => state.user.data);
+  const currentSize = user?.space_total;
   const wallet = useTonWallet();
   const [tonConnectUI] = useTonConnectUI();
   const { open } = useTonConnectModal();
   const dispatch = useDispatch();
+
+  const currentPrice = useMemo(() => {
+    return tariffs?.find((tariff) => tariff.storage === currentSize);
+  }, [currentSize, tariffs]);
 
   const payByTON = async (el) => {
     try {
@@ -106,16 +110,18 @@ export const BoostPage = ({ tariffs }) => {
         <p className={styles.header}>Current multiplier</p>
         <div className={styles.current_item}>
           <div className={styles.flex}>
-            <X1 className={styles.multiplier} />
+            {multipliers[currentPrice?.ton_price] || (
+              <X1 className={styles.multiplier} />
+            )}
             <p className={styles.current_storage}>
               <span className={styles.span}>
-                {DEFAULT_TARIFFS_NAMES[currentPlan?.storage] || '1GB'}
+                {DEFAULT_TARIFFS_NAMES[currentSize] || '1GB'}
               </span>
               {' Storage'}
             </p>
           </div>
           <div className={styles.cost}>
-            <p className={styles.cost_value}>{currentPlan?.ton_price || '0'}</p>
+            <p className={styles.cost_value}>{currentPrice?.ton_price || '0'}</p>
             <Diamond className={styles.current_diamond} />
           </div>
         </div>
