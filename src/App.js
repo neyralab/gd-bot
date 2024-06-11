@@ -28,7 +28,6 @@ import { Referral } from './pages/referral';
 import { Leaderboard } from './pages/leaderboard';
 import { TaskPage } from './pages/Task';
 import { BoostPage } from './pages/boost';
-import { TapPage } from './pages/tap';
 import { IntroPage } from './pages/intro';
 
 import './App.css';
