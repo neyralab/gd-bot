@@ -1,22 +1,25 @@
 import React from 'react';
 
-export default function ProgressBar() {
+export default function ProgressBar({ percent }) {
+  const width = percent / 100 * 180;
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 202 34"
-      fill="none">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 202 34" fill="none">
+      {/* Base */}
       <rect x="10" y="11.8789" width="181" height="12" rx="2" fill="#252529" />
+
+      {/* Active line */}
       <g filter="url(#filter0_d_5045_42284)">
         <rect
           x="11"
           y="11.1211"
-          width="180"
+          width={width}
           height="12"
           rx="2"
           fill="url(#paint0_linear_5045_42284)"
+          style={{transition: 'width 0.2s'}}
         />
       </g>
+
       <defs>
         <filter
           id="filter0_d_5045_42284"
