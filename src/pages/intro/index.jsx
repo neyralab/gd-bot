@@ -1,3 +1,4 @@
+import Wave from 'react-wavify';
 import { useNavigate } from 'react-router-dom';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
@@ -32,9 +33,12 @@ const info = [
 export const IntroPage = () => {
   const logoRef = useRef(null);
   const infoRef = useRef(null);
+  const waveRef = useRef(null);
   const [list, setList] = useState(info);
   const [isInfoShown, setIsInfoShown] = useState(false);
   const [isJoinShown, setIsJoinShown] = useState(false);
+  const [paused, setPaused] = useState(false);
+  const [realPaused, setRealPaused] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -51,8 +55,14 @@ export const IntroPage = () => {
       }
     };
   }, []);
+  console.log({ waveRef: waveRef.current });
 
   const onLogoShown = useCallback(() => {
+    setPaused(true);
+    setTimeout(() => {
+      setRealPaused(true);
+    }, 1500);
+
     list.forEach(
       (item, index) =>
         setTimeout(() => {
@@ -79,6 +89,29 @@ export const IntroPage = () => {
         <div onAnimationEnd={onLogoShown} ref={logoRef} className={s.slide_up}>
           <div className={s.logo}>
             <LogoIcon />
+            <Wave
+              fill="#007DE9"
+              paused={realPaused}
+              className={s.wave}
+              options={{
+                height: 1,
+                amplitude: paused ? 5 : 50,
+                speed: paused ? 1 : 0.25,
+                points: 2
+              }}
+            />
+            <Wave
+              fill="#1A5EA2"
+              paused={realPaused}
+              className={s.wave}
+              style={{ zIndex: -3 }}
+              options={{
+                height: 15,
+                amplitude: 15,
+                speed: 0.25,
+                points: 1
+              }}
+            />
           </div>
           <h2 className={s.title}>
             <span className={s.title_ghost}>Ghostdrive</span>

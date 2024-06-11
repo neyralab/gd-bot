@@ -21,6 +21,16 @@
   justify-content: center;
 }
 
+.wave {
+  position: absolute;
+  z-index: -2;
+  display: flex;
+  width: 100px !important;
+  height: 100px;
+  border-radius: 50px;
+  overflow: hidden;
+}
+
 .title {
   color: var(--Labels-Dark-Primary, #fff);
   font-feature-settings:
@@ -164,5 +174,14 @@
   }
   100% {
     transform: translateY(0); /* End in the container */
+  }
+}
+
+@keyframes waveAnimation {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
   }
 }
