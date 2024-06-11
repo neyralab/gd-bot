@@ -7,26 +7,45 @@ import React, {
 import styles from './Background.module.css';
 
 const Background = forwardRef((_, ref) => {
-  const containerRef = useRef(null);
+  const starsRef = useRef(null);
+  const glowRef = useRef(null);
+  const object1Ref = useRef(null);
+  const object2Ref = useRef(null);
+  const planetRef = useRef(null);
+
   const requestAnimationRef = useRef();
-  const speedRef = useRef(0.02); // I'm using ref instead of useState ON PURPOSE! It won't work with useState because of js closures in animate function
-  const maxSpeed = 3;
+  const speedRef = useRef(0.01); // I'm using ref instead of useState ON PURPOSE! It won't work with useState because of js closures in animate function
+  const distanceRef = useRef(0); // I'm using ref instead of useState ON PURPOSE! It won't work with useState because of js closures in animate function
+  const lastClickTimeRef = useRef(Date.now()); // I'm using ref instead of useState ON PURPOSE! It won't work with useState because of js closures in animate function
+
+  const maxSpeed = 1;
   const decreaseInterval = 2000; //  decrease coef to 0
   const noClickTimeout = 1000;
-  let lastClickTime = Date.now();
-  let yPos = 0;
 
   const animate = () => {
-    yPos += speedRef.current; // Increment yPos by the current speed
-    if (containerRef.current) {
-      containerRef.current.style.backgroundPosition = `50% ${-yPos}%`;
-    }
+    if (
+      !starsRef.current ||
+      !glowRef.current ||
+      !object1Ref.current ||
+      !object2Ref.current ||
+      !planetRef.current
+    )
+      return;
+
+    distanceRef.current += speedRef.current; // Increment distance by the current speed
+
+    starsRef.current.style.backgroundPosition = `50% ${-distanceRef.current}%`;
+    glowRef.current.style.backgroundPosition = `50% ${-distanceRef.current * 0.1}%`;
+    object1Ref.current.style.backgroundPosition = `50% ${-distanceRef.current * 0.3}%`;
+    object2Ref.current.style.backgroundPosition = `50% ${-distanceRef.current * 0.5}%`;
+    planetRef.current.style.backgroundPosition = `50% ${-distanceRef.current * 0.15}%`;
+
     requestAnimationRef.current = requestAnimationFrame(animate);
   };
 
   const runAnimation = () => {
-    lastClickTime = Date.now();
-    const newSpeed = Math.min(speedRef.current + 0.2, maxSpeed);
+    lastClickTimeRef.current = Date.now();
+    const newSpeed = Math.min(speedRef.current + 0.05, maxSpeed);
     speedRef.current = newSpeed;
     if (!requestAnimationRef.current) {
       requestAnimationRef.current = requestAnimationFrame(animate);
@@ -35,11 +54,9 @@ const Background = forwardRef((_, ref) => {
 
   useEffect(() => {
     const intervalId = setInterval(() => {
-      if (Date.now() - lastClickTime > noClickTimeout) {
-        const newSpeed = Math.max(
-          speedRef.current - (speedRef.current / decreaseInterval) * 50,
-          0
-        );
+      if (Date.now() - lastClickTimeRef.current > noClickTimeout) {
+        const newSpeed =
+          speedRef.current - (speedRef.current / decreaseInterval) * 50;
         speedRef.current = newSpeed;
 
         if (newSpeed <= 0.01) {
@@ -60,7 +77,15 @@ const Background = forwardRef((_, ref) => {
     runAnimation: runAnimation
   }));
 
-  return <div ref={containerRef} className={styles.container}></div>;
+  return (
+    <div className={styles.container}>
+      <div ref={starsRef} className={styles.stars}></div>
+      <div ref={glowRef} className={styles.glow}></div>
+      <div ref={object1Ref} className={styles.object1}></div>
+      <div ref={object2Ref} className={styles.object2}></div>
+      <div ref={planetRef} className={styles.planet}></div>
+    </div>
+  );
 });
 
 export default Background;
