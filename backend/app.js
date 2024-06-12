@@ -30,10 +30,15 @@ bot.start(async (ctx) => {
 
   if (!cachedUserData) {
     try {
-      const requestBody = JSON.stringify(userData);
-      console.log(requestBody);
+      const url = `${process.env.GD_BACKEND_URL}/apiv2/user/create/telegram`;
+
+      console.log({
+        url,
+        userData
+      });
+
       const response = await fetch(
-          `${process.env.GD_BACKEND_URL}/apiv2/user/create/telegram`,
+          url,
           {
             method: 'POST',
             headers: {
@@ -41,16 +46,18 @@ bot.start(async (ctx) => {
               'client-id': process.env.GD_CLIENT_ID,
               'client-secret': process.env.GD_CLIENT_SECRET
             },
-            body: requestBody
+            body: JSON.stringify(userData)
           }
       );
 
+
       if (!response.ok) {
+        console.error('Failed to create user');
         throw new Error('Failed to create user');
       }
 
       cachedUserData = await response.json();
-      cache[cacheKey] = cachedUserData;
+      //cache[cacheKey] = cachedUserData;
     } catch (error) {
       ctx.reply(`Error: ${error.message}`);
       return;
