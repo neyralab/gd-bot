@@ -7,5 +7,6 @@ RUN apk update \
  && apk add git openssh-client
 
 RUN npm install
-
-CMD ["npm", "start"]
+RUN yarn build
+RUN yarn global add serve
+CMD serve -s build
