@@ -22,6 +22,7 @@ const MainButton = forwardRef(({ theme }, ref) => {
   const runAnimation = () => {
     let startTime = null;
     let animationFrameId = null;
+
     cancelAnimationFrame(animationFrameId);
 
     const frames = [
@@ -114,7 +115,7 @@ const MainButton = forwardRef(({ theme }, ref) => {
         viewBox="0 0 390 441"
         fill="none">
         {/* Frame 2 */}
-        <g ref={frame2Ref} style={{ opacity: maxOpacities[1] }}>
+        <g ref={frame2Ref} style={{ opacity: minOpacities[1] }}>
           <g
             filter={
               theme === 'gold'
@@ -151,7 +152,7 @@ const MainButton = forwardRef(({ theme }, ref) => {
         </g>
 
         {/* Frame 1 */}
-        <g ref={frame1Ref} style={{ opacity: maxOpacities[0] }}>
+        <g ref={frame1Ref} style={{ opacity: minOpacities[0] }}>
           <path
             d="M192.5 105.66C194.356 104.588 196.644 104.588 198.5 105.66L292.588 159.982C294.445 161.054 295.588 163.035 295.588 165.178V273.822C295.588 275.965 294.445 277.946 292.588 279.018L198.5 333.34C196.644 334.412 194.356 334.412 192.5 333.34L98.4119 279.018C96.5555 277.946 95.4119 275.965 95.4119 273.822V165.178C95.4119 163.035 96.5555 161.054 98.4119 159.982L192.5 105.66Z"
             stroke="#02081C"
@@ -175,7 +176,7 @@ const MainButton = forwardRef(({ theme }, ref) => {
         {/* Frame 3 */}
         <g
           ref={frame3Ref}
-          style={{ opacity: maxOpacities[2] }}
+          style={{ opacity: minOpacities[2] }}
           filter={
             theme === 'gold'
               ? 'url(#filter4_d_5348_37972)'
@@ -192,7 +193,7 @@ const MainButton = forwardRef(({ theme }, ref) => {
         {/* Frame 4 */}
         <g
           ref={frame4Ref}
-          style={{ opacity: maxOpacities[3] }}
+          style={{ opacity: minOpacities[3] }}
           filter={
             theme === 'gold'
               ? 'url(#filter5_d_5348_37972)'
@@ -209,7 +210,7 @@ const MainButton = forwardRef(({ theme }, ref) => {
         {/* Frame 5 */}
         <g
           ref={frame5Ref}
-          style={{ opacity: maxOpacities[4] }}
+          style={{ opacity: minOpacities[4] }}
           filter={
             theme === 'gold'
               ? 'url(#filter6_d_5348_37972)'

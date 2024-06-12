@@ -39,12 +39,7 @@ export function TapPage() {
         theme === 'gold' ? styles.gold : styles.default
       )}>
       <Background ref={backgroundRef} theme={theme} />
-      <Header label="GhostDrive" />
-
-      {/* TODO: REMOVE LATER */}
-      <div className={styles['test-button']} onClick={testButtonClickHandler}>
-        Click here to test theme
-      </div>
+      <Header />
 
       <div className={styles.content}>
         <div className={styles['content-inner-container']}>
