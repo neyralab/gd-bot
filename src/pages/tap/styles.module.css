@@ -1,0 +1,168 @@
+.container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+  position: relative;
+}
+
+.content {
+  position: relative;
+  width: 100%;
+  flex-grow: 1;
+  flex-shrink: 0;
+  height: 100dvh;
+
+  margin: auto;
+  overflow: hidden;
+}
+
+.content-inner-container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16px;
+  padding-top: 72px;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.balance-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.balance-container strong {
+  color: #fff;
+  font-family: 'SF Pro Text';
+  font-size: 16px;
+  font-weight: 400;
+  letter-spacing: 0.16px;
+  opacity: 0.7;
+}
+
+.balance {
+  padding: 0 16px;
+  border-radius: 7px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(3.65px);
+  color: #fff;
+  text-align: center;
+  font-family: 'SF Pro Text';
+  font-size: 64px;
+  font-weight: 600;
+  font-feature-settings:
+    'clig' off,
+    'liga' off;
+}
+
+.main-button-container {
+  width: 400px;
+  max-width: 90vw;
+  height: auto;
+  flex-grow: 1;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.experience-container {
+  padding-top: 32px;
+  flex-shrink: 0;
+  width: 100%;
+  display: flex;
+  gap: 16px;
+  max-width: 400px;
+}
+
+.progress-container {
+  display: flex;
+  gap: 8px;
+  flex-grow: 1;
+  height: 55px;
+  padding: 0px 12px;
+
+  justify-content: space-between;
+  align-items: center;
+  flex-shrink: 0;
+  border-radius: 10px;
+  border: 1px solid #303030;
+  background: #151517;
+}
+
+.progress-bar {
+  flex-grow: 1;
+  justify-content: space-between;
+  align-items: center;
+  display: flex;
+}
+
+.points {
+  color: #fff;
+  font-family: 'SF Pro Text';
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.logo {
+  width: 24px;
+  height: 24px;
+
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+.multiplier {
+  padding: 16px;
+  height: 55px;
+  min-width: 55px;
+  text-align: center;
+  flex-shrink: 0;
+  border-radius: 10px;
+  color: #fff;
+  font-family: 'SF Pro Text';
+  font-size: 16px;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+.container.default .multiplier {
+  border: 0.5px solid #03c2fe;
+  background: linear-gradient(90deg, #00c6fb 0%, #005bea 100%);
+  box-shadow: 0px 4px 17.2px 0px #0586fe;
+}
+
+.container.gold .multiplier {
+  border: 0.5px solid #fff1a6;
+  background: linear-gradient(90deg, #f7b50d 0%, #fee140 100%);
+  box-shadow: 0px 4px 17.2px 0px #fee140;
+}
+
+.container.default .logo {
+  background-image: url('../../assets/tap-page/token-blue.png');
+}
+
+.container.gold .logo {
+  background-image: url('../../assets/tap-page/token-gold.png');
+}
+
+
+/* TODO: REMOVE LATER  */
+.test-button {
+  position: fixed;
+  top: 70px;
+  left: 10px;
+  border-radius: 4px;
+  background: grey;
+  color: white;
+  width: 80px;
+  z-index: 1000;
+  text-align: center;
+  padding: 4px;
+}

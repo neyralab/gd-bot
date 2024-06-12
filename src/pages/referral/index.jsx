@@ -1,12 +1,15 @@
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { TelegramShareButton } from 'react-share';
+import { useBalance } from '../../hooks/useBalance';
 import { referralEffect } from '../../effects/referralEffect';
 
-import styles from './styles.module.css';
 import { Header } from '../../components/header';
 import { Tab } from '../../components/tab';
 import { Button } from '../../components/button';
 import { History } from '../../components/history';
+
+import styles from './styles.module.css';
 
 const tabs = [
   {
@@ -32,7 +35,18 @@ export const Referral = () => {
     refFiles: 0,
     earn: 0
   });
+  const [isLinkCopied, setIsLinkCopied] = useState(false);
   const link = useSelector((state) => state.user.link);
+  const balance = useBalance();
+  console.log({ balance });
+
+  useEffect(() => {
+    setTabs((prevState) => ({
+      ...prevState,
+      refFiles: balance?.fileCnt,
+      earn: balance?.points
+    }));
+  }, [balance]);
 
   useEffect(() => {
     (async () => {
@@ -40,7 +54,8 @@ export const Referral = () => {
         const { data } = await referralEffect();
         setTabs((prevState) => ({
           ...prevState,
-          users: data?.data?.current_usage
+          users: data?.data?.current_usage,
+          earn: data.data?.points
         }));
         console.log({ referralEffect: data });
       } catch (error) {
@@ -49,16 +64,23 @@ export const Referral = () => {
     })();
   }, []);
 
+  useEffect(() => {
+    let id;
+    if (isLinkCopied) {
+      id = setTimeout(() => {
+        setIsLinkCopied(false);
+      }, 2000);
+    }
+    return () => clearTimeout(id);
+  }, [isLinkCopied]);
+
   const copyMe = async () => {
     try {
       await navigator.clipboard.writeText(link.copy);
+      setIsLinkCopied(true);
     } catch (e) {
       console.log({ e });
     }
-  };
-
-  const sendLink = () => {
-    window.open(link.send);
   };
 
   return (
@@ -77,18 +99,20 @@ export const Referral = () => {
           />
         ))}
       </div>
-      <History />
+      <History history={balance.history} />
       <footer>
         <Button
-          label="Copy link"
+          label={isLinkCopied ? 'Copied!' : 'Copy link'}
           onClick={copyMe}
           className={styles.white_btn}
+          disable={isLinkCopied}
         />
-        <Button
-          label="Send link"
-          onClick={sendLink}
-          className={styles.black_btn}
-        />
+        <TelegramShareButton
+          url={link.copy}
+          title={'Share this link with friends'}
+          className={styles.black_btn}>
+          Send Link
+        </TelegramShareButton>
       </footer>
     </div>
   );

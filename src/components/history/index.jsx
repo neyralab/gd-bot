@@ -1,25 +1,9 @@
-import { useEffect, useState } from 'react';
 import { NoHistory } from './empty';
-import { getBalanceEffect } from '../../effects/balanceEffect';
 
 import { ReactComponent as Cloud } from '../../assets/clock.svg';
 import styles from './styles.module.css';
 
-export const History = () => {
-  const [history, setHistory] = useState();
-
-  useEffect(() => {
-    (async () => {
-      try {
-        const { data } = await getBalanceEffect();
-        setHistory(data.data);
-        console.log({ getBalanceEffect: data });
-      } catch (e) {
-        console.log({ getBalanceEffectErr: e });
-      }
-    })();
-  }, []);
-
+export const History = ({ history }) => {
   return (
     <div className={styles.container}>
       <p className={styles.history}>History</p>
@@ -32,8 +16,7 @@ export const History = () => {
               <Cloud width={32} height={32} />
               <div className={styles.text_container}>
                 <p className={styles.value}>{el.points}</p>
-                <p className={styles.text}>{el?.point?.action_text}
-                </p>
+                <p className={styles.text}>{el?.point?.action_text}</p>
               </div>
             </li>
           ))
