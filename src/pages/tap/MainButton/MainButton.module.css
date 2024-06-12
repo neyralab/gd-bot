@@ -50,3 +50,141 @@
 .container.gold .icon {
   background-image: url('../../../assets/tap-page/ship-gold.png');
 }
+
+.btn-animation-1 {
+  animation: BtnAnimation1 0.3s ease-in-out;
+}
+
+@keyframes BtnAnimation1 {
+  0% {
+    opacity: 1 !important;
+    transform: scale(1);
+  }
+  30% {
+    opacity: 1 !important;
+    transform: scale(1.1);
+  }
+  50% {
+    opacity: 0.95 !important;
+    transform: scale(0.9);
+  }
+  100% {
+    opacity: 0.95 !important;
+    transform: scale(1);
+  }
+}
+
+.btn-animation-2 {
+  animation: BtnAnimation2 0.3s ease-in-out 0.05s;
+}
+
+@keyframes BtnAnimation2 {
+  0% {
+    opacity: 1 !important;
+    transform: scale(1);
+  }
+  30% {
+    opacity: 1 !important;
+    transform: scale(1.04);
+  }
+  50% {
+    opacity: 0.9 !important;
+    transform: scale(0.98);
+  }
+  100% {
+    opacity: 0.9 !important;
+    transform: scale(1);
+  }
+}
+
+.btn-animation-3 {
+  animation: BtnAnimation3 0.3s ease-in-out 0.1s;
+}
+
+@keyframes BtnAnimation3 {
+  0% {
+    opacity: 1 !important;
+    transform: scale(1);
+  }
+  30% {
+    opacity: 1 !important;
+    transform: scale(1.05);
+  }
+  50% {
+    opacity: 0.9 !important;
+    transform: scale(0.97);
+  }
+  100% {
+    opacity: 0.9 !important;
+    transform: scale(1);
+  }
+}
+
+.btn-animation-4 {
+  animation: BtnAnimation4 0.3s ease-in-out 0.15s;
+}
+
+@keyframes BtnAnimation4 {
+  0% {
+    opacity: 0.6 !important;
+    transform: scale(1);
+  }
+  30% {
+    opacity: 1 !important;
+    transform: scale(1.03);
+  }
+  50% {
+    opacity: 1 !important;
+    transform: scale(0.97);
+  }
+  100% {
+    opacity: 0.6 !important;
+    transform: scale(1);
+  }
+}
+
+.btn-animation-5 {
+  animation: BtnAnimation5 0.3s ease-in-out 0.2s;
+}
+
+@keyframes BtnAnimation5 {
+  0% {
+    opacity: 0.2 !important;
+    transform: scale(1);
+  }
+  30% {
+    opacity: 0.5 !important;
+    transform: scale(1.02);
+  }
+  50% {
+    opacity: 0.5 !important;
+    transform: scale(0.98);
+  }
+  100% {
+    opacity: 0.2 !important;
+    transform: scale(1);
+  }
+}
+
+.btn-animation-6 {
+  animation: BtnAnimation5 0.3s ease-in-out 0.25s;
+}
+
+@keyframes BtnAnimation5 {
+  0% {
+    opacity: 0.1 !important;
+    transform: scale(1);
+  }
+  30% {
+    opacity: 0.2 !important;
+    transform: scale(1.01);
+  }
+  50% {
+    opacity: 0.2 !important;
+    transform: scale(0.99);
+  }
+  100% {
+    opacity: 0.1 !important;
+    transform: scale(1);
+  }
+}
