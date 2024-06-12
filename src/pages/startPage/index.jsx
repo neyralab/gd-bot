@@ -97,8 +97,8 @@ export const StartPage = ({ onClose }) => {
       },
       {
         Icon: TaskIcon,
-        text: 'Gain Points',
-        amount: '*',
+        text: 'Play & Earn',
+        amount: '',
         onClick: () => {
           navigate('/tap');
         }
@@ -202,54 +202,56 @@ export const StartPage = ({ onClose }) => {
           </div>
         ))}
       </div>
+      <div className={style.bottom}>
+        <button className={style.invite_button}>
+          <TelegramShareButton
+            className={style.telegram_share}
+            title={'Share this link with friends'}
+            url={link.copy}>
+            <InviteBackgroundIcon className={style.invite_background} />
+            <div className={style.invite_block}>
+              <div className={style.invite_right}>
+                <LargeTelegramIcon />
+              </div>
+              <div className={style.invite_left}>
+                <h4 className={CN(style.invite_get)}>Invite & Get Points</h4>
+                <span className={style.invite_amount}>1,000</span>
+              </div>
+            </div>
+          </TelegramShareButton>
+        </button>
 
-      <button className={style.invite_button}>
-        <TelegramShareButton
-          className={style.telegram_share}
-          title={'Share this link with friends'}
-          url={link.copy}>
-          <InviteBackgroundIcon className={style.invite_background} />
-          <div className={style.invite_block}>
-            <div className={style.invite_left}>
-              <h4 className={CN(style.invite_get)}>Invite & Get Points</h4>
-              <span className={style.invite_amount}>1,000</span>
-            </div>
-            <div className={style.invite_right}>
-              <LargeTelegramIcon />
-            </div>
+        <div className={style.storage_block}>
+          <div className={style.storage_text_container}>
+            <p className={style.storage_text}>Storage</p>
+            <p className={style.storage_text}>
+              {human.used} of {human.total}
+            </p>
           </div>
-        </TelegramShareButton>
-      </button>
+          <div className={style.storage_usage_container}>
+            <div
+              className={style.storage_usage}
+              style={{ width: human.percent.label }}
+            />
+          </div>
+        </div>
 
-      <div className={style.storage_block}>
-        <div className={style.storage_text_container}>
-          <p className={style.storage_text}>Storage</p>
-          <p className={style.storage_text}>
-            {human.used} of {human.total}
-          </p>
-        </div>
-        <div className={style.storage_usage_container}>
+        <footer className={style.footer}>
+          <div onClick={onRef} className={style.footer_item}>
+            <ReferralIcon />
+            <span className={style.footer_item_text}>Task Center</span>
+          </div>
           <div
-            className={style.storage_usage}
-            style={{ width: human.percent.label }}
-          />
-        </div>
+            className={style.footer_item}
+            onClick={() => {
+              navigate('/leadboard');
+            }}>
+            <LeadboardIcon />
+            <span className={style.footer_item_text}>Leadboard</span>
+          </div>
+        </footer>
       </div>
 
-      <footer className={style.footer}>
-        <div onClick={onRef} className={style.footer_item}>
-          <ReferralIcon />
-          <span className={style.footer_item_text}>Task Center</span>
-        </div>
-        <div
-          className={style.footer_item}
-          onClick={() => {
-            navigate('/leadboard');
-          }}>
-          <LeadboardIcon />
-          <span className={style.footer_item_text}>Leadboard</span>
-        </div>
-      </footer>
       {disconnectWalletModal && (
         <DisconnectWalletModal
           isOpen={disconnectWalletModal}
