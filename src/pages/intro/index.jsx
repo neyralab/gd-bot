@@ -33,7 +33,6 @@ const info = [
 export const IntroPage = () => {
   const logoRef = useRef(null);
   const infoRef = useRef(null);
-  const waveRef = useRef(null);
   const [list, setList] = useState(info);
   const [isInfoShown, setIsInfoShown] = useState(false);
   const [isJoinShown, setIsJoinShown] = useState(false);
@@ -55,7 +54,6 @@ export const IntroPage = () => {
       }
     };
   }, []);
-  console.log({ waveRef: waveRef.current });
 
   const onLogoShown = useCallback(() => {
     setPaused(true);
