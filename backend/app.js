@@ -26,6 +26,7 @@ bot.start(async (ctx) => {
   const cacheKey = userData.id;
  
   let cachedUserData = cache[cacheKey];
+  cachedUserData = null;
 
   if (!cachedUserData) {
     try {
