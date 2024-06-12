@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 
 import {
   clearFiles,
@@ -28,6 +29,8 @@ import { ReactComponent as FileIcon } from '../../assets/file_draft.svg';
 
 import style from './style.module.css';
 
+const MAX_FILE_SIZE = 268435456;
+
 export const FilesSystemPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -48,8 +51,20 @@ export const FilesSystemPage = () => {
   };
 
   const handleFileUpload = async (event) => {
-    setAreFilesLoading(true);
     const files = event.target.files;
+    if (files[0].size > MAX_FILE_SIZE) {
+      clearInputsAfterUpload();
+      toast.info(
+        'Max file size to upload is reached. You can not upload files larger than 256MB',
+        {
+          theme: 'colored',
+          position: 'bottom-center',
+          autoClose: 5000
+        }
+      );
+      return;
+    }
+    setAreFilesLoading(true);
     await uploadFileEffect({ files, dispatch });
     setAreFilesLoading(false);
     clearInputsAfterUpload();
