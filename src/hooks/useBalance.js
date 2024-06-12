@@ -22,12 +22,16 @@ export const useBalance = () => {
           fileCnt: data.fileCnt,
           history: data.data
         }));
-        user && dispatch(setUser({ ...user, points: data?.points || 0 }));
       } catch (e) {
         console.log({ e });
       }
     })();
-  }, [dispatch, user]);
+  }, [dispatch]);
+
+  useEffect(() => {
+    user?.points !== balance.points &&
+      dispatch(setUser({ ...user, points: balance?.points || 0 }));
+  }, [balance?.points, dispatch, user]);
 
   return balance;
 };
