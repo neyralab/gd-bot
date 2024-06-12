@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { TelegramShareButton } from 'react-share';
+import { useBalance } from '../../hooks/useBalance';
 import { referralEffect } from '../../effects/referralEffect';
 
 import { Header } from '../../components/header';
 import { Tab } from '../../components/tab';
 import { Button } from '../../components/button';
 import { History } from '../../components/history';
-import { TelegramShareButton } from 'react-share';
 
 import styles from './styles.module.css';
 
@@ -36,6 +37,16 @@ export const Referral = () => {
   });
   const [isLinkCopied, setIsLinkCopied] = useState(false);
   const link = useSelector((state) => state.user.link);
+  const balance = useBalance();
+  console.log({ balance });
+
+  useEffect(() => {
+    setTabs((prevState) => ({
+      ...prevState,
+      refFiles: balance?.fileCnt,
+      earn: balance?.points
+    }));
+  }, [balance]);
 
   useEffect(() => {
     (async () => {
@@ -43,7 +54,8 @@ export const Referral = () => {
         const { data } = await referralEffect();
         setTabs((prevState) => ({
           ...prevState,
-          users: data?.data?.current_usage
+          users: data?.data?.current_usage,
+          earn: data.data?.points
         }));
         console.log({ referralEffect: data });
       } catch (error) {
@@ -87,7 +99,7 @@ export const Referral = () => {
           />
         ))}
       </div>
-      <History />
+      <History history={balance.history} />
       <footer>
         <Button
           label={isLinkCopied ? 'Copied!' : 'Copy link'}
