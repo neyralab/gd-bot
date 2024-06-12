@@ -43,6 +43,7 @@
 
   background-repeat: no-repeat;
   background-size: contain;
+  will-change: 'opacity, transform';
 }
 
 .container.default .icon {
@@ -51,6 +52,25 @@
 
 .container.gold .icon {
   background-image: url('../../../assets/tap-page/ship-gold.png');
+}
+
+.btn-animation-0 {
+  animation: BtnAnimation0 0.3s ease-in-out;
+}
+
+@keyframes BtnAnimation0 {
+  0% {
+    transform: scale(1);
+  }
+  30% {
+    transform: scale(0.97);
+  }
+  50% {
+    transform: scale(1.03);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 
 .btn-animation-1 {
@@ -64,12 +84,12 @@
   }
   30% {
     opacity: 1 !important;
-    transform: scale(0.9);
+    transform: scale(0.95);
   }
   50% {
     opacity: 1 !important;
-    transform: scale(1.1);
-  }  
+    transform: scale(1.05);
+  }
   100% {
     opacity: 0.95 !important;
     transform: scale(1);
@@ -92,7 +112,7 @@
   40% {
     opacity: 1 !important;
     transform: scale(1.03);
-  } 
+  }
   100% {
     opacity: 0.9 !important;
     transform: scale(1);
@@ -161,7 +181,7 @@
   50% {
     opacity: 0.5 !important;
     transform: scale(1.02);
-  } 
+  }
   100% {
     opacity: 0.2 !important;
     transform: scale(1);

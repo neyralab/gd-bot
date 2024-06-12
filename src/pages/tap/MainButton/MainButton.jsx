@@ -1,8 +1,10 @@
 import React, { useRef, useImperativeHandle, forwardRef } from 'react';
 import classNames from 'classnames';
 import styles from './MainButton.module.css';
+import { getBrowserName } from '../../../utils/client';
 
 const MainButton = forwardRef(({ theme }, ref) => {
+  const containerRef = useRef(null);
   const iconRef = useRef(null);
   const frame1Ref = useRef(null);
   const frame2Ref = useRef(null);
@@ -11,23 +13,28 @@ const MainButton = forwardRef(({ theme }, ref) => {
   const frame5Ref = useRef(null);
 
   const runAnimation = () => {
-    const frames = [
-      iconRef,
-      frame1Ref,
-      frame2Ref,
-      frame3Ref,
-      frame4Ref,
-      frame5Ref
-    ];
+    let items = [containerRef, iconRef];
+
+    /**
+     * ATTENTION!
+     * Safari is the dumbest browser, as you know ofc.
+     * The whole app starts lagging by animating all the ref items.
+     * BECAUSE OF FILTERS SVG USES (you can check them in <filter> tag)
+     * So for this "amazing" browser use only a few itmes to animate (at least those that use filters).
+     * Chrome can handle this btw..
+     */
+    if (getBrowserName() !== 'Safari') {
+      items.push(...[frame1Ref, frame2Ref, frame3Ref, frame4Ref, frame5Ref]);
+    }
 
     // Clear any existing animations and start from the beginning
-    frames.forEach((frameRef, i) => {
-      if (frameRef.current) {
-        frameRef.current.classList.remove(styles['btn-animation-' + (i + 1)]);
+    items.forEach((itemRef, i) => {
+      if (itemRef.current) {
+        itemRef.current.classList.remove(styles['btn-animation-' + i]);
 
         // Using setTimeout to ensure the class is removed before adding it again
         setTimeout(() => {
-          frameRef.current.classList.add(styles['btn-animation-' + (i + 1)]);
+          itemRef.current.classList.add(styles['btn-animation-' + i]);
         }, 1);
       }
     });
@@ -39,6 +46,7 @@ const MainButton = forwardRef(({ theme }, ref) => {
 
   return (
     <div
+      ref={containerRef}
       className={classNames(
         styles.container,
         theme === 'gold' ? styles.gold : styles.default
@@ -49,7 +57,9 @@ const MainButton = forwardRef(({ theme }, ref) => {
         viewBox="0 0 390 441"
         fill="none">
         {/* Frame 2 */}
-        <g ref={frame2Ref} style={{ opacity: 0.9 }}>
+        <g
+          ref={frame2Ref}
+          style={{ opacity: 0.9, willChange: 'opacity, transform' }}>
           <g
             filter={
               theme === 'gold'
@@ -86,7 +96,9 @@ const MainButton = forwardRef(({ theme }, ref) => {
         </g>
 
         {/* Frame 1 */}
-        <g ref={frame1Ref} style={{ opacity: 0.9 }}>
+        <g
+          ref={frame1Ref}
+          style={{ opacity: 0.9, willChange: 'opacity, transform' }}>
           <path
             d="M192.5 105.66C194.356 104.588 196.644 104.588 198.5 105.66L292.588 159.982C294.445 161.054 295.588 163.035 295.588 165.178V273.822C295.588 275.965 294.445 277.946 292.588 279.018L198.5 333.34C196.644 334.412 194.356 334.412 192.5 333.34L98.4119 279.018C96.5555 277.946 95.4119 275.965 95.4119 273.822V165.178C95.4119 163.035 96.5555 161.054 98.4119 159.982L192.5 105.66Z"
             stroke="#02081C"
@@ -110,7 +122,7 @@ const MainButton = forwardRef(({ theme }, ref) => {
         {/* Frame 3 */}
         <g
           ref={frame3Ref}
-          style={{ opacity: 0.6 }}
+          style={{ opacity: 0.6, willChange: 'opacity, transform' }}
           filter={
             theme === 'gold'
               ? 'url(#filter4_d_5348_37972)'
@@ -127,7 +139,7 @@ const MainButton = forwardRef(({ theme }, ref) => {
         {/* Frame 4 */}
         <g
           ref={frame4Ref}
-          style={{ opacity: 0.2 }}
+          style={{ opacity: 0.2, willChange: 'opacity, transform' }}
           filter={
             theme === 'gold'
               ? 'url(#filter5_d_5348_37972)'
@@ -144,7 +156,7 @@ const MainButton = forwardRef(({ theme }, ref) => {
         {/* Frame 5 */}
         <g
           ref={frame5Ref}
-          style={{ opacity: 0.1 }}
+          style={{ opacity: 0.1, willChange: 'opacity, transform' }}
           filter={
             theme === 'gold'
               ? 'url(#filter6_d_5348_37972)'
