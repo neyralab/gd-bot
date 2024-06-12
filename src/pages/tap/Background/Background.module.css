@@ -51,7 +51,7 @@
   background-repeat: repeat;
   background-size: 100%;
   background-position: 50% 0;
-  transform: rotate(-25deg) translateY(4%) scale(1.08);
+  transform: rotate(-25deg) translateY(1%) scale(1.15);
 }
 
 .object2 {
@@ -65,7 +65,7 @@
   background-repeat: repeat;
   background-size: 100%;
   background-position: 50% 0;
-  transform: rotate(15deg) translateY(3%) scale(1.05);
+  transform: rotate(15deg) translateY(0%) scale(1.12);
 }
 
 .planet {

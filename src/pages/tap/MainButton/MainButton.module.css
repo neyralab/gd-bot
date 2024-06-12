@@ -6,6 +6,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  touch-action: manipulation;
 }
 
 .svg > g {
@@ -19,6 +20,7 @@
   top: 50%;
   left: 50%;
   transform: translate(-47%, -52%);
+  touch-action: manipulation;
 }
 
 @media (max-width: 400px) {
@@ -57,17 +59,17 @@
 
 @keyframes BtnAnimation1 {
   0% {
-    opacity: 1 !important;
+    opacity: 0.95 !important;
     transform: scale(1);
   }
   30% {
     opacity: 1 !important;
-    transform: scale(1.1);
-  }
-  50% {
-    opacity: 0.95 !important;
     transform: scale(0.9);
   }
+  50% {
+    opacity: 1 !important;
+    transform: scale(1.1);
+  }  
   100% {
     opacity: 0.95 !important;
     transform: scale(1);
@@ -80,17 +82,17 @@
 
 @keyframes BtnAnimation2 {
   0% {
-    opacity: 1 !important;
+    opacity: 0.9 !important;
     transform: scale(1);
   }
   30% {
     opacity: 1 !important;
-    transform: scale(1.04);
+    transform: scale(0.97);
   }
-  50% {
-    opacity: 0.9 !important;
-    transform: scale(0.98);
-  }
+  40% {
+    opacity: 1 !important;
+    transform: scale(1.03);
+  } 
   100% {
     opacity: 0.9 !important;
     transform: scale(1);
@@ -103,16 +105,16 @@
 
 @keyframes BtnAnimation3 {
   0% {
-    opacity: 1 !important;
+    opacity: 0.9 !important;
     transform: scale(1);
   }
   30% {
     opacity: 1 !important;
-    transform: scale(1.05);
+    transform: scale(0.97);
   }
   50% {
-    opacity: 0.9 !important;
-    transform: scale(0.97);
+    opacity: 1 !important;
+    transform: scale(1.04);
   }
   100% {
     opacity: 0.9 !important;
@@ -131,11 +133,11 @@
   }
   30% {
     opacity: 1 !important;
-    transform: scale(1.03);
+    transform: scale(0.97);
   }
   50% {
     opacity: 1 !important;
-    transform: scale(0.97);
+    transform: scale(1.02);
   }
   100% {
     opacity: 0.6 !important;
@@ -154,12 +156,12 @@
   }
   30% {
     opacity: 0.5 !important;
-    transform: scale(1.02);
+    transform: scale(0.98);
   }
   50% {
     opacity: 0.5 !important;
-    transform: scale(0.98);
-  }
+    transform: scale(1.02);
+  } 
   100% {
     opacity: 0.2 !important;
     transform: scale(1);
@@ -167,21 +169,21 @@
 }
 
 .btn-animation-6 {
-  animation: BtnAnimation5 0.3s ease-in-out 0.25s;
+  animation: BtnAnimation6 0.3s ease-in-out 0.25s;
 }
 
-@keyframes BtnAnimation5 {
+@keyframes BtnAnimation6 {
   0% {
     opacity: 0.1 !important;
     transform: scale(1);
   }
   30% {
     opacity: 0.2 !important;
-    transform: scale(1.01);
+    transform: scale(0.99);
   }
   50% {
     opacity: 0.2 !important;
-    transform: scale(0.99);
+    transform: scale(1.01);
   }
   100% {
     opacity: 0.1 !important;
