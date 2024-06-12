@@ -1,48 +1,11 @@
-.header {
-  padding: 0px 16px;
-  background: #14171e;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 16px;
-  height: 52px;
-  flex-shrink: 0;
-  position: fixed;
-  width: 100%;
-  z-index: 10;
-}
-
 .back-button {
   color: #fff;
   font-size: 14px;
   font-weight: 300;
   font-family: 'SF Pro Text';
-}
-
-.titles {
-  flex: 2;
-
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-.titles h1 {
-  font-size: 14px;
-  font-weight: 500;
-  font-family: 'SF Pro Text';
-}
-
-.titles p {
-  color: rgba(255, 255, 255, 0.6);
-  font-size: 10px;
-  font-weight: 300;
-  font-family: 'SF Pro Text';
-}
-
-.action-container {
-  width: 24px;
-  height: 24px;
+  position: fixed;
+  z-index: 10;
+  top: 22px;
+  left: 10px;
+  padding: 16px;
 }
