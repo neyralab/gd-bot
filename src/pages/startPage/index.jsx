@@ -239,7 +239,7 @@ export const StartPage = ({ onClose }) => {
       <footer className={style.footer}>
         <div onClick={onRef} className={style.footer_item}>
           <ReferralIcon />
-          <span className={style.footer_item_text}>Referral</span>
+          <span className={style.footer_item_text}>Task Center</span>
         </div>
         <div
           className={style.footer_item}
