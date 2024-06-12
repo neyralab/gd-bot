@@ -1,5 +1,7 @@
 import React, { useRef, useState } from 'react';
 import classNames from 'classnames';
+import { useTimer } from 'react-timer-hook';
+
 import { Header } from '../../components/header_v2';
 import MainButton from './MainButton/MainButton';
 import ProgressBar from './ProgressBar/ProgressBar';
@@ -11,15 +13,40 @@ export function TapPage() {
   const mainButtonRef = useRef();
 
   const [theme, setTheme] = useState('default'); // 'default' or 'gold'; Fetch from store later
-  const [clickedPoints, setClickedPoints] = useState(0); // 'default' or 'gold'; Fetch from store later
+  const [clickedPoints, setClickedPoints] = useState(0);
+
+  const lockTimer = useTimer({
+    expiryTimestamp: new Date(),
+    onExpire: () => console.warn('onExpire called'),
+    autoStart: false
+  });
+
+  const clickTimer = useTimer({
+    expiryTimestamp: new Date(),
+    onExpire: () => {
+      console.warn('onExpire called');
+      const lockTime = new Date();
+      lockTime.setSeconds(lockTime.getSeconds() + 10800); // 1 minutes timer
+      lockTimer.restart(lockTime);
+    },
+    autoStart: false
+  });
 
   const multiplier = 5;
   const points = 4000;
 
   const clickHandler = () => {
+    if (lockTimer.isRunning) {
+      return;
+    }
     mainButtonRef.current.runAnimation();
     backgroundRef.current.runAnimation();
     setClickedPoints((prevState) => prevState + 2);
+    if (!clickTimer.isRunning) {
+      const time = new Date();
+      time.setSeconds(time.getSeconds() + 60); // 1 minutes timer
+      clickTimer.restart(time);
+    }
   };
 
   /* TODO: REMOVE LATER */
@@ -52,8 +79,15 @@ export function TapPage() {
           <div
             onClick={clickHandler}
             className={styles['main-button-container']}>
+            {lockTimer.isRunning && <p className={styles.charging}>Charging</p>}
             <MainButton ref={mainButtonRef} theme={theme} />
           </div>
+
+          <p className={styles.clickTimer}>
+            {lockTimer.isRunning
+              ? `${lockTimer.hours}:${lockTimer.minutes}:${lockTimer.seconds}`
+              : `${clickTimer.minutes}:${clickTimer.seconds < 10 ? '0' + clickTimer.seconds : clickTimer.seconds}`}
+          </p>
 
           <div className={styles['experience-container']}>
             <div className={styles['progress-container']}>

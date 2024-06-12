@@ -30,6 +30,7 @@
     "react-router-dom": "^6.23.0",
     "react-scripts": "^5.0.1",
     "react-share": "^5.1.0",
+    "react-timer-hook": "^3.0.7",
     "react-toastify": "^10.0.5",
     "react-wavify": "^1.11.0",
     "sass": "^1.77.4",

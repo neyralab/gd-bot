@@ -70,6 +70,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
 }
 
 .experience-container {
@@ -152,7 +153,6 @@
   background-image: url('../../assets/tap-page/token-gold.png');
 }
 
-
 /* TODO: REMOVE LATER  */
 .test-button {
   position: fixed;
@@ -165,4 +165,39 @@
   z-index: 1000;
   text-align: center;
   padding: 4px;
+}
+
+.clickTimer {
+  color: var(--White, #fff);
+  font-family: 'SF Pro Text', serif;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 150%; /* 24px */
+
+  padding: 0 12px;
+  border-radius: 6px;
+  border: 1px solid #303030;
+  background: #151517;
+}
+
+.charging {
+  position: absolute;
+  top: 150px;
+  z-index: 1;
+
+  color: #fff;
+  text-align: center;
+  font-family: 'SF Pro Text', serif;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 150%; /* 24px */
+  text-transform: uppercase;
+}
+
+@media screen and (max-height: 500px) {
+  .charging {
+    top: 115px;
+  }
 }
