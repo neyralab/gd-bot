@@ -4,7 +4,8 @@ import { getBalanceEffect } from '../effects/balanceEffect';
 export const useBalance = () => {
   const [balance, setBalance] = useState({
     points: 0,
-    fileCnt: 0
+    fileCnt: 0,
+    history: []
   });
 
   useEffect(() => {
@@ -14,7 +15,8 @@ export const useBalance = () => {
         setBalance((prevState) => ({
           ...prevState,
           points: data.points,
-          fileCnt: data.fileCnt
+          fileCnt: data.fileCnt,
+          history: data.data
         }));
       } catch (e) {
         console.log({ e });
