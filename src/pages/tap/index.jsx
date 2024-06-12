@@ -11,14 +11,15 @@ export function TapPage() {
   const mainButtonRef = useRef();
 
   const [theme, setTheme] = useState('default'); // 'default' or 'gold'; Fetch from store later
+  const [clickedPoints, setClickedPoints] = useState(0); // 'default' or 'gold'; Fetch from store later
 
-  const balance = 100;
   const multiplier = 5;
   const points = 4000;
 
   const clickHandler = () => {
     mainButtonRef.current.runAnimation();
     backgroundRef.current.runAnimation();
+    setClickedPoints((prevState) => prevState + 2);
   };
 
   /* TODO: REMOVE LATER */
@@ -44,7 +45,7 @@ export function TapPage() {
       <div className={styles.content}>
         <div className={styles['content-inner-container']}>
           <div className={styles['balance-container']}>
-            <div className={styles.balance}>{balance}</div>
+            <div className={styles.balance}>{clickedPoints}</div>
             <strong>Balance</strong>
           </div>
 
