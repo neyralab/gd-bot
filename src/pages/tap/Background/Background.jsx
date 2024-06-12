@@ -23,7 +23,7 @@ const Background = forwardRef(({ theme }, ref) => {
   const maxSpeed = 1;
   const decreaseInterval = 2000; //  decrease coef to 0
   const noClickTimeout = 1000;
-  const fps = 40; // The max frame rate
+  const fps = 30; // The max frame rate
   const fpsInterval = 1000 / fps; // The interval between frames in milliseconds
 
   const animate = () => {
@@ -44,22 +44,11 @@ const Background = forwardRef(({ theme }, ref) => {
 
       distanceRef.current += speedRef.current; // Increment distance by the current speed
 
-      const starsHeight = starsRef.current.getBoundingClientRect().height;
-
-      // Calculate the maximum distance the stars can move before they need to loop back
-      const maxDistance = starsHeight - window.innerHeight;
-
-      distanceRef.current += speedRef.current; // Increment distance by the current speed
-
-      // Apply the transformation to the stars element
-      const translateYValue = distanceRef.current % maxDistance;
-      starsRef.current.style.transform = `translateY(${translateYValue}px)`;
-
-      // starsRef.current.style.backgroundPosition = `50% ${-distanceRef.current}%`;
-      // glowRef.current.style.backgroundPosition = `50% ${-distanceRef.current * 0.1}%`;
-      // object1Ref.current.style.backgroundPosition = `50% ${-distanceRef.current * 0.3}%`;
-      // object2Ref.current.style.backgroundPosition = `50% ${-distanceRef.current * 0.5}%`;
-      // planetRef.current.style.backgroundPosition = `50% ${-distanceRef.current * 0.15}%`;
+      starsRef.current.style.backgroundPosition = `50% ${-distanceRef.current}%`;
+      glowRef.current.style.backgroundPosition = `50% ${-distanceRef.current * 0.1}%`;
+      object1Ref.current.style.backgroundPosition = `50% ${-distanceRef.current * 0.3}%`;
+      object2Ref.current.style.backgroundPosition = `50% ${-distanceRef.current * 0.5}%`;
+      planetRef.current.style.backgroundPosition = `50% ${-distanceRef.current * 0.15}%`;
     }
 
     requestAnimationRef.current = requestAnimationFrame(animate);
@@ -67,7 +56,7 @@ const Background = forwardRef(({ theme }, ref) => {
 
   const runAnimation = () => {
     lastClickTimeRef.current = Date.now();
-    const newSpeed = Math.min(speedRef.current + 0.1, maxSpeed);
+    const newSpeed = Math.min(speedRef.current + 0.05, maxSpeed);
     speedRef.current = newSpeed;
     if (!requestAnimationRef.current) {
       requestAnimationRef.current = requestAnimationFrame(animate);
