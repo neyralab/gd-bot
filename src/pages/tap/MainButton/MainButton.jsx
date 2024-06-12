@@ -2,15 +2,6 @@ import React, { useRef, useImperativeHandle, forwardRef } from 'react';
 import classNames from 'classnames';
 import styles from './MainButton.module.css';
 
-const scaleCoefs = [0.1, 0.07, 0.06, 0.04, 0.02, 0.01];
-const maxOpacities = [1, 1, 1, 1, 0.5, 0.2];
-const minOpacities = [0.95, 0.9, 0.9, 0.6, 0.2, 0.1];
-
-const durationUp = 100; // Duration for up phase
-const durationDown = 150; // Duration for down phase
-const totalDuration = durationUp + durationDown;
-const delayBetweenFrames = 50; // Delay between frames
-
 const MainButton = forwardRef(({ theme }, ref) => {
   const iconRef = useRef(null);
   const frame1Ref = useRef(null);
@@ -20,11 +11,6 @@ const MainButton = forwardRef(({ theme }, ref) => {
   const frame5Ref = useRef(null);
 
   const runAnimation = () => {
-    let startTime = null;
-    let animationFrameId = null;
-
-    cancelAnimationFrame(animationFrameId);
-
     const frames = [
       iconRef,
       frame1Ref,
@@ -34,69 +20,17 @@ const MainButton = forwardRef(({ theme }, ref) => {
       frame5Ref
     ];
 
-    // Function to get the current scale of an element
-    const getCurrentScale = (element) => {
-      const transform = window.getComputedStyle(element).transform;
-      const match = /scale\(([^)]+)\)/.exec(transform);
-      return match ? parseFloat(match[1]) : 1; // Default to 1 if no scale is found
-    };
-    // Function to get the current opacity of an element
-    const getCurrentOpacity = (element) => {
-      const opacity = window.getComputedStyle(element).opacity;
-      return opacity ? parseFloat(opacity) : 1; // Default to 1 if no opacity is found
-    };
+    // Clear any existing animations and start from the beginning
+    frames.forEach((frameRef, i) => {
+      if (frameRef.current) {
+        frameRef.current.classList.remove(styles['btn-animation-' + (i + 1)]);
 
-    const animate = (timestamp) => {
-      cancelAnimationFrame(animationFrameId);
-
-      if (!startTime) startTime = timestamp;
-      const currentTime = timestamp - startTime;
-
-      frames.forEach((frameRef, index) => {
-        if (frameRef.current) {
-          const timeElapsed = currentTime - index * delayBetweenFrames;
-          if (timeElapsed >= 0 && timeElapsed <= totalDuration) {
-            const progress = timeElapsed / totalDuration;
-            const upPhase = progress <= durationUp / totalDuration;
-            const scaleCoef = scaleCoefs[index];
-            const startScale = getCurrentScale(frameRef.current);
-            const startOpacity = getCurrentOpacity(frameRef.current);
-            let scale;
-            let opacity;
-
-            if (upPhase) {
-              // UP PHASE
-              scale = startScale + scaleCoef * progress;
-              opacity =
-                startOpacity + (maxOpacities[index] - startOpacity) * progress;
-            } else {
-              // DOWN PHASE
-              const downProgress =
-                (progress - durationUp / totalDuration) /
-                (durationDown / totalDuration);
-              scale = startScale + scaleCoef - scaleCoef * downProgress;
-              opacity =
-                maxOpacities[index] -
-                (maxOpacities[index] - minOpacities[index]) * downProgress;
-            }
-
-            frameRef.current.style.transform = `scale(${scale})`;
-            frameRef.current.style.opacity = opacity.toString();
-          }
-        }
-      });
-
-      if (
-        currentTime <
-        totalDuration + delayBetweenFrames * (frames.length - 1)
-      ) {
-        animationFrameId = requestAnimationFrame(animate);
-      } else {
-        cancelAnimationFrame(animationFrameId);
+        // Using setTimeout to ensure the class is removed before adding it again
+        setTimeout(() => {
+          frameRef.current.classList.add(styles['btn-animation-' + (i + 1)]);
+        }, 1);
       }
-    };
-
-    animationFrameId = requestAnimationFrame(animate);
+    });
   };
 
   useImperativeHandle(ref, () => ({
@@ -115,7 +49,7 @@ const MainButton = forwardRef(({ theme }, ref) => {
         viewBox="0 0 390 441"
         fill="none">
         {/* Frame 2 */}
-        <g ref={frame2Ref} style={{ opacity: minOpacities[1] }}>
+        <g ref={frame2Ref} style={{ opacity: 0.9 }}>
           <g
             filter={
               theme === 'gold'
@@ -152,7 +86,7 @@ const MainButton = forwardRef(({ theme }, ref) => {
         </g>
 
         {/* Frame 1 */}
-        <g ref={frame1Ref} style={{ opacity: minOpacities[0] }}>
+        <g ref={frame1Ref} style={{ opacity: 0.9 }}>
           <path
             d="M192.5 105.66C194.356 104.588 196.644 104.588 198.5 105.66L292.588 159.982C294.445 161.054 295.588 163.035 295.588 165.178V273.822C295.588 275.965 294.445 277.946 292.588 279.018L198.5 333.34C196.644 334.412 194.356 334.412 192.5 333.34L98.4119 279.018C96.5555 277.946 95.4119 275.965 95.4119 273.822V165.178C95.4119 163.035 96.5555 161.054 98.4119 159.982L192.5 105.66Z"
             stroke="#02081C"
@@ -176,7 +110,7 @@ const MainButton = forwardRef(({ theme }, ref) => {
         {/* Frame 3 */}
         <g
           ref={frame3Ref}
-          style={{ opacity: minOpacities[2] }}
+          style={{ opacity: 0.6 }}
           filter={
             theme === 'gold'
               ? 'url(#filter4_d_5348_37972)'
@@ -193,7 +127,7 @@ const MainButton = forwardRef(({ theme }, ref) => {
         {/* Frame 4 */}
         <g
           ref={frame4Ref}
-          style={{ opacity: minOpacities[3] }}
+          style={{ opacity: 0.2 }}
           filter={
             theme === 'gold'
               ? 'url(#filter5_d_5348_37972)'
@@ -210,7 +144,7 @@ const MainButton = forwardRef(({ theme }, ref) => {
         {/* Frame 5 */}
         <g
           ref={frame5Ref}
-          style={{ opacity: minOpacities[4] }}
+          style={{ opacity: 0.1 }}
           filter={
             theme === 'gold'
               ? 'url(#filter6_d_5348_37972)'
