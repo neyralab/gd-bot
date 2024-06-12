@@ -23,7 +23,7 @@ const Background = forwardRef(({ theme }, ref) => {
   const maxSpeed = 1;
   const decreaseInterval = 2000; //  decrease coef to 0
   const noClickTimeout = 1000;
-  const fps = 30; // The max frame rate
+  const fps = 60; // The max frame rate
   const fpsInterval = 1000 / fps; // The interval between frames in milliseconds
 
   const animate = () => {
@@ -55,12 +55,15 @@ const Background = forwardRef(({ theme }, ref) => {
   };
 
   const runAnimation = () => {
-    lastClickTimeRef.current = Date.now();
-    const newSpeed = Math.min(speedRef.current + 0.05, maxSpeed);
-    speedRef.current = newSpeed;
-    if (!requestAnimationRef.current) {
-      requestAnimationRef.current = requestAnimationFrame(animate);
+    if (requestAnimationRef.current) {
+      cancelAnimationFrame(requestAnimationRef.current);
     }
+
+    lastClickTimeRef.current = Date.now();
+    const newSpeed = Math.min(speedRef.current + 0.1, maxSpeed);
+    speedRef.current = newSpeed;
+
+    requestAnimationRef.current = requestAnimationFrame(animate);
   };
 
   useEffect(() => {
@@ -69,7 +72,6 @@ const Background = forwardRef(({ theme }, ref) => {
         const newSpeed =
           speedRef.current - (speedRef.current / decreaseInterval) * 100;
         speedRef.current = newSpeed;
-
         if (newSpeed <= 0.01) {
           // Stop the animation
           cancelAnimationFrame(requestAnimationRef.current);
