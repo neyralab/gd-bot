@@ -82,7 +82,7 @@ export function TapPage() {
             <div className={styles['timer-container']}>
               <p className={styles.clickTimer}>
                 {lockTimer.isRunning
-                  ? `${lockTimer.hours}:${lockTimer.minutes}:${lockTimer.seconds}`
+                  ? `${lockTimer.hours}:${lockTimer.minutes < 10 ? '0' + lockTimer.minutes : lockTimer.minutes}:${lockTimer.seconds < 10 ? '0' + lockTimer.seconds : lockTimer.seconds}`
                   : `${clickTimer.minutes}:${clickTimer.seconds < 10 ? '0' + clickTimer.seconds : clickTimer.seconds}`}
               </p>
             </div>
