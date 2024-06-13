@@ -49,6 +49,7 @@
   font-weight: 400;
   letter-spacing: 0.16px;
   opacity: 0.7;
+  text-transform: uppercase;
 }
 
 .balance {
@@ -76,6 +77,14 @@
   align-items: center;
   justify-content: center;
   position: relative;
+}
+
+.points-grow-area-container {
+  position: absolute;
+  top: -10%;
+  left: 0;
+  width: 100%;
+  height: 50%;
 }
 
 .experience-container {
@@ -142,7 +151,7 @@
 
 .charging {
   position: absolute;
-  top: 125px;
+  top: calc(50% - 90px);
   z-index: 1;
 
   color: #fff;
