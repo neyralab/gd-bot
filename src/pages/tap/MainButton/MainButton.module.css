@@ -166,11 +166,11 @@
   }
   30% {
     opacity: 1 !important;
-    transform: scale(0.97);
+    transform: scale(0.95);
   }
   40% {
     opacity: 1 !important;
-    transform: scale(1.03);
+    transform: scale(1.05);
   }
   100% {
     opacity: 0.9 !important;
@@ -189,7 +189,7 @@
   }
   30% {
     opacity: 1 !important;
-    transform: scale(0.97);
+    transform: scale(0.96);
   }
   50% {
     opacity: 1 !important;

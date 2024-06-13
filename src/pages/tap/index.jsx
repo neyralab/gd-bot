@@ -9,9 +9,11 @@ import Background from './Background/Background';
 import BuyButton from './BuyButton/BuyButton';
 import themes from './themes';
 import styles from './styles.module.css';
+import PointsGrowArea from './PointsGrowArea/PointsGrowArea';
 
 export function TapPage() {
   const backgroundRef = useRef();
+  const pointsAreaRef = useRef();
   const mainButtonRef = useRef();
 
   const [theme, setTheme] = useState(themes[0]);
@@ -41,9 +43,12 @@ export function TapPage() {
     if (lockTimer.isRunning) {
       return;
     }
+
     mainButtonRef.current.runAnimation();
     backgroundRef.current.runAnimation();
-    setClickedPoints((prevState) => prevState + 2);
+    pointsAreaRef.current.runAnimation();
+
+    setClickedPoints((prevState) => prevState + theme.multiplier);
     if (!clickTimer.isRunning) {
       const time = new Date();
       time.setSeconds(time.getSeconds() + 60); // 1 minutes timer
@@ -60,12 +65,16 @@ export function TapPage() {
         <div className={styles['content-inner-container']}>
           <div className={styles['balance-container']}>
             <div className={styles.balance}>{clickedPoints}</div>
-            <strong>Balance</strong>
+            <strong>{theme && theme.name + ' X' + theme.multiplier}</strong>
           </div>
 
           <div
             onClick={clickHandler}
             className={styles['main-button-container']}>
+            <div className={styles['points-grow-area-container']}>
+              <PointsGrowArea ref={pointsAreaRef} theme={theme} />
+            </div>
+
             {lockTimer.isRunning && <p className={styles.charging}>Charging</p>}
 
             <MainButton ref={mainButtonRef} theme={theme} />
