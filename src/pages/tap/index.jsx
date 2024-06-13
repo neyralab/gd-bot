@@ -56,6 +56,11 @@ export function TapPage() {
     }
   };
 
+  const completedHandler = (nextTheme) => {
+    setTheme(nextTheme);
+    lockTimer.pause()
+  };
+
   return (
     <div className={classNames(styles.container, theme && styles[theme.id])}>
       <Background ref={backgroundRef} theme={theme} />
@@ -64,7 +69,7 @@ export function TapPage() {
       <div className={styles.content}>
         <div className={styles['content-inner-container']}>
           <div className={styles['balance-container']}>
-            <div className={styles.balance}>{clickedPoints}</div>
+            <div className={styles.balance}>{clickedPoints.toLocaleString('en-US')}</div>
             <strong>{theme && theme.name + ' X' + theme.multiplier}</strong>
           </div>
 
@@ -104,11 +109,9 @@ export function TapPage() {
                 />
               </>
             )}
+
             {lockTimer.isRunning && (
-              <>
-                <span className={styles.description}>Upgrade and play now</span>
-                <BuyButton theme={theme} />
-              </>
+              <BuyButton theme={theme} onCompleted={completedHandler} />
             )}
           </div>
         </div>
