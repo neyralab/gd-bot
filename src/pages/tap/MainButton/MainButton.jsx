@@ -40,25 +40,39 @@ const MainButton = forwardRef(({ theme }, ref) => {
   return (
     <div
       ref={containerRef}
-      className={classNames(
-        styles.container,
-        theme && styles[theme.id]
-      )}>
+      className={classNames(styles.container, theme && styles[theme.id])}>
       <div
         className={classNames(styles.frame, styles.frame1)}
-        ref={frame1Ref}></div>
+        ref={frame1Ref}
+        style={{
+          backgroundImage: `url('/assets/tap-page/frame-1-${theme.id}.png')`
+        }}></div>
       <div
         className={classNames(styles.frame, styles.frame2)}
-        ref={frame2Ref}></div>
+        ref={frame2Ref}
+        style={{
+          backgroundImage: `url('/assets/tap-page/frame-2-${theme.id}.png')`
+        }}></div>
       <div
         className={classNames(styles.frame, styles.frame3)}
-        ref={frame3Ref}></div>
+        ref={frame3Ref}
+        style={{
+          backgroundImage: `url('/assets/tap-page/frame-3-${theme.id}.png')`
+        }}></div>
       <div
         className={classNames(styles.frame, styles.frame4)}
-        ref={frame4Ref}></div>
+        ref={frame4Ref}
+        style={{
+          backgroundImage: `url('/assets/tap-page/frame-4-${theme.id}.png')`
+        }}></div>
 
       <div className={styles['icon-container']}>
-        <div className={styles.icon} ref={iconRef}></div>
+        <div
+          className={styles.icon}
+          ref={iconRef}
+          style={{
+            backgroundImage: `url('/assets/tap-page/ship-${theme.id}.png')`
+          }}></div>
       </div>
     </div>
   );

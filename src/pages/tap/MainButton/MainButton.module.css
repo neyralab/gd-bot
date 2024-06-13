@@ -23,7 +23,6 @@
   left: calc(50% - 74px);
 }
 
-
 .icon {
   width: 100%;
   height: 100%;
@@ -31,14 +30,6 @@
   background-repeat: no-repeat;
   background-size: contain;
   will-change: opacity, transform;
-}
-
-.container.hawk .icon {
-  background-image: url('../../../assets/tap-page/ship-blue.png');
-}
-
-.container.phoenix .icon {
-  background-image: url('../../../assets/tap-page/ship-gold.png');
 }
 
 .frame {
@@ -57,28 +48,12 @@
   left: calc(50% - 123px);
 }
 
-.container.hawk .frame1 {
-  background-image: url('../../../assets/tap-page/frame-1-blue.png');
-}
-
-.container.phoenix .frame1 {
-  /* background-image: url('../../../assets/tap-page/ship-gold.png'); */
-}
-
 .frame2 {
   width: 330px;
   height: 330px;
   top: calc(50% - 165px);
   left: calc(50% - 165px);
   opacity: 0.9;
-}
-
-.container.hawk .frame2 {
-  background-image: url('../../../assets/tap-page/frame-2-blue.png');
-}
-
-.container.phoenix .frame2 {
-  /* background-image: url('../../../assets/tap-page/ship-gold.png'); */
 }
 
 .frame3 {
@@ -89,28 +64,12 @@
   opacity: 0.6;
 }
 
-.container.hawk .frame3 {
-  background-image: url('../../../assets/tap-page/frame-3-blue.png');
-}
-
-.container.phoenix .frame3 {
-  /* background-image: url('../../../assets/tap-page/ship-gold.png'); */
-}
-
 .frame4 {
   width: 430px;
   height: 430px;
   top: calc(50% - 215px);
   left: calc(50% - 215px);
   opacity: 0.2;
-}
-
-.container.hawk .frame4 {
-  background-image: url('../../../assets/tap-page/frame-4-blue.png');
-}
-
-.container.phoenix .frame4 {
-  /* background-image: url('../../../assets/tap-page/ship-gold.png'); */
 }
 
 .btn-animation-0 {
@@ -246,5 +205,3 @@
     transform: scale(1);
   }
 }
-
-

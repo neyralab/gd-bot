@@ -91,16 +91,37 @@ const Background = forwardRef(({ theme }, ref) => {
   }));
 
   return (
-    <div
-      className={classNames(
-        styles.container,
-        theme && styles[theme.id]
-      )}>
-      <div ref={starsRef} className={styles.stars}></div>
-      <div ref={glowRef} className={styles.glow}></div>
-      <div ref={object1Ref} className={styles.object1}></div>
-      <div ref={object2Ref} className={styles.object2}></div>
-      <div ref={planetRef} className={styles.planet}></div>
+    <div className={classNames(styles.container, theme && styles[theme.id])}>
+      <div
+        ref={starsRef}
+        className={styles.stars}
+        style={{
+          backgroundImage: `url('/assets/tap-page/stars.png')`
+        }}></div>
+      <div
+        ref={glowRef}
+        className={styles.glow}
+        style={{
+          backgroundImage: `url('/assets/tap-page/glow-${theme.id}.png')`
+        }}></div>
+      <div
+        ref={object1Ref}
+        className={styles.object1}
+        style={{
+          backgroundImage: `url('/assets/tap-page/object1.png')`
+        }}></div>
+      <div
+        ref={object2Ref}
+        className={styles.object2}
+        style={{
+          backgroundImage: `url('/assets/tap-page/object2.png')`
+        }}></div>
+      <div
+        ref={planetRef}
+        className={styles.planet}
+        style={{
+          backgroundImage: `url('/assets/tap-page/planet-${theme.id}.png')`
+        }}></div>
     </div>
   );
 });

@@ -103,26 +103,6 @@
   text-transform: uppercase;
 }
 
-.container.hawk .multiplier {
-  border: 0.5px solid #03c2fe;
-  background: linear-gradient(90deg, #00c6fb 0%, #005bea 100%);
-  box-shadow: 0px 4px 17.2px 0px #0586fe;
-}
-
-.container.phoenix .multiplier {
-  border: 0.5px solid #fff1a6;
-  background: linear-gradient(90deg, #f7b50d 0%, #fee140 100%);
-  box-shadow: 0px 4px 17.2px 0px #fee140;
-}
-
-.container.hawk .logo {
-  background-image: url('../../assets/tap-page/token-blue.png');
-}
-
-.container.phoenix .logo {
-  background-image: url('../../assets/tap-page/token-gold.png');
-}
-
 .timer-container {
   position: absolute;
   width: 100%;

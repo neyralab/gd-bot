@@ -1,7 +1,7 @@
 .button {
   border-radius: 10px;
-  border: 1px solid #fff;
-  background: linear-gradient(90deg, #00c6fb 0%, #005bea 100%);
+  border: 1px solid rgba(255,255,255,0.5);
+
   color: white;
   display: flex;
   justify-content: center;
@@ -14,4 +14,22 @@
   font-family: 'SF Pro Text';
   font-size: 21px;
   font-weight: 500;
+}
+
+.description {
+  margin-bottom: 16px;
+  text-transform: uppercase;
+}
+
+.button.hawk {
+  background: linear-gradient(90deg, #00c6fb 0%, #005bea 100%);
+}
+.button.lotus {
+  background: linear-gradient(90deg, #dfb1e4 0%, #c567c7 100%);
+}
+.button.phoenix {
+  background: linear-gradient(90deg, #a36e08 0%, #f2e60f 100%);
+}
+.button.ghost {
+  background: linear-gradient(90deg, #c2d309 0%, #0fcf17 100%);
 }
