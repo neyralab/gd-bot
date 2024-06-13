@@ -63,7 +63,7 @@ export const getTonWallet = async (dispatch, comment) => {
       }
     })
     .post(API_TON_WALLET, body)
-    .then(({ data }) => data?.data?.address)
+    .then(({ data }) => data?.data)
     .catch(() => null);
 
   return data;
