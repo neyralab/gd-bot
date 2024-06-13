@@ -6,6 +6,12 @@
   position: relative;
 }
 
+.container * {
+  touch-action: manipulation;
+  user-select: none;
+}
+
+
 .content {
   position: relative;
   width: 100%;

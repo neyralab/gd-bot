@@ -35,7 +35,10 @@ export function TapPage() {
   const multiplier = 5;
   const points = 4000;
 
-  const clickHandler = () => {
+  const clickHandler = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    
     if (lockTimer.isRunning) {
       return;
     }
@@ -49,16 +52,6 @@ export function TapPage() {
     }
   };
 
-  /* TODO: REMOVE LATER */
-  const testButtonClickHandler = () => {
-    setTheme((value) => {
-      if (value === 'default') {
-        return 'gold';
-      } else {
-        return 'default';
-      }
-    });
-  };
 
   return (
     <div
