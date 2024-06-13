@@ -53,7 +53,7 @@
   height: 330px;
   top: calc(50% - 165px);
   left: calc(50% - 165px);
-  opacity: 0.9;
+  opacity: 0.3;
 }
 
 .frame3 {
@@ -61,7 +61,7 @@
   height: 380px;
   top: calc(50% - 190px);
   left: calc(50% - 190px);
-  opacity: 0.6;
+  opacity: 0.2;
 }
 
 .frame4 {
@@ -69,7 +69,7 @@
   height: 430px;
   top: calc(50% - 215px);
   left: calc(50% - 215px);
-  opacity: 0.2;
+  opacity: 0;
 }
 
 .btn-animation-0 {
@@ -97,19 +97,19 @@
 
 @keyframes BtnAnimation1 {
   0% {
-    opacity: 0.95 !important;
+    opacity: 0.95;
     transform: scale(1);
   }
   30% {
-    opacity: 1 !important;
+    opacity: 1;
     transform: scale(0.95);
   }
   60% {
-    opacity: 1 !important;
+    opacity: 1;
     transform: scale(1.05);
   }
   100% {
-    opacity: 0.95 !important;
+    opacity: 0.95;
     transform: scale(1);
   }
 }
@@ -120,19 +120,19 @@
 
 @keyframes BtnAnimation2 {
   0% {
-    opacity: 0.9 !important;
+    opacity: 0.9;
     transform: scale(1);
   }
   30% {
-    opacity: 1 !important;
+    opacity: 1;
     transform: scale(0.95);
   }
   60% {
-    opacity: 1 !important;
+    opacity: 1;
     transform: scale(1.05);
   }
   100% {
-    opacity: 0.9 !important;
+    opacity: 0.9;
     transform: scale(1);
   }
 }
@@ -143,19 +143,19 @@
 
 @keyframes BtnAnimation3 {
   0% {
-    opacity: 0.9 !important;
+    opacity: 0.3;
     transform: scale(1);
   }
   30% {
-    opacity: 1 !important;
-    transform: scale(0.96);
+    opacity: 1;
+    transform: scale(1.1);
   }
   60%{
-    opacity: 1 !important;
-    transform: scale(1.04);
+    opacity: 1;
+    transform: scale(0.96);
   }
   100% {
-    opacity: 0.9 !important;
+    opacity: 0.3;
     transform: scale(1);
   }
 }
@@ -166,19 +166,19 @@
 
 @keyframes BtnAnimation4 {
   0% {
-    opacity: 0.6 !important;
+    opacity: 0.2;
     transform: scale(1);
   }
   30% {
-    opacity: 1 !important;
-    transform: scale(0.97);
+    opacity: 1;
+    transform: scale(1.1);
   }
-  60% {
-    opacity: 1 !important;
-    transform: scale(1.02);
+  60%{
+    opacity: 1;
+    transform: scale(0.96);
   }
   100% {
-    opacity: 0.6 !important;
+    opacity: 0.2;
     transform: scale(1);
   }
 }
@@ -189,19 +189,19 @@
 
 @keyframes BtnAnimation5 {
   0% {
-    opacity: 0.2 !important;
+    opacity: 0;
     transform: scale(1);
   }
   30% {
-    opacity: 0.5 !important;
-    transform: scale(0.98);
+    opacity: 1;
+    transform: scale(1.1);
   }
-  60% {
-    opacity: 0.5 !important;
-    transform: scale(1.02);
+  60%{
+    opacity: 1;
+    transform: scale(0.96);
   }
   100% {
-    opacity: 0.2 !important;
+    opacity: 0;
     transform: scale(1);
   }
 }
