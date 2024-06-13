@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { ReactComponent as LogoIcon } from '../../assets/intro/logo.svg';
 import { ReactComponent as UploadIcon } from '../../assets/intro/upload.svg';
-import { ReactComponent as CoinIcon } from '../../assets/intro/coin.svg';
+import { ReactComponent as PlayIcon } from '../../assets/intro/play.svg';
 import { ReactComponent as AirdropIcon } from '../../assets/intro/airdrop.svg';
 
 import s from './styles.module.css';
@@ -12,20 +12,20 @@ import s from './styles.module.css';
 const info = [
   {
     icon: <UploadIcon />,
-    title: 'Upload Files',
-    text: 'Enjoy seamless integration with the Filecoin network.',
+    title: 'Upload for Airdrop',
+    text: 'Upload files directly to Filecoin, share content with friends, and earn rewards!',
     opacity: 0
   },
   {
-    icon: <CoinIcon />,
-    title: 'Get Rewarded',
-    text: 'Earn points and upgrade your account to boost your rewards.',
+    icon: <PlayIcon />,
+    title: 'Play for Airdrop',
+    text: 'Earn points by playing the tap game and get free storage.',
     opacity: 0
   },
   {
     icon: <AirdropIcon />,
-    title: '$6 Million Airdrop',
-    text: 'Open to all! Participate in tapping games and our referral program.',
+    title: '$6 Million giveaway',
+    text: 'Participate in tapping games will receive in exchange GD Tokens',
     opacity: 0
   }
 ];
@@ -112,9 +112,10 @@ export const IntroPage = () => {
             />
           </div>
           <h2 className={s.title}>
-            <span className={s.title_ghost}>Ghostdrive</span>
-            <span className={s.number}> #1</span>
-            <br /> Telegram Web3 Drive!
+            <span className={s.title_ghost}>Ghost Drive</span>
+            <p className={s.title_desc}>
+              The Unlimited Drive for the Ton Ecosystem
+            </p>
           </h2>
         </div>
         <div className={s.info}>
@@ -137,7 +138,7 @@ export const IntroPage = () => {
             onTransitionEnd={onJoinShown}
             style={{ opacity: isInfoShown ? 1 : 0 }}
             className={s.join}>
-            Join community today and start earning!
+            $6M Airdrop Giveaway
           </p>
           <button
             style={{
