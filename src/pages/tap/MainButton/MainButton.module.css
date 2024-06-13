@@ -1,12 +1,14 @@
 .container {
   width: 100%;
-  height: 100%;
+  height: 430px;
   position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
   touch-action: manipulation;
+  user-select: none;
+}
+
+.container * {
+  touch-action: manipulation;
+  user-select: none;
 }
 
 .svg > g {
@@ -15,27 +17,12 @@
 
 .icon-container {
   position: absolute;
-  width: 200px;
-  height: 200px;
-  top: 50%;
-  left: 50%;
-  transform: translate(-47%, -52%);
-  touch-action: manipulation;
+  width: 154px;
+  height: 154px;
+  top: calc(50% - 80px);
+  left: calc(50% - 74px);
 }
 
-@media (max-width: 400px) {
-  .icon-container {
-    width: 170px;
-    height: 170px;
-  }
-}
-
-@media (max-width: 350px) {
-  .icon-container {
-    width: 150px;
-    height: 150px;
-  }
-}
 
 .icon {
   width: 100%;
@@ -52,6 +39,75 @@
 
 .container.gold .icon {
   background-image: url('../../../assets/tap-page/ship-gold.png');
+}
+
+.frame {
+  position: absolute;
+
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  background-size: contain;
+  will-change: 'opacity, transform';
+}
+
+.frame1 {
+  width: 246px;
+  height: 246px;
+  top: calc(50% - 123px);
+  left: calc(50% - 123px);
+}
+
+.container.default .frame1 {
+  background-image: url('../../../assets/tap-page/frame-1-blue.png');
+}
+
+.container.gold .frame1 {
+  /* background-image: url('../../../assets/tap-page/ship-gold.png'); */
+}
+
+.frame2 {
+  width: 330px;
+  height: 330px;
+  top: calc(50% - 165px);
+  left: calc(50% - 165px);
+}
+
+.container.default .frame2 {
+  background-image: url('../../../assets/tap-page/frame-2-blue.png');
+}
+
+.container.gold .frame2 {
+  /* background-image: url('../../../assets/tap-page/ship-gold.png'); */
+}
+
+.frame3 {
+  width: 380px;
+  height: 380px;
+  top: calc(50% - 190px);
+  left: calc(50% - 190px);
+}
+
+.container.default .frame3 {
+  background-image: url('../../../assets/tap-page/frame-3-blue.png');
+}
+
+.container.gold .frame3 {
+  /* background-image: url('../../../assets/tap-page/ship-gold.png'); */
+}
+
+.frame4 {
+  width: 430px;
+  height: 430px;
+  top: calc(50% - 215px);
+  left: calc(50% - 215px);
+}
+
+.container.default .frame4 {
+  background-image: url('../../../assets/tap-page/frame-4-blue.png');
+}
+
+.container.gold .frame4 {
+  /* background-image: url('../../../assets/tap-page/ship-gold.png'); */
 }
 
 .btn-animation-0 {
