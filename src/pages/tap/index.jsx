@@ -79,13 +79,17 @@ export function TapPage() {
 
             <MainButton ref={mainButtonRef} theme={theme} />
 
-            <div className={styles['timer-container']}>
-              <p className={styles.clickTimer}>
-                {lockTimer.isRunning
-                  ? `${lockTimer.hours}:${lockTimer.minutes}:${lockTimer.seconds}`
-                  : `${clickTimer.minutes}:${clickTimer.seconds < 10 ? '0' + clickTimer.seconds : clickTimer.seconds}`}
-              </p>
-            </div>
+            {lockTimer.isRunning ||
+              (clickTimer.isRunning && (
+                <div className={styles['timer-container']}>
+                  <p className={styles.clickTimer}>
+                    {lockTimer.isRunning &&
+                      `${lockTimer.hours}:${lockTimer.minutes < 10 ? '0' + lockTimer.minutes : lockTimer.minutes}:${lockTimer.seconds < 10 ? '0' + lockTimer.seconds : lockTimer.seconds}`}
+                    {clickTimer.isRunning &&
+                      `${clickTimer.minutes}:${clickTimer.seconds < 10 ? '0' + clickTimer.seconds : clickTimer.seconds}`}
+                  </p>
+                </div>
+              ))}
           </div>
 
           <div className={styles['experience-container']}>
