@@ -129,7 +129,7 @@ function App() {
             element={<UpgradeStoragePage tariffs={tariffs} />}
           />
           <Route path="/balance" exact element={<Balance />} />
-          <Route path="/ref" exact element={<Referral />} />
+          <Route path="/point-tracker" exact element={<Referral />} />
           <Route path="/task" exact element={<TaskPage />} />
           <Route path="/leadboard" exact element={<Leaderboard />} />
           <Route path="/tap" exact element={<TapPage />} />
