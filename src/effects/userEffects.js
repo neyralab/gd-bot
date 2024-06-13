@@ -18,3 +18,9 @@ export const getUserEffect = async (token) => {
       throw error;
     });
 };
+
+export const saveUserWallet = async (walletData) => {
+  const data = await axiosInstance.post(`${API_PATH}/tg/wallet`, walletData);
+  return data.data;
+  // 8/api/tg/wallet' \
+};
