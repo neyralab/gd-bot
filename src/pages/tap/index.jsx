@@ -6,13 +6,15 @@ import { Header } from '../../components/header_v2';
 import MainButton from './MainButton/MainButton';
 import ProgressBar from './ProgressBar/ProgressBar';
 import Background from './Background/Background';
+import BuyButton from './BuyButton/BuyButton';
+import themes from './themes';
 import styles from './styles.module.css';
 
 export function TapPage() {
   const backgroundRef = useRef();
   const mainButtonRef = useRef();
 
-  const [theme, setTheme] = useState('default'); // 'default' or 'gold'; Fetch from store later
+  const [theme, setTheme] = useState(themes[0]);
   const [clickedPoints, setClickedPoints] = useState(0);
 
   const lockTimer = useTimer({
@@ -32,13 +34,10 @@ export function TapPage() {
     autoStart: false
   });
 
-  const multiplier = 5;
-  const points = 4000;
-
   const clickHandler = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    
+
     if (lockTimer.isRunning) {
       return;
     }
@@ -52,13 +51,8 @@ export function TapPage() {
     }
   };
 
-
   return (
-    <div
-      className={classNames(
-        styles.container,
-        theme === 'gold' ? styles.gold : styles.default
-      )}>
+    <div className={classNames(styles.container, theme && styles[theme.id])}>
       <Background ref={backgroundRef} theme={theme} />
       <Header />
 
@@ -73,25 +67,36 @@ export function TapPage() {
             onClick={clickHandler}
             className={styles['main-button-container']}>
             {lockTimer.isRunning && <p className={styles.charging}>Charging</p>}
+
             <MainButton ref={mainButtonRef} theme={theme} />
+
+            <div className={styles['timer-container']}>
+              <p className={styles.clickTimer}>
+                {lockTimer.isRunning
+                  ? `${lockTimer.hours}:${lockTimer.minutes}:${lockTimer.seconds}`
+                  : `${clickTimer.minutes}:${clickTimer.seconds < 10 ? '0' + clickTimer.seconds : clickTimer.seconds}`}
+              </p>
+            </div>
           </div>
 
-          <p className={styles.clickTimer}>
-            {lockTimer.isRunning
-              ? `${lockTimer.hours}:${lockTimer.minutes}:${lockTimer.seconds}`
-              : `${clickTimer.minutes}:${clickTimer.seconds < 10 ? '0' + clickTimer.seconds : clickTimer.seconds}`}
-          </p>
-
           <div className={styles['experience-container']}>
-            <div className={styles['progress-container']}>
-              <div className={styles['progress-bar']}>
-                <ProgressBar percent={100} theme={theme} />
-              </div>
-              <span className={styles.points}>{points}</span>
-              <div className={styles.logo}></div>
-            </div>
-
-            <div className={styles['multiplier']}>x{multiplier}</div>
+            {!lockTimer.isRunning && (
+              <>
+                <span className={styles.description}>
+                  GAME MODE, DATA MINING {theme.data}
+                </span>
+                <ProgressBar
+                  percent={(clickTimer.seconds / 60) * 100 || 100}
+                  theme={theme}
+                />
+              </>
+            )}
+            {lockTimer.isRunning && (
+              <>
+                <span className={styles.description}>Upgrade and play now</span>
+                <BuyButton theme={theme} />
+              </>
+            )}
           </div>
         </div>
       </div>

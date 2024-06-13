@@ -30,14 +30,14 @@
 
   background-repeat: no-repeat;
   background-size: contain;
-  will-change: 'opacity, transform';
+  will-change: opacity, transform;
 }
 
-.container.default .icon {
+.container.hawk .icon {
   background-image: url('../../../assets/tap-page/ship-blue.png');
 }
 
-.container.gold .icon {
+.container.phoenix .icon {
   background-image: url('../../../assets/tap-page/ship-gold.png');
 }
 
@@ -47,7 +47,7 @@
   background-position: 50% 50%;
   background-repeat: no-repeat;
   background-size: contain;
-  will-change: 'opacity, transform';
+  will-change: opacity, transform;
 }
 
 .frame1 {
@@ -57,11 +57,11 @@
   left: calc(50% - 123px);
 }
 
-.container.default .frame1 {
+.container.hawk .frame1 {
   background-image: url('../../../assets/tap-page/frame-1-blue.png');
 }
 
-.container.gold .frame1 {
+.container.phoenix .frame1 {
   /* background-image: url('../../../assets/tap-page/ship-gold.png'); */
 }
 
@@ -70,13 +70,14 @@
   height: 330px;
   top: calc(50% - 165px);
   left: calc(50% - 165px);
+  opacity: 0.9;
 }
 
-.container.default .frame2 {
+.container.hawk .frame2 {
   background-image: url('../../../assets/tap-page/frame-2-blue.png');
 }
 
-.container.gold .frame2 {
+.container.phoenix .frame2 {
   /* background-image: url('../../../assets/tap-page/ship-gold.png'); */
 }
 
@@ -85,13 +86,14 @@
   height: 380px;
   top: calc(50% - 190px);
   left: calc(50% - 190px);
+  opacity: 0.6;
 }
 
-.container.default .frame3 {
+.container.hawk .frame3 {
   background-image: url('../../../assets/tap-page/frame-3-blue.png');
 }
 
-.container.gold .frame3 {
+.container.phoenix .frame3 {
   /* background-image: url('../../../assets/tap-page/ship-gold.png'); */
 }
 
@@ -100,13 +102,14 @@
   height: 430px;
   top: calc(50% - 215px);
   left: calc(50% - 215px);
+  opacity: 0.2;
 }
 
-.container.default .frame4 {
+.container.hawk .frame4 {
   background-image: url('../../../assets/tap-page/frame-4-blue.png');
 }
 
-.container.gold .frame4 {
+.container.phoenix .frame4 {
   /* background-image: url('../../../assets/tap-page/ship-gold.png'); */
 }
 
@@ -244,25 +247,4 @@
   }
 }
 
-.btn-animation-6 {
-  animation: BtnAnimation6 0.3s ease-in-out 0.25s;
-}
 
-@keyframes BtnAnimation6 {
-  0% {
-    opacity: 0.1 !important;
-    transform: scale(1);
-  }
-  30% {
-    opacity: 0.2 !important;
-    transform: scale(0.99);
-  }
-  50% {
-    opacity: 0.2 !important;
-    transform: scale(1.01);
-  }
-  100% {
-    opacity: 0.1 !important;
-    transform: scale(1);
-  }
-}

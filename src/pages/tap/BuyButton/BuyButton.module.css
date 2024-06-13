@@ -1,0 +1,17 @@
+.button {
+  border-radius: 10px;
+  border: 1px solid #fff;
+  background: linear-gradient(90deg, #00c6fb 0%, #005bea 100%);
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  padding: 12px;
+}
+
+.button span {
+  font-family: 'SF Pro Text';
+  font-size: 21px;
+  font-weight: 500;
+}
