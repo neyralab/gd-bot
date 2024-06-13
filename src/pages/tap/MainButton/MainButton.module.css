@@ -83,7 +83,7 @@
   30% {
     transform: scale(0.97);
   }
-  50% {
+  60% {
     transform: scale(1.03);
   }
   100% {
@@ -104,7 +104,7 @@
     opacity: 1 !important;
     transform: scale(0.95);
   }
-  50% {
+  60% {
     opacity: 1 !important;
     transform: scale(1.05);
   }
@@ -127,7 +127,7 @@
     opacity: 1 !important;
     transform: scale(0.95);
   }
-  40% {
+  60% {
     opacity: 1 !important;
     transform: scale(1.05);
   }
@@ -150,7 +150,7 @@
     opacity: 1 !important;
     transform: scale(0.96);
   }
-  50% {
+  60%{
     opacity: 1 !important;
     transform: scale(1.04);
   }
@@ -173,7 +173,7 @@
     opacity: 1 !important;
     transform: scale(0.97);
   }
-  50% {
+  60% {
     opacity: 1 !important;
     transform: scale(1.02);
   }
@@ -196,7 +196,7 @@
     opacity: 0.5 !important;
     transform: scale(0.98);
   }
-  50% {
+  60% {
     opacity: 0.5 !important;
     transform: scale(1.02);
   }
