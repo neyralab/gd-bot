@@ -80,11 +80,11 @@ bot.start(async (ctx) => {
   const shareButton = Markup.button.switchToChat(shareButtonText, referralLink);
   const uploadForAirdropButton = Markup.button.webApp(
     'Upload for Airdrop',
-    `${process.env.APP_FRONTEND_URL}/file-upload`
+    `${process.env.APP_FRONTEND_URL}file-upload`
   );
   const playForAirdropButton = Markup.button.webApp(
     'Play for Airdrop',
-    `${process.env.APP_FRONTEND_URL}/tap`
+    `${process.env.APP_FRONTEND_URL}tap`
   );
   const followXButton = Markup.button.url(
     'Follow X',
