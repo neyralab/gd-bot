@@ -5,15 +5,15 @@ import dotenv from 'dotenv';
 import fetch from 'node-fetch';
 import OpenAI from 'openai';
 
-const openai = new OpenAI({
-  baseURL: 'https://api.neyra.ai/api/v1/chat/completions',
-  apiKey: `${process.env.NEYRA_CHAT_KEY}`
-});
-
 dotenv.config();
 const app = express();
 const bot = new Telegraf(process.env.BOT_TOKEN_SECRET);
 const cache = {};
+
+const openai = new OpenAI({
+  baseURL: 'https://api.neyra.ai/api/v1',
+  apiKey: `${process.env.NEYRA_CHAT_KEY}`
+});
 
 bot.start(async (ctx) => {
   const refCode = ctx.startPayload;
