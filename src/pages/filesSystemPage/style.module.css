@@ -51,7 +51,15 @@
   align-items: center;
 }
 
-.wrapper__list__title {
+.listHeader {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 32px;
+}
+
+.listHeader__title {
   align-self: flex-start;
   color: #98989f;
   font-family: 'Open Sans';
@@ -60,7 +68,6 @@
   line-height: 150%;
   letter-spacing: 0.24px;
   text-transform: uppercase;
-  margin-top: 32px;
 }
 
 .options {
@@ -80,6 +87,9 @@
   overflow-y: scroll;
   overflow-x: hidden;
   scrollbar-width: 1px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
 }
 .filesList::-webkit-scrollbar {
   width: 1px;

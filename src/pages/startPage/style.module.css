@@ -370,9 +370,13 @@
 }
 
 .list_element {
+  min-height: 56px;
   padding: 16px 24px;
   border-radius: 16px;
   border: 0.5px dashed #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .list_element_text {
@@ -389,13 +393,13 @@
 }
 
 .list_element_amount {
-  opacity: 0.6;
   text-align: right;
-  font-family: Nunito;
-  font-size: 24px;
-  font-weight: 300;
-  letter-spacing: 0.24px;
-  text-transform: uppercase;
+  color: #fff;
+  font-family: 'SF Pro Text';
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 150%;
 }
 
 .list_element_button {
@@ -409,7 +413,7 @@
 }
 
 .footer_item_text {
-  color: rgba(255, 255, 255, 0.6);
+  color: rgba(255, 255, 255, 1);
   font-feature-settings: 'case' on;
   font-family: 'SF Pro Text';
   font-size: 14px;
@@ -426,6 +430,7 @@
   justify-content: center;
   flex: 1 0;
   gap: 12px;
+  opacity: 0.6;
 }
 
 .footer {

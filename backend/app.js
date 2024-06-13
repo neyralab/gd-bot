@@ -6,7 +6,7 @@ import fetch from 'node-fetch';
 import OpenAI from 'openai';
 
 const openai = new OpenAI({
-  baseURL: 'https://api.neyra.ai/api/v1',
+  baseURL: 'https://api.neyra.ai/api/v1/chat/completions',
   apiKey: `${process.env.NEYRA_CHAT_KEY}`
 });
 
@@ -190,6 +190,7 @@ bot.on('text', async (ctx) => {
       throw Error('no response');
     }
   } catch (e) {
+    console.log('error in chat:', e.message);
     ctx.reply('Sorry, chat is unavailable now. Please, try again later!');
   }
 });
