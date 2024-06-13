@@ -94,7 +94,7 @@ const Background = forwardRef(({ theme }, ref) => {
     <div
       className={classNames(
         styles.container,
-        theme === 'gold' ? styles.gold : styles.default
+        theme && styles[theme.id]
       )}>
       <div ref={starsRef} className={styles.stars}></div>
       <div ref={glowRef} className={styles.glow}></div>

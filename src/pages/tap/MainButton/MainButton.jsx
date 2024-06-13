@@ -1,7 +1,6 @@
 import React, { useRef, useImperativeHandle, forwardRef } from 'react';
 import classNames from 'classnames';
 import styles from './MainButton.module.css';
-import { getBrowserName } from '../../../utils/client';
 
 const MainButton = forwardRef(({ theme }, ref) => {
   const containerRef = useRef(null);
@@ -18,10 +17,8 @@ const MainButton = forwardRef(({ theme }, ref) => {
       frame1Ref,
       frame2Ref,
       frame3Ref,
-      frame4Ref,
+      frame4Ref
     ];
-
-
 
     // Clear any existing animations and start from the beginning
     items.forEach((itemRef, i) => {
@@ -45,12 +42,20 @@ const MainButton = forwardRef(({ theme }, ref) => {
       ref={containerRef}
       className={classNames(
         styles.container,
-        theme === 'gold' ? styles.gold : styles.default
+        theme && styles[theme.id]
       )}>
-      <div className={classNames(styles.frame, styles.frame1)} ref={frame1Ref}></div>
-      <div className={classNames(styles.frame, styles.frame2)} ref={frame2Ref}></div>
-      <div className={classNames(styles.frame, styles.frame3)} ref={frame3Ref}></div>
-      <div className={classNames(styles.frame, styles.frame4)} ref={frame4Ref}></div>
+      <div
+        className={classNames(styles.frame, styles.frame1)}
+        ref={frame1Ref}></div>
+      <div
+        className={classNames(styles.frame, styles.frame2)}
+        ref={frame2Ref}></div>
+      <div
+        className={classNames(styles.frame, styles.frame3)}
+        ref={frame3Ref}></div>
+      <div
+        className={classNames(styles.frame, styles.frame4)}
+        ref={frame4Ref}></div>
 
       <div className={styles['icon-container']}>
         <div className={styles.icon} ref={iconRef}></div>
