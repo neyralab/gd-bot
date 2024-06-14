@@ -105,7 +105,7 @@ export const StartPage = ({ onClose }) => {
       {
         Icon: PointsIcon,
         text: `Upgrade X${storage.multiplier}`,
-        amount: `${human.used} of ${human.total}`,
+        amount: `${human?.used} of ${human?.total}`,
         onClick: () => {
           navigate('/boost');
         }
@@ -143,7 +143,7 @@ export const StartPage = ({ onClose }) => {
       //   }
       // }
     ];
-  }, [navigate, storage.multiplier, human.used, human.total]);
+  }, [navigate, storage.multiplier, human?.used, human?.total]);
 
   const handleWsSelection = async (ws) => {
     await switchWorkspace(ws.workspace.id).then(() => {
