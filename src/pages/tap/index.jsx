@@ -120,8 +120,13 @@ export function TapPage() {
 
     if (soundIsActive) {
       setTimeout(() => {
-        clickSoundRef.current.play();
-      }, 2);
+        const playPromise = clickSoundRef.current.play();
+        if (playPromise !== undefined) {
+          playPromise.catch((e) => {
+            console.warn('Autoplay was prevented:', e);
+          });
+        }
+      }, 0);
     }
 
     // Update state and timers
