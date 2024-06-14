@@ -90,7 +90,13 @@ export function TapPage() {
     if (soundIsActive) {
       backgroundMusicRef.current.pause();
     } else {
-      backgroundMusicRef.current.play();
+      const playPromise = backgroundMusicRef.current.play();
+      if (playPromise !== undefined) {
+        playPromise.catch((e) => {
+          console.warn('Autoplay was prevented:', e);
+          setSoundIsActive(false);
+        });
+      }
     }
   };
 
