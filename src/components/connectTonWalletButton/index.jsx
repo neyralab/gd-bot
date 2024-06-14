@@ -41,7 +41,10 @@ export const ConnectTonWalletButton = ({ openDisconnectModal }) => {
         ) {
           const res = await saveUserWallet({
             tonProof: wallet?.connectItems.tonProof,
-            account: wallet?.account
+            account: {
+              ...wallet?.account,
+              uiAddress: address
+            }
           });
           console.log(wallet?.connectItems, { res });
         }
