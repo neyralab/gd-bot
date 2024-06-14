@@ -105,7 +105,7 @@ export const StartPage = ({ onClose }) => {
       {
         Icon: PointsIcon,
         text: `Upgrade X${storage.multiplier}`,
-        amount: `${human.used} of ${human.total}`,
+        amount: `${human?.used} of ${human?.total}`,
         onClick: () => {
           navigate('/boost');
         }
@@ -143,7 +143,7 @@ export const StartPage = ({ onClose }) => {
       //   }
       // }
     ];
-  }, [navigate, storage.multiplier, human.used, human.total]);
+  }, [navigate, storage.multiplier, human?.used, human?.total]);
 
   const handleWsSelection = async (ws) => {
     await switchWorkspace(ws.workspace.id).then(() => {
@@ -235,22 +235,7 @@ export const StartPage = ({ onClose }) => {
               </div>
             </div>
           </TelegramShareButton>
-        </button>
-
-        <div className={style.storage_block}>
-          <div className={style.storage_text_container}>
-            <p className={style.storage_text}>Storage</p>
-            <p className={style.storage_text}>
-              {human.used} of {human.total}
-            </p>
-          </div>
-          <div className={style.storage_usage_container}>
-            <div
-              className={style.storage_usage}
-              style={{ width: human.percent.label }}
-            />
-          </div>
-        </div> */}
+        </button>*/}
 
         <footer className={style.footer}>
           <div
