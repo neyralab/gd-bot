@@ -49,7 +49,7 @@ export const ConnectTonWalletButton = ({ openDisconnectModal }) => {
           console.log(wallet?.connectItems, { res });
         }
       }),
-    []
+    [address, tonConnectUI]
   );
 
   return (
