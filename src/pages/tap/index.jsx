@@ -1,25 +1,36 @@
 import React, { useEffect, useRef, useState } from 'react';
 import classNames from 'classnames';
 import { useTimer } from 'react-timer-hook';
+import { Link } from 'react-router-dom';
 
 import { Header } from '../../components/header_v2';
 import MainButton from './MainButton/MainButton';
-import ProgressBar from './ProgressBar/ProgressBar';
 import Background from './Background/Background';
 import BuyButton from './BuyButton/BuyButton';
 import themes from './themes';
-import styles from './styles.module.css';
 import PointsGrowArea from './PointsGrowArea/PointsGrowArea';
 import { ReactComponent as BatteryFull } from '../../assets/battery-full.svg';
 import { ReactComponent as BatteryEmpty } from '../../assets/battery-empty.svg';
+import { ReactComponent as LeaderBoard } from '../../assets/social_leaderboard.svg';
+import { ReactComponent as VolumeOff } from '../../assets/volume_off.svg';
+import { ReactComponent as VolumeOn } from '../../assets/volume_up.svg';
+import styles from './styles.module.css';
 
 export function TapPage() {
+  const [soundIsActive, setSoundIsActive] = useState(
+    localStorage.getItem('gameSound')
+      ? localStorage.getItem('gameSound') === 'true'
+      : true
+  );
+  const backgroundMusicRef = useRef(new Audio('/assets/tap-page/ghost.mp3'));
+  const clickSoundRef = useRef(new Audio('/assets/tap-page/2blick.wav'));
+
   const backgroundRef = useRef();
   const pointsAreaRef = useRef();
   const mainButtonRef = useRef();
 
   const [theme, setTheme] = useState(themes[0]);
-  const [status, setStatus] = useState('init'); // 'waiting', 'playing', 'finished';
+  const [status, setStatus] = useState('waiting'); // 'waiting', 'playing', 'finished';
   const [clickedPoints, setClickedPoints] = useState(0);
 
   const lockTimer = useTimer({
@@ -33,7 +44,7 @@ export function TapPage() {
     onExpire: () => {
       console.warn('onExpire called');
       const lockTime = new Date();
-      lockTime.setSeconds(lockTime.getSeconds() + 10800); // 1 minutes timer
+      lockTime.setSeconds(lockTime.getSeconds() + 10800);
       lockTimer.restart(lockTime);
     },
     autoStart: false
@@ -49,6 +60,40 @@ export function TapPage() {
     }
   }, [lockTimer.isRunning, clickTimer.isRunning]);
 
+  useEffect(() => {
+    backgroundMusicRef.current.loop = true;
+
+    if (soundIsActive) {
+      const playPromise = backgroundMusicRef.current.play();
+      if (playPromise !== undefined) {
+        playPromise.catch((e) => {
+          console.warn('Autoplay was prevented:', e);
+          setSoundIsActive(false);
+        });
+      }
+    }
+
+    return () => {
+      backgroundMusicRef.current.pause();
+      backgroundMusicRef.current.currentTime = 0;
+      clickSoundRef.current.pause();
+      clickSoundRef.current.currentTime = 0;
+    };
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem('gameSound', soundIsActive);
+  }, [soundIsActive]);
+
+  const togglePlay = () => {
+    setSoundIsActive(!soundIsActive);
+    if (soundIsActive) {
+      backgroundMusicRef.current.pause();
+    } else {
+      backgroundMusicRef.current.play();
+    }
+  };
+
   const clickHandler = (e) => {
     e.preventDefault();
     e.stopPropagation();
@@ -57,10 +102,21 @@ export function TapPage() {
       return;
     }
 
+    // Run animations
     mainButtonRef.current.runAnimation();
     backgroundRef.current.runAnimation();
     pointsAreaRef.current.runAnimation();
 
+    // Run sounds
+    if (clickSoundRef.current && !clickSoundRef.current.ended) {
+      clickSoundRef.current.pause();
+      clickSoundRef.current.currentTime = 0;
+    }
+    if (soundIsActive) {
+      clickSoundRef.current.play();
+    }
+
+    // Update state and timers
     setClickedPoints((prevState) => prevState + theme.multiplier);
     if (!clickTimer.isRunning) {
       const time = new Date();
@@ -120,16 +176,35 @@ export function TapPage() {
 
           <div className={styles['actions-container']}>
             {status !== 'finished' && (
-              <span className={styles['actions-description']}>Tap to play</span>
+              <span className={styles['actions-description-1']}>
+                Tap to play
+              </span>
             )}
             {status === 'finished' && (
               <div className={styles['actions-flex']}>
                 <BuyButton theme={theme} onCompleted={completedHandler} />
-                <span className={styles['actions-description']}>
+                <span className={styles['actions-description-2']}>
                   recharge & play
                 </span>
               </div>
             )}
+          </div>
+
+          <div className={styles['extra-actions-container']}>
+            {status === 'finished' && (
+              <Link to={'/leadboard'} className={styles['extra-action']}>
+                <LeaderBoard />
+                <span>Winners</span>
+              </Link>
+            )}
+
+            <button
+              type="button"
+              className={styles['extra-action']}
+              onClick={togglePlay}>
+              {soundIsActive ? <VolumeOn /> : <VolumeOff />}
+              <span>{soundIsActive ? 'Sound Off' : 'Sound On'}</span>
+            </button>
           </div>
         </div>
       </div>

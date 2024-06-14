@@ -12,6 +12,7 @@ export default function BuyButton({ theme, onCompleted }) {
 
     if (index < 0) return;
 
+    // If the current theme is the last, then return the very first one
     if (index === themes.length - 1) {
       return themes[0];
     }
