@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import CN from 'classnames';
 import CountUp from 'react-countup';
-import { TelegramShareButton } from 'react-share';
+// import { TelegramShareButton } from 'react-share';
 
 import {
   selectAllWorkspaces,
@@ -25,21 +25,22 @@ import GhostLoader from '../../components/ghostLoader';
 import { ConnectTonWalletButton } from '../../components/connectTonWalletButton';
 import { DisconnectWalletModal } from '../../components/disconnectWalletModal';
 
+import { ReactComponent as ArrowIcon } from '../../assets/arrow_right.svg';
+import { ReactComponent as HardDriveIcon } from '../../assets/hard_drive.svg';
+import { ReactComponent as TaskIcon } from '../../assets/task.svg';
+import { ReactComponent as LeadboardIcon } from '../../assets/leadboard.svg';
+import { ReactComponent as PointsIcon } from '../../assets/point.svg';
 // import { ReactComponent as UploadIcon } from '../../assets/upload.svg';
 // import { ReactComponent as UpgradeIcon } from '../../assets/upgrade.svg';
 // import { ReactComponent as GhostIcon } from '../../assets/ghost.svg';
-import { ReactComponent as ArrowIcon } from '../../assets/arrow_right.svg';
-import { ReactComponent as HardDriveIcon } from '../../assets/hard_drive.svg';
 // import { ReactComponent as MoneyIcon } from '../../assets/money.svg';
 // import { ReactComponent as RefIcon } from '../../assets/ref.svg';
-import { ReactComponent as UploadFileIcon } from '../../assets/uploadFile.svg';
+// import { ReactComponent as UploadFileIcon } from '../../assets/uploadFile.svg';
 // import { ReactComponent as DriveIcon } from '../../assets/drive.svg';
-import { ReactComponent as BoostIcon } from '../../assets/boost.svg';
-import { ReactComponent as TaskIcon } from '../../assets/task.svg';
-import { ReactComponent as ReferralIcon } from '../../assets/referral.svg';
-import { ReactComponent as LeadboardIcon } from '../../assets/leadboard.svg';
-import { ReactComponent as LargeTelegramIcon } from '../../assets/large_telegram.svg';
-import { ReactComponent as InviteBackgroundIcon } from '../../assets/invite_background.svg';
+// import { ReactComponent as BoostIcon } from '../../assets/boost.svg';
+// import { ReactComponent as ReferralIcon } from '../../assets/referral.svg';
+// import { ReactComponent as LargeTelegramIcon } from '../../assets/large_telegram.svg';
+// import { ReactComponent as InviteBackgroundIcon } from '../../assets/invite_background.svg';
 
 import style from './style.module.css';
 
@@ -61,43 +62,6 @@ export const StartPage = ({ onClose }) => {
     };
   }, [user?.space_total]);
 
-  const list = useMemo(() => {
-    return [
-      {
-        Icon: UploadFileIcon,
-        text: 'Upload & Reward',
-        amount: '+50',
-        onClick: () => {
-          navigate('/file-upload');
-        }
-      },
-      // {
-      //   Icon: DriveIcon,
-      //   text: 'Drive',
-      //   amount: storage.size,
-      //   onClick: () => {
-      //     navigate('/ghostdrive-upload');
-      //   }
-      // },
-      {
-        Icon: BoostIcon,
-        text: 'Multiplier',
-        amount: `X${storage.multiplier}`,
-        onClick: () => {
-          navigate('/boost');
-        }
-      },
-      {
-        Icon: TaskIcon,
-        text: 'Tasks',
-        amount: '5',
-        onClick: () => {
-          navigate('/task');
-        }
-      }
-    ];
-  }, [navigate, storage.multiplier]);
-
   const human = useMemo(() => {
     if (!user) return;
     const { space_total, storage } = user;
@@ -111,6 +75,75 @@ export const StartPage = ({ onClose }) => {
       percent: { label: `${percent || 1}%`, value: percent }
     };
   }, [user]);
+
+  const list = useMemo(() => {
+    return [
+      {
+        Icon: TaskIcon,
+        text: 'Daily Tasks',
+        amount: '',
+        onClick: () => {
+          navigate('/task');
+        }
+      },
+      {
+        Icon: LeadboardIcon,
+        text: 'Leadboard',
+        amount: '',
+        onClick: () => {
+          navigate('/leadboard');
+        }
+      },
+      {
+        Icon: PointsIcon,
+        text: 'Point Tracker',
+        amount: '',
+        onClick: () => {
+          navigate('/point-tracker');
+        }
+      },
+      {
+        Icon: PointsIcon,
+        text: `Upgrade X${storage.multiplier}`,
+        amount: `${human.used} of ${human.total}`,
+        onClick: () => {
+          navigate('/boost');
+        }
+      }
+      // {
+      //   Icon: UploadFileIcon,
+      //   text: 'Upload & Reward',
+      //   amount: '+50',
+      //   onClick: () => {
+      //     navigate('/file-upload');
+      //   }
+      // },
+      // {
+      //   Icon: DriveIcon,
+      //   text: 'Drive',
+      //   amount: storage.size,
+      //   onClick: () => {
+      //     navigate('/ghostdrive-upload');
+      //   }
+      // },
+      // {
+      //   Icon: BoostIcon,
+      //   text: 'Multiplier',
+      //   amount: `X${storage.multiplier}`,
+      //   onClick: () => {
+      //     navigate('/boost');
+      //   }
+      // },
+      // {
+      //   Icon: TaskIcon,
+      //   text: 'Play & Earn',
+      //   amount: '',
+      //   onClick: () => {
+      //     navigate('/tap');
+      //   }
+      // }
+    ];
+  }, [navigate, storage.multiplier, human.used, human.total]);
 
   const handleWsSelection = async (ws) => {
     await switchWorkspace(ws.workspace.id).then(() => {
@@ -143,15 +176,6 @@ export const StartPage = ({ onClose }) => {
       </div>
     );
   }
-
-  const onInvite = () => {
-    onClose?.();
-    window.open(link.copy);
-  };
-
-  const onRef = () => {
-    navigate('/ref');
-  };
 
   const onBalance = () => {
     navigate('/balance');
@@ -194,54 +218,60 @@ export const StartPage = ({ onClose }) => {
           </div>
         ))}
       </div>
+      <div className={style.bottom}>
+        {/* <button className={style.invite_button}>
+          <TelegramShareButton
+            className={style.telegram_share}
+            title={'Share this link with friends'}
+            url={link.copy}>
+            <InviteBackgroundIcon className={style.invite_background} />
+            <div className={style.invite_block}>
+              <div className={style.invite_right}>
+                <LargeTelegramIcon />
+              </div>
+              <div className={style.invite_left}>
+                <h4 className={CN(style.invite_get)}>Invite & Get Points</h4>
+                <span className={style.invite_amount}>1,000</span>
+              </div>
+            </div>
+          </TelegramShareButton>
+        </button>
 
-      <button className={style.invite_button}>
-        <TelegramShareButton
-          className={style.telegram_share}
-          title={'Share this link with friends'}
-          url={link.copy}>
-          <InviteBackgroundIcon className={style.invite_background} />
-          <div className={style.invite_block}>
-            <div className={style.invite_left}>
-              <h4 className={CN(style.invite_get)}>Invite & Get Points</h4>
-              <span className={style.invite_amount}>1,000</span>
-            </div>
-            <div className={style.invite_right}>
-              <LargeTelegramIcon />
-            </div>
+        <div className={style.storage_block}>
+          <div className={style.storage_text_container}>
+            <p className={style.storage_text}>Storage</p>
+            <p className={style.storage_text}>
+              {human.used} of {human.total}
+            </p>
           </div>
-        </TelegramShareButton>
-      </button>
+          <div className={style.storage_usage_container}>
+            <div
+              className={style.storage_usage}
+              style={{ width: human.percent.label }}
+            />
+          </div>
+        </div> */}
 
-      <div className={style.storage_block}>
-        <div className={style.storage_text_container}>
-          <p className={style.storage_text}>Storage</p>
-          <p className={style.storage_text}>
-            {human.used} of {human.total}
-          </p>
-        </div>
-        <div className={style.storage_usage_container}>
+        <footer className={style.footer}>
           <div
-            className={style.storage_usage}
-            style={{ width: human.percent.label }}
-          />
-        </div>
+            onClick={() => {
+              navigate('/file-upload');
+            }}
+            className={style.footer_item}>
+            <PointsIcon />
+            <span className={style.footer_item_text}>Upload for Airdrop</span>
+          </div>
+          <div
+            className={style.footer_item}
+            onClick={() => {
+              navigate('/tap');
+            }}>
+            <LeadboardIcon />
+            <span className={style.footer_item_text}>Taping for Airdop</span>
+          </div>
+        </footer>
       </div>
 
-      <footer className={style.footer}>
-        <div onClick={onRef} className={style.footer_item}>
-          <ReferralIcon />
-          <span className={style.footer_item_text}>Task Center</span>
-        </div>
-        <div
-          className={style.footer_item}
-          onClick={() => {
-            navigate('/leadboard');
-          }}>
-          <LeadboardIcon />
-          <span className={style.footer_item_text}>Leadboard</span>
-        </div>
-      </footer>
       {disconnectWalletModal && (
         <DisconnectWalletModal
           isOpen={disconnectWalletModal}

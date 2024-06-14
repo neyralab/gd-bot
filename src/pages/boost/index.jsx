@@ -6,6 +6,8 @@ import {
   useTonConnectUI,
   useTonWallet
 } from '@tonconnect/ui-react';
+import { toast } from 'react-toastify';
+import TonWeb from 'tonweb';
 
 import { Header } from '../../components/header';
 // import { Button } from '../../components/button';
@@ -25,7 +27,6 @@ import { ReactComponent as Diamond } from '../../assets/diamond.svg';
 // import { ReactComponent as PayIcon } from '../../assets/pay_ton.svg';
 
 import styles from './styles.module.css';
-import { toast } from 'react-toastify';
 
 const multipliers = {
   1: <X3 className={styles.multiplier} />,
@@ -66,7 +67,16 @@ export const BoostPage = ({ tariffs }) => {
         workspace_id: ws.id,
         storage_id: el?.id
       };
-      const recipientWallet = await getTonWallet(dispatch, paymentInfo);
+      const { address: recipientWallet, memo } = await getTonWallet(
+        dispatch,
+        paymentInfo
+      );
+      const cell = new TonWeb.boc.Cell();
+      cell.bits.writeUint(0, 32);
+      cell.bits.writeString('343831785' || memo);
+      const boc = await cell.toBoc();
+      const payload = TonWeb.utils.bytesToBase64(boc);
+      console.log({ payload, memo });
       if (wallet) {
         if (recipientWallet) {
           const transaction = {
@@ -74,7 +84,8 @@ export const BoostPage = ({ tariffs }) => {
             messages: [
               {
                 address: recipientWallet,
-                amount: el?.ton_price * 1000000000
+                amount: el?.ton_price * 1000000000,
+                payload
               }
             ]
           };
@@ -121,7 +132,9 @@ export const BoostPage = ({ tariffs }) => {
             </p>
           </div>
           <div className={styles.cost}>
-            <p className={styles.cost_value}>{currentPrice?.ton_price || '0'}</p>
+            <p className={styles.cost_value}>
+              {currentPrice?.ton_price || '0'}
+            </p>
             <Diamond className={styles.current_diamond} />
           </div>
         </div>

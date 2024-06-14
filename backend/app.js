@@ -2,15 +2,20 @@ import express from 'express';
 import { Telegraf, Markup } from 'telegraf';
 import fs from 'fs';
 import dotenv from 'dotenv';
-import fetch from 'node-fetch'; // Import node-fetch to make fetch work in Node.js
+import fetch from 'node-fetch';
+import OpenAI from 'openai';
 
 dotenv.config();
 const app = express();
 const bot = new Telegraf(process.env.BOT_TOKEN_SECRET);
 const cache = {};
 
+const openai = new OpenAI({
+  baseURL: 'https://api.neyra.ai/api/v1',
+  apiKey: `${process.env.NEYRA_CHAT_KEY}`
+});
+
 bot.start(async (ctx) => {
-  const header = "<b>Let's get started!</b>";
   const refCode = ctx.startPayload;
   const user = ctx.from;
   const userData = {
@@ -24,7 +29,6 @@ bot.start(async (ctx) => {
 
   // Cache userData by user.id
   const cacheKey = userData.id;
- 
   let cachedUserData = cache[cacheKey];
   cachedUserData = null;
 
@@ -37,19 +41,15 @@ bot.start(async (ctx) => {
         userData
       });
 
-      const response = await fetch(
-          url,
-          {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'client-id': process.env.GD_CLIENT_ID,
-              'client-secret': process.env.GD_CLIENT_SECRET
-            },
-            body: JSON.stringify(userData)
-          }
-      );
-
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'client-id': process.env.GD_CLIENT_ID,
+          'client-secret': process.env.GD_CLIENT_SECRET
+        },
+        body: JSON.stringify(userData)
+      });
 
       if (!response.ok) {
         console.error('Failed to create user');
@@ -66,29 +66,43 @@ bot.start(async (ctx) => {
 
   const data = cachedUserData;
   const referralLink = `https://t.me/${process.env.BOT_NAME}?start=${data?.coupon?.code}`;
-  const welcomeText = 'Join the Ghostdrive Community!';
-  const activitiesText = 'Ghostdrive is the #1 Telegram Drive – easy to use, upload files, and get rewarded!\n\n' +
-    '💰 $6 Million Airdrop: Earn points and upgrade your account to boost your rewards.\n' +
-    '🎮 Tap Game: Have fun and earn more points with our exciting tap game.\n' +
-    '🔗 Filecoin Integration: Enjoy seamless integration with the Filecoin network.\n' +
-    '👥 Invite Friends: Earn points for every friend you invite.\n\n' +
-    'Get started with Ghostdrive today and be part of the future of decentralized storage on Ton chain!';
+  const header =
+    '<b>Welcome to Ghostdrive – The Ultimate Drive for the TON Ecosystem!</b>';
+  const activitiesText =
+    'Experience the easiest way to upload files, share content with friends, and earn rewards!\n\n' +
+    '<b>$6 Million Airdrop:</b> Upload files to earn points, reach the highest levels, and boost your rewards with our fun tap game.\n\n' +
+    '<b>50 GB Giveaways:</b> Access over 400 million TB of storage from the Filecoin network. Invite friends and earn even more!\n\n' +
+    '<b>Join Ghostdrive today and get started!</b>';
   const buttonText = 'Open GhostDrive';
   const buttonUrl = process.env.APP_FRONTEND_URL;
   const button = Markup.button.webApp(buttonText, buttonUrl);
-  const shareButtonText = 'Share Referral Link';
-  const shareButton = Markup.button.switchToChat(
-    shareButtonText,
-    referralLink
+  const shareButtonText = 'Share Link';
+  const shareButton = Markup.button.switchToChat(shareButtonText, referralLink);
+  const uploadForAirdropButton = Markup.button.webApp(
+    'Upload for Airdrop',
+    `${process.env.APP_FRONTEND_URL}file-upload`
+  );
+  const playForAirdropButton = Markup.button.webApp(
+    'Play for Airdrop',
+    `${process.env.APP_FRONTEND_URL}tap`
+  );
+  const followXButton = Markup.button.url(
+    'Follow X',
+    `https://twitter.com/ghostdrive_web3`
   );
 
   ctx.replyWithPhoto(
     { source: fs.createReadStream('./assets/start.png') },
     {
-      caption: `${header}\n\n${welcomeText}\n\n${activitiesText}\n\nSend this referral link to your friends ⤵️\n${referralLink}`,
+      caption: `${header}\n\n${activitiesText}`,
       parse_mode: 'HTML',
       reply_markup: {
-        inline_keyboard: [[button], [shareButton]]
+        inline_keyboard: [
+          [uploadForAirdropButton],
+          [playForAirdropButton],
+          [followXButton],
+          [shareButton]
+        ]
       }
     }
   );
@@ -98,7 +112,8 @@ let cachedPointsData = null;
 let lastFetchTime = null;
 
 async function fetchPointsData() {
-  if (!cachedPointsData || Date.now() - lastFetchTime > 600000) { // 10 minutes in milliseconds
+  if (!cachedPointsData || Date.now() - lastFetchTime > 600000) {
+    // 10 minutes in milliseconds
     const response = await fetch(`${process.env.GD_BACKEND_URL}/api/gd/points`);
     if (!response.ok) {
       throw new Error('Failed to fetch points data');
@@ -159,6 +174,24 @@ Ends by Aug 16`;
     ctx.reply(termsMessage, extra);
   } catch (error) {
     ctx.reply(`Error: ${error.message}`);
+  }
+});
+
+bot.on('text', async (ctx) => {
+  try {
+    const completion = await openai.chat.completions.create({
+      model: 'neyra/1D',
+      stream: false,
+      messages: [{ role: 'user', content: ctx.message.text }]
+    });
+    if (completion?.choices[0]?.message?.content) {
+      ctx.reply(completion.choices[0].message.content);
+    } else {
+      throw Error('no response');
+    }
+  } catch (e) {
+    console.log('error in chat:', e.message);
+    ctx.reply('Sorry, chat is unavailable now. Please, try again later!');
   }
 });
 

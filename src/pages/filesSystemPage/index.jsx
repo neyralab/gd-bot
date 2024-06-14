@@ -1,10 +1,13 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 
 import {
+  changeFileView,
   clearFiles,
   selecSelectedFile,
+  selectFileView,
   selectFiles,
   selectFilesCount,
   selectFilesPage,
@@ -21,12 +24,16 @@ import { FileItem } from '../../components/fileItem';
 import GhostLoader from '../../components/ghostLoader';
 import InfiniteScrollComponent from '../../components/infiniteScrollComponent';
 
+import { ReactComponent as GridIcon } from '../../assets/grid_view.svg';
+import { ReactComponent as ListIcon } from '../../assets/list_view.svg';
 import { ReactComponent as ArrowIcon } from '../../assets/arrow_right.svg';
 import { ReactComponent as CircleCloudIcon } from '../../assets/cloud_circle.svg';
 import { ReactComponent as CirclePictureIcon } from '../../assets/picture_circle.svg';
 import { ReactComponent as FileIcon } from '../../assets/file_draft.svg';
 
 import style from './style.module.css';
+
+const MAX_FILE_SIZE = 268435456;
 
 export const FilesSystemPage = () => {
   const navigate = useNavigate();
@@ -36,6 +43,7 @@ export const FilesSystemPage = () => {
   const files = useSelector(selectFiles);
   const filesCount = useSelector(selectFilesCount);
   const filesPage = useSelector(selectFilesPage);
+  const view = useSelector(selectFileView);
   const [areFilesLoading, setAreFilesLoading] = useState(false);
   const checkedFile = useSelector(selecSelectedFile);
 
@@ -48,8 +56,20 @@ export const FilesSystemPage = () => {
   };
 
   const handleFileUpload = async (event) => {
-    setAreFilesLoading(true);
     const files = event.target.files;
+    if (files[0].size > MAX_FILE_SIZE) {
+      clearInputsAfterUpload();
+      toast.info(
+        'Max file size to upload is reached. You can not upload files larger than 256MB',
+        {
+          theme: 'colored',
+          position: 'bottom-center',
+          autoClose: 5000
+        }
+      );
+      return;
+    }
+    setAreFilesLoading(true);
     await uploadFileEffect({ files, dispatch });
     setAreFilesLoading(false);
     clearInputsAfterUpload();
@@ -79,6 +99,14 @@ export const FilesSystemPage = () => {
     } else {
       dispatch(handleFileMenu(true));
       dispatch(setSelectedFile(file));
+    }
+  };
+
+  const onFileViewChange = () => {
+    if (view === 'grid') {
+      dispatch(changeFileView('list'));
+    } else {
+      dispatch(changeFileView('grid'));
     }
   };
 
@@ -124,28 +152,34 @@ export const FilesSystemPage = () => {
             />
           </li>
         </ul>
-        <p className={style.wrapper__list__title}>Recently sent files</p>
+        <div className={style.listHeader}>
+          <p className={style.listHeader__title}>Recently sent files</p>
+          <button
+            className={style.listHeader__viewBtn}
+            onClick={onFileViewChange}>
+            {view === 'grid' ? <ListIcon /> : <GridIcon />}
+          </button>
+        </div>
         {areFilesLoading ? (
           <div className={style.loaderWrapper}>
             <GhostLoader texts={['Uploading']} />
           </div>
         ) : files.length ? (
-          <ul className={`${style.options} ${style.filesList}`}>
-            <InfiniteScrollComponent
-              totalItems={filesCount}
-              files={files}
-              fetchMoreFiles={fetchMoreFiles}>
+          <InfiniteScrollComponent
+            totalItems={filesCount}
+            files={files}
+            fetchMoreFiles={fetchMoreFiles}>
+            <ul className={`${style.options} ${style.filesList}`}>
               {files.map((file) => (
                 <FileItem
                   file={file}
                   key={file.id}
                   checkedFile={checkedFile}
                   callback={onFileSelect}
-                  fileView={'list'}
                 />
               ))}
-            </InfiniteScrollComponent>
-          </ul>
+            </ul>
+          </InfiniteScrollComponent>
         ) : (
           <div className={style.emptyFilesPage}>
             <FileIcon />

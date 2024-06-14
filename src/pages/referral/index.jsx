@@ -85,7 +85,7 @@ export const Referral = () => {
 
   return (
     <div className={styles.container}>
-      <Header label="Task Center" />
+      <Header label="Point Tracker" />
       <div className={styles.tabs}>
         {Object.keys(tabList).map((el, index) => (
           <Tab

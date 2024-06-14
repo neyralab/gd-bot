@@ -1,0 +1,28 @@
+.container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.points {
+  position: absolute;
+  color: white;
+  animation: PointsAnimation 1s linear forwards;
+  opacity: 0;
+  will-change: opacity;
+}
+
+@keyframes PointsAnimation {
+  0% {
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.8;
+  }
+  50% {
+    opacity: 0.8;
+  }
+  100% {
+    opacity: 0;
+  }
+}

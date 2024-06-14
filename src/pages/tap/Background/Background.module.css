@@ -16,10 +16,10 @@
   top: 0;
   left: 0;
 
-  background-image: url('../../../assets/tap-page/stars.png');
   background-repeat: repeat;
   background-size: 200%;
   background-position: 50% 0;
+  will-change: background-position;
 }
 
 .glow {
@@ -32,6 +32,7 @@
   background-repeat: repeat;
   background-size: 100%;
   background-position: 50% 0;
+  will-change: background-position;
 }
 
 @media (min-width: 600px) {
@@ -47,11 +48,11 @@
   top: 0;
   left: 0;
 
-  background-image: url('../../../assets/tap-page/object1.png');
   background-repeat: repeat;
   background-size: 100%;
   background-position: 50% 0;
-  transform: rotate(-25deg) translateY(4%) scale(1.08);
+  transform: rotate(-25deg) translateY(1%) scale(1.15);
+  will-change: background-position;
 }
 
 .object2 {
@@ -61,11 +62,11 @@
   top: 0;
   left: 0;
 
-  background-image: url('../../../assets/tap-page/object2.png');
   background-repeat: repeat;
   background-size: 100%;
   background-position: 50% 0;
-  transform: rotate(15deg) translateY(3%) scale(1.05);
+  transform: rotate(15deg) translateY(0%) scale(1.12);
+  will-change: background-position;
 }
 
 .planet {
@@ -79,20 +80,5 @@
   background-size: 100%;
   background-position: 50% 0;
   transform: translateX(40%);
-}
-
-.container.default .glow {
-  background-image: url('../../../assets/tap-page/glow-blue.png');
-}
-
-.container.gold .glow {
-  background-image: url('../../../assets/tap-page/glow-gold.png');
-}
-
-.container.default .planet {
-  background-image: url('../../../assets/tap-page/planet-blue.png');
-}
-
-.container.gold .planet {
-  background-image: url('../../../assets/tap-page/planet-gold.png');
+  will-change: background-position;
 }
