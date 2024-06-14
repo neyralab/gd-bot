@@ -38,8 +38,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-
-  gap: 18px;
+  justify-content: space-between;
   flex-shrink: 0;
 }
 
@@ -56,6 +55,7 @@
   font-feature-settings:
     'clig' off,
     'liga' off;
+  flex-shrink: 0;
 }
 
 .main-button-container {
@@ -79,6 +79,11 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+
+  touch-action: manipulation;
+  user-select: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .description strong {
@@ -111,10 +116,19 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  flex-shrink: 0;
+  position: relative;
 }
 
-.actions-description {
+.actions-description-1 {
   text-transform: uppercase;
+  font-size: 19px;
+}
+
+.actions-description-2 {
+  text-transform: uppercase;
+  font-size: 14px;
+  font-weight: 300;
 }
 
 .actions-flex {
@@ -151,4 +165,49 @@
   position: absolute;
   top: calc(50% - 100px);
   z-index: 1;
+
+  touch-action: manipulation;
+  user-select: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.extra-actions-container {
+  position: relative;
+  display: flex;
+  flex-shrink: 0;
+  gap: 32px;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  padding-top: 24px;
+  height: calc(58px + 24px);
+}
+
+.extra-action {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  flex-shrink: 0;
+  color: white;
+}
+
+.extra-action svg {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+}
+
+.extra-action span {
+  color: white;
+  text-transform: uppercase;
+  text-decoration: none;
+
+  font-family: 'SF Pro Text';
+  font-size: 18px;
+  font-weight: 500;
 }
