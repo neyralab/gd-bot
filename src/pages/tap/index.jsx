@@ -117,8 +117,11 @@ export function TapPage() {
       clickSoundRef.current.pause();
       clickSoundRef.current.currentTime = 0;
     }
+
     if (soundIsActive) {
-      clickSoundRef.current.play();
+      setTimeout(() => {
+        clickSoundRef.current.play();
+      }, 2);
     }
 
     // Update state and timers
