@@ -43,19 +43,21 @@
 }
 
 .balance {
-  padding: 0 16px;
+  padding: 8px 16px;
+  height: 64px;
   border-radius: 7px;
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(4px);
   color: #fff;
   text-align: center;
   font-family: 'Digital Numbers';
-  font-size: 64px;
+  font-size: 44px;
   font-weight: 400;
   font-feature-settings:
     'clig' off,
     'liga' off;
   flex-shrink: 0;
+  line-height: 1;
 }
 
 .main-button-container {
@@ -194,6 +196,11 @@
   text-decoration: none;
   flex-shrink: 0;
   color: white;
+
+  touch-action: manipulation;
+  user-select: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .extra-action svg {

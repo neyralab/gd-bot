@@ -15,7 +15,7 @@
 
 @font-face {
   font-family: 'Digital Numbers';
-  src: local('Digital Numbers'), url(./assets/fonts/digital-7.ttf) format('truetype');
+  src: local('Digital Numbers'), url(./assets/fonts/DigitalNumbers-Regular.ttf) format('truetype');
 }
 
 * {
