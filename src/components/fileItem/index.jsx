@@ -14,6 +14,7 @@ import imageFileExtensions, {
 import CustomFileSmallIcon from '../../components/customFileIcon/CustomFileSmallIcon';
 import CustomFileIcon from '../../components/customFileIcon';
 import { ReactComponent as DotsIcon } from '../../assets/dots.svg';
+import { ReactComponent as FavoriteIcon } from '../../assets/favorite.svg';
 
 import style from './style.module.css';
 
@@ -43,6 +44,17 @@ export const FileItem = ({
     }
   }, []);
 
+  const FavButton = (
+    <button
+      className={cn(
+        style.fileMenuButton,
+        view === 'grid' ? style.favBtnGrid : style.favBtnList
+      )}
+      onClick={() => {}}>
+      <FavoriteIcon />
+    </button>
+  );
+
   const MenuButton = (
     <button
       className={cn(style.fileMenuButton, isFileChecked && style.selectedFile)}
@@ -55,6 +67,7 @@ export const FileItem = ({
     <>
       {view === 'grid' ? (
         <li className={style.fileSquare} id={file.id}>
+          {FavButton}
           {MenuButton}
           <div className={style.previewWrapper}>
             {preview ? (
@@ -80,6 +93,7 @@ export const FileItem = ({
         </li>
       ) : (
         <li className={style.fileList}>
+          {FavButton}
           {MenuButton}
           <div className={style.fileListPreview}>
             {preview ? (
