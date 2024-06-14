@@ -94,7 +94,6 @@ export function TapPage() {
       if (playPromise !== undefined) {
         playPromise.catch((e) => {
           console.warn('Autoplay was prevented:', e);
-          setSoundIsActive(false);
         });
       }
     }
