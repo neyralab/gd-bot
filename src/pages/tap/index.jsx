@@ -94,7 +94,6 @@ export function TapPage() {
       if (playPromise !== undefined) {
         playPromise.catch((e) => {
           console.warn('Autoplay was prevented:', e);
-          setSoundIsActive(false);
         });
       }
     }
@@ -118,8 +117,16 @@ export function TapPage() {
       clickSoundRef.current.pause();
       clickSoundRef.current.currentTime = 0;
     }
+
     if (soundIsActive) {
-      clickSoundRef.current.play();
+      setTimeout(() => {
+        const playPromise = clickSoundRef.current.play();
+        if (playPromise !== undefined) {
+          playPromise.catch((e) => {
+            console.warn('Autoplay was prevented:', e);
+          });
+        }
+      }, 0);
     }
 
     // Update state and timers
