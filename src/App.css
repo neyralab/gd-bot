@@ -3,7 +3,19 @@
 
 @font-face {
   font-family: 'SF Pro Text';
+  font-weight: 500;
   src: local('SF Pro Text'), url(./assets/fonts/sf-pro-text.woff) format('woff');
+}
+
+@font-face {
+  font-family: 'SF Pro Text';
+  font-weight: 200;
+  src: local('SF Pro Text'), url(./assets/fonts/SF-Pro-Display-Thin.otf) format('opentype');
+}
+
+@font-face {
+  font-family: 'Digital Numbers';
+  src: local('Digital Numbers'), url(./assets/fonts/digital-7.ttf) format('truetype');
 }
 
 * {

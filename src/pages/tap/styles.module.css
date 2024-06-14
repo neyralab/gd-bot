@@ -34,34 +34,25 @@
 }
 
 .balance-container {
+  height: 105px;
   display: flex;
   flex-direction: column;
   align-items: center;
 
-  gap: 12px;
+  gap: 18px;
   flex-shrink: 0;
-}
-
-.balance-container strong {
-  color: #fff;
-  font-family: 'SF Pro Text';
-  font-size: 16px;
-  font-weight: 400;
-  letter-spacing: 0.16px;
-  opacity: 0.7;
-  text-transform: uppercase;
 }
 
 .balance {
   padding: 0 16px;
   border-radius: 7px;
   background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(3.65px);
+  backdrop-filter: blur(4px);
   color: #fff;
   text-align: center;
-  font-family: 'SF Pro Text';
+  font-family: 'Digital Numbers';
   font-size: 64px;
-  font-weight: 600;
+  font-weight: 400;
   font-feature-settings:
     'clig' off,
     'liga' off;
@@ -79,6 +70,31 @@
   position: relative;
 }
 
+.description {
+  position: absolute;
+  top: calc(50% + 60px);
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.description strong {
+  font-family: 'SF Pro Text';
+  font-size: 16px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.description span {
+  font-family: 'SF Pro Text';
+  font-size: 21px;
+  font-weight: 100;
+  text-transform: uppercase;
+}
+
 .points-grow-area-container {
   position: absolute;
   top: -10%;
@@ -87,35 +103,37 @@
   height: 50%;
 }
 
-.experience-container {
-  padding: 6px;
+.actions-container {
+  height: 78px;
   width: 100%;
   max-width: 400px;
-  padding-top: 16px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
 
-.description {
-  margin-bottom: 16px;
+.actions-description {
   text-transform: uppercase;
 }
 
+.actions-flex {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  justify-content: center;
+  align-items: center;
+}
+
 .timer-container {
-  position: absolute;
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  top: calc(50% + 180px);
-  left: 50%;
-  transform: translateX(-50%);
 }
 
 .clickTimer {
-  color: var(--White, #fff);
+  color: white;
   font-family: 'SF Pro Text', serif;
   font-size: 16px;
   font-style: normal;
@@ -124,28 +142,13 @@
 
   padding: 0 12px;
   border-radius: 6px;
-  border: 1px solid #303030;
-  background: #151517;
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(4px);
   display: inline-block;
 }
 
-.charging {
+.battery {
   position: absolute;
-  top: calc(50% - 90px);
+  top: calc(50% - 100px);
   z-index: 1;
-
-  color: #fff;
-  text-align: center;
-  font-family: 'SF Pro Text', serif;
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: 150%; /* 24px */
-  text-transform: uppercase;
-}
-
-@media screen and (max-height: 500px) {
-  .charging {
-    top: 115px;
-  }
 }

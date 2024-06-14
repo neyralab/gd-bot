@@ -10,7 +10,11 @@ export default function BuyButton({ theme, onCompleted }) {
 
     const index = themes.findIndex((el) => el.id === theme.id);
 
-    if (index < 0 || index === themes.length - 1) return;
+    if (index < 0) return;
+
+    if (index === themes.length - 1) {
+      return themes[0];
+    }
 
     return themes[index + 1];
   };
@@ -26,17 +30,13 @@ export default function BuyButton({ theme, onCompleted }) {
   if (!nextThemeResult) return;
 
   return (
-    <>
-      <span className={styles.description}>Upgrade and play now</span>
-
-      <button
-        type="button"
-        className={classNames(styles.button, styles[theme.id])}
-        onClick={clickHandler}>
-        <TonIcon />
-        <span>{nextThemeResult.cost}</span>
-        <span>X{nextThemeResult.multiplier}</span>
-      </button>
-    </>
+    <button
+      type="button"
+      className={classNames(styles.button, styles[theme.id])}
+      onClick={clickHandler}>
+      <TonIcon />
+      <span className={styles.cost}>{nextThemeResult.cost || 'FREE'}</span>
+      <span className={styles.multiplier}>X{nextThemeResult.multiplier}</span>
+    </button>
   );
 }

@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import classNames from 'classnames';
 import { useTimer } from 'react-timer-hook';
 
@@ -10,6 +10,8 @@ import BuyButton from './BuyButton/BuyButton';
 import themes from './themes';
 import styles from './styles.module.css';
 import PointsGrowArea from './PointsGrowArea/PointsGrowArea';
+import { ReactComponent as BatteryFull } from '../../assets/battery-full.svg';
+import { ReactComponent as BatteryEmpty } from '../../assets/battery-empty.svg';
 
 export function TapPage() {
   const backgroundRef = useRef();
@@ -17,6 +19,7 @@ export function TapPage() {
   const mainButtonRef = useRef();
 
   const [theme, setTheme] = useState(themes[0]);
+  const [status, setStatus] = useState('init'); // 'waiting', 'playing', 'finished';
   const [clickedPoints, setClickedPoints] = useState(0);
 
   const lockTimer = useTimer({
@@ -35,6 +38,16 @@ export function TapPage() {
     },
     autoStart: false
   });
+
+  useEffect(() => {
+    if (!lockTimer.isRunning && !clickTimer.isRunning) {
+      setStatus('waiting');
+    } else if (clickTimer.isRunning && !lockTimer.isRunning) {
+      setStatus('playing');
+    } else if (lockTimer.isRunning && !clickTimer.isRunning) {
+      setStatus('finished');
+    }
+  }, [lockTimer.isRunning, clickTimer.isRunning]);
 
   const clickHandler = (e) => {
     e.preventDefault();
@@ -58,7 +71,7 @@ export function TapPage() {
 
   const completedHandler = (nextTheme) => {
     setTheme(nextTheme);
-    lockTimer.pause()
+    lockTimer.pause();
   };
 
   return (
@@ -69,8 +82,20 @@ export function TapPage() {
       <div className={styles.content}>
         <div className={styles['content-inner-container']}>
           <div className={styles['balance-container']}>
-            <div className={styles.balance}>{clickedPoints.toLocaleString('en-US')}</div>
-            <strong>{theme && theme.name + ' X' + theme.multiplier}</strong>
+            <div className={styles.balance}>
+              {clickedPoints.toLocaleString('en-US')}
+            </div>
+
+            {status !== 'waiting' && (
+              <div className={styles['timer-container']}>
+                <p className={styles.clickTimer}>
+                  {status === 'finished' &&
+                    `${lockTimer.hours}:${lockTimer.minutes < 10 ? '0' + lockTimer.minutes : lockTimer.minutes}:${lockTimer.seconds < 10 ? '0' + lockTimer.seconds : lockTimer.seconds}`}
+                  {status === 'playing' &&
+                    `${clickTimer.minutes}:${clickTimer.seconds < 10 ? '0' + clickTimer.seconds : clickTimer.seconds}`}
+                </p>
+              </div>
+            )}
           </div>
 
           <div
@@ -80,38 +105,30 @@ export function TapPage() {
               <PointsGrowArea ref={pointsAreaRef} theme={theme} />
             </div>
 
-            {lockTimer.isRunning && <p className={styles.charging}>Charging</p>}
+            <div className={styles.battery}>
+              {status === 'finished' && <BatteryEmpty />}
+              {status !== 'finished' && <BatteryFull />}
+            </div>
 
             <MainButton ref={mainButtonRef} theme={theme} />
 
-            {lockTimer.isRunning ||
-              (clickTimer.isRunning && (
-                <div className={styles['timer-container']}>
-                  <p className={styles.clickTimer}>
-                    {lockTimer.isRunning &&
-                      `${lockTimer.hours}:${lockTimer.minutes < 10 ? '0' + lockTimer.minutes : lockTimer.minutes}:${lockTimer.seconds < 10 ? '0' + lockTimer.seconds : lockTimer.seconds}`}
-                    {clickTimer.isRunning &&
-                      `${clickTimer.minutes}:${clickTimer.seconds < 10 ? '0' + clickTimer.seconds : clickTimer.seconds}`}
-                  </p>
-                </div>
-              ))}
+            <div className={styles.description}>
+              <strong>{theme.name}</strong>
+              <span>X{theme.multiplier}</span>
+            </div>
           </div>
 
-          <div className={styles['experience-container']}>
-            {!lockTimer.isRunning && (
-              <>
-                <span className={styles.description}>
-                  GAME MODE, DATA MINING {theme.data}
-                </span>
-                <ProgressBar
-                  percent={(clickTimer.seconds / 60) * 100 || 100}
-                  theme={theme}
-                />
-              </>
+          <div className={styles['actions-container']}>
+            {status !== 'finished' && (
+              <span className={styles['actions-description']}>Tap to play</span>
             )}
-
-            {lockTimer.isRunning && (
-              <BuyButton theme={theme} onCompleted={completedHandler} />
+            {status === 'finished' && (
+              <div className={styles['actions-flex']}>
+                <BuyButton theme={theme} onCompleted={completedHandler} />
+                <span className={styles['actions-description']}>
+                  recharge & play
+                </span>
+              </div>
             )}
           </div>
         </div>

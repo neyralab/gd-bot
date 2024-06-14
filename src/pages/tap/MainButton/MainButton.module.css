@@ -1,9 +1,11 @@
 .container {
   width: 100%;
-  height: 430px;
+  height: 350px;
   position: relative;
   touch-action: manipulation;
   user-select: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .container * {
@@ -20,7 +22,7 @@
   width: 154px;
   height: 154px;
   top: calc(50% - 80px);
-  left: calc(50% - 74px);
+  left: calc(50% - 76px);
 }
 
 .icon {
@@ -150,7 +152,7 @@
     opacity: 1;
     transform: scale(1.1);
   }
-  60%{
+  60% {
     opacity: 1;
     transform: scale(0.96);
   }
@@ -173,7 +175,7 @@
     opacity: 1;
     transform: scale(1.1);
   }
-  60%{
+  60% {
     opacity: 1;
     transform: scale(0.96);
   }
@@ -196,7 +198,7 @@
     opacity: 1;
     transform: scale(1.1);
   }
-  60%{
+  60% {
     opacity: 1;
     transform: scale(0.96);
   }
