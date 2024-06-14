@@ -22,7 +22,7 @@ export function TapPage() {
       ? localStorage.getItem('gameSound') === 'true'
       : true
   );
-  const backgroundMusicRef = useRef(new Audio('/assets/tap-page/ghost.mp3'));
+  // const backgroundMusicRef = useRef(new Audio('/assets/tap-page/ghost.mp3'));
   const clickSoundRef = useRef(new Audio('/assets/tap-page/2blick.wav'));
 
   const backgroundRef = useRef();
@@ -61,21 +61,21 @@ export function TapPage() {
   }, [lockTimer.isRunning, clickTimer.isRunning]);
 
   useEffect(() => {
-    backgroundMusicRef.current.loop = true;
+    // backgroundMusicRef.current.loop = true;
 
-    if (soundIsActive) {
-      const playPromise = backgroundMusicRef.current.play();
-      if (playPromise !== undefined) {
-        playPromise.catch((e) => {
-          console.warn('Autoplay was prevented:', e);
-          setSoundIsActive(false);
-        });
-      }
-    }
+    // if (soundIsActive) {
+    //   const playPromise = backgroundMusicRef.current.play();
+    //   if (playPromise !== undefined) {
+    //     playPromise.catch((e) => {
+    //       console.warn('Autoplay was prevented:', e);
+    //       setSoundIsActive(false);
+    //     });
+    //   }
+    // }
 
     return () => {
-      backgroundMusicRef.current.pause();
-      backgroundMusicRef.current.currentTime = 0;
+      // backgroundMusicRef.current.pause();
+      // backgroundMusicRef.current.currentTime = 0;
       clickSoundRef.current.pause();
       clickSoundRef.current.currentTime = 0;
     };
@@ -87,16 +87,16 @@ export function TapPage() {
 
   const togglePlay = () => {
     setSoundIsActive(!soundIsActive);
-    if (soundIsActive) {
-      backgroundMusicRef.current.pause();
-    } else {
-      const playPromise = backgroundMusicRef.current.play();
-      if (playPromise !== undefined) {
-        playPromise.catch((e) => {
-          console.warn('Autoplay was prevented:', e);
-        });
-      }
-    }
+    // if (soundIsActive) {
+    //   backgroundMusicRef.current.pause();
+    // } else {
+    //   const playPromise = backgroundMusicRef.current.play();
+    //   if (playPromise !== undefined) {
+    //     playPromise.catch((e) => {
+    //       console.warn('Autoplay was prevented:', e);
+    //     });
+    //   }
+    // }
   };
 
   const clickHandler = (e) => {
