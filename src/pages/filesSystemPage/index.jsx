@@ -6,6 +6,8 @@ import { DebounceInput } from 'react-debounce-input';
 
 import {
   changeFileView,
+  changeTimeLeft,
+  changeuploadingProgress,
   clearFiles,
   selecSelectedFile,
   selectFileView,
@@ -13,11 +15,13 @@ import {
   selectFilesCount,
   selectFilesPage,
   selectSearchAutocomplete,
+  selectUploadingProgress,
   setCount,
   setFiles,
   setPage,
   setSearchAutocomplete,
-  setSelectedFile
+  setSelectedFile,
+  setUploadingFile
 } from '../../store/reducers/filesSlice';
 import { uploadFileEffect } from '../../effects/uploadFileEffect';
 import {
@@ -55,6 +59,9 @@ export const FilesSystemPage = () => {
   const [searchValue, setSearchValue] = useState('');
   const checkedFile = useSelector(selecSelectedFile);
   const user = useSelector((state) => state?.user?.data);
+  const { progress, file: uploadingFile } = useSelector(
+    selectUploadingProgress
+  );
 
   const onBackButtonClick = () => navigate(-1);
 
@@ -63,6 +70,12 @@ export const FilesSystemPage = () => {
     if (fileRef.current) {
       fileRef.current.files = dataTransfer.files;
     }
+  };
+
+  const clearUploadState = () => {
+    dispatch(changeuploadingProgress({ progress: 0 }));
+    dispatch(changeTimeLeft({ timeLeft: 0 }));
+    dispatch(setUploadingFile({}));
   };
 
   const handleFileUpload = async (event) => {
@@ -79,11 +92,30 @@ export const FilesSystemPage = () => {
       );
       return;
     }
-    setAreFilesLoading(true);
-    await uploadFileEffect({ files, dispatch });
-    setAreFilesLoading(false);
-    clearInputsAfterUpload();
+    try {
+      setAreFilesLoading(true);
+      dispatch(setUploadingFile(files[0]));
+      await uploadFileEffect({ files, dispatch });
+    } catch (error) {
+      toast.error(
+        'Something went wrong during upload. Please try again later!',
+        {
+          theme: 'colored',
+          position: 'bottom-center',
+          autoClose: 5000
+        }
+      );
+    } finally {
+      setAreFilesLoading(false);
+      clearInputsAfterUpload();
+      clearUploadState();
+    }
   };
+
+  const uploadingProgress = useMemo(() => {
+    const percentage = (progress / uploadingFile?.size) * 100;
+    return `${Math.round(percentage)}/100 %`;
+  }, [progress, uploadingFile?.size]);
 
   const handleInputChange = async (e) => {
     const query = e.target.value.trim();
@@ -150,7 +182,6 @@ export const FilesSystemPage = () => {
     const percent = Math.round(
       (Number(storage) / space_total + Number.EPSILON) * 100
     );
-
     return {
       total: `${transformSize(String(space_total), 0)}`,
       used: `${transformSize(storage, 1)}`,
@@ -207,7 +238,7 @@ export const FilesSystemPage = () => {
         </div>
         {areFilesLoading ? (
           <div className={style.loaderWrapper}>
-            <GhostLoader texts={['Uploading']} />
+            <GhostLoader texts={[`Uploading: ${uploadingProgress}`]} />
           </div>
         ) : fileList.length ? (
           <InfiniteScrollComponent
