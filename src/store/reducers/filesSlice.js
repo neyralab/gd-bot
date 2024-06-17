@@ -9,7 +9,12 @@ const filesSlice = createSlice({
     searchAutocomplete: [],
     selectedFile: {},
     direction: 'asc',
-    view: 'grid'
+    view: 'grid',
+    uploadingFile: {
+      progress: 0,
+      timeLeft: 0,
+      id: null
+    }
   },
   reducers: {
     setFiles: (state, { payload }) => {
@@ -43,6 +48,20 @@ const filesSlice = createSlice({
     deleteFile: (state, { payload }) => {
       const files = state.files.filter((file) => file.slug !== payload);
       state.files = files;
+    },
+    changeuploadingProgress: (state, { payload }) => {
+      state.uploadingFile.progress = payload.progress;
+      state.uploadingFile.id = payload.id;
+    },
+    changeTimeLeft: (state, { payload }) => {
+      state.uploadingFile.timeLeft = payload.timeLeft;
+      state.uploadingFile.id = payload.id;
+    },
+    updateFile: (state, { payload }) => {
+      const updatedFiles = [...state.files].map((file) =>
+        file.id === payload.id ? payload : file
+      );
+      state.files = [...updatedFiles];
     }
   }
 });
@@ -57,7 +76,10 @@ export const {
   clearFiles,
   setSelectedFile,
   setFiles,
-  deleteFile
+  deleteFile,
+  changeuploadingProgress,
+  changeTimeLeft,
+  updateFile
 } = filesSlice.actions;
 export default filesSlice.reducer;
 
