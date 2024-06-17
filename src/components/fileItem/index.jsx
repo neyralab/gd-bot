@@ -1,20 +1,25 @@
-import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useEffect, useMemo, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 import moment from 'moment';
 import cn from 'classnames';
 
 import { selectFileView } from '../../store/reducers/filesSlice';
-import { getFilePreviewEffect } from '../../effects/filesEffects';
+import {
+  getFilePreviewEffect,
+  updateFileFavoriteEffect
+} from '../../effects/filesEffects';
 import videoFileExtensions from '../../config/video-file-extensions';
 import imageFileExtensions, {
-  imageMediaTypesPreview
+  imageMediaTypesPreview,
+  imagesWithoutPreview
 } from '../../config/image-file-extensions';
 
 import CustomFileSmallIcon from '../../components/customFileIcon/CustomFileSmallIcon';
 import CustomFileIcon from '../../components/customFileIcon';
 import { ReactComponent as DotsIcon } from '../../assets/dots.svg';
 import { ReactComponent as FavoriteIcon } from '../../assets/favorite.svg';
+import { ReactComponent as FavoriteActiveIcon } from '../../assets/favorite_active.svg';
 
 import style from './style.module.css';
 
@@ -26,23 +31,42 @@ export const FileItem = ({
   isSearch = false
 }) => {
   const currentView = useSelector(selectFileView);
+  const user = useSelector((state) => state?.user?.data);
+  const dispatch = useDispatch();
   const view = fileView || currentView;
   const [preview, setPreview] = useState(null);
   const isFileChecked = file.id === checkedFile.id;
+  const isSearchFile = file?.isSearch || isSearch;
   const formattedDate = (dateCreated) =>
     moment.unix(dateCreated).format('MMM DD, YYYY, h:mma');
+  const isFavorite = useMemo(() => {
+    return (
+      user &&
+      file?.user_favorites &&
+      user?.id === file?.user_favorites[0]?.user?.id
+    );
+  }, [file?.user_favorites, user?.id]);
 
   useEffect(() => {
-    if (
+    const searchHasPreview =
+      isSearchFile &&
+      imageFileExtensions.includes(`.${file.extension}`) &&
+      !imagesWithoutPreview.includes(`.${file.extension}`);
+    const fileHasPreview =
       (imageMediaTypesPreview.includes(file.mime) &&
         imageFileExtensions.includes(`.${file.extension}`)) ||
-      videoFileExtensions.includes(`.${file.extension}`)
-    ) {
+      videoFileExtensions.includes(`.${file.extension}`);
+
+    if (searchHasPreview || fileHasPreview) {
       getFilePreviewEffect(file.slug, null, file.extension).then((res) => {
         setPreview(res);
       });
     }
   }, []);
+
+  const toggleFavorite = () => {
+    updateFileFavoriteEffect(file.slug, dispatch);
+  };
 
   const FavButton = (
     <button
@@ -50,8 +74,8 @@ export const FileItem = ({
         style.fileMenuButton,
         view === 'grid' ? style.favBtnGrid : style.favBtnList
       )}
-      onClick={() => {}}>
-      <FavoriteIcon />
+      onClick={toggleFavorite}>
+      {isFavorite ? <FavoriteActiveIcon /> : <FavoriteIcon />}
     </button>
   );
 
@@ -85,9 +109,11 @@ export const FileItem = ({
             )}
           </div>
           <div className={style.squareInfo}>
-            <p className={style.squareInfo__name}>{file.name}</p>
+            <p className={style.squareInfo__name}>
+              {isSearchFile ? file.title : file.name}
+            </p>
             <p className={style.squareInfo__date}>
-              {formattedDate(file.created_at)}
+              {isSearchFile ? file.updated : formattedDate(file.created_at)}
             </p>
           </div>
         </li>
@@ -104,10 +130,10 @@ export const FileItem = ({
           </div>
           <div className={style.info}>
             <h3 className={style.info__name}>
-              {isSearch ? file.title : file.name}
+              {isSearchFile ? file.title : file.name}
             </h3>
             <p className={style.info__date}>
-              {isSearch ? file.updated : formattedDate(file.created_at)}
+              {isSearchFile ? file.updated : formattedDate(file.created_at)}
             </p>
           </div>
         </li>

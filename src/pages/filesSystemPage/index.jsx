@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
+import { DebounceInput } from 'react-debounce-input';
 
 import {
   changeFileView,
@@ -11,13 +12,18 @@ import {
   selectFiles,
   selectFilesCount,
   selectFilesPage,
+  selectSearchAutocomplete,
   setCount,
   setFiles,
   setPage,
+  setSearchAutocomplete,
   setSelectedFile
 } from '../../store/reducers/filesSlice';
 import { uploadFileEffect } from '../../effects/uploadFileEffect';
-import { getFilesEffect } from '../../effects/filesEffects';
+import {
+  autoCompleteSearchEffect,
+  getFilesEffect
+} from '../../effects/filesEffects';
 import { handleFileMenu } from '../../store/reducers/modalSlice';
 import { transformSize } from '../../utils/transformSize';
 
@@ -41,10 +47,12 @@ export const FilesSystemPage = () => {
   const dispatch = useDispatch();
   const fileRef = useRef(null);
   const files = useSelector(selectFiles);
+  const searchFiles = useSelector(selectSearchAutocomplete);
   const filesCount = useSelector(selectFilesCount);
   const filesPage = useSelector(selectFilesPage);
   const view = useSelector(selectFileView);
   const [areFilesLoading, setAreFilesLoading] = useState(false);
+  const [searchValue, setSearchValue] = useState('');
   const checkedFile = useSelector(selecSelectedFile);
   const user = useSelector((state) => state?.user?.data);
 
@@ -76,6 +84,30 @@ export const FilesSystemPage = () => {
     setAreFilesLoading(false);
     clearInputsAfterUpload();
   };
+
+  const handleInputChange = async (e) => {
+    const query = e.target.value.trim();
+    setSearchValue(query);
+    dispatch(setSearchAutocomplete([]));
+    if (query.length > 0) {
+      await autoCompleteSearchEffect(query).then((data) => {
+        if (data?.length > 0) {
+          const searchFiles = data.map((el) => ({ ...el, isSearch: true }));
+          dispatch(setSearchAutocomplete(searchFiles));
+        } else {
+          dispatch(setSearchAutocomplete([]));
+        }
+      });
+    }
+  };
+
+  const fileList = useMemo(() => {
+    if (searchValue.length < 1) {
+      return files;
+    } else {
+      return searchFiles;
+    }
+  }, [searchFiles, searchValue, files]);
 
   useEffect(() => {
     getFilesEffect(filesPage).then(({ data, count }) => {
@@ -131,13 +163,16 @@ export const FilesSystemPage = () => {
       <header className={style.filesHeader}></header>
       <section className={style.wrapper}>
         <div className={style.search}>
-          <input
+          <DebounceInput
+            minLength={1}
+            debounceTimeout={500}
             name="search"
             id="search"
             maxLength="40"
             placeholder="Search"
             className={style.search__input}
             autoComplete="off"
+            onChange={handleInputChange}
           />
           <label htmlFor="search" className={style.search__icon}>
             <SearchIcon />
@@ -174,13 +209,13 @@ export const FilesSystemPage = () => {
           <div className={style.loaderWrapper}>
             <GhostLoader texts={['Uploading']} />
           </div>
-        ) : files.length ? (
+        ) : fileList.length ? (
           <InfiniteScrollComponent
             totalItems={filesCount}
-            files={files}
+            files={fileList}
             fetchMoreFiles={fetchMoreFiles}>
             <ul className={style.filesList}>
-              {files.map((file) => (
+              {fileList.map((file) => (
                 <FileItem
                   file={file}
                   key={file.id}
@@ -194,9 +229,7 @@ export const FilesSystemPage = () => {
           <div className={style.emptyFilesPage}>
             <FileIcon />
             <h2 className={style.emptyFilesPage_title}>Files not found</h2>
-            <p className={style.emptyFilesPage_desc}>
-              This page is empty. You have no uploaded files.
-            </p>
+            <p className={style.emptyFilesPage_desc}>This page is empty</p>
           </div>
         )}
       </section>
