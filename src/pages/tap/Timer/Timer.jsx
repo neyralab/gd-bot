@@ -47,6 +47,7 @@ export default function Timer() {
         }
       }, 1000);
     }
+
     return () => {
       clearInterval(roundCountdownRef.current);
     };
@@ -54,7 +55,7 @@ export default function Timer() {
 
   // Lock timer countdown
   useEffect(() => {
-    if (status === 'finished' && theme.id === 'hawk' && lockTimerTimestamp) {
+    if (theme.id === 'hawk' && lockTimerTimestamp) {
       const endTime = new Date(lockTimerTimestamp).getTime();
       setRemainingTime(formatLockTime(endTime - Date.now()));
 
@@ -68,6 +69,7 @@ export default function Timer() {
         }
       }, 1000);
     }
+
     return () => {
       clearInterval(lockCountdownRef.current);
     };
