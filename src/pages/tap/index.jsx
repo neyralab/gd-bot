@@ -72,13 +72,11 @@ export function TapPage() {
     e.preventDefault();
     e.stopPropagation();
 
-    if (status === 'waiting') {
-      if (theme.id === 'hawk') {
-        if (lockTimerTimestamp) {
-          return;
-        }
-      }
+    if (!themeAccess[theme.id]) {
+      return;
+    }
 
+    if (status === 'waiting') {
       dispatch(startRound());
     }
 
