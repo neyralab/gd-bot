@@ -7,10 +7,11 @@ import {
   selectStatus,
   selectTheme,
   setBalance,
-  setTheme,
   startRound,
   setStatus,
-  selectLockTimerTimestamp
+  selectLockTimerTimestamp,
+  setLockTimerTimestamp,
+  setLockTimeoutId
 } from '../../store/reducers/gameSlice';
 import { Header } from '../../components/header_v2';
 import MainButton from './MainButton/MainButton';
@@ -79,9 +80,12 @@ export function TapPage() {
     dispatch(setBalance(balance + theme.multiplier));
   };
 
-  const buyCompletedHandler = (nextTheme) => {
-    dispatch(setTheme(nextTheme));
+  const buyCompletedHandler = () => {
     dispatch(setStatus('waiting'));
+    if (theme.id === 'hawk') {
+      dispatch(setLockTimerTimestamp(null));
+      dispatch(setLockTimeoutId(null));
+    }
   };
 
   return (

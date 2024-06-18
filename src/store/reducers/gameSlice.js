@@ -14,7 +14,9 @@ const gameSlice = createSlice({
     //   : true,
     soundIsActive: false,
     roundTimerTimestamp: null,
-    lockTimerTimestamp: null
+    roundTimeoutId: null,
+    lockTimerTimestamp: null,
+    lockTimeoutId: null
   },
   reducers: {
     setStatus: (state, { payload }) => {
@@ -33,8 +35,16 @@ const gameSlice = createSlice({
     setRoundTimerTimestamp: (state, { payload }) => {
       state.roundTimerTimestamp = payload;
     },
+    setRoundTimeoutId: (state, { payload }) => {
+      clearTimeout(state.roundTimeoutId);
+      state.roundTimeoutId = payload;
+    },
     setLockTimerTimestamp: (state, { payload }) => {
       state.lockTimerTimestamp = payload;
+    },
+    setLockTimeoutId: (state, { payload }) => {
+      clearTimeout(state.lockTimeoutId);
+      state.lockTimeoutId = payload;
     },
     setExperienceMax: (state, { payload }) => {
       state.experienceMax = payload;
@@ -48,37 +58,45 @@ const gameSlice = createSlice({
 export const startRound = createAsyncThunk(
   'game/startRound',
   async (_, { dispatch, getState }) => {
-    // Set the status to 'playing' and initialize the timer with a future timestamp
+    dispatch(setRoundTimeoutId(null));
     dispatch(setStatus('playing'));
+
     const endTime = Date.now() + 60 * 1000; // 1 minute from now
     dispatch(setRoundTimerTimestamp(endTime));
 
-    setTimeout(() => {
+    const timeoutId = setTimeout(() => {
       const state = getState();
       dispatch(setStatus('finished'));
       dispatch(setRoundTimerTimestamp(null));
+      dispatch(setRoundTimeoutId(null));
 
       if (state.game.theme.id === 'hawk') {
         dispatch(startNewFreeGameCountdown());
       }
     }, 60 * 1000); // 1 minute in milliseconds
+
+    dispatch(setRoundTimeoutId(timeoutId));
   }
 );
 
 export const startNewFreeGameCountdown = createAsyncThunk(
   'game/startNewFreeGameCountdown',
   async (_, { dispatch }) => {
-    // Set the lockTimerTimestamp with a future timestamp
+    dispatch(setLockTimeoutId(null));
+
     const endTime = Date.now() + 60 * 3 * 60 * 1000; // 3 hours from now
     dispatch(setLockTimerTimestamp(endTime));
 
-    setTimeout(
+    const timeoutId = setTimeout(
       () => {
         dispatch(setLockTimerTimestamp(null));
+        dispatch(setLockTimeoutId(null));
         dispatch(setStatus('waiting'));
       },
       60 * 3 * 60 * 1000
     ); // 3 hours in milliseconds
+
+    dispatch(setLockTimeoutId(timeoutId));
   }
 );
 
@@ -88,7 +106,9 @@ export const {
   setBalance,
   setSoundIsActive,
   setRoundTimerTimestamp,
-  setLockTimerTimestamp
+  setRoundTimeoutId,
+  setLockTimerTimestamp,
+  setLockTimeoutId
 } = gameSlice.actions;
 export default gameSlice.reducer;
 
