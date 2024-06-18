@@ -6,6 +6,12 @@ const gameSlice = createSlice({
   initialState: {
     status: 'waiting', // 'waiting', 'playing', 'finished';
     theme: themes[0],
+    themeAccess: {
+      hawk: true,
+      lotus: false,
+      gold: false,
+      ghost: false
+    },
     balance: 0,
     experienceMax: 1000,
     experienceCurrent: 0,
@@ -51,6 +57,9 @@ const gameSlice = createSlice({
     },
     setExperienceCurrent: (state, { payload }) => {
       state.experienceCurrent = payload;
+    },
+    setThemeAccess: (state, { payload }) => {
+      state.themeAccess[payload.themeId] = payload.status;
     }
   }
 });
@@ -69,6 +78,7 @@ export const startRound = createAsyncThunk(
       dispatch(setStatus('finished'));
       dispatch(setRoundTimerTimestamp(null));
       dispatch(setRoundTimeoutId(null));
+      dispatch(setThemeAccess({themeId: state.game.theme.id, status: false}));
 
       if (state.game.theme.id === 'hawk') {
         dispatch(startNewFreeGameCountdown());
@@ -83,6 +93,7 @@ export const startNewFreeGameCountdown = createAsyncThunk(
   'game/startNewFreeGameCountdown',
   async (_, { dispatch }) => {
     dispatch(setLockTimeoutId(null));
+    dispatch(setThemeAccess({themeId: 'hawk', status: false}));
 
     const endTime = Date.now() + 60 * 3 * 60 * 1000; // 3 hours from now
     dispatch(setLockTimerTimestamp(endTime));
@@ -92,6 +103,7 @@ export const startNewFreeGameCountdown = createAsyncThunk(
         dispatch(setLockTimerTimestamp(null));
         dispatch(setLockTimeoutId(null));
         dispatch(setStatus('waiting'));
+        dispatch(setThemeAccess({themeId: 'hawk', status: true}));
       },
       60 * 3 * 60 * 1000
     ); // 3 hours in milliseconds
@@ -108,12 +120,14 @@ export const {
   setRoundTimerTimestamp,
   setRoundTimeoutId,
   setLockTimerTimestamp,
-  setLockTimeoutId
+  setLockTimeoutId,
+  setThemeAccess
 } = gameSlice.actions;
 export default gameSlice.reducer;
 
 export const selectStatus = (state) => state.game.status;
 export const selectTheme = (state) => state.game.theme;
+export const selectThemeAccess = (state) => state.game.themeAccess;
 export const selectBalance = (state) => state.game.balance;
 export const selectSoundIsActive = (state) => state.game.soundIsActive;
 export const selectRoundTimerTimestamp = (state) =>

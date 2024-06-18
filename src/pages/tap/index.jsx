@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import classNames from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -9,9 +9,12 @@ import {
   setBalance,
   startRound,
   setStatus,
+  setTheme,
   selectLockTimerTimestamp,
   setLockTimerTimestamp,
-  setLockTimeoutId
+  setLockTimeoutId,
+  setThemeAccess,
+  selectThemeAccess
 } from '../../store/reducers/gameSlice';
 import { Header } from '../../components/header_v2';
 import MainButton from './MainButton/MainButton';
@@ -19,6 +22,7 @@ import Background from './Background/Background';
 import BuyButton from './BuyButton/BuyButton';
 import PointsGrowArea from './PointsGrowArea/PointsGrowArea';
 import Timer from './Timer/Timer';
+import themes from './themes';
 import styles from './styles.module.css';
 
 export function TapPage() {
@@ -31,9 +35,11 @@ export function TapPage() {
   const dispatch = useDispatch();
   const soundIsActive = useSelector(selectSoundIsActive);
   const theme = useSelector(selectTheme);
+  const themeAccess = useSelector(selectThemeAccess);
   const status = useSelector(selectStatus);
   const balance = useSelector(selectBalance);
   const lockTimerTimestamp = useSelector(selectLockTimerTimestamp);
+  const [themeIndex, setThemeIndex] = useState([0]);
 
   useEffect(() => {
     return () => {
@@ -42,11 +48,37 @@ export function TapPage() {
     };
   }, []);
 
+  useEffect(() => {
+    setThemeIndex(themes.findIndex((t) => t.id === theme.id) || 0);
+  }, [theme]);
+
+  const switchTheme = (e, direction) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    let newThemeIndex;
+
+    if (direction === 'next') {
+      newThemeIndex = (themeIndex + 1) % themes.length;
+    } else if (direction === 'prev') {
+      newThemeIndex = (themeIndex - 1 + themes.length) % themes.length;
+    }
+
+    dispatch(setTheme(themes[newThemeIndex]));
+    dispatch(setStatus('waiting'));
+  };
+
   const clickHandler = (e) => {
     e.preventDefault();
     e.stopPropagation();
 
     if (status === 'waiting') {
+      if (theme.id === 'hawk') {
+        if (lockTimerTimestamp) {
+          return;
+        }
+      }
+
       dispatch(startRound());
     }
 
@@ -82,6 +114,8 @@ export function TapPage() {
 
   const buyCompletedHandler = () => {
     dispatch(setStatus('waiting'));
+    dispatch(setThemeAccess({ themeId: theme.id, status: true }));
+
     if (theme.id === 'hawk') {
       dispatch(setLockTimerTimestamp(null));
       dispatch(setLockTimeoutId(null));
@@ -126,10 +160,30 @@ export function TapPage() {
               <strong>{theme.name}</strong>
               <span>X{theme.multiplier}</span>
             </div>
+
+            {status !== 'playing' && (
+              <div className={styles.arrows}>
+                {themeIndex !== 0 && (
+                  <div
+                    className={styles.prev}
+                    onClick={(e) => switchTheme(e, 'prev')}>
+                    {'<'}
+                  </div>
+                )}
+
+                {themeIndex !== themes.length - 1 && (
+                  <div
+                    className={styles.next}
+                    onClick={(e) => switchTheme(e, 'next')}>
+                    {'>'}
+                  </div>
+                )}
+              </div>
+            )}
           </div>
 
           <div className={styles['actions-container']}>
-            {status === 'finished' && (
+            {status !== 'played' && !themeAccess[theme.id] && (
               <div className={styles['actions-flex']}>
                 <BuyButton theme={theme} onCompleted={buyCompletedHandler} />
                 <span className={styles['actions-description']}>
