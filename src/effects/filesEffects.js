@@ -193,3 +193,13 @@ export const updateFileFavoriteEffect = async (slug, dispatch) => {
     console.warn(e);
   }
 };
+
+export const createFolderEffect = async (name) =>
+  axiosInstance
+    .post(`${API_PATH}/folders/folder`, { name, parent: null })
+    .then((response) => {
+      return response.data.data;
+    })
+    .catch((err) => {
+      return err;
+    });

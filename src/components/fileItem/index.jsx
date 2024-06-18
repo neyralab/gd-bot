@@ -15,6 +15,7 @@ import imageFileExtensions, {
   imagesWithoutPreview
 } from '../../config/image-file-extensions';
 
+import CustomFolderIcon from '../../components/customFileIcon/CustomFolderIcon';
 import CustomFileSmallIcon from '../../components/customFileIcon/CustomFileSmallIcon';
 import CustomFileIcon from '../../components/customFileIcon';
 import { ReactComponent as DotsIcon } from '../../assets/dots.svg';
@@ -37,6 +38,7 @@ export const FileItem = ({
   const [preview, setPreview] = useState(null);
   const isFileChecked = file.id === checkedFile.id;
   const isSearchFile = file?.isSearch || isSearch;
+  const isFolder = file?.type === 2;
   const formattedDate = (dateCreated) =>
     moment.unix(dateCreated).format('MMM DD, YYYY, h:mma');
   const isFavorite = useMemo(() => {
@@ -100,6 +102,8 @@ export const FileItem = ({
                 alt={file.name}
                 className={style.previewImage}
               />
+            ) : isFolder ? (
+              <CustomFolderIcon viewType={view} color={file?.color[0]?.hex} />
             ) : (
               <CustomFileIcon
                 extension={file.extension}
@@ -124,6 +128,8 @@ export const FileItem = ({
           <div className={style.fileListPreview}>
             {preview ? (
               <img src={preview} alt="file" width={30} height={40} />
+            ) : isFolder ? (
+              <CustomFolderIcon viewType={view} color={file?.color[0]?.hex} />
             ) : (
               <CustomFileSmallIcon type={file.extension} />
             )}

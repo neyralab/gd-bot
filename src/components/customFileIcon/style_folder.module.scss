@@ -1,0 +1,173 @@
+.folderContent {
+  position: absolute;
+  top: 14px;
+  left: 7px;
+
+  & img {
+    width: 97px;
+    height: 63px;
+    border-radius: 2px;
+  }
+  &.smallContent {
+    top: 8px;
+    left: 7px;
+    & img {
+      width: 42px;
+      height: 25px;
+    }
+  }
+}
+
+.folderContentGroup {
+  position: absolute;
+  top: 14px;
+  left: 5.5px;
+  & img {
+    width: 33px;
+    height: 63px;
+    margin-right: 1px;
+    border-radius: 2px;
+  }
+  & img:last-of-type {
+    margin-right: 0;
+  }
+  &.smallContent {
+    top: 8px;
+    left: 7px;
+    & img {
+      width: 14px;
+      height: 25px;
+      margin-right: 0;
+      border-radius: 0;
+    }
+  }
+}
+
+.folderWrapper {
+  position: relative;
+
+  & svg:nth-child(3) {
+    position: absolute;
+    bottom: 3px;
+    left: -6px;
+  }
+
+  & svg:nth-child(4) {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+  }
+}
+
+div.folderWrapper.smallIcon {
+  & svg:nth-child(1) {
+    max-width: 59px;
+    max-height: 40px;
+  }
+  & svg:nth-child(3) {
+    position: absolute;
+    bottom: 0px;
+    left: -1px;
+    max-width: 59px;
+    max-height: 34px;
+  }
+
+  & svg:nth-child(4) {
+    position: absolute;
+    top: -2px;
+    left: 5px;
+    width: 18px;
+    height: 9px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .folderContent {
+    position: absolute;
+    top: 11px;
+    left: 9px;
+
+    & img {
+      width: 100%;
+      height: 100%;
+      width: 60px;
+      height: 40px;
+    }
+    &.smallContent {
+      top: 5px;
+      left: 3.5px;
+      & img {
+        width: 23px;
+        height: 15px;
+        border-radius: 1px;
+      }
+    }
+  }
+
+  .folderContentGroup {
+    position: absolute;
+    top: 10px;
+    left: 8px;
+    & img {
+      width: 20px;
+      height: 41px;
+      margin-right: 1.5px;
+      border-radius: 1px;
+    }
+    & img:last-of-type {
+      margin-right: 0;
+    }
+    &.smallContent {
+      top: 5px;
+      left: 4px;
+      & img {
+        width: 7.5px;
+        height: 15px;
+        margin-right: 0;
+        border-radius: 0.5px;
+      }
+    }
+  }
+  .folderWrapper {
+    position: relative;
+
+    & svg:nth-child(1) {
+      width: 82px;
+      height: 60px;
+    }
+
+    & svg:nth-child(3) {
+      width: 88px;
+      height: 50px;
+      left: -3px;
+    }
+
+    & svg:nth-child(4) {
+      width: 28px;
+      height: 8px;
+      top: 0px;
+      left: 4px;
+    }
+  }
+  div.folderWrapper.smallIcon {
+    & svg:nth-child(1) {
+      max-width: 32px;
+      max-height: 22px;
+    }
+    & svg:nth-child(3) {
+      position: absolute;
+      bottom: 3px;
+      left: 0px;
+      max-width: 32px;
+      max-height: 20px;
+    }
+
+    & svg:nth-child(4) {
+      position: absolute;
+      top: -0.5px;
+      left: 2.5px;
+      width: 10px;
+      height: 4px;
+    }
+  }
+}
