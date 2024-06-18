@@ -74,16 +74,32 @@ export default function Timer() {
   }, [status, theme.id, lockTimerTimestamp]);
 
   const drawTime = useMemo(() => {
-    if (status === 'finished' || status === 'waiting') {
+    if (status === 'waiting') {
       if (theme.id !== 'hawk') {
-        return '0:00';
+        return '1:00';
       } else {
-        return remainingTime;
+        if (lockTimerTimestamp) {
+          return remainingTime;
+        } else {
+          return '1:00';
+        }
       }
     }
 
     if (status === 'playing') {
       return remainingTime;
+    }
+
+    if (status === 'finished') {
+      if (theme.id !== 'hawk') {
+        return '0:00';
+      } else {
+        if (lockTimerTimestamp) {
+          return remainingTime;
+        } else {
+          return '0:00';
+        }
+      }
     }
   }, [remainingTime, status, theme.id]);
 

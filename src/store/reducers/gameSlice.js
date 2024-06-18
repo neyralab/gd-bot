@@ -74,6 +74,7 @@ export const startNewFreeGameCountdown = createAsyncThunk(
     setTimeout(
       () => {
         dispatch(setLockTimerTimestamp(null));
+        dispatch(setStatus('waiting'));
       },
       60 * 3 * 60 * 1000
     ); // 3 hours in milliseconds
