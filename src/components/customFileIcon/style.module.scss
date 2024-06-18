@@ -5,7 +5,7 @@
 }
 
 .iconText {
-  font-family: "Open Sans";
+  font-family: 'Open Sans';
   display: block;
   font-style: normal;
   font-weight: 400;
@@ -48,7 +48,7 @@
   width: 40px;
   height: 16px;
   border-radius: 5px;
-  font-family: "Open Sans";
+  font-family: 'Open Sans';
   font-style: normal;
   font-weight: 600;
   font-size: 10px;
@@ -59,7 +59,7 @@
 
 .docCreationDate {
   display: block;
-  font-family: "Open Sans";
+  font-family: 'Open Sans';
   font-style: normal;
   font-weight: 200;
   font-size: 6px;
@@ -80,7 +80,7 @@
 
 .mediaBigIconContent span {
   color: #fff;
-  font-family: "Open Sans";
+  font-family: 'Open Sans';
   font-style: normal;
   font-weight: 400;
   font-size: 10px;
@@ -104,7 +104,9 @@
   height: 15px;
   max-width: 15px;
   max-height: 15px;
-  transition: fill 200ms linear, transform 0.7s ease;
+  transition:
+    fill 200ms linear,
+    transform 0.7s ease;
 }
 
 .mediaBigIconContent svg:hover {
@@ -125,7 +127,9 @@
   top: 55%;
   left: 50%;
   transform: translate(-50%, -50%);
-  transition: fill 200ms linear, transform 0.7s ease;
+  transition:
+    fill 200ms linear,
+    transform 0.7s ease;
 }
 
 .bigIconWrapper {
@@ -172,7 +176,9 @@
   height: 13px;
   max-width: 13px;
   max-height: 13px;
-  transition: fill 200ms linear, transform 0.7s ease;
+  transition:
+    fill 200ms linear,
+    transform 0.7s ease;
 }
 
 .smallMediaIconWrapper .audioImage {
