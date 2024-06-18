@@ -1,0 +1,14 @@
+.timer {
+  color: white;
+  font-family: 'SF Pro Text', serif;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 150%;
+
+  padding: 0 12px;
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(4px);
+  display: inline-block;
+}
