@@ -9,9 +9,10 @@ const gameSlice = createSlice({
     balance: 0,
     experienceMax: 1000,
     experienceCurrent: 0,
-    soundIsActive: localStorage.getItem('gameSound')
-      ? localStorage.getItem('gameSound') === 'true'
-      : true,
+    // soundIsActive: localStorage.getItem('gameSound')
+    //   ? localStorage.getItem('gameSound') === 'true'
+    //   : true,
+    soundIsActive: false,
     roundTimerTimestamp: null,
     lockTimerTimestamp: null
   },
