@@ -73,7 +73,7 @@ export const BoostPage = ({ tariffs }) => {
       );
       const cell = new TonWeb.boc.Cell();
       cell.bits.writeUint(0, 32);
-      cell.bits.writeString('343831785' || memo);
+      cell.bits.writeString(memo);
       const boc = await cell.toBoc();
       const payload = TonWeb.utils.bytesToBase64(boc);
       console.log({ payload, memo });
