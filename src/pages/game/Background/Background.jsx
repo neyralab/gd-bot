@@ -96,31 +96,31 @@ const Background = forwardRef(({ theme }, ref) => {
         ref={starsRef}
         className={styles.stars}
         style={{
-          backgroundImage: `url('/assets/tap-page/stars.png')`
+          backgroundImage: `url('/assets/game-page/stars.png')`
         }}></div>
       <div
         ref={glowRef}
         className={styles.glow}
         style={{
-          backgroundImage: `url('/assets/tap-page/glow-${theme.id}.png')`
+          backgroundImage: `url('/assets/game-page/glow-${theme.id}.png')`
         }}></div>
       <div
         ref={object1Ref}
         className={styles.object1}
         style={{
-          backgroundImage: `url('/assets/tap-page/object1.png')`
+          backgroundImage: `url('/assets/game-page/object1.png')`
         }}></div>
       <div
         ref={object2Ref}
         className={styles.object2}
         style={{
-          backgroundImage: `url('/assets/tap-page/object2.png')`
+          backgroundImage: `url('/assets/game-page/object2.png')`
         }}></div>
       <div
         ref={planetRef}
         className={styles.planet}
         style={{
-          backgroundImage: `url('/assets/tap-page/planet-${theme.id}.png')`
+          backgroundImage: `url('/assets/game-page/planet-${theme.id}.png')`
         }}></div>
     </div>
   );

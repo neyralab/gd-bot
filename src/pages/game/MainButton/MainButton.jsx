@@ -45,25 +45,25 @@ const MainButton = forwardRef(({ theme }, ref) => {
         className={classNames(styles.frame, styles.frame1)}
         ref={frame1Ref}
         style={{
-          backgroundImage: `url('/assets/tap-page/frame-1-${theme.id}.png')`
+          backgroundImage: `url('/assets/game-page/frame-1-${theme.id}.png')`
         }}></div>
       <div
         className={classNames(styles.frame, styles.frame2)}
         ref={frame2Ref}
         style={{
-          backgroundImage: `url('/assets/tap-page/frame-2-${theme.id}.png')`
+          backgroundImage: `url('/assets/game-page/frame-2-${theme.id}.png')`
         }}></div>
       <div
         className={classNames(styles.frame, styles.frame3)}
         ref={frame3Ref}
         style={{
-          backgroundImage: `url('/assets/tap-page/frame-3-${theme.id}.png')`
+          backgroundImage: `url('/assets/game-page/frame-3-${theme.id}.png')`
         }}></div>
       <div
         className={classNames(styles.frame, styles.frame4)}
         ref={frame4Ref}
         style={{
-          backgroundImage: `url('/assets/tap-page/frame-4-${theme.id}.png')`
+          backgroundImage: `url('/assets/game-page/frame-4-${theme.id}.png')`
         }}></div>
 
       <div className={styles['icon-container']}>
@@ -71,7 +71,7 @@ const MainButton = forwardRef(({ theme }, ref) => {
           className={styles.icon}
           ref={iconRef}
           style={{
-            backgroundImage: `url('/assets/tap-page/ship-${theme.id}.png')`
+            backgroundImage: `url('/assets/game-page/ship-${theme.id}.png')`
           }}></div>
       </div>
     </div>

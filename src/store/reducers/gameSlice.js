@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import themes from '../../pages/tap/themes';
+import themes from '../../pages/game/themes';
 
 const gameSlice = createSlice({
   name: 'game',
