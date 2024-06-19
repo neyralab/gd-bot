@@ -15,6 +15,7 @@ export default function Timer() {
   const lockTimerTimestamp = useSelector(selectLockTimerTimestamp);
 
   const [remainingTime, setRemainingTime] = useState('1:00');
+  const [lockTime, setLockTime] = useState('0:00');
   const roundCountdownRef = useRef();
   const lockCountdownRef = useRef();
 
@@ -57,15 +58,15 @@ export default function Timer() {
   useEffect(() => {
     if (theme.id === 'hawk' && lockTimerTimestamp) {
       const endTime = new Date(lockTimerTimestamp).getTime();
-      setRemainingTime(formatLockTime(endTime - Date.now()));
+      setLockTime(formatLockTime(endTime - Date.now()));
 
       lockCountdownRef.current = setInterval(() => {
         const timeLeft = endTime - Date.now();
         if (timeLeft <= 0) {
           clearInterval(lockCountdownRef.current);
-          setRemainingTime('0:00');
+          setLockTime('0:00');
         } else {
-          setRemainingTime(formatLockTime(timeLeft));
+          setLockTime(formatLockTime(timeLeft));
         }
       }, 1000);
     }
@@ -76,20 +77,20 @@ export default function Timer() {
   }, [status, theme.id, lockTimerTimestamp]);
 
   const drawTime = useMemo(() => {
+    if (status === 'playing') {
+      return remainingTime;
+    }
+
     if (status === 'waiting') {
       if (theme.id !== 'hawk') {
         return '1:00';
       } else {
         if (lockTimerTimestamp) {
-          return remainingTime;
+          return lockTime;
         } else {
           return '1:00';
         }
       }
-    }
-
-    if (status === 'playing') {
-      return remainingTime;
     }
 
     if (status === 'finished') {
@@ -97,13 +98,13 @@ export default function Timer() {
         return '0:00';
       } else {
         if (lockTimerTimestamp) {
-          return remainingTime;
+          return lockTime;
         } else {
           return '0:00';
         }
       }
     }
-  }, [remainingTime, status, theme.id]);
+  }, [remainingTime, lockTime, lockTimerTimestamp, status, theme.id]);
 
   return <div className={styles.timer}>{drawTime}</div>;
 }

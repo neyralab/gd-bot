@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import themes from '../../pages/game/themes';
+import levels from '../../pages/game/levels';
 
 const gameSlice = createSlice({
   name: 'game',
@@ -13,8 +14,9 @@ const gameSlice = createSlice({
       ghost: false
     },
     balance: 0,
-    experienceMax: 1000,
-    experienceCurrent: 0,
+    experienceLevel: 1,
+    experiencePoints: 0,
+    reachedNewLevel: false,
     // soundIsActive: localStorage.getItem('gameSound')
     //   ? localStorage.getItem('gameSound') === 'true'
     //   : true,
@@ -52,14 +54,17 @@ const gameSlice = createSlice({
       clearTimeout(state.lockTimeoutId);
       state.lockTimeoutId = payload;
     },
-    setExperienceMax: (state, { payload }) => {
-      state.experienceMax = payload;
-    },
-    setExperienceCurrent: (state, { payload }) => {
-      state.experienceCurrent = payload;
-    },
     setThemeAccess: (state, { payload }) => {
       state.themeAccess[payload.themeId] = payload.status;
+    },
+    setExperienceLevel: (state, { payload }) => {
+      state.experienceLevel = payload;
+    },
+    setExperiencePoints: (state, { payload }) => {
+      state.experiencePoints = payload;
+    },
+    setReachedNewLevel: (state, { payload }) => {
+      state.reachedNewLevel = payload;
     }
   }
 });
@@ -78,7 +83,7 @@ export const startRound = createAsyncThunk(
       dispatch(setStatus('finished'));
       dispatch(setRoundTimerTimestamp(null));
       dispatch(setRoundTimeoutId(null));
-      dispatch(setThemeAccess({themeId: state.game.theme.id, status: false}));
+      dispatch(setThemeAccess({ themeId: state.game.theme.id, status: false }));
 
       if (state.game.theme.id === 'hawk') {
         dispatch(startNewFreeGameCountdown());
@@ -93,7 +98,7 @@ export const startNewFreeGameCountdown = createAsyncThunk(
   'game/startNewFreeGameCountdown',
   async (_, { dispatch }) => {
     dispatch(setLockTimeoutId(null));
-    dispatch(setThemeAccess({themeId: 'hawk', status: false}));
+    dispatch(setThemeAccess({ themeId: 'hawk', status: false }));
 
     const endTime = Date.now() + 60 * 3 * 60 * 1000; // 3 hours from now
     dispatch(setLockTimerTimestamp(endTime));
@@ -103,12 +108,58 @@ export const startNewFreeGameCountdown = createAsyncThunk(
         dispatch(setLockTimerTimestamp(null));
         dispatch(setLockTimeoutId(null));
         dispatch(setStatus('waiting'));
-        dispatch(setThemeAccess({themeId: 'hawk', status: true}));
+        dispatch(setThemeAccess({ themeId: 'hawk', status: true }));
       },
       60 * 3 * 60 * 1000
     ); // 3 hours in milliseconds
 
     dispatch(setLockTimeoutId(timeoutId));
+  }
+);
+
+export const addExperience = createAsyncThunk(
+  'game/addExperience',
+  async (_, { dispatch, getState }) => {
+    const state = getState();
+    const levelIndex = levels.findIndex(
+      (el) => el.id === state.game.experienceLevel
+    );
+    const level = levels[levelIndex];
+
+    if (levelIndex >= levels.length - 1) return;
+
+    const newPoints = state.game.experiencePoints + 1;
+    if (newPoints >= level.maxExperience) {
+      dispatch(setReachedNewLevel(true));
+      dispatch(setExperienceLevel(state.game.experienceLevel + 1));
+      dispatch(setExperiencePoints(newPoints - level.maxExperience));
+    } else {
+      dispatch(setExperiencePoints(newPoints));
+    }
+  }
+);
+
+export const confirmNewlevel = createAsyncThunk(
+  'game/confirmNewLevel',
+  async (_, { dispatch, getState }) => {
+    const state = getState();
+    const levelIndex = levels.findIndex(
+      (el) => el.id === state.game.experienceLevel
+    );
+
+    if (levelIndex >= levels.length - 1) return;
+
+    dispatch(setReachedNewLevel(false));
+    dispatch(
+      setBalance(state.game.balance + levels[levelIndex - 1].giftPoints)
+    );
+
+    if (levels[levelIndex - 1].freeRound) {
+      dispatch(setThemeAccess({ themeId: 'hawk', status: true }));
+      dispatch(setLockTimerTimestamp(null));
+      dispatch(setLockTimeoutId(null));
+      dispatch(setStatus('waiting'));
+    }
   }
 );
 
@@ -121,7 +172,10 @@ export const {
   setRoundTimeoutId,
   setLockTimerTimestamp,
   setLockTimeoutId,
-  setThemeAccess
+  setThemeAccess,
+  setExperienceLevel,
+  setExperiencePoints,
+  setReachedNewLevel
 } = gameSlice.actions;
 export default gameSlice.reducer;
 
@@ -134,3 +188,6 @@ export const selectRoundTimerTimestamp = (state) =>
   state.game.roundTimerTimestamp;
 export const selectLockTimerTimestamp = (state) =>
   state.game.lockTimerTimestamp;
+export const selectExperienceLevel = (state) => state.game.experienceLevel;
+export const selectExperiencePoints = (state) => state.game.experiencePoints;
+export const selectReachNewLevel = (state) => state.game.reachedNewLevel;

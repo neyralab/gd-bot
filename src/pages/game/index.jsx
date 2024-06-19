@@ -14,7 +14,8 @@ import {
   setLockTimerTimestamp,
   setLockTimeoutId,
   setThemeAccess,
-  selectThemeAccess
+  selectThemeAccess,
+  addExperience
 } from '../../store/reducers/gameSlice';
 import { Header } from '../../components/header_v2';
 import MainButton from './MainButton/MainButton';
@@ -22,9 +23,11 @@ import Background from './Background/Background';
 import BuyButton from './BuyButton/BuyButton';
 import PointsGrowArea from './PointsGrowArea/PointsGrowArea';
 import Timer from './Timer/Timer';
+import Menu from './Menu/Menu';
+import ProgressBar from './ProgressBar/ProgressBar';
+import Congratulations from './Congratulations/Congratulations';
 import themes from './themes';
 import styles from './styles.module.css';
-import Menu from './Menu/Menu';
 
 export function GamePage() {
   const clickSoundRef = useRef(new Audio('/assets/game-page/2blick.wav'));
@@ -108,6 +111,7 @@ export function GamePage() {
     }
 
     // Update state and timers
+    dispatch(addExperience());
     dispatch(setBalance(balance + theme.multiplier));
   };
 
@@ -181,20 +185,26 @@ export function GamePage() {
             )}
           </div>
 
-          <div className={styles['actions-container']}>
-            {status !== 'played' && !themeAccess[theme.id] && (
+          {status !== 'played' && !themeAccess[theme.id] && (
+            <div className={styles['actions-container']}>
               <div className={styles['actions-flex']}>
                 <BuyButton theme={theme} onCompleted={buyCompletedHandler} />
                 <span className={styles['actions-description']}>
                   recharge & play
                 </span>
               </div>
-            )}
+            </div>
+          )}
+
+          <div className={styles['experience-container']}>
+            <ProgressBar />
           </div>
         </div>
       </div>
 
       <Menu />
+
+      <Congratulations />
     </div>
   );
 }
