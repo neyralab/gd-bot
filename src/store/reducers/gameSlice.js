@@ -149,6 +149,7 @@ export const confirmNewlevel = createAsyncThunk(
 
     if (levelIndex >= levels.length - 1) return;
 
+    dispatch(setStatus('waiting'));
     dispatch(setReachedNewLevel(false));
     dispatch(
       setBalance(state.game.balance + levels[levelIndex - 1].giftPoints)
@@ -158,7 +159,6 @@ export const confirmNewlevel = createAsyncThunk(
       dispatch(setThemeAccess({ themeId: 'hawk', status: true }));
       dispatch(setLockTimerTimestamp(null));
       dispatch(setLockTimeoutId(null));
-      dispatch(setStatus('waiting'));
     }
   }
 );
