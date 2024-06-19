@@ -1,12 +1,13 @@
 .container {
   position: fixed;
-  width: 90%;
+  max-width: 95%;
   left: 50%;
   bottom: 12px;
   transform: translateX(-50%);
-  background-color: #252629;
+  background: #2C2E31B2;
+  backdrop-filter: blur(8px);
   border-radius: 10px;
-  padding: 4px;
+  padding: 4px 8px;
   text-align: center;
   white-space:nowrap;
   overflow-y: auto;
@@ -18,12 +19,13 @@
   border-radius: 10px;
   text-decoration: none;
   color: white;
-  background-color: #252629;
+  background-color: #15161900;
   display: inline-flex;
   flex-shrink: 0;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  margin: auto 4px;
 }
 
 .item.active {
