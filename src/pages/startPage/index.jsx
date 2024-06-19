@@ -139,7 +139,7 @@ export const StartPage = ({ onClose }) => {
       //   text: 'Play & Earn',
       //   amount: '',
       //   onClick: () => {
-      //     navigate('/tap');
+      //     navigate('/game');
       //   }
       // }
     ];
@@ -249,7 +249,7 @@ export const StartPage = ({ onClose }) => {
           <div
             className={style.footer_item}
             onClick={() => {
-              navigate('/tap');
+              navigate('/game');
             }}>
             <LeadboardIcon />
             <span className={style.footer_item_text}>Taping for Airdop</span>

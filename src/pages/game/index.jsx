@@ -24,9 +24,10 @@ import PointsGrowArea from './PointsGrowArea/PointsGrowArea';
 import Timer from './Timer/Timer';
 import themes from './themes';
 import styles from './styles.module.css';
+import Menu from './Menu/Menu';
 
-export function TapPage() {
-  const clickSoundRef = useRef(new Audio('/assets/tap-page/2blick.wav'));
+export function GamePage() {
+  const clickSoundRef = useRef(new Audio('/assets/game-page/2blick.wav'));
 
   const backgroundRef = useRef();
   const pointsAreaRef = useRef();
@@ -192,6 +193,8 @@ export function TapPage() {
           </div>
         </div>
       </div>
+
+      <Menu />
     </div>
   );
 }

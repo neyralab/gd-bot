@@ -84,7 +84,7 @@ bot.start(async (ctx) => {
   );
   const playForAirdropButton = Markup.button.webApp(
     'Play for Airdrop',
-    `${process.env.APP_FRONTEND_URL}tap`
+    `${process.env.APP_FRONTEND_URL}game`
   );
   const followXButton = Markup.button.url(
     'Follow X',
