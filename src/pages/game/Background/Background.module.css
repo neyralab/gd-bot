@@ -22,6 +22,12 @@
   will-change: background-position;
 }
 
+@media (min-width: 600px) {
+  .stars {
+    background-size: 100%;
+  }
+}
+
 .glow {
   position: absolute;
   height: 100%;
@@ -33,12 +39,8 @@
   background-size: 100%;
   background-position: 50% 0;
   will-change: background-position;
-}
 
-@media (min-width: 600px) {
-  .stars {
-    background-size: 100%;
-  }
+  opacity: 0;
 }
 
 .object1 {
@@ -81,4 +83,32 @@
   background-position: 50% 0;
   transform: translateX(40%);
   will-change: background-position;
+
+  opacity: 0;
+}
+
+.current-theme-dissapear {
+  animation: CurrentThemeDisappearAnim 0.5s ease-out;
+}
+
+@keyframes CurrentThemeDisappearAnim {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.next-theme-appear {
+  animation: NextThemeAppearAnim 1s ease-out;
+}
+
+@keyframes NextThemeAppearAnim {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }

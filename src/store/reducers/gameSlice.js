@@ -24,7 +24,8 @@ const gameSlice = createSlice({
     roundTimerTimestamp: null,
     roundTimeoutId: null,
     lockTimerTimestamp: null,
-    lockTimeoutId: null
+    lockTimeoutId: null,
+    nextTheme: null // for animation purposes only
   },
   reducers: {
     setStatus: (state, { payload }) => {
@@ -65,6 +66,9 @@ const gameSlice = createSlice({
     },
     setReachedNewLevel: (state, { payload }) => {
       state.reachedNewLevel = payload;
+    },
+    setNextTheme: (state, { payload }) => {
+      state.nextTheme = payload;
     }
   }
 });
@@ -175,7 +179,8 @@ export const {
   setThemeAccess,
   setExperienceLevel,
   setExperiencePoints,
-  setReachedNewLevel
+  setReachedNewLevel,
+  setNextTheme
 } = gameSlice.actions;
 export default gameSlice.reducer;
 
@@ -191,3 +196,4 @@ export const selectLockTimerTimestamp = (state) =>
 export const selectExperienceLevel = (state) => state.game.experienceLevel;
 export const selectExperiencePoints = (state) => state.game.experiencePoints;
 export const selectReachNewLevel = (state) => state.game.reachedNewLevel;
+export const selectNextTheme = (state) => state.game.nextTheme;
