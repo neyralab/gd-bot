@@ -3,17 +3,14 @@ import { Telegraf, Markup } from 'telegraf';
 import fs from 'fs';
 import dotenv from 'dotenv';
 import fetch from 'node-fetch';
-import OpenAI from 'openai';
+import photoHandler from './handlers/photoHandler.js';
+import textHandler from './handlers/textHandler.js';
+import termsHandler from './commands/terms/index.js';
 
 dotenv.config();
 const app = express();
 const bot = new Telegraf(process.env.BOT_TOKEN_SECRET);
 const cache = {};
-
-const openai = new OpenAI({
-  baseURL: 'https://api.neyra.ai/api/v1',
-  apiKey: `${process.env.NEYRA_CHAT_KEY}`
-});
 
 bot.start(async (ctx) => {
   const refCode = ctx.startPayload;
@@ -108,92 +105,11 @@ bot.start(async (ctx) => {
   );
 });
 
-let cachedPointsData = null;
-let lastFetchTime = null;
+bot.command('terms', termsHandler);
 
-async function fetchPointsData() {
-  if (!cachedPointsData || Date.now() - lastFetchTime > 600000) {
-    // 10 minutes in milliseconds
-    const response = await fetch(`${process.env.GD_BACKEND_URL}/api/gd/points`);
-    if (!response.ok) {
-      throw new Error('Failed to fetch points data');
-    }
-    cachedPointsData = await response.json();
-    lastFetchTime = Date.now();
-  }
-  return cachedPointsData;
-}
+bot.on('text', textHandler);
 
-bot.command('terms', async (ctx) => {
-  try {
-    const pointsData = await fetchPointsData();
-    const pointsActions = pointsData.data
-      .map((action) => {
-        return `- ${action.action_text}: ${action.amount} Points`;
-      })
-      .join('\n\n');
-
-    const termsMessage = `<b>Community-Focused Airdrop: GD Token on TON Blockchain</b>
-
-Welcome to GhostDrive Community Airdrop for the GD Token on the Ton Blockchain! Our goal is to reward active users with GD points for their actions and tasks, fostering a vibrant and engaged community.
-
-How It Works:
-
-1. Join the Telegram Program
-   - Connect with our bot: [@${process.env.BOT_NAME}](#).
-   - Engage with the community and stay updated with the latest announcements.
-
-2. Launch GhostDrive Telegram Mini App
-   - Click the "Open GhostDrive" button to launch the app directly within Telegram.
-   - Seamlessly access and manage your GD points and rewards.
-
-3. Start Point Mining
-   - Begin earning GD Points through various activities and tasks.
-   - Track your progress and points accumulation through the bot.
-
-Earning GD Points:
-
-${pointsActions}
-
-Points Booster:
-
-We also offer a Points Booster packages that includes additional storage space for one year. Enhance your earning potential and enjoy expanded storage capabilities:
-
-- Points Booster with Storage Space:
-  - Unlock increased storage capacity for 12 months.
-  - Boost your GD Points earnings with exclusive benefits.
-
-Ends by Aug 16`;
-
-    const openAppButton = Markup.button.webApp(
-      'Open GhostDrive',
-      process.env.APP_FRONTEND_URL
-    );
-    const extra = Markup.inlineKeyboard([openAppButton]);
-
-    ctx.reply(termsMessage, extra);
-  } catch (error) {
-    ctx.reply(`Error: ${error.message}`);
-  }
-});
-
-bot.on('text', async (ctx) => {
-  try {
-    const completion = await openai.chat.completions.create({
-      model: 'neyra/1D',
-      stream: false,
-      messages: [{ role: 'user', content: ctx.message.text }]
-    });
-    if (completion?.choices[0]?.message?.content) {
-      ctx.reply(completion.choices[0].message.content);
-    } else {
-      throw Error('no response');
-    }
-  } catch (e) {
-    console.log('error in chat:', e.message);
-    ctx.reply('Sorry, chat is unavailable now. Please, try again later!');
-  }
-});
+bot.on('photo', photoHandler);
 
 bot.launch();
 
