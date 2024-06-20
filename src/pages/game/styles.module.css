@@ -207,6 +207,10 @@
     transform: scale(1) translateY(0);
     opacity: 1;
   }
+  20% {
+    transform: scale(1) translateY(40%);
+    opacity: 1;
+  }
   100% {
     transform: scale(0.5) translateY(-200%);
     opacity: 0;

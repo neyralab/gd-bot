@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import classNames from 'classnames';
+import { useSwipeable } from 'react-swipeable';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   selectBalance,
@@ -50,6 +51,15 @@ export function GamePage() {
   const nextTheme = useSelector(selectNextTheme);
   const [themeIndex, setThemeIndex] = useState([0]);
 
+  const swipeHandlers = useSwipeable({
+    onSwipedLeft: (e) => {
+      switchTheme(e, 'next');
+    },
+    onSwipedRight: (e) => {
+      switchTheme(e, 'prev');
+    }
+  });
+
   useEffect(() => {
     return () => {
       clickSoundRef.current.pause();
@@ -62,15 +72,19 @@ export function GamePage() {
   }, [theme]);
 
   const switchTheme = (e, direction) => {
-    e.preventDefault();
-    e.stopPropagation();
+    e?.preventDefault?.();
+    e?.stopPropagation?.();
+
+    if (status === 'playing') return;
 
     let newThemeIndex;
 
     if (direction === 'next') {
       newThemeIndex = (themeIndex + 1) % themes.length;
+      if (newThemeIndex >= themes.length || newThemeIndex <= 0) return;
     } else if (direction === 'prev') {
       newThemeIndex = (themeIndex - 1 + themes.length) % themes.length;
+      if (newThemeIndex >= themes.length - 1 || newThemeIndex < 0) return;
     }
 
     const nextThemeStyle =
@@ -148,6 +162,8 @@ export function GamePage() {
     }
   };
 
+  const conditionalSwipeHandlers = status !== 'playing' ? swipeHandlers : {}; // just in case we swipe will affect click.
+
   return (
     <div className={classNames(styles.container, theme && styles[theme.id])}>
       <Background ref={backgroundRef} theme={theme} />
@@ -162,6 +178,7 @@ export function GamePage() {
           </div>
 
           <div
+            {...conditionalSwipeHandlers}
             onClick={clickHandler}
             className={styles['main-button-container']}>
             <div className={styles['points-grow-area-container']}>
