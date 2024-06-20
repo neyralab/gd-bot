@@ -264,7 +264,7 @@ export const StartPage = ({ onClose }) => {
           <div
             className={style.footer_item}
             onClick={() => {
-              navigate('/tap');
+              // navigate('/tap');
             }}>
             <LeadboardIcon />
             <span className={style.footer_item_text}>Taping for Airdop</span>
