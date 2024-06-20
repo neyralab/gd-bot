@@ -25,6 +25,9 @@
   width: 100%;
   height: 100%;
   border-radius: 2px;
+  transition:
+    background-color 0.2s ease-in-out,
+    box-shadow 0.2s ease-in-out;
 }
 
 .active {
@@ -35,7 +38,10 @@
   height: 100%;
   max-width: 100%;
   border-radius: 2px;
-  transition: width 0.2s linear;
+  transition:
+    width 0.2s linear,
+    background-color 0.2s ease-in-out,
+    box-shadow 0.2s ease-in-out;
 }
 
 .container.hawk .empty {
