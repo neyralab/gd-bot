@@ -261,11 +261,7 @@ export const StartPage = ({ onClose }) => {
             <PointsIcon />
             <span className={style.footer_item_text}>Upload for Airdrop</span>
           </div>
-          <div
-            className={style.footer_item}
-            onClick={() => {
-              // navigate('/tap');
-            }}>
+          <div className={style.footer_item}>
             <LeadboardIcon />
             <span className={style.footer_item_text}>Taping for Airdop</span>
           </div>
