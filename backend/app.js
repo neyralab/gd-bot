@@ -99,7 +99,6 @@ bot.start(async (ctx) => {
       reply_markup: {
         inline_keyboard: [
           [uploadForAirdropButton],
-          [playForAirdropButton],
           [followXButton],
           [shareButton]
         ]
