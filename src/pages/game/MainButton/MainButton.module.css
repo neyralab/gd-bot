@@ -23,25 +23,22 @@
   height: 154px;
   top: calc(50% - 80px);
   left: calc(50% - 76px);
-  transform: perspective(100px) rotateX(-10deg);
+  transform: perspective(100px) rotateY(-10deg) translateY(-10px);
 }
 
 .travel-animation {
-  animation: TravelAnimation 3s infinite alternate ease-in-out;
+  animation: TravelAnimation 6s infinite forwards ease-in-out;
 }
 
 @keyframes TravelAnimation {
-  0% {
-    transform: perspective(100px) rotateX(-10deg);
-  }
-  90% {
-    transform: perspective(100px) rotateX(5deg);
-  }
-  95% {
-    transform: perspective(100px) rotateX(5.5deg) rotateY(1deg);
-  }
+  0%,
   100% {
-    transform: perspective(100px) rotateX(6deg) rotateY(-2deg);
+    transform: perspective(100px) rotateY(-5deg) rotateX(-5deg)
+      translateY(-10px);
+  }
+
+  50% {
+    transform: perspective(100px) rotateY(5deg) rotateX(5deg) translateY(0px);
   }
 }
 
