@@ -1,24 +1,36 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
+import { DebounceInput } from 'react-debounce-input';
 
 import {
   changeFileView,
+  changeTimeLeft,
+  changeuploadingProgress,
   clearFiles,
   selecSelectedFile,
   selectFileView,
   selectFiles,
   selectFilesCount,
   selectFilesPage,
+  selectSearchAutocomplete,
+  selectUploadingProgress,
   setCount,
   setFiles,
   setPage,
-  setSelectedFile
+  setSearchAutocomplete,
+  setSelectedFile,
+  setUploadingFile
 } from '../../store/reducers/filesSlice';
 import { uploadFileEffect } from '../../effects/uploadFileEffect';
-import { getFilesEffect } from '../../effects/filesEffects';
+import {
+  autoCompleteSearchEffect,
+  getFilesEffect
+} from '../../effects/filesEffects';
 import { handleFileMenu } from '../../store/reducers/modalSlice';
+import { transformSize } from '../../utils/transformSize';
+import { fromByteToGb } from '../../utils/storage';
 
 import { FileItem } from '../../components/fileItem';
 import GhostLoader from '../../components/ghostLoader';
@@ -26,33 +38,45 @@ import InfiniteScrollComponent from '../../components/infiniteScrollComponent';
 
 import { ReactComponent as GridIcon } from '../../assets/grid_view.svg';
 import { ReactComponent as ListIcon } from '../../assets/list_view.svg';
-import { ReactComponent as ArrowIcon } from '../../assets/arrow_right.svg';
-import { ReactComponent as CircleCloudIcon } from '../../assets/cloud_circle.svg';
-import { ReactComponent as CirclePictureIcon } from '../../assets/picture_circle.svg';
 import { ReactComponent as FileIcon } from '../../assets/file_draft.svg';
+import { ReactComponent as PlusIcon } from './assets/plus.svg';
+import { ReactComponent as GhostIcon } from './assets/ghost_logo.svg';
+import { ReactComponent as SearchIcon } from './assets/search.svg';
 
-import style from './style.module.css';
+import style from './style.module.scss';
 
 const MAX_FILE_SIZE = 268435456;
 
 export const FilesSystemPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const mediaRef = useRef(null);
   const fileRef = useRef(null);
   const files = useSelector(selectFiles);
+  const searchFiles = useSelector(selectSearchAutocomplete);
   const filesCount = useSelector(selectFilesCount);
   const filesPage = useSelector(selectFilesPage);
   const view = useSelector(selectFileView);
   const [areFilesLoading, setAreFilesLoading] = useState(false);
+  const [searchValue, setSearchValue] = useState('');
   const checkedFile = useSelector(selecSelectedFile);
+  const user = useSelector((state) => state?.user?.data);
+  const { progress, file: uploadingFile } = useSelector(
+    selectUploadingProgress
+  );
 
   const onBackButtonClick = () => navigate(-1);
 
   const clearInputsAfterUpload = () => {
     const dataTransfer = new DataTransfer();
-    mediaRef.current.files = dataTransfer.files;
-    fileRef.current.files = dataTransfer.files;
+    if (fileRef.current) {
+      fileRef.current.files = dataTransfer.files;
+    }
+  };
+
+  const clearUploadState = () => {
+    dispatch(changeuploadingProgress({ progress: 0 }));
+    dispatch(changeTimeLeft({ timeLeft: 0 }));
+    dispatch(setUploadingFile({}));
   };
 
   const handleFileUpload = async (event) => {
@@ -69,11 +93,54 @@ export const FilesSystemPage = () => {
       );
       return;
     }
-    setAreFilesLoading(true);
-    await uploadFileEffect({ files, dispatch });
-    setAreFilesLoading(false);
-    clearInputsAfterUpload();
+    try {
+      setAreFilesLoading(true);
+      dispatch(setUploadingFile(files[0]));
+      await uploadFileEffect({ files, dispatch });
+    } catch (error) {
+      toast.error(
+        'Something went wrong during upload. Please try again later!',
+        {
+          theme: 'colored',
+          position: 'bottom-center',
+          autoClose: 5000
+        }
+      );
+    } finally {
+      setAreFilesLoading(false);
+      clearInputsAfterUpload();
+      clearUploadState();
+    }
   };
+
+  const uploadingProgress = useMemo(() => {
+    const percentage = (progress / uploadingFile?.size) * 100;
+    return `${Math.round(percentage)}/100 %`;
+  }, [progress, uploadingFile?.size]);
+
+  const handleInputChange = async (e) => {
+    const query = e.target.value.trim();
+    setSearchValue(query);
+    dispatch(setSearchAutocomplete([]));
+    if (query.length > 0) {
+      await autoCompleteSearchEffect(query).then((data) => {
+        if (data?.length > 0) {
+          const searchFiles = data.map((el) => ({ ...el, isSearch: true }));
+          dispatch(setSearchAutocomplete(searchFiles));
+        } else {
+          dispatch(setSearchAutocomplete([]));
+        }
+      });
+    }
+  };
+
+  const fileList = useMemo(() => {
+    if (searchValue.length < 1) {
+      return files;
+    } else {
+      return searchFiles;
+    }
+  }, [searchFiles, searchValue, files]);
 
   useEffect(() => {
     getFilesEffect(filesPage).then(({ data, count }) => {
@@ -110,50 +177,60 @@ export const FilesSystemPage = () => {
     }
   };
 
+  const human = useMemo(() => {
+    if (!user) return;
+    const { space_total, storage } = user;
+    const percent = Math.round(
+      (Number(storage) / space_total + Number.EPSILON) * 100
+    );
+    return {
+      total: `${transformSize(String(space_total), 0)}`,
+      used: `${fromByteToGb(storage)}`,
+      percent: { label: `${percent || 1}%`, value: percent }
+    };
+  }, [user]);
+
   return (
     <div className={style.container}>
-      <header className={style.filesHeader}>
-        <button
-          className={style.header__cancelBtnBlue}
-          onClick={onBackButtonClick}>
-          Back
-        </button>
-        <h2 className={`${style.header__title} ${style.centeredTitle}`}>
-          Files System
-        </h2>
-      </header>
+      <header className={style.filesHeader}></header>
       <section className={style.wrapper}>
-        <ul className={style.options}>
-          <li className={style.options__item}>
-            <button
-              className={`${style.options__item__button} ${style.selectFileButton}`}>
-              <CirclePictureIcon /> From Gallery{' '}
-              <ArrowIcon className={style.arrowIcon} />
-            </button>
-            <input
-              ref={mediaRef}
-              type="file"
-              accept="image/*,video/*"
-              className={style.hiddenInput}
-              onChange={handleFileUpload}
-            />
-          </li>
-          <li className={style.options__item}>
-            <button
-              className={`${style.options__item__button} ${style.selectFileButton}`}>
-              <CircleCloudIcon /> From Files{' '}
-              <ArrowIcon className={style.arrowIcon} />
-            </button>
-            <input
-              ref={fileRef}
-              type="file"
-              className={style.hiddenInput}
-              onChange={handleFileUpload}
-            />
-          </li>
-        </ul>
+        <div className={style.search}>
+          <DebounceInput
+            minLength={1}
+            debounceTimeout={500}
+            name="search"
+            id="search"
+            maxLength="40"
+            placeholder="Search"
+            className={style.search__input}
+            autoComplete="off"
+            onChange={handleInputChange}
+          />
+          <label htmlFor="search" className={style.search__icon}>
+            <SearchIcon />
+          </label>
+          <div className={style.search__logo}>
+            <GhostIcon />
+          </div>
+        </div>
+        {user && human && (
+          <div className={style.storage_block}>
+            <div className={style.storage_text_container}>
+              <p className={style.storage_text}>{`${user?.points} Points`}</p>
+              <p className={style.storage_text}>
+                {human?.used} of {human?.total}
+              </p>
+            </div>
+            <div className={style.storage_usage_container}>
+              <div
+                className={style.storage_usage}
+                style={{ width: human?.percent?.label }}
+              />
+            </div>
+          </div>
+        )}
         <div className={style.listHeader}>
-          <p className={style.listHeader__title}>Recently sent files</p>
+          <p className={style.listHeader__title}>GHOSTDRIVE</p>
           <button
             className={style.listHeader__viewBtn}
             onClick={onFileViewChange}>
@@ -162,15 +239,15 @@ export const FilesSystemPage = () => {
         </div>
         {areFilesLoading ? (
           <div className={style.loaderWrapper}>
-            <GhostLoader texts={['Uploading']} />
+            <GhostLoader texts={[`Uploading: ${uploadingProgress}`]} />
           </div>
-        ) : files.length ? (
+        ) : fileList.length ? (
           <InfiniteScrollComponent
             totalItems={filesCount}
-            files={files}
+            files={fileList}
             fetchMoreFiles={fetchMoreFiles}>
-            <ul className={`${style.options} ${style.filesList}`}>
-              {files.map((file) => (
+            <ul className={style.filesList}>
+              {fileList.map((file) => (
                 <FileItem
                   file={file}
                   key={file.id}
@@ -184,12 +261,25 @@ export const FilesSystemPage = () => {
           <div className={style.emptyFilesPage}>
             <FileIcon />
             <h2 className={style.emptyFilesPage_title}>Files not found</h2>
-            <p className={style.emptyFilesPage_desc}>
-              This page is empty. You have no uploaded files.
-            </p>
+            <p className={style.emptyFilesPage_desc}>This page is empty</p>
           </div>
         )}
       </section>
+      {!areFilesLoading && (
+        <div className={style.uploadButton}>
+          <input
+            name="file"
+            id="file"
+            type="file"
+            ref={fileRef}
+            className={style.hiddenInput}
+            onChange={handleFileUpload}
+          />
+          <label htmlFor="file" className={style.uploadButton__icon}>
+            <PlusIcon />
+          </label>
+        </div>
+      )}
     </div>
   );
 };

@@ -20,6 +20,7 @@ import {
   DEFAULT_TARIFFS_NAMES
 } from '../upgradeStorage';
 import { transformSize } from '../../utils/transformSize';
+import { fromByteToGb } from '../../utils/storage';
 
 import GhostLoader from '../../components/ghostLoader';
 import { ConnectTonWalletButton } from '../../components/connectTonWalletButton';
@@ -71,7 +72,7 @@ export const StartPage = ({ onClose }) => {
 
     return {
       total: `${transformSize(String(space_total), 0)}`,
-      used: `${transformSize(storage, 1)}`,
+      used: `${fromByteToGb(storage)}`,
       percent: { label: `${percent || 1}%`, value: percent }
     };
   }, [user]);
@@ -139,7 +140,7 @@ export const StartPage = ({ onClose }) => {
       //   text: 'Play & Earn',
       //   amount: '',
       //   onClick: () => {
-      //     navigate('/tap');
+      //     navigate('/game');
       //   }
       // }
     ];
@@ -235,22 +236,7 @@ export const StartPage = ({ onClose }) => {
               </div>
             </div>
           </TelegramShareButton>
-        </button>
-
-        <div className={style.storage_block}>
-          <div className={style.storage_text_container}>
-            <p className={style.storage_text}>Storage</p>
-            <p className={style.storage_text}>
-              {human.used} of {human.total}
-            </p>
-          </div>
-          <div className={style.storage_usage_container}>
-            <div
-              className={style.storage_usage}
-              style={{ width: human.percent.label }}
-            />
-          </div>
-        </div> */}
+        </button>*/}
 
         <footer className={style.footer}>
           <div

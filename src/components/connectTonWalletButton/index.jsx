@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   useTonAddress,
   useTonConnectModal,
@@ -15,6 +15,7 @@ export const ConnectTonWalletButton = ({ openDisconnectModal }) => {
   const { open } = useTonConnectModal();
   const wallet = useTonWallet();
   const [tonConnectUI] = useTonConnectUI();
+  const [tonProof, setTonProof] = useState();
 
   useEffect(() => {
     (async () => {
@@ -33,21 +34,32 @@ export const ConnectTonWalletButton = ({ openDisconnectModal }) => {
 
   useEffect(
     () =>
-      tonConnectUI.onStatusChange(async (wallet) => {
+      tonConnectUI.onStatusChange((wallet) => {
         console.log({ onStatusChange: wallet });
         if (
           wallet?.connectItems?.tonProof &&
           'proof' in wallet?.connectItems.tonProof
         ) {
-          const res = await saveUserWallet({
-            tonProof: wallet?.connectItems.tonProof,
-            account: wallet?.account
-          });
-          console.log(wallet?.connectItems, { res });
+          setTonProof(wallet?.connectItems.tonProof);
         }
       }),
-    []
+    [tonConnectUI]
   );
+
+  useEffect(() => {
+    if (address && tonProof && wallet) {
+      (async () => {
+        const res = await saveUserWallet({
+          tonProof,
+          account: {
+            ...wallet?.account,
+            uiAddress: address
+          }
+        });
+        console.log({ res });
+      })();
+    }
+  }, [address, tonProof, wallet]);
 
   return (
     <div className={style.wrapper}>
