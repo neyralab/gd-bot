@@ -23,7 +23,27 @@
   height: 154px;
   top: calc(50% - 80px);
   left: calc(50% - 76px);
+  animation: tiltAnimation 3s infinite alternate ease-in-out;
+  transform: perspective(100px) rotateX(-10deg);
 }
+
+
+@keyframes tiltAnimation {
+  0% {
+    transform: perspective(100px) rotateX(-10deg);
+  }
+  90% {
+    transform: perspective(100px) rotateX(5deg);
+  }
+  95% {
+    transform: perspective(100px) rotateX(5.5deg) rotateY(1deg);
+  }
+  100% {
+    transform: perspective(100px) rotateX(6deg) rotateY(-2deg);
+  }
+  
+}
+
 
 .icon {
   width: 100%;
@@ -32,7 +52,10 @@
   background-repeat: no-repeat;
   background-size: contain;
   will-change: opacity, transform;
+
+  
 }
+
 
 .frame {
   position: absolute;
@@ -99,7 +122,7 @@
 
 @keyframes BtnAnimation1 {
   0% {
-    opacity: 0.95;
+    opacity: 1;
     transform: scale(1);
   }
   30% {
@@ -111,7 +134,7 @@
     transform: scale(1.05);
   }
   100% {
-    opacity: 0.95;
+    opacity: 1;
     transform: scale(1);
   }
 }

@@ -71,6 +71,9 @@ const Background = forwardRef(({ theme }, ref) => {
   };
 
   useEffect(() => {
+    let timeout1;
+    let timeout2;
+
     if (nextTheme) {
       glowRef.current.classList.remove(styles['next-theme-appear']);
       planetRef.current.classList.remove(styles['next-theme-appear']);
@@ -78,10 +81,10 @@ const Background = forwardRef(({ theme }, ref) => {
       glowRef.current.classList.add(styles['current-theme-dissapear']);
       planetRef.current.classList.add(styles['current-theme-dissapear']);
 
-      setTimeout(() => {
+      timeout1 = setTimeout(() => {
         glowRef.current.style.opacity = 0;
         planetRef.current.style.opacity = 0;
-      }, 450); // to avoid flickering
+      }, 490); // to avoid flickering
     } else {
       glowRef.current.classList.remove(styles['current-theme-dissapear']);
       planetRef.current.classList.remove(styles['current-theme-dissapear']);
@@ -89,11 +92,20 @@ const Background = forwardRef(({ theme }, ref) => {
       glowRef.current.classList.add(styles['next-theme-appear']);
       planetRef.current.classList.add(styles['next-theme-appear']);
 
-      setTimeout(() => {
+      timeout2 = setTimeout(() => {
         glowRef.current.style.opacity = 1;
         planetRef.current.style.opacity = 1;
-      }, 950); // to avoid flickering
+      }, 990); // to avoid flickering
     }
+
+    return () => {
+      if (timeout1) {
+        clearTimeout(timeout1);
+      }
+      if (timeout2) {
+        clearTimeout(timeout2);
+      }
+    };
   }, [nextTheme]);
 
   useEffect(() => {

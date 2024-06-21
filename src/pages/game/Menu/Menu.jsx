@@ -1,6 +1,8 @@
 import React from 'react';
 import classNames from 'classnames';
 import { NavLink } from 'react-router-dom';
+import { TelegramShareButton } from 'react-share';
+import { useSelector } from 'react-redux';
 import styles from './Menu.module.css';
 
 import { ReactComponent as UpgradeIcon } from '../../../assets/database.svg';
@@ -9,6 +11,8 @@ import { ReactComponent as EarnIcon } from '../../../assets/toll.svg';
 import { ReactComponent as AirdropIcon } from '../../../assets/atr.svg';
 
 export default function Menu() {
+  const link = useSelector((state) => state.user.link);
+
   return (
     <div className={styles.container}>
       <NavLink
@@ -27,21 +31,24 @@ export default function Menu() {
         <span className={styles.text}>Upgrade</span>
       </NavLink>
 
-      <NavLink className={styles.item} to={'/friends'}>
+      <TelegramShareButton
+        className={styles.item}
+        url={link.copy}
+        title={'Share this link with friends'}>
         <div className={styles.icon}>
           <FriendsIcon />
         </div>
         <span className={styles.text}>Friends</span>
-      </NavLink>
+      </TelegramShareButton>
 
-      <NavLink className={styles.item} to={'/earn'}>
+      <NavLink className={styles.item} to={'/task'}>
         <div className={styles.icon}>
           <EarnIcon />
         </div>
         <span className={styles.text}>Earn</span>
       </NavLink>
 
-      <NavLink className={styles.item} to={'/airdrop'}>
+      <NavLink className={styles.item} to={'/point-tracker'}>
         <div className={styles.icon}>
           <AirdropIcon />
         </div>
