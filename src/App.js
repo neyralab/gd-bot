@@ -28,6 +28,7 @@ import { Referral } from './pages/referral';
 import { Leaderboard } from './pages/leaderboard';
 import { TaskPage } from './pages/Task';
 import { BoostPage } from './pages/boost';
+import { GamePage } from './pages/game';
 import { IntroPage } from './pages/intro';
 
 import './App.css';
@@ -131,6 +132,7 @@ function App() {
           <Route path="/point-tracker" exact element={<Referral />} />
           <Route path="/task" exact element={<TaskPage />} />
           <Route path="/leadboard" exact element={<Leaderboard />} />
+          <Route path="/game" exact element={<GamePage />} />
           <Route
             path="/boost"
             exact

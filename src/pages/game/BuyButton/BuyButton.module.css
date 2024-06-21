@@ -1,0 +1,34 @@
+.button {
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 1);
+
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 12px;
+}
+
+.button span {
+  font-family: 'SF Pro Text';
+  font-size: 21px;
+  font-weight: 600;
+}
+
+.button .multiplier {
+  transition: color 0.2s ease-in-out;
+}
+
+.button.hawk .multiplier {
+  color: #6bb1ff;
+}
+.button.lotus .multiplier {
+  color: #ff6be9;
+}
+.button.phoenix .multiplier {
+  color: #ffa66b;
+}
+.button.ghost .multiplier {
+  color: #6bffa6;
+}

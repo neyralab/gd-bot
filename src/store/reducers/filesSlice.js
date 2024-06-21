@@ -9,7 +9,13 @@ const filesSlice = createSlice({
     searchAutocomplete: [],
     selectedFile: {},
     direction: 'asc',
-    view: 'grid'
+    view: 'grid',
+    uploadingFile: {
+      file: {},
+      progress: 0,
+      timeLeft: 0,
+      id: null
+    }
   },
   reducers: {
     setFiles: (state, { payload }) => {
@@ -43,6 +49,21 @@ const filesSlice = createSlice({
     deleteFile: (state, { payload }) => {
       const files = state.files.filter((file) => file.slug !== payload);
       state.files = files;
+    },
+    changeuploadingProgress: (state, { payload }) => {
+      state.uploadingFile.progress = payload.progress;
+    },
+    changeTimeLeft: (state, { payload }) => {
+      state.uploadingFile.timeLeft = payload.timeLeft;
+    },
+    setUploadingFile: (state, { payload }) => {
+      state.uploadingFile.file = payload;
+    },
+    updateFile: (state, { payload }) => {
+      const updatedFiles = [...state.files].map((file) =>
+        file.id === payload.id ? payload : file
+      );
+      state.files = [...updatedFiles];
     }
   }
 });
@@ -57,7 +78,11 @@ export const {
   clearFiles,
   setSelectedFile,
   setFiles,
-  deleteFile
+  deleteFile,
+  changeuploadingProgress,
+  changeTimeLeft,
+  updateFile,
+  setUploadingFile
 } = filesSlice.actions;
 export default filesSlice.reducer;
 
@@ -69,3 +94,4 @@ export const selectSearchAutocomplete = (state) =>
 export const selectDirection = (state) => state.files.direction;
 export const selectFileView = (state) => state.files.view;
 export const selecSelectedFile = (state) => state.files.selectedFile;
+export const selectUploadingProgress = (state) => state.files.uploadingFile;
