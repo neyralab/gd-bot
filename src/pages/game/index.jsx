@@ -233,16 +233,16 @@ export function GamePage() {
             )}
           </div>
 
-          {status !== 'played' && !themeAccess[theme.id] && (
-            <div className={styles['actions-container']}>
+          <div className={styles['actions-container']}>
+            {status !== 'played' && !themeAccess[theme.id] && (
               <div className={styles['actions-flex']}>
                 <BuyButton theme={theme} onCompleted={buyCompletedHandler} />
                 <span className={styles['actions-description']}>
                   recharge & play
                 </span>
               </div>
-            </div>
-          )}
+            )}
+          </div>
 
           <div className={styles['experience-container']}>
             <ProgressBar />
