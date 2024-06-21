@@ -23,12 +23,14 @@
   height: 154px;
   top: calc(50% - 80px);
   left: calc(50% - 76px);
-  animation: tiltAnimation 3s infinite alternate ease-in-out;
   transform: perspective(100px) rotateX(-10deg);
 }
 
+.travel-animation {
+  animation: TravelAnimation 3s infinite alternate ease-in-out;
+}
 
-@keyframes tiltAnimation {
+@keyframes TravelAnimation {
   0% {
     transform: perspective(100px) rotateX(-10deg);
   }
@@ -41,9 +43,7 @@
   100% {
     transform: perspective(100px) rotateX(6deg) rotateY(-2deg);
   }
-  
 }
-
 
 .icon {
   width: 100%;
@@ -52,10 +52,7 @@
   background-repeat: no-repeat;
   background-size: contain;
   will-change: opacity, transform;
-
-  
 }
-
 
 .frame {
   position: absolute;
