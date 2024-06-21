@@ -1,4 +1,4 @@
-import React, { useRef, useImperativeHandle, forwardRef } from 'react';
+import React, { useRef, useImperativeHandle, forwardRef, useEffect } from 'react';
 import classNames from 'classnames';
 import styles from './MainButton.module.css';
 
@@ -9,6 +9,14 @@ const MainButton = forwardRef(({ theme }, ref) => {
   const frame2Ref = useRef(null);
   const frame3Ref = useRef(null);
   const frame4Ref = useRef(null);
+
+  const iconContainerRef = useRef(null);
+
+  useEffect(() => {
+    iconContainerRef.current.classList.remove(styles['travel-animation']);
+    void iconContainerRef.current.offsetWidth; // Trigger a reflow (force re-render)
+    iconContainerRef.current.classList.add(styles['travel-animation']);
+  }, [theme]);
 
   const runAnimation = () => {
     let items = [
@@ -66,7 +74,7 @@ const MainButton = forwardRef(({ theme }, ref) => {
           backgroundImage: `url('/assets/game-page/frame-4-${theme.id}.png')`
         }}></div>
 
-      <div className={styles['icon-container']}>
+      <div className={styles['icon-container']} ref={iconContainerRef}>
         <div
           className={styles.icon}
           ref={iconRef}
