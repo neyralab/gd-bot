@@ -3,10 +3,14 @@ import {
   LocalFileBuffer,
   getThumbnailImage
 } from 'gdgateway-client';
+import { toast } from 'react-toastify';
 
 import { getOneTimeToken } from './getOneTimeToken';
 import { uploadFileData } from '../config/upload-file-data';
 import { addUploadedFile } from '../store/reducers/filesSlice';
+import imageFileExtensions, {
+  imageMediaTypesPreview
+} from '../config/image-file-extensions';
 
 const setTelegramFiles = (fileID) => {
   const files = JSON.parse(localStorage.getItem('telegram_files')) ?? [];
@@ -65,14 +69,18 @@ export const uploadFileEffect = async ({ files, dispatch }) => {
           is_telegram: true
         });
         const uploadedFile = result.data.data;
-        await getThumbnailImage({
-          file,
-          quality: 3,
-          oneTimeToken,
-          endpoint: gateway.url,
-          slug: uploadedFile?.slug
-        });
-
+        if (
+          imageMediaTypesPreview.includes(uploadedFile.mime) &&
+          imageFileExtensions.includes(`.${uploadedFile.extension}`)
+        ) {
+          await getThumbnailImage({
+            file,
+            quality: 3,
+            oneTimeToken,
+            endpoint: gateway.url,
+            slug: uploadedFile?.slug
+          });
+        }
         dispatch(addUploadedFile([uploadedFile]));
         setTelegramFiles(uploadedFile.id);
         if (!result) {
@@ -85,6 +93,22 @@ export const uploadFileEffect = async ({ files, dispatch }) => {
         }
       } catch (e) {
         console.log('error', e);
+        if (e?.response?.data?.errors === 'Not enough free space') {
+          toast.error(
+            'The file you are trying to upload exceeds the available free space on your drive. Please free up some storage and try again.',
+            {
+              theme: 'colored',
+              position: 'bottom-center',
+              autoClose: 5000
+            }
+          );
+        } else {
+          toast.error('Sorry, something went wrong! Please reload the page', {
+            theme: 'colored',
+            position: 'bottom-center',
+            autoClose: 5000
+          });
+        }
       }
     };
 

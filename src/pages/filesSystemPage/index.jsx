@@ -30,6 +30,7 @@ import {
 } from '../../effects/filesEffects';
 import { handleFileMenu } from '../../store/reducers/modalSlice';
 import { transformSize } from '../../utils/transformSize';
+import { fromByteToGb } from '../../utils/storage';
 
 import { FileItem } from '../../components/fileItem';
 import GhostLoader from '../../components/ghostLoader';
@@ -184,7 +185,7 @@ export const FilesSystemPage = () => {
     );
     return {
       total: `${transformSize(String(space_total), 0)}`,
-      used: `${transformSize(storage, 1)}`,
+      used: `${fromByteToGb(storage)}`,
       percent: { label: `${percent || 1}%`, value: percent }
     };
   }, [user]);
