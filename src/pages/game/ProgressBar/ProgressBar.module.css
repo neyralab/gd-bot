@@ -44,6 +44,22 @@
     box-shadow 0.2s ease-in-out;
 }
 
+.container.new-level {
+  animation: NewLevelAnimation 0.5s ease-in-out alternate infinite;
+}
+
+@keyframes NewLevelAnimation {
+  0% {
+    transform: scaleY(1);
+  }
+  100% {
+    transform: scale(0.99);
+  }
+}
+
+/* ---- */
+/* Theme specific styles */
+/* ---- */
 .container.hawk .empty {
   background: linear-gradient(
     90deg,
