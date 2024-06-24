@@ -113,7 +113,7 @@ export function GamePage() {
         213, 254, 163, 31, 65, 245, 148, 117, 0, 119, 51, 209, 53, 120, 44, 219
       ])
     );
-    const closedContract = new GDTapBooster(adr);
+    const closedContract = new GDTapBooster(contractAddress);
     console.log({ endpoint, closedContract, contractAddress });
     // const { TonClient } = t;
     console.log({ TonClient });
