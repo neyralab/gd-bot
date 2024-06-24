@@ -4,6 +4,7 @@
   flex-direction: column;
   overflow-x: hidden;
   position: relative;
+  overscroll-behavior: none;
 }
 
 .container * {
@@ -20,6 +21,7 @@
 
   margin: auto;
   overflow: hidden;
+  overscroll-behavior: none;
 }
 
 .content-inner-container {

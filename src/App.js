@@ -30,6 +30,7 @@ import { TaskPage } from './pages/Task';
 import { BoostPage } from './pages/boost';
 import { GamePage } from './pages/game';
 import { IntroPage } from './pages/intro';
+import EarnPage from './pages/earn';
 
 import './App.css';
 
@@ -138,6 +139,7 @@ function App() {
             exact
             element={<BoostPage tariffs={tariffs} />}
           />
+          <Route path="/earn" exact element={<EarnPage />} />
         </Routes>
       </SharedLayout>
     </TonConnectUIProvider>
