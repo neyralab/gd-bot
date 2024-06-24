@@ -5,10 +5,10 @@ import { TelegramShareButton } from 'react-share';
 import { useSelector } from 'react-redux';
 import styles from './Menu.module.css';
 
-import { ReactComponent as UpgradeIcon } from '../../../assets/database.svg';
-import { ReactComponent as FriendsIcon } from '../../../assets/groups.svg';
-import { ReactComponent as EarnIcon } from '../../../assets/toll.svg';
-import { ReactComponent as AirdropIcon } from '../../../assets/atr.svg';
+import { ReactComponent as UpgradeIcon } from '../../assets/database.svg';
+import { ReactComponent as FriendsIcon } from '../../assets/groups.svg';
+import { ReactComponent as EarnIcon } from '../../assets/toll.svg';
+import { ReactComponent as AirdropIcon } from '../../assets/atr.svg';
 
 export default function Menu() {
   const link = useSelector((state) => state.user.link);
@@ -24,7 +24,11 @@ export default function Menu() {
         <span className={styles.text}>Fly</span>
       </NavLink>
 
-      <NavLink className={styles.item} to={'/upgrade'}>
+      <NavLink
+        className={({ isActive }) =>
+          classNames(styles.item, isActive && styles.active)
+        }
+        to={'/upgrade'}>
         <div className={styles.icon}>
           <UpgradeIcon />
         </div>
@@ -41,14 +45,22 @@ export default function Menu() {
         <span className={styles.text}>Friends</span>
       </TelegramShareButton>
 
-      <NavLink className={styles.item} to={'/task'}>
+      <NavLink
+        className={({ isActive }) =>
+          classNames(styles.item, isActive && styles.active)
+        }
+        to={'/earn'}>
         <div className={styles.icon}>
           <EarnIcon />
         </div>
         <span className={styles.text}>Earn</span>
       </NavLink>
 
-      <NavLink className={styles.item} to={'/point-tracker'}>
+      <NavLink
+        className={({ isActive }) =>
+          classNames(styles.item, isActive && styles.active)
+        }
+        to={'/point-tracker'}>
         <div className={styles.icon}>
           <AirdropIcon />
         </div>

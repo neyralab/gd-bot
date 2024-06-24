@@ -26,7 +26,7 @@ import Background from './Background/Background';
 import BuyButton from './BuyButton/BuyButton';
 import PointsGrowArea from './PointsGrowArea/PointsGrowArea';
 import Timer from './Timer/Timer';
-import Menu from './Menu/Menu';
+import Menu from '../../components/Menu/Menu';
 import ProgressBar from './ProgressBar/ProgressBar';
 import Congratulations from './Congratulations/Congratulations';
 import themes from './themes';
