@@ -45,7 +45,7 @@ import { ReactComponent as PointsIcon } from '../../assets/point.svg';
 
 import style from './style.module.css';
 
-export const StartPage = ({ onClose }) => {
+export const StartPage = ({ tariffs }) => {
   const [disconnectWalletModal, setDisconnectWalletModal] = useState(false);
   const totalWsCount = useSelector(selectTotalWsCount);
   const allWorkspaces = useSelector(selectAllWorkspaces);
@@ -59,9 +59,11 @@ export const StartPage = ({ onClose }) => {
     const size = DEFAULT_TARIFFS_NAMES[user?.space_total] || '1GB';
     return {
       size,
-      multiplier: DEFAULT_MULTIPLIER_NAMES[size] || 1
+      multiplier:
+        tariffs?.find((el) => el.storage === user?.space_total)
+          ?.multiplicator || 1
     };
-  }, [user?.space_total]);
+  }, [user?.space_total, tariffs]);
 
   const human = useMemo(() => {
     if (!user) return;
