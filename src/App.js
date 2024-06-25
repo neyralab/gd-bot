@@ -31,6 +31,7 @@ import { BoostPage } from './pages/boost';
 import { GamePage } from './pages/game';
 import { IntroPage } from './pages/intro';
 import EarnPage from './pages/earn';
+import FriendsPage from './pages/friends';
 
 import './App.css';
 
@@ -133,6 +134,7 @@ function App() {
           <Route path="/point-tracker" exact element={<Referral />} />
           <Route path="/task" exact element={<TaskPage />} />
           <Route path="/leadboard" exact element={<Leaderboard />} />
+          <Route path="/friends" exact element={<FriendsPage />} />
           <Route path="/game" exact element={<GamePage />} />
           <Route
             path="/boost"

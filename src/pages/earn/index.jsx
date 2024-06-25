@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Header } from '../../components/header';
 import Menu from '../../components/Menu/Menu';
-import Task from './Task/Task';
+import Task from '../../components/Task/Task';
 import { tasks as tasksFromFile } from './tasks';
 import styles from './styles.module.css';
 
@@ -36,7 +36,7 @@ export default function EarnPage() {
       <Header label={'Earn'} />
 
       <div className={styles['title-block']}>
-        <img src="/assets/earn-page/token.png" alt="Token" />
+        <img src="/assets/token.png" alt="Token" />
         <h1>Earn more points</h1>
       </div>
 
