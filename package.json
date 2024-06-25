@@ -47,8 +47,7 @@
     "util": "^0.12.5"
   },
   "scripts": {
-    "fix": "cd node_modules/@ton/ton && yarn install && yarn build",
-    "postinstall": "node generateManifest.js && yarn fix",
+    "postinstall": "node generateManifest.js",
     "start": "react-app-rewired start",
     "build": "react-app-rewired build",
     "test": "react-app-rewired test",
