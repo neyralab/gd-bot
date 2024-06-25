@@ -28,7 +28,7 @@ export default function Menu() {
         <div className={styles.icon}>
           <LeadboardIcon />
         </div>
-        <span className={styles.text}>Leadbord</span>
+        <span className={styles.text}>Leadboard</span>
       </NavLink>
 
       <NavLink
