@@ -1,18 +1,14 @@
 import React from 'react';
 import classNames from 'classnames';
 import { NavLink } from 'react-router-dom';
-import { TelegramShareButton } from 'react-share';
-import { useSelector } from 'react-redux';
 import styles from './Menu.module.css';
 
-import { ReactComponent as UpgradeIcon } from '../../assets/database.svg';
+import { ReactComponent as LeadboardIcon } from '../../assets/leadboard.svg';
 import { ReactComponent as FriendsIcon } from '../../assets/groups.svg';
 import { ReactComponent as EarnIcon } from '../../assets/toll.svg';
 import { ReactComponent as AirdropIcon } from '../../assets/atr.svg';
 
 export default function Menu() {
-  const link = useSelector((state) => state.user.link);
-
   return (
     <div className={styles.container}>
       <NavLink
@@ -28,22 +24,23 @@ export default function Menu() {
         className={({ isActive }) =>
           classNames(styles.item, isActive && styles.active)
         }
-        to={'/upgrade'}>
+        to={'/leadboard'}>
         <div className={styles.icon}>
-          <UpgradeIcon />
+          <LeadboardIcon />
         </div>
-        <span className={styles.text}>Upgrade</span>
+        <span className={styles.text}>Leadboard</span>
       </NavLink>
 
-      <TelegramShareButton
-        className={styles.item}
-        url={link.copy}
-        title={'Share this link with friends'}>
+      <NavLink
+        className={({ isActive }) =>
+          classNames(styles.item, isActive && styles.active)
+        }
+        to={'/friends'}>
         <div className={styles.icon}>
           <FriendsIcon />
         </div>
         <span className={styles.text}>Friends</span>
-      </TelegramShareButton>
+      </NavLink>
 
       <NavLink
         className={({ isActive }) =>

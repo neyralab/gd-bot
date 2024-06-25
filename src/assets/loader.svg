@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid"
+    width="48" height="48"
+    style="shape-rendering: auto; display: block;">
+    <g data-idx="1">
+        <path stroke="none" fill="#ffffff" d="M10 50A40 40 0 0 0 90 50A40 42 0 0 1 10 50"
+            data-idx="2"
+            transform="matrix(-0.684551726353843,-0.7289642885258325,0.7289642885258325,-0.684551726353843,47.05040760287469,122.36035247033762)">
+
+        </path>
+        <g data-idx="4"></g>
+    </g>
+
+</svg>

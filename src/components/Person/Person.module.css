@@ -1,0 +1,80 @@
+.container {
+  padding: 18px 16px;
+  border-radius: 16px;
+  border: 1px dotted #ffffff99;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  position: relative;
+  animation: AppearAnim 0.5s ease-out forwards;
+  transform: translateX(100%) scale(0.2);
+  opacity: 0;
+  transition: border-color 0.2s;
+}
+
+@keyframes AppearAnim {
+  0% {
+    transform: translateX(100%) scale(0.2);
+    max-height: 0px;
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0%) scale(1);
+    max-height: 100px;
+    opacity: 1;
+  }
+}
+
+.container.done {
+  border-color: #01d807;
+}
+
+.container > * {
+  flex-shrink: 0;
+}
+
+.name {
+  flex-grow: 1;
+  white-space: normal;
+  width: calc(100% - 150px);
+}
+
+.name strong {
+  white-space: pre-wrap;
+  display: block;
+  width: 100%;
+  font-weight: 400;
+  transition: color 1s;
+}
+
+.container.done .name strong {
+  color: #01d807;
+  text-decoration: line-through;
+}
+
+.points {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.points span {
+  font-weight: 600;
+  transition:
+    color 1s ease-out,
+    opacity 1s ease-out;
+}
+
+.container.done .points span {
+  color: #01d807;
+  opacity: 0.6;
+}
+
+.points img {
+  font-weight: 600;
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
