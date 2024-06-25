@@ -13,7 +13,7 @@
     "@stripe/stripe-js": "^3.3.0",
     "@ton/core": "^0.56.3",
     "@ton/crypto": "^3.2.0",
-    "@ton/ton": "https://github.com/aSpite/ton.git#70121b978c2f47036b9c10be6d45fa5bf712b846",
+    "@ton/ton": "^13.11.2",
     "@tonconnect/ui-react": "^2.0.2",
     "axios": "^1.6.8",
     "bignumber.js": "^9.1.2",

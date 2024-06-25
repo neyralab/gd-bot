@@ -1,5 +1,5 @@
 /* global BigInt */
-import React, { useEffect, useId, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import classNames from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -33,12 +33,20 @@ import styles from './styles.module.css';
 import { Address } from '@ton/core';
 import { TonClient } from '@ton/ton';
 import { getHttpEndpoint } from '@orbs-network/ton-access';
-import { useTonConnectUI, useTonWallet } from '@tonconnect/ui-react';
+import {
+  useTonConnectModal,
+  useTonConnectUI,
+  useTonWallet
+} from '@tonconnect/ui-react';
 import { GDTapBooster } from '../../effects/contracts/tact_GDTapBooster';
 import { nullValueCheck } from '../../effects/contracts/helper';
-import { getGameContractAddress, getGamePlans } from '../../effects/gameEffect';
+import {
+  endGame,
+  getGameContractAddress,
+  getGamePlans,
+  startGame
+} from '../../effects/gameEffect';
 import { useQueryId } from '../../effects/contracts/useQueryId';
-import TonWeb from 'tonweb';
 
 export function GamePage() {
   const clickSoundRef = useRef(new Audio('/assets/game-page/2blick.wav'));
@@ -55,13 +63,13 @@ export function GamePage() {
   const balance = useSelector(selectBalance);
   const lockTimerTimestamp = useSelector(selectLockTimerTimestamp);
   const [themeIndex, setThemeIndex] = useState([0]);
+  const { open } = useTonConnectModal();
+  const { queryId } = useQueryId();
   const wallet = useTonWallet();
   const [tonConnectUI] = useTonConnectUI();
   const [gamePlans, setGamePlans] = useState();
-  const [currentGamePlan, setCurrentGamePlan] = useState();
   const [contractAddress, setContractAddress] = useState();
-  const { queryId } = useQueryId();
-  // console.log({ gamePlans, queryId, currentGamePlan, contractAddress });
+  const [gameId, setGameId] = useState();
 
   useEffect(() => {
     (async () => {
@@ -71,7 +79,6 @@ export function GamePage() {
 
       const games = await getGamePlans();
       setGamePlans(games);
-      setCurrentGamePlan(games?.at(0));
     })();
     return () => {
       clickSoundRef.current.pause();
@@ -99,84 +106,58 @@ export function GamePage() {
     dispatch(setStatus('waiting'));
   };
 
-  const onBuy = async () => {
-    if (!contractAddress) {
-      return;
-    }
-    const endpoint = await getHttpEndpoint();
-    // const addressString = 'EQBDaILjUTPYEE2ibO8Lg-8X1f6jH0H1lHUAdzPRNXgs24iL';
-    // const { address } = Address.parseFriendly(addressString);
-    const adr = new Address(
-      -1,
-      Buffer.from([
-        67, 104, 130, 227, 81, 51, 216, 16, 77, 162, 108, 239, 11, 131, 239, 23,
-        213, 254, 163, 31, 65, 245, 148, 117, 0, 119, 51, 209, 53, 120, 44, 219
-      ])
-    );
-    const closedContract = new GDTapBooster(contractAddress);
-    console.log({ endpoint, closedContract, contractAddress });
-    // const { TonClient } = t;
-    console.log({ TonClient });
-    const client = new TonClient({ endpoint });
-    console.log({
-      client,
-      iss: Address.isAddress(closedContract.address),
-      '!Address.isAddress(src.address)': !Address.isAddress(
-        closedContract.address
-      )
-    });
-
-    const contract = client.open(closedContract);
-    console.log({ contract });
-    const p2 = 2n;
-
-    const tierPrice = await contract.getTierPrice(currentGamePlan?.tierId);
-    // const np = await contract.getNextPurchaseId();
-    console.log({
-      tierPrice,
-      // np,
-      wallet
-    });
-    // return;
-    const userAddress = Address.parseRaw(wallet.account.address);
-    console.log({ userAddress });
-
-    const res = await contract.send(
-      {
-        send: async (args) => {
-          console.log({ args });
-
-          const data = await tonConnectUI.sendTransaction({
-            messages: [
-              {
-                address: args.to.toString(),
-                amount: args.value.toString(),
-                payload: args.body?.toBoc().toString('base64')
-              }
-            ],
-            validUntil: Date.now() + 5 * 60 * 1000 // 5 minutes for user to approve
-          });
-          console.log({ data });
-          return data;
-        }
-      },
-      { value: currentGamePlan?.ton_price },
-      {
-        $$type: 'Boost',
-        queryId,
-        tierId: currentGamePlan?.tierId
+  const onBuy = async (plan) => {
+    try {
+      if (!wallet) {
+        return open();
       }
-    );
-    console.log({ res });
-    const pur = await nullValueCheck(() => {
-      return contract.getLatestPurchase(userAddress);
-    });
-    console.log({ PPPPP: pur });
+      if (!contractAddress && !plan) {
+        return;
+      }
+      const endpoint = await getHttpEndpoint();
+      const closedContract = new GDTapBooster(contractAddress);
+      const client = new TonClient({ endpoint });
+      const contract = client.open(closedContract);
+      await contract.send(
+        {
+          send: async (args) => {
+            const data = await tonConnectUI.sendTransaction({
+              messages: [
+                {
+                  address: args.to.toString(),
+                  amount: args.value.toString(),
+                  payload: args.body?.toBoc().toString('base64')
+                }
+              ],
+              validUntil: Date.now() + 60 * 1000 // 5 minutes for user to approve
+            });
+            console.log({ data });
+            return data;
+          }
+        },
+        { value: plan?.ton_price },
+        {
+          $$type: 'Boost',
+          queryId,
+          tierId: plan?.tierId
+        }
+      );
+
+      const userAddress = Address.parseRaw(wallet.account.address);
+      const purchaseId = await nullValueCheck(() => {
+        return contract.getLatestPurchase(userAddress);
+      });
+      const game = await startGame(Number(purchaseId));
+      setGameId(game?.id);
+      console.log({ PPPPP: purchaseId, game });
+      return true;
+    } catch (e) {
+      console.log({ onBuyError: e });
+      return false;
+    }
   };
 
   const clickHandler = (e) => {
-    onBuy();
-    return;
     e.preventDefault();
     e.stopPropagation();
 
@@ -219,7 +200,10 @@ export function GamePage() {
     dispatch(setBalance(balance + theme.multiplier));
   };
 
-  const buyCompletedHandler = () => {
+  const buyCompletedHandler = async () => {
+    const plan = gamePlans?.find((el) => el.multiplier === theme.multiplier);
+    console.log({ theme, plan, gamePlans });
+    const bought = await onBuy(plan);
     dispatch(setStatus('waiting'));
     dispatch(setThemeAccess({ themeId: theme.id, status: true }));
 
@@ -228,6 +212,14 @@ export function GamePage() {
       dispatch(setLockTimeoutId(null));
     }
   };
+
+  useEffect(() => {
+    if (gameId && status === 'finished') {
+      (async () => {
+        await endGame({ id: gameId, taps: balance });
+      })();
+    }
+  }, [gameId, status, balance]);
 
   return (
     <div className={classNames(styles.container, theme && styles[theme.id])}>
