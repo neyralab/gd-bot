@@ -16,6 +16,10 @@
   font-weight: 600;
 }
 
+.button .multiplier {
+  transition: color 0.2s ease-in-out;
+}
+
 .button.hawk .multiplier {
   color: #6bb1ff;
 }

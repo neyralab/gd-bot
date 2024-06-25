@@ -2,14 +2,14 @@
   width: 100%;
   height: 350px;
   position: relative;
-  touch-action: manipulation;
+  touch-action: none;
   user-select: none;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
 }
 
 .container * {
-  touch-action: manipulation;
+  touch-action: none;
   user-select: none;
 }
 
@@ -23,6 +23,23 @@
   height: 154px;
   top: calc(50% - 80px);
   left: calc(50% - 76px);
+  transform: perspective(100px) rotateY(-10deg) translateY(-10px);
+}
+
+.travel-animation {
+  animation: TravelAnimation 6s infinite forwards ease-in-out;
+}
+
+@keyframes TravelAnimation {
+  0%,
+  100% {
+    transform: perspective(100px) rotateY(-5deg) rotateX(-5deg)
+      translateY(-10px);
+  }
+
+  50% {
+    transform: perspective(100px) rotateY(5deg) rotateX(5deg) translateY(0px);
+  }
 }
 
 .icon {
@@ -99,7 +116,7 @@
 
 @keyframes BtnAnimation1 {
   0% {
-    opacity: 0.95;
+    opacity: 1;
     transform: scale(1);
   }
   30% {
@@ -111,7 +128,7 @@
     transform: scale(1.05);
   }
   100% {
-    opacity: 0.95;
+    opacity: 1;
     transform: scale(1);
   }
 }

@@ -20,6 +20,7 @@ import {
   DEFAULT_TARIFFS_NAMES
 } from '../upgradeStorage';
 import { transformSize } from '../../utils/transformSize';
+import { fromByteToGb } from '../../utils/storage';
 
 import GhostLoader from '../../components/ghostLoader';
 import { ConnectTonWalletButton } from '../../components/connectTonWalletButton';
@@ -71,7 +72,7 @@ export const StartPage = ({ onClose }) => {
 
     return {
       total: `${transformSize(String(space_total), 0)}`,
-      used: `${transformSize(storage, 1)}`,
+      used: `${fromByteToGb(storage)}`,
       percent: { label: `${percent || 1}%`, value: percent }
     };
   }, [user]);
@@ -249,7 +250,7 @@ export const StartPage = ({ onClose }) => {
           <div
             className={style.footer_item}
             onClick={() => {
-              navigate('/game');
+              // navigate('/game');
             }}>
             <LeadboardIcon />
             <span className={style.footer_item_text}>Taping for Airdop</span>

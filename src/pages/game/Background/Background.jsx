@@ -5,6 +5,8 @@ import React, {
   useEffect
 } from 'react';
 import classNames from 'classnames';
+import { useSelector } from 'react-redux';
+import { selectNextTheme } from '../../../store/reducers/gameSlice';
 import styles from './Background.module.css';
 
 const Background = forwardRef(({ theme }, ref) => {
@@ -19,6 +21,8 @@ const Background = forwardRef(({ theme }, ref) => {
   const distanceRef = useRef(0); // I'm using ref instead of useState ON PURPOSE! It won't work with useState because of js closures in animate function
   const lastClickTimeRef = useRef(Date.now()); // I'm using ref instead of useState ON PURPOSE! It won't work with useState because of js closures in animate function
   const thenRef = useRef(Date.now());
+
+  const nextTheme = useSelector(selectNextTheme);
 
   const maxSpeed = 1;
   const decreaseInterval = 2000; //  decrease coef to 0
@@ -65,6 +69,44 @@ const Background = forwardRef(({ theme }, ref) => {
 
     requestAnimationRef.current = requestAnimationFrame(animate);
   };
+
+  useEffect(() => {
+    let timeout1;
+    let timeout2;
+
+    if (nextTheme) {
+      glowRef.current.classList.remove(styles['next-theme-appear']);
+      planetRef.current.classList.remove(styles['next-theme-appear']);
+
+      glowRef.current.classList.add(styles['current-theme-dissapear']);
+      planetRef.current.classList.add(styles['current-theme-dissapear']);
+
+      timeout1 = setTimeout(() => {
+        glowRef.current.style.opacity = 0;
+        planetRef.current.style.opacity = 0;
+      }, 490); // to avoid flickering
+    } else {
+      glowRef.current.classList.remove(styles['current-theme-dissapear']);
+      planetRef.current.classList.remove(styles['current-theme-dissapear']);
+
+      glowRef.current.classList.add(styles['next-theme-appear']);
+      planetRef.current.classList.add(styles['next-theme-appear']);
+
+      timeout2 = setTimeout(() => {
+        glowRef.current.style.opacity = 1;
+        planetRef.current.style.opacity = 1;
+      }, 990); // to avoid flickering
+    }
+
+    return () => {
+      if (timeout1) {
+        clearTimeout(timeout1);
+      }
+      if (timeout2) {
+        clearTimeout(timeout2);
+      }
+    };
+  }, [nextTheme]);
 
   useEffect(() => {
     const intervalId = setInterval(() => {
