@@ -33,7 +33,7 @@ import Congratulations from './Congratulations/Congratulations';
 import themes from './themes';
 import styles from './styles.module.css';
 
-import { Address } from '@ton/core';
+import { Address, toNano } from '@ton/core';
 import { TonClient } from '@ton/ton';
 import { getHttpEndpoint } from '@orbs-network/ton-access';
 import {
@@ -155,39 +155,36 @@ export function GamePage() {
       const closedContract = new GDTapBooster(contractAddress);
       const client = new TonClient({ endpoint });
       const contract = client.open(closedContract);
-      plan.multiplier > 1 &&
-        (await contract.send(
-          {
-            send: async (args) => {
-              const data = await tonConnectUI.sendTransaction({
-                messages: [
-                  {
-                    address: args.to.toString(),
-                    amount: args.value.toString(),
-                    payload: args.body?.toBoc().toString('base64')
-                  }
-                ],
-                validUntil: Date.now() + 60 * 1000 // 5 minutes for user to approve
-              });
-              console.log({ data });
-              return data;
-            }
-          },
-          { value: plan?.ton_price },
-          {
-            $$type: 'Boost',
-            queryId,
-            tierId: plan?.tierId
+      await contract.send(
+        {
+          send: async (args) => {
+            const data = await tonConnectUI.sendTransaction({
+              messages: [
+                {
+                  address: args.to.toString(),
+                  amount: args.value.toString(),
+                  payload: args.body?.toBoc().toString('base64')
+                }
+              ],
+              validUntil: Date.now() + 60 * 1000 // 5 minutes for user to approve
+            });
+            console.log({ data });
+            return data;
           }
-        ));
+        },
+        { value: plan?.ton_price || toNano(0.01) },
+        {
+          $$type: 'Boost',
+          queryId,
+          tierId: plan?.tierId
+        }
+      );
 
       const userAddress = Address.parseRaw(wallet.account.address);
       const purchaseId = await nullValueCheck(() => {
         return contract.getLatestPurchase(userAddress);
       });
-      const game = await startGame(
-        plan.multiplier > 1 ? Number(purchaseId) : null
-      );
+      const game = await startGame(Number(purchaseId));
       setGameId(game?.id);
       console.log({ PPPPP: purchaseId, game });
       return true;
@@ -197,7 +194,7 @@ export function GamePage() {
     }
   };
 
-  const clickHandler = (e) => {
+  const clickHandler = async (e) => {
     e.preventDefault();
     e.stopPropagation();
 
@@ -206,6 +203,10 @@ export function GamePage() {
     }
 
     if (status === 'waiting') {
+      if (!balance && theme.multiplier === 1) {
+        const game = await startGame(null);
+        setGameId(game?.id);
+      }
       dispatch(startRound());
     }
 
@@ -258,7 +259,8 @@ export function GamePage() {
   useEffect(() => {
     if (gameId && status === 'finished') {
       endGame({ id: gameId, taps: balance }).catch((err) => {
-        console.log({ endGameErr: err });
+        alert(JSON.stringify(err?.response.data) || 'Something went wrong!');
+        console.log({ endGameErr: err, m: err?.response.data });
       });
     }
   }, [gameId, status, balance]);
