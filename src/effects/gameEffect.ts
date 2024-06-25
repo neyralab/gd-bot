@@ -14,7 +14,7 @@ export const getGamePlans = async () => {
   }));
 };
 
-export const startGame = async (purchase_id: number) => {
+export const startGame = async (purchase_id: number | null) => {
   const url = `${API_PATH}/game/start`;
   const { data } = await axiosInstance.post<StartGameRes>(url, { purchase_id });
   console.log({ startGame: data });

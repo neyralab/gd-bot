@@ -155,36 +155,39 @@ export function GamePage() {
       const closedContract = new GDTapBooster(contractAddress);
       const client = new TonClient({ endpoint });
       const contract = client.open(closedContract);
-      await contract.send(
-        {
-          send: async (args) => {
-            const data = await tonConnectUI.sendTransaction({
-              messages: [
-                {
-                  address: args.to.toString(),
-                  amount: args.value.toString(),
-                  payload: args.body?.toBoc().toString('base64')
-                }
-              ],
-              validUntil: Date.now() + 60 * 1000 // 5 minutes for user to approve
-            });
-            console.log({ data });
-            return data;
+      plan.multiplier > 1 &&
+        (await contract.send(
+          {
+            send: async (args) => {
+              const data = await tonConnectUI.sendTransaction({
+                messages: [
+                  {
+                    address: args.to.toString(),
+                    amount: args.value.toString(),
+                    payload: args.body?.toBoc().toString('base64')
+                  }
+                ],
+                validUntil: Date.now() + 60 * 1000 // 5 minutes for user to approve
+              });
+              console.log({ data });
+              return data;
+            }
+          },
+          { value: plan?.ton_price },
+          {
+            $$type: 'Boost',
+            queryId,
+            tierId: plan?.tierId
           }
-        },
-        { value: plan?.ton_price },
-        {
-          $$type: 'Boost',
-          queryId,
-          tierId: plan?.tierId
-        }
-      );
+        ));
 
       const userAddress = Address.parseRaw(wallet.account.address);
       const purchaseId = await nullValueCheck(() => {
         return contract.getLatestPurchase(userAddress);
       });
-      const game = await startGame(Number(purchaseId));
+      const game = await startGame(
+        plan.multiplier > 1 ? Number(purchaseId) : null
+      );
       setGameId(game?.id);
       console.log({ PPPPP: purchaseId, game });
       return true;
@@ -254,9 +257,9 @@ export function GamePage() {
 
   useEffect(() => {
     if (gameId && status === 'finished') {
-      (async () => {
-        await endGame({ id: gameId, taps: balance });
-      })();
+      endGame({ id: gameId, taps: balance }).catch((err) => {
+        console.log({ endGameErr: err });
+      });
     }
   }, [gameId, status, balance]);
 
