@@ -35,6 +35,7 @@ import { fromByteToGb } from '../../utils/storage';
 import { FileItem } from '../../components/fileItem';
 import GhostLoader from '../../components/ghostLoader';
 import InfiniteScrollComponent from '../../components/infiniteScrollComponent';
+import { Header } from '../../components/header';
 
 import { ReactComponent as GridIcon } from '../../assets/grid_view.svg';
 import { ReactComponent as ListIcon } from '../../assets/list_view.svg';
@@ -192,6 +193,8 @@ export const FilesSystemPage = () => {
 
   return (
     <div className={style.container}>
+      <Header label={'Upload'} />
+
       <header className={style.filesHeader}></header>
       <section className={style.wrapper}>
         <div className={style.search}>

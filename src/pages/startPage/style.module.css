@@ -410,6 +410,7 @@
   align-items: center;
   gap: 16px;
   width: 100%;
+  color: white;
 }
 
 .footer_item_text {
