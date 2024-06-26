@@ -1,0 +1,33 @@
+.wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  row-gap: 12px;
+}
+
+.item {
+  cursor: pointer;
+  display: flex;
+  padding: 14px 16px;
+  width: 165px;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 7px;
+  background: #121214;
+}
+
+.count {
+  color: #fff;
+  font-family: 'SF Pro Text';
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 500;
+}
+
+.name {
+  color: rgba(255, 255, 255, 0.7);
+  font-family: 'SF Pro Text';
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+}

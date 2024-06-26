@@ -16,3 +16,14 @@ export const storageListEffect = async (token) => {
       throw e;
     });
 };
+
+export const getFileTypesCountEffect = async () => {
+  return axiosInstance
+    .get(`${API_PATH}/workspace/count/types`)
+    .then((response) => {
+      return response.data.data;
+    })
+    .catch((e) => {
+      throw e;
+    });
+};
