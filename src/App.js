@@ -120,7 +120,7 @@ function App() {
           <Route
             path="/start"
             exact
-            element={<StartPage onClose={onClose} />}
+            element={<StartPage onClose={onClose} tariffs={tariffs} />}
           />
           <Route path="/file-upload" exact element={<FilesSystemPage />} />
           <Route path="/ghostdrive-upload" exact element={<FilesPage />} />
