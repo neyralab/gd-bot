@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { NavLink } from 'react-router-dom';
 import styles from './Menu.module.css';
 
-import { ReactComponent as LeadboardIcon } from '../../assets/leadboard.svg';
+import { ReactComponent as LeadboardIcon } from '../../assets/leadboard2.svg';
 import { ReactComponent as FriendsIcon } from '../../assets/groups.svg';
 import { ReactComponent as EarnIcon } from '../../assets/toll.svg';
 import { ReactComponent as AirdropIcon } from '../../assets/atr.svg';
@@ -28,7 +28,7 @@ export default function Menu() {
         <div className={styles.icon}>
           <LeadboardIcon />
         </div>
-        <span className={styles.text}>Leadboard</span>
+        <span className={styles.text}>Players</span>
       </NavLink>
 
       <NavLink
