@@ -91,7 +91,7 @@ export function GamePage() {
   useEffect(() => {
     (async () => {
       const gameInfo = await getGameInfo();
-      dispatch(setBalance(gameInfo.points));
+      dispatch(setBalance({ label: gameInfo.points, value: 0 }));
       let level = 1;
       if (gameInfo.points <= 1000) {
         level = 1;
@@ -223,7 +223,7 @@ export function GamePage() {
     }
 
     if (status === 'waiting') {
-      if (!balance && theme.multiplier === 1) {
+      if (theme.multiplier === 1) {
         const game = await startGame(null);
         setGameId(game?.id);
       }
@@ -258,7 +258,12 @@ export function GamePage() {
 
     // Update state and timers
     dispatch(addExperience());
-    dispatch(setBalance(balance + theme.multiplier));
+    dispatch(
+      setBalance({
+        label: balance.label + theme.multiplier,
+        value: balance.value + theme.multiplier
+      })
+    );
   };
 
   const buyCompletedHandler = async () => {
@@ -278,7 +283,7 @@ export function GamePage() {
 
   useEffect(() => {
     if (gameId && status === 'finished') {
-      endGame({ id: gameId, taps: balance }).catch((err) => {
+      endGame({ id: gameId, taps: balance.value }).catch((err) => {
         alert(JSON.stringify(err?.response.data) || 'Something went wrong!');
         console.log({ endGameErr: err, m: err?.response.data });
       });
@@ -294,7 +299,7 @@ export function GamePage() {
         <div className={styles['content-inner-container']}>
           <div className={styles['balance-container']}>
             <div className={styles.balance}>
-              {balance.toLocaleString('en-US')}
+              {balance.label.toLocaleString('en-US')}
             </div>
           </div>
 
