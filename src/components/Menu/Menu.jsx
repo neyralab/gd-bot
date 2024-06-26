@@ -39,7 +39,8 @@ export default function Menu() {
         <div className={styles.icon}>
           <FriendsIcon />
         </div>
-        <span className={styles.text}>Friends</span>
+        {/* Ой даже не спрашивайте почему вместо Friends тут Frens. Просто примите. */}
+        <span className={styles.text}>Frens</span> 
       </NavLink>
 
       <NavLink
