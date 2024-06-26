@@ -19,7 +19,8 @@ import {
   selectThemeAccess,
   addExperience,
   setNextTheme,
-  selectNextTheme
+  selectNextTheme,
+  setExperienceLevel
 } from '../../store/reducers/gameSlice';
 import { Header } from '../../components/header_v2';
 import MainButton from './MainButton/MainButton';
@@ -91,6 +92,15 @@ export function GamePage() {
     (async () => {
       const gameInfo = await getGameInfo();
       dispatch(setBalance(gameInfo.points));
+      let level = 1;
+      if (gameInfo.points <= 1000) {
+        level = 1;
+      } else if (gameInfo.points > 1000 && gameInfo.points <= 10000) {
+        level = 2;
+      } else if (gameInfo.points > 10000) {
+        level = 3;
+      }
+      dispatch(setExperienceLevel(level));
       const now = Date.now();
       if (now <= gameInfo.game_ends_at) {
         dispatch(setLockTimerTimestamp(gameInfo.game_ends_at));
