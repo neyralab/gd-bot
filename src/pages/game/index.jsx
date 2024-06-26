@@ -46,6 +46,7 @@ import { nullValueCheck } from '../../effects/contracts/helper';
 import {
   endGame,
   getGameContractAddress,
+  getGameInfo,
   getGamePlans,
   startGame
 } from '../../effects/gameEffect';
@@ -88,6 +89,15 @@ export function GamePage() {
 
   useEffect(() => {
     (async () => {
+      const gameInfo = await getGameInfo();
+      dispatch(setBalance(gameInfo.points));
+      const now = Date.now();
+      if (now <= gameInfo.game_ends_at) {
+        dispatch(setLockTimerTimestamp(gameInfo.game_ends_at));
+        dispatch(setStatus('finished'));
+      }
+      console.log({ gameInfo });
+
       const cAddress = await getGameContractAddress();
       const { address } = Address.parseFriendly(cAddress);
       setContractAddress(address);

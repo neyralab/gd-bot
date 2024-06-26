@@ -39,6 +39,18 @@ export const getGameContractAddress = async () => {
     ?.click_counter;
 };
 
+export const getGameInfo = async () => {
+  const url = `${API_PATH}/tap/user/points`;
+  const { data } = await axiosInstance.get<{
+    game_ends_at: string | Date;
+    points: number;
+  }>(url);
+  const lockTime = new Date(+data.game_ends_at * 1000);
+  const next = lockTime.setHours(lockTime.getHours() + 3);
+  console.log({ getGameInfo: data });
+  return { game_ends_at: next, points: data.points };
+};
+
 type GamePlan = {
   id: number;
   per_tap: number;
