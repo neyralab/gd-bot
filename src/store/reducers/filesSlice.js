@@ -10,6 +10,7 @@ const filesSlice = createSlice({
     selectedFile: {},
     direction: 'asc',
     view: 'grid',
+    currentFilter: null,
     uploadingFile: {
       file: {},
       progress: 0,
@@ -36,8 +37,13 @@ const filesSlice = createSlice({
     setSearchAutocomplete: (state, { payload }) => {
       state.searchAutocomplete = [...payload];
     },
+    clearSearchAutocomplete: (state) => {
+      state.searchAutocomplete = [];
+    },
     addUploadedFile: (state, { payload }) => {
-      state.files = [...payload, ...state.files];
+      if (state.currentFilter) {
+        state.files = [...payload, ...state.files];
+      }
     },
     changeDirection: (state, { payload }) => {
       state.files = [];
@@ -59,6 +65,9 @@ const filesSlice = createSlice({
     setUploadingFile: (state, { payload }) => {
       state.uploadingFile.file = payload;
     },
+    setCurrentFilter: (state, { payload }) => {
+      state.currentFilter = payload;
+    },
     updateFile: (state, { payload }) => {
       const updatedFiles = [...state.files].map((file) =>
         file.id === payload.id ? payload : file
@@ -73,6 +82,7 @@ export const {
   changeDirection,
   changeFileView,
   setSearchAutocomplete,
+  clearSearchAutocomplete,
   setCount,
   setPage,
   clearFiles,
@@ -82,7 +92,8 @@ export const {
   changeuploadingProgress,
   changeTimeLeft,
   updateFile,
-  setUploadingFile
+  setUploadingFile,
+  setCurrentFilter
 } = filesSlice.actions;
 export default filesSlice.reducer;
 

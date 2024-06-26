@@ -8,11 +8,6 @@ export const getDownloadOTT = (body) => {
   return axiosInstance.post(url, body);
 };
 
-export const getFilesEffect = async (page = 1, order = 'asc') => {
-  const url = `${API_PATH}/files?page=${page}&order_by=createdAt&order=${order}`;
-  return await axiosInstance.get(url).then((result) => result.data);
-};
-
 export const getFilePreviewEffect = async (
   fileId,
   cancelToken = null,
@@ -203,3 +198,65 @@ export const createFolderEffect = async (name) =>
     .catch((err) => {
       return err;
     });
+
+export const getFilesEffect = async (page = 1, order = 'desc') => {
+  const url = `${API_PATH}/files?page=${page}&order_by=createdAt&order=${order}`;
+  return await axiosInstance.get(url).then((result) => result.data);
+};
+
+export const getFilesByTypeEffect = async (type) => {
+  return axiosInstance
+    .get(
+      `${API_PATH}/files?extension=${type}&page=1&order_by=createdAt&order=desc`
+    )
+    .then((response) => {
+      return response.data;
+    })
+    .catch((err) => {
+      throw Error(err);
+    });
+};
+export const getFavoritesEffect = async () => {
+  return axiosInstance
+    .get(`${API_PATH}/files/file/favorites`)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((err) => {
+      throw Error(err);
+    });
+};
+export const getSharedFilesEffect = async (page = 1) => {
+  return axiosInstance
+    .get(
+      `${API_PATH}/files/shared/my?page=${page}&order_by=createdAt&order=desc`
+    )
+    .then((response) => {
+      return response.data;
+    })
+    .catch((err) => {
+      throw Error(err);
+    });
+};
+export const getDeletedFilesEffect = async (page = 1) => {
+  return axiosInstance
+    .get(`${API_PATH}/trash?page=${page}`)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((err) => {
+      throw Error(err);
+    });
+};
+export const getGeoPinFilesEffect = async (page = 1) => {
+  return axiosInstance
+    .get(
+      `${API_PATH}/files/geo/security?page=${page}&order_by=createdAt&order=desc'`
+    )
+    .then((response) => {
+      return response.data.data;
+    })
+    .catch((err) => {
+      throw Error(err);
+    });
+};
