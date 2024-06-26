@@ -182,7 +182,7 @@ export const FilesSystemPage = () => {
 
   return (
     <div className={style.container}>
-      <Header label={'Upload'} />
+      <Header label={'Upload file(s)'} />
 
       <header className={style.filesHeader}></header>
       <section className={style.wrapper}>
