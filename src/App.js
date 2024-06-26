@@ -32,6 +32,7 @@ import { GamePage } from './pages/game';
 import { IntroPage } from './pages/intro';
 import EarnPage from './pages/earn';
 import FriendsPage from './pages/friends';
+import NodesWelcomePage from './pages/nodes-welcome';
 
 import './App.css';
 
@@ -142,6 +143,7 @@ function App() {
             element={<BoostPage tariffs={tariffs} />}
           />
           <Route path="/earn" exact element={<EarnPage />} />
+          <Route path="/nodes-welcome" exact element={<NodesWelcomePage />} />
         </Routes>
       </SharedLayout>
     </TonConnectUIProvider>
