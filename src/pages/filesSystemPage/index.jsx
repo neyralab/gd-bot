@@ -210,7 +210,7 @@ export const FilesSystemPage = () => {
             <div className={style.storage_text_container}>
               <p className={style.storage_text}>{`${user?.points} Points`}</p>
               <p className={style.storage_text}>
-                {human?.used} of {human?.total}
+                {human?.percent?.label} of {human?.total}
               </p>
             </div>
             <div className={style.storage_usage_container}>
