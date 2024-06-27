@@ -10,7 +10,7 @@ const openaiAnalize = new OpenAI({
 
 async function photoHandler(ctx) {
   try {
-    const photoID = ctx.update.message.photo[0].file_id;
+    const photoID = ctx.update.message.photo?.at(0)?.file_id;
     const file = await ctx.telegram.getFile(photoID);
     const filePath = file.file_path;
     const url = `https://api.telegram.org/file/bot${process.env.BOT_TOKEN_SECRET}/${filePath}`;
@@ -35,7 +35,7 @@ async function photoHandler(ctx) {
       ],
       max_tokens: 300
     });
-    ctx.reply(response.choices[0].message.content);
+    ctx.reply(response.choices?.at(0)?.message.content);
   } catch (error) {
     console.error('Error getting file info:', error);
     ctx.reply(
