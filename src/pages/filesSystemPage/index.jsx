@@ -182,7 +182,7 @@ export const FilesSystemPage = () => {
 
   return (
     <div className={style.container}>
-      <Header label={'Upload file(s)'} />
+      <Header label={'GhostDrive'} headerClassName={style.header} />
 
       <header className={style.filesHeader}></header>
       <section className={style.wrapper}>
@@ -193,7 +193,7 @@ export const FilesSystemPage = () => {
             name="search"
             id="search"
             maxLength="40"
-            placeholder="Search"
+            placeholder="GhostDrive"
             className={style.search__input}
             autoComplete="off"
             onChange={handleInputChange}
@@ -222,7 +222,7 @@ export const FilesSystemPage = () => {
           </div>
         )}
 
-        {(fileList.length && currentFileFilter) || searchValue ? (
+        {currentFileFilter || searchValue ? (
           <>
             <div className={style.listHeader}>
               <p className={style.listHeader__title}>GHOSTDRIVE</p>
@@ -246,11 +246,11 @@ export const FilesSystemPage = () => {
       </section>
       {!areFilesLoading && (
         <div className={style.buttonsWrapper}>
-          <button
+          {/* <button
             className={style.buttonsWrapper__square}
             onClick={onBackButtonClick}>
             <SquareIcon />
-          </button>
+          </button> */}
           <div className={style.uploadButton}>
             <input
               name="file"

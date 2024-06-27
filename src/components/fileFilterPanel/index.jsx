@@ -12,9 +12,7 @@ import {
   getDeletedFilesEffect,
   getFavoritesEffect,
   getFilesByTypeEffect,
-  getFilesEffect,
-  getGeoPinFilesEffect,
-  getSharedFilesEffect
+  getFilesEffect
 } from '../../effects/filesEffects';
 import { getFileTypesCountEffect } from '../../effects/storageEffects';
 
@@ -46,14 +44,8 @@ export const FileFilterPanel = ({}) => {
         case 'fav':
           files = await getFavoritesEffect();
           break;
-        case 'share':
-          files = await getSharedFilesEffect(filesPage);
-          break;
         case 'delete':
           files = await getDeletedFilesEffect(filesPage);
-          break;
-        case 'geo':
-          files = await getGeoPinFilesEffect(filesPage);
           break;
         default:
           files = await getFilesByTypeEffect(type);
@@ -80,10 +72,10 @@ export const FileFilterPanel = ({}) => {
       callback: () => getFiles('fav')
     },
     {
-      name: 'Geo Pin',
-      value: types?.geo,
-      icon: icons.geo_pin,
-      callback: () => getFiles('geo')
+      name: 'Pictures',
+      value: types?.images,
+      icon: icons.pictures,
+      callback: () => getFiles('image')
     },
     {
       name: 'Documents',
@@ -92,10 +84,10 @@ export const FileFilterPanel = ({}) => {
       callback: () => getFiles('docs')
     },
     {
-      name: 'Pictures',
-      value: types?.images,
-      icon: icons.pictures,
-      callback: () => getFiles('image')
+      name: 'Notes',
+      value: types?.notes,
+      icon: icons.notes,
+      callback: () => getFiles('notes')
     },
     {
       name: 'Audio',
@@ -108,13 +100,6 @@ export const FileFilterPanel = ({}) => {
       value: types?.videos,
       icon: icons.video,
       callback: () => getFiles('video')
-    },
-    // { name: 'Pined', value: 0, icon: icons.pin },
-    {
-      name: 'Shared',
-      value: types?.shared,
-      icon: icons.shared,
-      callback: () => getFiles('share')
     },
     {
       name: 'Deleted',

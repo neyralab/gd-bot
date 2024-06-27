@@ -1,4 +1,4 @@
-import { deleteFile, updateFile } from '../store/reducers/filesSlice';
+import { updateFile } from '../store/reducers/filesSlice';
 import { API_PATH } from '../utils/api-urls';
 import axiosInstance from './axiosInstance';
 import { saveBlob, downloadFile } from 'gdgateway-client';
@@ -158,20 +158,6 @@ export const updateEntrySorting = async (direction) => {
   return axiosInstance.post(`${API_PATH}/entry-sorting`, body).catch((e) => {
     console.error(e);
   });
-};
-
-export const deleteFileEffect = async (slug, dispatch) => {
-  const url = `${API_PATH}/files/multiply/delete`;
-
-  return axiosInstance
-    .delete(url, {
-      data: [slug]
-    })
-    .then(() => {
-      dispatch(deleteFile(slug));
-      return 'success';
-    })
-    .catch(() => 'error');
 };
 
 export const updateFileFavoriteEffect = async (slug, dispatch) => {

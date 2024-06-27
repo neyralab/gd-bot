@@ -7,6 +7,15 @@
   width: 100%;
 }
 
+.header {
+  margin-bottom: 20px;
+  & h1 {
+    font-weight: 600;
+    line-height: 150%;
+    font-family: 'Open Sans';
+  }
+}
+
 .filesHeader {
   display: flex;
   justify-content: space-between;
@@ -34,15 +43,21 @@
 
     width: 100%;
     border-radius: 16px;
-    background: #1c1c1e;
+    background: transparent;
     &::placeholder {
-      color: #fff;
+      color: rgba(255, 255, 255, 0.7);
+      font-family: 'SF Pro Text';
+      font-size: 18px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 150%;
+      letter-spacing: 0.18px;
     }
   }
   &__icon {
     position: absolute;
     top: 50%;
-    left: 16px;
+    left: 10px;
     transform: translateY(-50%);
   }
   &__logo {
@@ -50,6 +65,7 @@
     top: 50%;
     right: 16px;
     transform: translateY(-50%);
+    height: 20px;
   }
 }
 
@@ -173,19 +189,17 @@
 }
 
 .loaderWrapper {
-  position: absolute;
+  position: fixed;
+  top: 50px;
+  left: 0;
+  right: 0;
   bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 100%;
-  max-width: 370px;
-  height: calc(100% - 50px);
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 1005;
+
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 100px;
-  background: #1c1c1e;
-  z-index: 1000;
 }
 
 .storage {
@@ -197,7 +211,7 @@
     flex-direction: column;
     align-items: flex-start;
     gap: 6px;
-    margin-bottom: 12px;
+    margin-bottom: 24px;
     margin-top: 10px;
   }
   &_text_container {
