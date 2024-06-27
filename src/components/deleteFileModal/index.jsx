@@ -1,6 +1,7 @@
 import Modal from 'react-modal';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
+import { useLocation } from 'react-router-dom';
 
 import {
   handleDeleteFileModal,
@@ -11,7 +12,10 @@ import {
   selecSelectedFile,
   setSelectedFile
 } from '../../store/reducers/filesSlice';
-import { deleteFileEffect } from '../../effects/filesEffects';
+import {
+  deleteFileEffect,
+  permanentlyDeleteFileEffect
+} from '../../effects/file/deleteFileEffect';
 
 import style from './style.module.css';
 
@@ -19,6 +23,10 @@ export const DeleteFileModal = () => {
   const dispatch = useDispatch();
   const file = useSelector(selecSelectedFile);
   const isOpen = useSelector(selectisDeleteFileModalOpen);
+  const location = useLocation();
+  const isDeletedPage =
+    location.pathname === '/file-upload' &&
+    new URLSearchParams(location.search).get('type') === 'delete';
 
   const onClose = () => {
     dispatch(handleDeleteFileModal(false));
@@ -27,7 +35,12 @@ export const DeleteFileModal = () => {
   };
 
   const onAccept = async () => {
-    const result = await deleteFileEffect(file.slug, dispatch);
+    let result;
+    if (isDeletedPage) {
+      result = await permanentlyDeleteFileEffect(file.slug, dispatch);
+    } else {
+      result = await deleteFileEffect(file.slug, dispatch);
+    }
     onClose();
     if (result === 'success') {
       toast('File was successfully deleted', {
@@ -50,7 +63,11 @@ export const DeleteFileModal = () => {
       shouldCloseOnOverlayClick={true}
       overlayClassName={style.overlay}
       className={style.modal}>
-      <p className={style.text}>Are you sure you want to delete?</p>
+      <p className={style.text}>
+        {isDeletedPage
+          ? 'Are you sure you want to delete this file permanently? This action cannot be undone'
+          : 'Are you sure you want to delete?'}
+      </p>
       <div className={style.buttons}>
         <button className={style.noBtn} onClick={onClose}>
           No

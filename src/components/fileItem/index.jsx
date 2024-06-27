@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useLocation } from 'react-router-dom';
 
 import moment from 'moment';
 import cn from 'classnames';
@@ -39,6 +40,10 @@ export const FileItem = ({
   const isFileChecked = file.id === checkedFile.id;
   const isSearchFile = file?.isSearch || isSearch;
   const isFolder = file?.type === 2;
+  const location = useLocation();
+  const isDeletedPage =
+    location.pathname === '/file-upload' &&
+    new URLSearchParams(location.search).get('type') === 'delete';
   const formattedDate = (dateCreated) =>
     moment.unix(dateCreated).format('MMM DD, YYYY, h:mma');
   const isFavorite = useMemo(() => {
@@ -59,7 +64,7 @@ export const FileItem = ({
         imageFileExtensions.includes(`.${file.extension}`)) ||
       videoFileExtensions.includes(`.${file.extension}`);
 
-    if (searchHasPreview || fileHasPreview) {
+    if ((searchHasPreview || fileHasPreview) && !isDeletedPage) {
       getFilePreviewEffect(file.slug, null, file.extension).then((res) => {
         setPreview(res);
       });
