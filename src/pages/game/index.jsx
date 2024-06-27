@@ -1,5 +1,5 @@
 /* global BigInt */
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import classNames from 'classnames';
 import { useSwipeable } from 'react-swipeable';
 import { useDispatch, useSelector } from 'react-redux';
@@ -20,7 +20,8 @@ import {
   addExperience,
   setNextTheme,
   selectNextTheme,
-  setExperienceLevel
+  setExperienceLevel,
+  setExperiencePoints
 } from '../../store/reducers/gameSlice';
 import { Header } from '../../components/header_v2';
 import MainButton from './MainButton/MainButton';
@@ -52,6 +53,7 @@ import {
   startGame
 } from '../../effects/gameEffect';
 import { useQueryId } from '../../effects/contracts/useQueryId';
+import { setUser } from '../../store/reducers/userSlice';
 
 export function GamePage() {
   const clickSoundRef = useRef(new Audio('/assets/game-page/2blick.wav'));
@@ -70,6 +72,7 @@ export function GamePage() {
   const balance = useSelector(selectBalance);
   const lockTimerTimestamp = useSelector(selectLockTimerTimestamp);
   const nextTheme = useSelector(selectNextTheme);
+  const user = useSelector((state) => state?.user?.data);
   const [themeIndex, setThemeIndex] = useState([0]);
   const { open } = useTonConnectModal();
   const { queryId } = useQueryId();
@@ -92,6 +95,7 @@ export function GamePage() {
     (async () => {
       const gameInfo = await getGameInfo();
       dispatch(setBalance({ label: gameInfo.points, value: 0 }));
+      dispatch(setExperiencePoints(gameInfo.points));
       let level = 1;
       if (gameInfo.points <= 1000) {
         level = 1;
@@ -147,7 +151,7 @@ export function GamePage() {
         : styles['next-theme-appear-left'];
 
     dispatch(setNextTheme(themes[newThemeIndex]));
-    dispatch(setStatus('waiting'));
+    // dispatch(setStatus('waiting'));
 
     currentThemeRef.current.classList.add(styles['current-theme-dissapear']);
     nextThemeRef.current.classList.add(nextThemeStyle);
@@ -223,11 +227,11 @@ export function GamePage() {
     }
 
     if (status === 'waiting') {
+      dispatch(startRound());
       if (theme.multiplier === 1) {
         const game = await startGame(null);
         setGameId(game?.id);
       }
-      dispatch(startRound());
     }
 
     if (status === 'finished') {
@@ -270,6 +274,9 @@ export function GamePage() {
     const plan = gamePlans?.find((el) => el.multiplier === theme.multiplier);
     console.log({ theme, plan, gamePlans });
     const bought = await onBuy(plan);
+    if (!bought) {
+      return;
+    }
     dispatch(setStatus('waiting'));
     dispatch(setThemeAccess({ themeId: theme.id, status: true }));
 
@@ -281,13 +288,26 @@ export function GamePage() {
 
   const conditionalSwipeHandlers = status !== 'playing' ? swipeHandlers : {}; // just in case we swipe will affect click.
 
-  useEffect(() => {
+  useLayoutEffect(() => {
+    const callback = () => {
+      endGame({ id: gameId, taps: balance.value })
+        .then((data) => {
+          dispatch(setUser({ ...user, points: data?.data || 0 }));
+        })
+        .catch((err) => {
+          alert(JSON.stringify(err?.response.data) || 'Something went wrong!');
+          console.log({ endGameErr: err, m: err?.response.data });
+        });
+    };
+
     if (gameId && status === 'finished') {
-      endGame({ id: gameId, taps: balance.value }).catch((err) => {
-        alert(JSON.stringify(err?.response.data) || 'Something went wrong!');
-        console.log({ endGameErr: err, m: err?.response.data });
-      });
+      callback();
     }
+    return () => {
+      if (gameId && status === 'playing') {
+        callback();
+      }
+    };
   }, [gameId, status, balance]);
 
   return (

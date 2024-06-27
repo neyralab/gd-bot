@@ -543,6 +543,10 @@
   font-size: 36px;
 }
 
+.medium {
+  font-size: 48px;
+}
+
 .bottom {
   margin-top: auto;
   width: 100%;

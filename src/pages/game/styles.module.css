@@ -74,6 +74,13 @@
   align-items: center;
   justify-content: center;
   position: relative;
+
+  cursor: pointer;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 .main-button-inner-container {
