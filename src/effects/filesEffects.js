@@ -1,4 +1,4 @@
-import { deleteFile, updateFile } from '../store/reducers/filesSlice';
+import { updateFile } from '../store/reducers/filesSlice';
 import { API_PATH } from '../utils/api-urls';
 import axiosInstance from './axiosInstance';
 import { saveBlob, downloadFile } from 'gdgateway-client';
@@ -6,11 +6,6 @@ import { saveBlob, downloadFile } from 'gdgateway-client';
 export const getDownloadOTT = (body) => {
   const url = `${API_PATH}/download/generate/token`;
   return axiosInstance.post(url, body);
-};
-
-export const getFilesEffect = async (page = 1, order = 'asc') => {
-  const url = `${API_PATH}/files?page=${page}&order_by=createdAt&order=${order}`;
-  return await axiosInstance.get(url).then((result) => result.data);
 };
 
 export const getFilePreviewEffect = async (
@@ -165,20 +160,6 @@ export const updateEntrySorting = async (direction) => {
   });
 };
 
-export const deleteFileEffect = async (slug, dispatch) => {
-  const url = `${API_PATH}/files/multiply/delete`;
-
-  return axiosInstance
-    .delete(url, {
-      data: [slug]
-    })
-    .then(() => {
-      dispatch(deleteFile(slug));
-      return 'success';
-    })
-    .catch(() => 'error');
-};
-
 export const updateFileFavoriteEffect = async (slug, dispatch) => {
   const url = `${API_PATH}/files/favorite/toggle/${slug}`;
   try {
@@ -203,3 +184,65 @@ export const createFolderEffect = async (name) =>
     .catch((err) => {
       return err;
     });
+
+export const getFilesEffect = async (page = 1, order = 'desc') => {
+  const url = `${API_PATH}/files?page=${page}&order_by=createdAt&order=${order}`;
+  return await axiosInstance.get(url).then((result) => result.data);
+};
+
+export const getFilesByTypeEffect = async (type) => {
+  return axiosInstance
+    .get(
+      `${API_PATH}/files?extension=${type}&page=1&order_by=createdAt&order=desc`
+    )
+    .then((response) => {
+      return response.data;
+    })
+    .catch((err) => {
+      throw Error(err);
+    });
+};
+export const getFavoritesEffect = async () => {
+  return axiosInstance
+    .get(`${API_PATH}/files/file/favorites`)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((err) => {
+      throw Error(err);
+    });
+};
+export const getSharedFilesEffect = async (page = 1) => {
+  return axiosInstance
+    .get(
+      `${API_PATH}/files/shared/my?page=${page}&order_by=createdAt&order=desc`
+    )
+    .then((response) => {
+      return response.data;
+    })
+    .catch((err) => {
+      throw Error(err);
+    });
+};
+export const getDeletedFilesEffect = async (page = 1) => {
+  return axiosInstance
+    .get(`${API_PATH}/trash?page=${page}`)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((err) => {
+      throw Error(err);
+    });
+};
+export const getGeoPinFilesEffect = async (page = 1) => {
+  return axiosInstance
+    .get(
+      `${API_PATH}/files/geo/security?page=${page}&order_by=createdAt&order=desc'`
+    )
+    .then((response) => {
+      return response.data.data;
+    })
+    .catch((err) => {
+      throw Error(err);
+    });
+};

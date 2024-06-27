@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import CN from 'classnames';
 import CountUp from 'react-countup';
-// import { TelegramShareButton } from 'react-share';
+import { TelegramShareButton } from 'react-share';
 
 import {
   selectAllWorkspaces,
@@ -40,12 +40,13 @@ import { ReactComponent as PointsIcon } from '../../assets/point.svg';
 // import { ReactComponent as DriveIcon } from '../../assets/drive.svg';
 // import { ReactComponent as BoostIcon } from '../../assets/boost.svg';
 // import { ReactComponent as ReferralIcon } from '../../assets/referral.svg';
-// import { ReactComponent as LargeTelegramIcon } from '../../assets/large_telegram.svg';
 // import { ReactComponent as InviteBackgroundIcon } from '../../assets/invite_background.svg';
+import { ReactComponent as TelegramIcon } from '../../assets/telegram.svg';
+import { ReactComponent as CloudIcon } from '../../assets/cloud.svg';
 
 import style from './style.module.css';
 
-export const StartPage = ({ onClose }) => {
+export const StartPage = ({ tariffs }) => {
   const [disconnectWalletModal, setDisconnectWalletModal] = useState(false);
   const totalWsCount = useSelector(selectTotalWsCount);
   const allWorkspaces = useSelector(selectAllWorkspaces);
@@ -59,9 +60,11 @@ export const StartPage = ({ onClose }) => {
     const size = DEFAULT_TARIFFS_NAMES[user?.space_total] || '1GB';
     return {
       size,
-      multiplier: DEFAULT_MULTIPLIER_NAMES[size] || 1
+      multiplier:
+        tariffs?.find((el) => el.storage === user?.space_total)
+          ?.multiplicator || 1
     };
-  }, [user?.space_total]);
+  }, [user?.space_total, tariffs]);
 
   const human = useMemo(() => {
     if (!user) return;
@@ -104,7 +107,7 @@ export const StartPage = ({ onClose }) => {
         }
       },
       {
-        Icon: PointsIcon,
+        Icon: CloudIcon,
         text: `Upgrade X${storage.multiplier}`,
         amount: `${human?.used} of ${human?.total}`,
         onClick: () => {
@@ -193,6 +196,7 @@ export const StartPage = ({ onClose }) => {
             <p
               className={CN(
                 style.wallet,
+                user?.points > 99999 && style.medium,
                 user?.points > 999999 && style.small
               )}>
               <CountUp delay={1} end={user?.points} />
@@ -218,7 +222,26 @@ export const StartPage = ({ onClose }) => {
             </button>
           </div>
         ))}
+
+        <TelegramShareButton
+          url={link.copy}
+          title={'Share this link with friends'}>
+          <div className={style.list_element}>
+            <button className={style.list_element_button}>
+              <TelegramIcon />
+              <p className={style.list_element_text}>Share with friends</p>
+              <span
+                className={CN(
+                  style.list_element_text,
+                  style.list_element_amount
+                )}>
+                + 1,000
+              </span>
+            </button>
+          </div>
+        </TelegramShareButton>
       </div>
+
       <div className={style.bottom}>
         {/* <button className={style.invite_button}>
           <TelegramShareButton
@@ -247,7 +270,11 @@ export const StartPage = ({ onClose }) => {
             <PointsIcon />
             <span className={style.footer_item_text}>Upload for Airdrop</span>
           </div>
-          <div className={style.footer_item}>
+          <div
+            className={style.footer_item}
+            onClick={() => {
+              navigate('/game');
+            }}>
             <LeadboardIcon />
             <span className={style.footer_item_text}>Taping for Airdop</span>
           </div>

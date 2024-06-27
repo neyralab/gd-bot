@@ -1,9 +1,11 @@
 .container {
   width: 100%;
+  height: 100dvh;
   display: flex;
   flex-direction: column;
   overflow-x: hidden;
   position: relative;
+  overscroll-behavior: none;
 }
 
 .container * {
@@ -20,6 +22,7 @@
 
   margin: auto;
   overflow: hidden;
+  overscroll-behavior: none;
 }
 
 .content-inner-container {
@@ -71,6 +74,13 @@
   align-items: center;
   justify-content: center;
   position: relative;
+
+  cursor: pointer;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 .main-button-inner-container {

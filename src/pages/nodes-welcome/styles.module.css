@@ -1,0 +1,132 @@
+.container {
+  height: 100%;
+  width: 100%;
+  /* display: flex;
+  flex-direction: column; */
+  padding: 16px;
+  padding-bottom: 92px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.button {
+  position: fixed;
+  bottom: 32px;
+  left: 16px;
+  width: calc(100% - 32px);
+  padding: 16px;
+  color: black;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 500;
+  text-decoration: none;
+  animation: ButtonAppearAnim 0.5s ease-out forwards;
+  transform: scale(0.5);
+  opacity: 0;
+}
+
+@keyframes ButtonAppearAnim {
+  0% {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  70% {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 190px);
+  height: auto;
+}
+
+@media (max-height: 545px) {
+  .content {
+    display: block;
+  }
+}
+
+.img-container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-grow: 1;
+  flex-shrink: 0;
+  min-height: 277px;
+}
+
+.img-container img {
+  width: 267px;
+  height: 277px;
+  animation: ImageAnim 5s ease-in-out infinite alternate;
+  transform: translateY(-15px) perspective(200px) rotateX(-5deg);
+}
+
+@keyframes ImageAnim {
+  0% {
+    transform: translateY(-15px) perspective(200px) rotateX(-5deg);
+  }
+  100% {
+    transform: translateY(15px) perspective(200px) rotateX(5deg);
+  }
+}
+
+.description {
+  flex-shrink: 0;
+  opacity: 0;
+  animation: DescriptionAppearAnim 2s ease-out forwards;
+  width: 100%;
+  min-height: 90px;
+}
+
+@keyframes DescriptionAppearAnim {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.description h1 {
+  font-size: 24px;
+  line-height: 36px;
+  font-weight: 500;
+  text-transform: uppercase;
+  width: 100%;
+}
+
+.description p {
+  font-family: 'SF Pro Text';
+  font-size: 12px;
+  font-weight: 300;
+  line-height: 18px;
+  text-align: left;
+  letter-spacing: 0.5px;
+  width: 100%;
+}
+
+.title-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+  animation: TitleAppearAnim 0.5s ease-out forwards;
+  transform: scale(0.5);
+  opacity: 0;
+}

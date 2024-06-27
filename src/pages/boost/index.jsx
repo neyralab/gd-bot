@@ -27,6 +27,7 @@ import { ReactComponent as Diamond } from '../../assets/diamond.svg';
 // import { ReactComponent as PayIcon } from '../../assets/pay_ton.svg';
 
 import styles from './styles.module.css';
+import { transformSize } from '../../utils/transformSize';
 
 const multipliers = {
   1: <X3 className={styles.multiplier} />,
@@ -156,7 +157,7 @@ export const BoostPage = ({ tariffs }) => {
                   {multipliers[el?.ton_price]}
                   <div className={styles.item_storage}>
                     <p className={styles.storage}>
-                      {DEFAULT_TARIFFS_NAMES[el?.storage]}
+                      {transformSize(el?.storage, 0)}
                     </p>
                     <p className={styles.item_text}>Storage per year</p>
                   </div>

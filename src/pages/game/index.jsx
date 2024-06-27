@@ -1,4 +1,11 @@
-import React, { useEffect, useRef, useState } from 'react';
+/* global BigInt */
+import React, {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState
+} from 'react';
 import classNames from 'classnames';
 import { useSwipeable } from 'react-swipeable';
 import { useDispatch, useSelector } from 'react-redux';
@@ -18,7 +25,9 @@ import {
   selectThemeAccess,
   addExperience,
   setNextTheme,
-  selectNextTheme
+  selectNextTheme,
+  setExperienceLevel,
+  setExperiencePoints
 } from '../../store/reducers/gameSlice';
 import { Header } from '../../components/header_v2';
 import MainButton from './MainButton/MainButton';
@@ -26,11 +35,32 @@ import Background from './Background/Background';
 import BuyButton from './BuyButton/BuyButton';
 import PointsGrowArea from './PointsGrowArea/PointsGrowArea';
 import Timer from './Timer/Timer';
-import Menu from './Menu/Menu';
+import Menu from '../../components/Menu/Menu';
 import ProgressBar from './ProgressBar/ProgressBar';
 import Congratulations from './Congratulations/Congratulations';
 import themes from './themes';
 import styles from './styles.module.css';
+
+import { Address, toNano } from '@ton/core';
+import { TonClient } from '@ton/ton';
+import { getHttpEndpoint } from '@orbs-network/ton-access';
+import {
+  useTonConnectModal,
+  useTonConnectUI,
+  useTonWallet
+} from '@tonconnect/ui-react';
+import { GDTapBooster } from '../../effects/contracts/tact_GDTapBooster';
+import { nullValueCheck } from '../../effects/contracts/helper';
+import {
+  endGame,
+  getGameContractAddress,
+  getGameInfo,
+  getGamePlans,
+  startGame
+} from '../../effects/gameEffect';
+import { useQueryId } from '../../effects/contracts/useQueryId';
+import { setUser } from '../../store/reducers/userSlice';
+import { useOnLocationChange } from '../../utils/useBack';
 
 export function GamePage() {
   const clickSoundRef = useRef(new Audio('/assets/game-page/2blick.wav'));
@@ -49,7 +79,15 @@ export function GamePage() {
   const balance = useSelector(selectBalance);
   const lockTimerTimestamp = useSelector(selectLockTimerTimestamp);
   const nextTheme = useSelector(selectNextTheme);
+  const user = useSelector((state) => state?.user?.data);
   const [themeIndex, setThemeIndex] = useState([0]);
+  const { open } = useTonConnectModal();
+  const { queryId } = useQueryId();
+  const wallet = useTonWallet();
+  const [tonConnectUI] = useTonConnectUI();
+  const [gamePlans, setGamePlans] = useState();
+  const [contractAddress, setContractAddress] = useState();
+  const [gameId, setGameId] = useState();
 
   const swipeHandlers = useSwipeable({
     onSwipedLeft: (e) => {
@@ -61,6 +99,33 @@ export function GamePage() {
   });
 
   useEffect(() => {
+    (async () => {
+      const gameInfo = await getGameInfo();
+      dispatch(setBalance({ label: gameInfo.points, value: 0 }));
+      dispatch(setExperiencePoints(gameInfo.points));
+      let level = 1;
+      if (gameInfo.points <= 1000) {
+        level = 1;
+      } else if (gameInfo.points > 1000 && gameInfo.points <= 10000) {
+        level = 2;
+      } else if (gameInfo.points > 10000) {
+        level = 3;
+      }
+      dispatch(setExperienceLevel(level));
+      const now = Date.now();
+      if (now <= gameInfo.game_ends_at) {
+        dispatch(setLockTimerTimestamp(gameInfo.game_ends_at));
+        dispatch(setStatus('finished'));
+      }
+      console.log({ gameInfo });
+
+      const cAddress = await getGameContractAddress();
+      const { address } = Address.parseFriendly(cAddress);
+      setContractAddress(address);
+
+      const games = await getGamePlans();
+      setGamePlans(games);
+    })();
     return () => {
       clickSoundRef.current.pause();
       clickSoundRef.current.currentTime = 0;
@@ -93,7 +158,7 @@ export function GamePage() {
         : styles['next-theme-appear-left'];
 
     dispatch(setNextTheme(themes[newThemeIndex]));
-    dispatch(setStatus('waiting'));
+    // dispatch(setStatus('waiting'));
 
     currentThemeRef.current.classList.add(styles['current-theme-dissapear']);
     nextThemeRef.current.classList.add(nextThemeStyle);
@@ -109,7 +174,58 @@ export function GamePage() {
     }, 500);
   };
 
-  const clickHandler = (e) => {
+  const onBuy = async (plan) => {
+    try {
+      if (!wallet) {
+        return open();
+      }
+      if (!contractAddress && !plan) {
+        return;
+      }
+      const endpoint = await getHttpEndpoint();
+      const closedContract = new GDTapBooster(contractAddress);
+      const client = new TonClient({ endpoint });
+      const contract = client.open(closedContract);
+      await contract.send(
+        {
+          send: async (args) => {
+            const data = await tonConnectUI.sendTransaction({
+              messages: [
+                {
+                  address: args.to.toString(),
+                  amount: args.value.toString(),
+                  payload: args.body?.toBoc().toString('base64')
+                }
+              ],
+              validUntil: Date.now() + 60 * 1000 // 5 minutes for user to approve
+            });
+            console.log({ data });
+            return data;
+          }
+        },
+        { value: plan?.ton_price || toNano(0.01) },
+        {
+          $$type: 'Boost',
+          queryId,
+          tierId: plan?.tierId
+        }
+      );
+
+      const userAddress = Address.parseRaw(wallet.account.address);
+      const purchaseId = await nullValueCheck(() => {
+        return contract.getLatestPurchase(userAddress);
+      });
+      const game = await startGame(Number(purchaseId));
+      setGameId(game?.id);
+      console.log({ PPPPP: purchaseId, game });
+      return true;
+    } catch (e) {
+      console.log({ onBuyError: e });
+      return false;
+    }
+  };
+
+  const clickHandler = async (e) => {
     e.preventDefault();
     e.stopPropagation();
 
@@ -119,6 +235,10 @@ export function GamePage() {
 
     if (status === 'waiting') {
       dispatch(startRound());
+      if (theme.multiplier === 1) {
+        const game = await startGame(null);
+        setGameId(game?.id);
+      }
     }
 
     if (status === 'finished') {
@@ -149,10 +269,21 @@ export function GamePage() {
 
     // Update state and timers
     dispatch(addExperience());
-    dispatch(setBalance(balance + theme.multiplier));
+    dispatch(
+      setBalance({
+        label: balance.label + theme.multiplier,
+        value: balance.value + theme.multiplier
+      })
+    );
   };
 
-  const buyCompletedHandler = () => {
+  const buyCompletedHandler = async () => {
+    const plan = gamePlans?.find((el) => el.multiplier === theme.multiplier);
+    console.log({ theme, plan, gamePlans });
+    const bought = await onBuy(plan);
+    if (!bought) {
+      return;
+    }
     dispatch(setStatus('waiting'));
     dispatch(setThemeAccess({ themeId: theme.id, status: true }));
 
@@ -164,6 +295,29 @@ export function GamePage() {
 
   const conditionalSwipeHandlers = status !== 'playing' ? swipeHandlers : {}; // just in case we swipe will affect click.
 
+  const saveGame = useCallback(() => {
+    endGame({ id: gameId, taps: balance.value })
+      .then((data) => {
+        dispatch(setUser({ ...user, points: data?.data || 0 }));
+      })
+      .catch((err) => {
+        alert(JSON.stringify(err?.response.data) || 'Something went wrong!');
+        console.log({ endGameErr: err, m: err?.response.data });
+      });
+  }, [balance, gameId, user]);
+
+  useLayoutEffect(() => {
+    if (gameId && status === 'finished') {
+      saveGame();
+    }
+  }, [gameId, status, saveGame]);
+
+  useOnLocationChange(() => {
+    if (gameId && status === 'playing') {
+      saveGame();
+    }
+  });
+
   return (
     <div className={classNames(styles.container, theme && styles[theme.id])}>
       <Background ref={backgroundRef} theme={theme} />
@@ -173,7 +327,7 @@ export function GamePage() {
         <div className={styles['content-inner-container']}>
           <div className={styles['balance-container']}>
             <div className={styles.balance}>
-              {balance.toLocaleString('en-US')}
+              {balance.label.toLocaleString('en-US')}
             </div>
           </div>
 

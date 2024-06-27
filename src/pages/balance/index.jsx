@@ -47,7 +47,7 @@ export const Balance = () => {
       </div>
       <footer className={styles.footer}>
         <Button
-          label="Upload file"
+          label="Upload"
           onClick={onUploadFile}
           className={styles.blue_btn}
         />

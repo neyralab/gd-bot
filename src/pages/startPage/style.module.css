@@ -410,6 +410,7 @@
   align-items: center;
   gap: 16px;
   width: 100%;
+  color: white;
 }
 
 .footer_item_text {
@@ -540,6 +541,10 @@
 
 .small {
   font-size: 36px;
+}
+
+.medium {
+  font-size: 48px;
 }
 
 .bottom {

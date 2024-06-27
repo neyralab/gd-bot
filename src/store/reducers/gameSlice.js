@@ -13,7 +13,7 @@ const gameSlice = createSlice({
       gold: false,
       ghost: false
     },
-    balance: 0,
+    balance: { value: 0, label: 0 },
     experienceLevel: 1,
     experiencePoints: 0,
     reachedNewLevel: false,

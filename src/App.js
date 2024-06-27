@@ -30,6 +30,9 @@ import { TaskPage } from './pages/Task';
 import { BoostPage } from './pages/boost';
 import { GamePage } from './pages/game';
 import { IntroPage } from './pages/intro';
+import EarnPage from './pages/earn';
+import FriendsPage from './pages/friends';
+import NodesWelcomePage from './pages/nodes-welcome';
 
 import './App.css';
 
@@ -118,7 +121,7 @@ function App() {
           <Route
             path="/start"
             exact
-            element={<StartPage onClose={onClose} />}
+            element={<StartPage onClose={onClose} tariffs={tariffs} />}
           />
           <Route path="/file-upload" exact element={<FilesSystemPage />} />
           <Route path="/ghostdrive-upload" exact element={<FilesPage />} />
@@ -132,12 +135,15 @@ function App() {
           <Route path="/point-tracker" exact element={<Referral />} />
           <Route path="/task" exact element={<TaskPage />} />
           <Route path="/leadboard" exact element={<Leaderboard />} />
+          <Route path="/friends" exact element={<FriendsPage />} />
           <Route path="/game" exact element={<GamePage />} />
           <Route
             path="/boost"
             exact
             element={<BoostPage tariffs={tariffs} />}
           />
+          <Route path="/earn" exact element={<EarnPage />} />
+          <Route path="/nodes-welcome" exact element={<NodesWelcomePage />} />
         </Routes>
       </SharedLayout>
     </TonConnectUIProvider>
