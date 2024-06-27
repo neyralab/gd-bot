@@ -91,21 +91,25 @@ bot.start(async (ctx) => {
     'Follow X',
     `https://twitter.com/ghostdrive_web3`
   );
-
-  ctx.replyWithPhoto(
-    { source: fs.createReadStream('./assets/start.png') },
-    {
-      caption: `${header}\n\n${activitiesText}`,
-      parse_mode: 'HTML',
-      reply_markup: {
-        inline_keyboard: [
-          [uploadForAirdropButton],
-          [followXButton],
-          [shareButton]
-        ]
+  try {
+    await ctx.replyWithPhoto(
+      { source: fs.createReadStream('./assets/start.png') },
+      {
+        caption: `${header}\n\n${activitiesText}`,
+        parse_mode: 'HTML',
+        reply_markup: {
+          inline_keyboard: [
+            [uploadForAirdropButton],
+            [followXButton],
+            [shareButton]
+          ]
+        }
       }
-    }
-  );
+    );
+  } catch (error) {
+    await ctx.reply(`Error: ${error.message}`);
+    console.error('Error replyWithPhoto:', error.message);
+  }
 });
 
 bot.command('terms', termsHandler);
