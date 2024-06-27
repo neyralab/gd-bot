@@ -23,7 +23,10 @@ export const startGame = async (purchase_id: number | null) => {
 
 export const endGame = async ({ id, taps }: { id: number; taps: number }) => {
   const url = `${API_PATH}/store/game/points`;
-  const { data } = await axiosInstance.post<{ message: string }>(url, {
+  const { data } = await axiosInstance.post<{
+    message: string;
+    data: number;
+  }>(url, {
     game_id: id,
     taps_count: taps
   });

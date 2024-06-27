@@ -196,6 +196,7 @@ export const StartPage = ({ tariffs }) => {
             <p
               className={CN(
                 style.wallet,
+                user?.points > 99999 && style.medium,
                 user?.points > 999999 && style.small
               )}>
               <CountUp delay={1} end={user?.points} />

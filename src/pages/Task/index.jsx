@@ -39,13 +39,13 @@ export const TaskPage = () => {
   return (
     <div className={styles.container}>
       <Header label={'Task'} />
-      <p className={styles.checkbox_header}>Daily Task</p>
-      <div className={styles.checkbox_item}>
-        <div className={styles.input_container}>
-          <label htmlFor="send">Send 0.01</label>
-        </div>
-        <p className={styles.point}>+50 Points</p>
-      </div>
+      {/*<p className={styles.checkbox_header}>Daily Task</p>*/}
+      {/*<div className={styles.checkbox_item}>*/}
+      {/*  <div className={styles.input_container}>*/}
+      {/*    <label htmlFor="send">Send 0.01</label>*/}
+      {/*  </div>*/}
+      {/*  <p className={styles.point}>+50 Points</p>*/}
+      {/*</div>*/}
       <div className={styles.tasks}>
         <p className={styles.checkbox_header}>All Tasks</p>
         <ul className={styles.list}>
@@ -58,7 +58,9 @@ export const TaskPage = () => {
               }
               key={index}
               className={CN(el?.done && styles.done, styles.item)}>
-              <p className={styles.item_text}>{el?.action_text}</p>
+              <p className={styles.item_text}>
+                {el?.point?.action_text || el?.action_text}
+              </p>
               <p
                 className={
                   styles.point
