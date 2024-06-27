@@ -1,7 +1,4 @@
 import OpenAI from 'openai';
-import dotenv from 'dotenv';
-
-dotenv.config();
 
 const openai = new OpenAI({
   baseURL: 'https://api.neyra.ai/api/v1',

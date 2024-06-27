@@ -1,15 +1,19 @@
+import './config.js';
 import express from 'express';
 import { Telegraf, Markup } from 'telegraf';
 import fs from 'fs';
-import dotenv from 'dotenv';
 import fetch from 'node-fetch';
+import { telegrafThrottler } from 'telegraf-throttler';
+
 import photoHandler from './handlers/photoHandler.js';
 import textHandler from './handlers/textHandler.js';
 import termsHandler from './commands/terms/index.js';
 
-dotenv.config();
 const app = express();
 const bot = new Telegraf(process.env.BOT_TOKEN_SECRET);
+const throttler = telegrafThrottler();
+bot.use(throttler);
+
 const cache = {};
 
 bot.start(async (ctx) => {
