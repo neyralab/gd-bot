@@ -1,10 +1,7 @@
-import dotenv from 'dotenv';
 import { Markup } from 'telegraf';
 
 import termsMessage from './termsMessage.js';
 import fetchPointsData from './fetchPointsData.js';
-
-dotenv.config();
 
 async function termsHandler(ctx) {
   try {
