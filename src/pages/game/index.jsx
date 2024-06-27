@@ -1,5 +1,11 @@
 /* global BigInt */
-import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState
+} from 'react';
 import classNames from 'classnames';
 import { useSwipeable } from 'react-swipeable';
 import { useDispatch, useSelector } from 'react-redux';
@@ -54,6 +60,7 @@ import {
 } from '../../effects/gameEffect';
 import { useQueryId } from '../../effects/contracts/useQueryId';
 import { setUser } from '../../store/reducers/userSlice';
+import { useOnLocationChange } from '../../utils/useBack';
 
 export function GamePage() {
   const clickSoundRef = useRef(new Audio('/assets/game-page/2blick.wav'));
@@ -288,27 +295,28 @@ export function GamePage() {
 
   const conditionalSwipeHandlers = status !== 'playing' ? swipeHandlers : {}; // just in case we swipe will affect click.
 
-  useLayoutEffect(() => {
-    const callback = () => {
-      endGame({ id: gameId, taps: balance.value })
-        .then((data) => {
-          dispatch(setUser({ ...user, points: data?.data || 0 }));
-        })
-        .catch((err) => {
-          alert(JSON.stringify(err?.response.data) || 'Something went wrong!');
-          console.log({ endGameErr: err, m: err?.response.data });
-        });
-    };
+  const saveGame = useCallback(() => {
+    endGame({ id: gameId, taps: balance.value })
+      .then((data) => {
+        dispatch(setUser({ ...user, points: data?.data || 0 }));
+      })
+      .catch((err) => {
+        alert(JSON.stringify(err?.response.data) || 'Something went wrong!');
+        console.log({ endGameErr: err, m: err?.response.data });
+      });
+  }, [balance, gameId, user]);
 
+  useLayoutEffect(() => {
     if (gameId && status === 'finished') {
-      callback();
+      saveGame();
     }
-    return () => {
-      if (gameId && status === 'playing') {
-        callback();
-      }
-    };
-  }, [gameId, status, balance]);
+  }, [gameId, status, saveGame]);
+
+  useOnLocationChange(() => {
+    if (gameId && status === 'playing') {
+      saveGame();
+    }
+  });
 
   return (
     <div className={classNames(styles.container, theme && styles[theme.id])}>
