@@ -3,15 +3,14 @@ services:
   front:
     container_name: telegram-bot-front
     build: 
-      context: src
+      context: ./src
       dockerfile: Dockerfile
     ports:
     - "3002:3000"
-    command: npm start
   back:
     container_name: telegram-bot-back
     build:
-      context: src/backend
+      context: ./src/backend
       dockerfile: Dockerfile
     ports:
     - "3003:3000"
