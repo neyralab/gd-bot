@@ -17,11 +17,11 @@ const tabs = [
     name: 'users',
     key: 'users'
   },
-  {
-    number: 0,
-    name: 'referral files',
-    key: 'refFiles'
-  },
+  // {
+  //   number: 0,
+  //   name: 'referral files',
+  //   key: 'refFiles'
+  // },
   {
     number: 0,
     name: 'earn',
@@ -32,7 +32,7 @@ const tabs = [
 export const Referral = () => {
   const [tabList, setTabs] = useState({
     users: 0,
-    refFiles: 0,
+    // refFiles: 0,
     earn: 0
   });
   const [isLinkCopied, setIsLinkCopied] = useState(false);
@@ -43,7 +43,7 @@ export const Referral = () => {
   useEffect(() => {
     setTabs((prevState) => ({
       ...prevState,
-      refFiles: balance?.fileCnt,
+      // refFiles: balance?.fileCnt,
       earn: balance?.points
     }));
   }, [balance]);
