@@ -1,21 +1,27 @@
-@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
 
 @font-face {
   font-family: 'SF Pro Text';
   font-weight: 500;
-  src: local('SF Pro Text'), url(./assets/fonts/sf-pro-text.woff) format('woff');
+  src:
+    local('SF Pro Text'),
+    url(./assets/fonts/sf-pro-text.woff) format('woff');
 }
 
 @font-face {
   font-family: 'SF Pro Text';
   font-weight: 200;
-  src: local('SF Pro Text'), url(./assets/fonts/SF-Pro-Display-Thin.otf) format('opentype');
+  src:
+    local('SF Pro Text'),
+    url(./assets/fonts/SF-Pro-Display-Thin.otf) format('opentype');
 }
 
 @font-face {
   font-family: 'Digital Numbers';
-  src: local('Digital Numbers'), url(./assets/fonts/DigitalNumbers-Regular.ttf) format('truetype');
+  src:
+    local('Digital Numbers'),
+    url(./assets/fonts/DigitalNumbers-Regular.ttf) format('truetype');
 }
 
 * {
@@ -24,15 +30,16 @@
   box-sizing: border-box;
 }
 
-html, body {
+html,
+body {
   overscroll-behavior: none;
 }
 
 body {
-  background: var(--tg--theme-bg-color);
+  /* background: var(--tg--theme-bg-color); */
   /*color: var(--tg-theme-text-color);*/
-  background-color: #151517;
-  font-family: "Open Sans", sans-serif;
+  background-color: #000;
+  font-family: 'Open Sans', sans-serif;
   user-select: none;
   color: #e9e0e0;
 }
