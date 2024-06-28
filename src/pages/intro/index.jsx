@@ -24,7 +24,7 @@ const info = [
   },
   {
     icon: <AirdropIcon />,
-    title: '$6 Million giveaway',
+    title: 'Mega Bonus',
     text: 'Participate in tapping games will receive in exchange GD Tokens',
     opacity: 0
   }
@@ -134,18 +134,18 @@ export const IntroPage = () => {
           ))}
         </div>
         <div className={s.bottom}>
-          <p
-            onTransitionEnd={onJoinShown}
-            style={{ opacity: isInfoShown ? 1 : 0 }}
-            className={s.join}>
-            $6M Airdrop Giveaway
-          </p>
+          {/*<p*/}
+          {/*  onTransitionEnd={onJoinShown}*/}
+          {/*  style={{ opacity: isInfoShown ? 1 : 0 }}*/}
+          {/*  className={s.join}>*/}
+          {/*  $6M Airdrop Giveaway*/}
+          {/*</p>*/}
           <button
             style={{
-              fontSize: isJoinShown ? 18 : 0,
-              opacity: isJoinShown ? 1 : 0.25,
-              visibility: isJoinShown ? 'visible' : 'hidden',
-              width: isJoinShown ? '100%' : 0 /* Expand to full width */
+              fontSize: isInfoShown ? 18 : 0,
+              opacity: isInfoShown ? 1 : 0.25,
+              visibility: isInfoShown ? 'visible' : 'hidden',
+              width: isInfoShown ? '100%' : 0 /* Expand to full width */
             }}
             onClick={onStart}
             className={s.start_button}>
