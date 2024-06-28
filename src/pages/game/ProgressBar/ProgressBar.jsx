@@ -29,7 +29,7 @@ export default function ProgressBar() {
     value =
       (experiencePoints / levels[experienceLevelIndex].maxExperience) * 100;
     return value || 0;
-  }, [experiencePoints, experienceLevel]);
+  }, [experienceLevelIndex, experiencePoints]);
 
   return (
     <div
