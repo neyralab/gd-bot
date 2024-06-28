@@ -70,10 +70,10 @@ bot.start(async (ctx) => {
   const header =
     '<b>Welcome to Ghostdrive – The Ultimate Drive for the TON Ecosystem!</b>';
   const activitiesText =
-    'Experience the easiest way to upload files, share content with friends, and earn rewards!\n\n' +
-    '<b>$6 Million Airdrop:</b> Upload files to earn points, reach the highest levels, and boost your rewards with our fun tap game.\n\n' +
-    '<b>50 GB Giveaways:</b> Access over 400 million TB of storage from the Filecoin network. Invite friends and earn even more!\n\n' +
-    '<b>Join Ghostdrive today and get started!</b>';
+    'Experience a new way to store and transform your raw data into smart data. Join the Ghostdrive bot for AI image recognition and seamless Telegram sharing.\n\n' +
+    '🚀 <b>Community Rewards:</b> Upload files to earn points, climb the leaderboard, and boost your rewards with our exciting tap game.\n\n' +
+    '🎁 <b>Lifetime Storage Giveaway:</b> Enjoy storage from the Filecoin network. Invite friends and earn even more!\n\n' +
+    '<b>Join Ghostdrive today and be part of our growing community!</b>';
   const buttonText = 'Open GhostDrive';
   const buttonUrl = process.env.APP_FRONTEND_URL;
   const button = Markup.button.webApp(buttonText, buttonUrl);
