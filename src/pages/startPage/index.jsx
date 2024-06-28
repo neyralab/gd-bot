@@ -45,14 +45,14 @@ export const StartPage = ({ tariffs }) => {
 
   const human = useMemo(() => {
     if (!user) return;
-    const { space_total, storage } = user;
+    const { space_total, space_used } = user;
     const percent = Math.round(
-      (Number(storage) / space_total + Number.EPSILON) * 100
+      (Number(space_used) / space_total + Number.EPSILON) * 100
     );
 
     return {
       total: `${transformSize(String(space_total), 0)}`,
-      used: `${fromByteToGb(storage)}`,
+      used: `${fromByteToGb(space_used)}`,
       percent: { label: `${percent || 1}%`, value: percent }
     };
   }, [user]);
