@@ -28,11 +28,11 @@ export const tasks = [
     imgUrl: '/assets/x.png'
   },
   {
-    id: 'upgradeStorage',
+    id: 'youtube',
     isDone: false,
-    title: 'Upgrade Storage',
+    title: 'Join Our YouTube Channel',
     points: 10000,
-    imgUrl: '/assets/exchange.png'
+    imgUrl: '/assets/youtube.png'
   },
   {
     id: 'joinTG',
@@ -47,5 +47,12 @@ export const tasks = [
     title: 'Download Mobile App (via telegram login)',
     points: 10000,
     imgUrl: '/assets/like.png'
+  },
+  {
+    id: 'wallet',
+    isDone: false,
+    title: 'Connect Wallet',
+    points: 1000,
+    imgUrl: '/assets/money.png'
   }
 ];
