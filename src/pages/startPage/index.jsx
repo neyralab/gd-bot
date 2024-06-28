@@ -22,6 +22,8 @@ import { ReactComponent as LeadboardIcon } from '../../assets/leadboard.svg';
 import { ReactComponent as PointsIcon } from '../../assets/point.svg';
 import { ReactComponent as TelegramIcon } from '../../assets/telegram.svg';
 import { ReactComponent as CloudIcon } from '../../assets/cloud.svg';
+import { ReactComponent as DriveIcon } from '../../assets/drive.svg';
+import { ReactComponent as PlayIcon } from '../../assets/play.svg';
 
 import style from './style.module.css';
 
@@ -61,26 +63,26 @@ export const StartPage = ({ tariffs }) => {
     return [
       {
         Icon: TaskIcon,
-        text: 'Daily Tasks',
+        text: 'Tasks',
         amount: '',
         onClick: () => {
           navigate('/task');
         }
       },
       {
-        Icon: LeadboardIcon,
-        text: 'Leadboard',
+        Icon: DriveIcon,
+        text: 'Drive',
         amount: '',
         onClick: () => {
-          navigate('/leadboard');
+          navigate('/file-upload');
         }
       },
       {
-        Icon: PointsIcon,
-        text: 'Point Tracker',
+        Icon: PlayIcon,
+        text: 'Play',
         amount: '',
         onClick: () => {
-          navigate('/point-tracker');
+          navigate('/game');
         }
       },
       {
@@ -97,14 +99,6 @@ export const StartPage = ({ tariffs }) => {
       //   amount: '+50',
       //   onClick: () => {
       //     navigate('/file-upload');
-      //   }
-      // },
-      // {
-      //   Icon: DriveIcon,
-      //   text: 'Drive',
-      //   amount: storage.size,
-      //   onClick: () => {
-      //     navigate('/ghostdrive-upload');
       //   }
       // },
       // {
@@ -182,7 +176,7 @@ export const StartPage = ({ tariffs }) => {
           <div className={style.list_element}>
             <button className={style.list_element_button}>
               <TelegramIcon />
-              <p className={style.list_element_text}>Share with friends</p>
+              <p className={style.list_element_text}>Share</p>
               <span
                 className={CN(
                   style.list_element_text,
@@ -217,19 +211,19 @@ export const StartPage = ({ tariffs }) => {
         <footer className={style.footer}>
           <div
             onClick={() => {
-              navigate('/file-upload');
+              navigate('/point-tracker');
             }}
             className={style.footer_item}>
             <PointsIcon />
-            <span className={style.footer_item_text}>Upload for Airdrop</span>
+            <span className={style.footer_item_text}>Point Tracker</span>
           </div>
           <div
             className={style.footer_item}
             onClick={() => {
-              navigate('/game');
+              navigate('/leadboard');
             }}>
             <LeadboardIcon />
-            <span className={style.footer_item_text}>Taping for Airdop</span>
+            <span className={style.footer_item_text}>Leadboard</span>
           </div>
         </footer>
       </div>
