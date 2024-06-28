@@ -3,19 +3,19 @@ const levels = [
     id: 1,
     maxExperience: 1000,
     giftPoints: 1000,
-    freeRound: 1
+    freeRound: 0
   },
   {
     id: 2,
     maxExperience: 10000,
     giftPoints: 10000,
-    freeRound: 1
+    freeRound: 0
   },
   {
     id: 3,
     maxExperience: 100000,
     giftPoints: 100000,
-    freeRound: 1
+    freeRound: 0
   }
   // {
   //   id: 4,
