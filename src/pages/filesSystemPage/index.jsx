@@ -18,6 +18,7 @@ import {
   setSearchAutocomplete,
   setUploadingFile
 } from '../../store/reducers/filesSlice';
+import { getFileTypesCountEffect } from '../../effects/storageEffects';
 import { uploadFileEffect } from '../../effects/uploadFileEffect';
 import { autoCompleteSearchEffect } from '../../effects/filesEffects';
 import { transformSize } from '../../utils/transformSize';
@@ -33,13 +34,14 @@ import { ReactComponent as ListIcon } from '../../assets/list_view.svg';
 import { ReactComponent as PlusIcon } from './assets/plus.svg';
 import { ReactComponent as GhostIcon } from './assets/ghost_logo.svg';
 import { ReactComponent as SearchIcon } from './assets/search.svg';
-import { ReactComponent as SquareIcon } from './assets/square.svg';
+import { ReactComponent as BackIcon } from './assets/close.svg';
 
 import style from './style.module.scss';
 
 const MAX_FILE_SIZE = 268435456;
 
 export const FilesSystemPage = () => {
+  const [types, setTypes] = useState({});
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const fileRef = useRef(null);
@@ -59,6 +61,12 @@ export const FilesSystemPage = () => {
   useEffect(() => {
     dispatch(setCurrentFilter(currentFileFilter));
   }, [currentFileFilter]);
+
+  useEffect(() => {
+    getFileTypesCountEffect()
+      .then((data) => setTypes(data))
+      .catch(() => toast.error('Failed to load counts'));
+  }, []);
 
   const clearInputsAfterUpload = () => {
     const dataTransfer = new DataTransfer();
@@ -175,15 +183,22 @@ export const FilesSystemPage = () => {
   }, [user]);
 
   const onBackButtonClick = () => {
-    navigate('/file-upload');
+    navigate(-1);
     dispatch(clearSearchAutocomplete());
     setSearchValue('');
   };
 
+  if (Object.keys(types).length === 0 || !human || !user) {
+    return (
+      <div className={style.loaderContainer}>
+        <GhostLoader />
+      </div>
+    );
+  }
+
   return (
     <div className={style.container}>
-      <Header label={'GhostDrive'} headerClassName={style.header} />
-
+      {currentFileFilter && <Header headerClassName={style.header} />}
       <header className={style.filesHeader}></header>
       <section className={style.wrapper}>
         <div className={style.search}>
@@ -193,7 +208,7 @@ export const FilesSystemPage = () => {
             name="search"
             id="search"
             maxLength="40"
-            placeholder="GhostDrive"
+            placeholder="Search"
             className={style.search__input}
             autoComplete="off"
             onChange={handleInputChange}
@@ -201,9 +216,15 @@ export const FilesSystemPage = () => {
           <label htmlFor="search" className={style.search__icon}>
             <SearchIcon />
           </label>
-          <div className={style.search__logo}>
-            <GhostIcon />
-          </div>
+          {currentFileFilter ? (
+            <div className={style.search__logo}>
+              <GhostIcon />
+            </div>
+          ) : (
+            <div className={style.search__logo} onClick={onBackButtonClick}>
+              <BackIcon />
+            </div>
+          )}
         </div>
         {user && human && (
           <div className={style.storage_block}>
@@ -235,7 +256,7 @@ export const FilesSystemPage = () => {
             <FileList files={fileList} checkedFile={checkedFile} />
           </>
         ) : (
-          <FileFilterPanel />
+          <FileFilterPanel types={types} />
         )}
 
         {areFilesLoading && (
