@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
 const useWeeklyTimer = () => {
   // Calculate time left until next Monday Central Time
-  const calculateTimeLeft = () => {
+  const calculateTimeLeft = useCallback(() => {
     const now = new Date();
     const nextMonday = new Date(
       now.getFullYear(),
@@ -21,7 +21,7 @@ const useWeeklyTimer = () => {
     const seconds = Math.floor((diff / 1000) % 60);
 
     return `${days} : ${hours.toString().padStart(2, '0')} : ${minutes.toString().padStart(2, '0')} : ${seconds.toString().padStart(2, '0')}`;
-  };
+  }, []);
 
   const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
 

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import classNames from 'classnames';
 import { LeaderIcon } from '../LeaderIcon';
+import { anonymizeFullName } from '../../../../utils/anonymize';
 import styles from './Table.module.css';
 
 export default function Table({ items }) {
@@ -18,15 +19,6 @@ export default function Table({ items }) {
     });
   }, [items]);
 
-  function anonymizeFullName(str) {
-    if (str.length <= 7) {
-      return str;
-    }
-    const start = str.slice(0, 5);
-    const end = str.slice(-2);
-    const middle = '*'.repeat(str.length - 7);
-    return `${start}${middle}${end}`;
-  }
 
   return (
     <table className={styles.table}>
