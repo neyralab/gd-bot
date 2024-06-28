@@ -79,7 +79,7 @@ export const startRound = createAsyncThunk(
     dispatch(setRoundTimeoutId(null));
     dispatch(setStatus('playing'));
 
-    const endTime = Date.now() + 15 * 1000; // 15 sec from now
+    const endTime = Date.now() + 30 * 1000; // 30 sec from now
     dispatch(setRoundTimerTimestamp(endTime));
 
     const timeoutId = setTimeout(() => {
@@ -92,7 +92,7 @@ export const startRound = createAsyncThunk(
       if (state.game.theme.id === 'hawk') {
         dispatch(startNewFreeGameCountdown());
       }
-    }, 15 * 1000); // 15 sec in milliseconds
+    }, 30 * 1000); // 30 sec in milliseconds
 
     dispatch(setRoundTimeoutId(timeoutId));
   }

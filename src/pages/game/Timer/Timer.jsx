@@ -14,7 +14,7 @@ export default function Timer() {
   const roundTimerTimestamp = useSelector(selectRoundTimerTimestamp);
   const lockTimerTimestamp = useSelector(selectLockTimerTimestamp);
 
-  const [remainingTime, setRemainingTime] = useState('0:15');
+  const [remainingTime, setRemainingTime] = useState('0:30');
   const [lockTime, setLockTime] = useState('15:00');
   const roundCountdownRef = useRef();
   const lockCountdownRef = useRef();
@@ -83,12 +83,12 @@ export default function Timer() {
 
     if (status === 'waiting') {
       if (theme.id !== 'hawk') {
-        return '0:15';
+        return '0:30';
       } else {
         if (lockTimerTimestamp) {
           return lockTime;
         } else {
-          return '0:15';
+          return '0:30';
         }
       }
     }

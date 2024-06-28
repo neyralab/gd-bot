@@ -49,9 +49,9 @@ export const getGameInfo = async () => {
     points: number;
   }>(url);
   const lockTime = new Date(+data.game_ends_at * 1000);
-  const next = lockTime.setHours(lockTime.getHours() + 3);
+  const next = new Date(lockTime.getTime() + 15 * 1000 * 60);
   console.log({ getGameInfo: data });
-  return { game_ends_at: next, points: data.points };
+  return { game_ends_at: next.getTime(), points: data.points };
 };
 
 type GamePlan = {

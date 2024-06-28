@@ -2,7 +2,6 @@
 import React, {
   useCallback,
   useEffect,
-  useLayoutEffect,
   useMemo,
   useRef,
   useState
@@ -61,7 +60,6 @@ import {
 } from '../../effects/gameEffect';
 import { useQueryId } from '../../effects/contracts/useQueryId';
 import { setUser } from '../../store/reducers/userSlice';
-import { useOnLocationChange } from '../../utils/useBack';
 
 export function GamePage() {
   const clickSoundRef = useRef(new Audio('/assets/game-page/2blick.wav'));
@@ -76,7 +74,7 @@ export function GamePage() {
   const soundIsActive = useSelector(selectSoundIsActive);
   const theme = useSelector(selectTheme);
   const themeAccess = useSelector(selectThemeAccess);
-  const status = useSelector(selectStatus);
+  const status = useSelector(selectStatus, (prev, next) => prev === next);
   const balance = useSelector(selectBalance);
   const lockTimerTimestamp = useSelector(selectLockTimerTimestamp);
   const nextTheme = useSelector(selectNextTheme);
@@ -317,10 +315,10 @@ export function GamePage() {
   }, [status, swipeHandlers]);
 
   const saveGame = useCallback(() => {
+    setGameId(undefined);
     endGame({ id: gameId, taps: balance.value })
       .then((data) => {
         dispatch(setUser({ ...user, points: data?.data || 0 }));
-        setGameId(undefined);
       })
       .catch((err) => {
         alert(JSON.stringify(err?.response.data) || 'Something went wrong!');
@@ -328,7 +326,7 @@ export function GamePage() {
       });
   }, [balance.value, dispatch, gameId, user]);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (gameId && status === 'finished') {
       saveGame();
     }

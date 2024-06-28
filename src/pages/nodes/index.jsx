@@ -1,7 +1,7 @@
-import React, { useEffect, useLayoutEffect } from 'react';
+import React, { useLayoutEffect } from 'react';
 import classNames from 'classnames';
 import { Header } from '../../components/header';
-import { ReactComponent as LogoIcon } from '../../assets/ghost-filled.svg';
+import { ReactComponent as LogoIcon } from '../../assets/ghost.svg';
 import { ReactComponent as TonIcon } from '../../assets/TON.svg';
 import styles from './styles.module.css';
 import CardsSlider from '../../components/CardsSlider/CardsSlider';
@@ -51,7 +51,7 @@ export default function NodesPage() {
   const nodesAvailable = 990;
   const nodesCost = 55;
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     let intervalId;
 
     const toAppearElements = document.querySelectorAll(
@@ -96,7 +96,7 @@ export default function NodesPage() {
               <div className={styles['banner-header_img']}>
                 <LogoIcon />
               </div>
-              <h1>Nodes</h1>
+              <h1>My Nodes</h1>
               <span><CountUp delay={0.5} end={nodesAmount}  /></span>
             </div>
           </div>
