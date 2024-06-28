@@ -1,17 +1,17 @@
 import { API_PATH } from '../utils/api-urls';
 import axiosInstance from './axiosInstance';
 import * as Sentry from '@sentry/react';
+import { AxiosError } from 'axios';
 
-export const getUserEffect = async (token) => {
+export const getUserEffect = async (token: string) => {
   return await axiosInstance
-    .create({
+    .get(`${API_PATH}/tg/me`, {
       headers: {
         'X-Token': `Bearer ${token}`
       }
     })
-    .get(`${API_PATH}/me`)
-    .then((response) => response.data)
-    .catch((error) => {
+    .then((response: { data: GetMe }) => response.data)
+    .catch((error: AxiosError<{ message: string }>) => {
       Sentry.captureMessage(
         `Error ${error?.response?.status} in getUserEffect: ${error?.response?.data?.message}`
       );
@@ -19,7 +19,16 @@ export const getUserEffect = async (token) => {
     });
 };
 
-export const saveUserWallet = async (walletData) => {
+type GetMe = {
+  referral_code: string;
+  points: number;
+  id: number;
+  space_total: number;
+  ws_id: number;
+  workspace_plan: boolean | any;
+};
+
+export const saveUserWallet = async (walletData: unknown) => {
   const data = await axiosInstance.post(`${API_PATH}/tg/wallet`, walletData);
   return data.data;
   // 8/api/tg/wallet' \

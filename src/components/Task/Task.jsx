@@ -3,6 +3,8 @@ import classNames from 'classnames';
 import styles from './Task.module.css';
 
 export default function Task({ isDone, title, points, imgUrl, onClick }) {
+  const formattedPoints = Number(points).toLocaleString();
+
   return (
     <div
       className={classNames(styles.container, isDone && styles.done)}
@@ -12,7 +14,7 @@ export default function Task({ isDone, title, points, imgUrl, onClick }) {
         <strong>{title}</strong>
       </div>
       <div className={styles.points}>
-        <span>+{points}</span>
+        <span>+{formattedPoints}</span>
         <img src="/assets/token.png" alt={`+ ${points} points`} />
       </div>
     </div>
