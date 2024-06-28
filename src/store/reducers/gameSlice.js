@@ -79,7 +79,7 @@ export const startRound = createAsyncThunk(
     dispatch(setRoundTimeoutId(null));
     dispatch(setStatus('playing'));
 
-    const endTime = Date.now() + 60 * 1000; // 1 minute from now
+    const endTime = Date.now() + 15 * 1000; // 15 sec from now
     dispatch(setRoundTimerTimestamp(endTime));
 
     const timeoutId = setTimeout(() => {
@@ -92,7 +92,7 @@ export const startRound = createAsyncThunk(
       if (state.game.theme.id === 'hawk') {
         dispatch(startNewFreeGameCountdown());
       }
-    }, 60 * 1000); // 1 minute in milliseconds
+    }, 15 * 1000); // 15 sec in milliseconds
 
     dispatch(setRoundTimeoutId(timeoutId));
   }
@@ -104,7 +104,7 @@ export const startNewFreeGameCountdown = createAsyncThunk(
     dispatch(setLockTimeoutId(null));
     dispatch(setThemeAccess({ themeId: 'hawk', status: false }));
 
-    const endTime = Date.now() + 60 * 3 * 60 * 1000; // 3 hours from now
+    const endTime = Date.now() + 15 * 60 * 1000; // 15 min from now
     dispatch(setLockTimerTimestamp(endTime));
 
     const timeoutId = setTimeout(
@@ -114,8 +114,8 @@ export const startNewFreeGameCountdown = createAsyncThunk(
         dispatch(setStatus('waiting'));
         dispatch(setThemeAccess({ themeId: 'hawk', status: true }));
       },
-      60 * 3 * 60 * 1000
-    ); // 3 hours in milliseconds
+      15 * 60 * 1000
+    ); // 15 min from now milliseconds
 
     dispatch(setLockTimeoutId(timeoutId));
   }

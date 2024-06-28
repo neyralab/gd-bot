@@ -320,6 +320,7 @@ export function GamePage() {
     endGame({ id: gameId, taps: balance.value })
       .then((data) => {
         dispatch(setUser({ ...user, points: data?.data || 0 }));
+        setGameId(undefined);
       })
       .catch((err) => {
         alert(JSON.stringify(err?.response.data) || 'Something went wrong!');
@@ -348,7 +349,7 @@ export function GamePage() {
         <div className={styles['content-inner-container']}>
           <div className={styles['balance-container']}>
             <div className={styles.balance}>
-              {balance.label.toLocaleString('en-US')}
+              {balance?.label?.toLocaleString('en-US')}
             </div>
           </div>
 
