@@ -156,7 +156,10 @@ export const confirmNewlevel = createAsyncThunk(
     dispatch(setStatus('waiting'));
     dispatch(setReachedNewLevel(false));
     dispatch(
-      setBalance(state.game.balance + levels[levelIndex - 1].giftPoints)
+      setBalance({
+        value: state.game.balance.value + levels[levelIndex - 1].giftPoints,
+        label: state.game.balance.label + levels[levelIndex - 1].giftPoints
+      })
     );
 
     if (levels[levelIndex - 1].freeRound) {
