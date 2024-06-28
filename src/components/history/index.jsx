@@ -16,7 +16,9 @@ export const History = ({ history }) => {
               <Cloud width={32} height={32} />
               <div className={styles.text_container}>
                 <p className={styles.value}>{el.points}</p>
-                <p className={styles.text}>{el?.point?.action_text}</p>
+                <p className={styles.text}>
+                  {el?.action_text || el?.point?.action_text}
+                </p>
               </div>
             </li>
           ))
