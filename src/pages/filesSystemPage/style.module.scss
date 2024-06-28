@@ -6,14 +6,9 @@
   height: 100%;
   width: 100%;
 }
-
-.header {
+header.header {
   margin-bottom: 20px;
-  & h1 {
-    font-weight: 600;
-    line-height: 150%;
-    font-family: 'Open Sans';
-  }
+  max-width: 370px;
 }
 
 .filesHeader {
@@ -24,6 +19,15 @@
   margin-bottom: 0;
 }
 
+.loaderContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+}
+
 .search {
   width: 100%;
   position: relative;
@@ -31,7 +35,7 @@
   &__input {
     border: none;
     outline: none;
-    padding: 11px 8px 11px 40px;
+    padding: 11px 20px 11px 28px;
     color: #fff;
     font-feature-settings: 'case' on;
     font-family: 'Open Sans';
@@ -57,13 +61,13 @@
   &__icon {
     position: absolute;
     top: 50%;
-    left: 10px;
-    transform: translateY(-50%);
+    left: 0;
+    transform: translateY(-45%);
   }
   &__logo {
     position: absolute;
     top: 50%;
-    right: 16px;
+    right: 6px;
     transform: translateY(-50%);
     height: 20px;
   }
