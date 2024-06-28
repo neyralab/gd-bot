@@ -3,6 +3,7 @@ import React, {
   useCallback,
   useEffect,
   useLayoutEffect,
+  useMemo,
   useRef,
   useState
 } from 'react';
@@ -130,154 +131,172 @@ export function GamePage() {
       clickSoundRef.current.pause();
       clickSoundRef.current.currentTime = 0;
     };
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     setThemeIndex(themes.findIndex((t) => t.id === theme.id) || 0);
   }, [theme]);
 
-  const switchTheme = (e, direction) => {
-    e?.preventDefault?.();
-    e?.stopPropagation?.();
+  const switchTheme = useCallback(
+    (e, direction) => {
+      e?.preventDefault?.();
+      e?.stopPropagation?.();
 
-    if (status === 'playing') return;
+      if (status === 'playing') return;
 
-    let newThemeIndex;
+      let newThemeIndex;
 
-    if (direction === 'next') {
-      newThemeIndex = (themeIndex + 1) % themes.length;
-      if (newThemeIndex >= themes.length || newThemeIndex <= 0) return;
-    } else if (direction === 'prev') {
-      newThemeIndex = (themeIndex - 1 + themes.length) % themes.length;
-      if (newThemeIndex >= themes.length - 1 || newThemeIndex < 0) return;
-    }
-
-    const nextThemeStyle =
-      direction === 'next'
-        ? styles['next-theme-appear-right']
-        : styles['next-theme-appear-left'];
-
-    dispatch(setNextTheme(themes[newThemeIndex]));
-    // dispatch(setStatus('waiting'));
-
-    currentThemeRef.current.classList.add(styles['current-theme-dissapear']);
-    nextThemeRef.current.classList.add(nextThemeStyle);
-
-    setTimeout(() => {
-      dispatch(setTheme(themes[newThemeIndex]));
-      dispatch(setNextTheme(null));
-
-      currentThemeRef.current.classList.remove(
-        styles['current-theme-dissapear']
-      );
-      nextThemeRef.current.classList.remove(nextThemeStyle);
-    }, 500);
-  };
-
-  const onBuy = async (plan) => {
-    try {
-      if (!wallet) {
-        return open();
+      if (direction === 'next') {
+        newThemeIndex = (themeIndex + 1) % themes.length;
+        if (newThemeIndex >= themes.length || newThemeIndex <= 0) return;
+      } else if (direction === 'prev') {
+        newThemeIndex = (themeIndex - 1 + themes.length) % themes.length;
+        if (newThemeIndex >= themes.length - 1 || newThemeIndex < 0) return;
       }
-      if (!contractAddress && !plan) {
+
+      const nextThemeStyle =
+        direction === 'next'
+          ? styles['next-theme-appear-right']
+          : styles['next-theme-appear-left'];
+
+      dispatch(setNextTheme(themes[newThemeIndex]));
+      // dispatch(setStatus('waiting'));
+
+      currentThemeRef.current.classList.add(styles['current-theme-dissapear']);
+      nextThemeRef.current.classList.add(nextThemeStyle);
+
+      setTimeout(() => {
+        dispatch(setTheme(themes[newThemeIndex]));
+        dispatch(setNextTheme(null));
+
+        currentThemeRef.current.classList.remove(
+          styles['current-theme-dissapear']
+        );
+        nextThemeRef.current.classList.remove(nextThemeStyle);
+      }, 500);
+    },
+    [dispatch, status, themeIndex]
+  );
+
+  const onBuy = useCallback(
+    async (plan) => {
+      try {
+        if (!wallet) {
+          return open();
+        }
+        if (!contractAddress && !plan) {
+          return;
+        }
+        const endpoint = await getHttpEndpoint();
+        const closedContract = new GDTapBooster(contractAddress);
+        const client = new TonClient({ endpoint });
+        const contract = client.open(closedContract);
+        await contract.send(
+          {
+            send: async (args) => {
+              const data = await tonConnectUI.sendTransaction({
+                messages: [
+                  {
+                    address: args.to.toString(),
+                    amount: args.value.toString(),
+                    payload: args.body?.toBoc().toString('base64')
+                  }
+                ],
+                validUntil: Date.now() + 60 * 1000 // 5 minutes for user to approve
+              });
+              console.log({ data });
+              return data;
+            }
+          },
+          { value: plan?.ton_price || toNano(0.01) },
+          {
+            $$type: 'Boost',
+            queryId,
+            tierId: plan?.tierId
+          }
+        );
+
+        const userAddress = Address.parseRaw(wallet.account.address);
+        const purchaseId = await nullValueCheck(() => {
+          return contract.getLatestPurchase(userAddress);
+        });
+        const game = await startGame(Number(purchaseId));
+        setGameId(game?.id);
+        console.log({ PPPPP: purchaseId, game });
+        return true;
+      } catch (e) {
+        console.log({ onBuyError: e });
+        return false;
+      }
+    },
+    [contractAddress, open, queryId, tonConnectUI, wallet]
+  );
+
+  const clickHandler = useCallback(
+    async (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+
+      if (!themeAccess[theme.id]) {
         return;
       }
-      const endpoint = await getHttpEndpoint();
-      const closedContract = new GDTapBooster(contractAddress);
-      const client = new TonClient({ endpoint });
-      const contract = client.open(closedContract);
-      await contract.send(
-        {
-          send: async (args) => {
-            const data = await tonConnectUI.sendTransaction({
-              messages: [
-                {
-                  address: args.to.toString(),
-                  amount: args.value.toString(),
-                  payload: args.body?.toBoc().toString('base64')
-                }
-              ],
-              validUntil: Date.now() + 60 * 1000 // 5 minutes for user to approve
-            });
-            console.log({ data });
-            return data;
-          }
-        },
-        { value: plan?.ton_price || toNano(0.01) },
-        {
-          $$type: 'Boost',
-          queryId,
-          tierId: plan?.tierId
+
+      if (status === 'waiting') {
+        dispatch(startRound());
+        if (theme.multiplier === 1) {
+          const game = await startGame(null);
+          setGameId(game?.id);
         }
-      );
-
-      const userAddress = Address.parseRaw(wallet.account.address);
-      const purchaseId = await nullValueCheck(() => {
-        return contract.getLatestPurchase(userAddress);
-      });
-      const game = await startGame(Number(purchaseId));
-      setGameId(game?.id);
-      console.log({ PPPPP: purchaseId, game });
-      return true;
-    } catch (e) {
-      console.log({ onBuyError: e });
-      return false;
-    }
-  };
-
-  const clickHandler = async (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-
-    if (!themeAccess[theme.id]) {
-      return;
-    }
-
-    if (status === 'waiting') {
-      dispatch(startRound());
-      if (theme.multiplier === 1) {
-        const game = await startGame(null);
-        setGameId(game?.id);
       }
-    }
 
-    if (status === 'finished') {
-      return;
-    }
+      if (status === 'finished') {
+        return;
+      }
 
-    // Run animations
-    mainButtonRef.current.runAnimation();
-    backgroundRef.current.runAnimation();
-    pointsAreaRef.current.runAnimation();
+      // Run animations
+      mainButtonRef.current.runAnimation();
+      backgroundRef.current.runAnimation();
+      pointsAreaRef.current.runAnimation();
 
-    // Run sounds
-    if (clickSoundRef.current && !clickSoundRef.current.ended) {
-      clickSoundRef.current.pause();
-      clickSoundRef.current.currentTime = 0;
-    }
+      // Run sounds
+      if (clickSoundRef.current && !clickSoundRef.current.ended) {
+        clickSoundRef.current.pause();
+        clickSoundRef.current.currentTime = 0;
+      }
 
-    if (soundIsActive) {
-      setTimeout(() => {
-        const playPromise = clickSoundRef.current.play();
-        if (playPromise !== undefined) {
-          playPromise.catch((e) => {
-            console.warn('Autoplay was prevented:', e);
-          });
-        }
-      }, 0);
-    }
+      if (soundIsActive) {
+        setTimeout(() => {
+          const playPromise = clickSoundRef.current.play();
+          if (playPromise !== undefined) {
+            playPromise.catch((e) => {
+              console.warn('Autoplay was prevented:', e);
+            });
+          }
+        }, 0);
+      }
 
-    // Update state and timers
-    dispatch(addExperience());
-    dispatch(
-      setBalance({
-        label: balance.label + theme.multiplier,
-        value: balance.value + theme.multiplier
-      })
-    );
-  };
+      // Update state and timers
+      dispatch(addExperience());
+      dispatch(
+        setBalance({
+          label: balance.label + theme.multiplier,
+          value: balance.value + theme.multiplier
+        })
+      );
+    },
+    [
+      balance.label,
+      balance.value,
+      dispatch,
+      soundIsActive,
+      status,
+      theme.id,
+      theme.multiplier,
+      themeAccess
+    ]
+  );
 
-  const buyCompletedHandler = async () => {
+  const buyCompletedHandler = useCallback(async () => {
     const plan = gamePlans?.find((el) => el.multiplier === theme.multiplier);
     console.log({ theme, plan, gamePlans });
     const bought = await onBuy(plan);
@@ -291,9 +310,11 @@ export function GamePage() {
       dispatch(setLockTimerTimestamp(null));
       dispatch(setLockTimeoutId(null));
     }
-  };
+  }, [dispatch, gamePlans, onBuy, theme]);
 
-  const conditionalSwipeHandlers = status !== 'playing' ? swipeHandlers : {}; // just in case we swipe will affect click.
+  const conditionalSwipeHandlers = useMemo(() => {
+    return status !== 'playing' ? swipeHandlers : {}; // just in case we swipe will affect click.
+  }, [status, swipeHandlers]);
 
   const saveGame = useCallback(() => {
     endGame({ id: gameId, taps: balance.value })
@@ -304,7 +325,7 @@ export function GamePage() {
         alert(JSON.stringify(err?.response.data) || 'Something went wrong!');
         console.log({ endGameErr: err, m: err?.response.data });
       });
-  }, [balance, gameId, user]);
+  }, [balance.value, dispatch, gameId, user]);
 
   useLayoutEffect(() => {
     if (gameId && status === 'finished') {
@@ -312,11 +333,11 @@ export function GamePage() {
     }
   }, [gameId, status, saveGame]);
 
-  useOnLocationChange(() => {
-    if (gameId && status === 'playing') {
-      saveGame();
-    }
-  });
+  // useOnLocationChange(() => {
+  //   if (gameId && status === 'playing') {
+  //     saveGame();
+  //   }
+  // });
 
   return (
     <div className={classNames(styles.container, theme && styles[theme.id])}>

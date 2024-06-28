@@ -81,7 +81,7 @@ bot.start(async (ctx) => {
   const shareButton = Markup.button.switchToChat(shareButtonText, referralLink);
   const uploadForAirdropButton = Markup.button.webApp(
     'Upload for Airdrop',
-    `${process.env.APP_FRONTEND_URL}file-upload`
+    `${process.env.APP_FRONTEND_URL}/file-upload`
   );
   const playForAirdropButton = Markup.button.webApp(
     'Play for Airdrop',
@@ -91,21 +91,25 @@ bot.start(async (ctx) => {
     'Follow X',
     `https://twitter.com/ghostdrive_web3`
   );
-
-  ctx.replyWithPhoto(
-    { source: fs.createReadStream('./assets/start.png') },
-    {
-      caption: `${header}\n\n${activitiesText}`,
-      parse_mode: 'HTML',
-      reply_markup: {
-        inline_keyboard: [
-          [uploadForAirdropButton],
-          [followXButton],
-          [shareButton]
-        ]
+  try {
+    await ctx.replyWithPhoto(
+      { source: fs.createReadStream('./assets/start.png') },
+      {
+        caption: `${header}\n\n${activitiesText}`,
+        parse_mode: 'HTML',
+        reply_markup: {
+          inline_keyboard: [
+            [uploadForAirdropButton],
+            [followXButton],
+            [shareButton]
+          ]
+        }
       }
-    }
-  );
+    );
+  } catch (error) {
+    await ctx.reply(`Error: ${error.message}`);
+    console.error('Error replyWithPhoto:', error.message);
+  }
 });
 
 bot.command('terms', termsHandler);
