@@ -56,7 +56,7 @@ function App() {
       );
       if (!token) throw new Error('token not found');
       await getUserEffect(token).then((data) => {
-        const code = data.user?.referral?.code;
+        const code = data?.referral_code;
         const prefix = 'https://t.me/share/';
         const botUrl = `https://t.me/${process.env.REACT_APP_BOT_NAME}?start=${code}`;
         const url = `${prefix}?url=${botUrl}`;
@@ -66,9 +66,9 @@ function App() {
           label: `@t.me/${code}`
         };
         dispatch(setLink(linkPayload));
-        dispatch(setUser({ ...data.user, points: data?.points || 0 }));
-        dispatch(setCurrentWorkspace(data.current_workspace));
-        dispatch(setWorkspacePlan(data.workspace_plan));
+        dispatch(setUser(data));
+        dispatch(setCurrentWorkspace(data?.ws_id));
+        dispatch(setWorkspacePlan(data?.workspace_plan));
       });
       await storageListEffect(token).then((data) => {
         setTariffs(data);
