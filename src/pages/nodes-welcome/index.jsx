@@ -6,9 +6,7 @@ import useTypingEffect from '../../utils/useTypingEffect';
 
 export default function NodesWelcomePage() {
   const typingDescription = useTypingEffect(
-    `Earn more by uploading 100 GB of files and see your points increase
-    by 5 times! The more files you store, the more points you will earn.
-    Upgrade your storage today to maximize your points.`,
+    `Are you ready to be at the forefront of the decentralized storage revolution? Invest in a Ghost Drive Node and reap the benefits of our cutting-edge technology and robust network.`,
     10,
     0
   );
@@ -24,9 +22,7 @@ export default function NodesWelcomePage() {
 
         <div className={styles.description}>
           <h1>GD Node</h1>
-          <p>
-            {typingDescription}
-          </p>
+          <p>{typingDescription}</p>
         </div>
       </div>
 
