@@ -1,19 +1,15 @@
 import { useEffect, useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import * as Sentry from '@sentry/react';
-import { BrowserTracing } from '@sentry/tracing';
 import { TonConnectUIProvider } from '@tonconnect/ui-react';
 
 import { setInitData, setLink, setUser } from './store/reducers/userSlice';
 import {
-  setAllWorkspaces,
   setCurrentWorkspace,
   setWorkspacePlan
 } from './store/reducers/workspaceSlice';
 
 import { getUserEffect } from './effects/userEffects';
-import { getWorkspacesEffect } from './effects/workspaceEffects';
 import { authorizeUser } from './effects/authorizeUser';
 import { storageListEffect } from './effects/storageEffects';
 import { API_WEB_APP_URL } from './utils/api-urls';
@@ -39,11 +35,6 @@ import './App.css';
 
 const tg = window.Telegram.WebApp;
 
-Sentry.init({
-  dsn: 'https://90a01121ff787d65425233b65fae9085@o4506717537042432.ingest.sentry.io/4506717540384768',
-  integrations: [new BrowserTracing()]
-});
-
 function App() {
   const dispatch = useDispatch();
   const [tariffs, setTariffs] = useState(null);
@@ -59,10 +50,6 @@ function App() {
   const onPageLoad = async () => {
     try {
       dispatch(setInitData(tg.initData));
-      const [part1, part2] = splitString(JSON.stringify(currentUser));
-      Sentry.captureMessage(`currentUser: ${JSON.stringify(currentUser)}`);
-      Sentry.captureMessage(`currentUser1: ${JSON.stringify(part1)}`);
-      Sentry.captureMessage(`currentUser2: ${JSON.stringify(part2)}`);
       const { token } = await authorizeUser(
         currentUser,
         tg?.initDataUnsafe?.start_param
@@ -83,18 +70,11 @@ function App() {
         dispatch(setCurrentWorkspace(data.current_workspace));
         dispatch(setWorkspacePlan(data.workspace_plan));
       });
-      await getWorkspacesEffect(token).then((data) => {
-        dispatch(setAllWorkspaces(data));
-      });
       await storageListEffect(token).then((data) => {
         setTariffs(data);
       });
-      Sentry.captureMessage(`App is successfully running`);
     } catch (error) {
-      Sentry.captureMessage(
-        `Error ${error?.response?.status} in App in request '${error?.response?.config?.url}': ${error?.response?.data?.message}`
-      );
-      Sentry.captureException(error);
+      console.log('onStart Error', { error });
     }
   };
 

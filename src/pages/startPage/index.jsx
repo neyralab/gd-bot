@@ -7,18 +7,9 @@ import { TelegramShareButton } from 'react-share';
 
 import {
   selectAllWorkspaces,
-  selectCurrentWorkspace,
-  selectTotalWsCount
+  selectCurrentWorkspace
 } from '../../store/reducers/workspaceSlice';
-import {
-  getIsWorkspaceSelected,
-  setIsWorkspaceSelected,
-  switchWorkspace
-} from '../../effects/workspaceEffects';
-import {
-  DEFAULT_MULTIPLIER_NAMES,
-  DEFAULT_TARIFFS_NAMES
-} from '../upgradeStorage';
+import { DEFAULT_TARIFFS_NAMES } from '../upgradeStorage';
 import { transformSize } from '../../utils/transformSize';
 import { fromByteToGb } from '../../utils/storage';
 
@@ -26,21 +17,9 @@ import GhostLoader from '../../components/ghostLoader';
 import { ConnectTonWalletButton } from '../../components/connectTonWalletButton';
 import { DisconnectWalletModal } from '../../components/disconnectWalletModal';
 
-import { ReactComponent as ArrowIcon } from '../../assets/arrow_right.svg';
-import { ReactComponent as HardDriveIcon } from '../../assets/hard_drive.svg';
 import { ReactComponent as TaskIcon } from '../../assets/task.svg';
 import { ReactComponent as LeadboardIcon } from '../../assets/leadboard.svg';
 import { ReactComponent as PointsIcon } from '../../assets/point.svg';
-// import { ReactComponent as UploadIcon } from '../../assets/upload.svg';
-// import { ReactComponent as UpgradeIcon } from '../../assets/upgrade.svg';
-// import { ReactComponent as GhostIcon } from '../../assets/ghost.svg';
-// import { ReactComponent as MoneyIcon } from '../../assets/money.svg';
-// import { ReactComponent as RefIcon } from '../../assets/ref.svg';
-// import { ReactComponent as UploadFileIcon } from '../../assets/uploadFile.svg';
-// import { ReactComponent as DriveIcon } from '../../assets/drive.svg';
-// import { ReactComponent as BoostIcon } from '../../assets/boost.svg';
-// import { ReactComponent as ReferralIcon } from '../../assets/referral.svg';
-// import { ReactComponent as InviteBackgroundIcon } from '../../assets/invite_background.svg';
 import { ReactComponent as TelegramIcon } from '../../assets/telegram.svg';
 import { ReactComponent as CloudIcon } from '../../assets/cloud.svg';
 
@@ -48,12 +27,10 @@ import style from './style.module.css';
 
 export const StartPage = ({ tariffs }) => {
   const [disconnectWalletModal, setDisconnectWalletModal] = useState(false);
-  const totalWsCount = useSelector(selectTotalWsCount);
   const allWorkspaces = useSelector(selectAllWorkspaces);
   const currentWorkspace = useSelector(selectCurrentWorkspace);
   const user = useSelector((state) => state?.user?.data);
   const navigate = useNavigate();
-  const isWsSelected = getIsWorkspaceSelected();
   const link = useSelector((state) => state.user.link);
 
   const storage = useMemo(() => {
@@ -148,30 +125,6 @@ export const StartPage = ({ tariffs }) => {
       // }
     ];
   }, [navigate, storage.multiplier, human?.used, human?.total]);
-
-  const handleWsSelection = async (ws) => {
-    await switchWorkspace(ws.workspace.id).then(() => {
-      setIsWorkspaceSelected(true);
-      window.location.assign(window.location.origin);
-    });
-  };
-
-  const workspaceslist = useMemo(() => {
-    if (allWorkspaces) {
-      return allWorkspaces.map((ws) => (
-        <li className={style.options__item} key={ws.workspace.id}>
-          <button
-            onClick={() => {
-              handleWsSelection(ws);
-            }}
-            className={`${style.options__item__button} ${style.workspaceOptionButton}`}>
-            <HardDriveIcon /> {ws.workspace.name}
-            <ArrowIcon className={style.arrowIcon} />
-          </button>
-        </li>
-      ));
-    }
-  }, [allWorkspaces]);
 
   if (!allWorkspaces && !currentWorkspace) {
     return (
