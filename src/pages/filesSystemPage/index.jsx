@@ -41,7 +41,7 @@ import style from './style.module.scss';
 const MAX_FILE_SIZE = 268435456;
 
 export const FilesSystemPage = () => {
-  const [types, setTypes] = useState({});
+  const [types, setTypes] = useState(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const fileRef = useRef(null);
@@ -188,7 +188,7 @@ export const FilesSystemPage = () => {
     setSearchValue('');
   };
 
-  if (Object.keys(types).length === 0 || !human || !user) {
+  if (!types || !human || !user) {
     return (
       <div className={style.loaderContainer}>
         <GhostLoader />
