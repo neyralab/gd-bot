@@ -52,7 +52,7 @@ export const uploadFileEffect = async ({ files, dispatch }) => {
         const localFileBuffer = new LocalFileBuffer(
           file.size,
           file.name,
-          file.mime,
+          file.type,
           file.folderId,
           file.uploadId,
           async () => file.arrayBuffer()
