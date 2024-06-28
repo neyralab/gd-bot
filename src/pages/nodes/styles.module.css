@@ -1,0 +1,191 @@
+.container {
+  height: 100%;
+  width: 100%;
+  padding: 16px;
+  padding-bottom: 32px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background: black;
+}
+
+.content {
+  width: 100%;
+}
+
+.card {
+  padding: 16px;
+  border-radius: 12px;
+  border: 1px solid #1e1e1e;
+  background: #0f0f0f;
+  margin-bottom: 16px;
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+}
+
+.banner {
+  width: 100%;
+  aspect-ratio: 2 / 1;
+}
+
+.banner video {
+  position: absolute;
+  width: 110%;
+  height: auto;
+  bottom: -50px;
+  left: 53%;
+  transform: translateX(-50%);
+}
+
+.banner-content {
+  position: relative;
+}
+
+.banner-header {
+  display: flex;
+  gap: 4px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.banner-header_img {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+}
+
+.banner-header_img svg {
+  height: 24px;
+  width: 24px;
+  color: white;
+}
+
+.banner-header h1 {
+  flex-grow: 1;
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 24px;
+  text-transform: uppercase;
+}
+
+.banner-header span {
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 30px;
+}
+
+.buy-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.buy-container__description {
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 13.2px;
+
+  color: #ffffff99;
+}
+
+.buy-container__cost {
+  display: flex;
+  align-content: center;
+  align-items: center;
+  gap: 8px;
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 28.8px;
+}
+
+.buy-container__cost svg {
+  width: 16px;
+  height: 16px;
+}
+
+.buy-button {
+  font-family: 'SF Pro Text';
+  padding: 8px 48px 8px 48px;
+  color: black;
+  background-color: white;
+  border-radius: 27px;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 16.8px;
+  text-align: center;
+}
+
+.slider-card {
+  position: absolute;
+  top: 0;
+  transition: transform 0.5s ease-out;
+  z-index: 1;
+  transform: translateX(-100%);
+}
+
+.slider-card h2 {
+  font-family: 'SF Pro Text';
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 19.2px;
+  margin-bottom: 8px;
+}
+
+.slider-card p {
+  font-size: 12px;
+  font-weight: 300;
+  line-height: 18px;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.to-appear {
+  opacity: 0;
+  transform: scale(0);
+}
+/* Unfortunately, if I apply scale on the slider, 
+it won't calculate slide height properly (bounding rect calculates scale).
+That's why slider should have an alternative animation */
+.slider-container.to-appear { 
+  opacity: 0;
+  transform: scale(1);
+}
+
+.to-appear_active {
+  animation: AppearAnim 0.5s ease-out forwards;
+}
+
+.slider-container.to-appear_active {
+  animation: AppearAltAnim 0.5s ease-out forwards;
+}
+
+@keyframes AppearAnim {
+  0% {
+    opacity: 0;
+    transform: scale(0);
+  }
+  70% {
+    opacity: 1;
+    transform: scale(1.1);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes AppearAltAnim {
+  0% {
+    opacity: 0;
+    transform: translateY(100%) scale(1);
+  }
+  70% {
+    opacity: 1;
+    transform: translateY(-5%) scale(1);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
