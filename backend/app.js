@@ -79,17 +79,22 @@ bot.start(async (ctx) => {
   const button = Markup.button.webApp(buttonText, buttonUrl);
   const shareButtonText = 'Share Link';
   const shareButton = Markup.button.switchToChat(shareButtonText, referralLink);
-  const uploadForAirdropButton = Markup.button.webApp(
-    'Upload for Airdrop',
-    `${process.env.APP_FRONTEND_URL}/file-upload`
-  );
-  const playForAirdropButton = Markup.button.webApp(
-    'Play for Airdrop',
-    `${process.env.APP_FRONTEND_URL}game`
+
+  const dashboardButton = Markup.button.webApp(
+    'Dashboard',
+    `${process.env.APP_FRONTEND_URL}/start`
   );
   const followXButton = Markup.button.url(
     'Follow X',
     `https://twitter.com/ghostdrive_web3`
+  );
+  const followCommunityButton = Markup.button.url(
+    'Follow Community',
+    `https://t.me/ghostdrive_web3_chat`
+  );
+  const followNewsButton = Markup.button.url(
+    'Follow News',
+    `https://t.me/ghostdrive_web3`
   );
   try {
     await ctx.replyWithPhoto(
@@ -99,8 +104,10 @@ bot.start(async (ctx) => {
         parse_mode: 'HTML',
         reply_markup: {
           inline_keyboard: [
-            [uploadForAirdropButton],
+            [dashboardButton],
             [followXButton],
+            [followCommunityButton],
+            [followNewsButton],
             [shareButton]
           ]
         }
