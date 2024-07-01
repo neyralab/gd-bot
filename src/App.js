@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Route, Routes, Navigate } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { TonConnectUIProvider } from '@tonconnect/ui-react';
 
@@ -116,10 +116,6 @@ function App() {
           <Route path="/balance" exact element={<Balance />} />
           <Route path="/point-tracker" exact element={<Referral />} />
           <Route path="/task" exact element={<TaskPage />} />
-          <Route
-            path="/leadboard"
-            exact
-            element={<Navigate to="/leadboard/league" />}></Route>
           <Route path="/leadboard/league" exact element={<LeaderboardLeague />} />
           <Route
             path="/leadboard/friends"

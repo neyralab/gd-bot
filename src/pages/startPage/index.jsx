@@ -220,7 +220,7 @@ export const StartPage = ({ tariffs }) => {
           <div
             className={style.footer_item}
             onClick={() => {
-              navigate('/leadboard');
+              navigate('/leadboard/league');
             }}>
             <LeadboardIcon />
             <span className={style.footer_item_text}>Leadboard</span>
