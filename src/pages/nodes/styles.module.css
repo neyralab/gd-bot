@@ -117,29 +117,6 @@
   text-align: center;
 }
 
-.slider-card {
-  position: absolute;
-  top: 0;
-  transition: transform 0.5s ease-out;
-  z-index: 1;
-  transform: translateX(-100%);
-}
-
-.slider-card h2 {
-  font-family: 'SF Pro Text';
-  font-size: 16px;
-  font-weight: 500;
-  line-height: 19.2px;
-  margin-bottom: 8px;
-}
-
-.slider-card p {
-  font-size: 12px;
-  font-weight: 300;
-  line-height: 18px;
-  color: rgba(255, 255, 255, 0.6);
-}
-
 .to-appear {
   opacity: 0;
   transform: scale(0);
@@ -147,7 +124,7 @@
 /* Unfortunately, if I apply scale on the slider, 
 it won't calculate slide height properly (bounding rect calculates scale).
 That's why slider should have an alternative animation */
-.slider-container.to-appear { 
+.slider-container.to-appear {
   opacity: 0;
   transform: scale(1);
 }
