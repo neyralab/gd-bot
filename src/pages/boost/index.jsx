@@ -9,31 +9,15 @@ import {
 import { toast } from 'react-toastify';
 import TonWeb from 'tonweb';
 
+import { StorageIcon } from './icon';
 import { Header } from '../../components/header';
-// import { Button } from '../../components/button';
-import {
-  selectCurrentWorkspace,
-  selectWorkspacePlan
-} from '../../store/reducers/workspaceSlice';
+import { selectCurrentWorkspace } from '../../store/reducers/workspaceSlice';
 import { DEFAULT_TARIFFS_NAMES } from '../upgradeStorage';
 import { getTonWallet } from '../../effects/paymentEffect';
-
-import { ReactComponent as X1 } from '../../assets/x/x1.svg';
-import { ReactComponent as X3 } from '../../assets/x/x3.svg';
-import { ReactComponent as X5 } from '../../assets/x/x5.svg';
-import { ReactComponent as X10 } from '../../assets/x/x10.svg';
-import { ReactComponent as Diamond } from '../../assets/diamond.svg';
-// import { ReactComponent as Info } from '../../assets/info.svg';
-// import { ReactComponent as PayIcon } from '../../assets/pay_ton.svg';
-
-import styles from './styles.module.css';
 import { transformSize } from '../../utils/transformSize';
 
-const multipliers = {
-  1: <X3 className={styles.multiplier} />,
-  2: <X5 className={styles.multiplier} />,
-  3: <X10 className={styles.multiplier} />
-};
+import { ReactComponent as Diamond } from '../../assets/diamond.svg';
+import styles from './styles.module.css';
 
 export const BoostPage = ({ tariffs }) => {
   const [activeMultiplier, setActiveMultiplier] = useState();
@@ -116,9 +100,7 @@ export const BoostPage = ({ tariffs }) => {
         <p className={styles.header}>Current multiplier</p>
         <div className={styles.current_item}>
           <div className={styles.flex}>
-            {multipliers[currentPrice?.ton_price] || (
-              <X1 className={styles.multiplier} />
-            )}
+            <StorageIcon storage={currentPrice} />
             <p className={styles.current_storage}>
               <span className={styles.span}>
                 {DEFAULT_TARIFFS_NAMES[spaceTotal] || '1GB'}
@@ -148,12 +130,7 @@ export const BoostPage = ({ tariffs }) => {
                   activeMultiplier?.storage === el.storage && styles.active_item
                 )}>
                 <div className={styles.flex}>
-                  <div className={styles.icon}>
-                    {multipliers[el?.id]}
-                    <span className={styles.iconMultiplier}>
-                      X{el.multiplicator}
-                    </span>
-                  </div>
+                  <StorageIcon storage={el} />
                   <div className={styles.item_storage}>
                     <p className={styles.storage}>
                       {transformSize(el?.storage, 0)}
