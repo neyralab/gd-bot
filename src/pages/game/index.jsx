@@ -351,6 +351,22 @@ export function GamePage() {
             </div>
           </div>
 
+          <div className={styles['timer-container']}>
+            <Timer />
+
+            {(status === 'finished' || status === 'waiting') &&
+              lockTimerTimestamp &&
+              theme.id === 'hawk' && (
+                <span className={styles['timer-description']}>
+                  Next free play
+                </span>
+              )}
+
+            {status === 'playing' && (
+              <span className={styles['timer-description']}>Play now</span>
+            )}
+          </div>
+
           <div
             {...conditionalSwipeHandlers}
             onClick={clickHandler}
@@ -367,18 +383,6 @@ export function GamePage() {
               <div ref={nextThemeRef} className={styles['next-theme']}>
                 {nextTheme && <MainButton theme={nextTheme} />}
               </div>
-            </div>
-
-            <div className={styles['timer-container']}>
-              <Timer />
-
-              {(status === 'finished' || status === 'waiting') &&
-                lockTimerTimestamp &&
-                theme.id === 'hawk' && (
-                  <span className={styles['timer-description']}>
-                    Next free play
-                  </span>
-                )}
             </div>
 
             <div className={styles.description}>
