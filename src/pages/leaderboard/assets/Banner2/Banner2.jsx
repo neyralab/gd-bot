@@ -5,6 +5,7 @@ import styles from './Banner2.module.css';
 
 export default function Banner2() {
   const timer = useWeeklyTimer();
+  const points = 25000;
 
   const week = useMemo(() => {
     return getWeekNumber(new Date(Date.UTC(2024, 6, 1)));
@@ -20,7 +21,7 @@ export default function Banner2() {
           <h2>Week {week}: Bonus</h2>
         </div>
         <div className={styles['banner-description__points']}>
-          <img src="/assets/25,000points.png" alt="100000points" />
+        <span>{points.toLocaleString()}</span>
         </div>
         <div className={styles['banner-description__timer']}>{timer}</div>
       </div>
