@@ -1,4 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
+import {
+  getDeletedFilesEffect,
+  getFavoritesEffect,
+  getFilesByTypeEffect,
+  getFilesEffect
+} from '../../effects/filesEffects';
+import { toast } from 'react-toastify';
 
 const filesSlice = createSlice({
   name: 'files',
@@ -96,6 +103,33 @@ export const {
   setCurrentFilter
 } = filesSlice.actions;
 export default filesSlice.reducer;
+
+export const getFilesAction =
+  (filesPage, type) => async (dispatch, getState) => {
+    const currentFilter = type ?? getState()?.files?.currentFilter;
+
+    try {
+      let files;
+      switch (currentFilter) {
+        case 'all':
+          files = await getFilesEffect(filesPage);
+          break;
+        case 'fav':
+          files = await getFavoritesEffect();
+          break;
+        case 'delete':
+          files = await getDeletedFilesEffect(filesPage);
+          break;
+        default:
+          files = await getFilesByTypeEffect(currentFilter, filesPage);
+          break;
+      }
+      dispatch(setFiles(files?.data));
+      dispatch(setCount(files?.count));
+    } catch (error) {
+      toast.error('Sorry, something went wrong. Please try again later');
+    }
+  };
 
 export const selectFiles = (state) => state.files.files;
 export const selectFilesCount = (state) => state.files.count;

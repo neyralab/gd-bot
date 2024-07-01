@@ -1,9 +1,12 @@
-import { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import InfiniteScroll from 'react-infinite-scroll-component';
 
 import {
   clearFiles,
+  getFilesAction,
   selectFilesCount,
+  selectFilesPage,
   setCount,
   setPage,
   setSelectedFile
@@ -11,14 +14,18 @@ import {
 import { handleFileMenu } from '../../../../store/reducers/modalSlice';
 
 import { FileItem } from '../../../../components/fileItem';
-import InfiniteScrollComponent from '../../../../components/infiniteScrollComponent';
 import { ReactComponent as FileIcon } from '../../../../assets/file_draft.svg';
 
 import style from '../../style.module.scss';
 
-export const FileList = ({ files, checkedFile }) => {
+const FileList = ({ files, checkedFile }) => {
   const dispatch = useDispatch();
   const filesCount = useSelector(selectFilesCount);
+  const currentPage = useSelector(selectFilesPage);
+  const hasMore = useMemo(
+    () => filesCount - files.length > 0,
+    [filesCount, files.length]
+  );
 
   useEffect(() => {
     return () => {
@@ -38,23 +45,29 @@ export const FileList = ({ files, checkedFile }) => {
     }
   };
 
+  const fetchMoreFiles = () => {
+    const nextPage = currentPage + 1;
+    dispatch(setPage(nextPage));
+    dispatch(getFilesAction(nextPage));
+  };
+
   return files.length ? (
-    <InfiniteScrollComponent
-      totalItems={filesCount}
-      files={files}
-      // fetchMoreFiles={fetchMoreFiles}
-      fetchMoreFiles={() => {}}>
-      <ul className={style.filesList}>
-        {files.map((file) => (
-          <FileItem
-            file={file}
-            key={file?.id}
-            checkedFile={checkedFile}
-            callback={onFileSelect}
-          />
-        ))}
-      </ul>
-    </InfiniteScrollComponent>
+    <InfiniteScroll
+      className={style.filesList}
+      dataLength={files.length}
+      next={fetchMoreFiles}
+      hasMore={hasMore}
+      scrollThreshold={0.7}
+    >
+      {files.map((file) => (
+        <FileItem
+          file={file}
+          key={file?.id}
+          checkedFile={checkedFile}
+          callback={onFileSelect}
+        />
+      ))}
+    </InfiniteScroll>
   ) : (
     <div className={style.emptyFilesPage}>
       <FileIcon />
@@ -63,3 +76,5 @@ export const FileList = ({ files, checkedFile }) => {
     </div>
   );
 };
+
+export default React.memo(FileList);
