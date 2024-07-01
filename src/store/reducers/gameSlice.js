@@ -106,7 +106,7 @@ export const startNewFreeGameCountdown = createAsyncThunk(
     const state = getState();
     dispatch(setLockTimeoutId(null));
     dispatch(setThemeAccess({ themeId: 'hawk', status: false }));
-    const freezeTime = state.game.theme.charge_minutes * 60 * 1000;
+    const freezeTime = state.game.theme?.charge_minutes * 60 * 1000;
 
     const endTime = Date.now() + freezeTime; // 15 min from now
     dispatch(setLockTimerTimestamp(endTime));
