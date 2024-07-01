@@ -13,11 +13,18 @@ export default function Timer() {
   const status = useSelector(selectStatus);
   const roundTimerTimestamp = useSelector(selectRoundTimerTimestamp);
   const lockTimerTimestamp = useSelector(selectLockTimerTimestamp);
-
-  const [remainingTime, setRemainingTime] = useState('0:30');
+  const time = useMemo(
+    () => (theme?.game_time >= 60 ? '1:00' : '0:30'),
+    [theme?.game_time]
+  );
+  const [remainingTime, setRemainingTime] = useState(time);
   const [lockTime, setLockTime] = useState('15:00');
   const roundCountdownRef = useRef();
   const lockCountdownRef = useRef();
+
+  useEffect(() => {
+    setRemainingTime(time);
+  }, [time]);
 
   const formatRoundTime = (timeLeft) => {
     const minutes = Math.floor((timeLeft % 3600000) / 60000);
@@ -83,12 +90,12 @@ export default function Timer() {
 
     if (status === 'waiting') {
       if (theme.id !== 'hawk') {
-        return '0:30';
+        return time || '0:30';
       } else {
         if (lockTimerTimestamp) {
           return lockTime;
         } else {
-          return '0:30';
+          return time || '0:30';
         }
       }
     }
@@ -104,7 +111,7 @@ export default function Timer() {
         }
       }
     }
-  }, [remainingTime, lockTime, lockTimerTimestamp, status, theme.id]);
+  }, [status, remainingTime, theme.id, time, lockTimerTimestamp, lockTime]);
 
   return <div className={styles.timer}>{drawTime}</div>;
 }

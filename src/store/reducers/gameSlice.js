@@ -78,8 +78,10 @@ export const startRound = createAsyncThunk(
   async (_, { dispatch, getState }) => {
     dispatch(setRoundTimeoutId(null));
     dispatch(setStatus('playing'));
+    const state = getState();
+    const gameTime = state.game.theme?.game_time * 1000;
 
-    const endTime = Date.now() + 30 * 1000; // 30 sec from now
+    const endTime = Date.now() + gameTime; // 30 sec from now
     dispatch(setRoundTimerTimestamp(endTime));
 
     const timeoutId = setTimeout(() => {
@@ -92,7 +94,7 @@ export const startRound = createAsyncThunk(
       if (state.game.theme.id === 'hawk') {
         dispatch(startNewFreeGameCountdown());
       }
-    }, 30 * 1000); // 30 sec in milliseconds
+    }, gameTime); // 30 sec in milliseconds
 
     dispatch(setRoundTimeoutId(timeoutId));
   }
@@ -100,22 +102,21 @@ export const startRound = createAsyncThunk(
 
 export const startNewFreeGameCountdown = createAsyncThunk(
   'game/startNewFreeGameCountdown',
-  async (_, { dispatch }) => {
+  async (_, { dispatch, getState }) => {
+    const state = getState();
     dispatch(setLockTimeoutId(null));
     dispatch(setThemeAccess({ themeId: 'hawk', status: false }));
+    const freezeTime = state.game.theme?.charge_minutes * 60 * 1000;
 
-    const endTime = Date.now() + 15 * 60 * 1000; // 15 min from now
+    const endTime = Date.now() + freezeTime; // 15 min from now
     dispatch(setLockTimerTimestamp(endTime));
 
-    const timeoutId = setTimeout(
-      () => {
-        dispatch(setLockTimerTimestamp(null));
-        dispatch(setLockTimeoutId(null));
-        dispatch(setStatus('waiting'));
-        dispatch(setThemeAccess({ themeId: 'hawk', status: true }));
-      },
-      15 * 60 * 1000
-    ); // 15 min from now milliseconds
+    const timeoutId = setTimeout(() => {
+      dispatch(setLockTimerTimestamp(null));
+      dispatch(setLockTimeoutId(null));
+      dispatch(setStatus('waiting'));
+      dispatch(setThemeAccess({ themeId: 'hawk', status: true }));
+    }, freezeTime); // 15 min from now milliseconds
 
     dispatch(setLockTimeoutId(timeoutId));
   }
