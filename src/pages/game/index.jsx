@@ -351,6 +351,22 @@ export function GamePage() {
   //   }
   // });
 
+  const drawTimerDescription = useMemo(() => {
+    if (
+      (status === 'finished' || status === 'waiting') &&
+      lockTimerTimestamp &&
+      theme.id === 'hawk'
+    ) {
+      return (
+        <span className={styles['timer-description']}>Next free play</span>
+      );
+    } else if (themeAccess[theme.id] && !lockTimerTimestamp) {
+      return <span className={styles['timer-description']}>Play now</span>;
+    } else {
+      return null;
+    }
+  }, [status, lockTimerTimestamp, theme.id, themeAccess]);
+
   return (
     <div className={classNames(styles.container, theme && styles[theme.id])}>
       <Background ref={backgroundRef} theme={theme} />
@@ -366,18 +382,7 @@ export function GamePage() {
 
           <div className={styles['timer-container']}>
             <Timer />
-
-            {(status === 'finished' || status === 'waiting') &&
-              lockTimerTimestamp &&
-              theme.id === 'hawk' && (
-                <span className={styles['timer-description']}>
-                  Next free play
-                </span>
-              )}
-
-            {status === 'playing' && (
-              <span className={styles['timer-description']}>Play now</span>
-            )}
+            {drawTimerDescription}
           </div>
 
           <div
