@@ -329,12 +329,13 @@ export function GamePage() {
     endGame({ id: gameId, taps: balance.value })
       .then((data) => {
         dispatch(setUser({ ...user, points: data?.data || 0 }));
+        dispatch(setBalance({ value: 0, label: balance.label }));
       })
       .catch((err) => {
         alert(JSON.stringify(err?.response.data) || 'Something went wrong!');
         console.log({ endGameErr: err, m: err?.response.data });
       });
-  }, [balance.value, dispatch, gameId, user]);
+  }, [balance.label, balance.value, dispatch, gameId, user]);
 
   useEffect(() => {
     if (gameId && status === 'finished') {
