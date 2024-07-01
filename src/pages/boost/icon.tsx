@@ -8,10 +8,10 @@ import { ReactComponent as X10 } from '../../assets/x/x10.svg';
 import { Storage } from './types';
 
 const multipliers: Record<number, ReactElement> = {
-  0: <X1 className={styles.multiplier} />,
-  1: <X3 className={styles.multiplier} />,
-  2: <X5 className={styles.multiplier} />,
-  3: <X10 className={styles.multiplier} />
+  0: <X1 />,
+  1: <X3 />,
+  2: <X5 />,
+  3: <X10 />
 };
 
 export const StorageIcon: FC<{ storage?: Storage }> = ({ storage }) => {

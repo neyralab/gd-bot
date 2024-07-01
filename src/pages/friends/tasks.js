@@ -3,9 +3,10 @@ export const tasks = [
     id: 'invite',
     isDone: false,
     title: 'Invite a Friend',
-    points: 1000,
-    imgUrl: '/assets/like.png'
-  },
+    points: 0,
+    imgUrl: '/assets/like.png',
+    action: 'REFERRAL_SIGNUP'
+  }
   // {
   //   id: 'invitePremium',
   //   isDone: false,

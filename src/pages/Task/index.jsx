@@ -1,14 +1,17 @@
 import CN from 'classnames';
 import { useCallback, useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import MobileDetect from 'mobile-detect';
 
 import { Header } from '../../components/header';
 import { getAllTasks, getBalanceEffect } from '../../effects/balanceEffect';
+import { handleTasks } from '../../store/reducers/taskSlice';
 
 import styles from './styles.module.css';
 
 export const TaskPage = () => {
   const [tasks, setTasks] = useState();
+  const dispatch = useDispatch();
 
   const onDownloadClick = useCallback(() => {
     const md = new MobileDetect(window.navigator.userAgent);
@@ -23,6 +26,7 @@ export const TaskPage = () => {
   useEffect(() => {
     (async () => {
       const allTasks = await getAllTasks();
+      dispatch(handleTasks(allTasks));
       const {
         data: { data: userTasks }
       } = await getBalanceEffect();
