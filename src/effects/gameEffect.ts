@@ -47,9 +47,12 @@ export const getGameInfo = async () => {
   const { data } = await axiosInstance.get<{
     game_ends_at: string | Date;
     points: number;
+    lock_time: number | null;
   }>(url);
   const lockTime = new Date(+data.game_ends_at * 1000);
-  const next = new Date(lockTime.getTime() + 15 * 1000 * 60);
+  const next = new Date(
+    lockTime.getTime() + (data?.lock_time || 1) * 1000 * 60
+  );
   console.log({ getGameInfo: data });
   return { game_ends_at: next.getTime(), points: data.points };
 };
