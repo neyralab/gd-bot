@@ -24,7 +24,7 @@ export default function Menu() {
         className={({ isActive }) =>
           classNames(styles.item, isActive && styles.active)
         }
-        to={'/leadboard'}>
+        to={'/leadboard/league'}>
         <div className={styles.icon}>
           <LeadboardIcon />
         </div>
