@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import styles from './Menu.module.css';
 
 import { ReactComponent as LeadboardIcon } from '../../assets/leadboard2.svg';
@@ -9,6 +9,8 @@ import { ReactComponent as EarnIcon } from '../../assets/toll.svg';
 import { ReactComponent as AirdropIcon } from '../../assets/atr.svg';
 
 export default function Menu() {
+  const location = useLocation();
+
   return (
     <div className={styles.container}>
       <NavLink
@@ -21,8 +23,11 @@ export default function Menu() {
       </NavLink>
 
       <NavLink
-        className={({ isActive }) =>
-          classNames(styles.item, isActive && styles.active)
+        className={() =>
+          classNames(
+            styles.item,
+            location.pathname.startsWith('/leadboard/') && styles.active
+          )
         }
         to={'/leadboard/league'}>
         <div className={styles.icon}>
@@ -40,7 +45,7 @@ export default function Menu() {
           <FriendsIcon />
         </div>
         {/* Ой даже не спрашивайте почему вместо Friends тут Frens. Просто примите. */}
-        <span className={styles.text}>Frens</span> 
+        <span className={styles.text}>Frens</span>
       </NavLink>
 
       <NavLink
