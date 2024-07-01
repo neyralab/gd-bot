@@ -1,19 +1,11 @@
 import React from 'react';
-import { toast } from 'react-toastify';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 import {
-  selectFilesPage,
-  setCount,
-  setFiles
+  getFilesAction,
+  selectFilesPage
 } from '../../store/reducers/filesSlice';
-import {
-  getDeletedFilesEffect,
-  getFavoritesEffect,
-  getFilesByTypeEffect,
-  getFilesEffect
-} from '../../effects/filesEffects';
 
 import icons from './assets';
 
@@ -26,28 +18,7 @@ export const FileFilterPanel = ({ types }) => {
 
   const getFiles = async (type) => {
     navigate(`?type=${type}`);
-
-    try {
-      let files;
-      switch (type) {
-        case 'all':
-          files = await getFilesEffect(filesPage);
-          break;
-        case 'fav':
-          files = await getFavoritesEffect();
-          break;
-        case 'delete':
-          files = await getDeletedFilesEffect(filesPage);
-          break;
-        default:
-          files = await getFilesByTypeEffect(type);
-          break;
-      }
-      dispatch(setFiles(files?.data));
-      dispatch(setCount(files?.count));
-    } catch (error) {
-      toast.error('Sorry, something went wrong. Please try again later');
-    }
+    dispatch(getFilesAction(filesPage, type));
   };
 
   const options = [

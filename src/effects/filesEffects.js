@@ -190,10 +190,10 @@ export const getFilesEffect = async (page = 1, order = 'desc') => {
   return await axiosInstance.get(url).then((result) => result.data);
 };
 
-export const getFilesByTypeEffect = async (type) => {
+export const getFilesByTypeEffect = async (type, page = 1) => {
   return axiosInstance
     .get(
-      `${API_PATH}/files?extension=${type}&page=1&order_by=createdAt&order=desc`
+      `${API_PATH}/files?extension=${type}&page=${page}&order_by=createdAt&order=desc`
     )
     .then((response) => {
       return response.data;
