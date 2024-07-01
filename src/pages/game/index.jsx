@@ -304,6 +304,21 @@ export function GamePage() {
     ]
   );
 
+  const handleEvent = useCallback(
+    async (event) => {
+      let isTouch = true;
+      if (event.type.startsWith('touch')) {
+        const touches = event.changedTouches;
+        for (let i = 0; i < touches.length; i++) {
+          await clickHandler(event);
+        }
+      } else if (!isTouch) {
+        await clickHandler(event);
+      }
+    },
+    [clickHandler]
+  );
+
   const buyCompletedHandler = useCallback(async () => {
     const plan = gamePlans?.find((el) => el.multiplier === theme.multiplier);
     console.log({ theme, plan, gamePlans });
@@ -385,7 +400,9 @@ export function GamePage() {
 
           <div
             {...conditionalSwipeHandlers}
-            onClick={clickHandler}
+            // onClick={clickHandler}
+            onTouchEnd={handleEvent}
+            onMouseUp={handleEvent}
             className={styles['main-button-container']}>
             <div className={styles['points-grow-area-container']}>
               <PointsGrowArea ref={pointsAreaRef} theme={theme} />
