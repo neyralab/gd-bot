@@ -38,7 +38,7 @@ import Timer from './Timer/Timer';
 import Menu from '../../components/Menu/Menu';
 import ProgressBar from './ProgressBar/ProgressBar';
 import Congratulations from './Congratulations/Congratulations';
-import themes from './themes';
+import defaultThemes from './themes';
 import styles from './styles.module.css';
 
 import { Address, toNano } from '@ton/core';
@@ -87,6 +87,7 @@ export function GamePage() {
   const [gamePlans, setGamePlans] = useState();
   const [contractAddress, setContractAddress] = useState();
   const [gameId, setGameId] = useState();
+  const [themes, setThemes] = useState([]);
 
   const swipeHandlers = useSwipeable({
     onSwipedLeft: (e) => {
@@ -124,6 +125,18 @@ export function GamePage() {
 
       const games = await getGamePlans();
       setGamePlans(games);
+      const newThemes = defaultThemes.map((theme) => {
+        const findGame = games.find(
+          (game) => game.multiplier === theme.multiplier
+        );
+        delete findGame.ton_price;
+        delete findGame.tierIdBN;
+        delete findGame.tierId;
+        return findGame ? { ...findGame, ...theme } : theme;
+      });
+      setThemes(newThemes);
+      dispatch(setTheme(newThemes.at(0)));
+      console.log({ newThemes });
     })();
     return () => {
       clickSoundRef.current.pause();
@@ -133,7 +146,7 @@ export function GamePage() {
 
   useEffect(() => {
     setThemeIndex(themes.findIndex((t) => t.id === theme.id) || 0);
-  }, [theme]);
+  }, [theme, themes]);
 
   const switchTheme = useCallback(
     (e, direction) => {
@@ -173,7 +186,7 @@ export function GamePage() {
         nextThemeRef.current.classList.remove(nextThemeStyle);
       }, 500);
     },
-    [dispatch, status, themeIndex]
+    [dispatch, status, themeIndex, themes]
   );
 
   const onBuy = useCallback(
@@ -351,6 +364,22 @@ export function GamePage() {
             </div>
           </div>
 
+          <div className={styles['timer-container']}>
+            <Timer />
+
+            {(status === 'finished' || status === 'waiting') &&
+              lockTimerTimestamp &&
+              theme.id === 'hawk' && (
+                <span className={styles['timer-description']}>
+                  Next free play
+                </span>
+              )}
+
+            {status === 'playing' && (
+              <span className={styles['timer-description']}>Play now</span>
+            )}
+          </div>
+
           <div
             {...conditionalSwipeHandlers}
             onClick={clickHandler}
@@ -367,18 +396,6 @@ export function GamePage() {
               <div ref={nextThemeRef} className={styles['next-theme']}>
                 {nextTheme && <MainButton theme={nextTheme} />}
               </div>
-            </div>
-
-            <div className={styles['timer-container']}>
-              <Timer />
-
-              {(status === 'finished' || status === 'waiting') &&
-                lockTimerTimestamp &&
-                theme.id === 'hawk' && (
-                  <span className={styles['timer-description']}>
-                    Next free play
-                  </span>
-                )}
             </div>
 
             <div className={styles.description}>
@@ -408,14 +425,16 @@ export function GamePage() {
           </div>
 
           <div className={styles['actions-container']}>
-            {status !== 'played' && !themeAccess[theme.id] && (
-              <div className={styles['actions-flex']}>
-                <BuyButton theme={theme} onCompleted={buyCompletedHandler} />
-                <span className={styles['actions-description']}>
-                  recharge & play
-                </span>
-              </div>
-            )}
+            {status !== 'played' &&
+              !themeAccess[theme.id] &&
+              theme.id !== 'hawk' && (
+                <div className={styles['actions-flex']}>
+                  <BuyButton theme={theme} onCompleted={buyCompletedHandler} />
+                  <span className={styles['actions-description']}>
+                    recharge & play
+                  </span>
+                </div>
+              )}
           </div>
 
           <div className={styles['experience-container']}>

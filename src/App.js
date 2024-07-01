@@ -21,7 +21,8 @@ import { UpgradeStoragePage } from './pages/upgradeStorage';
 import { FilesPage } from './pages/filesPage';
 import { Balance } from './pages/balance';
 import { Referral } from './pages/referral';
-import { Leaderboard } from './pages/leaderboard';
+import { LeaderboardLeague } from './pages/leaderboard/league';
+import { LeaderboardFriends } from './pages/leaderboard/friends';
 import { TaskPage } from './pages/Task';
 import { BoostPage } from './pages/boost';
 import { GamePage } from './pages/game';
@@ -81,6 +82,7 @@ function App() {
   useEffect(() => {
     tg.ready();
     tg?.expand();
+    tg?.enableClosingConfirmation();
     console.log('tg:', tg);
     onPageLoad();
   }, []);
@@ -115,7 +117,12 @@ function App() {
           <Route path="/balance" exact element={<Balance />} />
           <Route path="/point-tracker" exact element={<Referral />} />
           <Route path="/task" exact element={<TaskPage />} />
-          <Route path="/leadboard" exact element={<Leaderboard />} />
+          <Route path="/leadboard/league" exact element={<LeaderboardLeague />} />
+          <Route
+            path="/leadboard/friends"
+            exact
+            element={<LeaderboardFriends />}
+          />
           <Route path="/friends" exact element={<FriendsPage />} />
           <Route path="/game" exact element={<GamePage />} />
           <Route

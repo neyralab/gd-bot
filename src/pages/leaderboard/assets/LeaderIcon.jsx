@@ -20,8 +20,8 @@ export const LeaderIcon = ({ position }) => {
             fill="#ECB541"
           />
           <path
-            fill-rule="evenodd"
-            clip-rule="evenodd"
+            fillRule="evenodd"
+            clipRule="evenodd"
             d="M10.2856 7.86434C9.97737 7.82195 9.66261 7.80005 9.34274 7.80005C5.55564 7.80005 2.4856 10.8701 2.4856 14.6572C2.4856 18.4443 5.55564 21.5143 9.34274 21.5143C9.66261 21.5143 9.97737 21.4924 10.2856 21.45V7.86434Z"
             fill="#ECB541"
           />
@@ -51,8 +51,8 @@ export const LeaderIcon = ({ position }) => {
             fill="#B3B39F"
           />
           <path
-            fill-rule="evenodd"
-            clip-rule="evenodd"
+            fillRule="evenodd"
+            clipRule="evenodd"
             d="M10.2856 7.86434C9.97737 7.82195 9.66261 7.80005 9.34274 7.80005C5.55564 7.80005 2.4856 10.8701 2.4856 14.6572C2.4856 18.4443 5.55564 21.5143 9.34274 21.5143C9.66261 21.5143 9.97737 21.4924 10.2856 21.45V7.86434Z"
             fill="#B3B39F"
           />
@@ -82,8 +82,8 @@ export const LeaderIcon = ({ position }) => {
             fill="#72848C"
           />
           <path
-            fill-rule="evenodd"
-            clip-rule="evenodd"
+            fillRule="evenodd"
+            clipRule="evenodd"
             d="M10.2856 7.86434C9.97737 7.82195 9.66261 7.80005 9.34274 7.80005C5.55564 7.80005 2.4856 10.8701 2.4856 14.6572C2.4856 18.4443 5.55564 21.5143 9.34274 21.5143C9.66261 21.5143 9.97737 21.4924 10.2856 21.45V7.86434Z"
             fill="#72848C"
           />

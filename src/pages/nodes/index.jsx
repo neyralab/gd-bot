@@ -1,55 +1,24 @@
-import React, { useLayoutEffect } from 'react';
+import React, { useLayoutEffect, useMemo } from 'react';
 import classNames from 'classnames';
+import CountUp from 'react-countup';
 import { Header } from '../../components/header';
 import { ReactComponent as LogoIcon } from '../../assets/ghost.svg';
 import { ReactComponent as TonIcon } from '../../assets/TON.svg';
-import styles from './styles.module.css';
 import CardsSlider from '../../components/CardsSlider/CardsSlider';
-import CountUp from 'react-countup';
-
-const sliderItems = [
-  {
-    id: 1,
-    html: (
-      <li key="1" className={classNames(styles.card, styles['slider-card'])}>
-        <h2>20% Revenue Share on TON Blockchain</h2>
-        <p>
-          Join TON Blockchain and earn a 20% revenue share. Participate now to
-          maximize your earnings.
-        </p>
-      </li>
-    )
-  },
-
-  {
-    id: 2,
-    html: (
-      <li key="2" className={classNames(styles.card, styles['slider-card'])}>
-        <h2>Some short text</h2>
-        <p>Super short text</p>
-      </li>
-    )
-  },
-
-  {
-    id: 3,
-    html: (
-      <li key="3" className={classNames(styles.card, styles['slider-card'])}>
-        <h2>Some large text</h2>
-        <p>
-          Join TON Blockchain and earn a 20% revenue share. Participate now to
-          maximize your earnings. Join TON Blockchain and earn a 20% revenue
-          share. Participate now to maximize your earnings.
-        </p>
-      </li>
-    )
-  }
-];
+import sliderItems from './SliderItem/sliderItems';
+import SliderItem from './SliderItem/SliderItem';
+import styles from './styles.module.css';
 
 export default function NodesPage() {
   const nodesAmount = 20;
   const nodesAvailable = 990;
   const nodesCost = 55;
+
+  const slides = useMemo(() => {
+    return sliderItems.map((el) => {
+      return { id: el.id, html: <SliderItem item={el} /> };
+    });
+  }, []);
 
   useLayoutEffect(() => {
     let intervalId;
@@ -97,7 +66,9 @@ export default function NodesPage() {
                 <LogoIcon />
               </div>
               <h1>My Nodes</h1>
-              <span><CountUp delay={0.5} end={nodesAmount}  /></span>
+              <span>
+                <CountUp delay={0.5} end={nodesAmount} />
+              </span>
             </div>
           </div>
         </div>
@@ -123,7 +94,7 @@ export default function NodesPage() {
             styles['slider-container'],
             styles['to-appear']
           )}>
-          <CardsSlider items={sliderItems} timeout={5000} />
+          <CardsSlider items={slides} timeout={5000} />
         </div>
       </div>
     </div>

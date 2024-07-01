@@ -1,0 +1,129 @@
+.banner {
+  position: relative;
+  border-radius: 12px;
+  border: 1px solid #323232;
+  padding: 12px;
+  height: 155px;
+  overflow: hidden;
+
+  animation: AppearAnim 0.5s ease-out forwards;
+  opacity: 0;
+  transform: scale(0.5);
+}
+
+@keyframes AppearAnim {
+  0% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  70% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.banner-image {
+  height: 115px;
+  width: 80px;
+  position: absolute;
+  left: 27px;
+  top: calc(50% - 57px);
+}
+
+.banner-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+
+  animation: ImgAppearAnim 0.5s 0.3s ease-out forwards;
+  opacity: 0;
+  transform: scale(0.7) translateY(20%) translateX(-20%);
+}
+
+@keyframes ImgAppearAnim {
+  0% {
+    opacity: 0;
+    transform: scale(0.7) translateY(20%) translateX(-20%);
+  }
+  70% {
+    opacity: 1;
+    transform: scale(1.05) translateY(0%) translateX(0);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0) translateX(0);
+  }
+}
+
+.banner-description {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 50%;
+}
+
+.banner-description__memory {
+  font-family: 'Open Sans';
+  font-size: 13.38px;
+  font-weight: 700;
+  width: 100%;
+  text-align: right;
+}
+
+.banner-description__title {
+  text-align: left;
+  position: relative;
+  top: -4px;
+}
+
+.banner-description__title h2 {
+  font-family: 'Open Sans';
+  font-size: 17.66px;
+  font-weight: 400;
+  line-height: 26.49px;
+  text-align: left;
+}
+
+.banner-description__points {
+  width: 166px;
+  height: 75px;
+  position: relative;
+  left: -14px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+
+.banner-description__points span:first-child {
+  font-family: 'Open Sans';
+  font-size: 39.7px;
+  font-weight: 700;
+  line-height: 1;
+  text-align: left;
+  text-shadow: 0px 0px 14px rgba(240, 22, 218, 1);
+}
+
+.banner-description__points span:last-child {
+  color: rgb(253 235 95);
+  text-shadow: 0px 0px 12px rgba(255, 226, 0, 1);
+  text-transform: uppercase;
+  font-family: 'Open Sans';
+  font-size: 13.38px;
+  font-weight: 700;
+  line-height: 1;
+  text-align: left;
+}
+
+.banner-description__timer {
+  position: relative;
+  top: -10px;
+  font-family: 'Open Sans';
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 21px;
+}

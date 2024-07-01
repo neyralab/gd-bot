@@ -30,15 +30,23 @@ const info = [
   }
 ];
 
+const DEFAULT_NAME = 'intro';
+
 export const IntroPage = () => {
   const logoRef = useRef(null);
   const infoRef = useRef(null);
   const [list, setList] = useState(info);
   const [isInfoShown, setIsInfoShown] = useState(false);
-  const [isJoinShown, setIsJoinShown] = useState(false);
   const [paused, setPaused] = useState(false);
   const [realPaused, setRealPaused] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const isLoadedBefore = localStorage.getItem(DEFAULT_NAME);
+    if (isLoadedBefore) {
+      navigate('/start');
+    }
+  }, [navigate]);
 
   useEffect(() => {
     if (infoRef.current) {
@@ -73,13 +81,10 @@ export const IntroPage = () => {
     );
   }, [list]);
 
-  const onJoinShown = useCallback(() => {
-    setIsJoinShown(true);
-  }, []);
-
   const onStart = useCallback(() => {
+    localStorage.setItem(DEFAULT_NAME, true.toString());
     navigate('/start');
-  }, []);
+  }, [navigate]);
 
   return (
     <div className={s.background}>
