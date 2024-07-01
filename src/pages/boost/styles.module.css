@@ -49,8 +49,8 @@
 
 .current_storage,
 .storage {
-  color: var(--White, #FFF);
-  font-family: "SF Pro Text", serif;
+  color: var(--White, #fff);
+  font-family: 'SF Pro Text', serif;
   font-size: 18px;
   font-style: normal;
   font-weight: 500;
@@ -70,9 +70,9 @@
 
 .cost_value {
   margin-right: 8px;
-  color: var(--White, #FFF);
+  color: var(--White, #fff);
   text-align: right;
-  font-family: "SF Pro Text", serif;
+  font-family: 'SF Pro Text', serif;
   font-size: 18px;
   font-style: normal;
   font-weight: 700;
@@ -103,7 +103,7 @@
   font-size: 12px;
   opacity: 0.7;
   font-family: 'SF Pro Text', sans-serif;
-  color: rgba(255, 255, 255, 0.70);
+  color: rgba(255, 255, 255, 0.7);
 }
 
 .item_storage {
@@ -170,14 +170,32 @@
   align-items: center;
   justify-content: center;
 
-  font-feature-settings: 'clig' off, 'liga' off;
-  font-family: "Open Sans";
+  font-feature-settings:
+    'clig' off,
+    'liga' off;
+  font-family: 'Open Sans';
   font-size: 20px;
   font-style: normal;
   font-weight: 600;
   line-height: normal;
 }
 
-.disabled{
+.disabled {
   background: #9a9a9a;
+}
+
+.icon {
+  position: relative;
+}
+
+.iconMultiplier {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 30%;
+
+  color: black;
+  font-size: 20px;
+  text-align: center;
+  text-transform: capitalize;
 }
