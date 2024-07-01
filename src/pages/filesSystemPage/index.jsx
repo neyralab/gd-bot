@@ -25,7 +25,7 @@ import { transformSize } from '../../utils/transformSize';
 import { fromByteToGb } from '../../utils/storage';
 
 import { FileFilterPanel } from '../../components/fileFilterPanel';
-import { FileList } from './components/FileList';
+import FileList from './components/FileList';
 import GhostLoader from '../../components/ghostLoader';
 import { Header } from '../../components/header';
 
