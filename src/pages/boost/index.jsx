@@ -31,29 +31,23 @@ import { transformSize } from '../../utils/transformSize';
 
 const multipliers = {
   1: <X3 className={styles.multiplier} />,
-  5: <X5 className={styles.multiplier} />,
-  10: <X10 className={styles.multiplier} />
+  2: <X5 className={styles.multiplier} />,
+  3: <X10 className={styles.multiplier} />
 };
-
-const infoData = [
-  'Points Booster with Storage Space',
-  'Unlock increased storage capacity for 12 months.',
-  'Boost your GDP points earnings with exclusive benefits.'
-];
 
 export const BoostPage = ({ tariffs }) => {
   const [activeMultiplier, setActiveMultiplier] = useState();
   const ws = useSelector(selectCurrentWorkspace);
   const user = useSelector((state) => state.user.data);
-  const currentSize = user?.space_total;
+  const spaceTotal = user?.space_total;
   const wallet = useTonWallet();
   const [tonConnectUI] = useTonConnectUI();
   const { open } = useTonConnectModal();
   const dispatch = useDispatch();
 
   const currentPrice = useMemo(() => {
-    return tariffs?.find((tariff) => tariff.storage === currentSize);
-  }, [currentSize, tariffs]);
+    return tariffs?.find((tariff) => tariff.storage === spaceTotal);
+  }, [spaceTotal, tariffs]);
 
   const payByTON = async (el) => {
     try {
@@ -127,7 +121,7 @@ export const BoostPage = ({ tariffs }) => {
             )}
             <p className={styles.current_storage}>
               <span className={styles.span}>
-                {DEFAULT_TARIFFS_NAMES[currentSize] || '1GB'}
+                {DEFAULT_TARIFFS_NAMES[spaceTotal] || '1GB'}
               </span>
               {' Storage'}
             </p>
@@ -154,7 +148,12 @@ export const BoostPage = ({ tariffs }) => {
                   activeMultiplier?.storage === el.storage && styles.active_item
                 )}>
                 <div className={styles.flex}>
-                  {multipliers[el?.ton_price]}
+                  <div className={styles.icon}>
+                    {multipliers[el?.id]}
+                    <span className={styles.iconMultiplier}>
+                      X{el.multiplicator}
+                    </span>
+                  </div>
                   <div className={styles.item_storage}>
                     <p className={styles.storage}>
                       {transformSize(el?.storage, 0)}
