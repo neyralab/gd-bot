@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, Navigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { TonConnectUIProvider } from '@tonconnect/ui-react';
 
@@ -21,7 +21,8 @@ import { UpgradeStoragePage } from './pages/upgradeStorage';
 import { FilesPage } from './pages/filesPage';
 import { Balance } from './pages/balance';
 import { Referral } from './pages/referral';
-import { Leaderboard } from './pages/leaderboard';
+import { LeaderboardLeague } from './pages/leaderboard/league';
+import { LeaderboardFriends } from './pages/leaderboard/friends';
 import { TaskPage } from './pages/Task';
 import { BoostPage } from './pages/boost';
 import { GamePage } from './pages/game';
@@ -115,7 +116,16 @@ function App() {
           <Route path="/balance" exact element={<Balance />} />
           <Route path="/point-tracker" exact element={<Referral />} />
           <Route path="/task" exact element={<TaskPage />} />
-          <Route path="/leadboard" exact element={<Leaderboard />} />
+          <Route
+            path="/leadboard"
+            exact
+            element={<Navigate to="/leadboard/league" />}></Route>
+          <Route path="/leadboard/league" exact element={<LeaderboardLeague />} />
+          <Route
+            path="/leadboard/friends"
+            exact
+            element={<LeaderboardFriends />}
+          />
           <Route path="/friends" exact element={<FriendsPage />} />
           <Route path="/game" exact element={<GamePage />} />
           <Route

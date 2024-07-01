@@ -1,0 +1,49 @@
+.pageHeader {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.pageHeader h2 {
+  color: #fff;
+  text-align: center;
+  text-overflow: ellipsis;
+  font-family: 'Open Sans';
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 150%;
+}
+
+.backButton {
+  color: #3d88f6;
+  text-align: center;
+  text-overflow: ellipsis;
+  font-family: 'Open Sans';
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 150%;
+}
+
+.navigation {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+}
+
+.navigation a {
+  font-family: 'Open Sans';
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 27px;
+  color: rgba(134, 134, 134, 1);
+  text-decoration: none;
+}
+
+.navigation a.active {
+  color: white;
+}

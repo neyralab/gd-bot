@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-/** Use key for aptading animation. If tour text was changed - update key */
+/** Use key for updating animation. If tour text was changed - update key */
 function useTypingEffect(
   text,
   typingSpeed = 150,
