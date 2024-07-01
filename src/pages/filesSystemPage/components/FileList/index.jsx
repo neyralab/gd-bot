@@ -53,20 +53,20 @@ const FileList = ({ files, checkedFile }) => {
 
   return files.length ? (
     <InfiniteScroll
-      dataLength={filesCount}
+      className={style.filesList}
+      dataLength={files.length}
       next={fetchMoreFiles}
       hasMore={hasMore}
-      scrollThreshold={0.5}>
-      <ul className={style.filesList}>
-        {files.map((file) => (
-          <FileItem
-            file={file}
-            key={file?.id}
-            checkedFile={checkedFile}
-            callback={onFileSelect}
-          />
-        ))}
-      </ul>
+      scrollThreshold={0.7}
+    >
+      {files.map((file) => (
+        <FileItem
+          file={file}
+          key={file?.id}
+          checkedFile={checkedFile}
+          callback={onFileSelect}
+        />
+      ))}
     </InfiniteScroll>
   ) : (
     <div className={style.emptyFilesPage}>
