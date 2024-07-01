@@ -129,9 +129,6 @@ export function GamePage() {
         const { ton_price, tierIdBN, tierId, ...findGame } = games.find(
           (game) => game.multiplier === theme.multiplier
         );
-        delete findGame.ton_price;
-        delete findGame.tierIdBN;
-        delete findGame.tierId;
         return findGame ? { ...findGame, ...theme } : theme;
       });
       setThemes(newThemes);
