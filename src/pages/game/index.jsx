@@ -126,7 +126,7 @@ export function GamePage() {
       const games = await getGamePlans();
       setGamePlans(games);
       const newThemes = defaultThemes.map((theme) => {
-        const findGame = games.find(
+        const { ton_price, tierIdBN, tierId, ...findGame } = games.find(
           (game) => game.multiplier === theme.multiplier
         );
         delete findGame.ton_price;
