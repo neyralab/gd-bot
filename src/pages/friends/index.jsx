@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { TelegramShareButton } from 'react-share';
 import { Header } from '../../components/header';
 import Menu from '../../components/Menu/Menu';
@@ -9,26 +9,40 @@ import Person from '../../components/Person/Person';
 import styles from './styles.module.css';
 import { getFriends } from '../../effects/friendsEffect';
 import { ReactComponent as LoaderIcon } from '../../assets/loader.svg';
+import { getAllTasks } from '../../effects/balanceEffect';
+import { handleTasks } from '../../store/reducers/taskSlice';
 
 export default function FriendsPage() {
   const link = useSelector((state) => state.user.link);
+  const dispatch = useDispatch();
 
   const [tasks, setTasks] = useState([]);
   const [friends, setFriends] = useState([]);
   const [friendsAreLoading, setFriendsAreLoading] = useState(true);
   const [animatedTaskIds, setAnimatedTaskIds] = useState(new Set());
   const [animatedFriendIds, setAnimatedFriendIds] = useState(new Set());
+  const [defaultPoints, setDefaultPoints] = useState('0');
 
   useEffect(() => {
-    setTasks(tasksFromFile);
+    getAllTasks().then((res) => {
+      dispatch(handleTasks(res));
+      setTasks(
+        tasksFromFile.map((el) => {
+          const realTask = res.find((task) => task.action === el.action);
+          return realTask ? { ...el, points: realTask?.amount || 0 } : el;
+        })
+      );
+    });
 
     setFriendsAreLoading(true);
     const response = getFriends();
     response.then((res) => {
       setFriendsAreLoading(false);
       setFriends(res.data ? res.data.map((el) => el.user) : []);
+      const formattedPoints = new Intl.NumberFormat().format(res.points);
+      setDefaultPoints(formattedPoints);
     });
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     const notAnimatedTasks = tasks.filter((el) => !animatedTaskIds.has(el.id));
@@ -100,7 +114,7 @@ export default function FriendsPage() {
                   <Person
                     key={friend.username}
                     title={'@' + friend.username}
-                    points={1000}
+                    points={defaultPoints}
                   />
                 );
               } else {
