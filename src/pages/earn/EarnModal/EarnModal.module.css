@@ -1,0 +1,87 @@
+.container {
+  position: relative;
+  padding: 0 16px 16px 16px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.points {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+}
+
+.points span {
+  font-family: 'SF Pro Text';
+  font-size: 20.44px;
+  font-weight: 500;
+  text-align: center;
+}
+
+.points img {
+  width: 28px;
+  height: 26px;
+  object-fit: contain;
+}
+
+.close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.close svg {
+  width: 32px;
+  height: 32px;
+}
+
+.content {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.content img {
+  width: 140px;
+  height: 140px;
+  margin-bottom: 10px;
+}
+
+.content h3 {
+  font-family: 'SF Pro Text';
+  font-size: 20px;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 30px;
+}
+
+.actions .button {
+  border-radius: 8px;
+  width: 100%;
+  padding: 10px;
+  color: white;
+  font-family: 'SF Pro Text';
+  font-size: 16px;
+  font-weight: 500;
+  text-align: center;
+  text-decoration: none;
+}
+
+.join-button {
+  background: rgba(0, 125, 233, 1);
+}
+
+.check-button {
+  border: 1px solid rgba(255, 255, 255, 1);
+}
