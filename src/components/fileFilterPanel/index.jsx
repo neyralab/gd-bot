@@ -1,20 +1,31 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 import {
   getFilesAction,
-  selectFilesPage
+  selectFileTypesCount,
+  selectFilesPage,
+  setFileTypesCount
 } from '../../store/reducers/filesSlice';
+import { getFileTypesCountEffect } from '../../effects/storageEffects';
 
 import icons from './assets';
 
 import style from './style.module.scss';
 
-export const FileFilterPanel = ({ types }) => {
+export const FileFilterPanel = () => {
   const filesPage = useSelector(selectFilesPage);
+  const types = useSelector(selectFileTypesCount);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    getFileTypesCountEffect()
+      .then((data) => dispatch(setFileTypesCount(data)))
+      .catch(() => toast.error('Failed to load counts'));
+  }, []);
 
   const getFiles = async (type) => {
     navigate(`?type=${type}`);
