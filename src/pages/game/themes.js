@@ -6,20 +6,20 @@ const themes = [
     cost: 0,
     data: '0.01MB'
   },
-  {
-    id: 'lotus',
-    name: 'Lotus',
-    multiplier: 5,
-    cost: 0.05,
-    data: '0.05MB'
-  },
-  {
-    id: 'phoenix',
-    name: 'Phoenix',
-    multiplier: 10,
-    cost: 0.1,
-    data: '0.1MB'
-  },
+  // {
+  //   id: 'lotus',
+  //   name: 'Lotus',
+  //   multiplier: 5,
+  //   cost: 0.05,
+  //   data: '0.05MB'
+  // },
+  // {
+  //   id: 'phoenix',
+  //   name: 'Phoenix',
+  //   multiplier: 10,
+  //   cost: 0.1,
+  //   data: '0.1MB'
+  // },
   {
     id: 'ghost',
     name: 'Ghost',

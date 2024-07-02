@@ -8,6 +8,7 @@ import {
   setCurrentWorkspace,
   setWorkspacePlan
 } from './store/reducers/workspaceSlice';
+import { setExperienceLevel } from './store/reducers/gameSlice';
 
 import { getUserEffect } from './effects/userEffects';
 import { authorizeUser } from './effects/authorizeUser';
@@ -68,6 +69,7 @@ function App() {
         };
         dispatch(setLink(linkPayload));
         dispatch(setUser(data));
+        dispatch(setExperienceLevel(data.current_level.level));
         dispatch(setCurrentWorkspace(data?.ws_id));
         dispatch(setWorkspacePlan(data?.workspace_plan));
       });
