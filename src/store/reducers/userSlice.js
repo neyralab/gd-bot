@@ -20,9 +20,31 @@ const userSlice = createSlice({
     },
     setLink: (state, { payload }) => {
       state.link = payload;
+    },
+    updatePoints: (state, { payload }) => {
+      if (state?.data) {
+        state.data.points += payload;
+      }
+    },
+    decreaseUsedSpace: (state, { payload }) => {
+      if (state?.data) {
+        state.data.space_used -= payload;
+      }
+    },
+    increaseUsedSpace: (state, { payload }) => {
+      if (state?.data) {
+        state.data.space_used += payload;
+      }
     }
   }
 });
 
-export const { setUser, setInitData, setLink } = userSlice.actions;
+export const {
+  setUser,
+  setInitData,
+  setLink,
+  updatePoints,
+  decreaseUsedSpace,
+  increaseUsedSpace
+} = userSlice.actions;
 export default userSlice.reducer;

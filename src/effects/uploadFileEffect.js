@@ -7,15 +7,10 @@ import { toast } from 'react-toastify';
 
 import { getOneTimeToken } from './getOneTimeToken';
 import { uploadFileData } from '../config/upload-file-data';
-import { addUploadedFile } from '../store/reducers/filesSlice';
+import { afterFileUploadAction } from '../store/reducers/filesSlice';
 import imageFileExtensions, {
   imageMediaTypesPreview
 } from '../config/image-file-extensions';
-
-const setTelegramFiles = (fileID) => {
-  const files = JSON.parse(localStorage.getItem('telegram_files')) ?? [];
-  localStorage.setItem('telegram_files', JSON.stringify([...files, fileID]));
-};
 
 export const uploadFileEffect = async ({ files, dispatch }) => {
   let progresses = {};
@@ -81,8 +76,8 @@ export const uploadFileEffect = async ({ files, dispatch }) => {
             slug: uploadedFile?.slug
           });
         }
-        dispatch(addUploadedFile([uploadedFile]));
-        setTelegramFiles(uploadedFile.id);
+        dispatch(afterFileUploadAction(result.data));
+
         if (!result) {
           console.log('error', error);
         }

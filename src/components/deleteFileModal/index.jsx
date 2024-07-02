@@ -37,7 +37,7 @@ export const DeleteFileModal = () => {
   const onAccept = async () => {
     let result;
     if (isDeletedPage) {
-      result = await permanentlyDeleteFileEffect(file.slug, dispatch);
+      result = await permanentlyDeleteFileEffect(file, dispatch);
     } else {
       result = await deleteFileEffect(file.slug, dispatch);
     }

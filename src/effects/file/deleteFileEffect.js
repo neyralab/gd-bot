@@ -2,6 +2,7 @@ import axios from 'axios';
 import { deleteFile } from '../../store/reducers/filesSlice';
 import { API_PATH } from '../../utils/api-urls';
 import axiosInstance from '../axiosInstance';
+import { decreaseUsedSpace } from '../../store/reducers/userSlice';
 
 export const getDeleteOTT = (body) => {
   const url = `${API_PATH}/delete/generate/token`;
@@ -22,13 +23,13 @@ export const deleteFileEffect = async (slug, dispatch) => {
     .catch(() => 'error');
 };
 
-export const permanentlyDeleteFileEffect = async (slug, dispatch) => {
+export const permanentlyDeleteFileEffect = async (file, dispatch) => {
   const {
     data: {
       user_tokens: { token: oneTimeToken },
       gateway
     }
-  } = await getDeleteOTT([slug]);
+  } = await getDeleteOTT([file.slug]);
 
   const url = `${gateway?.url}/trash/delete`;
 
@@ -38,9 +39,10 @@ export const permanentlyDeleteFileEffect = async (slug, dispatch) => {
         'one-time-token': oneTimeToken
       }
     })
-    .delete(url, { data: [slug] })
+    .delete(url, { data: [file.slug] })
     .then(() => {
-      dispatch(deleteFile(slug));
+      dispatch(deleteFile(file.slug));
+      dispatch(decreaseUsedSpace(file.size));
       return 'success';
     })
     .catch(() => 'error');
