@@ -306,13 +306,11 @@ export function GamePage() {
 
   const handleEvent = useCallback(
     async (event) => {
+      window?.Telegram?.WebApp?.HapticFeedback?.impactOccurred('soft');
       let isTouch = true;
       if (event.type.startsWith('touch')) {
         const touches = event.changedTouches;
         for (let i = 0; i < touches.length; i++) {
-          if (navigator?.vibrate) {
-            navigator?.vibrate(200);
-          }
           await clickHandler(event);
         }
       } else if (!isTouch) {
