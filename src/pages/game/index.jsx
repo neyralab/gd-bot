@@ -422,8 +422,7 @@ export function GamePage() {
             </div>
 
             <div className={styles.description}>
-              <strong>{theme.name}</strong>
-              <span>X{theme.multiplier}</span>
+              {theme.multiplier && <span>X{theme.multiplier}</span>}
             </div>
 
             {status !== 'playing' && (
