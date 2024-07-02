@@ -26,8 +26,9 @@ import {
   addExperience,
   setNextTheme,
   selectNextTheme,
-  setExperienceLevel,
-  setExperiencePoints
+  setExperiencePoints,
+  setLevels,
+  selectExperienceLevel
 } from '../../store/reducers/gameSlice';
 import { Header } from '../../components/header_v2';
 import MainButton from './MainButton/MainButton';
@@ -53,6 +54,7 @@ import { GDTapBooster } from '../../effects/contracts/tact_GDTapBooster';
 import { nullValueCheck } from '../../effects/contracts/helper';
 import {
   endGame,
+  gameLevels,
   getGameContractAddress,
   getGameInfo,
   getGamePlans,
@@ -73,6 +75,7 @@ export function GamePage() {
   const dispatch = useDispatch();
   const soundIsActive = useSelector(selectSoundIsActive);
   const theme = useSelector(selectTheme);
+  const level = useSelector(selectExperienceLevel);
   const themeAccess = useSelector(selectThemeAccess);
   const status = useSelector(selectStatus, (prev, next) => prev === next);
   const balance = useSelector(selectBalance);
@@ -100,22 +103,17 @@ export function GamePage() {
 
   useEffect(() => {
     (async () => {
+      const levels = await gameLevels();
+      dispatch(setLevels(levels));
       const gameInfo = await getGameInfo();
       dispatch(setBalance({ label: gameInfo.points, value: 0 }));
       dispatch(setExperiencePoints(gameInfo.points));
-      let level = 1;
-      if (gameInfo.points <= 1000) {
-        level = 1;
-      } else if (gameInfo.points > 1000 && gameInfo.points <= 10000) {
-        level = 2;
-      } else if (gameInfo.points > 10000) {
-        level = 3;
-      }
-      dispatch(setExperienceLevel(level));
       const now = Date.now();
       if (now <= gameInfo.game_ends_at) {
         dispatch(setLockTimerTimestamp(gameInfo.game_ends_at));
         dispatch(setStatus('finished'));
+      } else {
+        dispatch(setStatus('waiting'));
       }
       console.log({ gameInfo });
 
@@ -260,6 +258,7 @@ export function GamePage() {
       if (status === 'finished') {
         return;
       }
+      window?.Telegram?.WebApp?.HapticFeedback?.impactOccurred('soft');
 
       // Run animations
       mainButtonRef.current.runAnimation();
@@ -287,7 +286,7 @@ export function GamePage() {
       dispatch(addExperience());
       dispatch(
         setBalance({
-          label: balance.label + theme.multiplier,
+          label: balance.label + 1,
           value: balance.value + 1
         })
       );
@@ -306,16 +305,12 @@ export function GamePage() {
 
   const handleEvent = useCallback(
     async (event) => {
-      let isTouch = true;
       if (event.type.startsWith('touch')) {
         const touches = event.changedTouches;
         for (let i = 0; i < touches.length; i++) {
-          if (navigator?.vibrate) {
-            navigator?.vibrate(200);
-          }
           await clickHandler(event);
         }
-      } else if (!isTouch) {
+      } else {
         await clickHandler(event);
       }
     },
@@ -423,7 +418,7 @@ export function GamePage() {
 
             <div className={styles.description}>
               <strong>{theme.name}</strong>
-              <span>X{theme.multiplier}</span>
+              <span>X{level - 1 || 0}</span>
             </div>
 
             {status !== 'playing' && (

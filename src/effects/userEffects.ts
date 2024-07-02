@@ -26,6 +26,11 @@ type GetMe = {
   space_total: number;
   ws_id: number;
   workspace_plan: boolean | any;
+  wallet: string;
+  current_level: {
+    level: number;
+    multiplier: number;
+  };
 };
 
 export const saveUserWallet = async (walletData: unknown) => {

@@ -1,12 +1,13 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import themes from '../../pages/game/themes';
 import levels from '../../pages/game/levels';
 
 const gameSlice = createSlice({
   name: 'game',
   initialState: {
-    status: 'waiting', // 'waiting', 'playing', 'finished';
+    status: 'finished', // 'waiting', 'playing', 'finished';
     theme: themes[0],
+    levels: [],
     themeAccess: {
       hawk: true,
       lotus: false,
@@ -30,6 +31,9 @@ const gameSlice = createSlice({
   reducers: {
     setStatus: (state, { payload }) => {
       state.status = payload;
+    },
+    setLevels: (state, { payload }) => {
+      state.levels = payload;
     },
     setTheme: (state, { payload }) => {
       state.theme = payload;
@@ -79,7 +83,8 @@ export const startRound = createAsyncThunk(
     dispatch(setRoundTimeoutId(null));
     dispatch(setStatus('playing'));
     const state = getState();
-    const gameTime = state.game.theme?.game_time * 1000;
+    const level = selectLevel(state);
+    const gameTime = level?.play_time * 1000;
 
     const endTime = Date.now() + gameTime; // 30 sec from now
     dispatch(setRoundTimerTimestamp(endTime));
@@ -106,7 +111,8 @@ export const startNewFreeGameCountdown = createAsyncThunk(
     const state = getState();
     dispatch(setLockTimeoutId(null));
     dispatch(setThemeAccess({ themeId: 'hawk', status: false }));
-    const freezeTime = state.game.theme?.charge_minutes * 60 * 1000;
+    const level = selectLevel(state);
+    const freezeTime = level?.recharge_mins * 60 * 1000;
 
     const endTime = Date.now() + freezeTime; // 15 min from now
     dispatch(setLockTimerTimestamp(endTime));
@@ -126,21 +132,18 @@ export const addExperience = createAsyncThunk(
   'game/addExperience',
   async (_, { dispatch, getState }) => {
     const state = getState();
-    const levelIndex = levels.findIndex(
-      (el) => el.id === state.game.experienceLevel
-    );
-    const level = levels[levelIndex];
+    const level = selectLevel(state);
 
-    if (levelIndex >= levels.length - 1) return;
+    if (!level) return;
 
     const newPoints = state.game.experiencePoints + 1;
-    if (newPoints >= level.maxExperience) {
-      dispatch(setReachedNewLevel(true));
+    if (newPoints >= level.tapping_to) {
       dispatch(setExperienceLevel(state.game.experienceLevel + 1));
-      dispatch(setExperiencePoints(newPoints - level.maxExperience));
-    } else {
-      dispatch(setExperiencePoints(newPoints));
+      const now = Date.now();
+      const lock = new Date(now.getTime() + level.recharge_mins * 1000 * 60);
+      dispatch(setLockTimerTimestamp(lock));
     }
+    dispatch(setExperiencePoints(newPoints));
   }
 );
 
@@ -184,7 +187,8 @@ export const {
   setExperienceLevel,
   setExperiencePoints,
   setReachedNewLevel,
-  setNextTheme
+  setNextTheme,
+  setLevels
 } = gameSlice.actions;
 export default gameSlice.reducer;
 
@@ -201,3 +205,9 @@ export const selectExperienceLevel = (state) => state.game.experienceLevel;
 export const selectExperiencePoints = (state) => state.game.experiencePoints;
 export const selectReachNewLevel = (state) => state.game.reachedNewLevel;
 export const selectNextTheme = (state) => state.game.nextTheme;
+export const selectLevels = (state) => state.game.levels;
+export const selectLevel = (state) => {
+  const userLevel = selectExperienceLevel(state);
+  const levels = selectLevels(state);
+  return levels?.find((l) => l.id === userLevel);
+};

@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import {
   useTonAddress,
   useTonConnectModal,
@@ -11,6 +12,7 @@ import { ReactComponent as PlusIcon } from '../../assets/plusIcon.svg';
 import style from './style.module.scss';
 
 export const ConnectTonWalletButton = ({ openDisconnectModal }) => {
+  const user = useSelector((state) => state.user.data);
   const address = useTonAddress(true);
   const { open } = useTonConnectModal();
   const wallet = useTonWallet();
@@ -47,7 +49,7 @@ export const ConnectTonWalletButton = ({ openDisconnectModal }) => {
   // );
 
   useEffect(() => {
-    if (address && wallet) {
+    if (!user?.wallet && address && wallet) {
       // if (address && tonProof && wallet) {
       (async () => {
         const res = await saveUserWallet({
@@ -60,7 +62,7 @@ export const ConnectTonWalletButton = ({ openDisconnectModal }) => {
         console.log({ res });
       })();
     }
-  }, [address, wallet]);
+  }, [address, user?.wallet, wallet]);
   // }, [address, tonProof, wallet]);
 
   return (

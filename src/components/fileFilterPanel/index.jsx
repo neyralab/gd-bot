@@ -1,53 +1,35 @@
-import React from 'react';
-import { toast } from 'react-toastify';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 import {
+  getFilesAction,
+  selectFileTypesCount,
   selectFilesPage,
-  setCount,
-  setFiles
+  setFileTypesCount
 } from '../../store/reducers/filesSlice';
-import {
-  getDeletedFilesEffect,
-  getFavoritesEffect,
-  getFilesByTypeEffect,
-  getFilesEffect
-} from '../../effects/filesEffects';
+import { getFileTypesCountEffect } from '../../effects/storageEffects';
 
 import icons from './assets';
 
 import style from './style.module.scss';
 
-export const FileFilterPanel = ({ types }) => {
+export const FileFilterPanel = () => {
   const filesPage = useSelector(selectFilesPage);
+  const types = useSelector(selectFileTypesCount);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  useEffect(() => {
+    getFileTypesCountEffect()
+      .then((data) => dispatch(setFileTypesCount(data)))
+      .catch(() => toast.error('Failed to load counts'));
+  }, []);
+
   const getFiles = async (type) => {
     navigate(`?type=${type}`);
-
-    try {
-      let files;
-      switch (type) {
-        case 'all':
-          files = await getFilesEffect(filesPage);
-          break;
-        case 'fav':
-          files = await getFavoritesEffect();
-          break;
-        case 'delete':
-          files = await getDeletedFilesEffect(filesPage);
-          break;
-        default:
-          files = await getFilesByTypeEffect(type);
-          break;
-      }
-      dispatch(setFiles(files?.data));
-      dispatch(setCount(files?.count));
-    } catch (error) {
-      toast.error('Sorry, something went wrong. Please try again later');
-    }
+    dispatch(getFilesAction(filesPage, type));
   };
 
   const options = [
