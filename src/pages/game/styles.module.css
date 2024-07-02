@@ -86,7 +86,7 @@
 
 .main-button-inner-container {
   position: relative;
-  height: 350px;
+  height: 300px;
   width: 350px;
 }
 
@@ -138,7 +138,7 @@
 }
 
 .actions-container {
-  height: 78px;
+  height: 28px;
   width: 100%;
   max-width: 400px;
   display: flex;

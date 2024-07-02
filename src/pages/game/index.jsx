@@ -116,6 +116,8 @@ export function GamePage() {
       if (now <= gameInfo.game_ends_at) {
         dispatch(setLockTimerTimestamp(gameInfo.game_ends_at));
         dispatch(setStatus('finished'));
+      } else {
+        dispatch(setStatus('waiting'));
       }
       console.log({ gameInfo });
 
@@ -260,6 +262,7 @@ export function GamePage() {
       if (status === 'finished') {
         return;
       }
+      window?.Telegram?.WebApp?.HapticFeedback?.impactOccurred('soft');
 
       // Run animations
       mainButtonRef.current.runAnimation();
@@ -310,9 +313,6 @@ export function GamePage() {
       if (event.type.startsWith('touch')) {
         const touches = event.changedTouches;
         for (let i = 0; i < touches.length; i++) {
-          if (navigator?.vibrate) {
-            navigator?.vibrate(200);
-          }
           await clickHandler(event);
         }
       } else if (!isTouch) {
