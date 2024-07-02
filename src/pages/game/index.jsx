@@ -288,7 +288,7 @@ export function GamePage() {
       dispatch(
         setBalance({
           label: balance.label + theme.multiplier,
-          value: balance.value
+          value: balance.value + 1
         })
       );
     },
