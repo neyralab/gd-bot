@@ -288,7 +288,7 @@ export function GamePage() {
       dispatch(
         setBalance({
           label: balance.label + theme.multiplier,
-          value: balance.value + theme.multiplier
+          value: balance.value
         })
       );
     },
@@ -310,6 +310,9 @@ export function GamePage() {
       if (event.type.startsWith('touch')) {
         const touches = event.changedTouches;
         for (let i = 0; i < touches.length; i++) {
+          if (navigator?.vibrate) {
+            navigator?.vibrate(200);
+          }
           await clickHandler(event);
         }
       } else if (!isTouch) {
