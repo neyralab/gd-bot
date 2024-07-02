@@ -262,6 +262,7 @@ export function GamePage() {
       if (status === 'finished') {
         return;
       }
+      window?.Telegram?.WebApp?.HapticFeedback?.impactOccurred('soft');
 
       // Run animations
       mainButtonRef.current.runAnimation();
@@ -308,7 +309,6 @@ export function GamePage() {
 
   const handleEvent = useCallback(
     async (event) => {
-      window?.Telegram?.WebApp?.HapticFeedback?.impactOccurred('soft');
       let isTouch = true;
       if (event.type.startsWith('touch')) {
         const touches = event.changedTouches;
