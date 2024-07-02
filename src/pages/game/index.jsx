@@ -305,13 +305,12 @@ export function GamePage() {
 
   const handleEvent = useCallback(
     async (event) => {
-      let isTouch = true;
       if (event.type.startsWith('touch')) {
         const touches = event.changedTouches;
         for (let i = 0; i < touches.length; i++) {
           await clickHandler(event);
         }
-      } else if (!isTouch) {
+      } else {
         await clickHandler(event);
       }
     },
