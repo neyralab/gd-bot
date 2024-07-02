@@ -288,7 +288,7 @@ export function GamePage() {
       dispatch(
         setBalance({
           label: balance.label + theme.multiplier,
-          value: balance.value + theme.multiplier
+          value: balance.value
         })
       );
     },
@@ -302,6 +302,24 @@ export function GamePage() {
       theme.multiplier,
       themeAccess
     ]
+  );
+
+  const handleEvent = useCallback(
+    async (event) => {
+      let isTouch = true;
+      if (event.type.startsWith('touch')) {
+        const touches = event.changedTouches;
+        for (let i = 0; i < touches.length; i++) {
+          if (navigator?.vibrate) {
+            navigator?.vibrate(200);
+          }
+          await clickHandler(event);
+        }
+      } else if (!isTouch) {
+        await clickHandler(event);
+      }
+    },
+    [clickHandler]
   );
 
   const buyCompletedHandler = useCallback(async () => {
@@ -385,7 +403,9 @@ export function GamePage() {
 
           <div
             {...conditionalSwipeHandlers}
-            onClick={clickHandler}
+            // onClick={clickHandler}
+            onTouchEnd={handleEvent}
+            onMouseUp={handleEvent}
             className={styles['main-button-container']}>
             <div className={styles['points-grow-area-container']}>
               <PointsGrowArea ref={pointsAreaRef} theme={theme} />
