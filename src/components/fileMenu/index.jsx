@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { TelegramShareButton } from 'react-share';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
@@ -15,6 +16,7 @@ import {
 import { API_FILE_SHARING } from '../../utils/api-urls';
 import { updateShareEffect } from '../../effects/filesEffects';
 import { restoreFileEffect } from '../../effects/file/restoreFileEffect';
+import { generateSharingLink } from '../../utils/generateSharingLink';
 
 import { SlidingModal } from '../slidingModal';
 
@@ -30,8 +32,16 @@ export const FileMenu = () => {
   const isOpen = useSelector(selectisFileMenuOpen);
   const file = useSelector(selecSelectedFile);
   const location = useLocation();
+  const isDevEnv = API_FILE_SHARING === 'https://ghst.sh/dev/';
 
-  const url = `${API_FILE_SHARING}/${file.slug}?is_telegram=true`;
+  const url = useMemo(() => {
+    if (isDevEnv) {
+      return generateSharingLink(file.slug);
+    } else {
+      return `${API_FILE_SHARING}${file.slug}`;
+    }
+  }, [file]);
+
   const isDeletedPage =
     location.pathname === '/file-upload' &&
     new URLSearchParams(location.search).get('type') === 'delete';
