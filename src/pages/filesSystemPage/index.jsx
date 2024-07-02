@@ -10,11 +10,13 @@ import {
   changeuploadingProgress,
   clearSearchAutocomplete,
   selecSelectedFile,
+  selectFileTypesCount,
   selectFileView,
   selectFiles,
   selectSearchAutocomplete,
   selectUploadingProgress,
   setCurrentFilter,
+  setFileTypesCount,
   setSearchAutocomplete,
   setUploadingFile
 } from '../../store/reducers/filesSlice';
@@ -41,7 +43,6 @@ import style from './style.module.scss';
 const MAX_FILE_SIZE = 268435456;
 
 export const FilesSystemPage = () => {
-  const [types, setTypes] = useState(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const fileRef = useRef(null);
@@ -51,6 +52,7 @@ export const FilesSystemPage = () => {
   const [areFilesLoading, setAreFilesLoading] = useState(false);
   const [searchValue, setSearchValue] = useState('');
   const checkedFile = useSelector(selecSelectedFile);
+  const types = useSelector(selectFileTypesCount);
   const user = useSelector((state) => state?.user?.data);
   const { progress, file: uploadingFile } = useSelector(
     selectUploadingProgress
@@ -64,7 +66,7 @@ export const FilesSystemPage = () => {
 
   useEffect(() => {
     getFileTypesCountEffect()
-      .then((data) => setTypes(data))
+      .then((data) => dispatch(setFileTypesCount(data)))
       .catch(() => toast.error('Failed to load counts'));
   }, []);
 
@@ -143,23 +145,6 @@ export const FilesSystemPage = () => {
       return searchFiles;
     }
   }, [searchFiles, searchValue, files]);
-
-  // useEffect(() => {
-  //   getFilesEffect(filesPage).then(({ data, count }) => {
-  //     dispatch(setFiles(data));
-  //     dispatch(setCount(count));
-  //   });
-  //   return () => {
-  //     dispatch(setPage(1));
-  //     dispatch(clearFiles());
-  //   };
-  // }, []);
-
-  // const fetchMoreFiles = (page) => {
-  //   getFilesEffect(page).then(({ data }) => {
-  //     dispatch(setFiles(data));
-  //   });
-  // };
 
   const onFileViewChange = () => {
     if (view === 'grid') {
@@ -256,7 +241,7 @@ export const FilesSystemPage = () => {
             <FileList files={fileList} checkedFile={checkedFile} />
           </>
         ) : (
-          <FileFilterPanel types={types} />
+          <FileFilterPanel />
         )}
 
         {areFilesLoading && (
