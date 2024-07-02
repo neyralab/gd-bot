@@ -14,6 +14,13 @@ export const getGamePlans = async () => {
   }));
 };
 
+export const gameLevels = async () => {
+  const url = `${API_PATH}/tap/levels`;
+  const { data } = await axiosInstance.get<{ data: GameLevel[] }>(url);
+  console.log({ gameLevels: data });
+  return data.data;
+};
+
 export const startGame = async (purchase_id: number | null) => {
   const url = `${API_PATH}/game/start`;
   const { data } = await axiosInstance.post<StartGameRes>(url, { purchase_id });
@@ -47,6 +54,7 @@ export const getGameInfo = async () => {
   const { data } = await axiosInstance.get<{
     game_ends_at: string | Date;
     points: number;
+    level: number;
     lock_time: number | null;
   }>(url);
   const lockTime = new Date(+data.game_ends_at * 1000);
@@ -109,4 +117,13 @@ type StartGameRes = {
     game_ends_at: number;
     purchase_id: number;
   };
+};
+
+type GameLevel = {
+  id: number;
+  tapping_from: number;
+  tapping_to: number;
+  recharge_mins: number;
+  play_time: number;
+  multiplier: number;
 };

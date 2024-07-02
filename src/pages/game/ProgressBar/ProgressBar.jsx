@@ -6,30 +6,31 @@ import {
   selectTheme,
   selectExperienceLevel,
   selectExperiencePoints,
-  selectReachNewLevel
+  selectReachNewLevel,
+  selectLevels
 } from '../../../store/reducers/gameSlice';
-import levels from '../levels';
 
 export default function ProgressBar() {
   const theme = useSelector(selectTheme);
+  const levels = useSelector(selectLevels);
   const reachedNewLevel = useSelector(selectReachNewLevel);
   const experienceLevel = useSelector(selectExperienceLevel);
   const experiencePoints = useSelector(selectExperiencePoints);
-  const [experienceLevelIndex, setExperienceLevelIndex] = useState(0);
+  const [currentLevel, setCurrentLevel] = useState();
 
   useEffect(() => {
-    setExperienceLevelIndex(
-      levels.findIndex((el) => el.id === experienceLevel)
-    );
-  }, [experienceLevel]);
+    if (levels) {
+      const l = levels?.find((el) => el.id === experienceLevel);
+      setCurrentLevel(l);
+    }
+  }, [levels, experienceLevel]);
 
   const percent = useMemo(() => {
     let value = 0;
-    if (experienceLevelIndex < 0) return value;
-    value =
-      (experiencePoints / levels[experienceLevelIndex].maxExperience) * 100;
+    if (!currentLevel) return value;
+    value = (experiencePoints / currentLevel?.tapping_to) * 100;
     return value || 0;
-  }, [experienceLevelIndex, experiencePoints]);
+  }, [currentLevel, experiencePoints]);
 
   return (
     <div
@@ -42,10 +43,10 @@ export default function ProgressBar() {
         <span className={styles.level}>
           {reachedNewLevel
             ? `You've reached level ${experienceLevel}!`
-            : `Level ${experienceLevel}`}
+            : `Level ${experienceLevel - 1}`}
         </span>
         <span className={styles.points}>
-          {experiencePoints} / {levels[experienceLevelIndex].maxExperience}
+          {experiencePoints} / {currentLevel?.tapping_to}
         </span>
       </div>
       <div className={styles['bar-container']}>
