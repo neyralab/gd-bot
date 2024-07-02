@@ -209,5 +209,5 @@ export const selectLevels = (state) => state.game.levels;
 export const selectLevel = (state) => {
   const userLevel = selectExperienceLevel(state);
   const levels = selectLevels(state);
-  return levels?.find((l) => l.id === userLevel + 1);
+  return levels?.find((l) => l.id === userLevel);
 };
