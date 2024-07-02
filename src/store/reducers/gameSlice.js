@@ -5,7 +5,7 @@ import levels from '../../pages/game/levels';
 const gameSlice = createSlice({
   name: 'game',
   initialState: {
-    status: 'waiting', // 'waiting', 'playing', 'finished';
+    status: 'finished', // 'waiting', 'playing', 'finished';
     theme: themes[0],
     themeAccess: {
       hawk: true,

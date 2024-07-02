@@ -116,6 +116,8 @@ export function GamePage() {
       if (now <= gameInfo.game_ends_at) {
         dispatch(setLockTimerTimestamp(gameInfo.game_ends_at));
         dispatch(setStatus('finished'));
+      } else {
+        dispatch(setStatus('waiting'));
       }
       console.log({ gameInfo });
 
