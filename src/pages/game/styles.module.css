@@ -32,7 +32,7 @@
   align-items: center;
   padding: 16px;
   padding-top: 32px;
-  padding-bottom: 92px;
+  padding-bottom: 64px;
   overflow-x: hidden;
   overflow-y: auto;
 }
@@ -147,6 +147,7 @@
   align-items: center;
   flex-shrink: 0;
   position: relative;
+  margin-bottom: 24px;
 }
 
 .actions-description {
