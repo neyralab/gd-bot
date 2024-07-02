@@ -182,7 +182,7 @@ export const StartPage = ({ tariffs }) => {
                   style.list_element_text,
                   style.list_element_amount
                 )}>
-                + 1,000
+                + 10,000
               </span>
             </button>
           </div>
