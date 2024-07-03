@@ -1,13 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { TelegramShareButton } from 'react-share';
+
 import { useBalance } from '../../hooks/useBalance';
 import { referralEffect } from '../../effects/referralEffect';
-
 import { Header } from '../../components/header';
 import { Tab } from '../../components/tab';
-import { Button } from '../../components/button';
 import { History } from '../../components/history';
+import Menu from '../../components/Menu/Menu';
 
 import styles from './styles.module.css';
 
@@ -35,8 +34,6 @@ export const Referral = () => {
     // refFiles: 0,
     earn: 0
   });
-  const [isLinkCopied, setIsLinkCopied] = useState(false);
-  const link = useSelector((state) => state.user.link);
   const balance = useBalance();
   console.log({ balance });
 
@@ -64,24 +61,6 @@ export const Referral = () => {
     })();
   }, []);
 
-  useEffect(() => {
-    let id;
-    if (isLinkCopied) {
-      id = setTimeout(() => {
-        setIsLinkCopied(false);
-      }, 2000);
-    }
-    return () => clearTimeout(id);
-  }, [isLinkCopied]);
-
-  const copyMe = async () => {
-    try {
-      await navigator.clipboard.writeText(link.copy);
-      setIsLinkCopied(true);
-    } catch (e) {
-      console.log({ e });
-    }
-  };
 
   return (
     <div className={styles.container}>
@@ -99,21 +78,10 @@ export const Referral = () => {
           />
         ))}
       </div>
+
       <History history={balance.history} />
-      <footer>
-        <Button
-          label={isLinkCopied ? 'Copied!' : 'Copy link'}
-          onClick={copyMe}
-          className={styles.white_btn}
-          disable={isLinkCopied}
-        />
-        <TelegramShareButton
-          url={link.copy}
-          title={'Share this link with friends'}
-          className={styles.black_btn}>
-          Send Link
-        </TelegramShareButton>
-      </footer>
+
+      <Menu />
     </div>
   );
 };
