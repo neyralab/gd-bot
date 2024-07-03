@@ -417,8 +417,7 @@ export function GamePage() {
             </div>
 
             <div className={styles.description}>
-              <strong>{theme.name}</strong>
-              <span>X{level - 1 || 0}</span>
+              {(level - 1) && <span>X{level - 1}</span>}
             </div>
 
             {status !== 'playing' && (

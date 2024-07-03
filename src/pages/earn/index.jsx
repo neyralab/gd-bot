@@ -1,13 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Header } from '../../components/header';
 import Menu from '../../components/Menu/Menu';
 import Task from '../../components/Task/Task';
 import { tasks as tasksFromFile } from './tasks';
+import EarnModal from './EarnModal/EarnModal';
 import styles from './styles.module.css';
 
 export default function EarnPage() {
   const [tasks, setTasks] = useState([]);
   const [animatedTaskIds, setAnimatedTaskIds] = useState(new Set());
+  const modalRef = useRef(null);
+  const [modalSelectedTask, setModalSelectedTask] = useState(null);
 
   useEffect(() => {
     setTasks(tasksFromFile);
@@ -23,10 +26,21 @@ export default function EarnPage() {
     });
   }, [tasks]);
 
-  const handleClick = (id) => {
-    switch (id) {
+  const handleClick = (task) => {
+    switch (task.id) {
+      case 'youtube':
+      case 'joinTG':
+      case 'followX':
+      case 'downloadMobileApp':
+        setModalSelectedTask(task);
+        setTimeout(() => {
+          modalRef.current.open();
+        }, 10);
+
+        break;
+
       default:
-        console.log(id);
+        console.log(task);
         break;
     }
   };
@@ -46,7 +60,7 @@ export default function EarnPage() {
             return (
               <Task
                 key={task.id}
-                onClick={() => handleClick(task.id)}
+                onClick={() => handleClick(task)}
                 isDone={task.isDone}
                 title={task.title}
                 points={task.points}
@@ -60,6 +74,8 @@ export default function EarnPage() {
       </div>
 
       <Menu />
+
+      <EarnModal ref={modalRef} item={modalSelectedTask} />
     </div>
   );
 }

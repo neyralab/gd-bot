@@ -40,6 +40,12 @@
   text-align: center;
 }
 
+.title-block img {
+  width: 128px;
+  height: 119px;
+  object-fit: contain;
+}
+
 .tasks-list {
   display: flex;
   flex-direction: column;
