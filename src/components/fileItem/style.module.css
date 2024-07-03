@@ -2,7 +2,8 @@
   cursor: pointer;
   position: relative;
   height: 179px;
-  width: 171px;
+  width: 100%;
+  min-width: 100px;
   border-radius: 10px;
   background: #1c1c1e;
   display: flex;
@@ -87,22 +88,17 @@
 /* list view */
 
 .fileList {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-
   cursor: pointer;
+  position: relative;
   display: flex;
-  gap: 16px;
+  align-items: center;
   justify-content: flex-start;
   width: 100%;
   min-height: 60px;
-  padding: 0 16px;
+  gap: 16px;
+  padding: 0 100px 0 16px;
   border-radius: 8px;
   background: #1c1c1e;
-  padding-right: 100px;
 }
 .fileList div {
   overflow: hidden;
