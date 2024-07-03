@@ -8,7 +8,11 @@ import React, {
 import { useDispatch } from 'react-redux';
 import { Sheet } from 'react-modal-sheet';
 
-import { checkTgChatJoin } from '../../../effects/EarnEffect';
+import {
+  checkTgChatJoin,
+  checkXJoin,
+  checkYoutubeJoin
+} from '../../../effects/EarnEffect';
 import { updatePoints } from '../../../store/reducers/userSlice';
 
 import { ReactComponent as CloseIcon } from '../../../assets/close.svg';
@@ -35,8 +39,23 @@ const EarnModal = forwardRef(({ item }, ref) => {
     setIsOpen(false);
   };
 
-  const checkTelegram = async () => {
-    const res = await checkTgChatJoin();
+  const checkSocials = async (id) => {
+    let fn;
+
+    switch (id) {
+      case 'joinTG':
+        fn = checkTgChatJoin;
+        break;
+      case 'youtube':
+        fn = checkYoutubeJoin;
+        break;
+      case 'followX':
+        fn = checkXJoin;
+        break;
+    }
+
+    const res = fn ? await fn() : null;
+
     if (res === 'success') {
       dispatch(updatePoints(item?.points));
       systemModalRef.current.open({
@@ -61,7 +80,7 @@ const EarnModal = forwardRef(({ item }, ref) => {
             type: 'default',
             text: 'Try again',
             onClick: () => {
-              checkTelegram();
+              checkSocials(id);
               systemModalRef.current.close();
             }
           }
@@ -118,15 +137,20 @@ const EarnModal = forwardRef(({ item }, ref) => {
   const drawCheckButton = useMemo(() => {
     if (!item) return null;
 
-    if (item.id === 'joinTG') {
-      return (
-        <button
-          className={classNames(styles.button, styles['check-button'])}
-          onClick={checkTelegram}>
-          Check
-        </button>
-      );
-    } else return null;
+    switch (item.id) {
+      case 'joinTG':
+      case 'youtube':
+      case 'followX':
+        return (
+          <button
+            className={classNames(styles.button, styles['check-button'])}
+            onClick={() => checkSocials(item.id)}>
+            Check
+          </button>
+        );
+      default:
+        return null;
+    }
   }, [item]);
 
   if (!item) return;
