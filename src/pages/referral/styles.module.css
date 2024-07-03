@@ -11,21 +11,3 @@
   gap: 5px;
   margin-bottom: 32px;
 }
-
-button.black_btn {
-  background-color: #1c1c1e !important;
-  color: white !important;
-  width: 100%;
-  padding: 12px !important;
-  border: none;
-  border-radius: 8px;
-  font-family: 'SF Pro Text', sans-serif !important;
-  font-size: 14px !important;
-  font-weight: 500;
-  margin-bottom: 8px;
-  cursor: pointer;
-}
-
-.white_btn {
-  background-color: #fff;
-}
