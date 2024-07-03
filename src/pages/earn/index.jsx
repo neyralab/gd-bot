@@ -1,9 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
+
+import { getBalanceEffect } from '../../effects/balanceEffect';
+import { tasks as tasksFromFile } from './tasks';
+
 import { Header } from '../../components/header';
 import Menu from '../../components/Menu/Menu';
 import Task from '../../components/Task/Task';
-import { tasks as tasksFromFile } from './tasks';
 import EarnModal from './EarnModal/EarnModal';
+
 import styles from './styles.module.css';
 
 export default function EarnPage() {
@@ -12,8 +16,28 @@ export default function EarnPage() {
   const modalRef = useRef(null);
   const [modalSelectedTask, setModalSelectedTask] = useState(null);
 
+  const getTasks = async () => {
+    try {
+      const {
+        data: { data: userTasks }
+      } = await getBalanceEffect();
+      const isTgCommunityTaskDone = userTasks.find(
+        (task) =>
+          task.point.id === 18 || task.point.action === 'JOIN_TG_NEWS_CHANNEL'
+      );
+      const updatedTasks = tasksFromFile.map((task) =>
+        task.id === 'joinTG' && isTgCommunityTaskDone
+          ? { ...task, isDone: true }
+          : task
+      );
+      setTasks(updatedTasks);
+    } catch {
+      setTasks(tasksFromFile);
+    }
+  };
+
   useEffect(() => {
-    setTasks(tasksFromFile);
+    getTasks();
   }, []);
 
   useEffect(() => {
