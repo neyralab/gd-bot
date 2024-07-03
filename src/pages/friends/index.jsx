@@ -38,7 +38,7 @@ export default function FriendsPage() {
     const response = getFriends();
     response.then((res) => {
       setFriendsAreLoading(false);
-      setFriends(res.data ? res.data.map((el) => el.user) : []);
+      setFriends(res?.data || []);
       const formattedPoints = new Intl.NumberFormat().format(res.points);
       setDefaultPoints(formattedPoints);
     });
