@@ -8,7 +8,7 @@ export default function Banner2() {
   const points = 25000;
 
   const week = useMemo(() => {
-    return getWeekNumber(new Date(Date.UTC(2024, 6, 1)));
+    return getWeekNumber(new Date(Date.UTC(2024, 6, 4)));
   }, []);
 
   return (
@@ -21,7 +21,7 @@ export default function Banner2() {
           <h2>Week {week}: Bonus</h2>
         </div>
         <div className={styles['banner-description__points']}>
-        <span>{points.toLocaleString()}</span>
+          <span>{points.toLocaleString()}</span>
         </div>
         <div className={styles['banner-description__timer']}>{timer}</div>
       </div>

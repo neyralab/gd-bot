@@ -6,9 +6,10 @@ import styles from './Banner1.module.css';
 export default function Banner1() {
   const timer = useWeeklyTimer();
   const points = 1000000;
+  const isHidden = true;
 
   const week = useMemo(() => {
-    return getWeekNumber(new Date(Date.UTC(2024, 6, 1)));
+    return getWeekNumber(new Date(Date.UTC(2024, 6, 4)));
   }, []);
 
   return (
@@ -17,7 +18,9 @@ export default function Banner1() {
         <img src="/assets/banner1.png" alt="Week Bonus" />
       </div>
       <div className={styles['banner-description']}>
-        <div className={styles['banner-description__memory']}>56GB</div>
+        {!isHidden && (
+          <div className={styles['banner-description__memory']}>56GB</div>
+        )}
         <div className={styles['banner-description__title']}>
           <h2>Week {week}: Bonus</h2>
         </div>

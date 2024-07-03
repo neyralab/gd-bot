@@ -39,6 +39,7 @@ import Timer from './Timer/Timer';
 import Menu from '../../components/Menu/Menu';
 import ProgressBar from './ProgressBar/ProgressBar';
 import Congratulations from './Congratulations/Congratulations';
+import GhostLoader from '../../components/ghostLoader';
 import defaultThemes from './themes';
 import styles from './styles.module.css';
 
@@ -90,6 +91,7 @@ export function GamePage() {
   const [gamePlans, setGamePlans] = useState();
   const [contractAddress, setContractAddress] = useState();
   const [gameId, setGameId] = useState();
+  const [loading, setLoading] = useState(true);
   const [themes, setThemes] = useState([]);
 
   const swipeHandlers = useSwipeable({
@@ -132,6 +134,7 @@ export function GamePage() {
       setThemes(newThemes);
       dispatch(setTheme(newThemes.at(0)));
       console.log({ newThemes });
+      setLoading(false);
     })();
     return () => {
       clickSoundRef.current.pause();
@@ -378,6 +381,10 @@ export function GamePage() {
     }
   }, [status, lockTimerTimestamp, theme.id, themeAccess]);
 
+  if (loading) {
+    return <GhostLoader texts={['Please wait game is loading']} />;
+  }
+
   return (
     <div className={classNames(styles.container, theme && styles[theme.id])}>
       <Background ref={backgroundRef} theme={theme} />
@@ -394,6 +401,9 @@ export function GamePage() {
           <div className={styles['timer-container']}>
             <Timer />
             {drawTimerDescription}
+            {theme.id !== 'hawk' && (
+              <span className={styles['actions-description']}>Boost mode</span>
+            )}
           </div>
 
           <div
@@ -417,7 +427,7 @@ export function GamePage() {
             </div>
 
             <div className={styles.description}>
-              {(level - 1) && <span>X{level - 1}</span>}
+              {level - 1 ? <span>X{level - 1}</span> : null}
             </div>
 
             {status !== 'playing' && (
@@ -447,9 +457,9 @@ export function GamePage() {
               theme.id !== 'hawk' && (
                 <div className={styles['actions-flex']}>
                   <BuyButton theme={theme} onCompleted={buyCompletedHandler} />
-                  <span className={styles['actions-description']}>
-                    recharge & play
-                  </span>
+                  {/*<span className={styles['actions-description']}>*/}
+                  {/*  recharge & play*/}
+                  {/*</span>*/}
                 </div>
               )}
           </div>
