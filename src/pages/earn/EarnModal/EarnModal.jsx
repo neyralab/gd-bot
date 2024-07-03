@@ -3,14 +3,13 @@ import React, {
   useRef,
   useImperativeHandle,
   forwardRef,
-  useMemo,
+  useMemo
 } from 'react';
 import { useSelector } from 'react-redux';
 import { Sheet } from 'react-modal-sheet';
 import classNames from 'classnames';
-import { TelegramShareButton } from 'react-share';
 import { ReactComponent as CloseIcon } from '../../../assets/close.svg';
-import { checkTgJoin } from '../../../effects/EarnEffect';
+import { checkTgChatJoin } from '../../../effects/EarnEffect';
 import SystemModal from '../../../components/SystemModal/SystemModal';
 import styles from './EarnModal.module.css';
 
@@ -33,11 +32,11 @@ const EarnModal = forwardRef(({ item }, ref) => {
   };
 
   const checkTelegram = async () => {
-    const res = await checkTgJoin();
+    const res = await checkTgChatJoin();
     if (!res) {
       systemModalRef.current.open({
         title: 'Oops!',
-        text: 'You did not join our YouTube Channel',
+        text: 'You did not join our TG Chanel',
         actions: [
           {
             type: 'default',
@@ -46,19 +45,18 @@ const EarnModal = forwardRef(({ item }, ref) => {
               checkTelegram();
               systemModalRef.current.close();
             }
-          },
+          }
         ]
       });
     } else {
       systemModalRef.current.open({
         title: 'Success!',
-        text: 'You joined our YouTube Channel',
+        text: 'You joined our TG Channel',
         actions: [
           {
             type: 'default',
             text: 'OK',
             onClick: () => {
-              checkTelegram();
               systemModalRef.current.close();
             }
           }
@@ -70,15 +68,7 @@ const EarnModal = forwardRef(({ item }, ref) => {
   const drawJoinButton = useMemo(() => {
     if (!item) return null;
 
-    if (item.id === 'joinTG') {
-      return (
-        <TelegramShareButton url={link.copy}>
-          <div className={classNames(styles.button, styles['join-button'])}>
-            Join
-          </div>
-        </TelegramShareButton>
-      );
-    } else if (item.joinLink) {
+    if (item.joinLink) {
       return (
         <a
           href={item.joinLink}

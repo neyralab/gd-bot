@@ -1,4 +1,4 @@
-import { isiOS } from "../../utils/client";
+import { isiOS } from '../../utils/client';
 
 export const tasks = [
   {
@@ -42,8 +42,9 @@ export const tasks = [
     id: 'joinTG',
     isDone: false,
     title: 'Join Our Community',
-    points: 5000,
-    imgUrl: '/assets/telegram.png'
+    points: 10000,
+    imgUrl: '/assets/telegram.png',
+    joinLink: 'https://t.me/ghostdrive_web3_chat'
   },
   {
     id: 'downloadMobileApp',
@@ -52,7 +53,9 @@ export const tasks = [
     subtitle: '(via telegram login)',
     points: 10000,
     imgUrl: '/assets/download_app.png',
-    joinLink: isiOS() ? 'https://apps.apple.com/ca/app/ghost-drive/id6475002179' : 'https://play.google.com/store/apps/details?id=com.wise.data.ghostdrive',
+    joinLink: isiOS()
+      ? 'https://apps.apple.com/ca/app/ghost-drive/id6475002179'
+      : 'https://play.google.com/store/apps/details?id=com.wise.data.ghostdrive'
   },
   {
     id: 'wallet',
