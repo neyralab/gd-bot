@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { TonConnectUIProvider } from '@tonconnect/ui-react';
+import ReactGA from 'react-ga4';
 
 import { setInitData, setLink, setUser } from './store/reducers/userSlice';
 import {
@@ -35,7 +36,8 @@ import NodesPage from './pages/nodes';
 
 import './App.css';
 
-const tg = window.Telegram.WebApp;
+export const tg = window.Telegram.WebApp;
+const GA = 'G-VEPRY1XE4E';
 
 function App() {
   const dispatch = useDispatch();
@@ -44,6 +46,10 @@ function App() {
   const currentUser = {
     initData: tg.initData
   };
+
+  useEffect(() => {
+    ReactGA.initialize(GA);
+  }, []);
 
   function splitString(str) {
     const halfLength = Math.floor(str.length / 2);
