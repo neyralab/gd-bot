@@ -42,7 +42,6 @@ import Congratulations from './Congratulations/Congratulations';
 import GhostLoader from '../../components/ghostLoader';
 import defaultThemes from './themes';
 import styles from './styles.module.css';
-
 import { Address, toNano } from '@ton/core';
 import { TonClient } from '@ton/ton';
 import { getHttpEndpoint } from '@orbs-network/ton-access';
@@ -63,6 +62,7 @@ import {
 } from '../../effects/gameEffect';
 import { useQueryId } from '../../effects/contracts/useQueryId';
 import { setUser } from '../../store/reducers/userSlice';
+import Counter from './Counter/Counter';
 
 export function GamePage() {
   const clickSoundRef = useRef(new Audio('/assets/game-page/2blick.wav'));
@@ -72,6 +72,7 @@ export function GamePage() {
   const mainButtonRef = useRef(null);
   const currentThemeRef = useRef(null);
   const nextThemeRef = useRef(null);
+  const counterRef = useRef(null);
 
   const dispatch = useDispatch();
   const soundIsActive = useSelector(selectSoundIsActive);
@@ -93,6 +94,7 @@ export function GamePage() {
   const [gameId, setGameId] = useState();
   const [loading, setLoading] = useState(true);
   const [themes, setThemes] = useState([]);
+  const [counterIsFinished, setCounterIsFinished] = useState(true);
 
   const swipeHandlers = useSwipeable({
     onSwipedLeft: (e) => {
@@ -152,6 +154,7 @@ export function GamePage() {
       e?.stopPropagation?.();
 
       if (status === 'playing') return;
+      if (!counterIsFinished) return;
 
       let newThemeIndex;
 
@@ -184,7 +187,7 @@ export function GamePage() {
         nextThemeRef.current.classList.remove(nextThemeStyle);
       }, 500);
     },
-    [dispatch, status, themeIndex, themes]
+    [dispatch, status, themeIndex, themes, counterIsFinished]
   );
 
   const onBuy = useCallback(
@@ -243,8 +246,12 @@ export function GamePage() {
 
   const clickHandler = useCallback(
     async (e) => {
-      e.preventDefault();
-      e.stopPropagation();
+      e?.preventDefault();
+      e?.stopPropagation();
+
+      if (!counterIsFinished) {
+        return;
+      }
 
       if (!themeAccess[theme.id]) {
         return;
@@ -302,7 +309,8 @@ export function GamePage() {
       status,
       theme.id,
       theme.multiplier,
-      themeAccess
+      themeAccess,
+      counterIsFinished
     ]
   );
 
@@ -334,7 +342,19 @@ export function GamePage() {
       dispatch(setLockTimerTimestamp(null));
       dispatch(setLockTimeoutId(null));
     }
+
+    setCounterIsFinished(false);
+    counterRef.current.start(5);
   }, [dispatch, gamePlans, onBuy, theme]);
+
+  const counterFinishedHandler = async () => {
+    setCounterIsFinished(true);
+    dispatch(startRound());
+    if (theme.multiplier === 1) {
+      const game = await startGame(null);
+      setGameId(game?.id);
+    }
+  };
 
   const conditionalSwipeHandlers = useMemo(() => {
     return status !== 'playing' ? swipeHandlers : {}; // just in case we swipe will affect click.
@@ -406,31 +426,41 @@ export function GamePage() {
             )}
           </div>
 
-          <div
-            {...conditionalSwipeHandlers}
-            // onClick={clickHandler}
-            onTouchEnd={handleEvent}
-            onMouseUp={handleEvent}
-            className={styles['main-button-container']}>
-            <div className={styles['points-grow-area-container']}>
-              <PointsGrowArea ref={pointsAreaRef} theme={theme} />
-            </div>
-
-            <div className={styles['main-button-inner-container']}>
-              <div ref={currentThemeRef} className={styles['current-theme']}>
-                <MainButton ref={mainButtonRef} theme={theme} />
+          <div className={styles['main-button-container']}>
+            <div
+              className={styles['main-button-touch-area']}
+              {...conditionalSwipeHandlers}
+              // onClick={clickHandler}
+              onTouchEnd={handleEvent}
+              onMouseUp={handleEvent}>
+              <div className={styles['points-grow-area-container']}>
+                <PointsGrowArea ref={pointsAreaRef} theme={theme} />
               </div>
 
-              <div ref={nextThemeRef} className={styles['next-theme']}>
-                {nextTheme && <MainButton theme={nextTheme} />}
+              <div className={styles['main-button-inner-container']}>
+                <div ref={currentThemeRef} className={styles['current-theme']}>
+                  <MainButton ref={mainButtonRef} theme={theme} />
+                </div>
+
+                <div ref={nextThemeRef} className={styles['next-theme']}>
+                  {nextTheme && <MainButton theme={nextTheme} />}
+                </div>
+              </div>
+
+              <div className={styles.description}>
+                {level - 1 ? <span>X{level - 1}</span> : null}
+              </div>
+
+              <div className={styles.counter}>
+                <Counter
+                  ref={counterRef}
+                  seconds={5}
+                  onFinish={counterFinishedHandler}
+                />
               </div>
             </div>
 
-            <div className={styles.description}>
-              {level - 1 ? <span>X{level - 1}</span> : null}
-            </div>
-
-            {status !== 'playing' && (
+            {status !== 'playing' && counterIsFinished && (
               <div className={styles.arrows}>
                 {themeIndex !== 0 && (
                   <div

@@ -52,6 +52,7 @@
   width: 100%;
   font-weight: 400;
   transition: color 1s;
+  text-align: left;
 }
 
 .container.done .name strong {

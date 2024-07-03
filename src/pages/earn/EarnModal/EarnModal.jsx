@@ -5,18 +5,26 @@ import React, {
   forwardRef,
   useMemo
 } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Sheet } from 'react-modal-sheet';
-import classNames from 'classnames';
+
+import {
+  checkTgChatJoin,
+  checkXJoin,
+  checkYoutubeJoin
+} from '../../../effects/EarnEffect';
+import { updatePoints } from '../../../store/reducers/userSlice';
+
 import { ReactComponent as CloseIcon } from '../../../assets/close.svg';
-import { checkTgChatJoin } from '../../../effects/EarnEffect';
 import SystemModal from '../../../components/SystemModal/SystemModal';
+
+import classNames from 'classnames';
 import styles from './EarnModal.module.css';
 
 const EarnModal = forwardRef(({ item }, ref) => {
-  const link = useSelector((state) => state.user.link);
   const modalRef = useRef(null);
   const systemModalRef = useRef(null);
+  const dispatch = useDispatch();
   const [isOpen, setIsOpen] = useState(false);
 
   useImperativeHandle(ref, () => ({
@@ -31,9 +39,39 @@ const EarnModal = forwardRef(({ item }, ref) => {
     setIsOpen(false);
   };
 
-  const checkTelegram = async () => {
-    const res = await checkTgChatJoin();
-    if (!res) {
+  const checkSocials = async (id) => {
+    let fn;
+
+    switch (id) {
+      case 'joinTG':
+        fn = checkTgChatJoin;
+        break;
+      case 'youtube':
+        fn = checkYoutubeJoin;
+        break;
+      case 'followX':
+        fn = checkXJoin;
+        break;
+    }
+
+    const res = fn ? await fn() : null;
+
+    if (res === 'success') {
+      dispatch(updatePoints(item?.points));
+      systemModalRef.current.open({
+        title: 'Success!',
+        text: 'You joined our TG Channel',
+        actions: [
+          {
+            type: 'default',
+            text: 'OK',
+            onClick: () => {
+              systemModalRef.current.close();
+            }
+          }
+        ]
+      });
+    } else if (res === 'You are not a member of this channel') {
       systemModalRef.current.open({
         title: 'Oops!',
         text: 'You did not join our TG Chanel',
@@ -42,7 +80,21 @@ const EarnModal = forwardRef(({ item }, ref) => {
             type: 'default',
             text: 'Try again',
             onClick: () => {
-              checkTelegram();
+              checkSocials(id);
+              systemModalRef.current.close();
+            }
+          }
+        ]
+      });
+    } else if (res === 'You have already received points') {
+      systemModalRef.current.open({
+        title: 'Oops!',
+        text: 'You have already received points',
+        actions: [
+          {
+            type: 'default',
+            text: 'OK',
+            onClick: () => {
               systemModalRef.current.close();
             }
           }
@@ -50,8 +102,8 @@ const EarnModal = forwardRef(({ item }, ref) => {
       });
     } else {
       systemModalRef.current.open({
-        title: 'Success!',
-        text: 'You joined our TG Channel',
+        title: 'Oops!',
+        text: 'Something went wrong! Please try again',
         actions: [
           {
             type: 'default',
@@ -85,15 +137,20 @@ const EarnModal = forwardRef(({ item }, ref) => {
   const drawCheckButton = useMemo(() => {
     if (!item) return null;
 
-    if (item.id === 'joinTG') {
-      return (
-        <button
-          className={classNames(styles.button, styles['check-button'])}
-          onClick={checkTelegram}>
-          Check
-        </button>
-      );
-    } else return null;
+    switch (item.id) {
+      case 'joinTG':
+      case 'youtube':
+      case 'followX':
+        return (
+          <button
+            className={classNames(styles.button, styles['check-button'])}
+            onClick={() => checkSocials(item.id)}>
+            Check
+          </button>
+        );
+      default:
+        return null;
+    }
   }, [item]);
 
   if (!item) return;

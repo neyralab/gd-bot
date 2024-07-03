@@ -9,14 +9,14 @@ export const tasks = [
     imgUrl: '/assets/rocket.png'
   },
   {
-    id: 'invite5',
+    id: 'invite',
     isDone: true,
     title: 'Invite 5 Friends',
     points: 5000,
     imgUrl: '/assets/link.png'
   },
   {
-    id: 'upload10',
+    id: 'upload',
     isDone: true,
     title: 'Upload 10 Files',
     points: 1000,

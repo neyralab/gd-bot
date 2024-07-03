@@ -16,8 +16,44 @@ export const checkTgChatJoin = async () => {
 
   try {
     const { data } = await axiosInstance.get(url);
-    return data && data.message && data.message === 'success';
+    if (data?.message === 'success') {
+      return 'success';
+    } else {
+      throw Error();
+    }
   } catch (e) {
-    return false;
+    return e?.response?.data?.errors;
+  }
+};
+
+export const checkYoutubeJoin = async () => {
+  const url = `${API_PATH}/join/youtube`;
+
+  try {
+    const { data } = await axiosInstance.get(url);
+    console.log(data)
+    if (data?.message === 'success') {
+      return 'success';
+    } else {
+      throw Error();
+    }
+  } catch (e) {
+    return e?.response?.data?.errors;
+  }
+};
+
+
+export const checkXJoin = async () => {
+  const url = `${API_PATH}/join/twitter`;
+
+  try {
+    const { data } = await axiosInstance.get(url);
+    if (data?.message === 'success') {
+      return 'success';
+    } else {
+      throw Error();
+    }
+  } catch (e) {
+    return e?.response?.data?.errors;
   }
 };

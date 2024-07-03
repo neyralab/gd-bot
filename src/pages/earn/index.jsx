@@ -1,9 +1,22 @@
 import React, { useState, useEffect, useRef } from 'react';
+import {
+  useTonAddress,
+  useTonConnectModal,
+  useTonWallet
+} from '@tonconnect/ui-react';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { TelegramShareButton } from 'react-share';
+
+import { getBalanceEffect } from '../../effects/balanceEffect';
+import { tasks as tasksFromFile } from './tasks';
+import { saveUserWallet } from '../../effects/userEffects';
+
 import { Header } from '../../components/header';
 import Menu from '../../components/Menu/Menu';
 import Task from '../../components/Task/Task';
-import { tasks as tasksFromFile } from './tasks';
 import EarnModal from './EarnModal/EarnModal';
+
 import styles from './styles.module.css';
 
 export default function EarnPage() {
@@ -11,9 +24,35 @@ export default function EarnPage() {
   const [animatedTaskIds, setAnimatedTaskIds] = useState(new Set());
   const modalRef = useRef(null);
   const [modalSelectedTask, setModalSelectedTask] = useState(null);
+  const tonActions = useTonConnectModal();
+  const address = useTonAddress(true);
+  const wallet = useTonWallet();
+  const user = useSelector((state) => state.user.data);
+  const link = useSelector((state) => state.user.link);
+  const navigate = useNavigate();
+
+  const getTasks = async () => {
+    try {
+      const {
+        data: { data: userTasks }
+      } = await getBalanceEffect();
+      const isTgCommunityTaskDone = userTasks.find(
+        (task) =>
+          task.point.id === 18 || task.point.action === 'JOIN_TG_NEWS_CHANNEL'
+      );
+      const updatedTasks = tasksFromFile.map((task) =>
+        task.id === 'joinTG' && isTgCommunityTaskDone
+          ? { ...task, isDone: true }
+          : task
+      );
+      setTasks(updatedTasks);
+    } catch {
+      setTasks(tasksFromFile);
+    }
+  };
 
   useEffect(() => {
-    setTasks(tasksFromFile);
+    getTasks();
   }, []);
 
   useEffect(() => {
@@ -26,6 +65,20 @@ export default function EarnPage() {
     });
   }, [tasks]);
 
+  useEffect(() => {
+    if (!user?.wallet && address && wallet) {
+      (async () => {
+        const res = await saveUserWallet({
+          account: {
+            ...wallet?.account,
+            uiAddress: address
+          }
+        });
+        console.log({ res });
+      })();
+    }
+  }, [address, user?.wallet, wallet]);
+
   const handleClick = (task) => {
     switch (task.id) {
       case 'youtube':
@@ -36,7 +89,18 @@ export default function EarnPage() {
         setTimeout(() => {
           modalRef.current.open();
         }, 10);
+        break;
 
+      case 'wallet':
+        tonActions.open();
+        break;
+
+      case 'boost':
+        navigate('/boost');
+        break;
+
+      case 'upload':
+        navigate('/file-upload');
         break;
 
       default:
@@ -57,7 +121,20 @@ export default function EarnPage() {
       <div className={styles['tasks-list']}>
         {tasks.map((task) => {
           if (animatedTaskIds.has(task.id)) {
-            return (
+            return task.id === 'invite' ? (
+              <TelegramShareButton
+                url={link.copy}
+                title={'Share this link with friends'}>
+                <Task
+                  key={task.id}
+                  onClick={() => handleClick(task)}
+                  isDone={task.isDone}
+                  title={task.title}
+                  points={task.points}
+                  imgUrl={task.imgUrl}
+                />
+              </TelegramShareButton>
+            ) : (
               <Task
                 key={task.id}
                 onClick={() => handleClick(task)}

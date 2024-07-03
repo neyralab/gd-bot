@@ -1,0 +1,45 @@
+.counter,
+.final {
+  font-family: 'SF Pro Text';
+  font-size: 128px;
+  font-weight: 900;
+  line-height: 1;
+  color: rgba(255, 255, 255, 1);
+  text-shadow: 0px 4px 23.2px rgba(31, 166, 242, 1);
+}
+
+.final {
+  font-size: 156px;
+  animation: finalAnimation 1s linear forwards;
+}
+
+@keyframes scaleBounce {
+  0% {
+    transform: scale(1);
+  }
+  40% {
+    transform: scale(1.5);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.counterBounce {
+  animation: scaleBounce 0.4s ease-out;
+}
+
+@keyframes finalAnimation {
+  0% {
+    transform: scale(0.8);
+    opacity: 1;
+  }
+  10% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1.4);
+    opacity: 0;
+  }
+}
