@@ -1,3 +1,5 @@
+import { isiOS } from "../../utils/client";
+
 export const tasks = [
   {
     id: 'boost',
@@ -25,28 +27,32 @@ export const tasks = [
     isDone: false,
     title: 'Follow Our X Account',
     points: 5000,
-    imgUrl: '/assets/x.png'
+    imgUrl: '/assets/x.png',
+    joinLink: 'https://x.com/ghostdrive_web3'
   },
   {
     id: 'youtube',
     isDone: false,
     title: 'Join Our YouTube Channel',
     points: 10000,
-    imgUrl: '/assets/youtube.png'
+    imgUrl: '/assets/youtube.png',
+    joinLink: 'https://www.youtube.com/@ghostdrive-web3'
   },
   {
     id: 'joinTG',
     isDone: false,
-    title: 'Join Our TG Channel',
+    title: 'Join Our Community',
     points: 5000,
     imgUrl: '/assets/telegram.png'
   },
   {
     id: 'downloadMobileApp',
     isDone: false,
-    title: 'Download Mobile App (via telegram login)',
+    title: 'Download App',
+    subtitle: '(via telegram login)',
     points: 10000,
-    imgUrl: '/assets/like.png'
+    imgUrl: '/assets/download_app.png',
+    joinLink: isiOS() ? 'https://apps.apple.com/ca/app/ghost-drive/id6475002179' : 'https://play.google.com/store/apps/details?id=com.wise.data.ghostdrive',
   },
   {
     id: 'wallet',

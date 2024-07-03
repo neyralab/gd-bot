@@ -119,7 +119,7 @@ export const FilesSystemPage = () => {
 
   const uploadingProgress = useMemo(() => {
     const percentage = (progress / uploadingFile?.size) * 100;
-    return `${Math.round(percentage)}/100 %`;
+    return `${Math.round(percentage)}%`;
   }, [progress, uploadingFile?.size]);
 
   const handleInputChange = async (e) => {

@@ -135,9 +135,6 @@ export const StartPage = ({ tariffs }) => {
   return (
     <div className={`${style.container} ${style.uploadContainer}`}>
       <header className={style.header_new}>
-        <ConnectTonWalletButton
-          openDisconnectModal={setDisconnectWalletModal}
-        />
         <section onClick={onBalance}>
           <div className={style.wallet_balance}>
             <p
@@ -190,6 +187,11 @@ export const StartPage = ({ tariffs }) => {
       </div>
 
       <div className={style.bottom}>
+        <div className={style.wallet_button}>
+          <ConnectTonWalletButton
+            openDisconnectModal={setDisconnectWalletModal}
+          />
+        </div>
         {/* <button className={style.invite_button}>
           <TelegramShareButton
             className={style.telegram_share}

@@ -322,9 +322,16 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   width: 100%;
   gap: 12px;
+}
+
+.wallet_button {
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .wallet_balance {
