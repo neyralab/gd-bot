@@ -84,6 +84,10 @@ bot.start(async (ctx) => {
     'Dashboard',
     `${process.env.APP_FRONTEND_URL}/start`
   );
+  const playButton = Markup.button.webApp(
+    'Play to Earn',
+    `${process.env.APP_FRONTEND_URL}/game`
+  );
   const followXButton = Markup.button.url(
     'Follow X',
     `https://twitter.com/ghostdrive_web3`
@@ -105,6 +109,7 @@ bot.start(async (ctx) => {
         reply_markup: {
           inline_keyboard: [
             [dashboardButton],
+            [playButton],
             [followXButton],
             [followCommunityButton],
             [followNewsButton],
