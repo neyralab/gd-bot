@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 
-import { getLeaderboardEffect } from '../../../effects/leaderboardEffect';
 import Banner2 from '../assets/Banner2/Banner2';
 import Menu from '../../../components/Menu/Menu';
 import Header from '../assets/Header/Header';
 import Table from '../assets/Table/Table';
+import { getFriends } from '../../../effects/friendsEffect';
 import { ReactComponent as LoaderIcon } from '../../../assets/loader.svg';
 
 import style from '../style.module.css';
@@ -15,8 +15,8 @@ export const LeaderboardFriends = () => {
 
   useEffect(() => {
     setIsLoading(true);
-    getLeaderboardEffect().then((data) => {
-      setLeaderboard(data);
+    getFriends().then((data) => {
+      setLeaderboard(data?.data ? data.data : []);
       setIsLoading(false);
     });
   }, []);
