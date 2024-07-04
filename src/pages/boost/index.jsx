@@ -122,6 +122,7 @@ export const BoostPage = ({ tariffs }) => {
           {tariffs?.map((el, index) => (
             <li key={index}>
               <button
+                disabled={currentPrice?.storage === el?.storage}
                 onClick={async () => {
                   await payByTON(el);
                 }}
