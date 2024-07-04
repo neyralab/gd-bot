@@ -1,15 +1,19 @@
 import React from 'react';
-import classNames from 'classnames';
 import { NavLink, useLocation } from 'react-router-dom';
-import styles from './Menu.module.css';
+
+import useButtonVibration from '../../hooks/useButtonVibration';
 
 import { ReactComponent as LeadboardIcon } from '../../assets/leadboard2.svg';
 import { ReactComponent as FriendsIcon } from '../../assets/groups.svg';
 import { ReactComponent as EarnIcon } from '../../assets/toll.svg';
 import { ReactComponent as AirdropIcon } from '../../assets/atr.svg';
 
+import classNames from 'classnames';
+import styles from './Menu.module.css';
+
 export default function Menu() {
   const location = useLocation();
+  const handleVibrationClick = useButtonVibration();
 
   return (
     <div className={styles.container}>
@@ -17,7 +21,8 @@ export default function Menu() {
         className={({ isActive }) =>
           classNames(styles.item, isActive && styles.active)
         }
-        to={'/game'}>
+        to={'/game'}
+        onClick={handleVibrationClick()}>
         <div className={classNames(styles.icon, styles['img-icon'])}></div>
         <span className={styles.text}>Fly</span>
       </NavLink>
@@ -29,7 +34,8 @@ export default function Menu() {
             location.pathname.startsWith('/leadboard/') && styles.active
           )
         }
-        to={'/leadboard/league'}>
+        to={'/leadboard/league'}
+        onClick={handleVibrationClick()}>
         <div className={styles.icon}>
           <LeadboardIcon />
         </div>
@@ -40,7 +46,8 @@ export default function Menu() {
         className={({ isActive }) =>
           classNames(styles.item, isActive && styles.active)
         }
-        to={'/friends'}>
+        to={'/friends'}
+        onClick={handleVibrationClick()}>
         <div className={styles.icon}>
           <FriendsIcon />
         </div>
@@ -52,7 +59,8 @@ export default function Menu() {
         className={({ isActive }) =>
           classNames(styles.item, isActive && styles.active)
         }
-        to={'/earn'}>
+        to={'/earn'}
+        onClick={handleVibrationClick()}>
         <div className={styles.icon}>
           <EarnIcon />
         </div>
@@ -63,7 +71,8 @@ export default function Menu() {
         className={({ isActive }) =>
           classNames(styles.item, isActive && styles.active)
         }
-        to={'/point-tracker'}>
+        to={'/point-tracker'}
+        onClick={handleVibrationClick()}>
         <div className={styles.icon}>
           <AirdropIcon />
         </div>

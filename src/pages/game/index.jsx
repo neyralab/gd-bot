@@ -64,6 +64,7 @@ import {
 import { useQueryId } from '../../effects/contracts/useQueryId';
 import { setUser } from '../../store/reducers/userSlice';
 import Counter from './Counter/Counter';
+import useButtonVibration from '../../hooks/useButtonVibration';
 
 export function GamePage() {
   const clickSoundRef = useRef(new Audio('/assets/game-page/2blick.wav'));
@@ -97,6 +98,7 @@ export function GamePage() {
   const [themes, setThemes] = useState([]);
   const [counterIsFinished, setCounterIsFinished] = useState(true);
   const [tempPreview, setTempPreview] = useState(0);
+  const handleVibrationClick = useButtonVibration();
 
   const swipeHandlers = useSwipeable({
     onSwipedLeft: (e) => {
@@ -331,8 +333,8 @@ export function GamePage() {
   );
 
   const onCloseTempPreview = useCallback(() => {
-    setTempPreview(0)
-  }, [])
+    setTempPreview(0);
+  }, []);
 
   const buyCompletedHandler = useCallback(async () => {
     const plan = gamePlans?.find((el) => el.multiplier === theme.multiplier);
@@ -477,7 +479,9 @@ export function GamePage() {
                 {themeIndex !== 0 && (
                   <div
                     className={styles.prev}
-                    onClick={(e) => switchTheme(e, 'prev')}>
+                    onClick={handleVibrationClick((e) =>
+                      switchTheme(e, 'prev')
+                    )}>
                     {'<'}
                   </div>
                 )}
@@ -485,7 +489,9 @@ export function GamePage() {
                 {themeIndex !== themes.length - 1 && (
                   <div
                     className={styles.next}
-                    onClick={(e) => switchTheme(e, 'next')}>
+                    onClick={handleVibrationClick((e) =>
+                      switchTheme(e, 'next')
+                    )}>
                     {'>'}
                   </div>
                 )}
