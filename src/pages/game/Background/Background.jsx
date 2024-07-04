@@ -74,6 +74,9 @@ const Background = forwardRef(({ theme }, ref) => {
     let timeout1;
     let timeout2;
 
+    if (!glowRef || !glowRef.current || !planetRef || !planetRef.current)
+      return;
+
     if (nextTheme) {
       glowRef.current.classList.remove(styles['next-theme-appear']);
       planetRef.current.classList.remove(styles['next-theme-appear']);
@@ -82,6 +85,8 @@ const Background = forwardRef(({ theme }, ref) => {
       planetRef.current.classList.add(styles['current-theme-dissapear']);
 
       timeout1 = setTimeout(() => {
+        if (!glowRef || !glowRef.current || !planetRef || !planetRef.current)
+          return;
         glowRef.current.style.opacity = 0;
         planetRef.current.style.opacity = 0;
       }, 490); // to avoid flickering
@@ -93,6 +98,8 @@ const Background = forwardRef(({ theme }, ref) => {
       planetRef.current.classList.add(styles['next-theme-appear']);
 
       timeout2 = setTimeout(() => {
+        if (!glowRef || !glowRef.current || !planetRef || !planetRef.current)
+          return;
         glowRef.current.style.opacity = 1;
         planetRef.current.style.opacity = 1;
       }, 990); // to avoid flickering
