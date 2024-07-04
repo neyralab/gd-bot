@@ -13,7 +13,6 @@ import {
   selecSelectedFile,
   setSelectedFile
 } from '../../store/reducers/filesSlice';
-import { API_FILE_SHARING } from '../../utils/api-urls';
 import { updateShareEffect } from '../../effects/filesEffects';
 import { restoreFileEffect } from '../../effects/file/restoreFileEffect';
 import { generateSharingLink } from '../../utils/generateSharingLink';
@@ -32,14 +31,9 @@ export const FileMenu = () => {
   const isOpen = useSelector(selectisFileMenuOpen);
   const file = useSelector(selecSelectedFile);
   const location = useLocation();
-  const isDevEnv = API_FILE_SHARING === 'https://ghst.sh/dev/';
 
   const url = useMemo(() => {
-    if (isDevEnv) {
-      return generateSharingLink(file.slug);
-    } else {
-      return `${API_FILE_SHARING}${file.slug}`;
-    }
+    return generateSharingLink(file.slug);
   }, [file]);
 
   const isDeletedPage =
