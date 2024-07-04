@@ -22,6 +22,7 @@ import { ReactComponent as LeadboardIcon } from '../../assets/leadboard.svg';
 import { ReactComponent as PointsIcon } from '../../assets/point.svg';
 import { ReactComponent as TelegramIcon } from '../../assets/telegram.svg';
 import { ReactComponent as CloudIcon } from '../../assets/cloud.svg';
+import { ReactComponent as NodeIcon } from '../../assets/node.svg';
 import { ReactComponent as DriveIcon } from '../../assets/drive.svg';
 import { ReactComponent as PlayIcon } from '../../assets/play.svg';
 
@@ -91,6 +92,14 @@ export const StartPage = ({ tariffs }) => {
         amount: `${human?.used} of ${human?.total}`,
         onClick: () => {
           navigate('/boost');
+        }
+      },
+      {
+        Icon: NodeIcon,
+        text: `Nodes`,
+        amount: '',
+        onClick: () => {
+          navigate('/nodes-welcome');
         }
       }
       // {
