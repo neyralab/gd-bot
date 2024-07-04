@@ -43,7 +43,7 @@ export const BoostPage = ({ tariffs }) => {
       }
       const paymentInfo = {
         user_id: user.id,
-        workspace_id: ws.id,
+        workspace_id: ws,
         storage_id: el?.id
       };
       const { address: recipientWallet, memo } = await getTonWallet(
