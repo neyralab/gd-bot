@@ -85,7 +85,7 @@ bot.start(async (ctx) => {
     `${process.env.APP_FRONTEND_URL}/start`
   );
   const playButton = Markup.button.webApp(
-    'Play to Earn',
+    'Tap to Earn',
     `${process.env.APP_FRONTEND_URL}/game`
   );
   const followXButton = Markup.button.url(

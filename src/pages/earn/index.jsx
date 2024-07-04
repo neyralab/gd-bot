@@ -124,9 +124,9 @@ export default function EarnPage() {
             return task.id === 'invite' ? (
               <TelegramShareButton
                 url={link.copy}
+                key={task.id}
                 title={'Share this link with friends'}>
                 <Task
-                  key={task.id}
                   onClick={() => handleClick(task)}
                   isDone={task.isDone}
                   title={task.title}
