@@ -64,7 +64,11 @@ export const Referral = () => {
 
   return (
     <div className={styles.container}>
-      <Header label="Point Tracker" />
+      <Header
+        hideBack
+        label="Airdrop"
+        headerClassName={styles.header}
+      />
       <div className={styles.tabs}>
         {Object.keys(tabList).map((el, index) => (
           <Tab

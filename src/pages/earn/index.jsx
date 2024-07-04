@@ -12,7 +12,6 @@ import { getBalanceEffect } from '../../effects/balanceEffect';
 import { tasks as tasksFromFile } from './tasks';
 import { saveUserWallet } from '../../effects/userEffects';
 
-import { Header } from '../../components/header';
 import Menu from '../../components/Menu/Menu';
 import Task from '../../components/Task/Task';
 import EarnModal from './EarnModal/EarnModal';
@@ -112,7 +111,6 @@ export default function EarnPage() {
 
   return (
     <div className={styles.container}>
-      <Header label={'Earn'} />
 
       <div className={styles['title-block']}>
         <img src="/assets/token.png" alt="Token" />
