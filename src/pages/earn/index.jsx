@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import {
   useTonAddress,
-  useTonConnectModal,
+  useTonConnectUI,
   useTonWallet
 } from '@tonconnect/ui-react';
 import { useSelector } from 'react-redux';
@@ -24,7 +24,7 @@ export default function EarnPage() {
   const [animatedTaskIds, setAnimatedTaskIds] = useState(new Set());
   const modalRef = useRef(null);
   const [modalSelectedTask, setModalSelectedTask] = useState(null);
-  const tonActions = useTonConnectModal();
+  const [tonConnectUI] = useTonConnectUI();
   const address = useTonAddress(true);
   const wallet = useTonWallet();
   const user = useSelector((state) => state.user.data);
@@ -66,7 +66,7 @@ export default function EarnPage() {
   }, [tasks]);
 
   useEffect(() => {
-    if (!user?.wallet && address && wallet) {
+    if (user !== null && !user.wallet && address && wallet) {
       (async () => {
         const res = await saveUserWallet({
           account: {
@@ -74,10 +74,10 @@ export default function EarnPage() {
             uiAddress: address
           }
         });
-        console.log({ res });
+        console.log({ saveUserWallet: res });
       })();
     }
-  }, [address, user?.wallet, wallet]);
+  }, [address, user, user?.wallet, wallet]);
 
   const handleClick = (task) => {
     switch (task.id) {
@@ -92,7 +92,8 @@ export default function EarnPage() {
         break;
 
       case 'wallet':
-        tonActions.open();
+        address && tonConnectUI.disconnect();
+        tonConnectUI.openModal();
         break;
 
       case 'boost':
