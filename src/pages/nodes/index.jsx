@@ -131,7 +131,7 @@ export default function NodesPage() {
         {
           $$type: 'Mint',
           query_id: 1n,
-          referer: Address.parse(referer)
+          referer: referer ? Address.parse(referer) : null
         }
       );
       toast.success('Payment was successfully');
@@ -158,6 +158,8 @@ export default function NodesPage() {
             autoPlay
             loop
             muted
+            playsInline
+            controlsList="nofullscreen"
             poster="/assets/node-banner.jpg">
             <source src="/assets/node-banner.mp4" type="video/mp4" />
           </video>
