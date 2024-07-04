@@ -11,12 +11,14 @@ import style from '../style.module.css';
 
 export const LeaderboardLeague = () => {
   const [leaderboard, setLeaderboard] = useState([]);
+  const [totalUsers, setTotalUsers] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     setIsLoading(true);
     getLeaderboardEffect().then((data) => {
-      setLeaderboard(data);
+      setLeaderboard(data?.data);
+      if (data?.total_users) setTotalUsers(data?.total_users);
       setIsLoading(false);
     });
   }, []);
@@ -35,7 +37,9 @@ export const LeaderboardLeague = () => {
         </div>
       )}
 
-      {!isLoading && leaderboard.length > 0 && <Table items={leaderboard} />}
+      {!isLoading && leaderboard.length > 0 && (
+        <Table items={leaderboard} totalUsers={totalUsers} />
+      )}
 
       <Menu />
     </div>

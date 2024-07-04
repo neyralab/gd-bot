@@ -4,7 +4,7 @@ import { LeaderIcon } from '../LeaderIcon';
 import { anonymizeFullName } from '../../../../utils/anonymize';
 import styles from './Table.module.css';
 
-export default function Table({ items }) {
+export default function Table({ items, totalUsers }) {
   const [animatedLeaderIds, setAnimatedLeaderIds] = useState(new Set());
 
   useEffect(() => {
@@ -19,13 +19,14 @@ export default function Table({ items }) {
     });
   }, [items]);
 
-
   return (
     <table className={styles.table}>
       <thead>
         <tr className={styles.headerRow}>
           <th className={styles.headerCell}>#</th>
-          <th className={styles.headerCell}>User</th>
+          <th className={styles.headerCell}>
+            {totalUsers ? `${totalUsers} USERS` : `Users`}
+          </th>
           <th className={styles.headerCell}>Points</th>
         </tr>
       </thead>
