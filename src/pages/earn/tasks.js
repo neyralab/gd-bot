@@ -2,6 +2,17 @@ import { isiOS } from '../../utils/client';
 
 export const tasks = [
   {
+    id: 'downloadMobileApp',
+    isDone: false,
+    title: 'Download App',
+    subtitle: '(via telegram login)',
+    points: 100000,
+    imgUrl: '/assets/download_app.png',
+    joinLink: isiOS()
+      ? 'https://apps.apple.com/ca/app/ghost-drive/id6475002179'
+      : 'https://play.google.com/store/apps/details?id=com.wise.data.ghostdrive'
+  },
+  {
     id: 'boost',
     isDone: false,
     title: 'Boost Storage',
@@ -26,7 +37,7 @@ export const tasks = [
     id: 'followX',
     isDone: false,
     title: 'Follow Our X Account',
-    points: 5000,
+    points: 10000,
     imgUrl: '/assets/x.png',
     joinLink: 'https://x.com/ghostdrive_web3'
   },
@@ -45,17 +56,6 @@ export const tasks = [
     points: 10000,
     imgUrl: '/assets/telegram.png',
     joinLink: 'https://t.me/ghostdrive_web3_chat'
-  },
-  {
-    id: 'downloadMobileApp',
-    isDone: false,
-    title: 'Download App',
-    subtitle: '(via telegram login)',
-    points: 10000,
-    imgUrl: '/assets/download_app.png',
-    joinLink: isiOS()
-      ? 'https://apps.apple.com/ca/app/ghost-drive/id6475002179'
-      : 'https://play.google.com/store/apps/details?id=com.wise.data.ghostdrive'
   },
   {
     id: 'wallet',

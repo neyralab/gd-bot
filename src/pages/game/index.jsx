@@ -402,7 +402,7 @@ export function GamePage() {
   }, [status, lockTimerTimestamp, theme.id, themeAccess]);
 
   if (loading) {
-    return <GhostLoader texts={['Please wait game is loading']} />;
+    return <GhostLoader texts={[]} />;
   }
 
   return (
