@@ -34,6 +34,7 @@ import { Header } from '../../components/header_v2';
 import MainButton from './MainButton/MainButton';
 import Background from './Background/Background';
 import BuyButton from './BuyButton/BuyButton';
+import TempUpdate from './TempUpdate/TempUpdate';
 import PointsGrowArea from './PointsGrowArea/PointsGrowArea';
 import Timer from './Timer/Timer';
 import Menu from '../../components/Menu/Menu';
@@ -95,6 +96,7 @@ export function GamePage() {
   const [loading, setLoading] = useState(true);
   const [themes, setThemes] = useState([]);
   const [counterIsFinished, setCounterIsFinished] = useState(true);
+  const [tempPreview, setTempPreview] = useState(0);
 
   const swipeHandlers = useSwipeable({
     onSwipedLeft: (e) => {
@@ -328,6 +330,10 @@ export function GamePage() {
     [clickHandler]
   );
 
+  const onCloseTempPreview = useCallback(() => {
+    setTempPreview(0)
+  }, [])
+
   const buyCompletedHandler = useCallback(async () => {
     const plan = gamePlans?.find((el) => el.multiplier === theme.multiplier);
     console.log({ theme, plan, gamePlans });
@@ -364,6 +370,7 @@ export function GamePage() {
     setGameId(undefined);
     endGame({ id: gameId, taps: balance.value })
       .then((data) => {
+        setTempPreview(balance.value);
         dispatch(setUser({ ...user, points: data?.data || 0 }));
         dispatch(setBalance({ value: 0, label: balance.label }));
       })
@@ -445,6 +452,11 @@ export function GamePage() {
                 <div ref={nextThemeRef} className={styles['next-theme']}>
                   {nextTheme && <MainButton theme={nextTheme} />}
                 </div>
+                <TempUpdate
+                  isActive={!!tempPreview}
+                  counter={tempPreview}
+                  onClose={onCloseTempPreview}
+                />
               </div>
 
               <div className={styles.description}>
