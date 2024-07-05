@@ -203,7 +203,9 @@ export function GamePage() {
     }
 
     setCounterIsFinished(false);
-    counterRef.current?.start(5);
+    setTimeout(() => {
+      counterRef.current?.start(5);
+    }, 100);
   }, [dispatch, theme.id]);
 
   const onBuy = useCallback(
