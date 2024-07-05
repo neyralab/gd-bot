@@ -30,6 +30,7 @@ const ShipModel = forwardRef((_, ref) => {
 
   const runPushAnimation = () => {
     runWaveAnimation();
+    runShipPushAnimation();
 
     if (flyTimeout.current) {
       clearTimeout(flyTimeout.current);
@@ -43,16 +44,7 @@ const ShipModel = forwardRef((_, ref) => {
       flyTimeout.current = null;
 
       runFloatingAnimation();
-    }, 2000);
-  };
-
-  const runWaveAnimation = () => {
-    const waveId = Date.now();
-    setWaves((prevWaves) => [...prevWaves, waveId]);
-  };
-
-  const removeWave = (id) => {
-    setWaves((prevWaves) => prevWaves.filter((el) => el !== id));
+    }, 3000);
   };
 
   const runInitialAnimation = () => {
@@ -138,26 +130,9 @@ const ShipModel = forwardRef((_, ref) => {
   const runFlyAnimation = () => {
     /** Cleanup */
     flyingContext.current = gsap.context(() => {
-      gsap.to(shipGroupRef.current.position, {
-        z: 0,
-        duration: 0.2
-      });
-
       gsap.to(shipGroupRef.current.rotation, {
         y: -Math.PI / 2,
         duration: 0.2
-      });
-
-      /** New */
-      gsap.to(shipGroupRef.current.position, {
-        keyframes: [
-          { z: -0.1, duration: 0.3, ease: 'power1.inOut' },
-          { z: 0.1, duration: 0.3, ease: 'power1.inOut' }
-        ],
-        delay: 0.21,
-        repeatDelay: 0.1,
-        repeat: -1,
-        yoyo: true
       });
 
       gsap.to(shipGroupRef.current.rotation, {
@@ -178,6 +153,24 @@ const ShipModel = forwardRef((_, ref) => {
       flyingContext.current.kill();
       flyingContext.current = null;
     }
+  };
+
+  const runShipPushAnimation = () => {
+    gsap.to(shipGroupRef.current.position, {
+      keyframes: [
+        { z: -0.3, duration: 0.1, ease: 'power1.out' },
+        { z: 0, duration: 0.1, ease: 'power1.inOut' }
+      ]
+    });
+  };
+
+  const runWaveAnimation = () => {
+    const waveId = Date.now();
+    setWaves((prevWaves) => [...prevWaves, waveId]);
+  };
+
+  const removeWave = (id) => {
+    setWaves((prevWaves) => prevWaves.filter((el) => el !== id));
   };
 
   useFrame(() => {
