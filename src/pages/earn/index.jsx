@@ -8,7 +8,6 @@ import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { TelegramShareButton } from 'react-share';
 
-import { getBalanceEffect } from '../../effects/balanceEffect';
 import { tasks as tasksFromFile } from './tasks';
 import { saveUserWallet } from '../../effects/userEffects';
 
@@ -17,6 +16,7 @@ import Task from '../../components/Task/Task';
 import EarnModal from './EarnModal/EarnModal';
 
 import styles from './styles.module.css';
+import { checkAllEarnTasks } from '../../effects/EarnEffect';
 
 export default function EarnPage() {
   const [tasks, setTasks] = useState([]);
@@ -32,21 +32,34 @@ export default function EarnPage() {
 
   const getTasks = async () => {
     try {
-      const {
-        data: { data: userTasks }
-      } = await getBalanceEffect();
-      const isTgCommunityTaskDone = userTasks.find(
-        (task) =>
-          task.point.id === 18 || task.point.action === 'JOIN_TG_NEWS_CHANNEL'
-      );
-      const updatedTasks = tasksFromFile.map((task) =>
-        task.id === 'joinTG' && isTgCommunityTaskDone
-          ? { ...task, isDone: true }
-          : task
-      );
-      setTasks(updatedTasks);
-    } catch {
-      setTasks(tasksFromFile);
+      const res = await checkAllEarnTasks();
+      /** In this code you will see both backand and frontend hardcoded tasks
+       * Hardcoded have img, title, some other props that are needed in frontend.
+       * So here those 2 arrays are combined. 
+       * It takes the hardcoded frontend array with its order,
+       * and updates the information the code require
+       */
+      if (res) {
+        const filteredTasks = tasksFromFile.filter((task) =>
+          res.some((el) => task.id === el.action)
+        );
+
+        const updatedTasks = filteredTasks.map((task) => {
+          const serverTask = res.find((el) => task.id === el.action);
+          return {
+            ...task,
+            id: serverTask.action,
+            points: serverTask.amount,
+            isDone: serverTask.earn === 1
+          };
+        });
+        setTasks(updatedTasks);
+      } else {
+        setTasks([]);
+      }
+    } catch (error) {
+      console.error('Error fetching tasks:', error);
+      setTasks([]);
     }
   };
 
@@ -73,6 +86,7 @@ export default function EarnPage() {
             uiAddress: address
           }
         });
+        getTasks();
         console.log({ saveUserWallet: res });
       })();
     }
@@ -80,26 +94,26 @@ export default function EarnPage() {
 
   const handleClick = (task) => {
     switch (task.id) {
-      case 'youtube':
-      case 'joinTG':
-      case 'followX':
-      case 'downloadMobileApp':
+      case 'JOIN_YOUTUBE':
+      case 'JOIN_TG_CHANNEL':
+      case 'JOIN_TWITTER':
+      case 'DOWNLOAD_APP':
         setModalSelectedTask(task);
         setTimeout(() => {
           modalRef.current.open();
         }, 10);
         break;
 
-      case 'wallet':
+      case 'WALLET_CONNECTION':
         address && tonConnectUI.disconnect();
         tonConnectUI.openModal();
         break;
 
-      case 'boost':
+      case 'STORAGE_PURCHASE':
         navigate('/boost');
         break;
 
-      case 'upload':
+      case 'UPLOAD_10_FILES':
         navigate('/file-upload');
         break;
 
@@ -111,7 +125,6 @@ export default function EarnPage() {
 
   return (
     <div className={styles.container}>
-
       <div className={styles['title-block']}>
         <img src="/assets/token.png" alt="Token" />
         <h1>Earn more points</h1>
@@ -120,7 +133,7 @@ export default function EarnPage() {
       <div className={styles['tasks-list']}>
         {tasks.map((task) => {
           if (animatedTaskIds.has(task.id)) {
-            return task.id === 'invite' ? (
+            return task.id === 'INVITE_5_FRIENDS' ? (
               <TelegramShareButton
                 url={link.copy}
                 key={task.id}
@@ -131,6 +144,7 @@ export default function EarnPage() {
                   title={task.title}
                   points={task.points}
                   imgUrl={task.imgUrl}
+                  onTasksRequireCheck={getTasks}
                 />
               </TelegramShareButton>
             ) : (
@@ -141,6 +155,7 @@ export default function EarnPage() {
                 title={task.title}
                 points={task.points}
                 imgUrl={task.imgUrl}
+                onTasksRequireCheck={getTasks}
               />
             );
           } else {
