@@ -34,7 +34,7 @@ export default function EarnPage() {
   const getTasks = async () => {
     checkAllEarnTasks().then((res) => {
       if (res) {
-        setTasks(updatedTasks);
+        setTasks(res.map);
       } else {
         setTasks([]);
       }
@@ -87,28 +87,27 @@ export default function EarnPage() {
   }, [address, user, user?.wallet, wallet]);
 
   const handleClick = (task) => {
-    switch (task.action) {
+    switch (task.id) {
       case 'youtube':
-      case "JOIN_TG_CHANNEL":
-      case "JOIN_TG_NEWS_CHANNEL":
-      case "JOIN_TWITTER":
-      case "DOWNLOAD_APP":
+      case 'joinTG':
+      case 'followX':
+      case 'downloadMobileApp':
         setModalSelectedTask(task);
         setTimeout(() => {
           modalRef.current.open();
         }, 10);
         break;
 
-      case "WALLET_CONNECTION":
+      case 'wallet':
         address && tonConnectUI.disconnect();
         tonConnectUI.openModal();
         break;
 
-      case "STORAGE_PURCHASE":
+      case 'boost':
         navigate('/boost');
         break;
 
-      case "UPLOAD_10_FILES":
+      case 'upload':
         navigate('/file-upload');
         break;
 
