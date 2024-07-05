@@ -18,6 +18,7 @@ import { transformSize } from '../../utils/transformSize';
 
 import { ReactComponent as Diamond } from '../../assets/diamond.svg';
 import styles from './styles.module.css';
+import useButtonVibration from '../../hooks/useButtonVibration';
 
 export const BoostPage = ({ tariffs }) => {
   const [activeMultiplier, setActiveMultiplier] = useState();
@@ -28,6 +29,7 @@ export const BoostPage = ({ tariffs }) => {
   const [tonConnectUI] = useTonConnectUI();
   const { open } = useTonConnectModal();
   const dispatch = useDispatch();
+  const handleVibrationClick = useButtonVibration();
 
   const currentPrice = useMemo(() => {
     return tariffs?.find((tariff) => tariff.storage === spaceTotal);
@@ -120,7 +122,7 @@ export const BoostPage = ({ tariffs }) => {
         <p className={styles.header}>Boost multiplier</p>
         <ul className={styles.list}>
           {tariffs?.map((el, index) => (
-            <li key={index}>
+            <li key={index} onClick={handleVibrationClick()}>
               <button
                 disabled={currentPrice?.storage === el?.storage}
                 onClick={async () => {

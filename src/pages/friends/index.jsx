@@ -10,6 +10,7 @@ import { getFriends } from '../../effects/friendsEffect';
 import { ReactComponent as LoaderIcon } from '../../assets/loader.svg';
 import { getAllTasks } from '../../effects/balanceEffect';
 import { handleTasks } from '../../store/reducers/taskSlice';
+import useButtonVibration from '../../hooks/useButtonVibration';
 
 export default function FriendsPage() {
   const link = useSelector((state) => state.user.link);
@@ -21,6 +22,7 @@ export default function FriendsPage() {
   const [animatedTaskIds, setAnimatedTaskIds] = useState(new Set());
   const [animatedFriendIds, setAnimatedFriendIds] = useState(new Set());
   const [defaultPoints, setDefaultPoints] = useState('0');
+  const handleVibrationClick = useButtonVibration();
 
   useEffect(() => {
     getAllTasks().then((res) => {
@@ -125,7 +127,8 @@ export default function FriendsPage() {
       <TelegramShareButton
         className={styles['invite-button']}
         url={link.copy}
-        title={'Invite a friend'}>
+        title={'Invite a friend'}
+        onClick={handleVibrationClick()}>
         <span>Invite a friend</span>
       </TelegramShareButton>
 
