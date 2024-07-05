@@ -217,6 +217,13 @@ export function GamePage() {
                 validUntil: Date.now() + 60 * 1000 // 5 minutes for user to approve
               });
               console.log({ data });
+              const userAddress = Address.parseRaw(wallet.account.address);
+              const purchaseId = await nullValueCheck(() => {
+                return contract.getLatestPurchase(userAddress);
+              });
+              const game = await startGame(Number(purchaseId));
+              setGameId(game?.id);
+              console.log({ PPPPP: purchaseId, game });
               return data;
             }
           },
@@ -227,14 +234,6 @@ export function GamePage() {
             tierId: plan?.tierId
           }
         );
-
-        const userAddress = Address.parseRaw(wallet.account.address);
-        const purchaseId = await nullValueCheck(() => {
-          return contract.getLatestPurchase(userAddress);
-        });
-        const game = await startGame(Number(purchaseId));
-        setGameId(game?.id);
-        console.log({ PPPPP: purchaseId, game });
         return true;
       } catch (e) {
         console.log({ onBuyError: e });
