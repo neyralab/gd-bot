@@ -13,11 +13,20 @@ export default function GameCanvas() {
     <Canvas shadows>
       <Suspense fallback={<Loader />}>
         <ambientLight intensity={2} color={0xffffff} />
+        {/* Do not uncomment shadow props until the model will be retopologiesed properly */}
         <directionalLight
           position={[1, 1, 1]}
-          intensity={10}
+          intensity={12}
           color={'#8AB8E7'}
-          castShadow
+          // castShadow
+          // shadow-mapSize-width={512}
+          // shadow-mapSize-height={512}
+          // shadow-camera-near={0.5}
+          // shadow-camera-far={500}
+          // shadow-camera-left={-50}
+          // shadow-camera-right={50}
+          // shadow-camera-top={50}
+          // shadow-camera-bottom={-50}
         />
 
         <ShipModel />

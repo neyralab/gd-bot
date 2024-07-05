@@ -30,7 +30,7 @@ export default function ShipModel() {
       action.setLoop(THREE.LoopOnce);
       action.clampWhenFinished = true;
       action.time = action.getClip().duration;
-      action.setEffectiveTimeScale(-4); // Play the animation in reverse at double speed
+      action.setEffectiveTimeScale(-4); 
       action.play();
     }
 
