@@ -40,6 +40,8 @@ const GameCanvas = forwardRef((_, ref) => {
 
         <ShipModel ref={shipRef} />
 
+        {/* Remove in case of lags, 
+        but increase intensity of ambientLight to 2 and directionalLight to 10 */}
         <EffectComposer>
           <Bloom intensity={0.05} />
         </EffectComposer>
