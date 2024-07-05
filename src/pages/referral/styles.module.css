@@ -6,6 +6,10 @@
   padding-bottom: 8px;
 }
 
+.header div {
+  display: none;
+}
+
 .tabs {
   display: flex;
   gap: 5px;
