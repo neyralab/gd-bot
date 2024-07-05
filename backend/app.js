@@ -36,19 +36,26 @@ bot.start(async (ctx) => {
   if (!cachedUserData) {
     try {
       const url = `${process.env.GD_BACKEND_URL}/apiv2/user/create/telegram`;
-
+      
       console.log({
         url,
         userData
       });
 
+      const headers = {
+        'Content-Type': 'application/json',
+        'client-id': process.env.GD_CLIENT_ID,
+        'client-secret': process.env.GD_CLIENT_SECRET
+      };
+
+      // Check if GD_BACKEND_URL is a protocol + IP address
+      if (process.env.GD_BACKEND_HOST) {
+        headers['Host'] = process.env.GD_BACKEND_HOST;
+      }
+
       const response = await fetch(url, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'client-id': process.env.GD_CLIENT_ID,
-          'client-secret': process.env.GD_CLIENT_SECRET
-        },
+        headers: headers,
         body: JSON.stringify(userData)
       });
 
