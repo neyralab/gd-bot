@@ -1,11 +1,5 @@
-import OpenAI from 'openai';
 import callLLMProvider from '../utils/callLLMProvider.js';
 import generateImage from '../utils/generateImage.js';
-
-const openai = new OpenAI({
-  baseURL: 'https://api.neyra.ai/api/v1',
-  apiKey: `${process.env.NEYRA_CHAT_KEY}`
-});
 
 const state = new Map();
 
