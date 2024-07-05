@@ -7,6 +7,7 @@
     "@orbs-network/ton-access": "^2.3.3",
     "@react-three/drei": "^9.108.1",
     "@react-three/fiber": "^8.16.8",
+    "@react-three/postprocessing": "^2.16.2",
     "@reduxjs/toolkit": "^2.2.3",
     "@sentry/cli": "^2.31.0",
     "@sentry/react": "^7.112.2",

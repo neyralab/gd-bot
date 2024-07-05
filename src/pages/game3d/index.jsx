@@ -1,6 +1,5 @@
 /* global BigInt */
 import React, {
-  Suspense,
   useCallback,
   useEffect,
   useMemo,
@@ -32,7 +31,6 @@ import {
   selectExperienceLevel
 } from '../../store/reducers/gameSlice';
 import { Header } from '../../components/header_v2';
-import MainButton from './MainButton/MainButton';
 import Background from '../game/Background/Background';
 import BuyButton from '../game/BuyButton/BuyButton';
 import PointsGrowArea from '../game/PointsGrowArea/PointsGrowArea';
@@ -64,15 +62,15 @@ import {
 import { useQueryId } from '../../effects/contracts/useQueryId';
 import { setUser } from '../../store/reducers/userSlice';
 import Counter from '../game/Counter/Counter';
-import GameCanvas from './GameCanvas/GameCanvas';
+import GameCanvas from './Models/GameCanvas';
 
 export function Game3DPage() {
   const clickSoundRef = useRef(new Audio('/assets/game-page/2blick.wav'));
 
   const backgroundRef = useRef(null);
   const pointsAreaRef = useRef(null);
-  const mainButtonRef = useRef(null);
   const counterRef = useRef(null);
+  const canvasRef = useRef(null);
 
   const dispatch = useDispatch();
   const soundIsActive = useSelector(selectSoundIsActive);
@@ -263,9 +261,9 @@ export function Game3DPage() {
       window?.Telegram?.WebApp?.HapticFeedback?.impactOccurred('soft');
 
       // Run animations
-      mainButtonRef.current?.runAnimation();
       backgroundRef.current?.runAnimation();
       pointsAreaRef.current?.runAnimation();
+      canvasRef.current?.runPushAnimation();
 
       // Run sounds
       if (clickSoundRef.current && !clickSoundRef.current.ended) {
@@ -406,7 +404,7 @@ export function Game3DPage() {
         <div className={styles['content-inner-container']}>
           <div className={styles['canvas-container']}>
             <div className={styles.canvas}>
-              <GameCanvas />
+              <GameCanvas ref={canvasRef} />
             </div>
           </div>
 
@@ -435,9 +433,7 @@ export function Game3DPage() {
                 <PointsGrowArea ref={pointsAreaRef} theme={theme} />
               </div>
 
-              <div className={styles['main-button-inner-container']}>
-                <MainButton ref={mainButtonRef} theme={theme} />
-              </div>
+              <div className={styles['main-button-inner-container']}></div>
 
               <div className={styles.description}>
                 {level - 1 ? <span>X{level - 1}</span> : null}
