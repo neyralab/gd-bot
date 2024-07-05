@@ -330,9 +330,9 @@ export function GamePage() {
     [clickHandler]
   );
 
-  const onCloseTempPreview = () => {
+  const onCloseTempPreview = useCallback(() => {
     setTempPreview(0)
-  }
+  }, [])
 
   const buyCompletedHandler = useCallback(async () => {
     const plan = gamePlans?.find((el) => el.multiplier === theme.multiplier);
