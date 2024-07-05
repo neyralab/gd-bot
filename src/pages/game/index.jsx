@@ -64,7 +64,6 @@ import {
 import { useQueryId } from '../../effects/contracts/useQueryId';
 import { setUser } from '../../store/reducers/userSlice';
 import Counter from './Counter/Counter';
-import { sleep } from '../../utils/sleep';
 
 export function GamePage() {
   const clickSoundRef = useRef(new Audio('/assets/game-page/2blick.wav'));
@@ -95,6 +94,7 @@ export function GamePage() {
   const [contractAddress, setContractAddress] = useState();
   const [gameId, setGameId] = useState();
   const [loading, setLoading] = useState(true);
+  const [txLoading, setTxLoading] = useState(false);
   const [themes, setThemes] = useState([]);
   const [counterIsFinished, setCounterIsFinished] = useState(true);
   const [tempPreview, setTempPreview] = useState(0);
@@ -193,6 +193,19 @@ export function GamePage() {
     [dispatch, status, themeIndex, themes, counterIsFinished]
   );
 
+  const afterBought = useCallback(() => {
+    dispatch(setStatus('waiting'));
+    dispatch(setThemeAccess({ themeId: theme.id, status: true }));
+
+    if (theme.id === 'hawk') {
+      dispatch(setLockTimerTimestamp(null));
+      dispatch(setLockTimeoutId(null));
+    }
+
+    setCounterIsFinished(false);
+    counterRef.current?.start(5);
+  }, [dispatch, theme.id]);
+
   const onBuy = useCallback(
     async (plan) => {
       try {
@@ -206,6 +219,8 @@ export function GamePage() {
         const closedContract = new GDTapBooster(contractAddress);
         const client = new TonClient({ endpoint });
         const contract = client.open(closedContract);
+        console.log({ onBuyPlan: plan });
+        setTxLoading(true);
         await contract.send(
           {
             send: async (args) => {
@@ -222,10 +237,9 @@ export function GamePage() {
               console.log({ data });
               // await sleep(2000);
               const userAddress = Address.parseRaw(wallet.account.address);
-              const purchaseId = await nullValueCheck(() => {
+              let initialValue = await nullValueCheck(() => {
                 return contract.getLatestPurchase(userAddress);
               });
-              let initialValue = purchaseId;
               // Initial value
 
               // Function to get the value
@@ -257,9 +271,11 @@ export function GamePage() {
                   );
                   clearInterval(intervalId);
                   console.log('Interval cleared');
-                  const game = await startGame(Number(purchaseId));
+                  const game = await startGame(Number(currentValue));
                   setGameId(game?.id);
-                  console.log({ PPPPP: purchaseId, game });
+                  console.log({ PPPPP: currentValue, game });
+                  setTxLoading(false);
+                  afterBought();
                 }
               }, 1000); // Check every 1000 ms (1 second)
 
@@ -279,7 +295,7 @@ export function GamePage() {
         return false;
       }
     },
-    [contractAddress, open, queryId, tonConnectUI, wallet]
+    [afterBought, contractAddress, open, queryId, tonConnectUI, wallet]
   );
 
   const clickHandler = useCallback(
@@ -367,8 +383,8 @@ export function GamePage() {
   );
 
   const onCloseTempPreview = useCallback(() => {
-    setTempPreview(0)
-  }, [])
+    setTempPreview(0);
+  }, []);
 
   const buyCompletedHandler = useCallback(async () => {
     const plan = gamePlans?.find((el) => el.multiplier === theme.multiplier);
@@ -377,17 +393,7 @@ export function GamePage() {
     if (!bought) {
       return;
     }
-    dispatch(setStatus('waiting'));
-    dispatch(setThemeAccess({ themeId: theme.id, status: true }));
-
-    if (theme.id === 'hawk') {
-      dispatch(setLockTimerTimestamp(null));
-      dispatch(setLockTimeoutId(null));
-    }
-
-    setCounterIsFinished(false);
-    counterRef.current.start(5);
-  }, [dispatch, gamePlans, onBuy, theme]);
+  }, [gamePlans, onBuy, theme]);
 
   const counterFinishedHandler = async () => {
     setCounterIsFinished(true);
@@ -444,8 +450,12 @@ export function GamePage() {
     }
   }, [status, lockTimerTimestamp, theme.id, themeAccess]);
 
-  if (loading) {
-    return <GhostLoader texts={[]} />;
+  if (loading || txLoading) {
+    return (
+      <GhostLoader
+        texts={txLoading ? ['Waiting for transaction confirmation'] : []}
+      />
+    );
   }
 
   return (
