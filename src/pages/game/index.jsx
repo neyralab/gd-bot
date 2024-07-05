@@ -64,6 +64,7 @@ import {
 import { useQueryId } from '../../effects/contracts/useQueryId';
 import { setUser } from '../../store/reducers/userSlice';
 import Counter from './Counter/Counter';
+import { sleep } from '../../utils/sleep';
 
 export function GamePage() {
   const clickSoundRef = useRef(new Audio('/assets/game-page/2blick.wav'));
@@ -219,6 +220,7 @@ export function GamePage() {
                 validUntil: Date.now() + 60 * 1000 // 5 minutes for user to approve
               });
               console.log({ data });
+              await sleep(2000);
               const userAddress = Address.parseRaw(wallet.account.address);
               const purchaseId = await nullValueCheck(() => {
                 return contract.getLatestPurchase(userAddress);
