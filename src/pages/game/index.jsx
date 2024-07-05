@@ -225,6 +225,41 @@ export function GamePage() {
               const purchaseId = await nullValueCheck(() => {
                 return contract.getLatestPurchase(userAddress);
               });
+              let initialValue = purchaseId;
+              // Initial value
+
+              // Function to get the value
+              const getValue = async () => {
+                // Replace this with your actual getter logic
+                return await nullValueCheck(() => {
+                  return contract.getLatestPurchase(userAddress);
+                });
+              };
+
+              // Set up the interval
+              const intervalId = setInterval(async () => {
+                const currentValue = await getValue();
+
+                // If this is the first run, set the initial value
+                if (initialValue === null) {
+                  initialValue = currentValue;
+                  console.log('Initial value set:', initialValue);
+                  return;
+                }
+
+                // Check if the value has changed
+                if (currentValue !== initialValue) {
+                  console.log(
+                    'Value changed from',
+                    initialValue,
+                    'to',
+                    currentValue
+                  );
+                  clearInterval(intervalId);
+                  console.log('Interval cleared');
+                }
+              }, 1000); // Check every 1000 ms (1 second)
+
               const game = await startGame(Number(purchaseId));
               setGameId(game?.id);
               console.log({ PPPPP: purchaseId, game });
