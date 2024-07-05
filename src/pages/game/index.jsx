@@ -238,14 +238,6 @@ export function GamePage() {
             tierId: plan?.tierId
           }
         );
-        await sleep(2000);
-        const userAddress = Address.parseRaw(wallet.account.address);
-        const purchaseId = await nullValueCheck(() => {
-          return contract.getLatestPurchase(userAddress);
-        });
-        const game = await startGame(Number(purchaseId));
-        setGameId(game?.id);
-        console.log({ PPPPP: purchaseId, game });
         return true;
       } catch (e) {
         console.log({ onBuyError: e });
