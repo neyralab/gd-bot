@@ -2,7 +2,7 @@ import { isiOS } from '../../utils/client';
 
 export const tasks = [
   {
-    id: 'downloadMobileApp',
+    id: 'DOWNLOAD_APP',
     isDone: false,
     title: 'Download App',
     subtitle: '(via telegram login)',
@@ -13,21 +13,21 @@ export const tasks = [
       : 'https://play.google.com/store/apps/details?id=com.wise.data.ghostdrive'
   },
   {
-    id: 'boost',
+    id: 'STORAGE_PURCHASE',
     isDone: false,
     title: 'Boost Storage',
     points: 5000,
     imgUrl: '/assets/rocket.png'
   },
   {
-    id: 'invite',
+    id: 'INVITE_5_FRIENDS',
     isDone: true,
     title: 'Invite 5 Friends',
     points: 5000,
     imgUrl: '/assets/link.png'
   },
   {
-    id: 'upload',
+    id: 'UPLOAD_10_FILES',
     isDone: true,
     title: 'Upload 10 Files',
     points: 1000,
@@ -58,7 +58,7 @@ export const tasks = [
     joinLink: 'https://t.me/ghostdrive_web3_chat'
   },
   {
-    id: 'wallet',
+    id: 'WALLET_CONNECTION',
     isDone: false,
     title: 'Connect Wallet',
     points: 1000,
