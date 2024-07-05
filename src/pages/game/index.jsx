@@ -220,7 +220,7 @@ export function GamePage() {
                 validUntil: Date.now() + 60 * 1000 // 5 minutes for user to approve
               });
               console.log({ data });
-              await sleep(2000);
+              // await sleep(2000);
               const userAddress = Address.parseRaw(wallet.account.address);
               const purchaseId = await nullValueCheck(() => {
                 return contract.getLatestPurchase(userAddress);
