@@ -257,12 +257,12 @@ export function GamePage() {
                   );
                   clearInterval(intervalId);
                   console.log('Interval cleared');
+                  const game = await startGame(Number(purchaseId));
+                  setGameId(game?.id);
+                  console.log({ PPPPP: purchaseId, game });
                 }
               }, 1000); // Check every 1000 ms (1 second)
 
-              const game = await startGame(Number(purchaseId));
-              setGameId(game?.id);
-              console.log({ PPPPP: purchaseId, game });
               return data;
             }
           },
