@@ -17,6 +17,7 @@ import Task from '../../components/Task/Task';
 import EarnModal from './EarnModal/EarnModal';
 
 import styles from './styles.module.css';
+import { checkAllEarnTasks } from '../../effects/EarnEffect';
 
 export default function EarnPage() {
   const [tasks, setTasks] = useState([]);
@@ -31,23 +32,30 @@ export default function EarnPage() {
   const navigate = useNavigate();
 
   const getTasks = async () => {
-    try {
-      const {
-        data: { data: userTasks }
-      } = await getBalanceEffect();
-      const isTgCommunityTaskDone = userTasks.find(
-        (task) =>
-          task.point.id === 18 || task.point.action === 'JOIN_TG_NEWS_CHANNEL'
-      );
-      const updatedTasks = tasksFromFile.map((task) =>
-        task.id === 'joinTG' && isTgCommunityTaskDone
-          ? { ...task, isDone: true }
-          : task
-      );
-      setTasks(updatedTasks);
-    } catch {
-      setTasks(tasksFromFile);
-    }
+    checkAllEarnTasks().then((res) => {
+      if (res) {
+        setTasks(updatedTasks);
+      } else {
+        setTasks([]);
+      }
+    });
+    // try {
+    //   const {
+    //     data: { data: userTasks }
+    //   } = await getBalanceEffect();
+    //   const isTgCommunityTaskDone = userTasks.find(
+    //     (task) =>
+    //       task.point.id === 18 || task.point.action === 'JOIN_TG_NEWS_CHANNEL'
+    //   );
+    //   const updatedTasks = tasksFromFile.map((task) =>
+    //     task.id === 'joinTG' && isTgCommunityTaskDone
+    //       ? { ...task, isDone: true }
+    //       : task
+    //   );
+    //   setTasks(updatedTasks);
+    // } catch {
+    //   setTasks(tasksFromFile);
+    // }
   };
 
   useEffect(() => {
@@ -79,27 +87,28 @@ export default function EarnPage() {
   }, [address, user, user?.wallet, wallet]);
 
   const handleClick = (task) => {
-    switch (task.id) {
+    switch (task.action) {
       case 'youtube':
-      case 'joinTG':
-      case 'followX':
-      case 'downloadMobileApp':
+      case "JOIN_TG_CHANNEL":
+      case "JOIN_TG_NEWS_CHANNEL":
+      case "JOIN_TWITTER":
+      case "DOWNLOAD_APP":
         setModalSelectedTask(task);
         setTimeout(() => {
           modalRef.current.open();
         }, 10);
         break;
 
-      case 'wallet':
+      case "WALLET_CONNECTION":
         address && tonConnectUI.disconnect();
         tonConnectUI.openModal();
         break;
 
-      case 'boost':
+      case "STORAGE_PURCHASE":
         navigate('/boost');
         break;
 
-      case 'upload':
+      case "UPLOAD_10_FILES":
         navigate('/file-upload');
         break;
 

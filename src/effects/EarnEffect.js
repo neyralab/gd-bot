@@ -1,6 +1,17 @@
 import { API_PATH } from '../utils/api-urls';
 import axiosInstance from './axiosInstance';
 
+export const checkAllEarnTasks = async () => {
+  const url = `${API_PATH}/user/earn`;
+
+  try {
+    const { data } = await axiosInstance.get(url);
+    return data.data;
+  } catch (e) {
+    return false;
+  }
+};
+
 export const checkTgJoin = async () => {
   const url = `${API_PATH}/join/tg/channel`;
 
@@ -11,6 +22,7 @@ export const checkTgJoin = async () => {
     return false;
   }
 };
+
 export const checkTgChatJoin = async () => {
   const url = `${API_PATH}/join/tg/chat/channel`;
 
@@ -31,7 +43,7 @@ export const checkYoutubeJoin = async () => {
 
   try {
     const { data } = await axiosInstance.get(url);
-    console.log(data)
+    console.log(data);
     if (data?.message === 'success') {
       return 'success';
     } else {
@@ -41,7 +53,6 @@ export const checkYoutubeJoin = async () => {
     return e?.response?.data?.errors;
   }
 };
-
 
 export const checkXJoin = async () => {
   const url = `${API_PATH}/join/twitter`;
