@@ -43,7 +43,6 @@ export const checkYoutubeJoin = async () => {
 
   try {
     const { data } = await axiosInstance.get(url);
-    console.log(data);
     if (data?.message === 'success') {
       return 'success';
     } else {
