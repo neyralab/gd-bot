@@ -14,4 +14,4 @@ services:
       dockerfile: Dockerfile
     ports:
     - "3003:3000"
-    command: npm run serve
+    command: npm start
