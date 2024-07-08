@@ -130,8 +130,12 @@ bot.start(async (ctx) => {
       }
     );
   } catch (error) {
-    await ctx.reply(`Error: ${error.message}`);
     console.error('Error replyWithPhoto:', error.message);
+    try {
+      await ctx.reply(`Error: ${error.message}`);
+    } catch (e) {
+      console.error('Error replyWithPhoto: after reply err', error);
+    }
   }
 });
 
