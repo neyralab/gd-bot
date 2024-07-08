@@ -36,7 +36,7 @@ bot.start(async (ctx) => {
   if (!cachedUserData) {
     try {
       const url = `${process.env.GD_BACKEND_URL}/apiv2/user/create/telegram`;
-      
+
       console.log({
         url,
         userData
@@ -67,7 +67,11 @@ bot.start(async (ctx) => {
       cachedUserData = await response.json();
       //cache[cacheKey] = cachedUserData;
     } catch (error) {
-      ctx.reply(`Error: ${error.message}`);
+      try {
+        ctx.reply(`Error: ${error.message}`);
+      } catch (e) {
+        console.log('err because of err: ', e);
+      }
       return;
     }
   }
