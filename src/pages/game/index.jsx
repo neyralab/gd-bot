@@ -137,7 +137,7 @@ export function GamePage() {
         return findGame ? { ...findGame, ...theme } : theme;
       });
       setThemes(newThemes);
-      dispatch(setTheme(newThemes.at(0)));
+      dispatch(setTheme(newThemes[0]));
       console.log({ newThemes });
       setLoading(false);
     })();
