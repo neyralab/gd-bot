@@ -95,15 +95,15 @@ export const StartPage = ({ tariffs }) => {
         onClick: () => {
           navigate('/boost');
         }
-      },
-      {
-        Icon: NodeIcon,
-        text: `Nodes`,
-        amount: '',
-        onClick: () => {
-          navigate('/nodes-welcome');
-        }
       }
+      // {
+      //   Icon: NodeIcon,
+      //   text: `Nodes`,
+      //   amount: '',
+      //   onClick: () => {
+      //     navigate('/nodes-welcome');
+      //   }
+      // }
       // {
       //   Icon: UploadFileIcon,
       //   text: 'Upload & Reward',
