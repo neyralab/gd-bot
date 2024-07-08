@@ -15,6 +15,7 @@ import imageFileExtensions, {
   imageMediaTypesPreview,
   imagesWithoutPreview
 } from '../../config/image-file-extensions';
+import useButtonVibration from '../../hooks/useButtonVibration';
 
 import CustomFolderIcon from '../../components/customFileIcon/CustomFolderIcon';
 import CustomFileSmallIcon from '../../components/customFileIcon/CustomFileSmallIcon';
@@ -35,6 +36,7 @@ export const FileItem = ({
   const currentView = useSelector(selectFileView);
   const user = useSelector((state) => state?.user?.data);
   const dispatch = useDispatch();
+  const handleVibrationClick = useButtonVibration();
   const view = fileView || currentView;
   const [preview, setPreview] = useState(null);
   const isFileChecked = file.id === checkedFile.id;
@@ -75,13 +77,15 @@ export const FileItem = ({
     updateFileFavoriteEffect(file.slug, dispatch);
   };
 
+  const onMenuClick = () => callback(file);
+
   const FavButton = (
     <button
       className={cn(
         style.fileMenuButton,
         view === 'grid' ? style.favBtnGrid : style.favBtnList
       )}
-      onClick={toggleFavorite}>
+      onClick={handleVibrationClick(toggleFavorite)}>
       {isFavorite ? <FavoriteActiveIcon /> : <FavoriteIcon />}
     </button>
   );
@@ -89,7 +93,7 @@ export const FileItem = ({
   const MenuButton = (
     <button
       className={cn(style.fileMenuButton, isFileChecked && style.selectedFile)}
-      onClick={() => callback(file)}>
+      onClick={handleVibrationClick(onMenuClick)}>
       <DotsIcon />
     </button>
   );

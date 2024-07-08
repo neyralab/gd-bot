@@ -25,6 +25,7 @@ import { uploadFileEffect } from '../../effects/uploadFileEffect';
 import { autoCompleteSearchEffect } from '../../effects/filesEffects';
 import { transformSize } from '../../utils/transformSize';
 import { fromByteToGb } from '../../utils/storage';
+import useButtonVibration from '../../hooks/useButtonVibration';
 
 import { FileFilterPanel } from '../../components/fileFilterPanel';
 import FileList from './components/FileList';
@@ -51,6 +52,7 @@ export const FilesSystemPage = () => {
   const view = useSelector(selectFileView);
   const [areFilesLoading, setAreFilesLoading] = useState(false);
   const [searchValue, setSearchValue] = useState('');
+  const handleVibrationClick = useButtonVibration();
   const checkedFile = useSelector(selecSelectedFile);
   const types = useSelector(selectFileTypesCount);
   const user = useSelector((state) => state?.user?.data);
@@ -206,7 +208,9 @@ export const FilesSystemPage = () => {
               <GhostIcon />
             </div>
           ) : (
-            <div className={style.search__logo} onClick={onBackButtonClick}>
+            <div
+              className={style.search__logo}
+              onClick={handleVibrationClick(onBackButtonClick)}>
               <BackIcon />
             </div>
           )}
@@ -234,7 +238,7 @@ export const FilesSystemPage = () => {
               <p className={style.listHeader__title}>GHOSTDRIVE</p>
               <button
                 className={style.listHeader__viewBtn}
-                onClick={onFileViewChange}>
+                onClick={handleVibrationClick(onFileViewChange)}>
                 {view === 'grid' ? <ListIcon /> : <GridIcon />}
               </button>
             </div>
@@ -252,12 +256,7 @@ export const FilesSystemPage = () => {
       </section>
       {!areFilesLoading && (
         <div className={style.buttonsWrapper}>
-          {/* <button
-            className={style.buttonsWrapper__square}
-            onClick={onBackButtonClick}>
-            <SquareIcon />
-          </button> */}
-          <div className={style.uploadButton}>
+          <div className={style.uploadButton} onClick={handleVibrationClick()}>
             <input
               name="file"
               id="file"

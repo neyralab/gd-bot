@@ -5,6 +5,9 @@ import React, {
   useMemo
 } from 'react';
 import Modal from 'react-modal';
+
+import useButtonVibration from '../../hooks/useButtonVibration';
+
 import styles from './SystemModal.module.css';
 
 const SystemModal = forwardRef((_, ref) => {
@@ -12,6 +15,7 @@ const SystemModal = forwardRef((_, ref) => {
   const [title, setTitle] = useState('');
   const [text, setText] = useState('');
   const [actions, setActions] = useState([]);
+  const handleVibrationClick = useButtonVibration();
 
   /**  PARAMS:
    * title: string
@@ -24,7 +28,7 @@ const SystemModal = forwardRef((_, ref) => {
     setActions(actions);
     setIsOpen(true);
   };
-  
+
   const close = () => {
     setIsOpen(false);
     setTitle('');
@@ -45,7 +49,7 @@ const SystemModal = forwardRef((_, ref) => {
         <button
           key={el.text}
           className={styles['button-type__' + el.type]}
-          onClick={el.onClick}>
+          onClick={handleVibrationClick(el.onClick)}>
           {el.text}
         </button>
       );
