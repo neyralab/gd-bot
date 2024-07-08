@@ -136,7 +136,13 @@ export const FileItem = ({
           {MenuButton}
           <div className={style.fileListPreview}>
             {preview ? (
-              <img src={preview} alt="file" width={30} height={40} />
+              <img
+                src={preview}
+                alt="file"
+                width={30}
+                height={40}
+                className={style.previewImage}
+              />
             ) : isFolder ? (
               <CustomFolderIcon viewType={view} color={file?.color[0]?.hex} />
             ) : (
