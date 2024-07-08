@@ -49,7 +49,9 @@ export const FileMenu = () => {
 
   const onShareClick = async (e) => {
     e.stopPropagation();
+    dispatch(handleFileMenu(false));
     await updateShareEffect(file.slug);
+    dispatch(setSelectedFile({}));
   };
 
   const onDeleteClick = () => {
