@@ -94,6 +94,7 @@ export function GamePage() {
   const [contractAddress, setContractAddress] = useState();
   const [gameId, setGameId] = useState();
   const [loading, setLoading] = useState(true);
+  const [txLoading, setTxLoading] = useState(false);
   const [themes, setThemes] = useState([]);
   const [counterIsFinished, setCounterIsFinished] = useState(true);
   const [tempPreview, setTempPreview] = useState(0);
@@ -192,6 +193,21 @@ export function GamePage() {
     [dispatch, status, themeIndex, themes, counterIsFinished]
   );
 
+  const afterBought = useCallback(() => {
+    dispatch(setStatus('waiting'));
+    dispatch(setThemeAccess({ themeId: theme.id, status: true }));
+
+    if (theme.id === 'hawk') {
+      dispatch(setLockTimerTimestamp(null));
+      dispatch(setLockTimeoutId(null));
+    }
+
+    setCounterIsFinished(false);
+    setTimeout(() => {
+      counterRef.current?.start(5);
+    }, 100);
+  }, [dispatch, theme.id]);
+
   const onBuy = useCallback(
     async (plan) => {
       try {
@@ -205,6 +221,8 @@ export function GamePage() {
         const closedContract = new GDTapBooster(contractAddress);
         const client = new TonClient({ endpoint });
         const contract = client.open(closedContract);
+        console.log({ onBuyPlan: plan });
+        setTxLoading(true);
         await contract.send(
           {
             send: async (args) => {
@@ -219,13 +237,50 @@ export function GamePage() {
                 validUntil: Date.now() + 60 * 1000 // 5 minutes for user to approve
               });
               console.log({ data });
+              // await sleep(2000);
               const userAddress = Address.parseRaw(wallet.account.address);
-              const purchaseId = await nullValueCheck(() => {
+              let initialValue = await nullValueCheck(() => {
                 return contract.getLatestPurchase(userAddress);
               });
-              const game = await startGame(Number(purchaseId));
-              setGameId(game?.id);
-              console.log({ PPPPP: purchaseId, game });
+              // Initial value
+
+              // Function to get the value
+              const getValue = async () => {
+                // Replace this with your actual getter logic
+                return await nullValueCheck(() => {
+                  return contract.getLatestPurchase(userAddress);
+                });
+              };
+
+              // Set up the interval
+              const intervalId = setInterval(async () => {
+                const currentValue = await getValue();
+
+                // If this is the first run, set the initial value
+                if (initialValue === null) {
+                  initialValue = currentValue;
+                  console.log('Initial value set:', initialValue);
+                  return;
+                }
+
+                // Check if the value has changed
+                if (currentValue !== initialValue) {
+                  console.log(
+                    'Value changed from',
+                    initialValue,
+                    'to',
+                    currentValue
+                  );
+                  clearInterval(intervalId);
+                  console.log('Interval cleared');
+                  const game = await startGame(Number(currentValue));
+                  setGameId(game?.id);
+                  console.log({ PPPPP: currentValue, game });
+                  setTxLoading(false);
+                  afterBought();
+                }
+              }, 1000); // Check every 1000 ms (1 second)
+
               return data;
             }
           },
@@ -242,7 +297,7 @@ export function GamePage() {
         return false;
       }
     },
-    [contractAddress, open, queryId, tonConnectUI, wallet]
+    [afterBought, contractAddress, open, queryId, tonConnectUI, wallet]
   );
 
   const clickHandler = useCallback(
@@ -330,8 +385,8 @@ export function GamePage() {
   );
 
   const onCloseTempPreview = useCallback(() => {
-    setTempPreview(0)
-  }, [])
+    setTempPreview(0);
+  }, []);
 
   const buyCompletedHandler = useCallback(async () => {
     const plan = gamePlans?.find((el) => el.multiplier === theme.multiplier);
@@ -340,17 +395,7 @@ export function GamePage() {
     if (!bought) {
       return;
     }
-    dispatch(setStatus('waiting'));
-    dispatch(setThemeAccess({ themeId: theme.id, status: true }));
-
-    if (theme.id === 'hawk') {
-      dispatch(setLockTimerTimestamp(null));
-      dispatch(setLockTimeoutId(null));
-    }
-
-    setCounterIsFinished(false);
-    counterRef.current.start(5);
-  }, [dispatch, gamePlans, onBuy, theme]);
+  }, [gamePlans, onBuy, theme]);
 
   const counterFinishedHandler = async () => {
     setCounterIsFinished(true);
@@ -407,8 +452,12 @@ export function GamePage() {
     }
   }, [status, lockTimerTimestamp, theme.id, themeAccess]);
 
-  if (loading) {
-    return <GhostLoader texts={[]} />;
+  if (loading || txLoading) {
+    return (
+      <GhostLoader
+        texts={txLoading ? ['Waiting for transaction confirmation'] : []}
+      />
+    );
   }
 
   return (
