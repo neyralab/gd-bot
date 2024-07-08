@@ -41,6 +41,7 @@ async function textHandler(ctx) {
       { parse_mode: 'Markdown' }
     );
   } catch (err) {
+    console.log('textHandler err 1', err);
     if (err.description === 'Bad Request: message is empty') {
       await ctx.telegram.editMessageText(
         thinkingMsg.chat.id,
