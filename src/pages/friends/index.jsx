@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { TelegramShareButton } from 'react-share';
-import { Header } from '../../components/header';
 import Menu from '../../components/Menu/Menu';
 import Task from '../../components/Task/Task';
 import { tasks as tasksFromFile } from './tasks';
@@ -11,6 +10,7 @@ import { getFriends } from '../../effects/friendsEffect';
 import { ReactComponent as LoaderIcon } from '../../assets/loader.svg';
 import { getAllTasks } from '../../effects/balanceEffect';
 import { handleTasks } from '../../store/reducers/taskSlice';
+import useButtonVibration from '../../hooks/useButtonVibration';
 
 export default function FriendsPage() {
   const link = useSelector((state) => state.user.link);
@@ -22,6 +22,7 @@ export default function FriendsPage() {
   const [animatedTaskIds, setAnimatedTaskIds] = useState(new Set());
   const [animatedFriendIds, setAnimatedFriendIds] = useState(new Set());
   const [defaultPoints, setDefaultPoints] = useState('0');
+  const handleVibrationClick = useButtonVibration();
 
   useEffect(() => {
     getAllTasks().then((res) => {
@@ -70,8 +71,6 @@ export default function FriendsPage() {
 
   return (
     <div className={styles.container}>
-      <Header label={'Friends'} />
-
       <div className={styles['title-block']}>
         <img src="/assets/token_friends.png" alt="Token" />
         <h1>Invite friends and Get bonus!</h1>
@@ -128,7 +127,8 @@ export default function FriendsPage() {
       <TelegramShareButton
         className={styles['invite-button']}
         url={link.copy}
-        title={'Invite a friend'}>
+        title={'Invite a friend'}
+        onClick={handleVibrationClick()}>
         <span>Invite a friend</span>
       </TelegramShareButton>
 

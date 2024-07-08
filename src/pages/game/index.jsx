@@ -34,6 +34,7 @@ import { Header } from '../../components/header_v2';
 import MainButton from './MainButton/MainButton';
 import Background from './Background/Background';
 import BuyButton from './BuyButton/BuyButton';
+import TempUpdate from './TempUpdate/TempUpdate';
 import PointsGrowArea from './PointsGrowArea/PointsGrowArea';
 import Timer from './Timer/Timer';
 import Menu from '../../components/Menu/Menu';
@@ -63,6 +64,7 @@ import {
 import { useQueryId } from '../../effects/contracts/useQueryId';
 import { setUser } from '../../store/reducers/userSlice';
 import Counter from './Counter/Counter';
+import useButtonVibration from '../../hooks/useButtonVibration';
 
 export function GamePage() {
   const clickSoundRef = useRef(new Audio('/assets/game-page/2blick.wav'));
@@ -93,8 +95,11 @@ export function GamePage() {
   const [contractAddress, setContractAddress] = useState();
   const [gameId, setGameId] = useState();
   const [loading, setLoading] = useState(true);
+  const [txLoading, setTxLoading] = useState(false);
   const [themes, setThemes] = useState([]);
   const [counterIsFinished, setCounterIsFinished] = useState(true);
+  const [tempPreview, setTempPreview] = useState(0);
+  const handleVibrationClick = useButtonVibration();
 
   const swipeHandlers = useSwipeable({
     onSwipedLeft: (e) => {
@@ -134,7 +139,7 @@ export function GamePage() {
         return findGame ? { ...findGame, ...theme } : theme;
       });
       setThemes(newThemes);
-      dispatch(setTheme(newThemes.at(0)));
+      dispatch(setTheme(newThemes[0]));
       console.log({ newThemes });
       setLoading(false);
     })();
@@ -190,6 +195,21 @@ export function GamePage() {
     [dispatch, status, themeIndex, themes, counterIsFinished]
   );
 
+  const afterBought = useCallback(() => {
+    dispatch(setStatus('waiting'));
+    dispatch(setThemeAccess({ themeId: theme.id, status: true }));
+
+    if (theme.id === 'hawk') {
+      dispatch(setLockTimerTimestamp(null));
+      dispatch(setLockTimeoutId(null));
+    }
+
+    setCounterIsFinished(false);
+    setTimeout(() => {
+      counterRef.current?.start(5);
+    }, 100);
+  }, [dispatch, theme.id]);
+
   const onBuy = useCallback(
     async (plan) => {
       try {
@@ -203,6 +223,8 @@ export function GamePage() {
         const closedContract = new GDTapBooster(contractAddress);
         const client = new TonClient({ endpoint });
         const contract = client.open(closedContract);
+        console.log({ onBuyPlan: plan });
+        setTxLoading(true);
         await contract.send(
           {
             send: async (args) => {
@@ -217,6 +239,50 @@ export function GamePage() {
                 validUntil: Date.now() + 60 * 1000 // 5 minutes for user to approve
               });
               console.log({ data });
+              // await sleep(2000);
+              const userAddress = Address.parseRaw(wallet.account.address);
+              let initialValue = await nullValueCheck(() => {
+                return contract.getLatestPurchase(userAddress);
+              });
+              // Initial value
+
+              // Function to get the value
+              const getValue = async () => {
+                // Replace this with your actual getter logic
+                return await nullValueCheck(() => {
+                  return contract.getLatestPurchase(userAddress);
+                });
+              };
+
+              // Set up the interval
+              const intervalId = setInterval(async () => {
+                const currentValue = await getValue();
+
+                // If this is the first run, set the initial value
+                if (initialValue === null) {
+                  initialValue = currentValue;
+                  console.log('Initial value set:', initialValue);
+                  return;
+                }
+
+                // Check if the value has changed
+                if (currentValue !== initialValue) {
+                  console.log(
+                    'Value changed from',
+                    initialValue,
+                    'to',
+                    currentValue
+                  );
+                  clearInterval(intervalId);
+                  console.log('Interval cleared');
+                  const game = await startGame(Number(currentValue));
+                  setGameId(game?.id);
+                  console.log({ PPPPP: currentValue, game });
+                  setTxLoading(false);
+                  afterBought();
+                }
+              }, 1000); // Check every 1000 ms (1 second)
+
               return data;
             }
           },
@@ -227,21 +293,13 @@ export function GamePage() {
             tierId: plan?.tierId
           }
         );
-
-        const userAddress = Address.parseRaw(wallet.account.address);
-        const purchaseId = await nullValueCheck(() => {
-          return contract.getLatestPurchase(userAddress);
-        });
-        const game = await startGame(Number(purchaseId));
-        setGameId(game?.id);
-        console.log({ PPPPP: purchaseId, game });
         return true;
       } catch (e) {
         console.log({ onBuyError: e });
         return false;
       }
     },
-    [contractAddress, open, queryId, tonConnectUI, wallet]
+    [afterBought, contractAddress, open, queryId, tonConnectUI, wallet]
   );
 
   const clickHandler = useCallback(
@@ -328,6 +386,10 @@ export function GamePage() {
     [clickHandler]
   );
 
+  const onCloseTempPreview = useCallback(() => {
+    setTempPreview(0);
+  }, []);
+
   const buyCompletedHandler = useCallback(async () => {
     const plan = gamePlans?.find((el) => el.multiplier === theme.multiplier);
     console.log({ theme, plan, gamePlans });
@@ -335,17 +397,7 @@ export function GamePage() {
     if (!bought) {
       return;
     }
-    dispatch(setStatus('waiting'));
-    dispatch(setThemeAccess({ themeId: theme.id, status: true }));
-
-    if (theme.id === 'hawk') {
-      dispatch(setLockTimerTimestamp(null));
-      dispatch(setLockTimeoutId(null));
-    }
-
-    setCounterIsFinished(false);
-    counterRef.current.start(5);
-  }, [dispatch, gamePlans, onBuy, theme]);
+  }, [gamePlans, onBuy, theme]);
 
   const counterFinishedHandler = async () => {
     setCounterIsFinished(true);
@@ -364,6 +416,7 @@ export function GamePage() {
     setGameId(undefined);
     endGame({ id: gameId, taps: balance.value })
       .then((data) => {
+        setTempPreview(data?.data - user.points);
         dispatch(setUser({ ...user, points: data?.data || 0 }));
         dispatch(setBalance({ value: 0, label: balance.label }));
       })
@@ -401,8 +454,12 @@ export function GamePage() {
     }
   }, [status, lockTimerTimestamp, theme.id, themeAccess]);
 
-  if (loading) {
-    return <GhostLoader texts={[]} />;
+  if (loading || txLoading) {
+    return (
+      <GhostLoader
+        texts={txLoading ? ['Waiting for transaction confirmation'] : []}
+      />
+    );
   }
 
   return (
@@ -445,6 +502,11 @@ export function GamePage() {
                 <div ref={nextThemeRef} className={styles['next-theme']}>
                   {nextTheme && <MainButton theme={nextTheme} />}
                 </div>
+                <TempUpdate
+                  isActive={!!tempPreview}
+                  counter={tempPreview}
+                  onClose={onCloseTempPreview}
+                />
               </div>
 
               <div className={styles.description}>
@@ -465,7 +527,9 @@ export function GamePage() {
                 {themeIndex !== 0 && (
                   <div
                     className={styles.prev}
-                    onClick={(e) => switchTheme(e, 'prev')}>
+                    onClick={handleVibrationClick((e) =>
+                      switchTheme(e, 'prev')
+                    )}>
                     {'<'}
                   </div>
                 )}
@@ -473,7 +537,9 @@ export function GamePage() {
                 {themeIndex !== themes.length - 1 && (
                   <div
                     className={styles.next}
-                    onClick={(e) => switchTheme(e, 'next')}>
+                    onClick={handleVibrationClick((e) =>
+                      switchTheme(e, 'next')
+                    )}>
                     {'>'}
                   </div>
                 )}

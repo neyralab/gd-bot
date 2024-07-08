@@ -12,6 +12,7 @@ import {
 import { DEFAULT_TARIFFS_NAMES } from '../upgradeStorage';
 import { transformSize } from '../../utils/transformSize';
 import { fromByteToGb } from '../../utils/storage';
+import useButtonVibration from '../../hooks/useButtonVibration';
 
 import GhostLoader from '../../components/ghostLoader';
 import { ConnectTonWalletButton } from '../../components/connectTonWalletButton';
@@ -22,6 +23,7 @@ import { ReactComponent as LeadboardIcon } from '../../assets/leadboard.svg';
 import { ReactComponent as PointsIcon } from '../../assets/point.svg';
 import { ReactComponent as TelegramIcon } from '../../assets/telegram.svg';
 import { ReactComponent as CloudIcon } from '../../assets/cloud.svg';
+import { ReactComponent as NodeIcon } from '../../assets/node.svg';
 import { ReactComponent as DriveIcon } from '../../assets/drive.svg';
 import { ReactComponent as PlayIcon } from '../../assets/play.svg';
 
@@ -34,6 +36,7 @@ export const StartPage = ({ tariffs }) => {
   const user = useSelector((state) => state?.user?.data);
   const navigate = useNavigate();
   const link = useSelector((state) => state.user.link);
+  const handleVibrationClick = useButtonVibration();
 
   const storage = useMemo(() => {
     const size = DEFAULT_TARIFFS_NAMES[user?.space_total] || '1GB';
@@ -92,6 +95,14 @@ export const StartPage = ({ tariffs }) => {
         onClick: () => {
           navigate('/boost');
         }
+      },
+      {
+        Icon: NodeIcon,
+        text: `Nodes`,
+        amount: '',
+        onClick: () => {
+          navigate('/nodes-welcome');
+        }
       }
       // {
       //   Icon: UploadFileIcon,
@@ -135,7 +146,7 @@ export const StartPage = ({ tariffs }) => {
   return (
     <div className={`${style.container} ${style.uploadContainer}`}>
       <header className={style.header_new}>
-        <section onClick={onBalance}>
+        <section onClick={handleVibrationClick(onBalance)}>
           <div className={style.wallet_balance}>
             <p
               className={CN(
@@ -153,7 +164,9 @@ export const StartPage = ({ tariffs }) => {
       <div className={style.list}>
         {list.map((el) => (
           <div key={el.text} className={style.list_element}>
-            <button onClick={el?.onClick} className={style.list_element_button}>
+            <button
+              onClick={handleVibrationClick(el?.onClick)}
+              className={style.list_element_button}>
               <el.Icon />
               <p className={style.list_element_text}>{el.text}</p>
               <span
@@ -169,7 +182,8 @@ export const StartPage = ({ tariffs }) => {
 
         <TelegramShareButton
           url={link.copy}
-          title={'Share this link with friends'}>
+          title={'Share this link with friends'}
+          onClick={handleVibrationClick()}>
           <div className={style.list_element}>
             <button className={style.list_element_button}>
               <TelegramIcon />
@@ -212,18 +226,14 @@ export const StartPage = ({ tariffs }) => {
 
         <footer className={style.footer}>
           <div
-            onClick={() => {
-              navigate('/point-tracker');
-            }}
+            onClick={handleVibrationClick(() => navigate('/point-tracker'))}
             className={style.footer_item}>
             <PointsIcon />
             <span className={style.footer_item_text}>Point Tracker</span>
           </div>
           <div
             className={style.footer_item}
-            onClick={() => {
-              navigate('/leadboard/league');
-            }}>
+            onClick={handleVibrationClick(() => navigate('/leadboard/league'))}>
             <LeadboardIcon />
             <span className={style.footer_item_text}>Leadboard</span>
           </div>

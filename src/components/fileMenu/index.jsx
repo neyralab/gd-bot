@@ -25,12 +25,14 @@ import { ReactComponent as RestoreIcon } from '../../assets/restore.svg';
 
 import cn from 'classnames';
 import style from './style.module.css';
+import useButtonVibration from '../../hooks/useButtonVibration';
 
 export const FileMenu = () => {
   const dispatch = useDispatch();
   const isOpen = useSelector(selectisFileMenuOpen);
   const file = useSelector(selecSelectedFile);
   const location = useLocation();
+  const handleVibrationClick = useButtonVibration();
 
   const url = useMemo(() => {
     return generateSharingLink(file.slug);
@@ -79,7 +81,7 @@ export const FileMenu = () => {
             <TelegramShareButton
               url={url}
               title={`Tap this link to see the file "${file.name}"`}
-              onClick={onShareClick}
+              onClick={handleVibrationClick(onShareClick)}
               className={style.shareOption}>
               <ShareArrowIcon />
               <span className={style.menu__item__title}>Share</span>
@@ -87,12 +89,16 @@ export const FileMenu = () => {
           </li>
         )}
         {isDeletedPage && (
-          <li className={style.menu__item} onClick={onRestoreClick}>
+          <li
+            className={style.menu__item}
+            onClick={handleVibrationClick(onRestoreClick)}>
             <RestoreIcon />
             <span className={style.menu__item__title}>Restore</span>
           </li>
         )}
-        <li className={style.menu__item} onClick={onDeleteClick}>
+        <li
+          className={style.menu__item}
+          onClick={handleVibrationClick(onDeleteClick)}>
           <DeleteIcon />
           <span className={cn(style.menu__item__title, style.deleteTitle)}>
             {isDeletedPage ? 'Delete permanently' : 'Delete'}

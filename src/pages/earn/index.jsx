@@ -1,18 +1,18 @@
 import React, { useState, useEffect, useRef } from 'react';
 import {
   useTonAddress,
-  useTonConnectModal,
+  useTonConnectUI,
   useTonWallet
 } from '@tonconnect/ui-react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { TelegramShareButton } from 'react-share';
 
-import { getBalanceEffect } from '../../effects/balanceEffect';
 import { tasks as tasksFromFile } from './tasks';
 import { saveUserWallet } from '../../effects/userEffects';
+import { checkAllEarnTasks } from '../../effects/EarnEffect';
+import useButtonVibration from '../../hooks/useButtonVibration';
 
-import { Header } from '../../components/header';
 import Menu from '../../components/Menu/Menu';
 import Task from '../../components/Task/Task';
 import EarnModal from './EarnModal/EarnModal';
@@ -24,30 +24,44 @@ export default function EarnPage() {
   const [animatedTaskIds, setAnimatedTaskIds] = useState(new Set());
   const modalRef = useRef(null);
   const [modalSelectedTask, setModalSelectedTask] = useState(null);
-  const tonActions = useTonConnectModal();
+  const [tonConnectUI] = useTonConnectUI();
   const address = useTonAddress(true);
   const wallet = useTonWallet();
   const user = useSelector((state) => state.user.data);
   const link = useSelector((state) => state.user.link);
   const navigate = useNavigate();
+  const handleVibrationClick = useButtonVibration();
 
   const getTasks = async () => {
     try {
-      const {
-        data: { data: userTasks }
-      } = await getBalanceEffect();
-      const isTgCommunityTaskDone = userTasks.find(
-        (task) =>
-          task.point.id === 18 || task.point.action === 'JOIN_TG_NEWS_CHANNEL'
-      );
-      const updatedTasks = tasksFromFile.map((task) =>
-        task.id === 'joinTG' && isTgCommunityTaskDone
-          ? { ...task, isDone: true }
-          : task
-      );
-      setTasks(updatedTasks);
-    } catch {
-      setTasks(tasksFromFile);
+      const res = await checkAllEarnTasks();
+      /** In this code you will see both backand and frontend hardcoded tasks
+       * Hardcoded have img, title, some other props that are needed in frontend.
+       * So here those 2 arrays are combined.
+       * It takes the hardcoded frontend array with its order,
+       * and updates the information the code require
+       */
+      if (res) {
+        const filteredTasks = tasksFromFile.filter((task) =>
+          res.some((el) => task.id === el.action)
+        );
+
+        const updatedTasks = filteredTasks.map((task) => {
+          const serverTask = res.find((el) => task.id === el.action);
+          return {
+            ...task,
+            id: serverTask.action,
+            points: serverTask.amount,
+            isDone: serverTask.earn === 1
+          };
+        });
+        setTasks(updatedTasks);
+      } else {
+        setTasks([]);
+      }
+    } catch (error) {
+      console.error('Error fetching tasks:', error);
+      setTasks([]);
     }
   };
 
@@ -66,7 +80,7 @@ export default function EarnPage() {
   }, [tasks]);
 
   useEffect(() => {
-    if (!user?.wallet && address && wallet) {
+    if (user !== null && !user.wallet && address && wallet) {
       (async () => {
         const res = await saveUserWallet({
           account: {
@@ -74,32 +88,34 @@ export default function EarnPage() {
             uiAddress: address
           }
         });
-        console.log({ res });
+        getTasks();
+        console.log({ saveUserWallet: res });
       })();
     }
-  }, [address, user?.wallet, wallet]);
+  }, [address, user, user?.wallet, wallet]);
 
   const handleClick = (task) => {
     switch (task.id) {
-      case 'youtube':
-      case 'joinTG':
-      case 'followX':
-      case 'downloadMobileApp':
+      case 'JOIN_YOUTUBE':
+      case 'JOIN_TG_CHANNEL':
+      case 'JOIN_TWITTER':
+      case 'DOWNLOAD_APP':
         setModalSelectedTask(task);
         setTimeout(() => {
           modalRef.current.open();
         }, 10);
         break;
 
-      case 'wallet':
-        tonActions.open();
+      case 'WALLET_CONNECTION':
+        address && tonConnectUI.disconnect();
+        tonConnectUI.openModal();
         break;
 
-      case 'boost':
+      case 'STORAGE_PURCHASE':
         navigate('/boost');
         break;
 
-      case 'upload':
+      case 'UPLOAD_10_FILES':
         navigate('/file-upload');
         break;
 
@@ -111,8 +127,6 @@ export default function EarnPage() {
 
   return (
     <div className={styles.container}>
-      <Header label={'Earn'} />
-
       <div className={styles['title-block']}>
         <img src="/assets/token.png" alt="Token" />
         <h1>Earn more points</h1>
@@ -121,27 +135,30 @@ export default function EarnPage() {
       <div className={styles['tasks-list']}>
         {tasks.map((task) => {
           if (animatedTaskIds.has(task.id)) {
-            return task.id === 'invite' ? (
+            return task.id === 'INVITE_5_FRIENDS' ? (
               <TelegramShareButton
                 url={link.copy}
                 key={task.id}
-                title={'Share this link with friends'}>
+                title={'Share this link with friends'}
+                onClick={handleVibrationClick()}>
                 <Task
                   onClick={() => handleClick(task)}
                   isDone={task.isDone}
                   title={task.title}
                   points={task.points}
                   imgUrl={task.imgUrl}
+                  onTasksRequireCheck={getTasks}
                 />
               </TelegramShareButton>
             ) : (
               <Task
                 key={task.id}
-                onClick={() => handleClick(task)}
+                onClick={handleVibrationClick(() => handleClick(task))}
                 isDone={task.isDone}
                 title={task.title}
                 points={task.points}
                 imgUrl={task.imgUrl}
+                onTasksRequireCheck={getTasks}
               />
             );
           } else {

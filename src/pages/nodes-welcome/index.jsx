@@ -3,8 +3,11 @@ import { Header } from '../../components/header';
 import styles from './styles.module.css';
 import { NavLink } from 'react-router-dom';
 import useTypingEffect from '../../utils/useTypingEffect';
+import useButtonVibration from '../../hooks/useButtonVibration';
 
 export default function NodesWelcomePage() {
+  const handleVibrationClick = useButtonVibration();
+
   const typingDescription = useTypingEffect(
     `Are you ready to be at the forefront of the decentralized storage revolution? Invest in a Ghost Drive Node and reap the benefits of our cutting-edge technology and robust network.`,
     10,
@@ -26,7 +29,10 @@ export default function NodesWelcomePage() {
         </div>
       </div>
 
-      <NavLink className={styles.button} to={'/nodes'}>
+      <NavLink
+        className={styles.button}
+        to={'/nodes'}
+        onClick={handleVibrationClick()}>
         Dashboard
       </NavLink>
     </div>
