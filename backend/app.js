@@ -68,7 +68,7 @@ bot.start(async (ctx) => {
       //cache[cacheKey] = cachedUserData;
     } catch (error) {
       try {
-        ctx.reply(`Error: ${error.message}`);
+        await ctx.reply(`Error: ${error.message}`);
       } catch (e) {
         console.log('err because of err: ', e);
       }
