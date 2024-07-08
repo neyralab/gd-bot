@@ -414,7 +414,7 @@ export function GamePage() {
     setGameId(undefined);
     endGame({ id: gameId, taps: balance.value })
       .then((data) => {
-        setTempPreview(balance.value);
+        setTempPreview(data?.data - user.points);
         dispatch(setUser({ ...user, points: data?.data || 0 }));
         dispatch(setBalance({ value: 0, label: balance.label }));
       })
