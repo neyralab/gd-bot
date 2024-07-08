@@ -1,33 +1,33 @@
-import React, { useEffect, memo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import classNames from 'classnames';
-
-import styles from './TempUpdate.module.css';
+import { useSelector } from 'react-redux';
+import styles from './EndGameAddedPoints.module.css';
 
 const TIME_OUT = 6000;
 
-const TempUpdate = ({ isActive, counter, onClose }) => {
-  const [show, setShow] = useState(true);
+const EndGameAddedPoints = () => {
+  const isActive = useSelector((state) => state.game.roundFinal.isActive);
+  const counter = useSelector((state) => state.game.roundFinal.roundPoints);
+
+  const [show, setShow] = useState(false);
   const [currentCounter, setCrrentCounter] = useState(0);
 
   useEffect(() => {
     if (isActive) {
-      const id = setTimeout(() => {
-        onClose();
-        setShow(true);
-      }, TIME_OUT)
+      setShow(true);
 
-      const secondId = setTimeout(() => {
+      const timeout = setTimeout(() => {
         setShow(false);
-      }, TIME_OUT - 1000)
+      }, TIME_OUT);
 
       return () => {
-        clearTimeout(id);
-        clearTimeout(secondId)
-      }
+        clearTimeout(timeout);
+      };
+    } else {
+      setShow(false);
     }
   }, [isActive]);
 
-  
   useEffect(() => {
     if (isActive && currentCounter < counter) {
       const increment = counter / 100; // increment value per step
@@ -42,12 +42,14 @@ const TempUpdate = ({ isActive, counter, onClose }) => {
     }
   }, [currentCounter, counter, isActive]);
 
+  if (!show) return;
+
   return (
-    <div className={classNames(styles['temp-update'], (isActive && show) && styles['temp-active'])}>
+    <div className={styles.container}>
       <p className={styles.count}>{currentCounter}</p>
       <span className={styles[`points-text`]}>points</span>
     </div>
   );
-}
+};
 
-export default memo(TempUpdate)
+export default EndGameAddedPoints;

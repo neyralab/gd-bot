@@ -6,10 +6,13 @@ import React, {
 } from 'react';
 import classNames from 'classnames';
 import { useSelector } from 'react-redux';
-import { selectNextTheme } from '../../../store/reducers/gameSlice';
+import {
+  selectNextTheme,
+  selectTheme
+} from '../../../store/reducers/gameSlice';
 import styles from './Background.module.css';
 
-const Background = forwardRef(({ theme }, ref) => {
+const Background = forwardRef((_, ref) => {
   const starsRef = useRef(null);
   const glowRef = useRef(null);
   const object1Ref = useRef(null);
@@ -22,6 +25,7 @@ const Background = forwardRef(({ theme }, ref) => {
   const lastClickTimeRef = useRef(Date.now()); // I'm using ref instead of useState ON PURPOSE! It won't work with useState because of js closures in animate function
   const thenRef = useRef(Date.now());
 
+  const theme = useSelector(selectTheme);
   const nextTheme = useSelector(selectNextTheme);
 
   const maxSpeed = 1;

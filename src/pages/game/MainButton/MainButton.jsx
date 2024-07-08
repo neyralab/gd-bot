@@ -1,4 +1,9 @@
-import React, { useRef, useImperativeHandle, forwardRef, useEffect } from 'react';
+import React, {
+  useRef,
+  useImperativeHandle,
+  forwardRef,
+  useEffect
+} from 'react';
 import classNames from 'classnames';
 import styles from './MainButton.module.css';
 

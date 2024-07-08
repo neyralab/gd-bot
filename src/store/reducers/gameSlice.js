@@ -1,12 +1,29 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import themes from '../../pages/game/themes';
+import defaultThemes from '../../pages/game/themes';
 import levels from '../../pages/game/levels';
+import {
+  beforeGame,
+  endGame,
+  gameLevels,
+  getGameContractAddress,
+  getGameInfo,
+  getGamePlans,
+  startGame
+} from '../../effects/gameEffect';
+import { setUser } from './userSlice';
 
 const gameSlice = createSlice({
   name: 'game',
   initialState: {
+    isInitializing: false,
+    isInitialized: false,
+    contractAddress: null,
+    gameId: null,
+    themes: [],
+    isTransactionLoading: false,
     status: 'finished', // 'waiting', 'playing', 'finished';
-    theme: themes[0],
+    theme: null,
+    themeIndex: null,
     levels: [],
     themeAccess: {
       hawk: true,
@@ -18,17 +35,40 @@ const gameSlice = createSlice({
     experienceLevel: 1,
     experiencePoints: 0,
     reachedNewLevel: false,
-    // soundIsActive: localStorage.getItem('gameSound')
-    //   ? localStorage.getItem('gameSound') === 'true'
-    //   : true,
-    soundIsActive: false,
     roundTimerTimestamp: null,
     roundTimeoutId: null,
     lockTimerTimestamp: null,
     lockTimeoutId: null,
+    counter: {
+      isActive: false,
+      count: null,
+      isFinished: true
+    },
+    roundFinal: {
+      isActive: false,
+      roundPoints: null
+    },
     nextTheme: null // for animation purposes only
   },
   reducers: {
+    setIsInitializing: (state, { payload }) => {
+      state.isInitializing = payload;
+    },
+    setIsInitialized: (state, { payload }) => {
+      state.isInitialized = payload;
+    },
+    setContractAddress: (state, { payload }) => {
+      state.contractAddress = payload;
+    },
+    setThemes: (state, { payload }) => {
+      state.themes = payload;
+    },
+    setGameId: (state, { payload }) => {
+      state.gameId = payload;
+    },
+    setIsTransactionLoading: (state, { payload }) => {
+      state.isTransactionLoading = payload;
+    },
     setStatus: (state, { payload }) => {
       state.status = payload;
     },
@@ -37,13 +77,22 @@ const gameSlice = createSlice({
     },
     setTheme: (state, { payload }) => {
       state.theme = payload;
+
+      if (payload && state.themes && state.themes.length) {
+        state.themeIndex =
+          state.themes.findIndex((t) => t.id === state.theme.id) || 0;
+      } else {
+        state.themeIndex = null;
+      }
     },
     setBalance: (state, { payload }) => {
       state.balance = payload;
     },
-    setSoundIsActive: (state, { payload }) => {
-      state.soundIsActive = payload;
-      localStorage.setItem('gameSound', payload);
+    addBalance: (state, { payload }) => {
+      state.balance = {
+        label: state.balance.label + payload,
+        value: state.balance.value + payload
+      };
     },
     setRoundTimerTimestamp: (state, { payload }) => {
       state.roundTimerTimestamp = payload;
@@ -73,35 +122,147 @@ const gameSlice = createSlice({
     },
     setNextTheme: (state, { payload }) => {
       state.nextTheme = payload;
+    },
+    setCounterIsActive: (state, { payload }) => {
+      state.counter.isActive = payload;
+    },
+    setCounterCount: (state, { payload }) => {
+      state.counter.count = payload;
+    },
+    setCounterIsFinished: (state, { payload }) => {
+      state.counter.isFinished = payload;
+    },
+    setRoundFinal: (state, { payload }) => {
+      state.roundFinal = payload;
     }
   }
 });
 
+const lockTimerCountdown = (dispatch, endTime, freezeTime) => {
+  /** endTime is a timestamp, when the game is suppose to be ended */
+  /** freezeTime is an amount of milliseconds for timer to stop */
+
+  dispatch(setLockTimerTimestamp(endTime));
+
+  const timeoutId = setTimeout(() => {
+    dispatch(setLockTimerTimestamp(null));
+    dispatch(setLockTimeoutId(null));
+    dispatch(setStatus('waiting'));
+    dispatch(setThemeAccess({ themeId: 'hawk', status: true }));
+  }, freezeTime);
+
+  dispatch(setLockTimeoutId(timeoutId));
+};
+
+export const initGame = createAsyncThunk(
+  'game/initGame',
+  async (_, { dispatch }) => {
+    dispatch(setIsInitializing(true));
+    dispatch(setIsInitialized(false));
+
+    try {
+      const [levels, gameInfo, cAddress, games] = await Promise.all([
+        gameLevels(),
+        getGameInfo(),
+        getGameContractAddress(),
+        getGamePlans()
+      ]);
+
+      dispatch(setLevels(levels));
+      dispatch(setBalance({ label: gameInfo.points, value: 0 }));
+      dispatch(setExperiencePoints(gameInfo.points));
+      dispatch(setContractAddress(cAddress));
+
+      const now = Date.now();
+      if (now <= gameInfo.game_ends_at) {
+        dispatch(setStatus('finished'));
+
+        const endTime = gameInfo.game_ends_at;
+        const freezeTime = endTime - Date.now();
+        lockTimerCountdown(dispatch, endTime, freezeTime);
+      } else {
+        dispatch(setStatus('waiting'));
+      }
+
+      const newThemes = defaultThemes.map((theme) => {
+        const { ton_price, tierIdBN, tierId, ...findGame } = games.find(
+          (game) => game.multiplier === theme.multiplier
+        );
+        return findGame ? { ...findGame, ...theme } : theme;
+      });
+
+      dispatch(setThemes(newThemes));
+      dispatch(setTheme(newThemes[0]));
+
+      dispatch(setIsInitializing(false));
+      dispatch(setIsInitialized(true));
+    } catch (error) {
+      console.log('Error', error);
+      dispatch(setIsInitializing(false));
+      dispatch(setIsInitialized(false));
+    }
+  }
+);
+
 export const startRound = createAsyncThunk(
   'game/startRound',
   async (_, { dispatch, getState }) => {
+    setRoundFinal({ roundPoins: null, isActive: false });
     dispatch(setRoundTimeoutId(null));
     dispatch(setStatus('playing'));
     const state = getState();
     const level = selectLevel(state);
     const gameTime = level?.play_time * 1000;
 
-    const endTime = Date.now() + gameTime; // 30 sec from now
+    const endTime = Date.now() + gameTime;
     dispatch(setRoundTimerTimestamp(endTime));
 
     const timeoutId = setTimeout(() => {
-      const state = getState();
-      dispatch(setStatus('finished'));
-      dispatch(setRoundTimerTimestamp(null));
-      dispatch(setRoundTimeoutId(null));
-      dispatch(setThemeAccess({ themeId: state.game.theme.id, status: false }));
-
-      if (state.game.theme.id === 'hawk') {
-        dispatch(startNewFreeGameCountdown());
-      }
-    }, gameTime); // 30 sec in milliseconds
+      dispatch(finishRound());
+    }, gameTime);
 
     dispatch(setRoundTimeoutId(timeoutId));
+
+    if (state.game.theme.multiplier === 1) {
+      const game = await beforeGame(null, 1);
+      const g = await startGame(game.uuid || game.id, null);
+      dispatch(setGameId(game?.uuid || game?.id));
+    }
+  }
+);
+
+export const finishRound = createAsyncThunk(
+  'game/finishRound',
+  async (_, { dispatch, getState }) => {
+    const state = getState();
+
+    const gameId = state.game.gameId;
+
+    dispatch(setStatus('finished'));
+    dispatch(setRoundTimerTimestamp(null));
+    dispatch(setRoundTimeoutId(null));
+    dispatch(setThemeAccess({ themeId: state.game.theme.id, status: false }));
+    dispatch(setGameId(null));
+
+    if (state.game.theme.id === 'hawk') {
+      dispatch(startNewFreeGameCountdown());
+    }
+
+    endGame({ id: gameId, taps: state.game.balance.value })
+      .then((data) => {
+        dispatch(
+          setRoundFinal({
+            roundPoints: state.game.balance.value,
+            isActive: true
+          })
+        );
+        dispatch(setUser({ ...state.user.data, points: data?.data || 0 }));
+        dispatch(setBalance({ value: 0, label: state.game.balance.label }));
+      })
+      .catch((err) => {
+        alert(JSON.stringify(err?.response.data) || 'Something went wrong!');
+        console.log({ endGameErr: err, m: err?.response.data });
+      });
   }
 );
 
@@ -113,18 +274,8 @@ export const startNewFreeGameCountdown = createAsyncThunk(
     dispatch(setThemeAccess({ themeId: 'hawk', status: false }));
     const level = selectLevel(state);
     const freezeTime = level?.recharge_mins * 60 * 1000;
-
-    const endTime = Date.now() + freezeTime; // 15 min from now
-    dispatch(setLockTimerTimestamp(endTime));
-
-    const timeoutId = setTimeout(() => {
-      dispatch(setLockTimerTimestamp(null));
-      dispatch(setLockTimeoutId(null));
-      dispatch(setStatus('waiting'));
-      dispatch(setThemeAccess({ themeId: 'hawk', status: true }));
-    }, freezeTime); // 15 min from now milliseconds
-
-    dispatch(setLockTimeoutId(timeoutId));
+    const endTime = Date.now() + freezeTime;
+    lockTimerCountdown(dispatch, endTime, freezeTime);
   }
 );
 
@@ -174,11 +325,52 @@ export const confirmNewlevel = createAsyncThunk(
   }
 );
 
+export const startCountdown = createAsyncThunk(
+  'game/startCountdown',
+  async ({ seconds, startNextRound }, { dispatch, getState }) => {
+    const state = getState();
+    if (state.game.counter.isActive) return;
+
+    dispatch(setCounterIsActive(true));
+    dispatch(setCounterCount(seconds));
+    dispatch(setCounterIsFinished(false));
+
+    let innerCount = seconds;
+
+    let intervalId;
+
+    intervalId = setInterval(() => {
+      let prevCount = innerCount;
+      let newCount = prevCount - 1;
+      newCount = newCount < 1 ? 0 : newCount;
+
+      if (prevCount <= 1) {
+        clearInterval(intervalId);
+        dispatch(setCounterIsFinished(true));
+        if (startNextRound) {
+          dispatch(startRound());
+        }
+        setTimeout(() => {
+          dispatch(setCounterIsActive(false));
+        }, 2000);
+      }
+      dispatch(setCounterCount(newCount));
+      innerCount = newCount;
+    }, 1000);
+  }
+);
+
 export const {
+  setIsInitializing,
+  setIsInitialized,
+  setContractAddress,
+  setThemes,
+  setGameId,
+  setIsTransactionLoading,
   setStatus,
   setTheme,
   setBalance,
-  setSoundIsActive,
+  addBalance,
   setRoundTimerTimestamp,
   setRoundTimeoutId,
   setLockTimerTimestamp,
@@ -188,15 +380,26 @@ export const {
   setExperiencePoints,
   setReachedNewLevel,
   setNextTheme,
-  setLevels
+  setLevels,
+  setCounterIsActive,
+  setCounterCount,
+  setCounterIsFinished,
+  setRoundFinal
 } = gameSlice.actions;
 export default gameSlice.reducer;
 
+export const selectIsInitialized = (state) => state.game.isInitialized;
+export const selectIsInitializing = (state) => state.game.isInitializing;
+export const selectIsTransactionLoading = (state) =>
+  state.game.isTransactionLoading;
+export const selectContractAddress = (state) => state.game.contractAddress;
+export const selectGameId = (state) => state.game.gameId;
 export const selectStatus = (state) => state.game.status;
 export const selectTheme = (state) => state.game.theme;
+export const selectThemes = (state) => state.game.themes;
+export const selectThemeIndex = (state) => state.game.themeIndex;
 export const selectThemeAccess = (state) => state.game.themeAccess;
 export const selectBalance = (state) => state.game.balance;
-export const selectSoundIsActive = (state) => state.game.soundIsActive;
 export const selectRoundTimerTimestamp = (state) =>
   state.game.roundTimerTimestamp;
 export const selectLockTimerTimestamp = (state) =>
