@@ -1,0 +1,40 @@
+.slider-card {
+  padding: 16px;
+  border-radius: 12px;
+  background: #0f0f0f;
+  margin-bottom: 16px;
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+  min-height: 152px;
+  position: absolute;
+  top: 0;
+  transition: transform 0.5s ease-out;
+  z-index: 1;
+  transform: translateX(-100%);
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.slider-header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.slider-title {
+  font-family: 'SF Pro Text';
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 36px;
+  letter-spacing: 0.02em;
+}
+
+.slider-action {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 32px;
+  height: 32px;
+}

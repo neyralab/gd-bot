@@ -1,0 +1,74 @@
+.navigator {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  background-color: #151517;
+  border-radius: 10px;
+  margin-top: 20px;
+}
+
+.navigat-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 11px 16px;
+  height: 54px;
+}
+
+.navigat-left {
+  display: flex;
+  gap: 14px;
+}
+
+.navigat-icon {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.actionBtn {
+  height: 28px;
+  min-width: 60px;
+  font-family: 'SF Pro Text';
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 17px;
+  text-align: center;
+  background-color: #36363B;
+  padding: 6px 16px;
+  border-radius: 23px;
+  color: #CECED8;
+}
+
+.addBtn {
+  background-color: #FFFFFF;
+  color: #000000;
+}
+
+.playBtn {
+  background-color: #BFFB50;
+  color: #000000;
+}
+
+.to-appear {
+  opacity: 0;
+  transform: scale(0);
+  animation: AppearAnim 0.5s ease-out forwards;
+}
+
+@keyframes AppearAnim {
+  0% {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  70% {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
