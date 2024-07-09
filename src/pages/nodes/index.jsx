@@ -25,6 +25,7 @@ import sliderItems from './SliderItem/sliderItems';
 import SliderItem from './SliderItem/SliderItem';
 import styles from './styles.module.css';
 import { useSelector } from 'react-redux';
+import useButtonVibration from '../../hooks/useButtonVibration';
 
 const NFT_ADDRESS = 'EQCiIzRXoCr1XLrN7_A-ez8-chFbzHq4fZGBRbwFfQt93AGc';
 const allNodes = 10000;
@@ -38,6 +39,7 @@ export default function NodesPage() {
   const [connected, setConnected] = useState(false);
   const contract = useContract(NFT_ADDRESS, NftCollection);
   const user = useSelector((state) => state.user.data);
+  const handleVibrationClick = useButtonVibration();
 
   useEffect(() => {
     refererEffect().then((data) => {
@@ -190,7 +192,7 @@ export default function NodesPage() {
             <div className={styles['buy-container__flex-right']}>
               <button
                 type={'button'}
-                onClick={onBuyNode}
+                onClick={handleVibrationClick(onBuyNode)}
                 className={styles['buy-button']}>
                 Buy
               </button>

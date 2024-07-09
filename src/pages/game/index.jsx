@@ -59,11 +59,13 @@ import {
   getGameContractAddress,
   getGameInfo,
   getGamePlans,
+  beforeGame,
   startGame
 } from '../../effects/gameEffect';
 import { useQueryId } from '../../effects/contracts/useQueryId';
 import { setUser } from '../../store/reducers/userSlice';
 import Counter from './Counter/Counter';
+import useButtonVibration from '../../hooks/useButtonVibration';
 
 export function GamePage() {
   const clickSoundRef = useRef(new Audio('/assets/game-page/2blick.wav'));
@@ -98,6 +100,7 @@ export function GamePage() {
   const [themes, setThemes] = useState([]);
   const [counterIsFinished, setCounterIsFinished] = useState(true);
   const [tempPreview, setTempPreview] = useState(0);
+  const handleVibrationClick = useButtonVibration();
 
   const swipeHandlers = useSwipeable({
     onSwipedLeft: (e) => {
@@ -137,7 +140,7 @@ export function GamePage() {
         return findGame ? { ...findGame, ...theme } : theme;
       });
       setThemes(newThemes);
-      dispatch(setTheme(newThemes.at(0)));
+      dispatch(setTheme(newThemes[0]));
       console.log({ newThemes });
       setLoading(false);
     })();
@@ -217,12 +220,17 @@ export function GamePage() {
         if (!contractAddress && !plan) {
           return;
         }
+        dispatch(setStatus('waiting'));
         const endpoint = await getHttpEndpoint();
         const closedContract = new GDTapBooster(contractAddress);
         const client = new TonClient({ endpoint });
         const contract = client.open(closedContract);
         console.log({ onBuyPlan: plan });
         setTxLoading(true);
+        const pendingGame = await beforeGame(null, Number(plan.tierId));
+        console.log({ pendingGame });
+        setGameId(pendingGame?.uuid || pendingGame.id);
+
         await contract.send(
           {
             send: async (args) => {
@@ -255,7 +263,7 @@ export function GamePage() {
               // Set up the interval
               const intervalId = setInterval(async () => {
                 const currentValue = await getValue();
-
+                console.log({ currentValue, initialValue });
                 // If this is the first run, set the initial value
                 if (initialValue === null) {
                   initialValue = currentValue;
@@ -273,8 +281,11 @@ export function GamePage() {
                   );
                   clearInterval(intervalId);
                   console.log('Interval cleared');
-                  const game = await startGame(Number(currentValue));
-                  setGameId(game?.id);
+                  const game = await startGame(
+                    pendingGame.uuid || pendingGame.id,
+                    Number(currentValue)
+                  );
+                  setGameId(game.uuid || game?.id);
                   console.log({ PPPPP: currentValue, game });
                   setTxLoading(false);
                   afterBought();
@@ -288,7 +299,8 @@ export function GamePage() {
           {
             $$type: 'Boost',
             queryId,
-            tierId: plan?.tierId
+            tierId: plan?.tierId,
+            gameId: pendingGame.uuid
           }
         );
         return true;
@@ -297,7 +309,15 @@ export function GamePage() {
         return false;
       }
     },
-    [afterBought, contractAddress, open, queryId, tonConnectUI, wallet]
+    [
+      afterBought,
+      contractAddress,
+      dispatch,
+      open,
+      queryId,
+      tonConnectUI,
+      wallet
+    ]
   );
 
   const clickHandler = useCallback(
@@ -316,8 +336,10 @@ export function GamePage() {
       if (status === 'waiting') {
         dispatch(startRound());
         if (theme.multiplier === 1) {
-          const game = await startGame(null);
-          setGameId(game?.id);
+          const game = await beforeGame(null, 1);
+          const g = await startGame(game.uuid || game.id, null);
+          console.log({ g });
+          setGameId(game?.uuid || game?.id);
         }
       }
 
@@ -401,8 +423,10 @@ export function GamePage() {
     setCounterIsFinished(true);
     dispatch(startRound());
     if (theme.multiplier === 1) {
-      const game = await startGame(null);
-      setGameId(game?.id);
+      const game = await beforeGame(null, 1);
+      const g = await startGame(game.uuid || game.id, null);
+      console.log({ counterFinishedHandler: g });
+      setGameId(game?.uuid || game?.id);
     }
   };
 
@@ -423,6 +447,8 @@ export function GamePage() {
         console.log({ endGameErr: err, m: err?.response.data });
       });
   }, [balance.label, balance.value, dispatch, gameId, user]);
+
+  console.log({ gameId, status });
 
   useEffect(() => {
     if (gameId && status === 'finished') {
@@ -525,7 +551,9 @@ export function GamePage() {
                 {themeIndex !== 0 && (
                   <div
                     className={styles.prev}
-                    onClick={(e) => switchTheme(e, 'prev')}>
+                    onClick={handleVibrationClick((e) =>
+                      switchTheme(e, 'prev')
+                    )}>
                     {'<'}
                   </div>
                 )}
@@ -533,7 +561,9 @@ export function GamePage() {
                 {themeIndex !== themes.length - 1 && (
                   <div
                     className={styles.next}
-                    onClick={(e) => switchTheme(e, 'next')}>
+                    onClick={handleVibrationClick((e) =>
+                      switchTheme(e, 'next')
+                    )}>
                     {'>'}
                   </div>
                 )}

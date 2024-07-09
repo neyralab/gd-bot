@@ -10,6 +10,7 @@ import {
   setFileTypesCount
 } from '../../store/reducers/filesSlice';
 import { getFileTypesCountEffect } from '../../effects/storageEffects';
+import useButtonVibration from '../../hooks/useButtonVibration';
 
 import icons from './assets';
 
@@ -20,6 +21,7 @@ export const FileFilterPanel = () => {
   const types = useSelector(selectFileTypesCount);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const handleVibrationClick = useButtonVibration();
 
   useEffect(() => {
     getFileTypesCountEffect()
@@ -84,16 +86,16 @@ export const FileFilterPanel = () => {
   ];
   return (
     <ul className={style.wrapper}>
-      {options.map((option) => (
+      {options.map(({ name, value, icon: Icon, callback }) => (
         <li
           key={crypto.randomUUID()}
           className={style.item}
-          onClick={option.callback}>
+          onClick={handleVibrationClick(callback)}>
           <div>
-            <p className={style.count}>{option.value}</p>
-            <span className={style.name}>{option.name}</span>
+            <p className={style.count}>{value}</p>
+            <span className={style.name}>{name}</span>
           </div>
-          <option.icon />
+          <Icon />
         </li>
       ))}
     </ul>
