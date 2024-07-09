@@ -5,6 +5,8 @@
 /.pnp
 .pnp.js
 .idea
+package-lock.json
+yarn.lock
 # testing
 /coverage
 
