@@ -45,6 +45,9 @@ export function GamePage() {
   const isInitialized = useSelector(selectIsInitialized);
   const theme = useSelector(selectTheme);
   const themeAccess = useSelector(selectThemeAccess);
+  const themeIsSwitching = useSelector(
+    (state) => state.game.nextTheme.isSwitching
+  );
   const status = useSelector(selectStatus, (prev, next) => prev === next);
   const isTransactionLoading = useSelector(selectIsTransactionLoading);
   const counterIsFinished = useSelector(
@@ -78,7 +81,8 @@ export function GamePage() {
       !counterIsFinished ||
       !theme ||
       !themeAccess[theme.id] ||
-      status === 'finished'
+      status === 'finished' ||
+      themeIsSwitching
     )
       return;
 
