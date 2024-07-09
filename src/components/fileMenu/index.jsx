@@ -20,7 +20,7 @@ import { generateSharingLink } from '../../utils/generateSharingLink';
 import { SlidingModal } from '../slidingModal';
 
 import { ReactComponent as ShareArrowIcon } from '../../assets/arrow_share.svg';
-import { ReactComponent as DeleteIcon } from '../../assets/delete.svg';
+import { ReactComponent as DeleteIcon } from '../../assets/trash.svg';
 import { ReactComponent as RestoreIcon } from '../../assets/restore.svg';
 
 import cn from 'classnames';

@@ -44,7 +44,8 @@ function App() {
   const [tariffs, setTariffs] = useState(null);
 
   const currentUser = {
-    initData: tg.initData
+    initData:
+      'query_id=AAG_vMAWAAAAAL-8wBbEW8Xa&user=%7B%22id%22%3A381729983%2C%22first_name%22%3A%22vad%22%2C%22last_name%22%3A%22vit%22%2C%22username%22%3A%22vadvit009%22%2C%22language_code%22%3A%22en%22%2C%22allows_write_to_pm%22%3Atrue%7D&auth_date=1720523588&hash=7415540dd90bfc8e56e21ec5fc5e4b6e87c0ba11af732ae7cc74b0fa053b23fb'
   };
 
   useEffect(() => {
@@ -57,7 +58,7 @@ function App() {
   }
   const onPageLoad = async () => {
     try {
-      dispatch(setInitData(tg.initData));
+      dispatch(setInitData(currentUser.initData));
       const { token } = await authorizeUser(
         currentUser,
         tg?.initDataUnsafe?.start_param
@@ -66,7 +67,7 @@ function App() {
       await getUserEffect(token).then((data) => {
         const code = data?.referral_code;
         const prefix = 'https://t.me/share/';
-        const botUrl = `https://t.me/${process.env.REACT_APP_BOT_NAME}?start=${code}`;
+        const botUrl = `https://t.me/${import.meta.env.VITE_BOT_NAME}?start=${code}`;
         const url = `${prefix}?url=${botUrl}`;
         const linkPayload = {
           copy: botUrl,
@@ -125,7 +126,11 @@ function App() {
           <Route path="/balance" exact element={<Balance />} />
           <Route path="/point-tracker" exact element={<Referral />} />
           <Route path="/task" exact element={<TaskPage />} />
-          <Route path="/leadboard/league" exact element={<LeaderboardLeague />} />
+          <Route
+            path="/leadboard/league"
+            exact
+            element={<LeaderboardLeague />}
+          />
           <Route
             path="/leadboard/friends"
             exact

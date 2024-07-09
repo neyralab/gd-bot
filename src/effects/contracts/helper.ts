@@ -51,7 +51,7 @@ export async function retry<T>(
 export async function getTxByBOC(
   exBoc: string,
   address: string
-): Promise<string> {
+): Promise<string | undefined> {
   const myAddress = Address.parse(address); // Address to fetch transactions from
   const endpoint = await getHttpEndpoint();
   const client = new TonClient({ endpoint });
@@ -63,6 +63,9 @@ export async function getTxByBOC(
       });
       for (const tx of transactions) {
         const inMsg = tx.inMessage;
+        if (!inMsg) {
+          return;
+        }
         if (inMsg?.info.type === 'external-in') {
           const inBOC = inMsg?.body;
           if (typeof inBOC === 'undefined') {
@@ -73,7 +76,7 @@ export async function getTxByBOC(
           }
           const extHash = Cell.fromBase64(exBoc).hash().toString('hex');
           const inHash = beginCell()
-            .store(storeMessage(inMsg))
+            .store(storeMessage(inMsg!))
             .endCell()
             .hash()
             .toString('hex');

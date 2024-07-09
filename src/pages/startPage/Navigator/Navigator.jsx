@@ -24,60 +24,73 @@ export default function Navigator({
   const ref = useRef(null);
 
   const handleWalletClick = useCallback(() => {
-    ref.current.handleClick()
-  }, [])
-  
-  const NAVIGATION = useMemo(() => ([
-    {
-      id: 1,
-      name: 'Wallet',
-      icon: <WalletIcon />,
-      html: (<WalletConnect openDisconnectModal={openDisconnectModal} ref={ref} />),
-      onClick: handleWalletClick
-    },
-    {
-      id: 2,
-      name: 'Drive',
-      icon: <DriveIcon />,
-      html: (<span className={CN(styles.actionBtn, styles.addBt)}>{human.percent.label}</span>),
-      onClick: () => navigate('/file-upload')
-    },
-    {
-      id: 3,
-      name: 'Tap',
-      icon: <TapIcon />,
-      html: (<span className={CN(styles.actionBtn, styles.playBtn)}>Play</span>),
-      onClick: () => navigate('/game')
-    },
-    {
-      id: 4,
-      name: 'Rewards',
-      icon: <RewardsIcon />,
-      html: (<span className={styles.actionBtn}>{tasks?.length || 0}</span>),
-      onClick: () => navigate('/task')
-    },
-    {
-      id: 5,
-      name: 'Boost',
-      icon: <BoostIcon />,
-      html: (<span className={styles.actionBtn}>{`X${storage.multiplier}`}</span>),
-      onClick: () => navigate('/boost')
-    },
-    {
-      id: 6,
-      name: 'Nodes',
-      icon: <NodeIcon />,
-      html: '',
-      onClick: () => navigate('/nodes-welcome')
-    }
-    // {
-    //   id: 7,
-    //   name: 'Language',
-    //   icon: <LanguageIcon />,
-    //   html: (<span className={styles.actionBtn}>Eng</span>),
-    //   onClick: () => {}
-    // },
-  ]), [storage, tasks, human, handleWalletClick, openDisconnectModal, navigate])
+    ref.current.handleClick();
+  }, []);
+
+  const NAVIGATION = useMemo(
+    () => [
+      {
+        id: 1,
+        name: 'Wallet',
+        icon: <WalletIcon />,
+        html: (
+          <WalletConnect openDisconnectModal={openDisconnectModal} ref={ref} />
+        ),
+        onClick: handleWalletClick
+      },
+      {
+        id: 2,
+        name: 'Drive',
+        icon: <DriveIcon />,
+        html: (
+          <span className={CN(styles.actionBtn, styles.addBt)}>
+            {human.percent.label}
+          </span>
+        ),
+        onClick: () => navigate('/file-upload')
+      },
+      {
+        id: 3,
+        name: 'Tap',
+        icon: <TapIcon />,
+        html: (
+          <span className={CN(styles.actionBtn, styles.playBtn)}>Play</span>
+        ),
+        onClick: () => navigate('/game')
+      },
+      {
+        id: 4,
+        name: 'Rewards',
+        icon: <RewardsIcon />,
+        html: <span className={styles.actionBtn}>{tasks?.length || 0}</span>,
+        onClick: () => navigate('/task')
+      },
+      {
+        id: 5,
+        name: 'Boost',
+        icon: <BoostIcon />,
+        html: (
+          <span className={styles.actionBtn}>{`X${storage.multiplier}`}</span>
+        ),
+        onClick: () => navigate('/boost')
+      },
+      {
+        id: 6,
+        name: 'Nodes',
+        icon: <NodeIcon />,
+        html: '',
+        onClick: () => navigate('/nodes-welcome')
+      }
+      // {
+      //   id: 7,
+      //   name: 'Language',
+      //   icon: <LanguageIcon />,
+      //   html: (<span className={styles.actionBtn}>Eng</span>),
+      //   onClick: () => {}
+      // },
+    ],
+    [storage, tasks, human, handleWalletClick, openDisconnectModal, navigate]
+  );
 
   return (
     <ul className={CN(styles['navigator'], styles['to-appear'])}>
