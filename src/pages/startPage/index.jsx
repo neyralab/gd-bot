@@ -121,7 +121,6 @@ export const StartPage = ({ tariffs }) => {
             <div className={style['banner-header_img']}>
               <LogoIcon />
             </div>
-            <h1>Nodes</h1>
           </div>
         </div>
       </div>
@@ -129,12 +128,14 @@ export const StartPage = ({ tariffs }) => {
         points={user?.points}
         className={style[`point-counter`]}
         onClick={onBalance}
+        rank={user?.rank}
       />
       <Navigator
         storage={storage}
         human={human}
         openDisconnectModal={setDisconnectWalletModal}
         tasks={tasks}
+        wallet={user?.wallet}
       />
       <footer className={style.footer}>
         <p className={style['footer-text']}>
