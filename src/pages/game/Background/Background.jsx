@@ -12,6 +12,9 @@ import {
 } from '../../../store/reducers/gameSlice';
 import styles from './Background.module.css';
 
+/** Please, do not add extra selectors or state
+ * It will force the component to rerender, that will cause lags and rerenders
+ */
 const Background = forwardRef((_, ref) => {
   const starsRef = useRef(null);
   const glowRef = useRef(null);

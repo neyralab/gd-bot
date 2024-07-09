@@ -1,7 +1,6 @@
 import React, { useMemo, useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import classNames from 'classnames';
-import styles from './ProgressBar.module.css';
 import {
   selectTheme,
   selectExperienceLevel,
@@ -9,6 +8,7 @@ import {
   selectReachNewLevel,
   selectLevels
 } from '../../../store/reducers/gameSlice';
+import styles from './ProgressBar.module.css';
 
 export default function ProgressBar() {
   const theme = useSelector(selectTheme);

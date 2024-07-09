@@ -27,8 +27,8 @@ import {
 } from '../../../store/reducers/gameSlice';
 import { useQueryId } from '../../../effects/contracts/useQueryId';
 import { ReactComponent as TonIcon } from '../../../assets/TON.svg';
-import styles from './BuyButton.module.css';
 import { beforeGame, startGame } from '../../../effects/gameEffect';
+import styles from './BuyButton.module.css';
 
 export default function BuyButton() {
   const { open } = useTonConnectModal();

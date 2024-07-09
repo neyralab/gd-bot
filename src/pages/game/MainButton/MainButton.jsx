@@ -7,6 +7,9 @@ import React, {
 import classNames from 'classnames';
 import styles from './MainButton.module.css';
 
+/** Please, do not add extra selectors or state
+ * It will force the component to rerender, that will cause lags and rerenders
+ */
 const MainButton = forwardRef(({ theme }, ref) => {
   const containerRef = useRef(null);
   const iconRef = useRef(null);

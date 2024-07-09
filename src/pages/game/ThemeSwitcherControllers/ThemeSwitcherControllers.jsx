@@ -1,5 +1,4 @@
 import React from 'react';
-import styles from './ThemeSwitcherControllers.module.css';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   selectStatus,
@@ -8,6 +7,7 @@ import {
   setNextTheme,
   setTheme
 } from '../../../store/reducers/gameSlice';
+import styles from './ThemeSwitcherControllers.module.css';
 
 export default function ThemeSwitcherControllers() {
   const dispatch = useDispatch();

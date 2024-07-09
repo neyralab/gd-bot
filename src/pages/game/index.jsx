@@ -1,5 +1,4 @@
 import React, { useEffect, useRef } from 'react';
-
 import { useDispatch, useSelector } from 'react-redux';
 import {
   selectStatus,
@@ -22,13 +21,17 @@ import Menu from '../../components/Menu/Menu';
 import ProgressBar from './ProgressBar/ProgressBar';
 import Congratulations from './Congratulations/Congratulations';
 import GhostLoader from '../../components/ghostLoader';
-import styles from './styles.module.css';
 import Counter from './Counter/Counter';
 import Balance from './Balance/Balance';
 import Status from './Status/Status';
 import LevelDescription from './LevelDescription/LevelDescription';
 import ThemeSwitcherControllers from './ThemeSwitcherControllers/ThemeSwitcherControllers';
 import ThemeSwitcherMainButton from './ThemeSwitcherMainButton/ThemeSwitcherMainButton';
+import styles from './styles.module.css';
+
+/** Please, do not add extra selectors or state
+ * It will force the component to rerender, that will cause lags and rerenders
+ */
 
 export function GamePage() {
   const dispatch = useDispatch();
@@ -49,6 +52,12 @@ export function GamePage() {
   useEffect(() => {
     dispatch(initGame());
   }, []);
+
+  /** All the data for the game should be fetched in the store's thunks.
+   * Do not add extra actions and side effects.
+   * Keep the component clear,
+   * otherwise, it will cause lags and rerenders
+   */
 
   const clickHandler = async (e) => {
     e?.preventDefault();
