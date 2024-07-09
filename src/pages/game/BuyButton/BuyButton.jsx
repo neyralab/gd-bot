@@ -164,7 +164,7 @@ export default function BuyButton() {
             return data;
           }
         },
-        { value: plan?.ton_price || toNano(0.01) },
+        { value: toNano(plan?.ton_price) },
         {
           $$type: 'Boost',
           queryId,

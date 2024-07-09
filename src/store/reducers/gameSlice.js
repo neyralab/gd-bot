@@ -190,10 +190,12 @@ export const initGame = createAsyncThunk(
       }
 
       const newThemes = defaultThemes.map((theme) => {
-        const { ton_price, tierIdBN, tierId, ...findGame } = games.find(
+        const { tierIdBN, tierId, ...findGame } = games.find(
           (game) => game.multiplier === theme.multiplier
         );
-        return findGame ? { ...findGame, ...theme } : theme;
+        return findGame
+          ? { ...findGame, ...theme, tierId: findGame.id }
+          : theme;
       });
 
       dispatch(setThemes(newThemes));

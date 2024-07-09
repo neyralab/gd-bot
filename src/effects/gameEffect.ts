@@ -1,7 +1,6 @@
 import { API_PATH } from '../utils/api-urls';
 import axiosInstance from './axiosInstance';
 import BigNumber from 'bignumber.js';
-import { toNano } from '@ton/core';
 
 export const getGamePlans = async () => {
   const url = `${API_PATH}/tg/game/plans`;
@@ -10,7 +9,7 @@ export const getGamePlans = async () => {
     ...el,
     tierIdBN: new BigNumber(el.id),
     tierId: BigInt(el.id),
-    ton_price: toNano(el.ton_price)
+    ton_price: el.ton_price
   }));
 };
 
