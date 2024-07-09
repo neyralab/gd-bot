@@ -11,7 +11,8 @@ import {
   selectIsInitialized,
   addBalance,
   selectIsTransactionLoading,
-  switchTheme
+  switchTheme,
+  gameCleanup
 } from '../../store/reducers/gameSlice';
 import { Header } from '../../components/header_v2';
 import Background from './Background/Background';
@@ -64,7 +65,13 @@ export function GamePage() {
   });
 
   useEffect(() => {
-    dispatch(initGame());
+    if (!isInitialized) {
+      dispatch(initGame());
+    }
+
+    return () => {
+      dispatch(gameCleanup());
+    };
   }, []);
 
   /** All the data for the game should be fetched in the store's thunks.
