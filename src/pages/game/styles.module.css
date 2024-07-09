@@ -77,15 +77,6 @@
   user-select: none;
 }
 
-.current-theme,
-.next-theme {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-}
-
 .counter-container {
   position: absolute;
   top: 50%;
@@ -159,53 +150,4 @@
   height: 50px;
   width: 100%;
   max-width: 320px;
-}
-
-.current-theme-dissapear {
-  animation: CurrentThemeDisappearAnim 0.5s ease-out;
-}
-
-@keyframes CurrentThemeDisappearAnim {
-  0% {
-    transform: scale(1) translateY(0);
-    opacity: 1;
-  }
-  20% {
-    transform: scale(1) translateY(40%);
-    opacity: 1;
-  }
-  100% {
-    transform: scale(0.5) translateY(-200%);
-    opacity: 0;
-  }
-}
-
-.next-theme-appear-right {
-  animation: CurrentThemeAppearRightAnim 0.5s ease-out;
-}
-
-@keyframes CurrentThemeAppearRightAnim {
-  0% {
-    transform: translateX(100%) scale(0.7);
-    opacity: 0;
-  }
-  100% {
-    transform: translateX(0) scale(1);
-    opacity: 1;
-  }
-}
-
-.next-theme-appear-left {
-  animation: CurrentThemeAppearLeftAnim 0.5s ease-out;
-}
-
-@keyframes CurrentThemeAppearLeftAnim {
-  0% {
-    transform: translateX(-100%) scale(0.7);
-    opacity: 0;
-  }
-  100% {
-    transform: translateX(0) scale(1);
-    opacity: 1;
-  }
 }

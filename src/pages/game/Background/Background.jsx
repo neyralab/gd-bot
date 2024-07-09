@@ -78,7 +78,7 @@ const Background = forwardRef((_, ref) => {
     let timeout1;
     let timeout2;
 
-    if (nextTheme) {
+    if (nextTheme.theme) {
       glowRef.current.classList.remove(styles['next-theme-appear']);
       planetRef.current.classList.remove(styles['next-theme-appear']);
 
@@ -110,7 +110,7 @@ const Background = forwardRef((_, ref) => {
         clearTimeout(timeout2);
       }
     };
-  }, [nextTheme]);
+  }, [nextTheme.theme]);
 
   useEffect(() => {
     const intervalId = setInterval(() => {

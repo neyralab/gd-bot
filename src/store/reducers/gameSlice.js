@@ -48,7 +48,12 @@ const gameSlice = createSlice({
       isActive: false,
       roundPoints: null
     },
-    nextTheme: null // for animation purposes only
+    nextTheme: {
+      theme: null,
+      themeIndex: null,
+      direction: null,
+      isSwitching: false
+    } // for animation purposes only
   },
   reducers: {
     setIsInitializing: (state, { payload }) => {

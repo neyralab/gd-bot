@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import classNames from 'classnames';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { setRoundFinal } from '../../../store/reducers/gameSlice';
 import styles from './EndGameAddedPoints.module.css';
 
 const TIME_OUT = 6000;
 
 const EndGameAddedPoints = () => {
+  const dispatch = useDispatch();
+
   const isActive = useSelector((state) => state.game.roundFinal.isActive);
   const counter = useSelector((state) => state.game.roundFinal.roundPoints);
 
@@ -18,6 +20,7 @@ const EndGameAddedPoints = () => {
 
       const timeout = setTimeout(() => {
         setShow(false);
+        dispatch(setRoundFinal({ roundPoins: null, isActive: false }));
       }, TIME_OUT);
 
       return () => {
