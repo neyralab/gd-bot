@@ -10,13 +10,14 @@ import { TelegramShareButton } from 'react-share';
 
 import { tasks as tasksFromFile } from './tasks';
 import { saveUserWallet } from '../../effects/userEffects';
+import { checkAllEarnTasks } from '../../effects/EarnEffect';
+import useButtonVibration from '../../hooks/useButtonVibration';
 
 import Menu from '../../components/Menu/Menu';
 import Task from '../../components/Task/Task';
 import EarnModal from './EarnModal/EarnModal';
 
 import styles from './styles.module.css';
-import { checkAllEarnTasks } from '../../effects/EarnEffect';
 
 export default function EarnPage() {
   const [tasks, setTasks] = useState([]);
@@ -29,13 +30,14 @@ export default function EarnPage() {
   const user = useSelector((state) => state.user.data);
   const link = useSelector((state) => state.user.link);
   const navigate = useNavigate();
+  const handleVibrationClick = useButtonVibration();
 
   const getTasks = async () => {
     try {
       const res = await checkAllEarnTasks();
       /** In this code you will see both backand and frontend hardcoded tasks
        * Hardcoded have img, title, some other props that are needed in frontend.
-       * So here those 2 arrays are combined. 
+       * So here those 2 arrays are combined.
        * It takes the hardcoded frontend array with its order,
        * and updates the information the code require
        */
@@ -137,7 +139,8 @@ export default function EarnPage() {
               <TelegramShareButton
                 url={link.copy}
                 key={task.id}
-                title={'Share this link with friends'}>
+                title={'Share this link with friends'}
+                onClick={handleVibrationClick()}>
                 <Task
                   onClick={() => handleClick(task)}
                   isDone={task.isDone}
@@ -150,7 +153,7 @@ export default function EarnPage() {
             ) : (
               <Task
                 key={task.id}
-                onClick={() => handleClick(task)}
+                onClick={handleVibrationClick(() => handleClick(task))}
                 isDone={task.isDone}
                 title={task.title}
                 points={task.points}

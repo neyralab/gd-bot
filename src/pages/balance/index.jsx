@@ -1,20 +1,24 @@
 import { useCallback, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+
 import { DEFAULT_TARIFFS_NAMES } from '../upgradeStorage';
+import { useBalance } from '../../hooks/useBalance';
+import useButtonVibration from '../../hooks/useButtonVibration';
 
 import { Header } from '../../components/header';
 import { Button } from '../../components/button';
 import { FilesInfo } from '../../components/filesInfo';
 import { InfoBox } from '../../components/info';
 import { Range } from '../../components/range';
+
 import styles from './styles.module.css';
-import { useBalance } from '../../hooks/useBalance';
 
 export const Balance = () => {
   const balance = useBalance();
   const { workspacePlan } = useSelector((state) => state.workspace);
   const navigate = useNavigate();
+  const handleVibrationClick = useButtonVibration();
 
   const normalizedSize = useMemo(() => {
     console.log({ workspacePlan: workspacePlan });
@@ -48,12 +52,12 @@ export const Balance = () => {
       <footer className={styles.footer}>
         <Button
           label="Upload"
-          onClick={onUploadFile}
+          onClick={handleVibrationClick(onUploadFile)}
           className={styles.blue_btn}
         />
         <Button
           label="Upgrade storage"
-          onClick={onUpgradeFile}
+          onClick={handleVibrationClick(onUpgradeFile)}
           className={styles.white_btn}
         />
       </footer>

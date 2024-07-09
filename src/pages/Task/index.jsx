@@ -63,7 +63,7 @@ export const TaskPage = () => {
               key={index}
               className={CN(el?.done && styles.done, styles.item)}>
               <p className={styles.item_text}>
-                {el?.point?.action_text || el?.action_text}
+                {el?.point?.text || el?.text}
               </p>
               <p
                 className={

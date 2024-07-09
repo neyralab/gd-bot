@@ -17,7 +17,7 @@ export const History = ({ history }) => {
               <div className={styles.text_container}>
                 <p className={styles.value}>{el.points}</p>
                 <p className={styles.text}>
-                  {el?.action_text || el?.point?.action_text}
+                  {el?.text || el?.point?.text}
                 </p>
               </div>
             </li>
