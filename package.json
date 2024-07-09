@@ -59,7 +59,7 @@
     "postinstall": "node generateManifest.js && cd node_modules/@ton/ton && yarn install && yarn build && rm -rf node_modules && rm -rf src",
     "start": "vite --port=3000",
     "build": "vite build",
-    "prod": "vite preview",
+    "prod": "vite preview --host",
     "test": "react-app-rewired test",
     "eject": "react-app-rewired eject",
     "sentry:sourcemaps": "sentry-cli sourcemaps inject --org ghostdrive-yw --project javascript-react ./Dockerfile && sentry-cli --url https://ghostdrive-yw.sentry.io/ sourcemaps upload --org ghostdrive-yw --project javascript-react ./Dockerfile"
