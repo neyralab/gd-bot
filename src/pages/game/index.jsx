@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useSwipeable } from 'react-swipeable';
 import {
   selectStatus,
   selectTheme,
@@ -9,7 +10,8 @@ import {
   initGame,
   selectIsInitialized,
   addBalance,
-  selectIsTransactionLoading
+  selectIsTransactionLoading,
+  switchTheme
 } from '../../store/reducers/gameSlice';
 import { Header } from '../../components/header_v2';
 import Background from './Background/Background';
@@ -48,6 +50,15 @@ export function GamePage() {
   const counterIsFinished = useSelector(
     (state) => state.game.counter.isFinished
   );
+
+  const swipeHandlers = useSwipeable({
+    onSwipedLeft: () => {
+      dispatch(switchTheme({ direction: 'next' }));
+    },
+    onSwipedRight: () => {
+      dispatch(switchTheme({ direction: 'prev' }));
+    }
+  });
 
   useEffect(() => {
     dispatch(initGame());
@@ -127,6 +138,7 @@ export function GamePage() {
           <div className={styles['main-button-container']}>
             <div
               className={styles['main-button-touch-area']}
+              {...(status !== 'playing' ? swipeHandlers : {})}
               onTouchEnd={handleEvent}
               onMouseUp={handleEvent}>
               <div className={styles['points-grow-area-container']}>

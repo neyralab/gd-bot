@@ -4,8 +4,7 @@ import {
   selectStatus,
   selectThemeIndex,
   selectThemes,
-  setNextTheme,
-  setTheme
+  switchTheme
 } from '../../../store/reducers/gameSlice';
 import styles from './ThemeSwitcherControllers.module.css';
 
@@ -19,56 +18,24 @@ export default function ThemeSwitcherControllers() {
     (state) => state.game.counter.isFinished
   );
 
-  const switchTheme = (e, direction) => {
+  const clickHandler = (e, direction) => {
     e?.preventDefault?.();
     e?.stopPropagation?.();
 
-    if (status === 'playing') return;
-    if (!counterIsFinished) return;
-
-    let newThemeIndex;
-
-    if (direction === 'next') {
-      newThemeIndex = (themeIndex + 1) % themes.length;
-      if (newThemeIndex >= themes.length || newThemeIndex <= 0) return;
-    } else if (direction === 'prev') {
-      newThemeIndex = (themeIndex - 1 + themes.length) % themes.length;
-      if (newThemeIndex >= themes.length - 1 || newThemeIndex < 0) return;
-    }
-
-    dispatch(
-      setNextTheme({
-        theme: themes[newThemeIndex],
-        themeIndex: newThemeIndex,
-        direction: direction,
-        isSwitching: true
-      })
-    );
-
-    setTimeout(() => {
-      dispatch(setTheme(themes[newThemeIndex]));
-      dispatch(
-        setNextTheme({
-          theme: null,
-          themeIndex: null,
-          direction: null,
-          isSwitching: false
-        })
-      );
-    }, 500);
+    dispatch(switchTheme({direction}));
   };
 
   if (status !== 'playing' && counterIsFinished) {
     return (
       <div className={styles.arrows}>
         {themeIndex !== 0 && (
-          <div className={styles.prev} onClick={(e) => switchTheme(e, 'prev')}>
+          <div className={styles.prev} onClick={(e) => clickHandler(e, 'prev')}>
             {'<'}
           </div>
         )}
 
         {themeIndex !== themes.length - 1 && (
-          <div className={styles.next} onClick={(e) => switchTheme(e, 'next')}>
+          <div className={styles.next} onClick={(e) => clickHandler(e, 'next')}>
             {'>'}
           </div>
         )}

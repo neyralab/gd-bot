@@ -365,6 +365,49 @@ export const startCountdown = createAsyncThunk(
   }
 );
 
+export const switchTheme = createAsyncThunk(
+  'game/switchTheme',
+  async ({ direction }, { dispatch, getState }) => {
+    const state = getState();
+    const themes = state.game.themes;
+    const themeIndex = state.game.themeIndex;
+
+    if (state.game.status === 'playing') return;
+    if (!state.game.counter.isFinished) return;
+
+    let newThemeIndex;
+
+    if (direction === 'next') {
+      newThemeIndex = (themeIndex + 1) % themes.length;
+      if (newThemeIndex >= themes.length || newThemeIndex <= 0) return;
+    } else if (direction === 'prev') {
+      newThemeIndex = (themeIndex - 1 + themes.length) % themes.length;
+      if (newThemeIndex >= themes.length - 1 || newThemeIndex < 0) return;
+    }
+
+    dispatch(
+      setNextTheme({
+        theme: themes[newThemeIndex],
+        themeIndex: newThemeIndex,
+        direction: direction,
+        isSwitching: true
+      })
+    );
+
+    setTimeout(() => {
+      dispatch(setTheme(themes[newThemeIndex]));
+      dispatch(
+        setNextTheme({
+          theme: null,
+          themeIndex: null,
+          direction: null,
+          isSwitching: false
+        })
+      );
+    }, 500);
+  }
+);
+
 export const {
   setIsInitializing,
   setIsInitialized,
