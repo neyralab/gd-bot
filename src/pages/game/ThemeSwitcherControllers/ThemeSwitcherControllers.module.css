@@ -1,0 +1,22 @@
+.arrows > div {
+  position: absolute;
+  top: calc(50% - 24px);
+  font-family: 'Digital Numbers';
+  font-size: 21px;
+  color: white;
+  cursor: pointer;
+  width: 48px;
+  height: 48px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.arrows .prev {
+  left: 0;
+}
+
+.arrows .next {
+  right: 0;
+}
