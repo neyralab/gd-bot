@@ -57,7 +57,7 @@ function App() {
   }
   const onPageLoad = async () => {
     try {
-      dispatch(setInitData(tg.initData));
+      dispatch(setInitData(currentUser.initData));
       const { token } = await authorizeUser(
         currentUser,
         tg?.initDataUnsafe?.start_param
@@ -66,7 +66,7 @@ function App() {
       await getUserEffect(token).then((data) => {
         const code = data?.referral_code;
         const prefix = 'https://t.me/share/';
-        const botUrl = `https://t.me/${process.env.REACT_APP_BOT_NAME}?start=${code}`;
+        const botUrl = `https://t.me/${import.meta.env.VITE_BOT_NAME}?start=${code}`;
         const url = `${prefix}?url=${botUrl}`;
         const linkPayload = {
           copy: botUrl,
@@ -125,7 +125,11 @@ function App() {
           <Route path="/balance" exact element={<Balance />} />
           <Route path="/point-tracker" exact element={<Referral />} />
           <Route path="/task" exact element={<TaskPage />} />
-          <Route path="/leadboard/league" exact element={<LeaderboardLeague />} />
+          <Route
+            path="/leadboard/league"
+            exact
+            element={<LeaderboardLeague />}
+          />
           <Route
             path="/leadboard/friends"
             exact
