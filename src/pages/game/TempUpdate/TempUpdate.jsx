@@ -25,7 +25,7 @@ const TempUpdate = ({ isActive, counter, onClose }) => {
         clearTimeout(secondId)
       }
     }
-  }, [isActive]);
+  }, [isActive, onClose]);
 
   return (
     <div className={classNames(styles['temp-update'], (isActive && show) && styles['temp-active'])}>

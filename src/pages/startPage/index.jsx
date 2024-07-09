@@ -1,40 +1,49 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import CN from 'classnames';
-import CountUp from 'react-countup';
-import { TelegramShareButton } from 'react-share';
 
 import {
   selectAllWorkspaces,
   selectCurrentWorkspace
 } from '../../store/reducers/workspaceSlice';
+import { getAllTasks } from '../../effects/balanceEffect';
 import { DEFAULT_TARIFFS_NAMES } from '../upgradeStorage';
 import { transformSize } from '../../utils/transformSize';
 import { fromByteToGb } from '../../utils/storage';
 
 import GhostLoader from '../../components/ghostLoader';
-import { ConnectTonWalletButton } from '../../components/connectTonWalletButton';
+import { ReactComponent as LogoIcon } from '../../assets/ghost.svg';
 import { DisconnectWalletModal } from '../../components/disconnectWalletModal';
-
-import { ReactComponent as TaskIcon } from '../../assets/task.svg';
-import { ReactComponent as LeadboardIcon } from '../../assets/leadboard.svg';
-import { ReactComponent as PointsIcon } from '../../assets/point.svg';
-import { ReactComponent as TelegramIcon } from '../../assets/telegram.svg';
-import { ReactComponent as CloudIcon } from '../../assets/cloud.svg';
-import { ReactComponent as NodeIcon } from '../../assets/node.svg';
-import { ReactComponent as DriveIcon } from '../../assets/drive.svg';
-import { ReactComponent as PlayIcon } from '../../assets/play.svg';
+// import CardsSlider from '../../components/CardsSlider/CardsSlider';
+import PointCounter from './PointCounter/PointCounter';
+// import getSliderItems from './SliderItem/sliderItems';
+// import SliderItem from './SliderItem/SliderItem';
+import Navigator from './Navigator/Navigator';
 
 import style from './style.module.css';
 
 export const StartPage = ({ tariffs }) => {
+  const [tasks, setTasks] = useState([]);
+  const navigate = useNavigate();
   const [disconnectWalletModal, setDisconnectWalletModal] = useState(false);
   const allWorkspaces = useSelector(selectAllWorkspaces);
   const currentWorkspace = useSelector(selectCurrentWorkspace);
   const user = useSelector((state) => state?.user?.data);
-  const navigate = useNavigate();
-  const link = useSelector((state) => state.user.link);
+
+  const getTasks = useCallback(async () => {
+    try {
+      const allTasks = await getAllTasks();
+      setTasks(allTasks);
+    } catch (error) {
+      console.error('Error fetching tasks:', error);
+      setTasks([]);
+    }
+  }, []);
+
+  useEffect(() => {
+    getTasks();
+  }, [getTasks]);
 
   const storage = useMemo(() => {
     const size = DEFAULT_TARIFFS_NAMES[user?.space_total] || '1GB';
@@ -60,74 +69,13 @@ export const StartPage = ({ tariffs }) => {
     };
   }, [user]);
 
-  const list = useMemo(() => {
-    return [
-      {
-        Icon: TaskIcon,
-        text: 'Tasks',
-        amount: '',
-        onClick: () => {
-          navigate('/task');
-        }
-      },
-      {
-        Icon: DriveIcon,
-        text: 'Drive',
-        amount: '',
-        onClick: () => {
-          navigate('/file-upload');
-        }
-      },
-      {
-        Icon: PlayIcon,
-        text: 'Play',
-        amount: '',
-        onClick: () => {
-          navigate('/game');
-        }
-      },
-      {
-        Icon: CloudIcon,
-        text: `Upgrade X${storage.multiplier}`,
-        amount: `${human?.used} of ${human?.total}`,
-        onClick: () => {
-          navigate('/boost');
-        }
-      },
-      {
-        Icon: NodeIcon,
-        text: `Nodes`,
-        amount: '',
-        onClick: () => {
-          navigate('/nodes-welcome');
-        }
-      }
-      // {
-      //   Icon: UploadFileIcon,
-      //   text: 'Upload & Reward',
-      //   amount: '+50',
-      //   onClick: () => {
-      //     navigate('/file-upload');
-      //   }
-      // },
-      // {
-      //   Icon: BoostIcon,
-      //   text: 'Multiplier',
-      //   amount: `X${storage.multiplier}`,
-      //   onClick: () => {
-      //     navigate('/boost');
-      //   }
-      // },
-      // {
-      //   Icon: TaskIcon,
-      //   text: 'Play & Earn',
-      //   amount: '',
-      //   onClick: () => {
-      //     navigate('/game');
-      //   }
-      // }
-    ];
-  }, [navigate, storage.multiplier, human?.used, human?.total]);
+  // const sliderItems = useMemo(() => getSliderItems(storage.size), [storage])
+
+  // const slides = useMemo(() => {
+  //   return sliderItems.map((el) => {
+  //     return { id: el.id, html: <SliderItem key={el?.id} item={el} /> };
+  //   });
+  // }, [sliderItems]);
 
   if (!allWorkspaces && !currentWorkspace) {
     return (
@@ -141,104 +89,57 @@ export const StartPage = ({ tariffs }) => {
     navigate('/balance');
   };
 
+  const openInNewTab = (url) => {
+    window.open(url, "_blank", "noreferrer");
+  };
+
   return (
-    <div className={`${style.container} ${style.uploadContainer}`}>
-      <header className={style.header_new}>
-        <section onClick={onBalance}>
-          <div className={style.wallet_balance}>
-            <p
-              className={CN(
-                style.wallet,
-                user?.points > 99999 && style.medium,
-                user?.points > 999999 && style.small
-              )}>
-              <CountUp delay={1} end={user?.points} />
-            </p>
-          </div>
-          <p className={style.balance}>Points</p>
-        </section>
-      </header>
+    <div className={`${style.container}`}>
+      {/* <header className={style.header}>
+        <CardsSlider items={slides} timeout={15000} />
+      </header> */}
+      <div
+        className={CN(
+          style.card,
+          style.banner,
+          style['to-appear'],
+          style['to-appear_active']
+        )}>
+        <video
+          id="background-video"
+          autoPlay
+          loop
+          muted
+          playsInline
+          controlsList="nofullscreen"
+          poster="/assets/node-banner.jpg">
+          <source src="/assets/node-banner.mp4" type="video/mp4" />
+        </video>
 
-      <div className={style.list}>
-        {list.map((el) => (
-          <div key={el.text} className={style.list_element}>
-            <button onClick={el?.onClick} className={style.list_element_button}>
-              <el.Icon />
-              <p className={style.list_element_text}>{el.text}</p>
-              <span
-                className={CN(
-                  style.list_element_text,
-                  style.list_element_amount
-                )}>
-                {el.amount}
-              </span>
-            </button>
-          </div>
-        ))}
-
-        <TelegramShareButton
-          url={link.copy}
-          title={'Share this link with friends'}>
-          <div className={style.list_element}>
-            <button className={style.list_element_button}>
-              <TelegramIcon />
-              <p className={style.list_element_text}>Share</p>
-              <span
-                className={CN(
-                  style.list_element_text,
-                  style.list_element_amount
-                )}>
-                + 10,000
-              </span>
-            </button>
-          </div>
-        </TelegramShareButton>
-      </div>
-
-      <div className={style.bottom}>
-        <div className={style.wallet_button}>
-          <ConnectTonWalletButton
-            openDisconnectModal={setDisconnectWalletModal}
-          />
-        </div>
-        {/* <button className={style.invite_button}>
-          <TelegramShareButton
-            className={style.telegram_share}
-            title={'Share this link with friends'}
-            url={link.copy}>
-            <InviteBackgroundIcon className={style.invite_background} />
-            <div className={style.invite_block}>
-              <div className={style.invite_right}>
-                <LargeTelegramIcon />
-              </div>
-              <div className={style.invite_left}>
-                <h4 className={CN(style.invite_get)}>Invite & Get Points</h4>
-                <span className={style.invite_amount}>1,000</span>
-              </div>
+        <div className={style['banner-content']}>
+          <div className={style['banner-header']}>
+            <div className={style['banner-header_img']}>
+              <LogoIcon />
             </div>
-          </TelegramShareButton>
-        </button>*/}
-
-        <footer className={style.footer}>
-          <div
-            onClick={() => {
-              navigate('/point-tracker');
-            }}
-            className={style.footer_item}>
-            <PointsIcon />
-            <span className={style.footer_item_text}>Point Tracker</span>
+            <h1>Nodes</h1>
           </div>
-          <div
-            className={style.footer_item}
-            onClick={() => {
-              navigate('/leadboard/league');
-            }}>
-            <LeadboardIcon />
-            <span className={style.footer_item_text}>Leadboard</span>
-          </div>
-        </footer>
+        </div>
       </div>
-
+      <PointCounter
+        points={user?.points}
+        className={style[`point-counter`]}
+        onClick={onBalance}
+      />
+      <Navigator
+        storage={storage}
+        human={human}
+        openDisconnectModal={setDisconnectWalletModal}
+        tasks={tasks}
+      />
+      <footer className={style.footer}>
+        <p className={style['footer-text']}>
+          <span onClick={() => {openInNewTab('https://play.ghostdrive.com')}}>GhostDrive.com</span>.  How to play and earn?  </p>
+      </footer>
       {disconnectWalletModal && (
         <DisconnectWalletModal
           isOpen={disconnectWalletModal}
