@@ -1,7 +1,6 @@
 import { API_PATH } from '../utils/api-urls';
 import axiosInstance from './axiosInstance';
 import BigNumber from 'bignumber.js';
-import { toNano } from '@ton/core';
 
 export const getGamePlans = async () => {
   const url = `${API_PATH}/tg/game/plans`;
@@ -10,7 +9,7 @@ export const getGamePlans = async () => {
     ...el,
     tierIdBN: new BigNumber(el.id),
     tierId: BigInt(el.id),
-    ton_price: toNano(el.ton_price)
+    ton_price: el.ton_price
   }));
 };
 
@@ -21,9 +20,28 @@ export const gameLevels = async () => {
   return data.data;
 };
 
-export const startGame = async (purchase_id: number | null) => {
+export const beforeGame = async (
+  purchase_id: number | null,
+  tier_id: number
+) => {
   const url = `${API_PATH}/game/start`;
-  const { data } = await axiosInstance.post<StartGameRes>(url, { purchase_id });
+  const { data } = await axiosInstance.post<BeforeGameRes>(url, {
+    purchase_id,
+    tier_id
+  });
+  console.log({ beforeGame: data });
+  return data.data;
+};
+
+export const startGame = async (
+  game_id: number,
+  purchase_id: number | null
+) => {
+  const url = `${API_PATH}/game/process`;
+  const { data } = await axiosInstance.post<BeforeGameRes>(url, {
+    purchase_id,
+    game_id
+  });
   console.log({ startGame: data });
   return data.data;
 };
@@ -100,7 +118,7 @@ type GameContract = {
   multisig_factory: null;
 };
 
-type StartGameRes = {
+type BeforeGameRes = {
   data: {
     id: number;
     tier: {
@@ -115,7 +133,8 @@ type StartGameRes = {
     };
     created_at: number;
     game_ends_at: number;
-    purchase_id: number;
+    status: number;
+    uuid: number;
   };
 };
 

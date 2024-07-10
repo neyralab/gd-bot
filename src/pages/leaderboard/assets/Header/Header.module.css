@@ -1,7 +1,7 @@
 .pageHeader {
   position: relative;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
   gap: 16px;
   margin-bottom: 32px;
@@ -13,17 +13,6 @@
   text-overflow: ellipsis;
   font-family: 'Open Sans';
   font-size: 18px;
-  font-style: normal;
-  font-weight: 600;
-  line-height: 150%;
-}
-
-.backButton {
-  color: #3d88f6;
-  text-align: center;
-  text-overflow: ellipsis;
-  font-family: 'Open Sans';
-  font-size: 15px;
   font-style: normal;
   font-weight: 600;
   line-height: 150%;

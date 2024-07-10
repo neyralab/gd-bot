@@ -36,19 +36,26 @@ bot.start(async (ctx) => {
   if (!cachedUserData) {
     try {
       const url = `${process.env.GD_BACKEND_URL}/apiv2/user/create/telegram`;
-
+      
       console.log({
         url,
         userData
       });
 
+      const headers = {
+        'Content-Type': 'application/json',
+        'client-id': process.env.GD_CLIENT_ID,
+        'client-secret': process.env.GD_CLIENT_SECRET
+      };
+
+      // Check if GD_BACKEND_URL is a protocol + IP address
+      if (process.env.GD_BACKEND_HOST) {
+        headers['Host'] = process.env.GD_BACKEND_HOST;
+      }
+
       const response = await fetch(url, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'client-id': process.env.GD_CLIENT_ID,
-          'client-secret': process.env.GD_CLIENT_SECRET
-        },
+        headers: headers,
         body: JSON.stringify(userData)
       });
 
@@ -70,7 +77,7 @@ bot.start(async (ctx) => {
   const header =
     '<b>Welcome to Ghostdrive – The Ultimate Drive for the TON Ecosystem!</b>';
   const activitiesText =
-    'Experience a new way to store and transform your raw data into smart data. Join the Ghostdrive bot for AI image recognition and seamless Telegram sharing.\n\n' +
+    'Experience a new way to store and transform your raw data into smart data.\n\n' +
     '🚀 <b>Community Rewards:</b> Upload files to earn points, climb the leaderboard, and boost your rewards with our exciting tap game.\n\n' +
     '🎁 <b>Lifetime Storage Giveaway:</b> Enjoy storage from the Filecoin network. Invite friends and earn even more!\n\n' +
     '<b>Join Ghostdrive today and be part of our growing community!</b>';

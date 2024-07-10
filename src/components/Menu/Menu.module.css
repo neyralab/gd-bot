@@ -4,13 +4,18 @@
   left: 50%;
   bottom: 12px;
   transform: translateX(-50%);
-  background: #2C2E31B2;
+  background: #2c2e31b2;
   backdrop-filter: blur(8px);
   border-radius: 10px;
   padding: 4px 8px;
   text-align: center;
-  white-space:nowrap;
+  white-space: nowrap;
   overflow-y: auto;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.container::-webkit-scrollbar {
+  display: none;
 }
 
 .item {
@@ -40,7 +45,7 @@
 }
 
 .item.active .icon {
-    opacity: 1;
+  opacity: 1;
 }
 
 .icon > svg {

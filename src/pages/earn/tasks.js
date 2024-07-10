@@ -2,66 +2,66 @@ import { isiOS } from '../../utils/client';
 
 export const tasks = [
   {
-    id: 'downloadMobileApp',
+    id: 'DOWNLOAD_APP',
     isDone: false,
     title: 'Download App',
     subtitle: '(via telegram login)',
-    points: 100000,
+    points: 0,
     imgUrl: '/assets/download_app.png',
     joinLink: isiOS()
       ? 'https://apps.apple.com/ca/app/ghost-drive/id6475002179'
       : 'https://play.google.com/store/apps/details?id=com.wise.data.ghostdrive'
   },
   {
-    id: 'boost',
+    id: 'STORAGE_PURCHASE',
     isDone: false,
     title: 'Boost Storage',
-    points: 5000,
+    points: 0,
     imgUrl: '/assets/rocket.png'
   },
   {
-    id: 'invite',
-    isDone: true,
+    id: 'INVITE_5_FRIENDS',
+    isDone: false,
     title: 'Invite 5 Friends',
-    points: 5000,
+    points: 0,
     imgUrl: '/assets/link.png'
   },
   {
-    id: 'upload',
-    isDone: true,
+    id: 'UPLOAD_10_FILES',
+    isDone: false,
     title: 'Upload 10 Files',
-    points: 1000,
+    points: 0,
     imgUrl: '/assets/fire.png'
   },
   {
-    id: 'followX',
+    id: 'JOIN_TWITTER',
     isDone: false,
     title: 'Follow Our X Account',
-    points: 10000,
+    points: 0,
     imgUrl: '/assets/x.png',
     joinLink: 'https://x.com/ghostdrive_web3'
   },
   {
-    id: 'youtube',
+    id: 'JOIN_YOUTUBE',
     isDone: false,
     title: 'Join Our YouTube Channel',
-    points: 10000,
+    points: 0,
     imgUrl: '/assets/youtube.png',
     joinLink: 'https://www.youtube.com/@ghostdrive-web3'
   },
   {
-    id: 'joinTG',
+    id: 'JOIN_TG_CHANNEL',
     isDone: false,
     title: 'Join Our Community',
-    points: 10000,
+    points: 0,
     imgUrl: '/assets/telegram.png',
     joinLink: 'https://t.me/ghostdrive_web3_chat'
   },
   {
-    id: 'wallet',
+    id: 'WALLET_CONNECTION',
     isDone: false,
     title: 'Connect Wallet',
-    points: 1000,
+    points: 0,
     imgUrl: '/assets/money.png'
   }
 ];

@@ -1,6 +1,23 @@
-import React, { useLayoutEffect, useMemo } from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useState
+} from 'react';
 import classNames from 'classnames';
 import CountUp from 'react-countup';
+import { useSelector } from 'react-redux';
+import { fromNano } from '@ton/ton';
+import { useTonConnectUI } from '@tonconnect/ui-react';
+import { toast } from 'react-toastify';
+import { Address, Cell } from '@ton/core';
+
+import { useContract } from '../../utils/useContract';
+import { NftCollection } from '../../effects/contracts/tact_NftCollection';
+import { getContractMessage, getTxByBOC } from '../../effects/contracts/helper';
+import { refererEffect } from '../../effects/referralEffect';
+
 import { Header } from '../../components/header';
 import { ReactComponent as LogoIcon } from '../../assets/ghost.svg';
 import { ReactComponent as TonIcon } from '../../assets/TON.svg';
@@ -8,15 +25,58 @@ import CardsSlider from '../../components/CardsSlider/CardsSlider';
 import sliderItems from './SliderItem/sliderItems';
 import SliderItem from './SliderItem/SliderItem';
 import styles from './styles.module.css';
+import useButtonVibration from '../../hooks/useButtonVibration';
+import { NFT_ADDRESS } from '../../config/contracts';
+
+const allNodes = 10000;
 
 export default function NodesPage() {
-  const nodesAmount = 20;
-  const nodesAvailable = 990;
-  const nodesCost = 55;
+  const [tonConnectUI] = useTonConnectUI();
+  const [nodesAvailable, setNodesAvailable] = useState(allNodes);
+  const [nodesCost, setNodesCost] = useState('0');
+  const [userNodes, setUserNodes] = useState('0');
+  const [referer, setReferer] = useState();
+  const [connected, setConnected] = useState(false);
+  const contract = useContract(NFT_ADDRESS, NftCollection);
+  const user = useSelector((state) => state.user.data);
+  const handleVibrationClick = useButtonVibration();
+
+  useEffect(() => {
+    refererEffect().then((data) => {
+      setReferer(data);
+    });
+  }, []);
+
+  useEffect(() => {
+    if (contract) {
+      contract.getPricePerMint().then((price) => {
+        setNodesCost(fromNano(price));
+      });
+      contract.getGetCollectionData().then((used) => {
+        setNodesAvailable(
+          (prevState) => prevState - Number(used.next_item_index)
+        );
+      });
+    }
+  }, [contract]);
+
+  useEffect(() => {
+    if (contract && user?.wallet) {
+      contract
+        .getTotalBought(Address.parse(user?.wallet))
+        .then((total) => {
+          setUserNodes(total.toString());
+        })
+        .catch((err) => {
+          setUserNodes('0');
+          console.log({ err });
+        });
+    }
+  }, [contract, user?.wallet]);
 
   const slides = useMemo(() => {
     return sliderItems.map((el) => {
-      return { id: el.id, html: <SliderItem item={el} /> };
+      return { id: el.id, html: <SliderItem key={el?.id} item={el} /> };
     });
   }, []);
 
@@ -40,6 +100,50 @@ export default function NodesPage() {
     return () => clearInterval(intervalId);
   }, []);
 
+  const onBuyNode = useCallback(async () => {
+    try {
+      console.log('connected', { connected });
+      if (!contract) {
+        return;
+      }
+      if (!connected) {
+        if (tonConnectUI.connected) {
+          await tonConnectUI?.disconnect();
+        }
+        await tonConnectUI.openModal();
+        setConnected(true);
+        return;
+      }
+      console.log({ contract });
+      const price = await contract.getPricePerMint();
+      console.log({ contract, price, referer });
+      // const d = await contract.getGetCollectionData();
+      //
+      // console.log({ d });
+
+      await contract.send(
+        {
+          send: async (args) => {
+            const tx = getContractMessage(args);
+            const data = await tonConnectUI.sendTransaction(tx);
+            console.log({ data });
+          }
+        },
+        { value: price },
+        {
+          $$type: 'Mint',
+          query_id: 1n,
+          referer: referer ? Address.parse(referer) : null
+        }
+      );
+      toast.success('Payment was successfully');
+    } catch (e) {
+      console.log('onBuyNode error', e);
+      toast.error(e.message);
+      setConnected(false);
+    }
+  }, [connected, contract, referer, tonConnectUI]);
+
   return (
     <div className={styles.container}>
       <Header label={'Node'} />
@@ -56,6 +160,8 @@ export default function NodesPage() {
             autoPlay
             loop
             muted
+            playsInline
+            controlsList="nofullscreen"
             poster="/assets/node-banner.jpg">
             <source src="/assets/node-banner.mp4" type="video/mp4" />
           </video>
@@ -67,7 +173,7 @@ export default function NodesPage() {
               </div>
               <h1>My Nodes</h1>
               <span>
-                <CountUp delay={0.5} end={nodesAmount} />
+                <CountUp delay={0.5} end={userNodes} />
               </span>
             </div>
           </div>
@@ -77,14 +183,19 @@ export default function NodesPage() {
           <div className={styles['buy-container']}>
             <div className={styles['buy-container__flex-left']}>
               <div className={styles['buy-container__description']}>
-                Available: {nodesAvailable}
+                Available: {nodesAvailable.toLocaleString()}
               </div>
               <div className={styles['buy-container__cost']}>
                 {nodesCost} <TonIcon />
               </div>
             </div>
             <div className={styles['buy-container__flex-right']}>
-              <button className={styles['buy-button']}>Buy</button>
+              <button
+                type={'button'}
+                onClick={handleVibrationClick(onBuyNode)}
+                className={styles['buy-button']}>
+                Buy
+              </button>
             </div>
           </div>
         </div>

@@ -5,7 +5,6 @@ import React, {
   forwardRef,
   useMemo
 } from 'react';
-import { useDispatch } from 'react-redux';
 import { Sheet } from 'react-modal-sheet';
 
 import {
@@ -13,7 +12,7 @@ import {
   checkXJoin,
   checkYoutubeJoin
 } from '../../../effects/EarnEffect';
-import { updatePoints } from '../../../store/reducers/userSlice';
+import useButtonVibration from '../../../hooks/useButtonVibration';
 
 import { ReactComponent as CloseIcon } from '../../../assets/close.svg';
 import SystemModal from '../../../components/SystemModal/SystemModal';
@@ -21,11 +20,11 @@ import SystemModal from '../../../components/SystemModal/SystemModal';
 import classNames from 'classnames';
 import styles from './EarnModal.module.css';
 
-const EarnModal = forwardRef(({ item }, ref) => {
+const EarnModal = forwardRef(({ item, onTasksRequireCheck }, ref) => {
   const modalRef = useRef(null);
   const systemModalRef = useRef(null);
-  const dispatch = useDispatch();
   const [isOpen, setIsOpen] = useState(false);
+  const handleVibrationClick = useButtonVibration();
 
   useImperativeHandle(ref, () => ({
     open: open
@@ -43,38 +42,67 @@ const EarnModal = forwardRef(({ item }, ref) => {
     let fn;
 
     switch (id) {
-      case 'joinTG':
+      case 'JOIN_TG_CHANNEL':
         fn = checkTgChatJoin;
         break;
-      case 'youtube':
+      case 'JOIN_YOUTUBE':
         fn = checkYoutubeJoin;
         break;
-      case 'followX':
+      case 'JOIN_TWITTER':
         fn = checkXJoin;
         break;
     }
 
     const res = fn ? await fn() : null;
+    runSystemModal(id, res);
+  };
 
+  const runSystemModal = (id, res) => {
     if (res === 'success') {
-      dispatch(updatePoints(item?.points));
+      let text = '';
+      switch (id) {
+        case 'JOIN_TG_CHANNEL':
+          text = 'You joined our TG Channel';
+          break;
+        case 'JOIN_YOUTUBE':
+          text = 'You joined our Youtube Channel';
+          break;
+        case 'JOIN_TWITTER':
+          text = 'You joined our X Channel';
+          break;
+      }
+
       systemModalRef.current.open({
         title: 'Success!',
-        text: 'You joined our TG Channel',
+        text: text,
         actions: [
           {
             type: 'default',
             text: 'OK',
             onClick: () => {
               systemModalRef.current.close();
+              onTasksRequireCheck?.();
             }
           }
         ]
       });
     } else if (res === 'You are not a member of this channel') {
+      let text = '';
+      switch (id) {
+        case 'JOIN_TG_CHANNEL':
+          text = 'You did not join our TG Chanel';
+          break;
+        case 'JOIN_YOUTUBE':
+          text = 'You did not join our Youtube Chanel';
+          break;
+        case 'JOIN_TWITTER':
+          text = 'You did not join our X Chanel';
+          break;
+      }
+
       systemModalRef.current.open({
         title: 'Oops!',
-        text: 'You did not join our TG Chanel',
+        text: text,
         actions: [
           {
             type: 'default',
@@ -96,6 +124,7 @@ const EarnModal = forwardRef(({ item }, ref) => {
             text: 'OK',
             onClick: () => {
               systemModalRef.current.close();
+              onTasksRequireCheck?.();
             }
           }
         ]
@@ -125,8 +154,9 @@ const EarnModal = forwardRef(({ item }, ref) => {
         <a
           href={item.joinLink}
           target="_blank"
-          className={classNames(styles.button, styles['join-button'])}>
-          {item.id === 'downloadMobileApp' ? 'Download' : 'Join'}
+          className={classNames(styles.button, styles['join-button'])}
+          onClick={handleVibrationClick()}>
+          {item.id === 'DOWNLOAD_APP' ? 'Download' : 'Join'}
         </a>
       );
     } else {
@@ -138,13 +168,13 @@ const EarnModal = forwardRef(({ item }, ref) => {
     if (!item) return null;
 
     switch (item.id) {
-      case 'joinTG':
-      case 'youtube':
-      case 'followX':
+      case 'JOIN_TG_CHANNEL':
+      case 'JOIN_YOUTUBE':
+      case 'JOIN_TWITTER':
         return (
           <button
             className={classNames(styles.button, styles['check-button'])}
-            onClick={() => checkSocials(item.id)}>
+            onClick={handleVibrationClick(() => checkSocials(item.id))}>
             Check
           </button>
         );
@@ -172,7 +202,9 @@ const EarnModal = forwardRef(({ item }, ref) => {
                     <span>{item.points.toLocaleString()}</span>
                     <img src="/assets/token.png" />
                   </div>
-                  <div className={styles.close} onClick={close}>
+                  <div
+                    className={styles.close}
+                    onClick={handleVibrationClick(close)}>
                     <CloseIcon />
                   </div>
                 </div>

@@ -6,10 +6,16 @@ import React, {
 } from 'react';
 import classNames from 'classnames';
 import { useSelector } from 'react-redux';
-import { selectNextTheme } from '../../../store/reducers/gameSlice';
+import {
+  selectNextTheme,
+  selectTheme
+} from '../../../store/reducers/gameSlice';
 import styles from './Background.module.css';
 
-const Background = forwardRef(({ theme }, ref) => {
+/** Please, do not add extra selectors or state
+ * It will force the component to rerender, that will cause lags and rerenders
+ */
+const Background = forwardRef((_, ref) => {
   const starsRef = useRef(null);
   const glowRef = useRef(null);
   const object1Ref = useRef(null);
@@ -22,6 +28,7 @@ const Background = forwardRef(({ theme }, ref) => {
   const lastClickTimeRef = useRef(Date.now()); // I'm using ref instead of useState ON PURPOSE! It won't work with useState because of js closures in animate function
   const thenRef = useRef(Date.now());
 
+  const theme = useSelector(selectTheme);
   const nextTheme = useSelector(selectNextTheme);
 
   const maxSpeed = 1;
@@ -77,7 +84,7 @@ const Background = forwardRef(({ theme }, ref) => {
     if (!glowRef || !glowRef.current || !planetRef || !planetRef.current)
       return;
 
-    if (nextTheme) {
+    if (nextTheme.theme) {
       glowRef.current.classList.remove(styles['next-theme-appear']);
       planetRef.current.classList.remove(styles['next-theme-appear']);
 
@@ -113,7 +120,7 @@ const Background = forwardRef(({ theme }, ref) => {
         clearTimeout(timeout2);
       }
     };
-  }, [nextTheme]);
+  }, [nextTheme.theme]);
 
   useEffect(() => {
     const intervalId = setInterval(() => {

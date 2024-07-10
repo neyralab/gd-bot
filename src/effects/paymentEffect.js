@@ -8,7 +8,7 @@ let stripePromise;
 
 export const getStripe = () => {
   if (!stripePromise) {
-    stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLIC_KEY);
+    stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
   }
   return stripePromise;
 };

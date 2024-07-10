@@ -381,37 +381,52 @@ export type Boost = {
   $$type: 'Boost';
   queryId: bigint;
   tierId: bigint;
+  gameId: bigint;
 };
 
 export function storeBoost(src: Boost) {
   return (builder: Builder) => {
     let b_0 = builder;
-    b_0.storeUint(3711086086, 32);
+    b_0.storeUint(829983304, 32);
     b_0.storeUint(src.queryId, 64);
     b_0.storeUint(src.tierId, 16);
+    b_0.storeUint(src.gameId, 64);
   };
 }
 
 export function loadBoost(slice: Slice) {
   let sc_0 = slice;
-  if (sc_0.loadUint(32) !== 3711086086) {
+  if (sc_0.loadUint(32) !== 829983304) {
     throw Error('Invalid prefix');
   }
   let _queryId = sc_0.loadUintBig(64);
   let _tierId = sc_0.loadUintBig(16);
-  return { $$type: 'Boost' as const, queryId: _queryId, tierId: _tierId };
+  let _gameId = sc_0.loadUintBig(64);
+  return {
+    $$type: 'Boost' as const,
+    queryId: _queryId,
+    tierId: _tierId,
+    gameId: _gameId
+  };
 }
 
 function loadTupleBoost(source: TupleReader) {
   let _queryId = source.readBigNumber();
   let _tierId = source.readBigNumber();
-  return { $$type: 'Boost' as const, queryId: _queryId, tierId: _tierId };
+  let _gameId = source.readBigNumber();
+  return {
+    $$type: 'Boost' as const,
+    queryId: _queryId,
+    tierId: _tierId,
+    gameId: _gameId
+  };
 }
 
 function storeTupleBoost(source: Boost) {
   let builder = new TupleBuilder();
   builder.writeNumber(source.queryId);
   builder.writeNumber(source.tierId);
+  builder.writeNumber(source.gameId);
   return builder.build();
 }
 
@@ -430,27 +445,31 @@ export type SetTierPrice = {
   $$type: 'SetTierPrice';
   queryId: bigint;
   tierId: bigint;
-  price: bigint;
+  price: bigint | null;
 };
 
 export function storeSetTierPrice(src: SetTierPrice) {
   return (builder: Builder) => {
     let b_0 = builder;
-    b_0.storeUint(742784761, 32);
+    b_0.storeUint(2321637085, 32);
     b_0.storeUint(src.queryId, 64);
     b_0.storeUint(src.tierId, 16);
-    b_0.storeUint(src.price, 64);
+    if (src.price !== null && src.price !== undefined) {
+      b_0.storeBit(true).storeUint(src.price, 64);
+    } else {
+      b_0.storeBit(false);
+    }
   };
 }
 
 export function loadSetTierPrice(slice: Slice) {
   let sc_0 = slice;
-  if (sc_0.loadUint(32) !== 742784761) {
+  if (sc_0.loadUint(32) !== 2321637085) {
     throw Error('Invalid prefix');
   }
   let _queryId = sc_0.loadUintBig(64);
   let _tierId = sc_0.loadUintBig(16);
-  let _price = sc_0.loadUintBig(64);
+  let _price = sc_0.loadBit() ? sc_0.loadUintBig(64) : null;
   return {
     $$type: 'SetTierPrice' as const,
     queryId: _queryId,
@@ -462,7 +481,7 @@ export function loadSetTierPrice(slice: Slice) {
 function loadTupleSetTierPrice(source: TupleReader) {
   let _queryId = source.readBigNumber();
   let _tierId = source.readBigNumber();
-  let _price = source.readBigNumber();
+  let _price = source.readBigNumberOpt();
   return {
     $$type: 'SetTierPrice' as const,
     queryId: _queryId,
@@ -551,6 +570,7 @@ export type Boosted = {
   $$type: 'Boosted';
   queryId: bigint;
   tierId: bigint;
+  gameId: bigint;
   purchaseId: bigint;
   player: Address;
 };
@@ -558,9 +578,10 @@ export type Boosted = {
 export function storeBoosted(src: Boosted) {
   return (builder: Builder) => {
     let b_0 = builder;
-    b_0.storeUint(3868694109, 32);
+    b_0.storeUint(2561301016, 32);
     b_0.storeUint(src.queryId, 64);
     b_0.storeUint(src.tierId, 16);
+    b_0.storeUint(src.gameId, 64);
     b_0.storeUint(src.purchaseId, 64);
     b_0.storeAddress(src.player);
   };
@@ -568,17 +589,19 @@ export function storeBoosted(src: Boosted) {
 
 export function loadBoosted(slice: Slice) {
   let sc_0 = slice;
-  if (sc_0.loadUint(32) !== 3868694109) {
+  if (sc_0.loadUint(32) !== 2561301016) {
     throw Error('Invalid prefix');
   }
   let _queryId = sc_0.loadUintBig(64);
   let _tierId = sc_0.loadUintBig(16);
+  let _gameId = sc_0.loadUintBig(64);
   let _purchaseId = sc_0.loadUintBig(64);
   let _player = sc_0.loadAddress();
   return {
     $$type: 'Boosted' as const,
     queryId: _queryId,
     tierId: _tierId,
+    gameId: _gameId,
     purchaseId: _purchaseId,
     player: _player
   };
@@ -587,12 +610,14 @@ export function loadBoosted(slice: Slice) {
 function loadTupleBoosted(source: TupleReader) {
   let _queryId = source.readBigNumber();
   let _tierId = source.readBigNumber();
+  let _gameId = source.readBigNumber();
   let _purchaseId = source.readBigNumber();
   let _player = source.readAddress();
   return {
     $$type: 'Boosted' as const,
     queryId: _queryId,
     tierId: _tierId,
+    gameId: _gameId,
     purchaseId: _purchaseId,
     player: _player
   };
@@ -602,6 +627,7 @@ function storeTupleBoosted(source: Boosted) {
   let builder = new TupleBuilder();
   builder.writeNumber(source.queryId);
   builder.writeNumber(source.tierId);
+  builder.writeNumber(source.gameId);
   builder.writeNumber(source.purchaseId);
   builder.writeAddress(source.player);
   return builder.build();
@@ -621,6 +647,7 @@ function dictValueParserBoosted(): DictionaryValue<Boosted> {
 export type Purchase = {
   $$type: 'Purchase';
   tierId: bigint;
+  gameId: bigint;
   player: Address;
   timestamp: bigint;
 };
@@ -629,6 +656,7 @@ export function storePurchase(src: Purchase) {
   return (builder: Builder) => {
     let b_0 = builder;
     b_0.storeUint(src.tierId, 16);
+    b_0.storeUint(src.gameId, 64);
     b_0.storeAddress(src.player);
     b_0.storeUint(src.timestamp, 32);
   };
@@ -637,11 +665,13 @@ export function storePurchase(src: Purchase) {
 export function loadPurchase(slice: Slice) {
   let sc_0 = slice;
   let _tierId = sc_0.loadUintBig(16);
+  let _gameId = sc_0.loadUintBig(64);
   let _player = sc_0.loadAddress();
   let _timestamp = sc_0.loadUintBig(32);
   return {
     $$type: 'Purchase' as const,
     tierId: _tierId,
+    gameId: _gameId,
     player: _player,
     timestamp: _timestamp
   };
@@ -649,11 +679,13 @@ export function loadPurchase(slice: Slice) {
 
 function loadTuplePurchase(source: TupleReader) {
   let _tierId = source.readBigNumber();
+  let _gameId = source.readBigNumber();
   let _player = source.readAddress();
   let _timestamp = source.readBigNumber();
   return {
     $$type: 'Purchase' as const,
     tierId: _tierId,
+    gameId: _gameId,
     player: _player,
     timestamp: _timestamp
   };
@@ -662,6 +694,7 @@ function loadTuplePurchase(source: TupleReader) {
 function storeTuplePurchase(source: Purchase) {
   let builder = new TupleBuilder();
   builder.writeNumber(source.tierId);
+  builder.writeNumber(source.gameId);
   builder.writeAddress(source.player);
   builder.writeNumber(source.timestamp);
   return builder.build();
@@ -694,10 +727,10 @@ function initGDTapBooster_init_args(src: GDTapBooster_init_args) {
 
 async function GDTapBooster_init(owner: Address, beneficiary: Address) {
   const __code = Cell.fromBase64(
-    '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'
+    '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'
   );
   const __system = Cell.fromBase64(
-    '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'
+    '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'
   );
   let builder = beginCell();
   builder.storeRef(__system);
@@ -830,7 +863,7 @@ const GDTapBooster_types: ABIType[] = [
   },
   {
     name: 'Boost',
-    header: 3711086086,
+    header: 829983304,
     fields: [
       {
         name: 'queryId',
@@ -839,12 +872,16 @@ const GDTapBooster_types: ABIType[] = [
       {
         name: 'tierId',
         type: { kind: 'simple', type: 'uint', optional: false, format: 16 }
+      },
+      {
+        name: 'gameId',
+        type: { kind: 'simple', type: 'uint', optional: false, format: 64 }
       }
     ]
   },
   {
     name: 'SetTierPrice',
-    header: 742784761,
+    header: 2321637085,
     fields: [
       {
         name: 'queryId',
@@ -856,7 +893,7 @@ const GDTapBooster_types: ABIType[] = [
       },
       {
         name: 'price',
-        type: { kind: 'simple', type: 'uint', optional: false, format: 64 }
+        type: { kind: 'simple', type: 'uint', optional: true, format: 64 }
       }
     ]
   },
@@ -876,7 +913,7 @@ const GDTapBooster_types: ABIType[] = [
   },
   {
     name: 'Boosted',
-    header: 3868694109,
+    header: 2561301016,
     fields: [
       {
         name: 'queryId',
@@ -885,6 +922,10 @@ const GDTapBooster_types: ABIType[] = [
       {
         name: 'tierId',
         type: { kind: 'simple', type: 'uint', optional: false, format: 16 }
+      },
+      {
+        name: 'gameId',
+        type: { kind: 'simple', type: 'uint', optional: false, format: 64 }
       },
       {
         name: 'purchaseId',
@@ -903,6 +944,10 @@ const GDTapBooster_types: ABIType[] = [
       {
         name: 'tierId',
         type: { kind: 'simple', type: 'uint', optional: false, format: 16 }
+      },
+      {
+        name: 'gameId',
+        type: { kind: 'simple', type: 'uint', optional: false, format: 64 }
       },
       {
         name: 'player',
@@ -953,6 +998,16 @@ const GDTapBooster_getters: ABIGetter[] = [
       {
         name: 'player',
         type: { kind: 'simple', type: 'address', optional: false }
+      }
+    ],
+    returnType: { kind: 'simple', type: 'int', optional: false, format: 257 }
+  },
+  {
+    name: 'purchaseIdByGameId',
+    arguments: [
+      {
+        name: 'gameId',
+        type: { kind: 'simple', type: 'int', optional: false, format: 257 }
       }
     ],
     returnType: { kind: 'simple', type: 'int', optional: false, format: 257 }
@@ -1077,6 +1132,15 @@ export class GDTapBooster implements Contract {
     let builder = new TupleBuilder();
     builder.writeAddress(player);
     let source = (await provider.get('latestPurchase', builder.build())).stack;
+    let result = source.readBigNumber();
+    return result;
+  }
+
+  async getPurchaseIdByGameId(provider: ContractProvider, gameId: bigint) {
+    let builder = new TupleBuilder();
+    builder.writeNumber(gameId);
+    let source = (await provider.get('purchaseIdByGameId', builder.build()))
+      .stack;
     let result = source.readBigNumber();
     return result;
   }

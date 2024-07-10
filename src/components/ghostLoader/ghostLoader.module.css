@@ -5,6 +5,7 @@
   align-items: center;
   justify-content: center;
   gap: 32px;
+  font-family: 'SF Pro Text';
 }
 .startupWrapper {
   background-image: url('../../assets/background.png');
@@ -32,7 +33,7 @@
 
 .textContent,
 .blinkingPipe {
-  font-family: 'IBM Plex Mono';
+  font-family: 'SF Pro Text';
   text-transform: uppercase;
   background: linear-gradient(90deg, #e55d87 0%, #5fc3e4 100%);
   color: transparent;

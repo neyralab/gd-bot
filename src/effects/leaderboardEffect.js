@@ -5,8 +5,8 @@ export const getLeaderboardEffect = async () => {
   const url = `${API_PATH}/users/rankings`;
   const res = await axiosInstance
     .get(url)
-    .then(({ data }) => data?.data)
-    .catch(() => []);
+    .then(({ data }) => data)
+    .catch(() => null);
 
   return res;
 };

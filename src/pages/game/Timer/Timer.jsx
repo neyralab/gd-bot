@@ -18,7 +18,7 @@ export default function Timer() {
     [theme?.game_time]
   );
   const [remainingTime, setRemainingTime] = useState(time);
-  const [lockTime, setLockTime] = useState('1:00');
+  const [lockTime, setLockTime] = useState('0:30');
   const roundCountdownRef = useRef();
   const lockCountdownRef = useRef();
 
