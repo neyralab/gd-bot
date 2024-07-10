@@ -57,7 +57,7 @@
   },
   "scripts": {
     "postinstall": "node generateManifest.js && cd node_modules/@ton/ton && yarn install && yarn build && rm -rf node_modules && rm -rf src",
-    "start": "vite --port=3000",
+    "start": "vite --port=3000 --host",
     "build": "vite build",
     "prod": "vite preview --host",
     "test": "react-app-rewired test",
