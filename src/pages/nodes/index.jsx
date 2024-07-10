@@ -171,7 +171,7 @@ export default function NodesPage() {
               <div className={styles['banner-header_img']}>
                 <LogoIcon />
               </div>
-              <h1>My Nodes</h1>
+              <h1>Nodes</h1>
               <span>
                 <CountUp delay={0.5} end={userNodes} />
               </span>

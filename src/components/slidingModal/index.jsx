@@ -11,7 +11,7 @@ export const SlidingModal = ({ onClose, isOpen, children }) => {
       ref={ref}
       isOpen={isOpen}
       onClose={onClose}
-      snapPoints={[175, 150, 50, 0]}
+      snapPoints={[175, 90, 50, 0]}
       initialSnap={1}>
       <Sheet.Container className="react-modal-sheet-container">
         <Sheet.Header className="react-modal-sheet-header" />

@@ -92,18 +92,17 @@
 }
 
 .banner-header h1 {
-  flex-grow: 1;
   font-size: 20px;
   font-weight: 500;
   line-height: 24px;
   text-transform: uppercase;
 }
 
-.banner video {
+.banner img {
   position: absolute;
   width: 110%;
   height: auto;
-  bottom: -50px;
+  bottom: 0;
   left: 53%;
   transform: translateX(-50%);
 }
