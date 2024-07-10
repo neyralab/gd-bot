@@ -22,7 +22,7 @@ const filesSlice = createSlice({
     currentFilter: null,
     typesCount: null,
     uploadingFile: {
-      file: {},
+      file: null,
       progress: 0,
       timeLeft: 0,
       id: null

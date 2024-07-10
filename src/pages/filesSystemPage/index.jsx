@@ -56,9 +56,7 @@ export const FilesSystemPage = () => {
   const checkedFile = useSelector(selecSelectedFile);
   const types = useSelector(selectFileTypesCount);
   const user = useSelector((state) => state?.user?.data);
-  const { progress, file: uploadingFile } = useSelector(
-    selectUploadingProgress
-  );
+
   const urlParams = new URLSearchParams(window.location.search);
   const currentFileFilter = urlParams.get('type');
 
@@ -82,7 +80,7 @@ export const FilesSystemPage = () => {
   const clearUploadState = () => {
     dispatch(changeuploadingProgress({ progress: 0 }));
     dispatch(changeTimeLeft({ timeLeft: 0 }));
-    dispatch(setUploadingFile({}));
+    dispatch(setUploadingFile(null));
   };
 
   const handleFileUpload = async (event) => {
@@ -118,11 +116,6 @@ export const FilesSystemPage = () => {
       clearUploadState();
     }
   };
-
-  const uploadingProgress = useMemo(() => {
-    const percentage = (progress / uploadingFile?.size) * 100;
-    return `${Math.round(percentage)}%`;
-  }, [progress, uploadingFile?.size]);
 
   const handleInputChange = async (e) => {
     const query = e.target.value.trim();
@@ -250,7 +243,7 @@ export const FilesSystemPage = () => {
 
         {areFilesLoading && (
           <div className={style.loaderWrapper}>
-            <GhostLoader texts={[`Uploading: ${uploadingProgress}`]} />
+            <GhostLoader />
           </div>
         )}
       </section>
