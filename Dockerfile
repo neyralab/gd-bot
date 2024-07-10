@@ -9,4 +9,4 @@ RUN apk update \
 RUN yarn install
 RUN yarn build
 RUN yarn global add serve
-CMD yarn prod
+CMD yarn start
