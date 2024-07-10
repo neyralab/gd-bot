@@ -1,5 +1,4 @@
 import { useMemo, useState, useEffect, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import CN from 'classnames';
 
@@ -11,12 +10,15 @@ import { getAllTasks } from '../../effects/balanceEffect';
 import { DEFAULT_TARIFFS_NAMES } from '../upgradeStorage';
 import { transformSize } from '../../utils/transformSize';
 import { fromByteToGb } from '../../utils/storage';
+import { isDevEnv } from '../../utils/isDevEnv';
 
 import GhostLoader from '../../components/ghostLoader';
+import Nodes from './Nodes/index';
 import { ReactComponent as LogoIcon } from '../../assets/ghost.svg';
 import { DisconnectWalletModal } from '../../components/disconnectWalletModal';
-// import CardsSlider from '../../components/CardsSlider/CardsSlider';
+import BannerSource from '../../assets/node-banner.webp';
 import PointCounter from './PointCounter/PointCounter';
+// import CardsSlider from '../../components/CardsSlider/CardsSlider';
 // import getSliderItems from './SliderItem/sliderItems';
 // import SliderItem from './SliderItem/SliderItem';
 import Navigator from './Navigator/Navigator';
@@ -25,11 +27,11 @@ import style from './style.module.css';
 
 export const StartPage = ({ tariffs }) => {
   const [tasks, setTasks] = useState([]);
-  const navigate = useNavigate();
   const [disconnectWalletModal, setDisconnectWalletModal] = useState(false);
   const allWorkspaces = useSelector(selectAllWorkspaces);
   const currentWorkspace = useSelector(selectCurrentWorkspace);
   const user = useSelector((state) => state?.user?.data);
+  const isDev = isDevEnv();
 
   const getTasks = useCallback(async () => {
     try {
@@ -85,10 +87,6 @@ export const StartPage = ({ tariffs }) => {
     );
   }
 
-  const onBalance = () => {
-    navigate('/balance');
-  };
-
   const openInNewTab = (url) => {
     window.open(url, '_blank', 'noreferrer');
   };
@@ -105,29 +103,22 @@ export const StartPage = ({ tariffs }) => {
           style['to-appear'],
           style['to-appear_active']
         )}>
-        <video
-          id="background-video"
-          autoPlay
-          loop
-          muted
-          playsInline
-          controlsList="nofullscreen"
-          poster="/assets/node-banner.jpg">
-          <source src="/assets/node-banner.mp4" type="video/mp4" />
-        </video>
-
+        <img
+          src={BannerSource}
+          alt="banner"
+        />
         <div className={style['banner-content']}>
           <div className={style['banner-header']}>
             <div className={style['banner-header_img']}>
               <LogoIcon />
             </div>
+            <h1>{storage.size}</h1>
           </div>
         </div>
       </div>
       <PointCounter
         points={user?.points}
         className={style[`point-counter`]}
-        onClick={onBalance}
         rank={user?.rank}
       />
       <Navigator
@@ -135,8 +126,8 @@ export const StartPage = ({ tariffs }) => {
         human={human}
         openDisconnectModal={setDisconnectWalletModal}
         tasks={tasks}
-        wallet={user?.wallet}
       />
+      {isDev && (<Nodes wallet={user?.wallet} />)}
       <footer className={style.footer}>
         <p className={style['footer-text']}>
           <span

@@ -98,14 +98,14 @@ export const FileMenu = () => {
             <span className={style.menu__item__title}>Restore</span>
           </li>
         )}
-        <li
+        {/* <li
           className={style.menu__item}
           onClick={handleVibrationClick(onDeleteClick)}>
           <DeleteIcon />
           <span className={cn(style.menu__item__title, style.deleteTitle)}>
             {isDeletedPage ? 'Delete permanently' : 'Delete'}
           </span>
-        </li>
+        </li> */}
       </ul>
     </SlidingModal>
   );

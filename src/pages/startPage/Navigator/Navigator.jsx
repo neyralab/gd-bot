@@ -11,11 +11,6 @@ import { ReactComponent as TapIcon } from '../assets/tap.svg';
 import { ReactComponent as RewardsIcon } from '../assets/rewards.svg';
 import { ReactComponent as BoostIcon } from '../assets/boost.svg';
 // import { ReactComponent as LanguageIcon } from '../assets/language.svg';
-import { ReactComponent as NodeIcon } from '../../../assets/node.svg';
-
-import { useContract } from '../../../utils/useContract';
-import { NFT_ADDRESS } from '../../../config/contracts'
-import { NftCollection } from '../../../effects/contracts/tact_NftCollection';
 
 import styles from './Navigator.module.css';
 
@@ -23,27 +18,10 @@ export default function Navigator({
   storage,
   human,
   tasks,
-  wallet,
   openDisconnectModal
 }) {
-  const [userNodes, setUserNodes] = useState('0');
-  const contract = useContract(NFT_ADDRESS, NftCollection);
   const navigate = useNavigate();
   const ref = useRef(null);
-
-  useEffect(() => {
-    if (contract && wallet) {
-      contract
-        .getTotalBought(Address.parse(wallet))
-        .then((total) => {
-          setUserNodes(total.toString());
-        })
-        .catch((err) => {
-          setUserNodes('0');
-          console.log({ err });
-        });
-    }
-  }, [contract, wallet]);
 
   const handleWalletClick = useCallback(() => {
     ref.current.handleClick()
@@ -85,13 +63,13 @@ export default function Navigator({
       html: (<span className={styles.actionBtn}>{`X${storage.multiplier}`}</span>),
       onClick: () => navigate('/boost')
     },
-    {
-      id: 6,
-      name: 'Nodes',
-      icon: <NodeIcon />,
-      html: (<span className={styles.actionBtn}>{userNodes}</span>),
-      onClick: () => navigate('/nodes-welcome')
-    }
+    // {
+    //   id: 6,
+    //   name: 'Nodes',
+    //   icon: <NodeIcon />,
+    //   html: (<span className={styles.actionBtn}>{userNodes}</span>),
+    //   onClick: () => navigate('/nodes-welcome')
+    // }
     // {
     //   id: 7,
     //   name: 'Language',
@@ -99,7 +77,7 @@ export default function Navigator({
     //   html: (<span className={styles.actionBtn}>Eng</span>),
     //   onClick: () => {}
     // },
-  ]), [storage, tasks, human, handleWalletClick, openDisconnectModal, navigate, userNodes])
+  ]), [storage, tasks, human, handleWalletClick, openDisconnectModal, navigate])
 
   return (
     <ul className={CN(styles['navigator'], styles['to-appear'])}>

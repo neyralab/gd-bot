@@ -24,7 +24,11 @@ export default function Status() {
         <span className={styles['timer-description']}>Next free play</span>
       );
     } else if (themeAccess[theme.id] && !lockTimerTimestamp) {
-      return <span className={styles['timer-description']}>Play now</span>;
+      if (status === 'waiting') {
+        return <span className={styles['timer-description']}>Play now</span>;
+      } else {
+        return <span className={styles['timer-description']}>Play mode</span>;
+      }
     } else {
       return null;
     }

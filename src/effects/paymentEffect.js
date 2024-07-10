@@ -1,9 +1,10 @@
 import { loadStripe } from '@stripe/stripe-js/pure';
 import axiosInstance from './axiosInstance';
-import { API_PATH, API_TON_WALLET } from '../utils/api-urls';
+import { API_PATH, API_TON_WALLET, API_NEYRA } from '../utils/api-urls';
 import axios from 'axios';
 import { connectUserV8 } from './authorizeUser';
 
+const TG_STARS_BOT_TOKEN = '7391743462:AAF4XZF8mLkLWrKA8ZUVuDbFqC12kfK6FnI';
 let stripePromise;
 
 export const getStripe = () => {
@@ -68,3 +69,22 @@ export const getTonWallet = async (dispatch, comment) => {
 
   return data;
 };
+
+export const sendStarInvoice = async (invoice) => {
+  try {
+    const chatReq = await axios.get('https://api.telegram.org/bot7391743462:AAF4XZF8mLkLWrKA8ZUVuDbFqC12kfK6FnI/getUpdates');
+    if (!chatReq.data.ok && chatReq.data?.result !== 0) {
+      throw new Error(chatReq?.data?.message || '')
+    }
+    const chat_id =  chatReq.data?.result[0].message.chat.id;
+
+    axiosInstance.post(`${API_NEYRA}/billing/send_invoice`, {
+      invoice_payload: {
+        chat_id,
+        ...invoice,
+      }
+    }) 
+  } catch (error) {
+    console.log(error);
+  }
+}
