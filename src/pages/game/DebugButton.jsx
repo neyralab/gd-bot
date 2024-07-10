@@ -1,17 +1,20 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 export default function DebugButton() {
   const state = useSelector((state) => state.game);
   const navigate = useNavigate();
+  const location = useLocation();
 
   const clipboardHandler = () => {
     navigator.clipboard.writeText(JSON.stringify(state));
   };
 
   const game3DHandler = () => {
-    navigate('/game-3d');
+    if (location.pathname === '/game') {
+      navigate('/game-3d');
+    }
   };
 
   return (
@@ -24,8 +27,9 @@ export default function DebugButton() {
           position: 'fixed',
           bottom: 0,
           left: 0,
-          zIndex: '99999999999999999999',
+          zIndex: '99999999999999999999'
         }}></div>
+
       <div
         onClick={clipboardHandler}
         style={{
