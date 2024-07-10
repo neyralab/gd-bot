@@ -11,7 +11,21 @@ import ShipModel from './ShipModel';
 
 function Loader() {
   const { progress } = useProgress();
-  return <Html center>{progress} % loaded</Html>;
+  return (
+    <Html>
+      <div
+        style={{
+          textAlign: 'Center',
+          width: '200px',
+          position: 'fixed',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)'
+        }}>
+        {progress}% loaded
+      </div>
+    </Html>
+  );
 }
 
 const GameCanvas = forwardRef((_, ref) => {
