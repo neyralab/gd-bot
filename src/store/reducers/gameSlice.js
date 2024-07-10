@@ -38,7 +38,7 @@ const gameSlice = createSlice({
     roundTimerTimestamp: null,
     roundTimeoutId: null,
     lockTimerTimestamp: null,
-    lockTimeoutId: null,
+    lockIntervalId: null,
     counter: {
       isActive: false,
       count: null,
@@ -110,9 +110,9 @@ const gameSlice = createSlice({
     setLockTimerTimestamp: (state, { payload }) => {
       state.lockTimerTimestamp = payload;
     },
-    setLockTimeoutId: (state, { payload }) => {
-      clearTimeout(state.lockTimeoutId);
-      state.lockTimeoutId = payload;
+    setLockIntervalId: (state, { payload }) => {
+      clearInterval(state.lockIntervalId);
+      state.lockIntervalId = payload;
     },
     setThemeAccess: (state, { payload }) => {
       state.themeAccess[payload.themeId] = payload.status;
@@ -147,22 +147,25 @@ const gameSlice = createSlice({
   }
 });
 
-const lockTimerCountdown = (dispatch, endTime, freezeTime) => {
-  /** endTime is a timestamp, when the game is suppose to be ended */
-  /** freezeTime is an amount of milliseconds for timer to stop */
-  dispatch(addLogs(`lockTimerCountdown: ${endTime}, ${freezeTime}`));
+const lockTimerCountdown = (dispatch, endTime) => {
+  dispatch(addLogs(`lockTimerCountdown: ${endTime}`));
 
   dispatch(setLockTimerTimestamp(endTime));
 
-  const timeoutId = setTimeout(() => {
-    dispatch(setLockTimerTimestamp(null));
-    dispatch(setLockTimeoutId(null));
-    dispatch(setStatus('waiting'));
-    dispatch(setThemeAccess({ themeId: 'hawk', status: true }));
-    dispatch(addLogs(`lockTimerCountdown timeout worked`));
-  }, freezeTime);
+  const intervalId = setInterval(() => {
+    const now = Date.now();
+    const remainingTime = endTime - now;
 
-  dispatch(setLockTimeoutId(timeoutId));
+    if (remainingTime <= 0) {
+      dispatch(setLockTimerTimestamp(null));
+      dispatch(setLockIntervalId(null));
+      dispatch(setStatus('waiting'));
+      dispatch(setThemeAccess({ themeId: 'hawk', status: true }));
+      dispatch(addLogs(`lockTimerCountdown interval worked`));
+    }
+  }, 1000);
+
+  dispatch(setLockIntervalId(intervalId));
 };
 
 export const initGame = createAsyncThunk(
@@ -197,8 +200,7 @@ export const initGame = createAsyncThunk(
         dispatch(setStatus('finished'));
 
         const endTime = gameInfo.game_ends_at;
-        const freezeTime = endTime - Date.now();
-        lockTimerCountdown(dispatch, endTime, freezeTime);
+        lockTimerCountdown(dispatch, endTime);
       } else {
         dispatch(setStatus('waiting'));
       }
@@ -306,7 +308,7 @@ export const startNewFreeGameCountdown = createAsyncThunk(
   'game/startNewFreeGameCountdown',
   async (_, { dispatch, getState }) => {
     const state = getState();
-    dispatch(setLockTimeoutId(null));
+    dispatch(setLockIntervalId(null));
     dispatch(setThemeAccess({ themeId: 'hawk', status: false }));
     const level = selectLevel(state);
     const freezeTime = level?.recharge_mins * 60 * 1000;
@@ -316,7 +318,7 @@ export const startNewFreeGameCountdown = createAsyncThunk(
         `startNewFreeGameCountdown: freezeTime ${freezeTime}, endTime ${endTime}`
       )
     );
-    lockTimerCountdown(dispatch, endTime, freezeTime);
+    lockTimerCountdown(dispatch, endTime);
   }
 );
 
@@ -361,7 +363,8 @@ export const confirmNewlevel = createAsyncThunk(
     if (levels[levelIndex - 1].freeRound) {
       dispatch(setThemeAccess({ themeId: 'hawk', status: true }));
       dispatch(setLockTimerTimestamp(null));
-      dispatch(setLockTimeoutId(null));
+      clearInterval(state.game.lockIntervalId);
+      dispatch(setLockIntervalId(null));
     }
   }
 );
@@ -475,7 +478,7 @@ export const {
   setRoundTimerTimestamp,
   setRoundTimeoutId,
   setLockTimerTimestamp,
-  setLockTimeoutId,
+  setLockIntervalId,
   setThemeAccess,
   setExperienceLevel,
   setExperiencePoints,

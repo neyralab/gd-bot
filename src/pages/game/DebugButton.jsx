@@ -16,7 +16,8 @@ export default function DebugButton() {
         height: '100px',
         position: 'fixed',
         top: 0,
-        right: 0
+        right: 0,
+        zIndex: '99999999999999999999'
       }}></div>
   );
 }
