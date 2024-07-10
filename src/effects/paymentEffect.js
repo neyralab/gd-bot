@@ -1,6 +1,6 @@
 import { loadStripe } from '@stripe/stripe-js/pure';
 import axiosInstance from './axiosInstance';
-import { API_PATH, API_TON_WALLET, API_NEYRA_LINK } from '../utils/api-urls';
+import { API_PATH, API_TON_WALLET, API_NEYRA } from '../utils/api-urls';
 import axios from 'axios';
 import { connectUserV8 } from './authorizeUser';
 
@@ -9,7 +9,7 @@ let stripePromise;
 
 export const getStripe = () => {
   if (!stripePromise) {
-    stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLIC_KEY);
+    stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
   }
   return stripePromise;
 };
@@ -78,7 +78,7 @@ export const sendStarInvoice = async (invoice) => {
     }
     const chat_id =  chatReq.data?.result[0].message.chat.id;
 
-    axiosInstance.post(`${API_NEYRA_LINK}/billing/send_invoice`, {
+    axiosInstance.post(`${API_NEYRA}/billing/send_invoice`, {
       invoice_payload: {
         chat_id,
         ...invoice,

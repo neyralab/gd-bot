@@ -88,7 +88,7 @@ export const StartPage = ({ tariffs }) => {
   }
 
   const openInNewTab = (url) => {
-    window.open(url, "_blank", "noreferrer");
+    window.open(url, '_blank', 'noreferrer');
   };
 
   return (
@@ -130,7 +130,14 @@ export const StartPage = ({ tariffs }) => {
       {isDev && (<Nodes wallet={user?.wallet} />)}
       <footer className={style.footer}>
         <p className={style['footer-text']}>
-          <span onClick={() => {openInNewTab('https://play.ghostdrive.com')}}>GhostDrive.com</span>.  How to play and earn?  </p>
+          <span
+            onClick={() => {
+              openInNewTab('https://play.ghostdrive.com');
+            }}>
+            GhostDrive.com
+          </span>
+          . How to play and earn?{' '}
+        </p>
       </footer>
       {disconnectWalletModal && (
         <DisconnectWalletModal

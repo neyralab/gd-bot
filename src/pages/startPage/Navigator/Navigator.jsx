@@ -26,7 +26,7 @@ export default function Navigator({
   const handleWalletClick = useCallback(() => {
     ref.current.handleClick()
   }, [])
-  
+
   const NAVIGATION = useMemo(() => ([
     {
       id: 1,
