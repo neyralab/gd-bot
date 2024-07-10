@@ -18,6 +18,18 @@
   line-height: 150%;
 }
 
+.backButton {
+  color: #3d88f6;
+  text-align: center;
+  text-overflow: ellipsis;
+  font-family: 'Open Sans';
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 150%;
+  margin-right: auto;
+}
+
 .navigation {
   display: flex;
   gap: 24px;
