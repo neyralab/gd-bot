@@ -15,7 +15,6 @@ import {
   gameCleanup
 } from '../../store/reducers/gameSlice';
 import { Header } from '../../components/header_v2';
-import Background from '../game/Background/Background';
 import BuyButton from '../game/BuyButton/BuyButton';
 import EndGameAddedPoints from '../game/EndGameAddedPoints/EndGameAddedPoints';
 import PointsGrowArea from '../game/PointsGrowArea/PointsGrowArea';
@@ -38,7 +37,7 @@ import GameCanvas from './Models/GameCanvas';
 export function Game3DPage() {
   const dispatch = useDispatch();
 
-  const backgroundRef = useRef(null);
+  // const backgroundRef = useRef(null);
   const pointsAreaRef = useRef(null);
   const canvasRef = useRef(null);
 
@@ -83,6 +82,13 @@ export function Game3DPage() {
     e?.preventDefault();
     e?.stopPropagation();
 
+    // TODO: REMOVE LATER
+    pointsAreaRef.current.runAnimation();
+    canvasRef.current?.runPushAnimation();
+
+    return;
+    // TODO: REMOVE LATER
+
     if (
       !counterIsFinished ||
       !theme ||
@@ -99,7 +105,6 @@ export function Game3DPage() {
     window?.Telegram?.WebApp?.HapticFeedback?.impactOccurred('soft');
 
     // Run animations
-    backgroundRef.current.runAnimation();
     pointsAreaRef.current.runAnimation();
     canvasRef.current?.runPushAnimation();
 
@@ -131,7 +136,6 @@ export function Game3DPage() {
 
   return (
     <div className={styles.container}>
-      <Background ref={backgroundRef} />
       <Header />
 
       <div className={styles.content}>

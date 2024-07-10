@@ -6,8 +6,9 @@ import React, {
 } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { EffectComposer, Bloom } from '@react-three/postprocessing';
-import { Html, useProgress } from '@react-three/drei';
+import { Html, useProgress, OrbitControls } from '@react-three/drei';
 import ShipModel from './ShipModel';
+import StarsBackgroundModel from './StarsBackgoundModel';
 
 function Loader() {
   const { progress } = useProgress();
@@ -22,7 +23,7 @@ function Loader() {
           left: '50%',
           transform: 'translate(-50%, -50%)'
         }}>
-        {progress}% loaded
+        {Math.round(progress)}% loaded
       </div>
     </Html>
   );
@@ -30,10 +31,14 @@ function Loader() {
 
 const GameCanvas = forwardRef((_, ref) => {
   const shipRef = useRef(null);
+  const backgroundRef = useRef(null);
 
   const runPushAnimation = () => {
     if (shipRef && shipRef.current) {
       shipRef.current.runPushAnimation();
+    }
+    if (backgroundRef && backgroundRef.current) {
+      backgroundRef.current.runPushAnimation();
     }
   };
 
@@ -52,7 +57,10 @@ const GameCanvas = forwardRef((_, ref) => {
           color={'#A3C5E7'}
         />
 
+        <StarsBackgroundModel ref={backgroundRef} />
         <ShipModel ref={shipRef} />
+
+        {/* <OrbitControls /> */}
 
         {/* Remove in case of lags, 
         but increase intensity of ambientLight to 2 and directionalLight to 10 */}
