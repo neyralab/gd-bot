@@ -28,6 +28,7 @@ import { LeaderboardFriends } from './pages/leaderboard/friends';
 import { TaskPage } from './pages/Task';
 import { BoostPage } from './pages/boost';
 import { GamePage } from './pages/game';
+import { Game3DPage } from './pages/game3d';
 import { IntroPage } from './pages/intro';
 import EarnPage from './pages/earn';
 import FriendsPage from './pages/friends';
@@ -137,6 +138,7 @@ function App() {
           />
           <Route path="/friends" exact element={<FriendsPage />} />
           <Route path="/game" exact element={<GamePage />} />
+          <Route path="/game-3d" exact element={<Game3DPage />} />
           <Route
             path="/boost"
             exact

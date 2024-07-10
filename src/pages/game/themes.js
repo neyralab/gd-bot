@@ -4,7 +4,9 @@ const themes = [
     name: 'Hawk',
     multiplier: 1,
     cost: 0,
-    data: '0.01MB'
+    data: '0.01MB',
+    color1: '#A3C5E7',
+    color2: '#4495E7'
   },
   // {
   //   id: 'lotus',
@@ -25,7 +27,9 @@ const themes = [
     name: 'Ghost',
     multiplier: 25,
     cost: 0.25,
-    data: '0.25MB'
+    data: '0.25MB',
+    color1: '#A3E7BF',
+    color2: '#44E780'
   }
 ];
 
