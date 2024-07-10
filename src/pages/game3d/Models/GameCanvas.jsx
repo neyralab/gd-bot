@@ -9,6 +9,8 @@ import { EffectComposer, Bloom } from '@react-three/postprocessing';
 import { Html, useProgress, OrbitControls } from '@react-three/drei';
 import ShipModel from './ShipModel';
 import StarsBackgroundModel from './StarsBackgoundModel';
+import { useSelector } from 'react-redux';
+import { selectTheme } from '../../../store/reducers/gameSlice';
 
 function Loader() {
   const { progress } = useProgress();
@@ -30,6 +32,8 @@ function Loader() {
 }
 
 const GameCanvas = forwardRef((_, ref) => {
+  const theme = useSelector(selectTheme);
+
   const shipRef = useRef(null);
   const backgroundRef = useRef(null);
 
@@ -54,7 +58,7 @@ const GameCanvas = forwardRef((_, ref) => {
         <directionalLight
           position={[1, 1, 1]}
           intensity={7}
-          color={'#A3C5E7'}
+          color={theme.color1}
         />
 
         <StarsBackgroundModel ref={backgroundRef} />

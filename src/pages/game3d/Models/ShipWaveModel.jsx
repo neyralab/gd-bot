@@ -1,7 +1,11 @@
 import React, { useRef, useEffect } from 'react';
 import gsap from 'gsap';
+import { useSelector } from 'react-redux';
+import { selectTheme } from '../../../store/reducers/gameSlice';
 
 const ShipWaveModel = ({ id, onComplete }) => {
+  const theme = useSelector(selectTheme);
+
   const circleRef = useRef();
 
   useEffect(() => {
@@ -38,8 +42,8 @@ const ShipWaveModel = ({ id, onComplete }) => {
       rotation={[0, 0, 0]}>
       <torusGeometry args={[10, 0.1, 2, 50]} />
       <meshStandardMaterial
-        color={'#4495E7'}
-        emissive={'#4495E7'}
+        color={theme.color2}
+        emissive={theme.color2}
         emissiveIntensity={5}
         transparent
         opacity={0.15}
