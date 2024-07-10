@@ -82,12 +82,12 @@ export function Game3DPage() {
     e?.preventDefault();
     e?.stopPropagation();
 
-    // TODO: REMOVE LATER
-    pointsAreaRef.current.runAnimation();
-    canvasRef.current?.runPushAnimation();
+    // // TODO: REMOVE LATER
+    // pointsAreaRef.current.runAnimation();
+    // canvasRef.current?.runPushAnimation();
 
-    return;
-    // TODO: REMOVE LATER
+    // return;
+    // // TODO: REMOVE LATER
 
     if (
       !counterIsFinished ||
