@@ -63,7 +63,8 @@ const GameCanvas = forwardRef((_, ref) => {
         {/* <OrbitControls /> */}
 
         {/* Remove in case of lags, 
-        but increase intensity of ambientLight to 2 and directionalLight to 10 */}
+        but increase intensity of ambientLight to 2 (from 1.5) and directionalLight to 9 (from 7)
+        and also ShipWaveModel on-model opacity to 1 (from 0.1) and remove all attrs of emission emissive={'#4495E7'} emissiveIntensity={5} */}
         <EffectComposer>
           <Bloom intensity={0.05} />
         </EffectComposer>
