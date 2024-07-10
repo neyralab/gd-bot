@@ -1,4 +1,9 @@
-import React, { useEffect, forwardRef, useImperativeHandle, useCallback } from 'react';
+import React, {
+  useEffect,
+  forwardRef,
+  useImperativeHandle,
+  useCallback
+} from 'react';
 import { useSelector } from 'react-redux';
 import {
   useTonAddress,
@@ -68,9 +73,9 @@ export const WalletConnect = forwardRef(({ openDisconnectModal }, ref) => {
     if (address.length) {
       openDisconnectModal(true);
     } else {
-      open()
+      open();
     }
-  }, [openDisconnectModal, address, open])
+  }, [openDisconnectModal, address, open]);
 
   useImperativeHandle(ref, () => {
     return { handleClick };
@@ -84,7 +89,7 @@ export const WalletConnect = forwardRef(({ openDisconnectModal }, ref) => {
           onClick={() => {
             openDisconnectModal(true);
           }}>
-            {`...${address.slice(-4)}`}
+          {`...${address.slice(-4)}`}
         </span>
       ) : (
         <button className={style.connect} onClick={open}>
