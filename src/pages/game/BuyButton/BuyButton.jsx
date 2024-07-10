@@ -19,7 +19,7 @@ import {
   selectThemes,
   setGameId,
   setIsTransactionLoading,
-  setLockTimeoutId,
+  setLockIntervalId,
   setLockTimerTimestamp,
   setStatus,
   setThemeAccess,
@@ -68,7 +68,7 @@ export default function BuyButton() {
 
     if (theme.id === 'hawk') {
       dispatch(setLockTimerTimestamp(null));
-      dispatch(setLockTimeoutId(null));
+      dispatch(setLockIntervalId(null));
     }
 
     setTimeout(() => {
