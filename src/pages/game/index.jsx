@@ -12,7 +12,8 @@ import {
   addBalance,
   selectIsTransactionLoading,
   switchTheme,
-  gameCleanup
+  gameCleanup,
+  addLogs
 } from '../../store/reducers/gameSlice';
 import { Header } from '../../components/header_v2';
 import Background from './Background/Background';
@@ -31,6 +32,7 @@ import LevelDescription from './LevelDescription/LevelDescription';
 import ThemeSwitcherControllers from './ThemeSwitcherControllers/ThemeSwitcherControllers';
 import ThemeSwitcherMainButton from './ThemeSwitcherMainButton/ThemeSwitcherMainButton';
 import styles from './styles.module.css';
+import DebugButton from './DebugButton';
 
 /** Please, do not add extra selectors or state
  * It will force the component to rerender, that will cause lags and rerenders
@@ -65,11 +67,13 @@ export function GamePage() {
   });
 
   useEffect(() => {
+    dispatch(addLogs('entered the game'));
     if (!isInitialized) {
       dispatch(initGame());
     }
 
     return () => {
+      dispatch(addLogs('exiting the game'));
       dispatch(gameCleanup());
     };
   }, []);
@@ -189,6 +193,8 @@ export function GamePage() {
       <Menu />
 
       <Congratulations />
+
+      <DebugButton />
     </div>
   );
 }
