@@ -8,7 +8,7 @@ import { Canvas } from '@react-three/fiber';
 import { EffectComposer, Bloom } from '@react-three/postprocessing';
 import { Html, useProgress, OrbitControls } from '@react-three/drei';
 import ShipModel from './ShipModel';
-import StarsBackgroundModel from './StarsBackgoundModel';
+import BackgroundModel from './BackgoundModel';
 import { useSelector } from 'react-redux';
 import { selectTheme } from '../../../store/reducers/gameSlice';
 
@@ -51,26 +51,26 @@ const GameCanvas = forwardRef((_, ref) => {
   }));
 
   return (
-    <Canvas shadows>
+    <Canvas antialias="true" dpr={[1, 2]}>
       <Suspense fallback={<Loader />}>
-        <ambientLight intensity={1.5} color={0xffffff} />
+        <ambientLight intensity={1.2} color={0xffffff} />
 
         <directionalLight
           position={[1, 1, 1]}
-          intensity={7}
+          intensity={2.5}
           color={theme.color1}
         />
 
-        <StarsBackgroundModel ref={backgroundRef} />
+        <BackgroundModel ref={backgroundRef} />
         <ShipModel ref={shipRef} />
 
         {/* <OrbitControls /> */}
 
         {/* Remove in case of lags, 
-        but increase intensity of ambientLight to 2 (from 1.5) and directionalLight to 9 (from 7)
-        and also ShipWaveModel on-model opacity to 1 (from 0.1) and remove all attrs of emission emissive={'#4495E7'} emissiveIntensity={5} */}
+        but increase intensity of ambientLight t and directionalLight
+        and also ShipWaveModel on-model opacity to 1  and remove all attrs of emission  */}
         <EffectComposer>
-          <Bloom intensity={0.05} />
+          <Bloom intensity={0.5} />
         </EffectComposer>
       </Suspense>
     </Canvas>
