@@ -35,7 +35,10 @@ async function callLLMProvider(input, type = 'text') {
           {
             role: 'user',
             content: [
-              { type: 'text', text: 'What’s in this image?' },
+              {
+                type: 'text',
+                text: 'What’s in this image?'
+              },
               {
                 type: 'image_url',
                 image_url: {
@@ -47,7 +50,7 @@ async function callLLMProvider(input, type = 'text') {
         ],
         max_tokens: 512
       });
-      const textResponse = response.choices[0].message.content;
+      const textResponse = response.choices?.at(0)?.message.content;
       return textResponse;
     }
   } catch (error) {
