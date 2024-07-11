@@ -1,6 +1,7 @@
 import { API_PATH } from '../utils/api-urls';
 import axiosInstance from './axiosInstance';
 import BigNumber from 'bignumber.js';
+import { Effect } from './types';
 
 export const getGamePlans = async () => {
   const url = `${API_PATH}/tg/game/plans`;
@@ -25,7 +26,7 @@ export const beforeGame = async (
   tier_id: number
 ) => {
   const url = `${API_PATH}/game/start`;
-  const { data } = await axiosInstance.post<BeforeGameRes>(url, {
+  const { data } = await axiosInstance.post<Effect<Game[]>>(url, {
     purchase_id,
     tier_id
   });
@@ -38,7 +39,7 @@ export const startGame = async (
   purchase_id: number | null
 ) => {
   const url = `${API_PATH}/game/process`;
-  const { data } = await axiosInstance.post<BeforeGameRes>(url, {
+  const { data } = await axiosInstance.post<Effect<Game[]>>(url, {
     purchase_id,
     game_id
   });
@@ -83,6 +84,14 @@ export const getGameInfo = async () => {
   return { game_ends_at: next.getTime(), points: data.points };
 };
 
+export const getPendingGames = async ({ tierId }: { tierId: number }) => {
+  const url = `${API_PATH}/pending/games/${tierId}`;
+  const { data } =
+    await axiosInstance.get<Effect<({ purchase_id: string } & Game)[]>>(url);
+  console.log({ getPendingGames: data });
+  return data.data.filter((el) => el.purchase_id);
+};
+
 type GamePlan = {
   id: number;
   per_tap: number;
@@ -118,24 +127,24 @@ type GameContract = {
   multisig_factory: null;
 };
 
-type BeforeGameRes = {
-  data: {
-    id: number;
-    tier: {
-      id: number;
-      per_tap: number;
-      multiplier: number;
-      ton_price: number;
-      game_time: number;
-      charge_minutes: number;
-      storage_bonus: number;
-      session_tap_limit: number;
-    };
-    created_at: number;
-    game_ends_at: number;
-    status: number;
-    uuid: number;
-  };
+type Tier = {
+  id: number;
+  per_tap: number;
+  multiplier: number;
+  ton_price: number;
+  game_time: number;
+  charge_minutes: number;
+  storage_bonus: number;
+  session_tap_limit: number;
+};
+
+type Game = {
+  id: number;
+  tier: Tier;
+  created_at: number;
+  game_ends_at: number;
+  status: number;
+  uuid: number;
 };
 
 type GameLevel = {

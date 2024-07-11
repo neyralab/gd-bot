@@ -37,9 +37,11 @@ export default function Status() {
   return (
     <div>
       {drawTimerDescription}
-      {status !== 'playing' && theme.id !== 'hawk' && (
-        <span className={styles['actions-description']}>Boost mode</span>
-      )}
+      {status !== 'playing' &&
+        theme.id !== 'hawk' &&
+        !themeAccess[theme.id] && (
+          <span className={styles['actions-description']}>Boost mode</span>
+        )}
     </div>
   );
 }
