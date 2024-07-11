@@ -47,7 +47,6 @@ export default function BuyButton() {
 
   const clickHandler = async () => {
     if (isDisabled) return;
-    dispatch(addLogs(`buy button clicked`));
 
     setIsDisabled(true);
 
@@ -62,7 +61,6 @@ export default function BuyButton() {
   };
 
   const afterBought = () => {
-    dispatch(addLogs(`buy button after bought`));
     dispatch(setStatus('waiting'));
     dispatch(setThemeAccess({ themeId: theme.id, status: true }));
 
@@ -72,7 +70,6 @@ export default function BuyButton() {
     }
 
     setTimeout(() => {
-      dispatch(addLogs(`buy button start coountdown`));
       dispatch(startCountdown({ seconds: 5, startNextRound: true }));
     }, 100);
   };
@@ -177,7 +174,6 @@ export default function BuyButton() {
       );
       return true;
     } catch (e) {
-      dispatch(addLogs(`buy button error: ${e.toString()}`));
       console.log({ onBuyError: e });
       return false;
     }
