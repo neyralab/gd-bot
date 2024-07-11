@@ -8,6 +8,7 @@ import {
   getGameContractAddress,
   getGameInfo,
   getGamePlans,
+  getPendingGames,
   startGame
 } from '../../effects/gameEffect';
 import { setUser } from './userSlice';
@@ -53,9 +54,13 @@ const gameSlice = createSlice({
       themeIndex: null,
       direction: null,
       isSwitching: false
-    } // for animation purposes only
+    }, // for animation purposes only
+    pendingGames: []
   },
   reducers: {
+    setPendingGames: (state, { payload }) => {
+      state.pendingGames = payload;
+    },
     setIsInitializing: (state, { payload }) => {
       state.isInitializing = payload;
     },
@@ -139,7 +144,7 @@ const gameSlice = createSlice({
     },
     setRoundFinal: (state, { payload }) => {
       state.roundFinal = payload;
-    },
+    }
   }
 });
 
@@ -168,17 +173,20 @@ export const initGame = createAsyncThunk(
     dispatch(setIsInitialized(false));
 
     try {
-      const [levels, gameInfo, cAddress, games] = await Promise.all([
-        gameLevels(),
-        getGameInfo(),
-        getGameContractAddress(),
-        getGamePlans()
-      ]);
-
+      const [levels, gameInfo, cAddress, games, pendingGames] =
+        await Promise.all([
+          gameLevels(),
+          getGameInfo(),
+          getGameContractAddress(),
+          getGamePlans(),
+          getPendingGames({ tierId: 4 })
+        ]);
+      console.log({ pendingGames });
       dispatch(setLevels(levels));
       dispatch(setBalance({ label: gameInfo.points, value: 0 }));
       dispatch(setExperiencePoints(gameInfo.points));
       dispatch(setContractAddress(cAddress));
+      dispatch(setPendingGames(pendingGames));
 
       const now = Date.now();
       if (now <= gameInfo.game_ends_at) {
@@ -198,9 +206,18 @@ export const initGame = createAsyncThunk(
           ? { ...findGame, ...theme, tierId: findGame.id }
           : theme;
       });
-
       dispatch(setThemes(newThemes));
-      dispatch(setTheme(newThemes[0]));
+
+      if (pendingGames.length > 0) {
+        dispatch(setThemeAccess({ themeId: 'ghost', status: true }));
+        const pendingGame = pendingGames[0];
+        dispatch(
+          setTheme(newThemes.find((el) => el.tierId === pendingGame.tier.id))
+        );
+        dispatch(setGameId(pendingGame.id));
+      } else {
+        dispatch(setTheme(newThemes[0]));
+      }
 
       dispatch(setIsInitializing(false));
       dispatch(setIsInitialized(true));
@@ -243,14 +260,20 @@ export const finishRound = createAsyncThunk(
   'game/finishRound',
   async (_, { dispatch, getState }) => {
     const state = getState();
-
+    const pendingGames = selectPendingGames(state);
     const gameId = state.game.gameId;
+    const filteredGames = pendingGames.filter((el) => el.id !== gameId);
 
-    dispatch(setStatus('finished'));
+    dispatch(setStatus(filteredGames.length ? 'waiting' : 'finished'));
     dispatch(setRoundTimerTimestamp(null));
     dispatch(setRoundTimeoutId(null));
-    dispatch(setThemeAccess({ themeId: state.game.theme.id, status: false }));
-    dispatch(setGameId(null));
+    dispatch(
+      setThemeAccess({
+        themeId: state.game.theme.id,
+        status: !!filteredGames.length
+      })
+    );
+    dispatch(setGameId(filteredGames[0].id));
 
     if (state.game.theme.id === 'hawk') {
       dispatch(startNewFreeGameCountdown());
@@ -266,6 +289,7 @@ export const finishRound = createAsyncThunk(
         );
         dispatch(setUser({ ...state.user.data, points: data?.data || 0 }));
         dispatch(setBalance({ value: 0, label: state.game.balance.label }));
+        dispatch(setPendingGames(filteredGames));
       })
       .catch((err) => {
         console.log({ endGameErr: err, m: err?.response.data });
@@ -425,6 +449,7 @@ export const gameCleanup = createAsyncThunk(
 );
 
 export const {
+  setPendingGames,
   setIsInitializing,
   setIsInitialized,
   setContractAddress,
@@ -448,7 +473,7 @@ export const {
   setCounterIsActive,
   setCounterCount,
   setCounterIsFinished,
-  setRoundFinal,
+  setRoundFinal
 } = gameSlice.actions;
 export default gameSlice.reducer;
 
@@ -473,6 +498,7 @@ export const selectExperiencePoints = (state) => state.game.experiencePoints;
 export const selectReachNewLevel = (state) => state.game.reachedNewLevel;
 export const selectNextTheme = (state) => state.game.nextTheme;
 export const selectLevels = (state) => state.game.levels;
+export const selectPendingGames = (state) => state.game.pendingGames;
 export const selectLevel = (state) => {
   const userLevel = selectExperienceLevel(state);
   const levels = selectLevels(state);
