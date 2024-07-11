@@ -4,23 +4,19 @@ import React, {
   useImperativeHandle,
   useCallback
 } from 'react';
-import { useSelector } from 'react-redux';
-import {
-  useTonAddress,
-  useTonConnectModal,
-  // useTonConnectUI,
-  useTonWallet
-} from '@tonconnect/ui-react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useTonAddress, useTonConnectUI } from '@tonconnect/ui-react';
 import { saveUserWallet } from '../../../effects/userEffects';
+import { setUser } from '../../../store/reducers/userSlice';
 
 import style from './style.module.css';
 
 export const WalletConnect = forwardRef(({ openDisconnectModal }, ref) => {
   const user = useSelector((state) => state.user.data);
   const address = useTonAddress(true);
-  const { open } = useTonConnectModal();
-  const wallet = useTonWallet();
-  // const [tonConnectUI] = useTonConnectUI();
+  const [tonConnectUI] = useTonConnectUI();
+  const dispatch = useDispatch();
+
   // const [tonProof, setTonProof] = useState();
   //
   // useEffect(() => {
@@ -38,52 +34,41 @@ export const WalletConnect = forwardRef(({ openDisconnectModal }, ref) => {
   //   })();
   // }, [wallet, tonConnectUI]);
 
-  // useEffect(
-  //   () =>
-  //     tonConnectUI.onStatusChange((wallet) => {
-  //       console.log({ onStatusChange: wallet });
-  //       if (
-  //         wallet?.connectItems?.tonProof &&
-  //         'proof' in wallet?.connectItems.tonProof
-  //       ) {
-  //         setTonProof(wallet?.connectItems.tonProof);
-  //       }
-  //     }),
-  //   [tonConnectUI]
-  // );
-
-  useEffect(() => {
-    if (!user?.wallet && address && wallet) {
-      // if (address && tonProof && wallet) {
-      (async () => {
-        const res = await saveUserWallet({
-          // tonProof,
-          account: {
-            ...wallet?.account,
-            uiAddress: address
-          }
-        });
-        console.log({ res });
-      })();
-    }
-  }, [address, user?.wallet, wallet]);
-  // }, [address, tonProof, wallet]);
-
-  const handleClick = useCallback(() => {
-    if (address.length) {
+  const handleClick = useCallback(async () => {
+    if (address?.length) {
       openDisconnectModal(true);
     } else {
-      open();
+      await tonConnectUI?.openModal();
     }
-  }, [openDisconnectModal, address, open]);
+  }, [address?.length, openDisconnectModal, tonConnectUI]);
 
   useImperativeHandle(ref, () => {
     return { handleClick };
   }, [handleClick]);
 
+  const handleConnect = useCallback(async () => {
+    await tonConnectUI?.openModal();
+  }, [tonConnectUI]);
+
+  useEffect(() => {
+    tonConnectUI.modal.onStateChange(async (state) => {
+      if (
+        state.status === 'closed' &&
+        state.closeReason === 'wallet-selected' &&
+        !user?.wallet
+      ) {
+        const res = await saveUserWallet({
+          account: tonConnectUI?.account
+        });
+        const newWallets = res.map((el) => el.public_address);
+        dispatch(setUser({ ...user, wallet: newWallets }));
+      }
+    });
+  }, []);
+
   return (
     <div className={style.wrapper}>
-      {address.length ? (
+      {address ? (
         <span
           className={style.address}
           onClick={() => {
@@ -92,7 +77,7 @@ export const WalletConnect = forwardRef(({ openDisconnectModal }, ref) => {
           {`...${address.slice(-4)}`}
         </span>
       ) : (
-        <button className={style.connect} onClick={open}>
+        <button className={style.connect} onClick={handleConnect}>
           <span>Add</span>
         </button>
       )}
