@@ -24,6 +24,7 @@ import { ReactComponent as Star } from '../../assets/star.svg';
 import useButtonVibration from '../../hooks/useButtonVibration';
 import { createInvoice, INVOICE_TYPE } from '../../utils/createStarInvoice';
 import { isiOS } from '../../utils/client';
+import { NumberEncoder } from '../../utils/numberEncoder';
 import { tg } from '../../App';
 
 import styles from './styles.module.css';
@@ -116,22 +117,21 @@ export const BoostPage = ({ tariffs }) => {
 
   const makeInvoice = async (el) => {
     try {
-      const paymentInfo = {
-        user_id: user.id,
-        workspace_id: ws,
-        storage_id: el?.id,
-        target: 'storage',
-      };
+      const encoder = new NumberEncoder();
+      const input = `${el?.id};${user.id};${ws}`;
+      const byteArray = encoder.encodeNumbers(input, [1, 8, 8]);
+      const base64String = encoder.encodeToBase64(byteArray);
+
       const invoiceInput = createInvoice({
         type: INVOICE_TYPE.boost,
         additionalData: {
           mult: el.multiplicator,
           price: el.stars,
-          payload: btoa(JSON.stringify(paymentInfo))
+          payload: base64String,
         }
       });
-      const invoiceLink = await sendStarInvoice(invoiceInput);  
-
+      const invoiceLink = await sendStarInvoice(dispatch, invoiceInput);  
+      debugger
       if (invoiceLink) {
         tg.openInvoice(invoiceLink, invoiceCallback);
       }

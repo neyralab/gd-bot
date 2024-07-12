@@ -3,7 +3,6 @@ import axiosInstance from './axiosInstance';
 import { tg } from '../App'
 import { API_PATH, API_TON_WALLET, API_NEYRA } from '../utils/api-urls';
 import axios from 'axios';
-import { getToken, setToken } from './set-token';
 import { connectUserV8 } from './authorizeUser';
 
 let stripePromise;
@@ -71,11 +70,10 @@ export const getTonWallet = async (dispatch, comment) => {
   return data;
 };
 
-export const sendStarInvoice = async (invoice) => {
+export const sendStarInvoice = async (dispatch, invoice) => {
   try {
-    const token = await getToken();
-    const chat_id = 461882488 // tg?.initDataUnsafe?.user?.user;
-    debugger
+    const token = await dispatch(connectUserV8());
+    const chat_id = tg?.initDataUnsafe?.user?.user;
     const link = await axios
       .create({
         headers: {
@@ -90,9 +88,7 @@ export const sendStarInvoice = async (invoice) => {
       },
     )
 
-    // const link = 'https://t.me/$WsROlEGhgEg8BgAAdjtclpSWDK8'
-
-    return link
+    return link?.data?.data?.invoice_link || ''
   } catch (error) {
     console.log(error);
   }

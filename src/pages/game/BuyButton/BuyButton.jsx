@@ -10,7 +10,6 @@ import {
   useTonConnectUI,
   useTonWallet
 } from '@tonconnect/ui-react';
-import { toast } from 'react-toastify';
 
 import { GDTapBooster } from '../../../effects/contracts/tact_GDTapBooster';
 import { nullValueCheck } from '../../../effects/contracts/helper';
@@ -39,6 +38,7 @@ import { useQueryId } from '../../../effects/contracts/useQueryId';
 import { ReactComponent as StarIcon } from '../../../assets/star.svg';
 import { beforeGame, startGame } from '../../../effects/gameEffect';
 import { isiOS } from '../../../utils/client';
+import { NumberEncoder } from '../../../utils/numberEncoder';
 import styles from './BuyButton.module.css';
 import ReactGA from 'react-ga4';
 
@@ -67,7 +67,7 @@ export default function BuyButton() {
     setIsDisabled(true);
 
     const plan = themes?.find((el) => el.multiplier === theme.multiplier);
-    const bought = await makeInvoice(plan);
+    const bought = await onBuy(plan);
 
     setIsDisabled(false);
 
@@ -219,19 +219,17 @@ export default function BuyButton() {
 
   const makeInvoice = async () => {
     try {
-      const paymentInfo = {
-        user_id: user.id,
-        tier_id: theme.tierId,
-        purchase_id: null,
-        target: 'game',
-      };
+      const encoder = new NumberEncoder();
+      const input = `${0};${theme.tierId};${user.id}`;
+      const byteArray = encoder.encodeNumbers(input, [1, 8, 8]);
+      const base64String = encoder.encodeToBase64(byteArray);
 
       const invoiceInput = createInvoice({
         type: INVOICE_TYPE.game,
         additionalData: {
           mult: theme.multiplier,
           price: theme.start,
-          payload: btoa(JSON.stringify(paymentInfo))
+          payload: base64String,
         }
       })
       const invoiceLink = await sendStarInvoice(invoiceInput);  
@@ -261,7 +259,7 @@ export default function BuyButton() {
   }
   const handleStartPayment = (el) => {
     if (el.action === "ton") {
-      payByTON(el);
+      clickHandler(el);
     } else {
       makeInvoice(el);
     }
