@@ -262,7 +262,7 @@ export const finishRound = createAsyncThunk(
     const state = getState();
     const pendingGames = selectPendingGames(state);
     const gameId = state.game.gameId;
-    const filteredGames = pendingGames.filter((el) => el.id !== gameId);
+    const filteredGames = pendingGames.filter((el) => el?.id !== gameId);
 
     dispatch(setStatus(filteredGames.length ? 'waiting' : 'finished'));
     dispatch(setRoundTimerTimestamp(null));
@@ -273,7 +273,9 @@ export const finishRound = createAsyncThunk(
         status: !!filteredGames.length
       })
     );
-    dispatch(setGameId(filteredGames[0].id));
+    if (filteredGames.length) {
+      dispatch(setGameId(filteredGames[0]?.id));
+    }
 
     if (state.game.theme.id === 'hawk') {
       dispatch(startNewFreeGameCountdown());
