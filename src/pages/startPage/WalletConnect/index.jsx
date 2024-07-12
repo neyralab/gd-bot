@@ -55,7 +55,9 @@ export const WalletConnect = forwardRef(({ openDisconnectModal }, ref) => {
       if (
         state.status === 'closed' &&
         state.closeReason === 'wallet-selected' &&
-        !user?.wallet
+        !user?.wallet &&
+        !user?.wallet?.filter((el) => el !== tonConnectUI.account?.address)
+          .length
       ) {
         const res = await saveUserWallet({
           account: tonConnectUI?.account
