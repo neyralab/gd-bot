@@ -14,18 +14,15 @@ import { Header } from '../../components/header';
 import { selectCurrentWorkspace } from '../../store/reducers/workspaceSlice';
 import { handlePaymentSelectModal, selectPaymentSelectModal } from '../../store/reducers/modalSlice';
 import { DEFAULT_TARIFFS_NAMES } from '../upgradeStorage';
-import { getTonWallet } from '../../effects/paymentEffect';
+import { getTonWallet, makeInvoice } from '../../effects/paymentEffect';
 import { SlidingModal } from '../../components/slidingModal';
 import PaymentMenu from '../../components/paymentMenu/Menu';
-import { sendStarInvoice } from '../../effects/paymentEffect';
 import { transformSize } from '../../utils/transformSize';
 
 import { ReactComponent as Star } from '../../assets/star.svg';
 import useButtonVibration from '../../hooks/useButtonVibration';
-import { createInvoice, INVOICE_TYPE } from '../../utils/createStarInvoice';
+import { INVOICE_TYPE } from '../../utils/createStarInvoice';
 import { isiOS } from '../../utils/client';
-import { NumberEncoder } from '../../utils/numberEncoder';
-import { tg } from '../../App';
 
 import styles from './styles.module.css';
 
@@ -115,40 +112,16 @@ export const BoostPage = ({ tariffs }) => {
     }
   }
 
-  const makeInvoice = async (el) => {
-    try {
-      const encoder = new NumberEncoder();
-      const input = `${el?.id};${user.id};${ws}`;
-      const byteArray = encoder.encodeNumbers(input, [1, 8, 8]);
-      const base64String = encoder.encodeToBase64(byteArray);
-
-      const invoiceInput = createInvoice({
-        type: INVOICE_TYPE.boost,
-        additionalData: {
-          mult: el.multiplicator,
-          price: el.stars,
-          payload: base64String,
-        }
-      });
-      const invoiceLink = await sendStarInvoice(dispatch, invoiceInput);  
-      debugger
-      if (invoiceLink) {
-        tg.openInvoice(invoiceLink, invoiceCallback);
-      }
-    } catch (error) {
-      console.log(error);
-      toast.error('Something was wrong.', {
-        theme: 'colored',
-        position: 'top-center'
-      });
-    } 
-  }
-
   const handleStartPayment = (el) => {
     if (el.action === "ton") {
       payByTON(el);
     } else {
-      makeInvoice(el);
+      const input = `${el?.id};${user.id};${ws}`;
+      const theme = {
+        multiplier: el.multiplicator,
+        stars: el.stars,
+      }
+      makeInvoice({input, dispatch, callback: invoiceCallback, type: INVOICE_TYPE.boost, theme });
     }
     onClosePaymentModal();
   }

@@ -1,7 +1,10 @@
 import { loadStripe } from '@stripe/stripe-js/pure';
+import { toast } from 'react-toastify';
 import axiosInstance from './axiosInstance';
 import { tg } from '../App'
 import { API_PATH, API_TON_WALLET, API_NEYRA } from '../utils/api-urls';
+import { NumberEncoder } from '../utils/numberEncoder'
+import { createInvoice } from '../utils/createStarInvoice';
 import axios from 'axios';
 import { connectUserV8 } from './authorizeUser';
 
@@ -70,10 +73,39 @@ export const getTonWallet = async (dispatch, comment) => {
   return data;
 };
 
+export const makeInvoice = async ({ input, dispatch, callback, type, theme }) => {
+  try {
+    const encoder = new NumberEncoder();
+    const byteArray = encoder.encodeNumbers(input, [1, 8, 8]);
+    const base64String = encoder.encodeToBase64(byteArray);
+
+    const invoiceInput = createInvoice({
+      type: type,
+      additionalData: {
+        mult: theme.multiplier,
+        price: theme.stars,
+        payload: base64String,
+      }
+    })
+    const invoiceLink = await sendStarInvoice(dispatch, invoiceInput);  
+
+    if (invoiceLink) {
+      tg.openInvoice(invoiceLink, callback);
+    }
+  } catch (error) {
+    console.log(error);
+    toast.error('Something was wrong.', {
+      theme: 'colored',
+      position: 'top-center'
+    });
+  }
+}
+
 export const sendStarInvoice = async (dispatch, invoice) => {
   try {
     const token = await dispatch(connectUserV8());
     const chat_id = tg?.initDataUnsafe?.user?.user;
+    debugger
     const link = await axios
       .create({
         headers: {

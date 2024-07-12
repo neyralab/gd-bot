@@ -31,14 +31,12 @@ import {
   startCountdown
 } from '../../../store/reducers/gameSlice';
 import { handlePaymentSelectModal, selectPaymentSelectModal } from '../../../store/reducers/modalSlice';
-import { createInvoice, INVOICE_TYPE } from '../../../utils/createStarInvoice';
-import { sendStarInvoice } from '../../../effects/paymentEffect';
-import { tg } from '../../../App';
+import { INVOICE_TYPE } from '../../../utils/createStarInvoice';
+import { makeInvoice } from '../../../effects/paymentEffect';
 import { useQueryId } from '../../../effects/contracts/useQueryId';
 import { ReactComponent as StarIcon } from '../../../assets/star.svg';
 import { beforeGame, startGame } from '../../../effects/gameEffect';
 import { isiOS } from '../../../utils/client';
-import { NumberEncoder } from '../../../utils/numberEncoder';
 import styles from './BuyButton.module.css';
 import ReactGA from 'react-ga4';
 import { waitTonTx } from '../../../utils/wait';
@@ -184,42 +182,14 @@ export default function BuyButton() {
     }
   }
 
-  const makeInvoice = async () => {
-    try {
-      const encoder = new NumberEncoder();
-      const input = `${0};${theme.tierId};${user.id}`;
-      const byteArray = encoder.encodeNumbers(input, [1, 8, 8]);
-      const base64String = encoder.encodeToBase64(byteArray);
-
-      const invoiceInput = createInvoice({
-        type: INVOICE_TYPE.game,
-        additionalData: {
-          mult: theme.multiplier,
-          price: theme.start,
-          payload: base64String,
-        }
-      })
-      const invoiceLink = await sendStarInvoice(invoiceInput);  
-
-      if (invoiceLink) {
-        tg.openInvoice(invoiceLink, invoiceCallback);
-      }
-    } catch (error) {
-      console.log(error);
-      toast.error('Something was wrong.', {
-        theme: 'colored',
-        position: 'top-center'
-      });
-    }
-  }
-
   const onClosePaymentModal = () => {
     dispatch(handlePaymentSelectModal(false));
   }
 
   const handleSelect = () => {
     if (isiOSPlatform) {
-      makeInvoice(theme);
+      const input = `${0};${theme.tierId};${user.id}`;
+      makeInvoice({ input, dispatch, callback: invoiceCallback, type: INVOICE_TYPE.game, theme });
     } else {
       dispatch(handlePaymentSelectModal(true));
     }
@@ -228,7 +198,8 @@ export default function BuyButton() {
     if (el.action === "ton") {
       clickHandler(el);
     } else {
-      makeInvoice(el);
+      const input = `${0};${theme.tierId};${user.id}`;
+      makeInvoice({ input, dispatch, callback: invoiceCallback, type: INVOICE_TYPE.game, theme });
     }
     onClosePaymentModal();
   }
