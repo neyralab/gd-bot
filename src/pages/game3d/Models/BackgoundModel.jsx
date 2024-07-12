@@ -121,7 +121,7 @@ const BackgroundModel = forwardRef((_, ref) => {
 
       {/* Glare */}
       <group ref={glareRef} position={[0, 3, 0]}>
-        <mesh position={[1, 0, -2]} rotation={[0, 0, Math.PI * 2]}>
+        <mesh position={[1, -.1, -2]} rotation={[0, 0, Math.PI * 2]}>
           <planeGeometry args={[7.5, 7.5]} />
           <meshBasicMaterial
             map={glareColorMap}

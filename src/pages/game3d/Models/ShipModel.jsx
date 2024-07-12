@@ -72,7 +72,7 @@ const ShipModel = forwardRef((_, ref) => {
           }
         });
         tl.to(shipGroupRef.current.position, {
-          y: -0.5,
+          y: 0,
           duration: 1.4,
           ease: 'power3.out' //7
         }).to(shipGroupRef.current.rotation, {

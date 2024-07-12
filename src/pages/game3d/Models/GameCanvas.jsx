@@ -4,13 +4,14 @@ import React, {
   forwardRef,
   useImperativeHandle
 } from 'react';
-import { Canvas } from '@react-three/fiber';
+import { Canvas, useThree } from '@react-three/fiber';
 import { EffectComposer, Bloom } from '@react-three/postprocessing';
 import { Html, useProgress, OrbitControls } from '@react-three/drei';
 import ShipModel from './ShipModel';
 import BackgroundModel from './BackgoundModel';
 import { useSelector } from 'react-redux';
 import { selectTheme } from '../../../store/reducers/gameSlice';
+import MoveCamera from './MoveCamera';
 
 function Loader() {
   const { progress } = useProgress();
@@ -64,6 +65,7 @@ const GameCanvas = forwardRef((_, ref) => {
         <BackgroundModel ref={backgroundRef} />
         <ShipModel ref={shipRef} />
 
+        <MoveCamera />
         {/* <OrbitControls /> */}
 
         {/* Remove in case of lags, 
