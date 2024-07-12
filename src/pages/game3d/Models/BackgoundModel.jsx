@@ -5,13 +5,17 @@ import React, {
   useImperativeHandle
 } from 'react';
 import { useFrame, useLoader } from '@react-three/fiber';
-import { useGLTF } from '@react-three/drei';
 import * as THREE from 'three';
 import { TextureLoader } from 'three/src/loaders/TextureLoader';
 
 const BackgroundModel = forwardRef((_, ref) => {
-  const { scene: stars } = useGLTF('/assets/game-page/stars.glb');
+  const starsRef = useRef(null);
+  const starsColorMap = useLoader(
+    TextureLoader,
+    '/assets/game-page/stars-without-alpha.png'
+  );
 
+  const glareRef = useRef(null);
   const glareColorMap = useLoader(
     TextureLoader,
     '/assets/game-page/glare-color-1.png'
@@ -20,6 +24,8 @@ const BackgroundModel = forwardRef((_, ref) => {
     TextureLoader,
     '/assets/game-page/glare-alpha.png'
   );
+
+  const planetRef = useRef(null);
   const planetColorMap = useLoader(
     TextureLoader,
     '/assets/game-page/planet-color-1.png'
@@ -28,6 +34,8 @@ const BackgroundModel = forwardRef((_, ref) => {
     TextureLoader,
     '/assets/game-page/planet-alpha-1.png'
   );
+
+  const asteroidRef = useRef(null);
   const asteroidColorMap = useLoader(
     TextureLoader,
     '/assets/game-page/asteroid-color.png'
@@ -37,25 +45,18 @@ const BackgroundModel = forwardRef((_, ref) => {
     '/assets/game-page/asteroid-alpha.png'
   );
 
-  const starsRef = useRef(null);
-  const glareRef = useRef(null);
-  const planetRef = useRef(null);
-  const asteroidRef = useRef(null);
-
   const speedRef = useRef(0);
   const maxSpeed = 0.02;
 
   useEffect(() => {
-    stars.traverse((child) => {
-      if (child.isMesh) {
-        child.material = new THREE.MeshBasicMaterial({
-          // To not receive any light, just a texture
-          map: child.material.map,
-          side: THREE.FrontSide // Ensure the texture is visible from inside
-        });
-      }
-    });
-  }, [stars]);
+    starsColorMap.wrapS = THREE.RepeatWrapping;
+    starsColorMap.wrapT = THREE.MirroredRepeatWrapping;
+    starsColorMap.repeat.set(6, 4);
+    starsColorMap.rotation = Math.PI / 2;
+    starsColorMap.center.set(0.5, 0.5);
+    starsColorMap.encoding = THREE.LinearEncoding;
+    starsColorMap.needsUpdate = true;
+  }, [starsColorMap]);
 
   useImperativeHandle(ref, () => ({
     runPushAnimation: runPushAnimation
@@ -63,17 +64,11 @@ const BackgroundModel = forwardRef((_, ref) => {
 
   useFrame((_, delta) => {
     const deltaCoef = delta * 100;
-    if (starsRef.current) {
-      starsRef.current.rotation.x -= speedRef.current * deltaCoef;
-      speedRef.current *= Math.pow(0.99, deltaCoef); // Gradually slow down the rotation
-    }
+    speedRef.current *= Math.pow(0.99, deltaCoef); // Gradually slow down the rotation
 
-    if (stars) {
-      stars.traverse((child) => {
-        if (child.isMesh) {
-          child.material.map.offset.x -= 0.0003 * deltaCoef;
-        }
-      });
+    if (starsRef.current) {
+      starsRef.current.rotation.x -= speedRef.current * deltaCoef * 0.5;
+      starsColorMap.offset.x -= 0.0003 * deltaCoef;
     }
 
     if (glareRef.current) {
@@ -112,16 +107,15 @@ const BackgroundModel = forwardRef((_, ref) => {
     <>
       {/* Stars */}
       <group ref={starsRef}>
-        <primitive
-          object={stars}
-          scale={[10, 10, 10]}
-          rotation={[0, Math.PI / 2, 0]}
-        />
+        <mesh rotation={[0, 0, Math.PI / 2]}>
+          <sphereGeometry args={[20, 16, 16]} />
+          <meshStandardMaterial map={starsColorMap} side={THREE.BackSide} />
+        </mesh>
       </group>
 
       {/* Glare */}
       <group ref={glareRef} position={[0, 3, 0]}>
-        <mesh position={[1, -.1, -2]} rotation={[0, 0, Math.PI * 2]}>
+        <mesh position={[1, -0.1, -2]} rotation={[0, 0, Math.PI * 2]}>
           <planeGeometry args={[7.5, 7.5]} />
           <meshBasicMaterial
             map={glareColorMap}

@@ -4,7 +4,7 @@ import React, {
   forwardRef,
   useImperativeHandle
 } from 'react';
-import { Canvas, useThree } from '@react-three/fiber';
+import { Canvas } from '@react-three/fiber';
 import { EffectComposer, Bloom } from '@react-three/postprocessing';
 import { Html, useProgress, OrbitControls } from '@react-three/drei';
 import ShipModel from './ShipModel';
@@ -66,6 +66,8 @@ const GameCanvas = forwardRef((_, ref) => {
         <ShipModel ref={shipRef} />
 
         <MoveCamera />
+
+        {/* Uncommenting this will brake the camera. So don't be afraid if the ship changes its location */}
         {/* <OrbitControls /> */}
 
         {/* Remove in case of lags, 
