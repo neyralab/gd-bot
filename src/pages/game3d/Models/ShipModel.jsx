@@ -145,7 +145,7 @@ const ShipModel = forwardRef((_, ref) => {
       gsap.to(shipGroupRef.current.rotation, {
         keyframes: [
           { y: -Math.PI / 2 - Math.PI, duration: 5, ease: 'power1.inOut' },
-          { y: -Math.PI / 2 + Math.PI, duration: 2, ease: 'power4.inOut' }
+          { y: -Math.PI / 2 + Math.PI, duration: 2.5, ease: 'power4.inOut' }
         ],
         repeat: -1,
         repeatDelay: 4,
