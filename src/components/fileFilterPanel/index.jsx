@@ -4,9 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 import {
-  getFilesAction,
   selectFileTypesCount,
-  selectFilesPage,
+  setCurrentFilter,
   setFileTypesCount
 } from '../../store/reducers/filesSlice';
 import { getFileTypesCountEffect } from '../../effects/storageEffects';
@@ -17,7 +16,6 @@ import icons from './assets';
 import style from './style.module.scss';
 
 export const FileFilterPanel = () => {
-  const filesPage = useSelector(selectFilesPage);
   const types = useSelector(selectFileTypesCount);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -31,7 +29,7 @@ export const FileFilterPanel = () => {
 
   const getFiles = async (type) => {
     navigate(`?type=${type}`);
-    dispatch(getFilesAction(filesPage, type));
+    dispatch(setCurrentFilter(type));
   };
 
   const options = [

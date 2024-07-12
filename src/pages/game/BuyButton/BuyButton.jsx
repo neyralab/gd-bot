@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import classNames from 'classnames';
+import { toast } from 'react-toastify';
 import { useDispatch, useSelector } from 'react-redux';
 import { Address, toNano } from '@ton/core';
 import { TonClient } from '@ton/ton';
@@ -9,8 +10,12 @@ import {
   useTonConnectUI,
   useTonWallet
 } from '@tonconnect/ui-react';
+
 import { GDTapBooster } from '../../../effects/contracts/tact_GDTapBooster';
 import { nullValueCheck } from '../../../effects/contracts/helper';
+import { SlidingModal } from '../../../components/slidingModal';
+import PaymentMenu from '../../../components/paymentMenu/Menu';
+
 import {
   selectContractAddress,
   selectStatus,
@@ -25,10 +30,16 @@ import {
   setThemeAccess,
   startCountdown
 } from '../../../store/reducers/gameSlice';
+import { handlePaymentSelectModal, selectPaymentSelectModal } from '../../../store/reducers/modalSlice';
+import { INVOICE_TYPE } from '../../../utils/createStarInvoice';
+import { makeInvoice } from '../../../effects/paymentEffect';
 import { useQueryId } from '../../../effects/contracts/useQueryId';
-import { ReactComponent as TonIcon } from '../../../assets/TON.svg';
+import { ReactComponent as StarIcon } from '../../../assets/star.svg';
 import { beforeGame, startGame } from '../../../effects/gameEffect';
+import { isiOS } from '../../../utils/client';
 import styles from './BuyButton.module.css';
+import ReactGA from 'react-ga4';
+import { waitTonTx } from '../../../utils/wait';
 
 export default function BuyButton() {
   const { open } = useTonConnectModal();
@@ -41,7 +52,11 @@ export default function BuyButton() {
   const theme = useSelector(selectTheme);
   const themes = useSelector(selectThemes);
   const themeAccess = useSelector(selectThemeAccess);
+  const isPaymentModalOpen = useSelector(selectPaymentSelectModal);
+
+  const user = useSelector((state) => state?.user?.data);
   const contractAddress = useSelector(selectContractAddress);
+  const isiOSPlatform = isiOS();
 
   const [isDisabled, setIsDisabled] = useState(false);
 
@@ -111,56 +126,22 @@ export default function BuyButton() {
               validUntil: Date.now() + 60 * 1000 // 5 minutes for user to approve
             });
             console.log({ data });
-            // await sleep(2000);
             const userAddress = Address.parseRaw(wallet.account.address);
-            let initialValue = await nullValueCheck(() => {
-              return contract.getLatestPurchase(userAddress);
-            });
-            // Initial value
 
-            // Function to get the value
-            const getValue = async () => {
-              // Replace this with your actual getter logic
-              return await nullValueCheck(() => {
+            const lastTxValue = await waitTonTx(() =>
+              nullValueCheck(() => {
                 return contract.getLatestPurchase(userAddress);
-              });
-            };
-
-            // TODO: redo in redux, i have no idea what's happening
-
-            // Set up the interval
-            const intervalId = setInterval(async () => {
-              const currentValue = await getValue();
-
-              console.log({ currentValue, initialValue });
-              // If this is the first run, set the initial value
-              if (initialValue === null) {
-                initialValue = currentValue;
-                console.log('Initial value set:', initialValue);
-                return;
-              }
-
-              // Check if the value has changed
-              if (currentValue !== initialValue) {
-                console.log(
-                  'Value changed from',
-                  initialValue,
-                  'to',
-                  currentValue
-                );
-                clearInterval(intervalId);
-                console.log('Interval cleared');
-                const game = await startGame(
-                  pendingGame.uuid || pendingGame.id,
-                  Number(currentValue)
-                );
-                dispatch(setGameId(game.uuid || game?.id));
-                console.log({ PPPPP: currentValue, game });
-                dispatch(setIsTransactionLoading(false));
-                afterBought();
-              }
-            }, 1000); // Check every 1000 ms (1 second)
-
+              })
+            );
+            console.log({ lastTxValue });
+            const game = await startGame(
+              pendingGame.uuid || pendingGame.id,
+              Number(lastTxValue)
+            );
+            dispatch(setGameId(game.uuid || game?.id));
+            console.log({ PPPPP: lastTxValue, game });
+            dispatch(setIsTransactionLoading(false));
+            afterBought();
             return data;
           }
         },
@@ -174,10 +155,54 @@ export default function BuyButton() {
       );
       return true;
     } catch (e) {
+      dispatch(setIsTransactionLoading(false));
+      toast.error(
+        'Something went wrong during payment. Please try again later!',
+        {
+          theme: 'colored',
+          position: 'bottom-center',
+          autoClose: 2000
+        }
+      );
+      ReactGA.event({
+        category: 'Error',
+        action: 'Payment',
+        label: e.message
+      });
       console.log({ onBuyError: e });
       return false;
     }
   };
+
+  const invoiceCallback = async (result) => {
+    try {
+      console.log('Invoice callback', result)
+    } catch (error) {
+      console.log('error')
+    }
+  }
+
+  const onClosePaymentModal = () => {
+    dispatch(handlePaymentSelectModal(false));
+  }
+
+  const handleSelect = () => {
+    if (isiOSPlatform) {
+      const input = `${0};${theme.tierId};${user.id}`;
+      makeInvoice({ input, dispatch, callback: invoiceCallback, type: INVOICE_TYPE.game, theme });
+    } else {
+      dispatch(handlePaymentSelectModal(true));
+    }
+  }
+  const handleStartPayment = (el) => {
+    if (el.action === "ton") {
+      clickHandler(el);
+    } else {
+      const input = `${0};${theme.tierId};${user.id}`;
+      makeInvoice({ input, dispatch, callback: invoiceCallback, type: INVOICE_TYPE.game, theme });
+    }
+    onClosePaymentModal();
+  }
 
   if (status !== 'playing' && !themeAccess[theme.id] && theme.id !== 'hawk') {
     return (
@@ -185,8 +210,8 @@ export default function BuyButton() {
         <button
           type="button"
           className={classNames(styles.button, styles[theme.id])}
-          onClick={clickHandler}>
-          <TonIcon />
+          onClick={handleSelect}>
+          <StarIcon className={styles['star-icon']} viewBox="0 0 21 21" />
           <span className={styles.cost}>{theme.cost || 'FREE'}</span>
           <span
             className={styles.multiplier}
@@ -194,6 +219,16 @@ export default function BuyButton() {
             X{theme.multiplier}
           </span>
         </button>
+        <SlidingModal
+          onClose={onClosePaymentModal}
+          isOpen={isPaymentModalOpen}
+          snapPoints={[170, 170, 50, 0]}
+        >
+          <PaymentMenu
+            payload={theme}
+            onClick={handleStartPayment}
+          />
+        </SlidingModal>
       </div>
     );
   }

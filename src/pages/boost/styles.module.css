@@ -19,6 +19,11 @@
   color: #98989f;
 }
 
+.current_diamond, .cost_svg {
+  width: 19px;
+  height: 19px;
+}
+
 .current_diamond path {
   fill: #007de9;
 }
