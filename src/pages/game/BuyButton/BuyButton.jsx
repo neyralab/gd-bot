@@ -188,7 +188,11 @@ export default function BuyButton() {
           onClick={clickHandler}>
           <TonIcon />
           <span className={styles.cost}>{theme.cost || 'FREE'}</span>
-          <span className={styles.multiplier}>X{theme.multiplier}</span>
+          <span
+            className={styles.multiplier}
+            style={{ color: theme.colors.buttonText }}>
+            X{theme.multiplier}
+          </span>
         </button>
       </div>
     );

@@ -19,24 +19,22 @@ export default function FogModel() {
   }, []);
 
   useFrame((state) => {
-    if (!delayPassed || !showFog) return;
+    if (!delayPassed) return;
 
     if (!animationStartTime.current) {
       animationStartTime.current = state.clock.getElapsedTime();
     }
 
     const elapsed = state.clock.getElapsedTime() - animationStartTime.current;
-    const duration = 10; //  seconds
+    const duration = 5; // 5 seconds for a full cycle
 
-    if (elapsed < duration) {
-      fogRef.current.far = 20 + (990 * elapsed) / duration;
-    } else {
-      fogRef.current.far = 1000;
-      setShowFog(false);
-    }
+    // Calculate the new far value using a sine wave
+    const amplitude = 50; // Half of the range (350 - 250) / 2
+    const offset = 300; // Midpoint of the range (350 + 250) / 2
+    fogRef.current.far = offset + amplitude * Math.sin((elapsed / duration) * Math.PI * 2);
   });
 
   if (!showFog) return;
 
-  return <fog ref={fogRef} attach="fog" args={['#000000', -2, 20]} />;
+  return <fog ref={fogRef} attach="fog" args={[theme.colors.fog, -2, 350]} />;
 }

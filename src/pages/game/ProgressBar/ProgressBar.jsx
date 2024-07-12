@@ -50,8 +50,19 @@ export default function ProgressBar() {
         </span>
       </div>
       <div className={styles['bar-container']}>
-        <div className={styles.empty}></div>
-        <div className={styles.active} style={{ width: percent + '%' }}></div>
+        <div
+          className={styles.empty}
+          style={{
+            background: `linear-gradient(90deg, rgba(${theme.colors.experienceBar.empty.background1[0]}, ${theme.colors.experienceBar.empty.background1[1]}, ${theme.colors.experienceBar.empty.background1[2]}, 0.3) 0%, rgba(${theme.colors.experienceBar.empty.background2[0]}, ${theme.colors.experienceBar.empty.background2[1]}, ${theme.colors.experienceBar.empty.background2[2]}, 0.3) 100%)`,
+            boxShadow: `0px 0px 10.3px 0px ${theme.colors.experienceBar.empty.boxShadow}`
+          }}></div>
+        <div
+          className={styles.active}
+          style={{
+            width: percent + '%',
+            background: `linear-gradient(90deg, ${theme.colors.experienceBar.active.background1} 0%, ${theme.colors.experienceBar.active.background2} 100%)`,
+            boxShadow: `0px 0px 10.3px 0px ${theme.colors.experienceBar.active.boxShadow}`
+          }}></div>
       </div>
     </div>
   );

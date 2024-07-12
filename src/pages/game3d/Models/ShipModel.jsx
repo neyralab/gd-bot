@@ -7,12 +7,16 @@ import React, {
 } from 'react';
 import { useFrame, useLoader } from '@react-three/fiber';
 import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader';
+import { useSelector } from 'react-redux';
 import * as THREE from 'three';
 import gsap from 'gsap';
 import ShipWaveModel from './ShipWaveModel';
+import { selectTheme } from '../../../store/reducers/gameSlice';
 
 const ShipModel = forwardRef((_, ref) => {
-  const fbx = useLoader(FBXLoader, '/assets/game-page/ship.fbx');
+  const theme = useSelector(selectTheme);
+  const shipFbx = useLoader(FBXLoader, '/assets/game-page/ship.fbx');
+  const shipRef = useRef(null);
   const mixer = useRef(null);
   const [clock] = useState(() => new THREE.Clock());
   const shipGroupRef = useRef(null);
@@ -26,7 +30,36 @@ const ShipModel = forwardRef((_, ref) => {
 
   useEffect(() => {
     runInitialAnimation();
-  }, [fbx]);
+  }, [shipFbx]);
+
+  useEffect(() => {
+    if (!shipRef.current) return;
+  
+    shipRef.current.traverse((child) => {
+      if (child.isMesh) {
+        const materials = Array.isArray(child.material) ? child.material : [child.material];
+        materials.forEach((material) => {
+          switch (material.name) {
+            case 'BaseMaterial':
+              material.color.set(theme.colors.shipBase);
+              break;
+            case 'SecondaryColor':
+              material.color.set(theme.colors.wing);
+              break;
+            case 'SecondaryColor2':
+              material.color.set(theme.colors.wingAccent);
+              break;
+            case 'BaseEmission':
+              material.color.set(theme.colors.emission);
+              material.emissive = new THREE.Color(theme.colors.emission); // Set emissive color
+              material.needsUpdate = true; // Ensure the material updates
+              break;
+          }
+        });
+      }
+    });
+  }, [shipFbx, theme]);
+  
 
   const runPushAnimation = () => {
     runWaveAnimation();
@@ -48,9 +81,9 @@ const ShipModel = forwardRef((_, ref) => {
   };
 
   const runInitialAnimation = () => {
-    if (fbx.animations.length) {
-      mixer.current = new THREE.AnimationMixer(fbx);
-      const action = mixer.current.clipAction(fbx.animations[0]);
+    if (shipFbx.animations.length) {
+      mixer.current = new THREE.AnimationMixer(shipFbx);
+      const action = mixer.current.clipAction(shipFbx.animations[0]);
       action.setLoop(THREE.LoopOnce);
       action.clampWhenFinished = true;
       action.time = 1;
@@ -198,7 +231,7 @@ const ShipModel = forwardRef((_, ref) => {
         ref={shipGroupRef}
         position={[0, -20, 0]}
         rotation={[0, -Math.PI * 2.5, 0]}>
-        <primitive object={fbx} />
+        <primitive object={shipFbx} ref={shipRef} />
       </group>
 
       <group ref={waveGroupRef}>
