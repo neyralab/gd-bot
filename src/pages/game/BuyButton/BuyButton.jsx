@@ -41,6 +41,7 @@ import { isiOS } from '../../../utils/client';
 import { NumberEncoder } from '../../../utils/numberEncoder';
 import styles from './BuyButton.module.css';
 import ReactGA from 'react-ga4';
+import { waitTonTx } from '../../../utils/wait';
 
 export default function BuyButton() {
   const { open } = useTonConnectModal();
@@ -127,56 +128,22 @@ export default function BuyButton() {
               validUntil: Date.now() + 60 * 1000 // 5 minutes for user to approve
             });
             console.log({ data });
-            // await sleep(2000);
             const userAddress = Address.parseRaw(wallet.account.address);
-            let initialValue = await nullValueCheck(() => {
-              return contract.getLatestPurchase(userAddress);
-            });
-            // Initial value
 
-            // Function to get the value
-            const getValue = async () => {
-              // Replace this with your actual getter logic
-              return await nullValueCheck(() => {
+            const lastTxValue = await waitTonTx(() =>
+              nullValueCheck(() => {
                 return contract.getLatestPurchase(userAddress);
-              });
-            };
-
-            // TODO: redo in redux, i have no idea what's happening
-
-            // Set up the interval
-            const intervalId = setInterval(async () => {
-              const currentValue = await getValue();
-
-              console.log({ currentValue, initialValue });
-              // If this is the first run, set the initial value
-              if (initialValue === null) {
-                initialValue = currentValue;
-                console.log('Initial value set:', initialValue);
-                return;
-              }
-
-              // Check if the value has changed
-              if (currentValue !== initialValue) {
-                console.log(
-                  'Value changed from',
-                  initialValue,
-                  'to',
-                  currentValue
-                );
-                clearInterval(intervalId);
-                console.log('Interval cleared');
-                const game = await startGame(
-                  pendingGame.uuid || pendingGame.id,
-                  Number(currentValue)
-                );
-                dispatch(setGameId(game.uuid || game?.id));
-                console.log({ PPPPP: currentValue, game });
-                dispatch(setIsTransactionLoading(false));
-                afterBought();
-              }
-            }, 1000); // Check every 1000 ms (1 second)
-
+              })
+            );
+            console.log({ lastTxValue });
+            const game = await startGame(
+              pendingGame.uuid || pendingGame.id,
+              Number(lastTxValue)
+            );
+            dispatch(setGameId(game.uuid || game?.id));
+            console.log({ PPPPP: lastTxValue, game });
+            dispatch(setIsTransactionLoading(false));
+            afterBought();
             return data;
           }
         },
