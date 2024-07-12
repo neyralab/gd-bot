@@ -12,7 +12,7 @@ import gsap from 'gsap';
 import ShipWaveModel from './ShipWaveModel';
 
 const ShipModel = forwardRef((_, ref) => {
-  const fbx = useLoader(FBXLoader, '/assets/game-page/ship.fbx');
+  const fbx = useLoader(FBXLoader, '/assets/game-page/ship4.fbx');
   const mixer = useRef(null);
   const [clock] = useState(() => new THREE.Clock());
   const shipGroupRef = useRef(null);
