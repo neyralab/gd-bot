@@ -212,7 +212,7 @@ export default function BuyButton() {
           className={classNames(styles.button, styles[theme.id])}
           onClick={handleSelect}>
           <StarIcon className={styles['star-icon']} viewBox="0 0 21 21" />
-          <span className={styles.cost}>{theme.cost || 'FREE'}</span>
+          <span className={styles.cost}>{theme.stars || 'FREE'}</span>
           <span
             className={styles.multiplier}
             style={{ color: theme.colors.buttonText }}>
