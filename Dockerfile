@@ -8,5 +8,4 @@ RUN apk update \
 
 RUN yarn install
 RUN yarn build
-RUN yarn global add serve
-CMD yarn start
+CMD yarn prod
