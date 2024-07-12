@@ -13,7 +13,6 @@ import {
   selectIsTransactionLoading,
   switchTheme,
   gameCleanup,
-  addLogs
 } from '../../store/reducers/gameSlice';
 import { Header } from '../../components/header_v2';
 import Background from './Background/Background';
@@ -67,13 +66,11 @@ export function GamePage() {
   });
 
   useEffect(() => {
-    dispatch(addLogs('entered the game'));
     if (!isInitialized) {
       dispatch(initGame());
     }
 
     return () => {
-      dispatch(addLogs('exiting the game'));
       dispatch(gameCleanup());
     };
   }, []);

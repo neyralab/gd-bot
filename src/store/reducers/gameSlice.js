@@ -8,6 +8,7 @@ import {
   getGameContractAddress,
   getGameInfo,
   getGamePlans,
+  getPendingGames,
   startGame
 } from '../../effects/gameEffect';
 import { setUser } from './userSlice';
@@ -38,7 +39,7 @@ const gameSlice = createSlice({
     roundTimerTimestamp: null,
     roundTimeoutId: null,
     lockTimerTimestamp: null,
-    lockTimeoutId: null,
+    lockIntervalId: null,
     counter: {
       isActive: false,
       count: null,
@@ -48,15 +49,18 @@ const gameSlice = createSlice({
       isActive: false,
       roundPoints: null
     },
-    logs: [],
     nextTheme: {
       theme: null,
       themeIndex: null,
       direction: null,
       isSwitching: false
-    } // for animation purposes only
+    }, // for animation purposes only
+    pendingGames: []
   },
   reducers: {
+    setPendingGames: (state, { payload }) => {
+      state.pendingGames = payload;
+    },
     setIsInitializing: (state, { payload }) => {
       state.isInitializing = payload;
     },
@@ -110,9 +114,9 @@ const gameSlice = createSlice({
     setLockTimerTimestamp: (state, { payload }) => {
       state.lockTimerTimestamp = payload;
     },
-    setLockTimeoutId: (state, { payload }) => {
-      clearTimeout(state.lockTimeoutId);
-      state.lockTimeoutId = payload;
+    setLockIntervalId: (state, { payload }) => {
+      clearInterval(state.lockIntervalId);
+      state.lockIntervalId = payload;
     },
     setThemeAccess: (state, { payload }) => {
       state.themeAccess[payload.themeId] = payload.status;
@@ -140,65 +144,56 @@ const gameSlice = createSlice({
     },
     setRoundFinal: (state, { payload }) => {
       state.roundFinal = payload;
-    },
-    addLogs: (state, { payload }) => {
-      state.logs = [...state.logs, payload];
     }
   }
 });
 
-const lockTimerCountdown = (dispatch, endTime, freezeTime) => {
-  /** endTime is a timestamp, when the game is suppose to be ended */
-  /** freezeTime is an amount of milliseconds for timer to stop */
-  dispatch(addLogs(`lockTimerCountdown: ${endTime}, ${freezeTime}`));
-
+const lockTimerCountdown = (dispatch, endTime) => {
   dispatch(setLockTimerTimestamp(endTime));
 
-  const timeoutId = setTimeout(() => {
-    dispatch(setLockTimerTimestamp(null));
-    dispatch(setLockTimeoutId(null));
-    dispatch(setStatus('waiting'));
-    dispatch(setThemeAccess({ themeId: 'hawk', status: true }));
-    dispatch(addLogs(`lockTimerCountdown timeout worked`));
-  }, freezeTime);
+  const intervalId = setInterval(() => {
+    const now = Date.now();
+    const remainingTime = endTime - now;
 
-  dispatch(setLockTimeoutId(timeoutId));
+    if (remainingTime <= 0) {
+      dispatch(setLockTimerTimestamp(null));
+      dispatch(setLockIntervalId(null));
+      dispatch(setStatus('waiting'));
+      dispatch(setThemeAccess({ themeId: 'hawk', status: true }));
+    }
+  }, 1000);
+
+  dispatch(setLockIntervalId(intervalId));
 };
 
 export const initGame = createAsyncThunk(
   'game/initGame',
   async (_, { dispatch }) => {
-    dispatch(addLogs('init started'));
     dispatch(setIsInitializing(true));
     dispatch(setIsInitialized(false));
 
     try {
-      dispatch(addLogs('init try started'));
-      const [levels, gameInfo, cAddress, games] = await Promise.all([
-        gameLevels(),
-        getGameInfo(),
-        getGameContractAddress(),
-        getGamePlans()
-      ]);
-
-      dispatch(
-        addLogs(
-          `init game responses: ${JSON.stringify(levels)}, ${JSON.stringify(gameInfo)}, ${JSON.stringify(cAddress)}, ${JSON.stringify(games.map((el) => el.id))}`
-        )
-      );
+      const [levels, gameInfo, cAddress, games, pendingGames] =
+        await Promise.all([
+          gameLevels(),
+          getGameInfo(),
+          getGameContractAddress(),
+          getGamePlans(),
+          getPendingGames({ tierId: 4 })
+        ]);
+      console.log({ pendingGames });
       dispatch(setLevels(levels));
       dispatch(setBalance({ label: gameInfo.points, value: 0 }));
       dispatch(setExperiencePoints(gameInfo.points));
       dispatch(setContractAddress(cAddress));
+      dispatch(setPendingGames(pendingGames));
 
       const now = Date.now();
-      dispatch(addLogs(`Dates now: ${now} game ends ${gameInfo.game_ends_at}`));
       if (now <= gameInfo.game_ends_at) {
         dispatch(setStatus('finished'));
 
         const endTime = gameInfo.game_ends_at;
-        const freezeTime = endTime - Date.now();
-        lockTimerCountdown(dispatch, endTime, freezeTime);
+        lockTimerCountdown(dispatch, endTime);
       } else {
         dispatch(setStatus('waiting'));
       }
@@ -211,14 +206,22 @@ export const initGame = createAsyncThunk(
           ? { ...findGame, ...theme, tierId: findGame.id }
           : theme;
       });
-
       dispatch(setThemes(newThemes));
-      dispatch(setTheme(newThemes[0]));
+
+      if (pendingGames.length > 0) {
+        dispatch(setThemeAccess({ themeId: 'ghost', status: true }));
+        const pendingGame = pendingGames[0];
+        dispatch(
+          setTheme(newThemes.find((el) => el.tierId === pendingGame.tier.id))
+        );
+        dispatch(setGameId(pendingGame.id));
+      } else {
+        dispatch(setTheme(newThemes[0]));
+      }
 
       dispatch(setIsInitializing(false));
       dispatch(setIsInitialized(true));
     } catch (error) {
-      dispatch(addLogs(`init catch: ${JSON.stringify(error)}`));
       console.log('Error', error);
       dispatch(setIsInitializing(false));
       dispatch(setIsInitialized(false));
@@ -229,7 +232,6 @@ export const initGame = createAsyncThunk(
 export const startRound = createAsyncThunk(
   'game/startRound',
   async (_, { dispatch, getState }) => {
-    dispatch(addLogs(`startRound started`));
     setRoundFinal({ roundPoins: null, isActive: false });
     dispatch(setRoundTimeoutId(null));
     dispatch(setStatus('playing'));
@@ -238,11 +240,9 @@ export const startRound = createAsyncThunk(
     const gameTime = level?.play_time * 1000;
 
     const endTime = Date.now() + gameTime;
-    dispatch(addLogs(`startRound endtime: ${endTime}`));
     dispatch(setRoundTimerTimestamp(endTime));
 
     const timeoutId = setTimeout(() => {
-      dispatch(addLogs('start round timeout worked'));
       dispatch(finishRound());
     }, gameTime);
 
@@ -251,11 +251,6 @@ export const startRound = createAsyncThunk(
     if (state.game.theme.multiplier === 1) {
       const game = await beforeGame(null, 1);
       const g = await startGame(game.uuid || game.id, null);
-      dispatch(
-        addLogs(
-          `start round last requests: ${JSON.stringify(game)}, ${JSON.stringify(g)}`
-        )
-      );
       dispatch(setGameId(game?.uuid || game?.id));
     }
   }
@@ -264,16 +259,23 @@ export const startRound = createAsyncThunk(
 export const finishRound = createAsyncThunk(
   'game/finishRound',
   async (_, { dispatch, getState }) => {
-    dispatch(addLogs(`finish round started`));
     const state = getState();
-
+    const pendingGames = selectPendingGames(state);
     const gameId = state.game.gameId;
+    const filteredGames = pendingGames.filter((el) => el?.id !== gameId);
 
-    dispatch(setStatus('finished'));
+    dispatch(setStatus(filteredGames.length ? 'waiting' : 'finished'));
     dispatch(setRoundTimerTimestamp(null));
     dispatch(setRoundTimeoutId(null));
-    dispatch(setThemeAccess({ themeId: state.game.theme.id, status: false }));
-    dispatch(setGameId(null));
+    dispatch(
+      setThemeAccess({
+        themeId: state.game.theme.id,
+        status: !!filteredGames.length
+      })
+    );
+    if (filteredGames.length) {
+      dispatch(setGameId(filteredGames[0]?.id));
+    }
 
     if (state.game.theme.id === 'hawk') {
       dispatch(startNewFreeGameCountdown());
@@ -282,9 +284,6 @@ export const finishRound = createAsyncThunk(
     endGame({ id: gameId, taps: state.game.balance.value })
       .then((data) => {
         dispatch(
-          addLogs(`finish round end game worked" ${JSON.stringify(data)}`)
-        );
-        dispatch(
           setRoundFinal({
             roundPoints: state.game.balance.value,
             isActive: true
@@ -292,11 +291,9 @@ export const finishRound = createAsyncThunk(
         );
         dispatch(setUser({ ...state.user.data, points: data?.data || 0 }));
         dispatch(setBalance({ value: 0, label: state.game.balance.label }));
+        dispatch(setPendingGames(filteredGames));
       })
       .catch((err) => {
-        dispatch(
-          addLogs(`finish round end game error: ${JSON.stringify(err)}`)
-        );
         console.log({ endGameErr: err, m: err?.response.data });
       });
   }
@@ -306,17 +303,12 @@ export const startNewFreeGameCountdown = createAsyncThunk(
   'game/startNewFreeGameCountdown',
   async (_, { dispatch, getState }) => {
     const state = getState();
-    dispatch(setLockTimeoutId(null));
+    dispatch(setLockIntervalId(null));
     dispatch(setThemeAccess({ themeId: 'hawk', status: false }));
     const level = selectLevel(state);
     const freezeTime = level?.recharge_mins * 60 * 1000;
     const endTime = Date.now() + freezeTime;
-    dispatch(
-      addLogs(
-        `startNewFreeGameCountdown: freezeTime ${freezeTime}, endTime ${endTime}`
-      )
-    );
-    lockTimerCountdown(dispatch, endTime, freezeTime);
+    lockTimerCountdown(dispatch, endTime);
   }
 );
 
@@ -361,7 +353,8 @@ export const confirmNewlevel = createAsyncThunk(
     if (levels[levelIndex - 1].freeRound) {
       dispatch(setThemeAccess({ themeId: 'hawk', status: true }));
       dispatch(setLockTimerTimestamp(null));
-      dispatch(setLockTimeoutId(null));
+      clearInterval(state.game.lockIntervalId);
+      dispatch(setLockIntervalId(null));
     }
   }
 );
@@ -369,7 +362,6 @@ export const confirmNewlevel = createAsyncThunk(
 export const startCountdown = createAsyncThunk(
   'game/startCountdown',
   async ({ seconds, startNextRound }, { dispatch, getState }) => {
-    dispatch(addLogs(`startCountdown`));
     const state = getState();
     if (state.game.counter.isActive) return;
 
@@ -393,7 +385,6 @@ export const startCountdown = createAsyncThunk(
           dispatch(startRound());
         }
         setTimeout(() => {
-          dispatch(addLogs(`startCountdown interval finished`));
           dispatch(setCounterIsActive(false));
         }, 2000);
       }
@@ -406,7 +397,6 @@ export const startCountdown = createAsyncThunk(
 export const switchTheme = createAsyncThunk(
   'game/switchTheme',
   async ({ direction }, { dispatch, getState }) => {
-    dispatch(addLogs(`switchTheme`));
     const state = getState();
     const themes = state.game.themes;
     const themeIndex = state.game.themeIndex;
@@ -456,12 +446,12 @@ export const gameCleanup = createAsyncThunk(
      * Some of the timeoutIds you will need to store in this slice
      * and then clearTimeout() them in this function
      */
-    dispatch(addLogs(`gameCleanup`));
     dispatch(setRoundFinal({ roundPoins: null, isActive: false }));
   }
 );
 
 export const {
+  setPendingGames,
   setIsInitializing,
   setIsInitialized,
   setContractAddress,
@@ -475,7 +465,7 @@ export const {
   setRoundTimerTimestamp,
   setRoundTimeoutId,
   setLockTimerTimestamp,
-  setLockTimeoutId,
+  setLockIntervalId,
   setThemeAccess,
   setExperienceLevel,
   setExperiencePoints,
@@ -485,8 +475,7 @@ export const {
   setCounterIsActive,
   setCounterCount,
   setCounterIsFinished,
-  setRoundFinal,
-  addLogs
+  setRoundFinal
 } = gameSlice.actions;
 export default gameSlice.reducer;
 
@@ -511,6 +500,7 @@ export const selectExperiencePoints = (state) => state.game.experiencePoints;
 export const selectReachNewLevel = (state) => state.game.reachedNewLevel;
 export const selectNextTheme = (state) => state.game.nextTheme;
 export const selectLevels = (state) => state.game.levels;
+export const selectPendingGames = (state) => state.game.pendingGames;
 export const selectLevel = (state) => {
   const userLevel = selectExperienceLevel(state);
   const levels = selectLevels(state);

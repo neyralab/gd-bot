@@ -9,13 +9,12 @@ import {
   changeTimeLeft,
   changeuploadingProgress,
   clearSearchAutocomplete,
+  getFilesAction,
   selecSelectedFile,
   selectFileTypesCount,
   selectFileView,
   selectFiles,
   selectSearchAutocomplete,
-  selectUploadingProgress,
-  setCurrentFilter,
   setFileTypesCount,
   setSearchAutocomplete,
   setUploadingFile
@@ -61,7 +60,9 @@ export const FilesSystemPage = () => {
   const currentFileFilter = urlParams.get('type');
 
   useEffect(() => {
-    dispatch(setCurrentFilter(currentFileFilter));
+    if (currentFileFilter) {
+      dispatch(getFilesAction(1, currentFileFilter));
+    }
   }, [currentFileFilter]);
 
   useEffect(() => {

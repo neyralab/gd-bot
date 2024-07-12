@@ -2,6 +2,7 @@ import { API_PATH } from '../utils/api-urls';
 import axiosInstance from './axiosInstance';
 import * as Sentry from '@sentry/react';
 import { AxiosError } from 'axios';
+import { Effect } from './types';
 
 export const getUserEffect = async (token: string) => {
   return await axiosInstance
@@ -26,15 +27,28 @@ type GetMe = {
   space_total: number;
   ws_id: number;
   workspace_plan: boolean | any;
-  wallet: string;
+  wallet: string[];
   current_level: {
     level: number;
     multiplier: number;
   };
 };
 
-export const saveUserWallet = async (walletData: unknown) => {
-  const data = await axiosInstance.post(`${API_PATH}/tg/wallet`, walletData);
+type Wallet = {
+  id: number;
+  public_address: string;
+  created_at: string;
+  active: boolean;
+  is_unstoppable: boolean;
+  is_coinbase: boolean;
+};
+
+export const saveUserWallet = async (
+  walletData: unknown
+): Promise<Wallet[]> => {
+  const { data } = await axiosInstance.post<Effect<Wallet[]>>(
+    `${API_PATH}/tg/wallet`,
+    walletData
+  );
   return data.data;
-  // 8/api/tg/wallet' \
 };

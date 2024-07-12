@@ -10,6 +10,8 @@ import {
   useTonConnectUI,
   useTonWallet
 } from '@tonconnect/ui-react';
+import { toast } from 'react-toastify';
+
 import { GDTapBooster } from '../../../effects/contracts/tact_GDTapBooster';
 import { nullValueCheck } from '../../../effects/contracts/helper';
 import { SlidingModal } from '../../../components/slidingModal';
@@ -23,7 +25,7 @@ import {
   selectThemes,
   setGameId,
   setIsTransactionLoading,
-  setLockTimeoutId,
+  setLockIntervalId,
   setLockTimerTimestamp,
   setStatus,
   setThemeAccess,
@@ -38,6 +40,7 @@ import { ReactComponent as StarIcon } from '../../../assets/star.svg';
 import { beforeGame, startGame } from '../../../effects/gameEffect';
 import { isiOS } from '../../../utils/client';
 import styles from './BuyButton.module.css';
+import ReactGA from 'react-ga4';
 
 export default function BuyButton() {
   const { open } = useTonConnectModal();
@@ -60,7 +63,6 @@ export default function BuyButton() {
 
   const clickHandler = async () => {
     if (isDisabled) return;
-    dispatch(addLogs(`buy button clicked`));
 
     setIsDisabled(true);
 
@@ -75,17 +77,15 @@ export default function BuyButton() {
   };
 
   const afterBought = () => {
-    dispatch(addLogs(`buy button after bought`));
     dispatch(setStatus('waiting'));
     dispatch(setThemeAccess({ themeId: theme.id, status: true }));
 
     if (theme.id === 'hawk') {
       dispatch(setLockTimerTimestamp(null));
-      dispatch(setLockTimeoutId(null));
+      dispatch(setLockIntervalId(null));
     }
 
     setTimeout(() => {
-      dispatch(addLogs(`buy button start coountdown`));
       dispatch(startCountdown({ seconds: 5, startNextRound: true }));
     }, 100);
   };
@@ -190,7 +190,20 @@ export default function BuyButton() {
       );
       return true;
     } catch (e) {
-      dispatch(addLogs(`buy button error: ${e.toString()}`));
+      dispatch(setIsTransactionLoading(false));
+      toast.error(
+        'Something went wrong during payment. Please try again later!',
+        {
+          theme: 'colored',
+          position: 'bottom-center',
+          autoClose: 2000
+        }
+      );
+      ReactGA.event({
+        category: 'Error',
+        action: 'Payment',
+        label: e.message
+      });
       console.log({ onBuyError: e });
       return false;
     }

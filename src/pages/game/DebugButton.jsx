@@ -1,22 +1,28 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 export default function DebugButton() {
-  const state = useSelector((state) => state.game);
+  const navigate = useNavigate();
+  const location = useLocation();
 
-  const clickHandler = () => {
-    navigator.clipboard.writeText(JSON.stringify(state));
+  const game3DHandler = () => {
+    if (location.pathname === '/game') {
+      navigate('/game-3d');
+    }
   };
 
   return (
-    <div
-      onClick={clickHandler}
-      style={{
-        width: '100px',
-        height: '100px',
-        position: 'fixed',
-        top: 0,
-        right: 0
-      }}></div>
+    <>
+      <div
+        onClick={game3DHandler}
+        style={{
+          width: '25px',
+          height: '25px',
+          position: 'fixed',
+          bottom: 0,
+          left: 0,
+          zIndex: '99999999999999999999'
+        }}></div>
+    </>
   );
 }
