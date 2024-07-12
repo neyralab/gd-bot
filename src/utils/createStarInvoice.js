@@ -1,18 +1,3 @@
-/*
-  {
-    "invoice_payload": {
-      "chat_id":"383414673",
-      "title": "test digital product",
-      "description": "i'\''m just testing stars and that'\''s it",
-      "payload": "ewogICJ0ZXN0MSI6ICJwYXlsb2FkMSIsCiAgInRlc3QyIjogewogICAgImZvbyI6ICJiYXIiLAogIH0KfQ==",
-      "prices": [{
-        "label": "test digital product 1",
-        "amount": 5
-      }]
-    }
-  }
-*/
-
 const INVOICE_TYPE = {
   boost: 'boost',
   game: 'game',

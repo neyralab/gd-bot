@@ -5,8 +5,6 @@ import { ReactComponent as StarIcon  } from '../../assets/star.svg';
 
 import styles from './Menu.module.css';
 
-//  payload
-
 const paymentMethod = [
   {
     action: 'ton',
@@ -18,7 +16,7 @@ const paymentMethod = [
     icon: <StarIcon viewBox="-1 -1 23 23" />,
     path: 'stars'
   },
-]
+];
 
 export default function Menu({ payload, onClick }) {
 
