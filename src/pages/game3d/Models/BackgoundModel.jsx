@@ -51,7 +51,7 @@ const BackgroundModel = forwardRef((_, ref) => {
   useEffect(() => {
     starsColorMap.wrapS = THREE.RepeatWrapping;
     starsColorMap.wrapT = THREE.MirroredRepeatWrapping;
-    starsColorMap.repeat.set(6, 4);
+    starsColorMap.repeat.set(5, 5);
     starsColorMap.rotation = Math.PI / 2;
     starsColorMap.center.set(0.5, 0.5);
     starsColorMap.encoding = THREE.LinearEncoding;
