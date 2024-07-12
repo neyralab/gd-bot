@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import classNames from 'classnames';
+import { toast } from 'react-toastify';
 import { useDispatch, useSelector } from 'react-redux';
 import { Address, toNano } from '@ton/core';
 import { TonClient } from '@ton/ton';
@@ -9,10 +10,12 @@ import {
   useTonConnectUI,
   useTonWallet
 } from '@tonconnect/ui-react';
-import { toast } from 'react-toastify';
 
 import { GDTapBooster } from '../../../effects/contracts/tact_GDTapBooster';
 import { nullValueCheck } from '../../../effects/contracts/helper';
+import { SlidingModal } from '../../../components/slidingModal';
+import PaymentMenu from '../../../components/paymentMenu/Menu';
+
 import {
   selectContractAddress,
   selectStatus,
@@ -27,9 +30,13 @@ import {
   setThemeAccess,
   startCountdown
 } from '../../../store/reducers/gameSlice';
+import { handlePaymentSelectModal, selectPaymentSelectModal } from '../../../store/reducers/modalSlice';
+import { INVOICE_TYPE } from '../../../utils/createStarInvoice';
+import { makeInvoice } from '../../../effects/paymentEffect';
 import { useQueryId } from '../../../effects/contracts/useQueryId';
-import { ReactComponent as TonIcon } from '../../../assets/TON.svg';
+import { ReactComponent as StarIcon } from '../../../assets/star.svg';
 import { beforeGame, startGame } from '../../../effects/gameEffect';
+import { isiOS } from '../../../utils/client';
 import styles from './BuyButton.module.css';
 import ReactGA from 'react-ga4';
 import { waitTonTx } from '../../../utils/wait';
@@ -45,7 +52,11 @@ export default function BuyButton() {
   const theme = useSelector(selectTheme);
   const themes = useSelector(selectThemes);
   const themeAccess = useSelector(selectThemeAccess);
+  const isPaymentModalOpen = useSelector(selectPaymentSelectModal);
+
+  const user = useSelector((state) => state?.user?.data);
   const contractAddress = useSelector(selectContractAddress);
+  const isiOSPlatform = isiOS();
 
   const [isDisabled, setIsDisabled] = useState(false);
 
@@ -163,17 +174,57 @@ export default function BuyButton() {
     }
   };
 
+  const invoiceCallback = async (result) => {
+    try {
+      console.log('Invoice callback', result)
+    } catch (error) {
+      console.log('error')
+    }
+  }
+
+  const onClosePaymentModal = () => {
+    dispatch(handlePaymentSelectModal(false));
+  }
+
+  const handleSelect = () => {
+    if (isiOSPlatform) {
+      const input = `${0};${theme.tierId};${user.id}`;
+      makeInvoice({ input, dispatch, callback: invoiceCallback, type: INVOICE_TYPE.game, theme });
+    } else {
+      dispatch(handlePaymentSelectModal(true));
+    }
+  }
+  const handleStartPayment = (el) => {
+    if (el.action === "ton") {
+      clickHandler(el);
+    } else {
+      const input = `${0};${theme.tierId};${user.id}`;
+      makeInvoice({ input, dispatch, callback: invoiceCallback, type: INVOICE_TYPE.game, theme });
+    }
+    onClosePaymentModal();
+  }
+
   if (status !== 'playing' && !themeAccess[theme.id] && theme.id !== 'hawk') {
     return (
       <div className={styles['actions-flex']}>
         <button
           type="button"
           className={classNames(styles.button, styles[theme.id])}
-          onClick={clickHandler}>
-          <TonIcon />
-          <span className={styles.cost}>{theme.cost || 'FREE'}</span>
+          onClick={handleSelect}>
+          <StarIcon className={styles['star-icon']} viewBox="0 0 21 21" />
+          <span className={styles.cost}>{theme.stars || 'FREE'}</span>
           <span className={styles.multiplier}>X{theme.multiplier}</span>
         </button>
+        <SlidingModal
+          onClose={onClosePaymentModal}
+          isOpen={isPaymentModalOpen}
+          snapPoints={[170, 170, 50, 0]}
+        >
+          <PaymentMenu
+            payload={theme}
+            onClick={handleStartPayment}
+          />
+        </SlidingModal>
       </div>
     );
   }

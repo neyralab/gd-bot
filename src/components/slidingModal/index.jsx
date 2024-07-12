@@ -3,7 +3,7 @@ import { Sheet } from 'react-modal-sheet';
 
 import './style.css';
 
-export const SlidingModal = ({ onClose, isOpen, children }) => {
+export const SlidingModal = ({ onClose, isOpen, children, ...rest }) => {
   const ref = useRef();
 
   return (
@@ -12,7 +12,9 @@ export const SlidingModal = ({ onClose, isOpen, children }) => {
       isOpen={isOpen}
       onClose={onClose}
       snapPoints={[175, 90, 50, 0]}
-      initialSnap={1}>
+      initialSnap={1}
+      {...rest}
+      >
       <Sheet.Container className="react-modal-sheet-container">
         <Sheet.Header className="react-modal-sheet-header" />
         <Sheet.Content>{children}</Sheet.Content>
