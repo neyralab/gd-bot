@@ -43,8 +43,8 @@ const ShipWaveModel = ({ id, onComplete }) => {
       rotation={[0, 0, 0]}>
       <torusGeometry args={[10, 0.1, 2, 50]} />
       <meshStandardMaterial
-        color={theme.color2}
-        emissive={theme.color2}
+        color={theme.colors.wave}
+        emissive={theme.colors.wave}
         emissiveIntensity={5}
         transparent
         opacity={0.15}
