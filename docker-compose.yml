@@ -6,7 +6,7 @@ services:
     container_name: telegram-bot-front
     ports:
     - "3002:3000"
-    command: serve -s build
+    command: npm start
 
   telegram-bot-back:
     build:

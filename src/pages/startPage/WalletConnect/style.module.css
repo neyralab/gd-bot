@@ -1,0 +1,13 @@
+.wrapper {
+  height: 28px;
+  min-width: 60px;
+  font-family: 'SF Pro Text';
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 17px;
+  text-align: center;
+  background-color: #FFFFFF;
+  padding: 6px 16px;
+  border-radius: 23px;
+  color: #000;
+}

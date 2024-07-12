@@ -1,8 +1,11 @@
 import React, { useRef, useImperativeHandle, forwardRef } from 'react';
+import { useSelector } from 'react-redux';
+import { selectTheme } from '../../../store/reducers/gameSlice';
 import styles from './PointsGrowArea.module.css';
 
-const PointsGrowArea = forwardRef(({ theme }, ref) => {
+const PointsGrowArea = forwardRef((_, ref) => {
   const containerRef = useRef(null);
+  const theme = useSelector(selectTheme);
 
   const runAnimation = () => {
     // Create a new span element with the points class
@@ -25,10 +28,10 @@ const PointsGrowArea = forwardRef(({ theme }, ref) => {
 
     // Schedule to remove the point after 1 second
     setTimeout(() => {
-        if (point.parentNode) {
-          point.parentNode.removeChild(point);
-        }
-      }, 1000);
+      if (point.parentNode) {
+        point.parentNode.removeChild(point);
+      }
+    }, 1000);
   };
 
   useImperativeHandle(ref, () => ({

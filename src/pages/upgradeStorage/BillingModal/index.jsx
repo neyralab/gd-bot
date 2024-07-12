@@ -1,88 +1,88 @@
-import React, { useEffect, useState } from "react";
-import { Elements } from "@stripe/react-stripe-js";
-import Modal from "react-modal";
+import React, { useEffect, useState } from 'react';
+import { Elements } from '@stripe/react-stripe-js';
+import Modal from 'react-modal';
 
-import { getStripe } from "../../../effects/paymentEffect";
+import { getStripe } from '../../../effects/paymentEffect';
 
-import CheckoutForm from "./CheckoutForm";
+import CheckoutForm from './CheckoutForm';
 
-import { ReactComponent as DarkLogo } from "../assets/darkLogo.svg";
-import { ReactComponent as CloseIcon } from "../assets/close.svg";
+import { ReactComponent as DarkLogo } from '../assets/darkLogo.svg';
+import { ReactComponent as CloseIcon } from '../assets/close.svg';
 
-import styles from "./styles.module.css";
-import GhostLoader from "../../../components/ghostLoader";
+import styles from './styles.module.css';
+import GhostLoader from '../../../components/ghostLoader';
 
 const BillingModal = ({
   isOpen,
   onClose,
   clientSecret,
   successCallback,
-  noPaymentSelector = false,
+  noPaymentSelector = false
 }) => {
   const [stripePromise, setStripePromise] = useState(null);
   const appearance = {
-    theme: "flat",
+    theme: 'flat',
     variables: {
       colorText: `#ffffff`,
-      colorTextSecondary: "#b9b9b9",
-      spacing1: "10px",
+      colorTextSecondary: '#b9b9b9',
+      spacing1: '10px',
       fontFamily: '"IBM Plex Mono", sans-serif',
-      fontLineHeight: "1.5",
-      borderRadius: "0",
-      colorBackground: "#fff",
-      focusBoxShadow: "none",
+      fontLineHeight: '1.5',
+      borderRadius: '0',
+      colorBackground: '#fff',
+      focusBoxShadow: 'none',
       focusOutline: `1px solid #303030`,
-      colorIconTabSelected: "#ffffff",
-      colorPrimary: "red",
-      inputDividerBackgroundColor: "#303030",
-      spacingGridRow: "24px",
+      colorIconTabSelected: '#ffffff',
+      colorPrimary: 'red',
+      inputDividerBackgroundColor: '#303030',
+      spacingGridRow: '24px'
     },
     rules: {
-      ".Input, .CheckboxInput, .CodeInput": {
-        padding: "14px 16px",
-        paddingTop: "Input",
-        backgroundColor: "#242424",
-        transition: "none",
-        border: `1px solid #303030`,
+      '.Input, .CheckboxInput, .CodeInput': {
+        padding: '14px 16px',
+        paddingTop: 'Input',
+        backgroundColor: '#242424',
+        transition: 'none',
+        border: `1px solid #303030`
       },
-      ".Label": {
+      '.Label': {
         fontFamily: '"IBM Plex Mono", sans-serif',
-        lineHeight: "21px",
-        fontSize: "14px",
-        fontWeight: "500",
-        marginBottom: "8px",
+        lineHeight: '21px',
+        fontSize: '14px',
+        fontWeight: '500',
+        marginBottom: '8px'
       },
-      ".Input": {
-        padding: "14px 16px",
+      '.Input': {
+        padding: '14px 16px'
       },
-      ".Input--invalid": {
-        color: "#DF1B41",
+      '.Input--invalid': {
+        color: '#DF1B41'
       },
-      ".Tab, .Block, .PickerItem--selected": {
-        backgroundColor: "#242424",
-        borderColor: "none",
-        boxShadow: "none",
+      '.Tab, .Block, .PickerItem--selected': {
+        backgroundColor: '#242424',
+        borderColor: 'none',
+        boxShadow: 'none'
       },
-      ".Tab": {
-        display: "none",
-        transition: "none",
+      '.Tab': {
+        display: 'none',
+        transition: 'none'
       },
-      ".Tab:hover": {
-        backgroundColor: "#eee",
+      '.Tab:hover': {
+        backgroundColor: '#eee'
       },
-      ".Tab--selected, .Tab--selected:focus, .Tab--selected:hover": {
-        color: "#ffffff",
-        backgroundColor: "",
+      '.Tab--selected, .Tab--selected:focus, .Tab--selected:hover': {
+        color: '#ffffff',
+        backgroundColor: ''
       },
-      ".Tab:focus, .Tab--selected:focus": {
+      '.Tab:focus, .Tab--selected:focus': {
         boxShadow:
-          "inset -1px -1px #0a0a0a, inset 1px 1px #ffffff, inset -2px -2px #808080, inset 2px 2px #dfdfdf",
-        outline: "none",
+          'inset -1px -1px #0a0a0a, inset 1px 1px #ffffff, inset -2px -2px #808080, inset 2px 2px #dfdfdf',
+        outline: 'none'
       },
-      ".Tab:focus-visible": {
-        outline: "var(--focusOutline)",
-      },
-    },
+      '.Tab:focus-visible': {
+        outline: 'var(--focusOutline)'
+      }
+    }
   };
 
   useEffect(() => {
@@ -98,7 +98,7 @@ const BillingModal = ({
 
   const options = {
     clientSecret,
-    appearance,
+    appearance
   };
 
   return (
@@ -124,7 +124,7 @@ const BillingModal = ({
           </Elements>
         ) : (
           <div className={styles.loader}>
-            <GhostLoader texts={["Please wait"]} />
+            <GhostLoader texts={['Please wait']} />
           </div>
         )}
       </div>

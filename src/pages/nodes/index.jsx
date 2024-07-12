@@ -7,6 +7,7 @@ import React, {
 } from 'react';
 import classNames from 'classnames';
 import CountUp from 'react-countup';
+import { useSelector } from 'react-redux';
 import { fromNano } from '@ton/ton';
 import { useTonConnectUI } from '@tonconnect/ui-react';
 import { toast } from 'react-toastify';
@@ -24,10 +25,9 @@ import CardsSlider from '../../components/CardsSlider/CardsSlider';
 import sliderItems from './SliderItem/sliderItems';
 import SliderItem from './SliderItem/SliderItem';
 import styles from './styles.module.css';
-import { useSelector } from 'react-redux';
 import useButtonVibration from '../../hooks/useButtonVibration';
+import { NFT_ADDRESS } from '../../config/contracts';
 
-const NFT_ADDRESS = 'EQCiIzRXoCr1XLrN7_A-ez8-chFbzHq4fZGBRbwFfQt93AGc';
 const allNodes = 10000;
 
 export default function NodesPage() {
@@ -171,7 +171,7 @@ export default function NodesPage() {
               <div className={styles['banner-header_img']}>
                 <LogoIcon />
               </div>
-              <h1>My Nodes</h1>
+              <h1>Nodes</h1>
               <span>
                 <CountUp delay={0.5} end={userNodes} />
               </span>

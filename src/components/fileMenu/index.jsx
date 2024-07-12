@@ -20,7 +20,7 @@ import { generateSharingLink } from '../../utils/generateSharingLink';
 import { SlidingModal } from '../slidingModal';
 
 import { ReactComponent as ShareArrowIcon } from '../../assets/arrow_share.svg';
-import { ReactComponent as DeleteIcon } from '../../assets/delete.svg';
+import { ReactComponent as DeleteIcon } from '../../assets/trash.svg';
 import { ReactComponent as RestoreIcon } from '../../assets/restore.svg';
 
 import cn from 'classnames';
@@ -49,7 +49,9 @@ export const FileMenu = () => {
 
   const onShareClick = async (e) => {
     e.stopPropagation();
+    dispatch(handleFileMenu(false));
     await updateShareEffect(file.slug);
+    dispatch(setSelectedFile({}));
   };
 
   const onDeleteClick = () => {
@@ -96,14 +98,14 @@ export const FileMenu = () => {
             <span className={style.menu__item__title}>Restore</span>
           </li>
         )}
-        <li
+        {/* <li
           className={style.menu__item}
           onClick={handleVibrationClick(onDeleteClick)}>
           <DeleteIcon />
           <span className={cn(style.menu__item__title, style.deleteTitle)}>
             {isDeletedPage ? 'Delete permanently' : 'Delete'}
           </span>
-        </li>
+        </li> */}
       </ul>
     </SlidingModal>
   );

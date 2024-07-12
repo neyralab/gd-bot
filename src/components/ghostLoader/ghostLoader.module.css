@@ -47,10 +47,12 @@
   white-space: nowrap;
   overflow: hidden;
   animation: typingAnimation 3s steps(50);
-  &_isOnePhrase {
-    animation: typingAnimation 5s steps(50) infinite;
-  }
 }
+
+.infiniteTyping {
+  animation: typingAnimation 3s steps(50) infinite;
+}
+
 @keyframes typingAnimation {
   0% {
     width: 0;

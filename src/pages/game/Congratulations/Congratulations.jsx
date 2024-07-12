@@ -17,6 +17,7 @@ export default function Congratulations() {
   const [experienceLevelIndex, setExperienceLevelIndex] = useState(0);
   const [isOpen, setIsOpen] = useState(false);
   const [isClickable, setIsClickable] = useState(false);
+  // TODO: fix levels, get em from the store
 
   useEffect(() => {
     setExperienceLevelIndex(
@@ -61,6 +62,7 @@ export default function Congratulations() {
           style={{
             backgroundImage: `url('/assets/game-page/congrats-icon.png')`
           }}></div>
+          {/* TODO: no points anymore */}
         <div className={styles.points}>+{points}</div>
         <div className={styles.description}>
           Congratulations! You've Reached Level {experienceLevel}

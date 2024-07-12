@@ -4,7 +4,7 @@ const dotenv = require('dotenv');
 
 dotenv.config();
 
-const frontendUrl = process.env.REACT_APP_APP_FRONTEND_URL;
+const frontendUrl = process.env.VITE_APP_FRONTEND_URL;
 const manifest = {
   url: frontendUrl,
   name: 'Ghost Bot',

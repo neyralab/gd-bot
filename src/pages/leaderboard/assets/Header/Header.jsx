@@ -13,11 +13,6 @@ export default function Header() {
 
   return (
     <header className={styles.pageHeader}>
-      <button
-        className={styles.backButton}
-        onClick={handleVibrationClick(onBackButtonClick)}>
-        Back
-      </button>
       <div className={styles.navigation}>
         <NavLink
           className={({ isActive }) => classNames(isActive && styles.active)}
