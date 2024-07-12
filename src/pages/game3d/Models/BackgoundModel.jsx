@@ -109,7 +109,7 @@ const BackgroundModel = forwardRef((_, ref) => {
       <group ref={starsRef}>
         <mesh rotation={[0, 0, Math.PI / 2]}>
           <sphereGeometry args={[20, 16, 16]} />
-          <meshStandardMaterial map={starsColorMap} side={THREE.BackSide} />
+          <meshBasicMaterial map={starsColorMap} side={THREE.BackSide} />
         </mesh>
       </group>
 
