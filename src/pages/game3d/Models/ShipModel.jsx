@@ -22,7 +22,7 @@ const ShipModel = forwardRef((_, ref) => {
   const floatingContext = useRef(null);
   const flyingContext = useRef(null);
 
-  const scale = 0.00115;
+  const scale = 0.0016;
 
   useEffect(() => {
     runInitialAnimation();
@@ -51,31 +51,36 @@ const ShipModel = forwardRef((_, ref) => {
     if (fbx.animations.length) {
       mixer.current = new THREE.AnimationMixer(fbx);
       const action = mixer.current.clipAction(fbx.animations[0]);
-      action.stop();
       action.setLoop(THREE.LoopOnce);
       action.clampWhenFinished = true;
-      action.time = action.getClip().duration;
-      action.setEffectiveTimeScale(-4);
+      action.time = 1;
+      action.setEffectiveTimeScale(1);
+      mixer.current.update(0);
       action.play();
-    }
 
-    if (shipGroupRef.current) {
-      const tl = gsap.timeline({
-        onComplete: () => {
-          if (!flyTimeout || !flyTimeout.current) {
-            runFloatingAnimation();
+      setTimeout(() => {
+        action.setEffectiveTimeScale(-1);
+        action.play();
+      }, 1000);
+
+      if (shipGroupRef.current) {
+        const tl = gsap.timeline({
+          onComplete: () => {
+            if (!flyTimeout || !flyTimeout.current) {
+              runFloatingAnimation();
+            }
           }
-        }
-      });
-      tl.to(shipGroupRef.current.position, {
-        y: -0.36,
-        duration: 1.5,
-        ease: 'power1.out'
-      }).to(shipGroupRef.current.rotation, {
-        y: -Math.PI / 2,
-        duration: 1,
-        ease: 'power1.inOut'
-      });
+        });
+        tl.to(shipGroupRef.current.position, {
+          y: 0,
+          duration: 1.4,
+          ease: 'power3.out' //7
+        }).to(shipGroupRef.current.rotation, {
+          y: -Math.PI / 2,
+          duration: 1.5,
+          ease: 'power4.inOut'
+        });
+      }
     }
 
     setTimeout(() => {
@@ -88,12 +93,14 @@ const ShipModel = forwardRef((_, ref) => {
       /** Cleanup */
       gsap.to(shipGroupRef.current.position, {
         z: 0,
-        duration: 0.2
+        duration: 0.2,
+        ease: 'power4.inOut'
       });
 
       gsap.to(shipGroupRef.current.rotation, {
         y: -Math.PI / 2,
-        duration: 1.9
+        duration: 1.9,
+        ease: 'power4.inOut'
       });
 
       /** New */
@@ -138,7 +145,7 @@ const ShipModel = forwardRef((_, ref) => {
       gsap.to(shipGroupRef.current.rotation, {
         keyframes: [
           { y: -Math.PI / 2 - Math.PI, duration: 5, ease: 'power1.inOut' },
-          { y: -Math.PI / 2 + Math.PI, duration: 2, ease: 'power1.inOut' }
+          { y: -Math.PI / 2 + Math.PI, duration: 2.5, ease: 'power4.inOut' }
         ],
         repeat: -1,
         repeatDelay: 4,
