@@ -140,6 +140,7 @@ div.folderWrapper.smallIcon {
       width: 88px;
       height: 50px;
       left: -3px;
+      bottom: 5px;
     }
 
     & svg:nth-child(4) {
@@ -156,7 +157,7 @@ div.folderWrapper.smallIcon {
     }
     & svg:nth-child(3) {
       position: absolute;
-      bottom: 3px;
+      bottom: 3.5px;
       left: 0px;
       max-width: 32px;
       max-height: 20px;
