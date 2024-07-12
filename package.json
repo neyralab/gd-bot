@@ -20,7 +20,7 @@
     "@ton/core": "^0.56.3",
     "@ton/crypto": "^3.2.0",
     "@ton/ton": "github:ton-org/ton#fb20e8d70723aba5bd4ec147eb48269ac1efec45",
-    "@tonconnect/ui-react": "^2.0.2",
+    "@tonconnect/ui-react": "^2.0.6",
     "@vitejs/plugin-react": "^4.3.1",
     "axios": "^1.6.8",
     "bignumber.js": "^9.1.2",

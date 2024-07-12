@@ -9,6 +9,8 @@ import {
   useTonConnectUI,
   useTonWallet
 } from '@tonconnect/ui-react';
+import { toast } from 'react-toastify';
+
 import { GDTapBooster } from '../../../effects/contracts/tact_GDTapBooster';
 import { nullValueCheck } from '../../../effects/contracts/helper';
 import {
@@ -29,6 +31,7 @@ import { useQueryId } from '../../../effects/contracts/useQueryId';
 import { ReactComponent as TonIcon } from '../../../assets/TON.svg';
 import { beforeGame, startGame } from '../../../effects/gameEffect';
 import styles from './BuyButton.module.css';
+import ReactGA from 'react-ga4';
 
 export default function BuyButton() {
   const { open } = useTonConnectModal();
@@ -174,6 +177,20 @@ export default function BuyButton() {
       );
       return true;
     } catch (e) {
+      dispatch(setIsTransactionLoading(false));
+      toast.error(
+        'Something went wrong during payment. Please try again later!',
+        {
+          theme: 'colored',
+          position: 'bottom-center',
+          autoClose: 2000
+        }
+      );
+      ReactGA.event({
+        category: 'Error',
+        action: 'Payment',
+        label: e.message
+      });
       console.log({ onBuyError: e });
       return false;
     }
