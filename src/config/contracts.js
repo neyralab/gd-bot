@@ -1,3 +1,3 @@
-const NFT_ADDRESS = 'EQCiIzRXoCr1XLrN7_A-ez8-chFbzHq4fZGBRbwFfQt93AGc';
+const NFT_ADDRESS = 'EQDB7vW9q7sn8smrx2t68pIODtD9Mc7osJU73YmqWCIZMF-l';
 
 export { NFT_ADDRESS };
