@@ -1,5 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 import gsap from 'gsap';
+import * as THREE from 'three';
 import { useSelector } from 'react-redux';
 import { selectTheme } from '../../../store/reducers/gameSlice';
 
@@ -13,9 +14,9 @@ const ShipWaveModel = ({ id, onComplete }) => {
       circleRef.current.scale,
       { x: 0, y: 0, z: 0 },
       {
-        x: 0.13,
-        y: 0.13,
-        z: 0.13,
+        x: 0.17,
+        y: 0.17,
+        z: 0.17,
         duration: 1,
         onComplete: () => {
           onComplete?.(id);
@@ -28,17 +29,17 @@ const ShipWaveModel = ({ id, onComplete }) => {
       duration: 0.6
     });
     gsap.to(circleRef.current.material, {
-        emissiveIntensity: 0,
-        delay: 0.2,
-        duration: 0.6
-      });
+      emissiveIntensity: 0,
+      delay: 0.2,
+      duration: 0.6
+    });
   }, []);
 
   return (
     <mesh
       scale={0.05}
       ref={circleRef}
-      position={[0, 0, -0.5]}
+      position={[0, 0.5, -0.5]}
       rotation={[0, 0, 0]}>
       <torusGeometry args={[10, 0.1, 2, 50]} />
       <meshStandardMaterial
@@ -47,6 +48,9 @@ const ShipWaveModel = ({ id, onComplete }) => {
         emissiveIntensity={5}
         transparent
         opacity={0.15}
+        blending={THREE.AdditiveBlending}
+        depthWrite={false}
+        depthTest={true}
       />
     </mesh>
   );

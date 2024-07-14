@@ -1,47 +1,23 @@
 .container {
-  width: 100%;
-  height: 100dvh;
-  display: flex;
-  flex-direction: column;
-  overflow-x: hidden;
+  width: 100vw;
+  height: 100vh;
   position: relative;
+  overflow: hidden;
   overscroll-behavior: none;
+  user-select: none;
 }
 
 .container * {
   touch-action: manipulation;
-  user-select: none;
 }
 
 .content {
   position: relative;
-  width: 100%;
-  flex-grow: 1;
-  flex-shrink: 0;
-  height: 100dvh;
-
-  margin: auto;
+  width: 100vw;
+  height: 100vh;
   overflow: hidden;
   overscroll-behavior: none;
-}
-
-.content-inner-container {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 16px;
-  padding-top: 32px;
-  padding-bottom: 64px;
-  overflow-x: hidden;
-  overflow-y: auto;
-  position: relative;
-}
-
-@media (max-height: 635px) {
-  .content-inner-container {
-    display: block;
-  }
+  z-index: 1;
 }
 
 .balance-container {
@@ -50,21 +26,22 @@
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  flex-shrink: 0;
-  position: relative;
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 20px;
+  z-index: 5;
 }
 
 .main-button-container {
-  flex-grow: 1;
-  flex-shrink: 0;
   position: relative;
+  height: 100%;
 }
 
 .main-button-inner-container {
   position: relative;
-  width: 400px;
-  max-width: 90vw;
-  height: 300px;
+  width: 100%;
+  height: 100%;
 }
 
 .main-button-touch-area {
@@ -86,10 +63,7 @@
 }
 
 .counter-container {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  position: relative;
 }
 
 .level-description-container {
@@ -124,10 +98,10 @@
 
 .points-grow-area-container {
   position: absolute;
-  top: -10%;
+  top: 100px;
   left: 0;
   width: 100%;
-  height: 50%;
+  height: 40%;
 }
 
 .actions-container {
@@ -137,8 +111,9 @@
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  flex-shrink: 0;
-  position: relative;
+  position: fixed;
+  z-index: 5;
+  bottom: 120px;
 }
 
 .actions-container > * {
@@ -154,12 +129,14 @@
   justify-content: flex-start;
   gap: 4px;
   height: 48px;
-  flex-shrink: 0;
-  position: relative;
+  position: fixed;
+  top: 100px;
 }
 
 .experience-container {
-  position: relative;
+  position: fixed;
+  z-index: 5;
+  bottom: 66px;
   height: 50px;
   width: 100%;
   display: flex;
@@ -170,4 +147,28 @@
 .experience-container > * {
   width: 100%;
   max-width: 320px;
+}
+
+.canvas-container {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+}
+
+.canvas {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+}
+
+.theme-switcher-container {
+  position: fixed;
+  z-index: 5;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  width: 100%;
 }

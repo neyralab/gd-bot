@@ -41,6 +41,7 @@ export default function NodesPage() {
   const contract = useContract(NFT_ADDRESS, NftCollection);
   const user = useSelector((state) => state.user.data);
   const handleVibrationClick = useButtonVibration();
+  const [tonconnectUI] = useTonConnectUI();
 
   useEffect(() => {
     refererEffect().then((data) => {
@@ -62,10 +63,9 @@ export default function NodesPage() {
   }, [contract]);
 
   useEffect(() => {
-    if (contract && user?.wallet) {
-      const wallet = getWallet(user?.wallet);
+    if (contract && user?.wallet && tonconnectUI.account?.address) {
       contract
-        .getTotalBought(Address.parse(wallet))
+        .getTotalBought(Address.parse(tonconnectUI.account?.address))
         .then((total) => {
           setUserNodes(total.toString());
         })
@@ -74,7 +74,7 @@ export default function NodesPage() {
           console.log({ err });
         });
     }
-  }, [contract, user?.wallet]);
+  }, [contract, tonconnectUI.account?.address, user?.wallet]);
 
   const slides = useMemo(() => {
     return sliderItems.map((el) => {
