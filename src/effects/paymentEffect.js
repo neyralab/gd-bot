@@ -105,7 +105,6 @@ export const sendStarInvoice = async (dispatch, invoice) => {
   try {
     const token = await dispatch(connectUserV8());
     const chat_id = tg?.initDataUnsafe?.user?.user;
-    debugger
     const link = await axios
       .create({
         headers: {

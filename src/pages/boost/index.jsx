@@ -15,6 +15,7 @@ import { selectCurrentWorkspace } from '../../store/reducers/workspaceSlice';
 import { handlePaymentSelectModal, selectPaymentSelectModal } from '../../store/reducers/modalSlice';
 import { DEFAULT_TARIFFS_NAMES } from '../upgradeStorage';
 import { getTonWallet, makeInvoice } from '../../effects/paymentEffect';
+import { storageListEffect } from '../../effects/storageEffects';
 import { SlidingModal } from '../../components/slidingModal';
 import PaymentMenu from '../../components/paymentMenu/Menu';
 import { transformSize } from '../../utils/transformSize';
@@ -22,11 +23,13 @@ import { transformSize } from '../../utils/transformSize';
 import { ReactComponent as Star } from '../../assets/star.svg';
 import useButtonVibration from '../../hooks/useButtonVibration';
 import { INVOICE_TYPE } from '../../utils/createStarInvoice';
+import { sleep } from '../../utils/sleep';
 import { isiOS } from '../../utils/client';
 
 import styles from './styles.module.css';
+import { getToken } from '../../effects/set-token';
 
-export const BoostPage = ({ tariffs }) => {
+export const BoostPage = ({ tariffs, setTariffs }) => {
   const [selectedPayment, setSelectedPayment] = useState(null);
   const [activeMultiplier, setActiveMultiplier] = useState();
   const ws = useSelector(selectCurrentWorkspace);
@@ -106,7 +109,13 @@ export const BoostPage = ({ tariffs }) => {
 
   const invoiceCallback = async (result) => {
     try {
-      console.log('Invoice callback', result)
+      if (result === 'paid') {
+        await sleep(500);    
+        const token = await getToken();
+        await storageListEffect(token).then((data) => {
+          setTariffs(data);
+        });
+      } 
     } catch (error) {
       console.log('error')
     }

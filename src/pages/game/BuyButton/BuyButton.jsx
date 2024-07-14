@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import classNames from 'classnames';
 import { toast } from 'react-toastify';
 import { useDispatch, useSelector } from 'react-redux';
 import { Address, toNano } from '@ton/core';
 import { TonClient } from '@ton/ton';
 import { getHttpEndpoint } from '@orbs-network/ton-access';
+import ReactGA from 'react-ga4';
 import {
   useTonConnectModal,
   useTonConnectUI,
@@ -35,10 +36,10 @@ import { INVOICE_TYPE } from '../../../utils/createStarInvoice';
 import { makeInvoice } from '../../../effects/paymentEffect';
 import { useQueryId } from '../../../effects/contracts/useQueryId';
 import { ReactComponent as StarIcon } from '../../../assets/star.svg';
-import { beforeGame, startGame } from '../../../effects/gameEffect';
+import { beforeGame, startGame, getPendingGames } from '../../../effects/gameEffect';
 import { isiOS } from '../../../utils/client';
 import styles from './BuyButton.module.css';
-import ReactGA from 'react-ga4';
+import { sleep } from '../../../utils/sleep';
 import { waitTonTx } from '../../../utils/wait';
 
 export default function BuyButton() {
@@ -50,6 +51,7 @@ export default function BuyButton() {
 
   const status = useSelector(selectStatus);
   const theme = useSelector(selectTheme);
+  const themeRef = useRef(null);
   const themes = useSelector(selectThemes);
   const themeAccess = useSelector(selectThemeAccess);
   const isPaymentModalOpen = useSelector(selectPaymentSelectModal);
@@ -88,6 +90,10 @@ export default function BuyButton() {
       dispatch(startCountdown({ seconds: 5, startNextRound: true }));
     }, 100);
   };
+
+  useEffect(() => {
+    themeRef.current = { dispatch, theme, afterBought }
+  }, [dispatch, theme, afterBought])
 
   const onBuy = async (plan) => {
     try {
@@ -176,9 +182,29 @@ export default function BuyButton() {
 
   const invoiceCallback = async (result) => {
     try {
-      console.log('Invoice callback', result)
+      console.log('Invoice callback = ', result);
+      console.log(theme, dispatch);
+      console.log(ref);
+      debugger
+      if (result === 'paid') {
+        console.log(theme, dispatch);
+        console.log(ref);
+        await sleep(500);
+        dispatch(setStatus('waiting'));
+        const pendingGame = await getPendingGames({ tierId: theme.tierId });
+        dispatch(setGameId(pendingGame?.uuid || pendingGame.id));
+        afterBought();
+      } else {
+        console.log(theme, dispatch);
+        console.log(ref);
+        await sleep(500);
+        dispatch(setStatus('waiting'));
+        const pendingGame = await getPendingGames({ tierId: theme.tierId });
+        dispatch(setGameId(pendingGame?.uuid || pendingGame.id));
+        afterBought();
+      }     
     } catch (error) {
-      console.log('error')
+      console.log('error ', error)
     }
   }
 
