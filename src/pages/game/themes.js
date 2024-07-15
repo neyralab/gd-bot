@@ -27,7 +27,7 @@ const themes = [
       fog: '#A3C5E7',
       wave: '#4495E7',
       directionalLight: '#A3C5E7',
-      accentEmission: '#FF3E3E'
+      accentEmission: '#1177C0'
     }
   },
   // {
@@ -72,7 +72,7 @@ const themes = [
       fog: '#A3E7BF',
       wave: '#44E780',
       directionalLight: '#A3E7BF',
-      accentEmission: '#FF3E3E'
+      accentEmission: '#B53EFF'
     }
   }
 ];

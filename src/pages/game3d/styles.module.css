@@ -1,6 +1,6 @@
 .container {
   width: 100vw;
-  height: 100dvh;
+  height: 100vh;
   position: relative;
   overflow: hidden;
   overscroll-behavior: none;
@@ -63,7 +63,10 @@
 }
 
 .counter-container {
-  position: relative;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .level-description-container {
