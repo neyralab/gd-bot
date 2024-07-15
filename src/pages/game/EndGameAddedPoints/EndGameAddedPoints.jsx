@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setRoundFinal } from '../../../store/reducers/gameSlice';
+import { selectLevel, setRoundFinal } from '../../../store/reducers/gameSlice';
 import styles from './EndGameAddedPoints.module.css';
 
 const TIME_OUT = 8000;
@@ -9,8 +9,13 @@ const EndGameAddedPoints = () => {
   const dispatch = useDispatch();
 
   const isActive = useSelector((state) => state.game.roundFinal.isActive);
-  const counter = useSelector((state) => state.game.roundFinal.roundPoints);
+  const c = useSelector((state) => state.game.roundFinal.roundPoints);
+  const lvl = useSelector(selectLevel);
   const user = useSelector((state) => state.user.data);
+
+  const counter = useMemo(() => {
+    return c * lvl?.multiplier || undefined;
+  }, [c, lvl?.multiplier]);
 
   const [show, setShow] = useState(false);
   const [showRank, setShowRank] = useState(false);
@@ -37,7 +42,7 @@ const EndGameAddedPoints = () => {
       setShow(false);
     }
   }, [isActive]);
-  
+
   useEffect(() => {
     if (isActive && currentCounter < counter) {
       const increment = counter / 100; // increment value per step
@@ -56,14 +61,14 @@ const EndGameAddedPoints = () => {
 
   return (
     <div className={styles.container}>
-      { showRank && user.rank ? (
+      {showRank && user.rank ? (
         <span className={styles[`points-text`]}>{`rank: ${user.rank}`}</span>
       ) : (
         <>
           <p className={styles.count}>{currentCounter}</p>
           <span className={styles[`points-text`]}>points</span>
         </>
-      ) }
+      )}
     </div>
   );
 };
