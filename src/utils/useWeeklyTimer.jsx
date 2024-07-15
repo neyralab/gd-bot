@@ -7,7 +7,7 @@ const useWeeklyTimer = () => {
     const nextMonday = new Date(
       now.getFullYear(),
       now.getMonth(),
-      now.getDate() + ((1 + 7 - now.getDay()) % 7 || 7),
+      now.getUTCDate() + ((1 + 7 - now.getUTCDay()) % 7 || 7),
       11, // Set the hour to 11 am
       0,
       0,
@@ -15,7 +15,7 @@ const useWeeklyTimer = () => {
     );
 
     const diff = nextMonday - now;
-    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24)) % 7 || '00';
     const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
     const minutes = Math.floor((diff / 1000 / 60) % 60);
     const seconds = Math.floor((diff / 1000) % 60);
