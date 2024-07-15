@@ -92,6 +92,14 @@ export const getPendingGames = async ({ tierId }: { tierId: number }) => {
   return data.data.filter((el) => el.purchase_id);
 };
 
+export const getActivePayedGame = async () => {
+  const url = `${API_PATH}/active/game`;
+  const { data } =
+    await axiosInstance.get<Effect<({ purchase_id: string } & Game)[]>>(url);
+  console.log({ getActivePayedGame: data });
+  return data.data;
+};
+
 type GamePlan = {
   id: number;
   per_tap: number;

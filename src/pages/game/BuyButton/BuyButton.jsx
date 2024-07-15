@@ -36,8 +36,10 @@ import { INVOICE_TYPE } from '../../../utils/createStarInvoice';
 import { makeInvoice } from '../../../effects/paymentEffect';
 import { useQueryId } from '../../../effects/contracts/useQueryId';
 import { ReactComponent as StarIcon } from '../../../assets/star.svg';
-import { beforeGame, startGame, getPendingGames } from '../../../effects/gameEffect';
+import { ReactComponent as TonIcon } from '../../../assets/TON.svg';
+import { beforeGame, startGame, getActivePayedGame } from '../../../effects/gameEffect';
 import { isiOS } from '../../../utils/client';
+import { isDevEnv } from '../../../utils/isDevEnv';
 import styles from './BuyButton.module.css';
 import { sleep } from '../../../utils/sleep';
 import { waitTonTx } from '../../../utils/wait';
@@ -59,6 +61,7 @@ export default function BuyButton() {
   const user = useSelector((state) => state?.user?.data);
   const contractAddress = useSelector(selectContractAddress);
   const isiOSPlatform = isiOS();
+  const isDev = isDevEnv();
 
   const [isDisabled, setIsDisabled] = useState(false);
 
@@ -191,7 +194,7 @@ export default function BuyButton() {
         console.log(ref);
         await sleep(500);
         dispatch(setStatus('waiting'));
-        const pendingGame = await getPendingGames({ tierId: theme.tierId });
+        const pendingGame = await getActivePayedGame();
         dispatch(setGameId(pendingGame?.uuid || pendingGame.id));
         afterBought();
       } else {
@@ -199,7 +202,7 @@ export default function BuyButton() {
         console.log(ref);
         await sleep(500);
         dispatch(setStatus('waiting'));
-        const pendingGame = await getPendingGames({ tierId: theme.tierId });
+        const pendingGame = await getActivePayedGame();
         dispatch(setGameId(pendingGame?.uuid || pendingGame.id));
         afterBought();
       }     
@@ -233,14 +236,19 @@ export default function BuyButton() {
   if (status !== 'playing' && !themeAccess[theme.id] && theme.id !== 'hawk') {
     return (
       <div className={styles['actions-flex']}>
-        <button
-          type="button"
-          className={classNames(styles.button, styles[theme.id])}
-          onClick={handleSelect}>
-          <StarIcon className={styles['star-icon']} viewBox="0 0 21 21" />
-          <span className={styles.cost}>{theme.stars || 'FREE'}</span>
-          <span className={styles.multiplier}>X{theme.multiplier}</span>
-        </button>
+          <button
+            type="button"
+            className={classNames(styles.button, styles[theme.id])}
+            onClick={() => { isDev ? handleSelect() :clickHandler(el) }}>
+              {isDev ? (
+                <StarIcon className={styles['star-icon']} viewBox="0 0 21 21" />
+              ) : (
+                <TonIcon className={styles['star-icon']} viewBox="0 0 24 24" />
+              ) }
+            <StarIcon className={styles['star-icon']} viewBox="0 0 21 21" />
+            <span className={styles.cost}>{(isDev ? theme.stars : theme.cost) || 'FREE'}</span>
+            <span className={styles.multiplier}>X{theme.multiplier}</span>
+          </button>
         <SlidingModal
           onClose={onClosePaymentModal}
           isOpen={isPaymentModalOpen}
