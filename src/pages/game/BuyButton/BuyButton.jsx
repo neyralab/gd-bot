@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useState } from 'react';
 import classNames from 'classnames';
 import { toast } from 'react-toastify';
 import { useDispatch, useSelector } from 'react-redux';
@@ -45,7 +45,6 @@ import {
   startGame,
   getActivePayedGame
 } from '../../../effects/gameEffect';
-import { isiOS } from '../../../utils/client';
 import { isDevEnv } from '../../../utils/isDevEnv';
 import styles from './BuyButton.module.css';
 import { sleep } from '../../../utils/sleep';
@@ -66,7 +65,6 @@ export default function BuyButton() {
 
   const user = useSelector((state) => state?.user?.data);
   const contractAddress = useSelector(selectContractAddress);
-  const isiOSPlatform = isiOS();
   const isDev = isDevEnv();
 
   const [isDisabled, setIsDisabled] = useState(false);
@@ -204,19 +202,9 @@ export default function BuyButton() {
   };
 
   const handleSelect = () => {
-    if (isiOSPlatform) {
-      const input = `${0};${theme.tierId};${user.id}`;
-      makeInvoice({
-        input,
-        dispatch,
-        callback: invoiceCallback,
-        type: INVOICE_TYPE.game,
-        theme
-      });
-    } else {
-      dispatch(handlePaymentSelectModal(true));
-    }
+    dispatch(handlePaymentSelectModal(true));
   };
+
   const handleStartPayment = (el) => {
     if (el.action === 'ton') {
       clickHandler(el);

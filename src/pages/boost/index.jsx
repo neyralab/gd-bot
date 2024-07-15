@@ -27,7 +27,6 @@ import useButtonVibration from '../../hooks/useButtonVibration';
 import { INVOICE_TYPE } from '../../utils/createStarInvoice';
 import { isDevEnv } from '../../utils/isDevEnv';
 import { sleep } from '../../utils/sleep';
-import { isiOS } from '../../utils/client';
 
 import styles from './styles.module.css';
 import { getToken } from '../../effects/set-token';
@@ -44,10 +43,7 @@ export const BoostPage = ({ tariffs, setTariffs }) => {
   const { open } = useTonConnectModal();
   const dispatch = useDispatch();
   const handleVibrationClick = useButtonVibration();
-  const isiOSPlatform = isiOS();
   const isDev = isDevEnv();
-
-  console.log(tariffs)
 
   const currentPrice = useMemo(() => {
     return tariffs?.find((tariff) => tariff.storage === spaceTotal);
@@ -146,17 +142,9 @@ export const BoostPage = ({ tariffs, setTariffs }) => {
     dispatch(handlePaymentSelectModal(false));
   }
 
-  const startTonTx = (el) => {
+  const handleSelect = (el) => {
     setSelectedPayment(el);
     dispatch(handlePaymentSelectModal(true));
-  }
-
-  const handleSelect = (el) => {
-    if (isiOSPlatform) {
-      makeInvoice(el);
-    } else {
-      startTonTx(el);
-    }
   }
 
   return (
