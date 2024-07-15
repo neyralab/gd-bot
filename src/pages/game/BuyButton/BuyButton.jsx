@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import classNames from 'classnames';
 import { toast } from 'react-toastify';
 import { useDispatch, useSelector } from 'react-redux';
 import { Address, toNano } from '@ton/core';
 import { TonClient } from '@ton/ton';
 import { getHttpEndpoint } from '@orbs-network/ton-access';
+import ReactGA from 'react-ga4';
 import {
   useTonConnectModal,
   useTonConnectUI,
@@ -30,15 +31,24 @@ import {
   setThemeAccess,
   startCountdown
 } from '../../../store/reducers/gameSlice';
-import { handlePaymentSelectModal, selectPaymentSelectModal } from '../../../store/reducers/modalSlice';
+import {
+  handlePaymentSelectModal,
+  selectPaymentSelectModal
+} from '../../../store/reducers/modalSlice';
 import { INVOICE_TYPE } from '../../../utils/createStarInvoice';
 import { makeInvoice } from '../../../effects/paymentEffect';
 import { useQueryId } from '../../../effects/contracts/useQueryId';
 import { ReactComponent as StarIcon } from '../../../assets/star.svg';
-import { beforeGame, startGame } from '../../../effects/gameEffect';
+import { ReactComponent as TonIcon } from '../../../assets/TON.svg';
+import {
+  beforeGame,
+  startGame,
+  getActivePayedGame
+} from '../../../effects/gameEffect';
 import { isiOS } from '../../../utils/client';
+import { isDevEnv } from '../../../utils/isDevEnv';
 import styles from './BuyButton.module.css';
-import ReactGA from 'react-ga4';
+import { sleep } from '../../../utils/sleep';
 import { waitTonTx } from '../../../utils/wait';
 
 export default function BuyButton() {
@@ -50,6 +60,7 @@ export default function BuyButton() {
 
   const status = useSelector(selectStatus);
   const theme = useSelector(selectTheme);
+  const themeRef = useRef(null);
   const themes = useSelector(selectThemes);
   const themeAccess = useSelector(selectThemeAccess);
   const isPaymentModalOpen = useSelector(selectPaymentSelectModal);
@@ -57,6 +68,7 @@ export default function BuyButton() {
   const user = useSelector((state) => state?.user?.data);
   const contractAddress = useSelector(selectContractAddress);
   const isiOSPlatform = isiOS();
+  const isDev = isDevEnv();
 
   const [isDisabled, setIsDisabled] = useState(false);
 
@@ -88,6 +100,10 @@ export default function BuyButton() {
       dispatch(startCountdown({ seconds: 5, startNextRound: true }));
     }, 100);
   };
+
+  useEffect(() => {
+    themeRef.current = { dispatch, theme, afterBought };
+  }, [dispatch, theme, afterBought]);
 
   const onBuy = async (plan) => {
     try {
@@ -176,33 +192,65 @@ export default function BuyButton() {
 
   const invoiceCallback = async (result) => {
     try {
-      console.log('Invoice callback', result)
+      console.log('Invoice callback = ', result);
+      console.log(theme, dispatch);
+      console.log(themeRef);
+      debugger;
+      if (result === 'paid') {
+        console.log(theme, dispatch);
+        console.log(themeRef);
+        await sleep(500);
+        dispatch(setStatus('waiting'));
+        const pendingGame = await getActivePayedGame();
+        dispatch(setGameId(pendingGame?.uuid || pendingGame.id));
+        afterBought();
+      } else {
+        console.log(theme, dispatch);
+        console.log(themeRef);
+        await sleep(500);
+        dispatch(setStatus('waiting'));
+        const pendingGame = await getActivePayedGame();
+        dispatch(setGameId(pendingGame?.uuid || pendingGame.id));
+        afterBought();
+      }
     } catch (error) {
-      console.log('error')
+      console.log('error ', error);
     }
-  }
+  };
 
   const onClosePaymentModal = () => {
     dispatch(handlePaymentSelectModal(false));
-  }
+  };
 
   const handleSelect = () => {
     if (isiOSPlatform) {
       const input = `${0};${theme.tierId};${user.id}`;
-      makeInvoice({ input, dispatch, callback: invoiceCallback, type: INVOICE_TYPE.game, theme });
+      makeInvoice({
+        input,
+        dispatch,
+        callback: invoiceCallback,
+        type: INVOICE_TYPE.game,
+        theme
+      });
     } else {
       dispatch(handlePaymentSelectModal(true));
     }
-  }
+  };
   const handleStartPayment = (el) => {
-    if (el.action === "ton") {
+    if (el.action === 'ton') {
       clickHandler(el);
     } else {
       const input = `${0};${theme.tierId};${user.id}`;
-      makeInvoice({ input, dispatch, callback: invoiceCallback, type: INVOICE_TYPE.game, theme });
+      makeInvoice({
+        input,
+        dispatch,
+        callback: invoiceCallback,
+        type: INVOICE_TYPE.game,
+        theme
+      });
     }
     onClosePaymentModal();
-  }
+  };
 
   if (status !== 'playing' && !themeAccess[theme.id] && theme.id !== 'hawk') {
     return (
@@ -210,9 +258,17 @@ export default function BuyButton() {
         <button
           type="button"
           className={classNames(styles.button, styles[theme.id])}
-          onClick={handleSelect}>
-          <StarIcon className={styles['star-icon']} viewBox="0 0 21 21" />
-          <span className={styles.cost}>{theme.stars || 'FREE'}</span>
+          onClick={() => {
+            isDev ? handleSelect() : clickHandler();
+          }}>
+          {isDev ? (
+            <StarIcon className={styles['star-icon']} viewBox="0 0 21 21" />
+          ) : (
+            <TonIcon className={styles['star-icon']} viewBox="0 0 24 24" />
+          )}
+          <span className={styles.cost}>
+            {(isDev ? theme.stars : theme.cost) || 'FREE'}
+          </span>
           <span
             className={styles.multiplier}
             style={{ color: theme.colors.buttonText }}>
@@ -222,12 +278,8 @@ export default function BuyButton() {
         <SlidingModal
           onClose={onClosePaymentModal}
           isOpen={isPaymentModalOpen}
-          snapPoints={[170, 170, 50, 0]}
-        >
-          <PaymentMenu
-            payload={theme}
-            onClick={handleStartPayment}
-          />
+          snapPoints={[170, 170, 50, 0]}>
+          <PaymentMenu payload={theme} onClick={handleStartPayment} />
         </SlidingModal>
       </div>
     );

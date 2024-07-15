@@ -26,6 +26,7 @@ import sliderItems from './SliderItem/sliderItems';
 import SliderItem from './SliderItem/SliderItem';
 import styles from './styles.module.css';
 import useButtonVibration from '../../hooks/useButtonVibration';
+import { getWallet } from '../../utils/string';
 import { NFT_ADDRESS } from '../../config/contracts';
 
 const allNodes = 10000;
@@ -40,6 +41,7 @@ export default function NodesPage() {
   const contract = useContract(NFT_ADDRESS, NftCollection);
   const user = useSelector((state) => state.user.data);
   const handleVibrationClick = useButtonVibration();
+  const [tonconnectUI] = useTonConnectUI();
 
   useEffect(() => {
     refererEffect().then((data) => {
@@ -61,9 +63,9 @@ export default function NodesPage() {
   }, [contract]);
 
   useEffect(() => {
-    if (contract && user?.wallet) {
+    if (contract && user?.wallet && tonconnectUI.account?.address) {
       contract
-        .getTotalBought(Address.parse(user?.wallet))
+        .getTotalBought(Address.parse(tonconnectUI.account?.address))
         .then((total) => {
           setUserNodes(total.toString());
         })
@@ -72,7 +74,7 @@ export default function NodesPage() {
           console.log({ err });
         });
     }
-  }, [contract, user?.wallet]);
+  }, [contract, tonconnectUI.account?.address, user?.wallet]);
 
   const slides = useMemo(() => {
     return sliderItems.map((el) => {
@@ -183,10 +185,10 @@ export default function NodesPage() {
           <div className={styles['buy-container']}>
             <div className={styles['buy-container__flex-left']}>
               <div className={styles['buy-container__description']}>
-                Available: {nodesAvailable.toLocaleString()}
+                Available: 50 000
               </div>
               <div className={styles['buy-container__cost']}>
-                {nodesCost} <TonIcon />
+                {nodesCost} <TonIcon  viewBox="0 -2 24 26"  />
               </div>
             </div>
             <div className={styles['buy-container__flex-right']}>
