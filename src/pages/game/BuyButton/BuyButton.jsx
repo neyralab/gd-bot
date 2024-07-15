@@ -266,11 +266,14 @@ export default function BuyButton() {
           ) : (
             <TonIcon className={styles['star-icon']} viewBox="0 0 24 24" />
           )}
-          {/*<StarIcon className={styles['star-icon']} viewBox="0 0 21 21" />*/}
           <span className={styles.cost}>
             {(isDev ? theme.stars : theme.cost) || 'FREE'}
           </span>
-          <span className={styles.multiplier}>X{theme.multiplier}</span>
+          <span
+            className={styles.multiplier}
+            style={{ color: theme.colors.buttonText }}>
+            X{theme.multiplier}
+          </span>
         </button>
         <SlidingModal
           onClose={onClosePaymentModal}

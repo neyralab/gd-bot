@@ -7,8 +7,11 @@ import React, {
 import { useFrame, useLoader } from '@react-three/fiber';
 import * as THREE from 'three';
 import { TextureLoader } from 'three/src/loaders/TextureLoader';
+import { useSelector } from 'react-redux';
+import { selectTheme } from '../../../store/reducers/gameSlice';
 
 const BackgroundModel = forwardRef((_, ref) => {
+  const theme = useSelector(selectTheme);
   const starsRef = useRef(null);
   const starsColorMap = useLoader(
     TextureLoader,
@@ -18,7 +21,7 @@ const BackgroundModel = forwardRef((_, ref) => {
   const glareRef = useRef(null);
   const glareColorMap = useLoader(
     TextureLoader,
-    '/assets/game-page/glare-color-1.png'
+    `/assets/game-page/glare-color-${theme.id}.png`
   );
   const glareAlphaMap = useLoader(
     TextureLoader,
@@ -51,7 +54,7 @@ const BackgroundModel = forwardRef((_, ref) => {
   useEffect(() => {
     starsColorMap.wrapS = THREE.RepeatWrapping;
     starsColorMap.wrapT = THREE.MirroredRepeatWrapping;
-    starsColorMap.repeat.set(5, 5);
+    starsColorMap.repeat.set(6, 6);
     starsColorMap.rotation = Math.PI / 2;
     starsColorMap.center.set(0.5, 0.5);
     starsColorMap.encoding = THREE.LinearEncoding;
