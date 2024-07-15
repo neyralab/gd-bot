@@ -193,7 +193,7 @@ export const BoostPage = ({ tariffs, setTariffs }) => {
             <li key={index} onClick={handleVibrationClick()}>
               <button
                 disabled={currentPrice?.storage === el?.storage}
-                onClick={() => {isDev ? handleSelect(el) : handleSelect(el)}}
+                onClick={() => {isDev ? handleSelect(el) : startTonTx(el)}}
                 className={CN(
                   styles.item,
                   activeMultiplier?.storage === el.storage && styles.active_item
