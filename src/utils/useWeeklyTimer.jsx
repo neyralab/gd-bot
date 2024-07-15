@@ -1,13 +1,24 @@
 import { useState, useEffect, useCallback } from 'react';
+import moment from 'moment';
 
 const useWeeklyTimer = () => {
   // Calculate time left until next Monday at 11 am Kyiv time
   const calculateTimeLeft = useCallback(() => {
+    const n = moment.utc(); //.toDate();
+    const m = moment
+      .utc()
+      .add(7, 'day')
+      .set({ hour: 8, minutes: 0, seconds: 0 })
+      .isoWeekday(1); //.toDate();
+
+    const d = moment.duration(m.diff(n)); //.asDays();
+    return `${d.days() % 7 || '00'} : ${d.hours().toString().padStart(2, '0')} : ${d.minutes().toString().padStart(2, '0')} : ${d.seconds().toString().padStart(2, '0')}`;
+
     const now = new Date();
     const nextMonday = new Date(
-      now.getFullYear(),
-      now.getMonth(),
-      now.getDate() + ((1 + 7 - now.getDay()) % 7 || 7),
+      now.getUTCFullYear(),
+      now.getUTCMonth(),
+      now.getUTCDate() + ((1 + 7 - now.getUTCDay()) % 7 || 7),
       11, // Set the hour to 11 am
       0,
       0,
@@ -15,7 +26,7 @@ const useWeeklyTimer = () => {
     );
 
     const diff = nextMonday - now;
-    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24)) % 7 || '00';
     const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
     const minutes = Math.floor((diff / 1000 / 60) % 60);
     const seconds = Math.floor((diff / 1000) % 60);

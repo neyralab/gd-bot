@@ -151,15 +151,15 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 100%;
+  height: auto;
 }
 
 .smallMediaIconWrapper svg:nth-child(1) {
   fill: none;
   stroke: #ffffff;
   width: 30px;
-  max-width: 30px;
   height: 40px;
-  max-height: 40px;
 }
 
 .smallMediaIconWrapper img {
@@ -218,18 +218,18 @@
 .smallDocIconWrapper {
   box-sizing: border-box;
   position: relative;
-
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 30px;
+  height: 40px;
 }
 
 .smallDocIconWrapper svg {
-  width: 30px;
-  height: 40px;
-  max-width: 30px;
-  max-height: 40px;
+  width: 100%;
+  height: 100%;
 }
+
 .smallDocIconWrapper span {
   position: absolute;
   color: white;

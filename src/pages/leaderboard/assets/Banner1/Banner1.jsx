@@ -9,7 +9,7 @@ export default function Banner1() {
   const isHidden = true;
 
   const week = useMemo(() => {
-    return getWeekNumber(new Date(Date.UTC(2024, 6, 4)));
+    return getWeekNumber(new Date(Date.UTC(2024, 6, 4, 8)));
   }, []);
 
   return (

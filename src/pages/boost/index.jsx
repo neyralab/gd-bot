@@ -12,17 +12,31 @@ import TonWeb from 'tonweb';
 import { StorageIcon } from './icon';
 import { Header } from '../../components/header';
 import { selectCurrentWorkspace } from '../../store/reducers/workspaceSlice';
+import { handlePaymentSelectModal, selectPaymentSelectModal } from '../../store/reducers/modalSlice';
 import { DEFAULT_TARIFFS_NAMES } from '../upgradeStorage';
-import { getTonWallet } from '../../effects/paymentEffect';
+import { getTonWallet, makeInvoice } from '../../effects/paymentEffect';
+import { storageListEffect } from '../../effects/storageEffects';
+import { SlidingModal } from '../../components/slidingModal';
+import PaymentMenu from '../../components/paymentMenu/Menu';
 import { transformSize } from '../../utils/transformSize';
 
-import { ReactComponent as Diamond } from '../../assets/diamond.svg';
-import styles from './styles.module.css';
-import useButtonVibration from '../../hooks/useButtonVibration';
+import { ReactComponent as Star } from '../../assets/star.svg';
+import { ReactComponent as Ton } from '../../assets/TON.svg';
 
-export const BoostPage = ({ tariffs }) => {
+import useButtonVibration from '../../hooks/useButtonVibration';
+import { INVOICE_TYPE } from '../../utils/createStarInvoice';
+import { isDevEnv } from '../../utils/isDevEnv';
+import { sleep } from '../../utils/sleep';
+import { isiOS } from '../../utils/client';
+
+import styles from './styles.module.css';
+import { getToken } from '../../effects/set-token';
+
+export const BoostPage = ({ tariffs, setTariffs }) => {
+  const [selectedPayment, setSelectedPayment] = useState(null);
   const [activeMultiplier, setActiveMultiplier] = useState();
   const ws = useSelector(selectCurrentWorkspace);
+  const isPaymentModalOpen = useSelector(selectPaymentSelectModal);
   const user = useSelector((state) => state.user.data);
   const spaceTotal = user?.space_total;
   const wallet = useTonWallet();
@@ -30,6 +44,10 @@ export const BoostPage = ({ tariffs }) => {
   const { open } = useTonConnectModal();
   const dispatch = useDispatch();
   const handleVibrationClick = useButtonVibration();
+  const isiOSPlatform = isiOS();
+  const isDev = isDevEnv();
+
+  console.log(tariffs)
 
   const currentPrice = useMemo(() => {
     return tariffs?.find((tariff) => tariff.storage === spaceTotal);
@@ -95,6 +113,52 @@ export const BoostPage = ({ tariffs }) => {
     }
   };
 
+  const invoiceCallback = async (result) => {
+    try {
+      if (result === 'paid') {
+        await sleep(500);    
+        const token = await getToken();
+        await storageListEffect(token).then((data) => {
+          setTariffs(data);
+        });
+      } 
+    } catch (error) {
+      console.log('error')
+    }
+  }
+
+  const handleStartPayment = (el) => {
+    if (el.action === "ton") {
+      payByTON(el);
+    } else {
+      const input = `${el?.id};${user.id};${ws}`;
+      const theme = {
+        multiplier: el.multiplicator,
+        stars: el.stars,
+      }
+      makeInvoice({input, dispatch, callback: invoiceCallback, type: INVOICE_TYPE.boost, theme });
+    }
+    onClosePaymentModal();
+  }
+
+  const onClosePaymentModal = () => {
+    setSelectedPayment(null);
+    dispatch(handlePaymentSelectModal(false));
+  }
+
+  const startTonTx = (el) => {
+    setSelectedPayment(el);
+    dispatch(handlePaymentSelectModal(true));
+  }
+
+  const handleSelect = (el) => {
+    if (isiOSPlatform) {
+      makeInvoice(el);
+    } else {
+      startTonTx(el);
+    }
+  }
+
   return (
     <div className={styles.container}>
       <Header label={'Boost Points Rewards'} className={styles.backBtn} />
@@ -112,9 +176,13 @@ export const BoostPage = ({ tariffs }) => {
           </div>
           <div className={styles.cost}>
             <p className={styles.cost_value}>
-              {currentPrice?.ton_price || '0'}
+              {isDev ? currentPrice?.stars : currentPrice?.ton_price || '0'}
             </p>
-            <Diamond className={styles.current_diamond} />
+            { isDev ? (
+              <Star className={styles.current_diamond} viewBox="0 0 21 21" />
+            ) : (
+              <Ton className={styles.current_diamond} viewBox="0 0 24 24" />
+            ) }
           </div>
         </div>
       </div>
@@ -125,9 +193,7 @@ export const BoostPage = ({ tariffs }) => {
             <li key={index} onClick={handleVibrationClick()}>
               <button
                 disabled={currentPrice?.storage === el?.storage}
-                onClick={async () => {
-                  await payByTON(el);
-                }}
+                onClick={() => {isDev ? handleSelect(el) : startTonTx(el)}}
                 className={CN(
                   styles.item,
                   activeMultiplier?.storage === el.storage && styles.active_item
@@ -142,8 +208,12 @@ export const BoostPage = ({ tariffs }) => {
                   </div>
                 </div>
                 <div className={styles.cost}>
-                  <p className={styles.cost_value}>{el?.ton_price}</p>
-                  <Diamond />
+                  <p className={styles.cost_value}>{isDev ? el?.stars : el?.ton_price}</p>
+                  {isDev ? (
+                    <Star className={styles.cost_svg} viewBox="0 0 21 21" />
+                  ) : (
+                    <Ton className={styles.cost_svg} viewBox="0 0 24 24" />
+                  )}
                 </div>
               </button>
             </li>
@@ -177,6 +247,16 @@ export const BoostPage = ({ tariffs }) => {
       {/*    className={CN(styles.pay_btn, !activeMultiplier && styles.disabled)}*/}
       {/*  />*/}
       {/*</footer>*/}
+      <SlidingModal
+        onClose={onClosePaymentModal}
+        isOpen={isPaymentModalOpen}
+        snapPoints={[170, 170, 50, 0]}
+      >
+        <PaymentMenu
+          payload={selectedPayment}
+          onClick={handleStartPayment}
+        />
+      </SlidingModal>
     </div>
   );
 };

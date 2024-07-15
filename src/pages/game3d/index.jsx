@@ -27,7 +27,7 @@ import Counter from '../game/Counter/Counter';
 import Balance from '../game/Balance/Balance';
 import Status from '../game/Status/Status';
 import ThemeSwitcherControllers from '../game/ThemeSwitcherControllers/ThemeSwitcherControllers';
-import styles from '../game/styles.module.css';
+import styles from './styles.module.css';
 import GameCanvas from './Models/GameCanvas';
 
 /** Please, do not add extra selectors or state
@@ -139,53 +139,51 @@ export function Game3DPage() {
       <Header />
 
       <div className={styles.content}>
-        <div className={styles['content-inner-container']}>
-          <div className={styles['canvas-container']}>
-            <div className={styles.canvas}>
-              <GameCanvas ref={canvasRef} />
+        <div className={styles['canvas-container']}>
+          <div className={styles.canvas}>
+            <GameCanvas ref={canvasRef} />
+          </div>
+        </div>
+
+        <div className={styles['balance-container']}>
+          <Balance />
+        </div>
+
+        <div className={styles['timer-container']}>
+          <Timer />
+          <Status />
+        </div>
+
+        <div className={styles['main-button-container']}>
+          <div
+            className={styles['main-button-touch-area']}
+            {...(status !== 'playing' ? swipeHandlers : {})}
+            onTouchEnd={handleEvent}
+            onMouseUp={handleEvent}>
+            <div className={styles['points-grow-area-container']}>
+              <PointsGrowArea ref={pointsAreaRef} />
+            </div>
+
+            <div className={styles['main-button-inner-container']}>
+              <EndGameAddedPoints />
+            </div>
+
+            <div className={styles['counter-container']}>
+              <Counter />
             </div>
           </div>
 
-          <div className={styles['balance-container']}>
-            <Balance />
+          <div className={styles['theme-switcher-container']}>
+            <ThemeSwitcherControllers />
           </div>
+        </div>
 
-          <div className={styles['timer-container']}>
-            <Timer />
-            <Status />
-          </div>
+        <div className={styles['actions-container']}>
+          <BuyButton />
+        </div>
 
-          <div className={styles['main-button-container']}>
-            <div
-              className={styles['main-button-touch-area']}
-              {...(status !== 'playing' ? swipeHandlers : {})}
-              onTouchEnd={handleEvent}
-              onMouseUp={handleEvent}>
-              <div className={styles['points-grow-area-container']}>
-                <PointsGrowArea ref={pointsAreaRef} />
-              </div>
-
-              <div className={styles['main-button-inner-container']}>
-                <EndGameAddedPoints />
-              </div>
-
-              <div className={styles['counter-container']}>
-                <Counter />
-              </div>
-            </div>
-
-            <div className={styles['theme-switcher-container']}>
-              <ThemeSwitcherControllers />
-            </div>
-          </div>
-
-          <div className={styles['actions-container']}>
-            <BuyButton />
-          </div>
-
-          <div className={styles['experience-container']}>
-            <ProgressBar />
-          </div>
+        <div className={styles['experience-container']}>
+          <ProgressBar />
         </div>
       </div>
 
