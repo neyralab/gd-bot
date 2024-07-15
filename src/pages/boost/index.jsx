@@ -15,18 +15,24 @@ import { selectCurrentWorkspace } from '../../store/reducers/workspaceSlice';
 import { handlePaymentSelectModal, selectPaymentSelectModal } from '../../store/reducers/modalSlice';
 import { DEFAULT_TARIFFS_NAMES } from '../upgradeStorage';
 import { getTonWallet, makeInvoice } from '../../effects/paymentEffect';
+import { storageListEffect } from '../../effects/storageEffects';
 import { SlidingModal } from '../../components/slidingModal';
 import PaymentMenu from '../../components/paymentMenu/Menu';
 import { transformSize } from '../../utils/transformSize';
 
 import { ReactComponent as Star } from '../../assets/star.svg';
+import { ReactComponent as Ton } from '../../assets/TON.svg';
+
 import useButtonVibration from '../../hooks/useButtonVibration';
 import { INVOICE_TYPE } from '../../utils/createStarInvoice';
+import { isDevEnv } from '../../utils/isDevEnv';
+import { sleep } from '../../utils/sleep';
 import { isiOS } from '../../utils/client';
 
 import styles from './styles.module.css';
+import { getToken } from '../../effects/set-token';
 
-export const BoostPage = ({ tariffs }) => {
+export const BoostPage = ({ tariffs, setTariffs }) => {
   const [selectedPayment, setSelectedPayment] = useState(null);
   const [activeMultiplier, setActiveMultiplier] = useState();
   const ws = useSelector(selectCurrentWorkspace);
@@ -39,6 +45,9 @@ export const BoostPage = ({ tariffs }) => {
   const dispatch = useDispatch();
   const handleVibrationClick = useButtonVibration();
   const isiOSPlatform = isiOS();
+  const isDev = isDevEnv();
+
+  console.log(tariffs)
 
   const currentPrice = useMemo(() => {
     return tariffs?.find((tariff) => tariff.storage === spaceTotal);
@@ -106,7 +115,13 @@ export const BoostPage = ({ tariffs }) => {
 
   const invoiceCallback = async (result) => {
     try {
-      console.log('Invoice callback', result)
+      if (result === 'paid') {
+        await sleep(500);    
+        const token = await getToken();
+        await storageListEffect(token).then((data) => {
+          setTariffs(data);
+        });
+      } 
     } catch (error) {
       console.log('error')
     }
@@ -131,12 +146,16 @@ export const BoostPage = ({ tariffs }) => {
     dispatch(handlePaymentSelectModal(false));
   }
 
+  const startTonTx = (el) => {
+    setSelectedPayment(el);
+    dispatch(handlePaymentSelectModal(true));
+  }
+
   const handleSelect = (el) => {
     if (isiOSPlatform) {
       makeInvoice(el);
     } else {
-      setSelectedPayment(el);
-      dispatch(handlePaymentSelectModal(true));
+      startTonTx(el);
     }
   }
 
@@ -157,9 +176,13 @@ export const BoostPage = ({ tariffs }) => {
           </div>
           <div className={styles.cost}>
             <p className={styles.cost_value}>
-              {currentPrice?.stars || '0'}
+              {isDev ? currentPrice?.stars : currentPrice?.ton_price || '0'}
             </p>
-            <Star className={styles.current_diamond} viewBox="0 0 21 21" />
+            { isDev ? (
+              <Star className={styles.current_diamond} viewBox="0 0 21 21" />
+            ) : (
+              <Ton className={styles.current_diamond} viewBox="0 0 24 24" />
+            ) }
           </div>
         </div>
       </div>
@@ -170,7 +193,7 @@ export const BoostPage = ({ tariffs }) => {
             <li key={index} onClick={handleVibrationClick()}>
               <button
                 disabled={currentPrice?.storage === el?.storage}
-                onClick={() => {handleSelect(el)}}
+                onClick={() => {isDev ? handleSelect(el) : startTonTx(el)}}
                 className={CN(
                   styles.item,
                   activeMultiplier?.storage === el.storage && styles.active_item
@@ -185,8 +208,12 @@ export const BoostPage = ({ tariffs }) => {
                   </div>
                 </div>
                 <div className={styles.cost}>
-                  <p className={styles.cost_value}>{el?.stars}</p>
-                  <Star className={styles.cost_svg} viewBox="0 0 21 21" />
+                  <p className={styles.cost_value}>{isDev ? el?.stars : el?.ton_price}</p>
+                  {isDev ? (
+                    <Star className={styles.cost_svg} viewBox="0 0 21 21" />
+                  ) : (
+                    <Ton className={styles.cost_svg} viewBox="0 0 24 24" />
+                  )}
                 </div>
               </button>
             </li>

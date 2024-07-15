@@ -26,6 +26,7 @@ import sliderItems from './SliderItem/sliderItems';
 import SliderItem from './SliderItem/SliderItem';
 import styles from './styles.module.css';
 import useButtonVibration from '../../hooks/useButtonVibration';
+import { getWallet } from '../../utils/string';
 import { NFT_ADDRESS } from '../../config/contracts';
 
 const allNodes = 10000;
@@ -184,10 +185,10 @@ export default function NodesPage() {
           <div className={styles['buy-container']}>
             <div className={styles['buy-container__flex-left']}>
               <div className={styles['buy-container__description']}>
-                Available: {nodesAvailable.toLocaleString()}
+                Available: 50 000
               </div>
               <div className={styles['buy-container__cost']}>
-                {nodesCost} <TonIcon />
+                {nodesCost} <TonIcon  viewBox="0 -2 24 26"  />
               </div>
             </div>
             <div className={styles['buy-container__flex-right']}>
