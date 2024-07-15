@@ -1,3 +1,5 @@
+import { isDevEnv } from '../utils/isDevEnv';
+
 const INVOICE_TYPE = {
   boost: 'boost',
   game: 'game',
@@ -14,7 +16,7 @@ const createInvoice = ({ type, additionalData }) => {
       prices: [
         {
           label: `Multiplier Х${additionalData.mult}`,
-          amount: additionalData.price
+          amount: isDevEnv() ? 1 : additionalData.price
         }
       ],
       // photo_url: 'https://cdn.prod.website-files.com/64a2a26178ac203cccd4a006/64ce383c9d9dd1b5884efdc4_GhostDrive-Spaceship.webp',
@@ -30,7 +32,7 @@ const createInvoice = ({ type, additionalData }) => {
       prices: [
         {
           label: `Boost Game Х${additionalData.mult}`,
-          amount: additionalData.price
+          amount: isDevEnv() ? 1 : additionalData.price
         }
       ],
       // photo_url: 'https://cdn.prod.website-files.com/64a2a26178ac203cccd4a006/64ce383c9d9dd1b5884efdc4_GhostDrive-Spaceship.webp',
