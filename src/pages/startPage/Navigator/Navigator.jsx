@@ -47,7 +47,7 @@ export default function Navigator({
       name: 'Tap',
       icon: <TapIcon />,
       html: (<span className={CN(styles.actionBtn, styles.playBtn)}>Play</span>),
-      onClick: () => navigate('/game')
+      onClick: () => navigate('/game-3d')
     },
     {
       id: 4,

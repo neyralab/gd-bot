@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useState } from 'react';
 import classNames from 'classnames';
 import { toast } from 'react-toastify';
 import { useDispatch, useSelector } from 'react-redux';
@@ -45,7 +45,6 @@ import {
   startGame,
   getActivePayedGame
 } from '../../../effects/gameEffect';
-import { isiOS } from '../../../utils/client';
 import { isDevEnv } from '../../../utils/isDevEnv';
 import styles from './BuyButton.module.css';
 import { sleep } from '../../../utils/sleep';
@@ -60,14 +59,12 @@ export default function BuyButton() {
 
   const status = useSelector(selectStatus);
   const theme = useSelector(selectTheme);
-  const themeRef = useRef(null);
   const themes = useSelector(selectThemes);
   const themeAccess = useSelector(selectThemeAccess);
   const isPaymentModalOpen = useSelector(selectPaymentSelectModal);
 
   const user = useSelector((state) => state?.user?.data);
   const contractAddress = useSelector(selectContractAddress);
-  const isiOSPlatform = isiOS();
   const isDev = isDevEnv();
 
   const [isDisabled, setIsDisabled] = useState(false);
@@ -100,10 +97,6 @@ export default function BuyButton() {
       dispatch(startCountdown({ seconds: 5, startNextRound: true }));
     }, 100);
   };
-
-  useEffect(() => {
-    themeRef.current = { dispatch, theme, afterBought };
-  }, [dispatch, theme, afterBought]);
 
   const onBuy = async (plan) => {
     try {
@@ -192,22 +185,8 @@ export default function BuyButton() {
 
   const invoiceCallback = async (result) => {
     try {
-      console.log('Invoice callback = ', result);
-      console.log(theme, dispatch);
-      console.log(themeRef);
-      debugger;
       if (result === 'paid') {
-        console.log(theme, dispatch);
-        console.log(themeRef);
-        await sleep(500);
-        dispatch(setStatus('waiting'));
-        const pendingGame = await getActivePayedGame();
-        dispatch(setGameId(pendingGame?.uuid || pendingGame.id));
-        afterBought();
-      } else {
-        console.log(theme, dispatch);
-        console.log(themeRef);
-        await sleep(500);
+        await sleep(600);
         dispatch(setStatus('waiting'));
         const pendingGame = await getActivePayedGame();
         dispatch(setGameId(pendingGame?.uuid || pendingGame.id));
@@ -223,19 +202,9 @@ export default function BuyButton() {
   };
 
   const handleSelect = () => {
-    if (isiOSPlatform) {
-      const input = `${0};${theme.tierId};${user.id}`;
-      makeInvoice({
-        input,
-        dispatch,
-        callback: invoiceCallback,
-        type: INVOICE_TYPE.game,
-        theme
-      });
-    } else {
-      dispatch(handlePaymentSelectModal(true));
-    }
+    dispatch(handlePaymentSelectModal(true));
   };
+
   const handleStartPayment = (el) => {
     if (el.action === 'ton') {
       clickHandler(el);
