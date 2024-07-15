@@ -45,7 +45,7 @@ function App() {
   const [tariffs, setTariffs] = useState(null);
 
   const currentUser = {
-    initData: "query_id=AAF4xIcbAAAAAHjEhxuk0Rwl&user=%7B%22id%22%3A461882488%2C%22first_name%22%3A%22Vasya%22%2C%22last_name%22%3A%22Popovych%22%2C%22username%22%3A%22BrendonHit0%22%2C%22language_code%22%3A%22uk%22%2C%22allows_write_to_pm%22%3Atrue%7D&auth_date=1720790946&hash=511f398961fac6eade8944fbb63a409886818e04fbcfe7e39bb3e58531a2bb42"
+    initData: tg.initData
   };
 
   useEffect(() => {
