@@ -30,6 +30,7 @@ const ShipModel = forwardRef((_, ref) => {
   const floatingContext = useRef(null);
   const flyingContext = useRef(null);
   const initialContext = useRef(null);
+  const pushContext = useRef(null);
   const accentDetails2MaterialRef = useRef(null);
   const [isInitialized, setIsInitialized] = useState(false);
 
@@ -272,12 +273,23 @@ const ShipModel = forwardRef((_, ref) => {
   };
 
   const runShipPushAnimation = () => {
-    gsap.to(shipGroupRef.current.position, {
-      keyframes: [
-        { z: -0.3, duration: 0.1, ease: 'power1.out' },
-        { z: 0, duration: 0.1, ease: 'power1.inOut' }
-      ]
+    stopPushAnimation();
+
+    pushContext.current = gsap.context(() => {
+      gsap.to(shipGroupRef.current.position, {
+        keyframes: [
+          { z: -0.3, duration: 0.1, ease: 'power1.out' },
+          { z: 0, duration: 0.1, ease: 'power1.inOut' }
+        ]
+      });
     });
+  };
+
+  const stopPushAnimation = () => {
+    if (pushContext.current) {
+      pushContext.current.kill();
+      pushContext.current = null;
+    }
   };
 
   const runWaveAnimation = () => {
