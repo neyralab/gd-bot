@@ -1,12 +1,25 @@
 import { useState, useEffect, useCallback } from 'react';
+import moment from 'moment';
 
 const useWeeklyTimer = () => {
   // Calculate time left until next Monday at 11 am Kyiv time
   const calculateTimeLeft = useCallback(() => {
+    const n = moment.utc(); //.toDate();
+    const m = moment
+      .utc()
+      .add(7, 'day')
+      .set({ hour: 8, minutes: 0, seconds: 0 }); //.toDate();
+    console.log({ n, m });
+
+    const d = moment.duration(m.diff(n)); //.asDays();
+    console.log({ d: d.toString() });
+
+    return `${d.days() % 7 || '00'} : ${d.hours().toString().padStart(2, '0')} : ${d.minutes().toString().padStart(2, '0')} : ${d.seconds().toString().padStart(2, '0')}`;
+
     const now = new Date();
     const nextMonday = new Date(
-      now.getFullYear(),
-      now.getMonth(),
+      now.getUTCFullYear(),
+      now.getUTCMonth(),
       now.getUTCDate() + ((1 + 7 - now.getUTCDay()) % 7 || 7),
       11, // Set the hour to 11 am
       0,
