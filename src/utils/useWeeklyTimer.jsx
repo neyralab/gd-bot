@@ -8,12 +8,10 @@ const useWeeklyTimer = () => {
     const m = moment
       .utc()
       .add(7, 'day')
-      .set({ hour: 8, minutes: 0, seconds: 0 }); //.toDate();
-    console.log({ n, m });
+      .set({ hour: 8, minutes: 0, seconds: 0 })
+      .isoWeekday(1); //.toDate();
 
     const d = moment.duration(m.diff(n)); //.asDays();
-    console.log({ d: d.toString() });
-
     return `${d.days() % 7 || '00'} : ${d.hours().toString().padStart(2, '0')} : ${d.minutes().toString().padStart(2, '0')} : ${d.seconds().toString().padStart(2, '0')}`;
 
     const now = new Date();

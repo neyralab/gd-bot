@@ -8,7 +8,7 @@ export default function Banner2() {
   const points = 25000;
 
   const week = useMemo(() => {
-    return getWeekNumber(new Date(Date.UTC(2024, 6, 4)));
+    return getWeekNumber(new Date(Date.UTC(2024, 6, 4, 8)));
   }, []);
 
   return (
