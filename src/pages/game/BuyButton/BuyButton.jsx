@@ -60,7 +60,6 @@ export default function BuyButton() {
 
   const status = useSelector(selectStatus);
   const theme = useSelector(selectTheme);
-  const themeRef = useRef(null);
   const themes = useSelector(selectThemes);
   const themeAccess = useSelector(selectThemeAccess);
   const isPaymentModalOpen = useSelector(selectPaymentSelectModal);
@@ -100,10 +99,6 @@ export default function BuyButton() {
       dispatch(startCountdown({ seconds: 5, startNextRound: true }));
     }, 100);
   };
-
-  useEffect(() => {
-    themeRef.current = { dispatch, theme, afterBought };
-  }, [dispatch, theme, afterBought]);
 
   const onBuy = async (plan) => {
     try {
@@ -192,22 +187,8 @@ export default function BuyButton() {
 
   const invoiceCallback = async (result) => {
     try {
-      console.log('Invoice callback = ', result);
-      console.log(theme, dispatch);
-      console.log(themeRef);
-      debugger;
       if (result === 'paid') {
-        console.log(theme, dispatch);
-        console.log(themeRef);
-        await sleep(500);
-        dispatch(setStatus('waiting'));
-        const pendingGame = await getActivePayedGame();
-        dispatch(setGameId(pendingGame?.uuid || pendingGame.id));
-        afterBought();
-      } else {
-        console.log(theme, dispatch);
-        console.log(themeRef);
-        await sleep(500);
+        await sleep(600);
         dispatch(setStatus('waiting'));
         const pendingGame = await getActivePayedGame();
         dispatch(setGameId(pendingGame?.uuid || pendingGame.id));
