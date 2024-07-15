@@ -12,6 +12,7 @@ import BackgroundModel from './BackgoundModel';
 import { useSelector } from 'react-redux';
 import { selectTheme } from '../../../store/reducers/gameSlice';
 import MoveCamera from './MoveCamera';
+import FogModel from './FogModel';
 
 function Loader() {
   const { progress } = useProgress();
@@ -59,8 +60,10 @@ const GameCanvas = forwardRef((_, ref) => {
         <directionalLight
           position={[1, 1, 1]}
           intensity={2.5}
-          color={theme.color1}
+          color={theme.colors.directionalLight}
         />
+
+        <FogModel />
 
         <BackgroundModel ref={backgroundRef} />
         <ShipModel ref={shipRef} />
