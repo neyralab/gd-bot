@@ -396,7 +396,7 @@ export const startCountdown = createAsyncThunk(
 
 export const switchTheme = createAsyncThunk(
   'game/switchTheme',
-  async ({ direction }, { dispatch, getState }) => {
+  async ({ direction, timeout = 500 }, { dispatch, getState }) => {
     const state = getState();
     const themes = state.game.themes;
     const themeIndex = state.game.themeIndex;
@@ -433,7 +433,7 @@ export const switchTheme = createAsyncThunk(
           isSwitching: false
         })
       );
-    }, 500);
+    }, timeout);
   }
 );
 

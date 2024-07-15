@@ -11,6 +11,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: opacity 0.5s;
 }
 
 .arrows .prev {
@@ -19,4 +20,8 @@
 
 .arrows .next {
   right: 0;
+}
+
+.arrows.is-switching {
+  opacity: 0.5;
 }

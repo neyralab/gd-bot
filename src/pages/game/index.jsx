@@ -58,10 +58,10 @@ export function GamePage() {
 
   const swipeHandlers = useSwipeable({
     onSwipedLeft: () => {
-      dispatch(switchTheme({ direction: 'next' }));
+      dispatch(switchTheme({ direction: 'next', timeout: 500 }));
     },
     onSwipedRight: () => {
-      dispatch(switchTheme({ direction: 'prev' }));
+      dispatch(switchTheme({ direction: 'prev', timeout: 500 }));
     }
   });
 
@@ -173,7 +173,7 @@ export function GamePage() {
             </div>
 
             <div className={styles['theme-switcher-container']}>
-              <ThemeSwitcherControllers />
+              <ThemeSwitcherControllers themeChangeTimeout={500} />
             </div>
           </div>
 
@@ -182,7 +182,7 @@ export function GamePage() {
           </div>
 
           <div className={styles['experience-container']}>
-            <ProgressBar />
+            <ProgressBar themeChangeTimeout={200} />
           </div>
         </div>
       </div>

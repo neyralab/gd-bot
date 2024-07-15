@@ -1,41 +1,26 @@
+import React, { useRef, useState, useEffect } from 'react';
 import { useFrame } from '@react-three/fiber';
-import React, { useRef, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import * as THREE from 'three';
 import {
-  selectNextTheme,
-  selectTheme
+  selectTheme,
+  selectNextTheme
 } from '../../../store/reducers/gameSlice';
 
-export default function FogModel() {
+import * as THREE from 'three';
+
+const DirectionalLight = () => {
   const theme = useSelector(selectTheme);
   const nextTheme = useSelector(selectNextTheme);
-  const fogRef = useRef();
-  const animationStartTime = useRef(null);
+  const lightRef = useRef();
   const [colorTransitionStartTime, setColorTransitionStartTime] =
     useState(null);
 
   useEffect(() => {
     if (!nextTheme.theme) return;
-
     setColorTransitionStartTime(null); // Reset the color transition start time
   }, [nextTheme.theme]);
 
   useFrame((state) => {
-    if (!animationStartTime.current) {
-      animationStartTime.current = state.clock.getElapsedTime();
-    }
-
-    const elapsed = state.clock.getElapsedTime() - animationStartTime.current;
-    const duration = 5; // 5 seconds for a full cycle
-
-    // Calculate the new far value using a sine wave
-    const amplitude = 50; // Half of the range (350 - 250) / 2
-    const offset = 300; // Midpoint of the range (350 + 250) / 2
-    fogRef.current.far =
-      offset + amplitude * Math.sin((elapsed / duration) * Math.PI * 2);
-
-    // Color transition logic with delay
     if (!colorTransitionStartTime) {
       setColorTransitionStartTime(state.clock.getElapsedTime());
     }
@@ -43,24 +28,35 @@ export default function FogModel() {
     if (colorTransitionStartTime && nextTheme.theme) {
       const colorElapsed =
         state.clock.getElapsedTime() - colorTransitionStartTime;
-      const delay = 1; //  seconds of delay
+      const delay = 1; // seconds of delay
       const colorDuration = 1.8; // Duration of the color transition in seconds
 
       if (colorElapsed > delay) {
         const t = (colorElapsed - delay) / colorDuration;
         if (t < 1) {
-          const startColor = new THREE.Color(theme.colors.fog);
-          const endColor = new THREE.Color(nextTheme.theme.colors.fog);
+          const startColor = new THREE.Color(theme.colors.directionalLight);
+          const endColor = new THREE.Color(
+            nextTheme.theme.colors.directionalLight
+          );
           const r = startColor.r + t * (endColor.r - startColor.r);
           const g = startColor.g + t * (endColor.g - startColor.g);
           const b = startColor.b + t * (endColor.b - startColor.b);
-          fogRef.current.color.setRGB(r, g, b);
+          lightRef.current.color.setRGB(r, g, b);
         } else {
-          fogRef.current.color.set(nextTheme.theme.colors.fog);
+          lightRef.current.color.set(nextTheme.theme.colors.directionalLight);
         }
       }
     }
   });
 
-  return <fog ref={fogRef} attach="fog" args={[theme.colors.fog, -2, 350]} />;
-}
+  return (
+    <directionalLight
+      ref={lightRef}
+      position={[1, 1, 1]}
+      intensity={2.5}
+      color={theme.colors.directionalLight}
+    />
+  );
+};
+
+export default DirectionalLight;
