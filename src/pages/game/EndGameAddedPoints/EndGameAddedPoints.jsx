@@ -57,7 +57,7 @@ const EndGameAddedPoints = () => {
   return (
     <div className={styles.container}>
       { showRank && user.rank ? (
-        <span className={styles[`points-text`]}>{`rank: ${user.rank}`}</span>
+        <span className={styles[`points-text-rank`]}>{`rank:${user.rank}`}</span>
       ) : (
         <>
           <p className={styles.count}>{currentCounter}</p>
