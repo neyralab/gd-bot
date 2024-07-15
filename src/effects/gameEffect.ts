@@ -61,11 +61,10 @@ export const endGame = async ({ id, taps }: { id: number; taps: number }) => {
 };
 
 export const getGameContractAddress = async () => {
-  const url = `${API_PATH}/net/list`;
-  const { data } = await axiosInstance.get<{ data: GameContract[] }>(url);
+  const url = `${API_PATH}/net/ton`;
+  const { data } = await axiosInstance.get<{ data: GameContract }>(url);
   console.log({ getGameContractAddress: data });
-  return data.data.find((net) => net.name.toLowerCase().includes('telegram'))
-    ?.click_counter;
+  return data.data?.click_counter; //.find((net) => net.name.toLowerCase().includes('telegram'))
 };
 
 export const getGameInfo = async () => {

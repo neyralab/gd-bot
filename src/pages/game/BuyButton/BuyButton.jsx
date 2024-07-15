@@ -31,13 +31,20 @@ import {
   setThemeAccess,
   startCountdown
 } from '../../../store/reducers/gameSlice';
-import { handlePaymentSelectModal, selectPaymentSelectModal } from '../../../store/reducers/modalSlice';
+import {
+  handlePaymentSelectModal,
+  selectPaymentSelectModal
+} from '../../../store/reducers/modalSlice';
 import { INVOICE_TYPE } from '../../../utils/createStarInvoice';
 import { makeInvoice } from '../../../effects/paymentEffect';
 import { useQueryId } from '../../../effects/contracts/useQueryId';
 import { ReactComponent as StarIcon } from '../../../assets/star.svg';
 import { ReactComponent as TonIcon } from '../../../assets/TON.svg';
-import { beforeGame, startGame, getActivePayedGame } from '../../../effects/gameEffect';
+import {
+  beforeGame,
+  startGame,
+  getActivePayedGame
+} from '../../../effects/gameEffect';
 import { isiOS } from '../../../utils/client';
 import { isDevEnv } from '../../../utils/isDevEnv';
 import styles from './BuyButton.module.css';
@@ -95,8 +102,8 @@ export default function BuyButton() {
   };
 
   useEffect(() => {
-    themeRef.current = { dispatch, theme, afterBought }
-  }, [dispatch, theme, afterBought])
+    themeRef.current = { dispatch, theme, afterBought };
+  }, [dispatch, theme, afterBought]);
 
   const onBuy = async (plan) => {
     try {
@@ -187,11 +194,11 @@ export default function BuyButton() {
     try {
       console.log('Invoice callback = ', result);
       console.log(theme, dispatch);
-      console.log(ref);
-      debugger
+      console.log(themeRef);
+      debugger;
       if (result === 'paid') {
         console.log(theme, dispatch);
-        console.log(ref);
+        console.log(themeRef);
         await sleep(500);
         dispatch(setStatus('waiting'));
         const pendingGame = await getActivePayedGame();
@@ -199,64 +206,77 @@ export default function BuyButton() {
         afterBought();
       } else {
         console.log(theme, dispatch);
-        console.log(ref);
+        console.log(themeRef);
         await sleep(500);
         dispatch(setStatus('waiting'));
         const pendingGame = await getActivePayedGame();
         dispatch(setGameId(pendingGame?.uuid || pendingGame.id));
         afterBought();
-      }     
+      }
     } catch (error) {
-      console.log('error ', error)
+      console.log('error ', error);
     }
-  }
+  };
 
   const onClosePaymentModal = () => {
     dispatch(handlePaymentSelectModal(false));
-  }
+  };
 
   const handleSelect = () => {
     if (isiOSPlatform) {
       const input = `${0};${theme.tierId};${user.id}`;
-      makeInvoice({ input, dispatch, callback: invoiceCallback, type: INVOICE_TYPE.game, theme });
+      makeInvoice({
+        input,
+        dispatch,
+        callback: invoiceCallback,
+        type: INVOICE_TYPE.game,
+        theme
+      });
     } else {
       dispatch(handlePaymentSelectModal(true));
     }
-  }
+  };
   const handleStartPayment = (el) => {
-    if (el.action === "ton") {
+    if (el.action === 'ton') {
       clickHandler(el);
     } else {
       const input = `${0};${theme.tierId};${user.id}`;
-      makeInvoice({ input, dispatch, callback: invoiceCallback, type: INVOICE_TYPE.game, theme });
+      makeInvoice({
+        input,
+        dispatch,
+        callback: invoiceCallback,
+        type: INVOICE_TYPE.game,
+        theme
+      });
     }
     onClosePaymentModal();
-  }
+  };
 
   if (status !== 'playing' && !themeAccess[theme.id] && theme.id !== 'hawk') {
     return (
       <div className={styles['actions-flex']}>
-          <button
-            type="button"
-            className={classNames(styles.button, styles[theme.id])}
-            onClick={() => { isDev ? handleSelect() :clickHandler(el) }}>
-              {isDev ? (
-                <StarIcon className={styles['star-icon']} viewBox="0 0 21 21" />
-              ) : (
-                <TonIcon className={styles['star-icon']} viewBox="0 0 24 24" />
-              ) }
-            <span className={styles.cost}>{(isDev ? theme.stars : theme.cost) || 'FREE'}</span>
-            <span className={styles.multiplier}>X{theme.multiplier}</span>
-          </button>
+        <button
+          type="button"
+          className={classNames(styles.button, styles[theme.id])}
+          onClick={() => {
+            isDev ? handleSelect() : clickHandler();
+          }}>
+          {isDev ? (
+            <StarIcon className={styles['star-icon']} viewBox="0 0 21 21" />
+          ) : (
+            <TonIcon className={styles['star-icon']} viewBox="0 0 24 24" />
+          )}
+          {/*<StarIcon className={styles['star-icon']} viewBox="0 0 21 21" />*/}
+          <span className={styles.cost}>
+            {(isDev ? theme.stars : theme.cost) || 'FREE'}
+          </span>
+          <span className={styles.multiplier}>X{theme.multiplier}</span>
+        </button>
         <SlidingModal
           onClose={onClosePaymentModal}
           isOpen={isPaymentModalOpen}
-          snapPoints={[170, 170, 50, 0]}
-        >
-          <PaymentMenu
-            payload={theme}
-            onClick={handleStartPayment}
-          />
+          snapPoints={[170, 170, 50, 0]}>
+          <PaymentMenu payload={theme} onClick={handleStartPayment} />
         </SlidingModal>
       </div>
     );
