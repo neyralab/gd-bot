@@ -146,12 +146,16 @@ export const BoostPage = ({ tariffs, setTariffs }) => {
     dispatch(handlePaymentSelectModal(false));
   }
 
+  const startTonTx = (el) => {
+    setSelectedPayment(el);
+    dispatch(handlePaymentSelectModal(true));
+  }
+
   const handleSelect = (el) => {
     if (isiOSPlatform) {
       makeInvoice(el);
     } else {
-      setSelectedPayment(el);
-      dispatch(handlePaymentSelectModal(true));
+      startTonTx(el);
     }
   }
 
@@ -189,7 +193,7 @@ export const BoostPage = ({ tariffs, setTariffs }) => {
             <li key={index} onClick={handleVibrationClick()}>
               <button
                 disabled={currentPrice?.storage === el?.storage}
-                onClick={() => {handleSelect(el)}}
+                onClick={() => {isDev ? handleSelect(el) : handleSelect(el)}}
                 className={CN(
                   styles.item,
                   activeMultiplier?.storage === el.storage && styles.active_item
