@@ -23,6 +23,17 @@
   align-self: center;
 }
 
+.points-text-rank {
+  align-self: center;
+  text-align: center;
+  font-family: 'Digital Numbers';
+  font-size: 22px;
+  font-weight: 400;
+  font-feature-settings:
+    'clig' off,
+    'liga' off;
+}
+
 @keyframes AppearAnination {
   0% {
     opacity: 0;
