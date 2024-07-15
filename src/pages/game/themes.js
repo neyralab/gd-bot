@@ -6,7 +6,7 @@ const themes = [
     cost: 0,
     data: '0.01MB',
     colors: {
-      buttonText: '#6bb1ff',  
+      buttonText: '#6bb1ff',
       experienceBar: {
         active: {
           background1: '#4facfe',
@@ -21,12 +21,13 @@ const themes = [
       },
       // 3D
       shipBase: '#FFFFFF',
-      wing: '#306896',
-      wingAccent: '#559AD2',
+      wing: '#FFFFFF',
+      wingAccent: '#FFFFFF',
       emission: '#AEE0FF',
       fog: '#A3C5E7',
       wave: '#4495E7',
-      directionalLight: '#A3C5E7'
+      directionalLight: '#A3C5E7',
+      accentEmission: '#FF3E3E'
     }
   },
   // {
@@ -50,7 +51,7 @@ const themes = [
     cost: 0.25,
     data: '0.25MB',
     colors: {
-      buttonText: '#6bffa6', 
+      buttonText: '#6bffa6',
       experienceBar: {
         active: {
           background1: '#3cd309',
@@ -70,7 +71,8 @@ const themes = [
       emission: '#8EE339',
       fog: '#A3E7BF',
       wave: '#44E780',
-      directionalLight: '#A3E7BF'
+      directionalLight: '#A3E7BF',
+      accentEmission: '#FF3E3E'
     }
   }
 ];

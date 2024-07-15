@@ -25,6 +25,7 @@ const ShipModel = forwardRef((_, ref) => {
   const flyTimeout = useRef(null);
   const floatingContext = useRef(null);
   const flyingContext = useRef(null);
+  const accentDetails2MaterialRef = useRef(null);
 
   const scale = 0.0016;
 
@@ -34,10 +35,12 @@ const ShipModel = forwardRef((_, ref) => {
 
   useEffect(() => {
     if (!shipRef.current) return;
-  
+
     shipRef.current.traverse((child) => {
       if (child.isMesh) {
-        const materials = Array.isArray(child.material) ? child.material : [child.material];
+        const materials = Array.isArray(child.material)
+          ? child.material
+          : [child.material];
         materials.forEach((material) => {
           switch (material.name) {
             case 'BaseMaterial':
@@ -51,15 +54,21 @@ const ShipModel = forwardRef((_, ref) => {
               break;
             case 'BaseEmission':
               material.color.set(theme.colors.emission);
-              material.emissive = new THREE.Color(theme.colors.emission); // Set emissive color
-              material.needsUpdate = true; // Ensure the material updates
+              material.emissive = new THREE.Color(theme.colors.emission);
+              material.needsUpdate = true;
+              break;
+            case 'AccentDetails2':
+              material.color.set(theme.colors.accentEmission);
+              material.emissive = new THREE.Color(theme.colors.accentEmission);
+              material.emissiveIntensity = 8;
+              material.needsUpdate = true;
+              accentDetails2MaterialRef.current = material;
               break;
           }
         });
       }
     });
   }, [shipFbx, theme]);
-  
 
   const runPushAnimation = () => {
     runWaveAnimation();
@@ -217,6 +226,11 @@ const ShipModel = forwardRef((_, ref) => {
   useFrame(() => {
     if (mixer.current) {
       mixer.current.update(clock.getDelta());
+    }
+
+    if (accentDetails2MaterialRef.current) {
+      const time = clock.getElapsedTime();
+      accentDetails2MaterialRef.current.emissiveIntensity = 4 * (1 + Math.sin(time * 6)); // Flicker between 0 and 8
     }
   });
 
