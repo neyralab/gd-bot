@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import { ReactComponent as ConvertorIcon } from '../../pages/startPage/assets/convertor.svg';
 import { TextInput } from './TextInput';
+import { getNumbers } from '../../utils/string';
 import { transformSize } from '../../utils/storage';
 import styles from './styles.module.css';
 
@@ -9,7 +10,7 @@ export const Range = ({ pointCount, setPointCount, pointBalance }) => {
     if (pointCount === 0 || pointCount === '')
       return '0KB'
 
-    const numbers = Number(pointCount.match(/\d+/g).join(''));
+    const numbers = Number(getNumbers(pointCount));
     return transformSize(numbers * 1024)
 
   }, [pointCount]);
