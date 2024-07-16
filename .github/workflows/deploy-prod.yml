@@ -10,9 +10,10 @@ on:
 env:
   GIT_BRANCH: prod
   PROJECT_DIR: /opt/gd-bot
-  SSH_HOST: 5.161.153.145
+  SSH_HOST: 10.0.6.152
+  SSH_PROXY: 162.55.193.107
   SSH_PORT: 22
-  SSH_USER: ec2-user
+  SSH_USER: app
   SSH_KEY: ${{ secrets.SERVER_SSH_KEY }}
   SLACK_CHANNEL: C03PQE4EQ83
   SLACK_BOT_TOKEN: ${{ secrets.SLACK_TOKEN }}
@@ -39,6 +40,10 @@ jobs:
         port: ${{ env.SSH_PORT }}
         username: ${{ env.SSH_USER }}
         key: ${{ env.SSH_KEY }}
+        proxy_host: ${{ env.SSH_PROXY }}
+        proxy_port: 22
+        proxy_username: ${{ env.SSH_USER }}
+        proxy_key: ${{ env.SSH_KEY }}
         script_stop: false
         script: |
            echo "# Getting code"
@@ -71,6 +76,10 @@ jobs:
         port: ${{ env.SSH_PORT }}
         username: ${{ env.SSH_USER }}
         key: ${{ env.SSH_KEY }}
+        proxy_host: ${{ env.SSH_PROXY }}
+        proxy_port: 22
+        proxy_username: ${{ env.SSH_USER }}
+        proxy_key: ${{ env.SSH_KEY }}
         script_stop: true
         script: |
           cd ${{ env.PROJECT_DIR }}
