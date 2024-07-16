@@ -12,7 +12,7 @@ import {
   addBalance,
   selectIsTransactionLoading,
   switchTheme,
-  gameCleanup,
+  gameCleanup
 } from '../../store/reducers/gameSlice';
 import { Header } from '../../components/header_v2';
 import Background from './Background/Background';
@@ -31,7 +31,6 @@ import LevelDescription from './LevelDescription/LevelDescription';
 import ThemeSwitcherControllers from './ThemeSwitcherControllers/ThemeSwitcherControllers';
 import ThemeSwitcherMainButton from './ThemeSwitcherMainButton/ThemeSwitcherMainButton';
 import styles from './styles.module.css';
-import DebugButton from './DebugButton';
 
 /** Please, do not add extra selectors or state
  * It will force the component to rerender, that will cause lags and rerenders
@@ -58,10 +57,10 @@ export function GamePage() {
 
   const swipeHandlers = useSwipeable({
     onSwipedLeft: () => {
-      dispatch(switchTheme({ direction: 'next' }));
+      dispatch(switchTheme({ direction: 'next', timeout: 500 }));
     },
     onSwipedRight: () => {
-      dispatch(switchTheme({ direction: 'prev' }));
+      dispatch(switchTheme({ direction: 'prev', timeout: 500 }));
     }
   });
 
@@ -125,7 +124,11 @@ export function GamePage() {
     return (
       <GhostLoader
         texts={
-          isTransactionLoading ? ['Waiting for transaction confirmation'] : []
+          isTransactionLoading
+            ? [
+                'Transaction may take up to 1 minute.\n\n Please do not close the window and wait for the game to start.'
+              ]
+            : []
         }
       />
     );
@@ -173,7 +176,7 @@ export function GamePage() {
             </div>
 
             <div className={styles['theme-switcher-container']}>
-              <ThemeSwitcherControllers />
+              <ThemeSwitcherControllers themeChangeTimeout={500} />
             </div>
           </div>
 
@@ -182,7 +185,7 @@ export function GamePage() {
           </div>
 
           <div className={styles['experience-container']}>
-            <ProgressBar />
+            <ProgressBar themeChangeTimeout={200} />
           </div>
         </div>
       </div>
@@ -190,8 +193,6 @@ export function GamePage() {
       <Menu />
 
       <Congratulations />
-
-      <DebugButton />
     </div>
   );
 }

@@ -2,16 +2,26 @@ import React, {
   useRef,
   useEffect,
   forwardRef,
-  useImperativeHandle
+  useImperativeHandle,
+  useState
 } from 'react';
 import { useFrame, useLoader } from '@react-three/fiber';
 import * as THREE from 'three';
 import { TextureLoader } from 'three/src/loaders/TextureLoader';
 import { useSelector } from 'react-redux';
-import { selectTheme } from '../../../store/reducers/gameSlice';
+import {
+  selectNextTheme,
+  selectTheme
+} from '../../../store/reducers/gameSlice';
 
 const BackgroundModel = forwardRef((_, ref) => {
   const theme = useSelector(selectTheme);
+  const nextTheme = useSelector(selectNextTheme);
+
+  const [isFadingOut, setIsFadingOut] = useState(false); // For animaiton purposes: theme changes
+  const themeChangeOpacityRef = useRef(0); // Ref to track glare opacity
+  const themeChangeStartTimeRef = useRef(null);
+
   const starsRef = useRef(null);
   const starsColorMap = useLoader(
     TextureLoader,
@@ -19,10 +29,10 @@ const BackgroundModel = forwardRef((_, ref) => {
   );
 
   const glareRef = useRef(null);
-  const glareColorMap = useLoader(
-    TextureLoader,
+  const [currentGlareImage, setCurrentGlareImage] = useState(
     `/assets/game-page/glare-color-${theme.id}.png`
   );
+  const glareColorMap = useLoader(TextureLoader, currentGlareImage);
   const glareAlphaMap = useLoader(
     TextureLoader,
     '/assets/game-page/glare-alpha.png'
@@ -61,11 +71,35 @@ const BackgroundModel = forwardRef((_, ref) => {
     starsColorMap.needsUpdate = true;
   }, [starsColorMap]);
 
+  useEffect(() => {
+    if (isFadingOut) return;
+
+    // Initialize glare opacity to 0
+    if (glareRef.current) {
+      glareRef.current.children.forEach((mesh) => {
+        mesh.material.opacity = 0;
+      });
+    }
+
+    // Reset glare animation start time and opacity
+    themeChangeStartTimeRef.current = null;
+    themeChangeOpacityRef.current = 0;
+  }, [glareColorMap, isFadingOut]);
+
+  useEffect(() => {
+    setTimeout(() => {
+      if (nextTheme.theme && glareRef.current) {
+        setIsFadingOut(true);
+        themeChangeStartTimeRef.current = null;
+      }
+    }, 500);
+  }, [nextTheme.theme]);
+
   useImperativeHandle(ref, () => ({
     runPushAnimation: runPushAnimation
   }));
 
-  useFrame((_, delta) => {
+  useFrame((state, delta) => {
     const deltaCoef = delta * 100;
     speedRef.current *= Math.pow(0.99, deltaCoef); // Gradually slow down the rotation
 
@@ -75,9 +109,37 @@ const BackgroundModel = forwardRef((_, ref) => {
     }
 
     if (glareRef.current) {
+      /** Glare position change */
       glareRef.current.position.y -= speedRef.current * 1.5 * deltaCoef;
       if (glareRef.current.position.y <= -10) {
         glareRef.current.position.y = 16;
+      }
+
+      /** Glare appear/disappear */
+      if (!themeChangeStartTimeRef.current) {
+        themeChangeStartTimeRef.current = state.clock.getElapsedTime();
+      }
+      const elapsed =
+        state.clock.getElapsedTime() - themeChangeStartTimeRef.current;
+      const delay = 0; // seconds of delay
+      const duration = 0.5; // Duration of the opacity transition in seconds
+
+      if (elapsed > delay) {
+        const t = (elapsed - delay) / duration;
+        if (isFadingOut) {
+          themeChangeOpacityRef.current = Math.max(1 - t, 0); // Fade out
+          if (themeChangeOpacityRef.current === 0) {
+            setCurrentGlareImage(
+              `/assets/game-page/glare-color-${nextTheme.theme ? nextTheme.theme.id : theme.id}.png`
+            );
+            setIsFadingOut(false);
+          }
+        } else {
+          themeChangeOpacityRef.current = Math.min(t, 1); // Fade in
+        }
+        glareRef.current.children.forEach((mesh) => {
+          mesh.material.opacity = themeChangeOpacityRef.current;
+        });
       }
     }
 
@@ -110,7 +172,7 @@ const BackgroundModel = forwardRef((_, ref) => {
     <>
       {/* Stars */}
       <group ref={starsRef}>
-        <mesh rotation={[0, 0, Math.PI / 2]}>
+        <mesh rotation={[Math.PI / 1.9, 0, Math.PI / 2]}>
           <sphereGeometry args={[20, 16, 16]} />
           <meshBasicMaterial map={starsColorMap} side={THREE.BackSide} />
         </mesh>

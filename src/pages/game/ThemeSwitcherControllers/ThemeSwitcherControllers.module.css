@@ -1,3 +1,7 @@
+.arrows {
+  transition: opacity 0.5s;
+}
+
 .arrows > div {
   position: absolute;
   top: calc(50% - 24px);
@@ -19,4 +23,8 @@
 
 .arrows .next {
   right: 0;
+}
+
+.arrows.is-switching {
+  opacity: 0.4;
 }
