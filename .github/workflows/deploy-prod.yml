@@ -50,7 +50,7 @@ jobs:
            cp .github/docker-compose.yml ../docker-compose.yml
 
            echo "# Building .env"
-           jq -sr '.[0] * .[1] | to_entries[] | .key + "=\"" + (.value | gsub("[\\n]"; "")) + "\""' <(echo '${{ toJson(vars) }}'|jq -r .) <(echo '${{ toJson(secrets) }}'|jq -r .) | sed -e "s/\"/'/g" | grep -v -e 'github_token' -e 'SERVER_SSH_KEY' -e 'SLACK_TOKEN'> .env
+           jq -sr '.[0] * .[1] | to_entries[] | .key + "=\"" + (.value | gsub("[\\n]"; "")) + "\""' <(echo '${{ toJson(vars) }}'|jq -r .) <(echo '${{ toJson(secrets) }}'|jq -r .) | sed -e "s/\"/'/g" | grep -v -e 'github_token' -e 'SERVER_SSH_KEY' -e 'SLACK_TOKEN' > .env
            cp .env backend/.env
 
            echo "# Vadidating .env"

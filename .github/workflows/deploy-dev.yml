@@ -15,6 +15,9 @@ env:
   SLACK_CHANNEL: C03PQE4EQ83
   SLACK_BOT_TOKEN: ${{ secrets.SLACK_TOKEN }}
   SLACK_MESSAGE: "*DEV GD Bot*"
+  MERCURE_URL: "https://dev.ghostdrive.com/.well-known/mercure"
+  MERCURE_SECRET: ${{ secrets.MERCURE_PUBLISHER_JWT_KEY }}
+  MERCURE_TOPIC: "version/dev/gd-bot"
 
 jobs:
   build:
@@ -45,7 +48,7 @@ jobs:
           cp .github/docker-compose.yml ../docker-compose.yml
 
           echo "# Building .env"
-          jq -sr '.[0] * .[1] | to_entries[] | .key + "=\"" + (.value | gsub("[\\n]"; "")) + "\""' <(echo '${{ toJson(vars) }}'|jq -r .) <(echo '${{ toJson(secrets) }}'|jq -r .) | sed -e "s/\"/'/g" | grep -v -e 'SERVER_SSH_KEY' -e 'SLACK_TOKEN'> .env
+          jq -sr '.[0] * .[1] | to_entries[] | .key + "=\"" + (.value | gsub("[\\n]"; "")) + "\""' <(echo '${{ toJson(vars) }}'|jq -r .) <(echo '${{ toJson(secrets) }}'|jq -r .) | sed -e "s/\"/'/g" | grep -v -e 'SERVER_SSH_KEY' -e 'SLACK_TOKEN' -e 'MERCURE_SECRET:' > .env
           cp .env backup/.env
 
           echo "# Vadidating .env"
@@ -74,6 +77,14 @@ jobs:
           docker-compose -f docker-compose.yml build
           docker-compose -f docker-compose.yml down
           docker-compose -f docker-compose.yml up -d
+
+    - name: Push To Mercure
+      run: |
+        TOPIC=${{ env.MERCURE_TOPIC }}
+        HEADER=$(echo -n '{"alg":"HS256","typ":"JWT"}' | base64)
+        PAYLOAD=$(echo -n '{"mercure":{"publish":["*"]}}' | base64)
+        JWT_TOKEN=$(echo -n "${HEADER}.${PAYLOAD}" | openssl dgst -sha256 -hmac "${{ env.MERCURE_SECRET }}" -binary | base64 | tr -d '=' | tr '/+' '_-')
+        curl -s -X POST -H "Authorization: Bearer ${JWT_TOKEN}" -d "topic=${TOPIC}&data=1.0" ${{ env.MERCURE_URL }}
 
     - name: Slack Result Notify
       if: always()
