@@ -27,23 +27,10 @@ const themes = [
       fog: '#A3C5E7',
       wave: '#4495E7',
       directionalLight: '#A3C5E7',
-      accentEmission: '#1177C0'
+      accentEmission: '#1177C0',
+      shipTrailEmission: '#3EC2FF'
     }
   },
-  // {
-  //   id: 'lotus',
-  //   name: 'Lotus',
-  //   multiplier: 5,
-  //   cost: 0.05,
-  //   data: '0.05MB'
-  // },
-  // {
-  //   id: 'phoenix',
-  //   name: 'Phoenix',
-  //   multiplier: 10,
-  //   cost: 0.1,
-  //   data: '0.1MB'
-  // },
   {
     id: 'ghost',
     name: 'Ghost',
@@ -72,7 +59,8 @@ const themes = [
       fog: '#A3E7BF',
       wave: '#44E780',
       directionalLight: '#A3E7BF',
-      accentEmission: '#B53EFF'
+      accentEmission: '#B53EFF',
+      shipTrailEmission: '#8EE339'
     }
   }
 ];
