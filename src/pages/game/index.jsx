@@ -31,7 +31,6 @@ import LevelDescription from './LevelDescription/LevelDescription';
 import ThemeSwitcherControllers from './ThemeSwitcherControllers/ThemeSwitcherControllers';
 import ThemeSwitcherMainButton from './ThemeSwitcherMainButton/ThemeSwitcherMainButton';
 import styles from './styles.module.css';
-import DebugButton from './DebugButton';
 
 /** Please, do not add extra selectors or state
  * It will force the component to rerender, that will cause lags and rerenders
@@ -190,8 +189,6 @@ export function GamePage() {
       <Menu />
 
       <Congratulations />
-
-      <DebugButton />
     </div>
   );
 }
