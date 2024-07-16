@@ -15,13 +15,7 @@ const getNumbers = (value = '') => {
 }
 
 const fomatNumber = (num) => {
-  // Convert the number to a string if it is not already
-  const numStr = num.toString();
-  
-  // Use a regular expression to add a dot after every three digits
-  const result = numStr.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-  
-  return result;
+  return Number(num).toLocaleString('en-US');
 }
 
 export { getWallet, fomatNumber, getNumbers }
