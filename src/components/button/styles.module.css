@@ -9,3 +9,7 @@
     margin-bottom: 8px;
     cursor: pointer;
 }
+
+.btn:disabled {
+    opacity: 0.7;
+}

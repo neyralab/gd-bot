@@ -36,7 +36,7 @@ bot.start(async (ctx) => {
   if (!cachedUserData) {
     try {
       const url = `${process.env.GD_BACKEND_URL}/apiv2/user/create/telegram`;
-      
+
       console.log({
         url,
         userData
@@ -85,7 +85,10 @@ bot.start(async (ctx) => {
   const buttonUrl = process.env.APP_FRONTEND_URL;
   const button = Markup.button.webApp(buttonText, buttonUrl);
   const shareButtonText = 'Share Link';
-  const shareButton = Markup.button.switchToChat(shareButtonText, referralLink);
+  const shareButton = {
+    text: shareButtonText,
+    url: `https://t.me/share/url?url=${encodeURIComponent(referralLink)}`
+  };
 
   const dashboardButton = Markup.button.webApp(
     'Dashboard',
