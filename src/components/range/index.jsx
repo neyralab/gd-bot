@@ -1,37 +1,33 @@
-import { useMemo, useState } from 'react';
-import { useSelector } from 'react-redux';
-import {
-  DEFAULT_MULTIPLIER_NAMES,
-  DEFAULT_TARIFFS_NAMES
-} from '../../pages/upgradeStorage';
-
-import { ReactComponent as Dollar } from '../../assets/dollar_sign.svg';
+import { useMemo } from 'react';
+import { ReactComponent as ConvertorIcon } from '../../pages/startPage/assets/convertor.svg';
+import { TextInput } from './TextInput';
+import { transformSize } from '../../utils/storage';
 import styles from './styles.module.css';
 
-export const Range = () => {
-  const [value, setValue] = useState(0);
-  const user = useSelector((state) => state?.user?.data);
+export const Range = ({ pointCount, setPointCount, pointBalance }) => {
+  const byteCount = useMemo(() => {
+    if (pointCount === 0 || pointCount === '')
+      return '0KB'
 
-  const storage = useMemo(() => {
-    const size = DEFAULT_TARIFFS_NAMES[user?.space_total] || '1GB';
-    return {
-      size,
-      multiplier: DEFAULT_MULTIPLIER_NAMES[size] || 1
-    };
-  }, [user?.space_total]);
+    const numbers = Number(pointCount.match(/\d+/g).join(''));
+    return transformSize(numbers * 1024)
+
+  }, [pointCount]);
 
   return (
     <div className={styles.container}>
-      <Dollar className={styles.img} />
-      <input
-        type="range"
-        min="1"
-        max="100"
-        value={value}
-        disabled
-        className={styles.slider}
-        onChange={(e) => setValue(e.target.value)}></input>
-      <p className={styles.text}>x{storage.multiplier}</p>
+      <TextInput
+        pointCount={pointCount}
+        setPointCount={setPointCount}
+        pointBalance={pointBalance}
+      />
+      <span className={styles.center}>
+        <ConvertorIcon />
+      </span>
+      <div className={styles.right}>
+        <p className={styles.count}>{byteCount}</p>
+        <span className={styles.text}>Space</span>
+      </div>
     </div>
   );
 };

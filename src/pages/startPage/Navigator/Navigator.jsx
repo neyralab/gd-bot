@@ -10,6 +10,7 @@ import { ReactComponent as DriveIcon } from '../assets/drive.svg';
 import { ReactComponent as TapIcon } from '../assets/tap.svg';
 import { ReactComponent as RewardsIcon } from '../assets/rewards.svg';
 import { ReactComponent as BoostIcon } from '../assets/boost.svg';
+import { ReactComponent as ConvertIcon } from '../assets/convertor.svg';
 // import { ReactComponent as LanguageIcon } from '../assets/language.svg';
 
 import styles from './Navigator.module.css';
@@ -62,6 +63,13 @@ export default function Navigator({
       icon: <BoostIcon />,
       html: (<span className={styles.actionBtn}>{`X${storage.multiplier}`}</span>),
       onClick: () => navigate('/boost')
+    },
+    {
+      id: 6,
+      name: 'Conver',
+      icon: <ConvertIcon />,
+      html: (<span className={styles.actionBtn}>Go</span>),
+      onClick: () => navigate('/balance')
     },
     // {
     //   id: 6,
