@@ -12,7 +12,7 @@ import {
   addBalance,
   selectIsTransactionLoading,
   switchTheme,
-  gameCleanup,
+  gameCleanup
 } from '../../store/reducers/gameSlice';
 import { Header } from '../../components/header_v2';
 import Background from './Background/Background';
@@ -125,7 +125,11 @@ export function GamePage() {
     return (
       <GhostLoader
         texts={
-          isTransactionLoading ? ['Waiting for transaction confirmation'] : []
+          isTransactionLoading
+            ? [
+                'Transaction may take up to 1 minute.\n\n Please do not close the window and wait for the game to start.'
+              ]
+            : []
         }
       />
     );
