@@ -34,13 +34,10 @@ export const beforeGame = async (
   return data.data;
 };
 
-export const startGame = async (
-  game_id: number,
-  purchase_id: number | null
-) => {
+export const startGame = async (game_id: number, txid: string) => {
   const url = `${API_PATH}/game/process`;
   const { data } = await axiosInstance.post<Effect<Game[]>>(url, {
-    purchase_id,
+    txid,
     game_id
   });
   console.log({ startGame: data });
