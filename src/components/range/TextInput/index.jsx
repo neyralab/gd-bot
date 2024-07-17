@@ -1,6 +1,5 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
-import { storageConvertEffect } from '../../../effects/storageEffects';
 import { fomatNumber, getNumbers } from '../../../utils/string';
 import { MAX_POINT_COUNT } from '../../../pages/balance';
 import { useClickOutside } from '../../../utils/useClickOutside';
@@ -15,6 +14,12 @@ export const TextInput = ({ pointCount, setPointCount, pointBalance }) => {
     setShow(true);
   }
 
+  useEffect(() => {
+    if (show && textInputRef.current) {
+      textInputRef.current.focus();
+    }
+  }, [show, textInputRef])
+
   const handleClickOutside = () => {
     setShow(false);
   };
@@ -24,13 +29,14 @@ export const TextInput = ({ pointCount, setPointCount, pointBalance }) => {
   const onPointCountChange = ({ target: { value } }) => {
     if (!value) {
       setPointCount('');
+      return;
     }
 
     const nextValue = Number(getNumbers(value));
     if (nextValue > pointBalance || MAX_POINT_COUNT < nextValue)
       return ;
 
-    setPointCount(fomatNumber(nextValue));
+    setPointCount(fomatNumber(nextValue) || 0);
   }
 
   const onFocus = () => {
