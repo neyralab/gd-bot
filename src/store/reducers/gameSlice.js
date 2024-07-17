@@ -422,9 +422,11 @@ export const switchTheme = createAsyncThunk(
       if (newThemeIndex >= themes.length - 1 || newThemeIndex < 0) return;
     }
 
+    const newTheme = themes[newThemeIndex];
+
     dispatch(
       setNextTheme({
-        theme: themes[newThemeIndex],
+        theme: newTheme,
         themeIndex: newThemeIndex,
         direction: direction,
         isSwitching: true
@@ -432,7 +434,7 @@ export const switchTheme = createAsyncThunk(
     );
 
     setTimeout(() => {
-      dispatch(setTheme(themes[newThemeIndex]));
+      dispatch(setTheme(newTheme));
       dispatch(
         setNextTheme({
           theme: null,
@@ -443,7 +445,7 @@ export const switchTheme = createAsyncThunk(
       );
     }, timeout);
 
-    const newTheme = themes[newThemeIndex];
+    
     if (newTheme.id !== 'hawk') {
       const newPendingGames = await getPendingGames({
         tierId: newTheme.tierId
