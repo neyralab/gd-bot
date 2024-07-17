@@ -48,6 +48,10 @@ export async function retry<T>(
   throw lastError;
 }
 
+export function getHexByBoc(exBoc: string) {
+  return Cell.fromBase64(exBoc).hash().toString('hex');
+}
+
 export async function getTxByBOC(
   exBoc: string,
   address: string

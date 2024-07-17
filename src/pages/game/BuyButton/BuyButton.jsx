@@ -13,7 +13,7 @@ import {
 } from '@tonconnect/ui-react';
 
 import { GDTapBooster } from '../../../effects/contracts/tact_GDTapBooster';
-import { nullValueCheck } from '../../../effects/contracts/helper';
+import { getHexByBoc } from '../../../effects/contracts/helper';
 import { SlidingModal } from '../../../components/slidingModal';
 import PaymentMenu from '../../../components/paymentMenu/Menu';
 
@@ -45,12 +45,13 @@ import {
   startGame,
   getActivePayedGame
 } from '../../../effects/gameEffect';
+import { useOnConnect } from '../../../utils/useOnConnect';
 import { isDevEnv } from '../../../utils/isDevEnv';
-import styles from './BuyButton.module.css';
 import { sleep } from '../../../utils/sleep';
-import { waitTonTx } from '../../../utils/wait';
+import styles from './BuyButton.module.css';
 
 export default function BuyButton() {
+  useOnConnect();
   const { open } = useTonConnectModal();
   const wallet = useTonWallet();
   const [tonConnectUI] = useTonConnectUI();
@@ -66,7 +67,6 @@ export default function BuyButton() {
   const user = useSelector((state) => state?.user?.data);
   const contractAddress = useSelector(selectContractAddress);
   const isDev = isDevEnv();
-
   const [isDisabled, setIsDisabled] = useState(false);
 
   const clickHandler = async () => {
@@ -135,23 +135,35 @@ export default function BuyButton() {
               validUntil: Date.now() + 60 * 1000 // 5 minutes for user to approve
             });
             console.log({ data });
-            const userAddress = Address.parseRaw(wallet.account.address);
-
-            const lastTxValue = await waitTonTx(() =>
-              nullValueCheck(() => {
-                return contract.getLatestPurchase(userAddress);
-              })
-            );
-            console.log({ lastTxValue });
+            const tx = getHexByBoc(data.boc);
+            console.log({ tx });
+            // return;
             const game = await startGame(
               pendingGame.uuid || pendingGame.id,
-              Number(lastTxValue)
+              tx
             );
             dispatch(setGameId(game.uuid || game?.id));
-            console.log({ PPPPP: lastTxValue, game });
+            console.log({ PPPPP: tx, game });
             dispatch(setIsTransactionLoading(false));
             afterBought();
-            return data;
+            return;
+            // const userAddress = Address.parseRaw(wallet.account.address);
+            //
+            // const lastTxValue = await waitTonTx(() =>
+            //   nullValueCheck(() => {
+            //     return contract.getLatestPurchase(userAddress);
+            //   })
+            // );
+            // console.log({ lastTxValue });
+            // const game = await startGame(
+            //   pendingGame.uuid || pendingGame.id,
+            //   Number(lastTxValue)
+            // );
+            // dispatch(setGameId(game.uuid || game?.id));
+            // console.log({ PPPPP: lastTxValue, game });
+            // dispatch(setIsTransactionLoading(false));
+            // afterBought();
+            // return data;
           }
         },
         { value: toNano(plan?.ton_price) },
