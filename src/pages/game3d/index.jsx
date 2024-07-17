@@ -90,7 +90,7 @@ export function Game3DPage() {
     // // TODO: REMOVE LATER
 
     if (
-      !counterIsFinished ||
+      (!counterIsFinished && theme.id === 'hawk') ||
       !theme ||
       !themeAccess[theme.id] ||
       status === 'finished' ||
