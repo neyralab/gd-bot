@@ -415,15 +415,24 @@ export const switchTheme = createAsyncThunk(
     let newThemeIndex;
 
     if (direction === 'next') {
-      const newPendingGames = await getPendingGames({ tierId: 4 });
-      console.log({ newPendingGames });
-      dispatch(setPendingGames(newPendingGames));
       newThemeIndex = (themeIndex + 1) % themes.length;
       if (newThemeIndex >= themes.length || newThemeIndex <= 0) return;
     } else if (direction === 'prev') {
-      lockTimerCountdown(dispatch, state.game.lastFreeGameEndsAt);
       newThemeIndex = (themeIndex - 1 + themes.length) % themes.length;
       if (newThemeIndex >= themes.length - 1 || newThemeIndex < 0) return;
+    }
+
+    const newTheme = themes[newThemeIndex];
+    if (newTheme.id !== 'hawk') {
+      const newPendingGames = await getPendingGames({
+        tierId: newTheme.tierId
+      });
+      console.log({ newPendingGames });
+      dispatch(setPendingGames(newPendingGames));
+      newPendingGames.length &&
+        dispatch(setThemeAccess({ themeId: newTheme.id, status: true }));
+    } else {
+      dispatch(setStatus('waiting'));
     }
 
     dispatch(
