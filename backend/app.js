@@ -73,7 +73,7 @@ bot.start(async (ctx) => {
   }
 
   const data = cachedUserData;
-  const referralLink = `https://t.me/${process.env.BOT_NAME}?start=${data?.coupon?.code}`;
+  const referralLink = `https://t.me/${process.env.BOT_NAME}/ghostdrive?startapp=${data?.coupon?.code}`;
   const header =
     '<b>Welcome to Ghostdrive – The Ultimate Drive for the TON Ecosystem!</b>';
   const activitiesText =

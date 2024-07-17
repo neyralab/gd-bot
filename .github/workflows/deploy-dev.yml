@@ -84,6 +84,9 @@ jobs:
         HEADER=$(echo -n '{"alg":"HS256","typ":"JWT"}' | base64)
         PAYLOAD=$(echo -n '{"mercure":{"publish":["*"]}}' | base64)
         JWT_TOKEN=$(echo -n "${HEADER}.${PAYLOAD}" | openssl dgst -sha256 -hmac "${{ env.MERCURE_SECRET }}" -binary | base64 | tr -d '=' | tr '/+' '_-')
+        echo "header: $HEADER"
+        echo "payload: $PAYLOAD"
+        echo "jwt: $JWT_TOKEN"
         curl -s -X POST -H "Authorization: Bearer ${JWT_TOKEN}" -d "topic=${TOPIC}&data=1.0" ${{ env.MERCURE_URL }}
 
     - name: Slack Result Notify
