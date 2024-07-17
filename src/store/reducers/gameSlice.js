@@ -422,19 +422,6 @@ export const switchTheme = createAsyncThunk(
       if (newThemeIndex >= themes.length - 1 || newThemeIndex < 0) return;
     }
 
-    const newTheme = themes[newThemeIndex];
-    if (newTheme.id !== 'hawk') {
-      const newPendingGames = await getPendingGames({
-        tierId: newTheme.tierId
-      });
-      console.log({ newPendingGames });
-      dispatch(setPendingGames(newPendingGames));
-      newPendingGames.length &&
-        dispatch(setThemeAccess({ themeId: newTheme.id, status: true }));
-    } else {
-      dispatch(setStatus('waiting'));
-    }
-
     dispatch(
       setNextTheme({
         theme: themes[newThemeIndex],
@@ -455,6 +442,19 @@ export const switchTheme = createAsyncThunk(
         })
       );
     }, timeout);
+
+    const newTheme = themes[newThemeIndex];
+    if (newTheme.id !== 'hawk') {
+      const newPendingGames = await getPendingGames({
+        tierId: newTheme.tierId
+      });
+      console.log({ newPendingGames });
+      dispatch(setPendingGames(newPendingGames));
+      newPendingGames.length &&
+        dispatch(setThemeAccess({ themeId: newTheme.id, status: true }));
+    } else {
+      dispatch(setStatus('waiting'));
+    }
   }
 );
 
