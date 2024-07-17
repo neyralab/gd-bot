@@ -423,6 +423,29 @@ export const switchTheme = createAsyncThunk(
     }
 
     const newTheme = themes[newThemeIndex];
+
+    dispatch(
+      setNextTheme({
+        theme: newTheme,
+        themeIndex: newThemeIndex,
+        direction: direction,
+        isSwitching: true
+      })
+    );
+
+    setTimeout(() => {
+      dispatch(setTheme(newTheme));
+      dispatch(
+        setNextTheme({
+          theme: null,
+          themeIndex: null,
+          direction: null,
+          isSwitching: false
+        })
+      );
+    }, timeout);
+
+    
     if (newTheme.id !== 'hawk') {
       const newPendingGames = await getPendingGames({
         tierId: newTheme.tierId
@@ -434,27 +457,6 @@ export const switchTheme = createAsyncThunk(
     } else {
       dispatch(setStatus('waiting'));
     }
-
-    dispatch(
-      setNextTheme({
-        theme: themes[newThemeIndex],
-        themeIndex: newThemeIndex,
-        direction: direction,
-        isSwitching: true
-      })
-    );
-
-    setTimeout(() => {
-      dispatch(setTheme(themes[newThemeIndex]));
-      dispatch(
-        setNextTheme({
-          theme: null,
-          themeIndex: null,
-          direction: null,
-          isSwitching: false
-        })
-      );
-    }, timeout);
   }
 );
 

@@ -42,6 +42,7 @@ body {
   font-family: 'Open Sans', sans-serif;
   user-select: none;
   color: #e9e0e0;
+  overflow: hidden;
 }
 
 button {
@@ -64,4 +65,5 @@ ul {
   height: 100svh;
   justify-content: center;
   display: flex;
+  overflow: auto;
 }
