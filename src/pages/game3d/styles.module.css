@@ -1,6 +1,6 @@
 .container {
   width: 100vw;
-  height: 100svh;
+  height: 100dvh;
   position: relative;
   overflow: hidden;
   overscroll-behavior: none;
@@ -164,7 +164,7 @@
 .canvas {
   position: relative;
   width: 100vw;
-  height: 100svh;
+  height: 100dvh;
 }
 
 .theme-switcher-container {

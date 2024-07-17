@@ -6,7 +6,7 @@
 }
 
 .list {
-    max-height: calc(100svh - 183px);
+    max-height: calc(100dvh - 183px);
     height: 100%;
     overflow: auto;
     scrollbar-width: none;
