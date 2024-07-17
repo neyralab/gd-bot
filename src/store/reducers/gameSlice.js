@@ -55,11 +55,15 @@ const gameSlice = createSlice({
       direction: null,
       isSwitching: false
     }, // for animation purposes only
-    pendingGames: []
+    pendingGames: [],
+    lastFreeGameEndsAt: null
   },
   reducers: {
     setPendingGames: (state, { payload }) => {
       state.pendingGames = payload;
+    },
+    setLastFreeGameEndsAt: (state, { payload }) => {
+      state.lastFreeGameEndsAt = payload;
     },
     setIsInitializing: (state, { payload }) => {
       state.isInitializing = payload;
@@ -187,6 +191,7 @@ export const initGame = createAsyncThunk(
       dispatch(setExperiencePoints(gameInfo.points));
       dispatch(setContractAddress(cAddress));
       dispatch(setPendingGames(pendingGames));
+      dispatch(setLastFreeGameEndsAt(gameInfo.game_ends_at));
 
       const now = Date.now();
       if (now <= gameInfo.game_ends_at) {
@@ -212,9 +217,9 @@ export const initGame = createAsyncThunk(
         dispatch(setThemeAccess({ themeId: 'ghost', status: true }));
         const pendingGame = pendingGames[0];
         dispatch(
-          setTheme(newThemes.find((el) => el.tierId === pendingGame.tier.id))
+          setTheme(newThemes.find((el) => el.tierId === pendingGame.tier_id))
         );
-        dispatch(setGameId(pendingGame.id));
+        dispatch(setGameId(pendingGame.uuid || pendingGame.id));
       } else {
         dispatch(setTheme(newThemes[0]));
       }
@@ -262,7 +267,8 @@ export const finishRound = createAsyncThunk(
     const state = getState();
     const pendingGames = selectPendingGames(state);
     const gameId = state.game.gameId;
-    const filteredGames = pendingGames.filter((el) => el?.id !== gameId);
+    const filteredGames = pendingGames.filter((el) => el.uuid !== gameId);
+    console.log({ filteredGames });
 
     dispatch(setStatus(filteredGames.length ? 'waiting' : 'finished'));
     dispatch(setRoundTimerTimestamp(null));
@@ -274,13 +280,15 @@ export const finishRound = createAsyncThunk(
       })
     );
     if (filteredGames.length) {
-      dispatch(setGameId(filteredGames[0]?.id));
+      const firstPendingGame = filteredGames[0];
+      console.log({ firstPendingGame });
+      dispatch(setGameId(firstPendingGame.uuid || firstPendingGame?.id));
     }
 
     if (state.game.theme.id === 'hawk') {
       dispatch(startNewFreeGameCountdown());
     }
-
+    console.log({ gameId });
     endGame({ id: gameId, taps: state.game.balance.value })
       .then((data) => {
         dispatch(
@@ -407,9 +415,13 @@ export const switchTheme = createAsyncThunk(
     let newThemeIndex;
 
     if (direction === 'next') {
+      const newPendingGames = await getPendingGames({ tierId: 4 });
+      console.log({ newPendingGames });
+      dispatch(setPendingGames(newPendingGames));
       newThemeIndex = (themeIndex + 1) % themes.length;
       if (newThemeIndex >= themes.length || newThemeIndex <= 0) return;
     } else if (direction === 'prev') {
+      lockTimerCountdown(dispatch, state.game.lastFreeGameEndsAt);
       newThemeIndex = (themeIndex - 1 + themes.length) % themes.length;
       if (newThemeIndex >= themes.length - 1 || newThemeIndex < 0) return;
     }
@@ -475,7 +487,8 @@ export const {
   setCounterIsActive,
   setCounterCount,
   setCounterIsFinished,
-  setRoundFinal
+  setRoundFinal,
+  setLastFreeGameEndsAt
 } = gameSlice.actions;
 export default gameSlice.reducer;
 
