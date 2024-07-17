@@ -7,14 +7,14 @@ import styles from './Menu.module.css';
 
 const paymentMethod = [
   {
-    action: 'ton',
-    icon: <TonIcon viewBox="-3 -4 30 30" />,
-    path: 'ton_price'
-  },
-  {
     action: 'star',
     icon: <StarIcon viewBox="-1 -1 23 23" />,
     path: 'stars'
+  },
+  {
+    action: 'ton',
+    icon: <TonIcon viewBox="-3 -4 30 30" />,
+    path: 'ton_price'
   },
 ];
 
