@@ -239,16 +239,11 @@ export default function BuyButton() {
         <button
           type="button"
           className={classNames(styles.button, styles[theme.id])}
-          onClick={() => {
-            isDev ? handleSelect() : clickHandler();
-          }}>
-          {isDev ? (
-            <StarIcon className={styles['star-icon']} viewBox="0 0 21 21" />
-          ) : (
-            <TonIcon className={styles['star-icon']} viewBox="0 0 24 24" />
-          )}
+          onClick={handleSelect}
+        >
+          <StarIcon className={styles['star-icon']} viewBox="0 0 21 21" />
           <span className={styles.cost}>
-            {(isDev ? theme.stars : theme.cost) || 'FREE'}
+            {theme.stars || 'FREE'}
           </span>
           <span
             className={styles.multiplier}
@@ -259,7 +254,7 @@ export default function BuyButton() {
         <SlidingModal
           onClose={onClosePaymentModal}
           isOpen={isPaymentModalOpen}
-          snapPoints={[170, 170, 50, 0]}>
+          snapPoints={[190, 190, 50, 0]}>
           <PaymentMenu payload={theme} onClick={handleStartPayment} />
         </SlidingModal>
       </div>
