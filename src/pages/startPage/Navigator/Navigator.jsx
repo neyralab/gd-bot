@@ -91,8 +91,8 @@ export default function Navigator({
       // },
     ]
 
-    if (isDev) {
-      return list.filter((item) => !HIDDEN_OPTION.includes(item.name))
+    if (!isDev) {
+      return list.filter((item) => !(HIDDEN_OPTION.includes(item.name)));
     }
 
     return list
