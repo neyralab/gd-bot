@@ -15,6 +15,7 @@ import { getUserEffect } from './effects/userEffects';
 import { authorizeUser } from './effects/authorizeUser';
 import { storageListEffect } from './effects/storageEffects';
 import { API_WEB_APP_URL } from './utils/api-urls';
+import { useLanguage } from './utils/useLanguage';
 
 import SharedLayout from './components/sharedLayout';
 import { StartPage } from './pages/startPage';
@@ -41,11 +42,12 @@ export const tg = window.Telegram.WebApp;
 const GA = 'G-VEPRY1XE4E';
 
 function App() {
+  useLanguage()
   const dispatch = useDispatch();
   const [tariffs, setTariffs] = useState(null);
 
   const currentUser = {
-    initData: tg.initData
+    initData: "query_id=AAF4xIcbAAAAAHjEhxuk0Rwl&user=%7B%22id%22%3A461882488%2C%22first_name%22%3A%22Vasya%22%2C%22last_name%22%3A%22Popovych%22%2C%22username%22%3A%22BrendonHit0%22%2C%22language_code%22%3A%22uk%22%2C%22allows_write_to_pm%22%3Atrue%7D&auth_date=1720790946&hash=511f398961fac6eade8944fbb63a409886818e04fbcfe7e39bb3e58531a2bb42"
   };
 
   useEffect(() => {

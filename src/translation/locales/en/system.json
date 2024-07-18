@@ -1,0 +1,94 @@
+{
+  "loading": {
+    "pleaseWait": "Please wait",
+    "systemLoading": "the system is loading...",
+    "loaded": "loaded"
+  },
+  "dashboard": {
+    "rank": "Rank",
+    "wallet": "Wallet",
+    "add": "Add",
+    "drive": "Drive",
+    "tap": "Tap",
+    "rewards": "Rewards",
+    "boost": "Boost",
+    "nodes": "Nodes",
+    "howEarn": "How to play and earn?",
+    "play": "Play",
+    "conver": "Conver",
+    "go": "Go",
+    "back": "Back"
+  },
+  "node": {
+    "node": "Node",
+    "gdNodeShort": "GD Node",
+    "nodeDesc": "Are you ready to be at the forefront of the decentralized storage revolution? Invest in a Ghost Drive Node and reap the benefits of our cutting-edge technology and robust network.",
+    "dashboard": "Dashboard",
+    "nodes": "Nodes",
+    "available": "Available",
+    "buy": "Buy",
+    "runNode": "Run Own Node",
+    "deployNode": "Deploy and manage your own Ghost Drive physical node and real-time data streaming. Coming soon",
+    "nodeFlex": "Market Flexibility",
+    "gdNode": "GD Nodes are fully tradable on the secondary market, providing you with the option",
+    "stake": "Valuable Stake",
+    "eachNode": "Each node comes with a stake of 10,000 Ghost Drive Tokens, giving you a significant position"
+  },
+  "boost": {
+    "reward": "Boost Points Rewards",
+    "multiplier": "Current multiplier",
+    "storage": "Storage",
+    "boostMultiplier": "Boost multiplier",
+    "storageYear": "Storage per year",
+    "paymentMethod": "Choose Payment Method"
+  },
+  "task": {
+    "task": "Task",
+    "allTasks": "All Tasks",
+    "uploadFile": "Upload file",
+    "storageReferral": "Storage purchase by referral",
+    "connectWallet": "Connect a wallet",
+    "uploadFiles": "Upload 10 files",
+    "referralSignup": "Active referral signup",
+    "extraBonus": "Extra bonus for reaching the 1 tapping level",
+    "tgChannel": "Join our TG channel",
+    "tgNewsChannel": "Join our TG news channel",
+    "xAccount": "Follow our X account",
+    "storagePurchase": "Storage purchase",
+    "extraBonusLvl2": "Extra bonus for reaching the 2 tapping level",
+    "inviteFriends": "Invite 5 friends",
+    "extraBonusLvl3": "Extra bonus for reaching the 3 tapping level",
+    "downloadGDApp": "Download Ghost Drive Аpp and Log In Via Telegram",
+    "extraBonusLvl4": "Extra bonus for reaching the 4 tapping level",
+    "extraBonusLvl5": "Extra bonus for reaching the 5 tapping level",
+    "extraBonusLvl6": "Extra bonus for reaching the 6 tapping level",
+    "extraBonusLvl7": "Extra bonus for reaching the 7 tapping level",
+    "points": "Points",
+    "point": "Point"
+  },
+  "wallet": {
+    "disconnect": "Are you sure you want to disconnect?",
+    "no": "No",
+    "yes": "Yes"
+  },
+  "convert": {
+    "storage": "Storage",
+    "enterPoints": "Enter points",
+    "space": "Space",
+    "convertPoints": "Convert {count} points",
+    "equal": "1 point equal to 1 kilobyte",
+    "mineSpace": "How to Mine Ghost Drive Space?",
+    "uploadFiles": "1. Upload Files",
+    "simplyUpload": "Simply upload your files to Ghostdrive.",
+    "tappingGame": "2. Tapping Game",
+    "earnPoints": "For every tap you earn points. ",
+    "lifetime": "3. Lifetime Storage",
+    "mineLifetime": "Mine up to 50 GB of Lifetime Storage.",
+    "convert": "Convert"
+  },
+  "message": {
+    "error": "Something went wrong",
+    "fileRestored": "File was successfully restored",
+    "failedLoad": "Failed to load counts"
+  }
+}

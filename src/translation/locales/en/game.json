@@ -1,0 +1,53 @@
+{
+  "mode": {
+    "playNow": "Play now",
+    "freePlay": "Next free play",
+    "play": "Play mode",
+    "boost": "Boost mode"
+  },
+  "navigate": {
+    "Fly": "Fly",
+    "reachedLevel": "You've reached level"
+  },
+  "process": {
+    "level": "Level",
+    "players": "Players",
+    "frens": "Frens",
+    "earn": "Earn",
+    "airdrop": "Airdrop"
+  },
+  "leadboard": {
+    "league": "League",
+    "friends": "Friends",
+    "week": "Week",
+    "bonus": "Bonus",
+    "points": "Points",
+    "users": "USERS"
+  },
+  "friends": {
+    "inviteGetBonus": "Invite friends and Get bonus!",
+    "inviteFriendCapitalize": "Invite a Friend",
+    "yourFriends": "Your Friends",
+    "inviteFriend": "Invite a friend"
+  },
+  "earn": {
+    "earn": "Earn more points",
+    "storage": "Boost Storage",
+    "app": "Download App",
+    "friends": "Invite 5 Friends",
+    "upload": "Upload 10 Files",
+    "followX": "Follow Our X Account",
+    "joinYouTube": "Join Our YouTube Channel",
+    "joinCommunity": "Join Our Community",
+    "connectWallet": "Connect Wallet"
+  },
+  "airdrop": {
+    "airdrop": "Airdrop",
+    "users": "users",
+    "earn": "earn",
+    "history": "History",
+    "tapping": "Game tapping",
+    "noHistory": "No Referral History",
+    "shareReferral": "Share your referral link to start earning."
+  }
+}

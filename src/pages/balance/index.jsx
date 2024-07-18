@@ -1,6 +1,7 @@
-import { useCallback, useMemo } from 'react';
-import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { toast } from 'react-toastify';
+import { useDispatch, useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
 import { DEFAULT_TARIFFS_NAMES } from '../upgradeStorage';
 import { useBalance } from '../../hooks/useBalance';
@@ -14,10 +15,28 @@ import { Range } from '../../components/range';
 
 import styles from './styles.module.css';
 
+const detail = (t) => [
+  {
+    title: t('convert.uploadFiles'),
+    text: t('convert.simplyUpload')
+  },
+  {
+    title: t('convert.tappingGame'),
+    text: t('convert.earnPoints')
+  },
+  {
+    title: t('convert.lifetime'),
+    text: t('convert.mineLifetime')
+  }
+];
+
+export const MAX_POINT_COUNT = 52428800;
+
 export const Balance = () => {
-  const balance = useBalance();
-  const { workspacePlan } = useSelector((state) => state.workspace);
-  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { t } = useTranslation('system');
+  const [loading, setLoading] = useState(false);
+  const [pointCount, setPointCount] = useState(0);
   const handleVibrationClick = useButtonVibration();
 
   const normalizedSize = useMemo(() => {
@@ -35,29 +54,38 @@ export const Balance = () => {
 
   return (
     <div className={styles.container}>
-      <Header label="Point Balance" />
-      <InfoBox size={normalizedSize} />
-      <Range />
-      <FilesInfo balance={balance} />
-      <div>
-        <p className={styles.mainText}>
-          Boost Your Storage, Multiply Your Points!
-        </p>
-        <p className={styles.text}>
-          Earn more by uploading 100 GB of files and see your points increase by
-          5 times! The more files you store, the more points you will earn.
-          Upgrade your storage today to maximize your points. 
-        </p>
+      <Header label={t('convert.storage')} />
+      <InfoBox
+        points={user?.points}
+      />
+      <Range
+        pointCount={pointCount}
+        setPointCount={setPointCount}
+        pointBalance={user?.points}
+      />
+      {!!user?.points && (
+        <Button
+          disabled={loading}
+          label={t('convert.convertPoints').replace('{count}', fomatNumber(user?.points || 0))}
+          className={styles.blue_btn}
+          onClick={onFullConvert}
+        />
+      )}
+      <div className={styles.info}>
+        <span className={styles['info-exchange']}>{t('convert.equal')}</span>
+        <h2 className={styles['info-title']}>{t('convert.mineSpace')}</h2>
+        {detail(t).map((item, index) => (
+          <div key={`detail-${index}`}>
+            <p className={styles['option-title']}>{item.title}</p>
+            <p className={styles['option-text']}>{item.text}</p>
+          </div>
+        ))}
       </div>
       <footer className={styles.footer}>
         <Button
-          label="Upload"
-          onClick={handleVibrationClick(onUploadFile)}
-          className={styles.blue_btn}
-        />
-        <Button
-          label="Upgrade storage"
-          onClick={handleVibrationClick(onUpgradeFile)}
+          label={t('convert.convert')}
+          disabled={loading}
+          onClick={handleVibrationClick(currentConvert)}
           className={styles.white_btn}
         />
       </footer>

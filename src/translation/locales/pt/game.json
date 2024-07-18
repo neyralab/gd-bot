@@ -1,0 +1,53 @@
+{
+  "mode": {
+    "playNow": "Jogue agora",
+    "freePlay": "Próximo jogo grátis",
+    "play": "Modo de jogo",
+    "boost": "Modo de impulso"
+  },
+  "navigate": {
+    "Fly": "Voar",
+    "reachedLevel": "Você atingiu o nível"
+  },
+  "process": {
+    "level": "Nível",
+    "players": "Jogadoras",
+    "frens": "Francês",
+    "earn": "Ganhar",
+    "airdrop": "Lançamento aéreo"
+  },
+  "leadboard": {
+    "league": "Liga",
+    "friends": "Amigos",
+    "week": "Semana",
+    "bonus": "Bônus",
+    "points": "Pontos",
+    "users": "USUÁRIOS"
+  },
+  "friends": {
+    "inviteGetBonus": "Convide amigos e ganhe bônus!",
+    "inviteFriendCapitalize": "Convidar um amigo",
+    "yourFriends": "Seus amigos",
+    "inviteFriend": "Convidar um amigo"
+  },
+  "earn": {
+    "earn": "Ganhe mais pontos",
+    "storage": "Aumente o armazenamento",
+    "app": "Baixar aplicativo",
+    "friends": "Convide 5 amigos",
+    "upload": "Carregar 10 arquivoss",
+    "followX": "Siga nossa conta X",
+    "joinYouTube": "Junte-se ao nosso canal no YouTube",
+    "joinCommunity": "Junte-se a nossa comunidade",
+    "connectWallet": "Conectar carteira"
+  },
+  "airdrop": {
+    "airdrop": "Lançamento aéreo",
+    "users": "Usuários",
+    "earn": "ganhar",
+    "history": "História",
+    "tapping": "Tocando no jogo",
+    "noHistory": "Sem histórico de referência",
+    "shareReferral": "Compartilhe seu link de indicação para começar a ganhar."
+  }
+}

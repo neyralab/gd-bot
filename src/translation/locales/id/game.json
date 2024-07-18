@@ -1,0 +1,53 @@
+{
+  "mode": {
+    "playNow": "Main sekarang",
+    "freePlay": "Permainan bebas berikutnya",
+    "play": "Modus bermain",
+    "boost": "Mode peningkatan"
+  },
+  "navigate": {
+    "Fly": "Terbang",
+    "reachedLevel": "Anda telah mencapai level"
+  },
+  "process": {
+    "level": "Tingkat",
+    "players": "Pemain",
+    "frens": "Frens",
+    "earn": "Menghasilkan",
+    "airdrop": "Tetesan udara"
+  },
+  "leadboard": {
+    "league": "Liga",
+    "friends": "Teman-teman",
+    "week": "Pekan",
+    "bonus": "Bonusnya",
+    "points": "Poin",
+    "users": "PENGGUNA"
+  },
+  "friends": {
+    "inviteGetBonus": "Undang teman dan Dapatkan bonus!",
+    "inviteFriendCapitalize": "Undang Seorang teman",
+    "yourFriends": "Teman Anda",
+    "inviteFriend": "Undang Seorang teman"
+  },
+  "earn": {
+    "earn": "Hasilkan lebih banyak poin",
+    "storage": "Tingkatkan Penyimpanan",
+    "app": "Unduh Aplikasi",
+    "friends": "Undang 5 Teman",
+    "upload": "Unggah 10 File",
+    "followX": "Ikuti Akun X Kami",
+    "joinYouTube": "Bergabunglah dengan Saluran YouTube Kami",
+    "joinCommunity": "Bergabunglah dengan Komunitas Kami",
+    "connectWallet": "Hubungkan Dompet"
+  },
+  "airdrop": {
+    "airdrop": "Tetesan udara",
+    "users": "pengguna",
+    "earn": "menghasilkan",
+    "history": "Sejarah",
+    "tapping": "Penyadapan permainan",
+    "noHistory": "Tidak Ada Riwayat Referensi",
+    "shareReferral": "Bagikan tautan rujukan Anda untuk mulai menghasilkan."
+  }
+}

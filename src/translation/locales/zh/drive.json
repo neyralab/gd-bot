@@ -1,0 +1,38 @@
+{
+  "dashbord": {
+    "search": "搜索",
+    "points": "积分",
+    "of": "的",
+    "all": "全部",
+    "favorites": "收藏夹",
+    "pictures": "图片",
+    "dcuments": "文件",
+    "notes": "笔记",
+    "audio": "声音的",
+    "video": "视频",
+    "deleted": "已删除",
+    "notFound": "未找到文件",
+    "isEmpty": "此页为空",
+    "ghostdrive": "GHOSTDRIVE",
+    "share": "分享",
+    "linkToFile": "点按此链接即可查看文件 {name}"
+  },
+  "month": {
+    "jan": "扬",
+    "feb": "二月",
+    "mar": "三月",
+    "apr": "四月",
+    "may": "可能",
+    "jun": "君",
+    "jul": "七月",
+    "aug": "八月",
+    "sep": "九月",
+    "oct": "十月",
+    "nov": "十一月",
+    "dec": "十二月"
+  },
+  "time": {
+    "am": "是",
+    "pm": "下午"
+  }
+}

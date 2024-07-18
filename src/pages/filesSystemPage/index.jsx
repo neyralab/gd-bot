@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
@@ -46,6 +47,7 @@ export const FilesSystemPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const fileRef = useRef(null);
+  const { t } = useTranslation('drive');
   const files = useSelector(selectFiles);
   const searchFiles = useSelector(selectSearchAutocomplete);
   const view = useSelector(selectFileView);

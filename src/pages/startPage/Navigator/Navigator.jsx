@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo, useRef, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Address } from '@ton/core';
+import { useTranslation } from 'react-i18next';
 import CN from 'classnames';
 
 import NavigatItem from './NavigatItem';
@@ -20,6 +20,7 @@ export default function Navigator({
   tasks,
   openDisconnectModal
 }) {
+  const { t } = useTranslation('system');
   const navigate = useNavigate();
   const ref = useRef(null);
 
@@ -27,57 +28,72 @@ export default function Navigator({
     ref.current.handleClick()
   }, [])
 
-  const NAVIGATION = useMemo(() => ([
-    {
-      id: 1,
-      name: 'Wallet',
-      icon: <WalletIcon />,
-      html: (<WalletConnect openDisconnectModal={openDisconnectModal} ref={ref} />),
-      onClick: handleWalletClick
-    },
-    {
-      id: 2,
-      name: 'Drive',
-      icon: <DriveIcon />,
-      html: (<span className={CN(styles.actionBtn, styles.addBt)}>{human.percent.label}</span>),
-      onClick: () => navigate('/file-upload')
-    },
-    {
-      id: 3,
-      name: 'Tap',
-      icon: <TapIcon />,
-      html: (<span className={CN(styles.actionBtn, styles.playBtn)}>Play</span>),
-      onClick: () => navigate('/game-3d')
-    },
-    {
-      id: 4,
-      name: 'Rewards',
-      icon: <RewardsIcon />,
-      html: (<span className={styles.actionBtn}>{tasks?.length || 0}</span>),
-      onClick: () => navigate('/task')
-    },
-    {
-      id: 5,
-      name: 'Boost',
-      icon: <BoostIcon />,
-      html: (<span className={styles.actionBtn}>{`X${storage.multiplier}`}</span>),
-      onClick: () => navigate('/boost')
-    },
-    // {
-    //   id: 6,
-    //   name: 'Nodes',
-    //   icon: <NodeIcon />,
-    //   html: (<span className={styles.actionBtn}>{userNodes}</span>),
-    //   onClick: () => navigate('/nodes-welcome')
-    // }
-    // {
-    //   id: 7,
-    //   name: 'Language',
-    //   icon: <LanguageIcon />,
-    //   html: (<span className={styles.actionBtn}>Eng</span>),
-    //   onClick: () => {}
-    // },
-  ]), [storage, tasks, human, handleWalletClick, openDisconnectModal, navigate])
+  const NAVIGATION = useMemo(() => {
+    const list = [
+      {
+        id: 1,
+        name: t('dashboard.wallet'),
+        icon: <WalletIcon />,
+        html: (<WalletConnect openDisconnectModal={openDisconnectModal} ref={ref} />),
+        onClick: handleWalletClick
+      },
+      {
+        id: 2,
+        name: t('dashboard.drive'),
+        icon: <DriveIcon />,
+        html: (<span className={CN(styles.actionBtn, styles.addBt)}>{human.percent.label}</span>),
+        onClick: () => navigate('/file-upload')
+      },
+      {
+        id: 3,
+        name: t('dashboard.tap'),
+        icon: <TapIcon />,
+        html: (<span className={CN(styles.actionBtn, styles.playBtn)}>{t('dashboard.play')}</span>),
+        onClick: () => navigate('/game-3d')
+      },
+      {
+        id: 4,
+        name: t('dashboard.rewards'),
+        icon: <RewardsIcon />,
+        html: (<span className={styles.actionBtn}>{tasks?.length || 0}</span>),
+        onClick: () => navigate('/task')
+      },
+      {
+        id: 5,
+        name: t('dashboard.boost'),
+        icon: <BoostIcon />,
+        html: (<span className={styles.actionBtn}>{`X${storage.multiplier}`}</span>),
+        onClick: () => navigate('/boost')
+      },
+      {
+        id: 6,
+        name: t('dashboard.conver'),
+        icon: <ConvertIcon />,
+        html: (<span className={styles.actionBtn}>{t('dashboard.go')}</span>),
+        onClick: () => navigate('/balance')
+      },
+      // {
+      //   id: 6,
+      //   name: 'Nodes',
+      //   icon: <NodeIcon />,
+      //   html: (<span className={styles.actionBtn}>{userNodes}</span>),
+      //   onClick: () => navigate('/nodes-welcome')
+      // }
+      // {
+      //   id: 7,
+      //   name: 'Language',
+      //   icon: <LanguageIcon />,
+      //   html: (<span className={styles.actionBtn}>Eng</span>),
+      //   onClick: () => {}
+      // },
+    ]
+
+    if (!isDev) {
+      return list.filter((item) => !(HIDDEN_OPTION.includes(item.name)));
+    }
+
+    return list
+  }, [storage, tasks, human, handleWalletClick, openDisconnectModal, navigate, isDev])
 
   return (
     <ul className={CN(styles['navigator'], styles['to-appear'])}>

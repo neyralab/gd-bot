@@ -1,0 +1,53 @@
+{
+  "mode": {
+    "playNow": "现在播放",
+    "freePlay": "下次免费玩",
+    "play": "游戏模式",
+    "boost": "升压模式"
+  },
+  "navigate": {
+    "Fly": "飞",
+    "reachedLevel": "你已经达到等级了"
+  },
+  "process": {
+    "level": "等级",
+    "players": "玩家",
+    "frens": "弗伦斯",
+    "earn": "赚",
+    "airdrop": "空投"
+  },
+  "leadboard": {
+    "league": "联盟",
+    "friends": "朋友们",
+    "week": "星期",
+    "bonus": "奖金",
+    "points": "积分",
+    "users": "用户"
+  },
+  "friends": {
+    "inviteGetBonus": "邀请好友并获得奖金！",
+    "inviteFriendCapitalize": "邀请朋友",
+    "yourFriends": "你的朋友们",
+    "inviteFriend": "邀请朋友"
+  },
+  "earn": {
+    "earn": "赚取更多积分",
+    "storage": "增强存储",
+    "app": "下载应用程序",
+    "friends": "邀请 5 位好友",
+    "upload": "上传 10 个文件",
+    "followX": "关注我们的 X 帐户",
+    "joinYouTube": "加入我们的 YouTube 频道",
+    "joinCommunity": "加入我们的社区",
+    "connectWallet": "连接钱包"
+  },
+  "airdrop": {
+    "airdrop": "空投",
+    "users": "用户",
+    "earn": "赚",
+    "history": "历史",
+    "tapping": "游戏点击",
+    "noHistory": "没有推荐历史",
+    "shareReferral": "分享您的推荐链接即可开始赚钱。"
+  }
+}

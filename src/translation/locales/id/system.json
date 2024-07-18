@@ -1,0 +1,95 @@
+{
+  "loading": {
+    "pleaseWait": "Harap tunggu",
+    "systemLoading": "sistem sedang memuat...",
+    "loaded": "sarat"
+  },
+  "dashboard": {
+    "rank": "Pangkat",
+    "wallet": "Dompet",
+    "add": "Menambahkan",
+    "drive": "Menyetir",
+    "tap": "Mengetuk",
+    "rewards": "Hadiah",
+    "boost": "Mendorong",
+    "nodes": "Node",
+    "howEarn": "Bagaimana cara bermain dan menghasilkan?",
+    "play": "Bermain",
+    "conver": "Konversi",
+    "go": "Pergi",
+    "back": "Kembali"
+  },
+  "node": {
+    "node": "Simpul",
+    "gdNodeShort": "Simpul GD",
+    "nodeDesc": "Apakah Anda siap menjadi yang terdepan dalam revolusi penyimpanan terdesentralisasi? Berinvestasilah pada Ghost Drive Node dan dapatkan manfaat dari teknologi mutakhir dan jaringan kami yang kuat.",
+    "dashboard": "Dasbor",
+    "nodes": "Node",
+    "available": "Tersedia",
+    "buy": "Membeli",
+    "runNode": "Jalankan Node Sendiri",
+    "deployNode": "Terapkan dan kelola node fisik Ghost Drive Anda sendiri dan streaming data waktu nyata. Segera hadir",
+    "nodeFlex": "Fleksibilitas Pasar",
+    "gdNode": "GD Node sepenuhnya dapat diperdagangkan di pasar sekunder, memberi Anda pilihan",
+    "stake": "Taruhan yang Berharga",
+    "eachNode": "Setiap node dilengkapi dengan taruhan 10.000 Ghost Drive Token, memberi Anda posisi yang signifikan"
+  },
+  "boost": {
+    "reward": "Hadiah Peningkatan Poin",
+    "multiplier": "Pengganda saat ini",
+    "storage": "Penyimpanan",
+    "boostMultiplier": "Tingkatkan pengganda",
+    "storageYear": "Penyimpanan per tahun",
+    "paymentMethod": "Pilih cara pembayaran"
+  },
+  "task": {
+    "task": "Tugas",
+    "allTasks": "Semua Tugas",
+    "uploadFile": "Unggah data",
+    "storageReferral": "Pembelian penyimpanan melalui referensi",
+    "connectWallet": "Hubungkan dompet",
+    "uploadFiles": "Unggah 10 file",
+    "referralSignup": "Pendaftaran rujukan aktif",
+    "extraBonus": "Bonus ekstra untuk mencapai level 1 penyadapan",
+    "tgChannel": "Bergabunglah dengan saluran TG kami",
+    "tgNewsChannel": "Bergabunglah dengan saluran berita TG kami",
+    "xAccount": "Ikuti akun X kami",
+    "storagePurchase": "Pembelian penyimpanan",
+    "extraBonusLvl2": "Bonus ekstra untuk mencapai level 2 penyadapan",
+    "inviteFriends": "Undang 5 teman",
+    "extraBonusLvl3": "Bonus ekstra untuk mencapai level 3 penyadapan",
+    "downloadGDApp": "Unduh Aplikasi Ghost Drive dan Masuk Melalui Telegram",
+    "extraBonusLvl4": "Bonus ekstra untuk mencapai level 4 penyadapan",
+    "extraBonusLvl5": "Bonus ekstra untuk mencapai level 5 penyadapan",
+    "extraBonusLvl6": "Bonus ekstra untuk mencapai level 6 ketukan",
+    "extraBonusLvl7": "Bonus ekstra untuk mencapai level 7 penyadapan",
+    "points": "Poin",
+    "point": "Titik"
+
+  },
+  "wallet": {
+    "disconnect": "Apakah Anda yakin ingin memutuskan sambungan?",
+    "no": "Tidak",
+    "yes": "Ya"
+  },
+  "convert": {
+    "storage": "Penyimpanan",
+    "enterPoints": "Masukkan poin",
+    "space": "Ruang angkasa",
+    "convertPoints": "Konversikan {count} poin",
+    "equal": "1 poin sama dengan 1 kilobyte",
+    "mineSpace": "Bagaimana Cara Menambang Ruang Ghost Drive?",
+    "uploadFiles": "1. Unggah File",
+    "simplyUpload": "Cukup unggah file Anda ke Ghostdrive.",
+    "tappingGame": "2. Permainan Mengetuk",
+    "earnPoints": "Untuk setiap ketukan Anda mendapatkan poin.",
+    "lifetime": "3. Penyimpanan Seumur Hidup",
+    "mineLifetime": "Tambang Penyimpanan Seumur Hidup hingga 50 GB.",
+    "convert": "Mengubah"
+  },
+  "message": {
+    "error": "Ada yang salah",
+    "fileRestored": "File berhasil dipulihkan",
+    "failedLoad": "Gagal memuat jumlah"
+  }
+}

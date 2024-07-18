@@ -1,0 +1,53 @@
+{
+  "mode": {
+    "playNow": "Reproducir ahora",
+    "freePlay": "Próxima jugada gratis",
+    "play": "Modo de juego",
+    "boost": "Modo de impulso"
+  },
+  "navigate": {
+    "Fly": "Volar",
+    "reachedLevel": "Has alcanzado el nivel"
+  },
+  "process": {
+    "level": "Nivel",
+    "players": "Jugadores",
+    "frens": "Francés",
+    "earn": "Ganar",
+    "airdrop": "Entrega por paracaídas"
+  },
+  "leadboard": {
+    "league": "Liga",
+    "friends": "Amigos",
+    "week": "Semana",
+    "bonus": "Prima",
+    "points": "Puntos",
+    "users": "USUARIOS"
+  },
+  "friends": {
+    "inviteGetBonus": "¡Invita amigos y obtén bonificación!",
+    "inviteFriendCapitalize": "Invita a un amigo",
+    "yourFriends": "Tus amigos",
+    "inviteFriend": "Invita a un amigo"
+  },
+  "earn": {
+    "earn": "Gana más puntos",
+    "storage": "Aumentar el almacenamiento",
+    "app": "Descargar aplicación",
+    "friends": "Invita a 5 amigos",
+    "upload": "Sube 10 archivos",
+    "followX": "Sigue nuestra cuenta X",
+    "joinYouTube": "Únase a nuestro canal de YouTube",
+    "joinCommunity": "Únete a nuestra comunidad",
+    "connectWallet": "Conectar billetera"
+  },
+  "airdrop": {
+    "airdrop": "Entrega por paracaídas",
+    "users": "usuarios",
+    "earn": "ganar",
+    "history": "Historia",
+    "tapping": "Tocando el juego",
+    "noHistory": "Sin historial de referencias",
+    "shareReferral": "Comparta su enlace de referencia para comenzar a ganar."
+  }
+}

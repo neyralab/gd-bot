@@ -2,6 +2,7 @@ import CN from 'classnames';
 import { useCallback, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import MobileDetect from 'mobile-detect';
+import { useTranslation } from 'react-i18next';
 
 import { Header } from '../../components/header';
 import { getAllTasks, getBalanceEffect } from '../../effects/balanceEffect';
@@ -10,6 +11,7 @@ import { handleTasks } from '../../store/reducers/taskSlice';
 import styles from './styles.module.css';
 
 export const TaskPage = () => {
+  const { t } = useTranslation('system');
   const [tasks, setTasks] = useState();
   const dispatch = useDispatch();
 
@@ -42,7 +44,7 @@ export const TaskPage = () => {
 
   return (
     <div className={styles.container}>
-      <Header label={'Task'} />
+      <Header label={t('task.task')} />
       {/*<p className={styles.checkbox_header}>Daily Task</p>*/}
       {/*<div className={styles.checkbox_item}>*/}
       {/*  <div className={styles.input_container}>*/}
@@ -51,7 +53,7 @@ export const TaskPage = () => {
       {/*  <p className={styles.point}>+50 Points</p>*/}
       {/*</div>*/}
       <div className={styles.tasks}>
-        <p className={styles.checkbox_header}>All Tasks</p>
+        <p className={styles.checkbox_header}>{t('task.allTasks')}</p>
         <ul className={styles.list}>
           {tasks?.map((el, index) => (
             <li
@@ -68,7 +70,7 @@ export const TaskPage = () => {
               <p
                 className={
                   styles.point
-                }>{`+${el.amount} ${el.amount > 1 ? 'Points' : 'Point'}`}</p>
+                }>{`+${el.amount} ${el.amount > 1 ? t('task.points') : t('task.point')}`}</p>
             </li>
           ))}
         </ul>

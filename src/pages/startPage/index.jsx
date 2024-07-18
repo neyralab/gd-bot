@@ -1,5 +1,6 @@
 import { useMemo, useState, useEffect, useCallback } from 'react';
 import { useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import CN from 'classnames';
 
 import {
@@ -26,6 +27,7 @@ import Navigator from './Navigator/Navigator';
 import style from './style.module.css';
 
 export const StartPage = ({ tariffs }) => {
+  const { t } = useTranslation('system');
   const [tasks, setTasks] = useState([]);
   const [disconnectWalletModal, setDisconnectWalletModal] = useState(false);
   const allWorkspaces = useSelector(selectAllWorkspaces);
@@ -136,7 +138,7 @@ export const StartPage = ({ tariffs }) => {
             }}>
             GhostDrive.com
           </span>
-          . How to play and earn?{' '}
+          . {t('dashboard.howEarn')}{' '}
         </p>
       </footer>
       {disconnectWalletModal && (
