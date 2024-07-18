@@ -34,13 +34,10 @@ export const beforeGame = async (
   return data.data;
 };
 
-export const startGame = async (
-  game_id: number,
-  purchase_id: number | null
-) => {
+export const startGame = async (game_id: number, txid: string) => {
   const url = `${API_PATH}/game/process`;
   const { data } = await axiosInstance.post<Effect<Game[]>>(url, {
-    purchase_id,
+    txid,
     game_id
   });
   console.log({ startGame: data });
@@ -83,12 +80,16 @@ export const getGameInfo = async () => {
   return { game_ends_at: next.getTime(), points: data.points };
 };
 
-export const getPendingGames = async ({ tierId }: { tierId: number }) => {
+export const getPendingGames = async ({
+  tierId
+}: {
+  tierId: number;
+}): Promise<(Omit<Game, 'tier'> & PendingGame)[]> => {
   const url = `${API_PATH}/pending/games/${tierId}`;
   const { data } =
-    await axiosInstance.get<Effect<({ purchase_id: string } & Game)[]>>(url);
+    await axiosInstance.get<Effect<(Omit<Game, 'tier'> & PendingGame)[]>>(url);
   console.log({ getPendingGames: data });
-  return data.data.filter((el) => el.purchase_id);
+  return data.data;
 };
 
 export const getActivePayedGame = async () => {
@@ -152,6 +153,16 @@ type Game = {
   game_ends_at: number;
   status: number;
   uuid: number;
+};
+
+type PendingGame = {
+  purchase_id: null | string;
+  tier_id: number;
+  user_id: number;
+  txid: string | null;
+  is_paid: boolean;
+  points_earned: null | number;
+  taps_earned: null | number;
 };
 
 type GameLevel = {

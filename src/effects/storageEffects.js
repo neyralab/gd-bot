@@ -27,3 +27,15 @@ export const getFileTypesCountEffect = async () => {
       throw e;
     });
 };
+
+
+export const storageConvertEffect = async (data) => {
+  return axiosInstance
+    .post(`${API_PATH}/utilize/points`, data)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((e) => {
+      throw e;
+    });
+};

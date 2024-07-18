@@ -21,13 +21,10 @@ import PaymentMenu from '../../components/paymentMenu/Menu';
 import { transformSize } from '../../utils/transformSize';
 
 import { ReactComponent as Star } from '../../assets/star.svg';
-import { ReactComponent as Ton } from '../../assets/TON.svg';
 
 import useButtonVibration from '../../hooks/useButtonVibration';
 import { INVOICE_TYPE } from '../../utils/createStarInvoice';
-import { isDevEnv } from '../../utils/isDevEnv';
 import { sleep } from '../../utils/sleep';
-import { isiOS } from '../../utils/client';
 
 import styles from './styles.module.css';
 import { getToken } from '../../effects/set-token';
@@ -44,10 +41,6 @@ export const BoostPage = ({ tariffs, setTariffs }) => {
   const { open } = useTonConnectModal();
   const dispatch = useDispatch();
   const handleVibrationClick = useButtonVibration();
-  const isiOSPlatform = isiOS();
-  const isDev = isDevEnv();
-
-  console.log(tariffs)
 
   const currentPrice = useMemo(() => {
     return tariffs?.find((tariff) => tariff.storage === spaceTotal);
@@ -146,17 +139,9 @@ export const BoostPage = ({ tariffs, setTariffs }) => {
     dispatch(handlePaymentSelectModal(false));
   }
 
-  const startTonTx = (el) => {
+  const handleSelect = (el) => {
     setSelectedPayment(el);
     dispatch(handlePaymentSelectModal(true));
-  }
-
-  const handleSelect = (el) => {
-    if (isiOSPlatform) {
-      makeInvoice(el);
-    } else {
-      startTonTx(el);
-    }
   }
 
   return (
@@ -176,13 +161,9 @@ export const BoostPage = ({ tariffs, setTariffs }) => {
           </div>
           <div className={styles.cost}>
             <p className={styles.cost_value}>
-              {isDev ? currentPrice?.stars : currentPrice?.ton_price || '0'}
+              {currentPrice?.stars || '0'}
             </p>
-            { isDev ? (
-              <Star className={styles.current_diamond} viewBox="0 0 21 21" />
-            ) : (
-              <Ton className={styles.current_diamond} viewBox="0 0 24 24" />
-            ) }
+            <Star className={styles.current_diamond} viewBox="0 0 21 21" />
           </div>
         </div>
       </div>
@@ -193,7 +174,7 @@ export const BoostPage = ({ tariffs, setTariffs }) => {
             <li key={index} onClick={handleVibrationClick()}>
               <button
                 disabled={currentPrice?.storage === el?.storage}
-                onClick={() => {isDev ? handleSelect(el) : startTonTx(el)}}
+                onClick={() => {handleSelect(el)}}
                 className={CN(
                   styles.item,
                   activeMultiplier?.storage === el.storage && styles.active_item
@@ -208,12 +189,8 @@ export const BoostPage = ({ tariffs, setTariffs }) => {
                   </div>
                 </div>
                 <div className={styles.cost}>
-                  <p className={styles.cost_value}>{isDev ? el?.stars : el?.ton_price}</p>
-                  {isDev ? (
-                    <Star className={styles.cost_svg} viewBox="0 0 21 21" />
-                  ) : (
-                    <Ton className={styles.cost_svg} viewBox="0 0 24 24" />
-                  )}
+                  <p className={styles.cost_value}>{el?.stars}</p>
+                  <Star className={styles.cost_svg} viewBox="0 0 21 21" />
                 </div>
               </button>
             </li>
@@ -250,7 +227,7 @@ export const BoostPage = ({ tariffs, setTariffs }) => {
       <SlidingModal
         onClose={onClosePaymentModal}
         isOpen={isPaymentModalOpen}
-        snapPoints={[170, 170, 50, 0]}
+        snapPoints={[190, 190, 50, 0]}
       >
         <PaymentMenu
           payload={selectedPayment}

@@ -55,10 +55,10 @@ export function Game3DPage() {
 
   const swipeHandlers = useSwipeable({
     onSwipedLeft: () => {
-      dispatch(switchTheme({ direction: 'next' }));
+      dispatch(switchTheme({ direction: 'next', timeout: 2500 }));
     },
     onSwipedRight: () => {
-      dispatch(switchTheme({ direction: 'prev' }));
+      dispatch(switchTheme({ direction: 'prev', timeout: 2500 }));
     }
   });
 
@@ -90,7 +90,7 @@ export function Game3DPage() {
     // // TODO: REMOVE LATER
 
     if (
-      !counterIsFinished ||
+      (!counterIsFinished && theme.id === 'hawk') ||
       !theme ||
       !themeAccess[theme.id] ||
       status === 'finished' ||
@@ -128,7 +128,11 @@ export function Game3DPage() {
     return (
       <GhostLoader
         texts={
-          isTransactionLoading ? ['Waiting for transaction confirmation'] : []
+          isTransactionLoading
+            ? [
+                'Transaction may take up to 1 minute.\n\n Please do not close the window and wait for the game to start.'
+              ]
+            : []
         }
       />
     );
@@ -174,7 +178,7 @@ export function Game3DPage() {
           </div>
 
           <div className={styles['theme-switcher-container']}>
-            <ThemeSwitcherControllers />
+            <ThemeSwitcherControllers themeChangeTimeout={2500} />
           </div>
         </div>
 
@@ -183,7 +187,7 @@ export function Game3DPage() {
         </div>
 
         <div className={styles['experience-container']}>
-          <ProgressBar />
+          <ProgressBar themeChangeTimeout={1000} />
         </div>
       </div>
 

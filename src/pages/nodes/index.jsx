@@ -185,7 +185,7 @@ export default function NodesPage() {
           <div className={styles['buy-container']}>
             <div className={styles['buy-container__flex-left']}>
               <div className={styles['buy-container__description']}>
-                Available: 50 000
+                Available: 1 000
               </div>
               <div className={styles['buy-container__cost']}>
                 {nodesCost} <TonIcon  viewBox="0 -2 24 26"  />

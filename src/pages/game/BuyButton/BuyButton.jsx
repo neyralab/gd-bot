@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useState } from 'react';
 import classNames from 'classnames';
 import { toast } from 'react-toastify';
 import { useDispatch, useSelector } from 'react-redux';
@@ -13,7 +13,7 @@ import {
 } from '@tonconnect/ui-react';
 
 import { GDTapBooster } from '../../../effects/contracts/tact_GDTapBooster';
-import { nullValueCheck } from '../../../effects/contracts/helper';
+import { getHexByBoc } from '../../../effects/contracts/helper';
 import { SlidingModal } from '../../../components/slidingModal';
 import PaymentMenu from '../../../components/paymentMenu/Menu';
 
@@ -45,13 +45,13 @@ import {
   startGame,
   getActivePayedGame
 } from '../../../effects/gameEffect';
-import { isiOS } from '../../../utils/client';
+import { useOnConnect } from '../../../utils/useOnConnect';
 import { isDevEnv } from '../../../utils/isDevEnv';
-import styles from './BuyButton.module.css';
 import { sleep } from '../../../utils/sleep';
-import { waitTonTx } from '../../../utils/wait';
+import styles from './BuyButton.module.css';
 
 export default function BuyButton() {
+  useOnConnect();
   const { open } = useTonConnectModal();
   const wallet = useTonWallet();
   const [tonConnectUI] = useTonConnectUI();
@@ -60,16 +60,13 @@ export default function BuyButton() {
 
   const status = useSelector(selectStatus);
   const theme = useSelector(selectTheme);
-  const themeRef = useRef(null);
   const themes = useSelector(selectThemes);
   const themeAccess = useSelector(selectThemeAccess);
   const isPaymentModalOpen = useSelector(selectPaymentSelectModal);
 
   const user = useSelector((state) => state?.user?.data);
   const contractAddress = useSelector(selectContractAddress);
-  const isiOSPlatform = isiOS();
   const isDev = isDevEnv();
-
   const [isDisabled, setIsDisabled] = useState(false);
 
   const clickHandler = async () => {
@@ -100,10 +97,6 @@ export default function BuyButton() {
       dispatch(startCountdown({ seconds: 5, startNextRound: true }));
     }, 100);
   };
-
-  useEffect(() => {
-    themeRef.current = { dispatch, theme, afterBought };
-  }, [dispatch, theme, afterBought]);
 
   const onBuy = async (plan) => {
     try {
@@ -142,23 +135,35 @@ export default function BuyButton() {
               validUntil: Date.now() + 60 * 1000 // 5 minutes for user to approve
             });
             console.log({ data });
-            const userAddress = Address.parseRaw(wallet.account.address);
-
-            const lastTxValue = await waitTonTx(() =>
-              nullValueCheck(() => {
-                return contract.getLatestPurchase(userAddress);
-              })
-            );
-            console.log({ lastTxValue });
+            const tx = getHexByBoc(data.boc);
+            console.log({ tx });
+            // return;
             const game = await startGame(
               pendingGame.uuid || pendingGame.id,
-              Number(lastTxValue)
+              tx
             );
             dispatch(setGameId(game.uuid || game?.id));
-            console.log({ PPPPP: lastTxValue, game });
+            console.log({ PPPPP: tx, game });
             dispatch(setIsTransactionLoading(false));
             afterBought();
-            return data;
+            return;
+            // const userAddress = Address.parseRaw(wallet.account.address);
+            //
+            // const lastTxValue = await waitTonTx(() =>
+            //   nullValueCheck(() => {
+            //     return contract.getLatestPurchase(userAddress);
+            //   })
+            // );
+            // console.log({ lastTxValue });
+            // const game = await startGame(
+            //   pendingGame.uuid || pendingGame.id,
+            //   Number(lastTxValue)
+            // );
+            // dispatch(setGameId(game.uuid || game?.id));
+            // console.log({ PPPPP: lastTxValue, game });
+            // dispatch(setIsTransactionLoading(false));
+            // afterBought();
+            // return data;
           }
         },
         { value: toNano(plan?.ton_price) },
@@ -192,22 +197,8 @@ export default function BuyButton() {
 
   const invoiceCallback = async (result) => {
     try {
-      console.log('Invoice callback = ', result);
-      console.log(theme, dispatch);
-      console.log(themeRef);
-      debugger;
       if (result === 'paid') {
-        console.log(theme, dispatch);
-        console.log(themeRef);
-        await sleep(500);
-        dispatch(setStatus('waiting'));
-        const pendingGame = await getActivePayedGame();
-        dispatch(setGameId(pendingGame?.uuid || pendingGame.id));
-        afterBought();
-      } else {
-        console.log(theme, dispatch);
-        console.log(themeRef);
-        await sleep(500);
+        await sleep(600);
         dispatch(setStatus('waiting'));
         const pendingGame = await getActivePayedGame();
         dispatch(setGameId(pendingGame?.uuid || pendingGame.id));
@@ -223,19 +214,9 @@ export default function BuyButton() {
   };
 
   const handleSelect = () => {
-    if (isiOSPlatform) {
-      const input = `${0};${theme.tierId};${user.id}`;
-      makeInvoice({
-        input,
-        dispatch,
-        callback: invoiceCallback,
-        type: INVOICE_TYPE.game,
-        theme
-      });
-    } else {
-      dispatch(handlePaymentSelectModal(true));
-    }
+    dispatch(handlePaymentSelectModal(true));
   };
+
   const handleStartPayment = (el) => {
     if (el.action === 'ton') {
       clickHandler(el);
@@ -258,24 +239,22 @@ export default function BuyButton() {
         <button
           type="button"
           className={classNames(styles.button, styles[theme.id])}
-          onClick={() => {
-            isDev ? handleSelect() : clickHandler();
-          }}>
-          {isDev ? (
-            <StarIcon className={styles['star-icon']} viewBox="0 0 21 21" />
-          ) : (
-            <TonIcon className={styles['star-icon']} viewBox="0 0 24 24" />
-          )}
-          {/*<StarIcon className={styles['star-icon']} viewBox="0 0 21 21" />*/}
+          onClick={handleSelect}
+        >
+          <StarIcon className={styles['star-icon']} viewBox="0 0 21 21" />
           <span className={styles.cost}>
-            {(isDev ? theme.stars : theme.cost) || 'FREE'}
+            {theme.stars || 'FREE'}
           </span>
-          <span className={styles.multiplier}>X{theme.multiplier}</span>
+          <span
+            className={styles.multiplier}
+            style={{ color: theme.colors.buttonText }}>
+            X{theme.multiplier}
+          </span>
         </button>
         <SlidingModal
           onClose={onClosePaymentModal}
           isOpen={isPaymentModalOpen}
-          snapPoints={[170, 170, 50, 0]}>
+          snapPoints={[190, 190, 50, 0]}>
           <PaymentMenu payload={theme} onClick={handleStartPayment} />
         </SlidingModal>
       </div>

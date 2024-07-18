@@ -1,12 +1,13 @@
-.container{
+.container {
   position: fixed;
   left: 50%;
-  bottom:150px;
+  top: 164px;
   transform: translateX(-50%);
   display: flex;
   flex-direction: column;
   opacity: 0;
   animation: AppearAnination 0.5s forwards;
+  z-index: 5;
 }
 
 .count {

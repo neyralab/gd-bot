@@ -100,7 +100,7 @@ bot.start(async (ctx) => {
   );
   const playButton = Markup.button.webApp(
     'Tap to Earn',
-    `${process.env.APP_FRONTEND_URL}/game`
+    `${process.env.APP_FRONTEND_URL}/game-3d`
   );
   const followXButton = Markup.button.url(
     'Follow X',

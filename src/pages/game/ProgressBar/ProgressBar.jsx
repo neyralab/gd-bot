@@ -6,17 +6,20 @@ import {
   selectExperienceLevel,
   selectExperiencePoints,
   selectReachNewLevel,
-  selectLevels
+  selectLevels,
+  selectNextTheme
 } from '../../../store/reducers/gameSlice';
 import styles from './ProgressBar.module.css';
 
-export default function ProgressBar() {
+export default function ProgressBar({ themeChangeTimeout = 0 }) {
   const theme = useSelector(selectTheme);
+  const nextTheme = useSelector(selectNextTheme);
   const levels = useSelector(selectLevels);
   const reachedNewLevel = useSelector(selectReachNewLevel);
   const experienceLevel = useSelector(selectExperienceLevel);
   const experiencePoints = useSelector(selectExperiencePoints);
   const [currentLevel, setCurrentLevel] = useState();
+  const [currentTheme, setCurrentTheme] = useState(theme);
 
   useEffect(() => {
     if (levels) {
@@ -24,6 +27,14 @@ export default function ProgressBar() {
       setCurrentLevel(l);
     }
   }, [levels, experienceLevel]);
+
+  useEffect(() => {
+    if (!nextTheme.theme) return;
+    const newTheme = JSON.parse(JSON.stringify(nextTheme.theme));
+    setTimeout(() => {
+      setCurrentTheme(newTheme);
+    }, themeChangeTimeout);
+  }, [nextTheme.theme]);
 
   const percent = useMemo(() => {
     let value = 0;
@@ -50,8 +61,19 @@ export default function ProgressBar() {
         </span>
       </div>
       <div className={styles['bar-container']}>
-        <div className={styles.empty}></div>
-        <div className={styles.active} style={{ width: percent + '%' }}></div>
+        <div
+          className={styles.empty}
+          style={{
+            background: `linear-gradient(90deg, rgba(${currentTheme.colors.experienceBar.empty.background1[0]}, ${currentTheme.colors.experienceBar.empty.background1[1]}, ${currentTheme.colors.experienceBar.empty.background1[2]}, 0.3) 0%, rgba(${currentTheme.colors.experienceBar.empty.background2[0]}, ${currentTheme.colors.experienceBar.empty.background2[1]}, ${currentTheme.colors.experienceBar.empty.background2[2]}, 0.3) 100%)`,
+            boxShadow: `0px 0px 10.3px 0px ${currentTheme.colors.experienceBar.empty.boxShadow}`
+          }}></div>
+        <div
+          className={styles.active}
+          style={{
+            width: percent + '%',
+            background: `linear-gradient(90deg, ${currentTheme.colors.experienceBar.active.background1} 0%, ${currentTheme.colors.experienceBar.active.background2} 100%)`,
+            boxShadow: `0px 0px 10.3px 0px ${currentTheme.colors.experienceBar.active.boxShadow}`
+          }}></div>
       </div>
     </div>
   );

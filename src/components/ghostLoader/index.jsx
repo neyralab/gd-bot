@@ -48,13 +48,7 @@ function GhostLoader({ texts = [], flashing = true, startup = false }) {
       )}
       {texts.length > 0 && !uploadingProgress && (
         <div className={s.textWrapper}>
-          <p
-            className={classNames(s.textContent, {
-              [s.infiniteTyping]: texts.length === 1
-            })}>
-            {texts[currentIndex]}
-          </p>
-          {flashing && <span className={s.blinkingPipe}>|</span>}
+          <p className={s.textContent}>{texts[currentIndex]}</p>
         </div>
       )}
       {uploadingProgress && (
