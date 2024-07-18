@@ -51,13 +51,13 @@ export const Balance = () => {
   const onFullConvert = async () => {
     try {
       if (!(user?.points || 0)) { return; }
-      setPointCount(fomatNumber(user?.points || 0));
       const cointCount = getNumbers(user?.points || 0);
       setLoading(true);
       const res = await storageConvertEffect({ points: cointCount });
       if (res.message === "success") {
         const token = await getToken();
         const updatedUser = await getUserEffect(token);
+        setPointCount(0);
         dispatch(setUser(updatedUser));
         setLoading(false);
       }
@@ -96,7 +96,7 @@ export const Balance = () => {
         setPointCount={setPointCount}
         pointBalance={user?.points}
       />
-      {user?.points && (
+      {!!user?.points && (
         <Button
           disabled={loading}
           label={`Convert ${fomatNumber(user?.points || 0)} points`}
