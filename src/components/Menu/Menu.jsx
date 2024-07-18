@@ -21,7 +21,7 @@ export default function Menu() {
         className={({ isActive }) =>
           classNames(styles.item, isActive && styles.active)
         }
-        to={'/game'}
+        to={'/game-3d'}
         onClick={handleVibrationClick()}>
         <div className={classNames(styles.icon, styles['img-icon'])}></div>
         <span className={styles.text}>Fly</span>

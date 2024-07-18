@@ -19,6 +19,7 @@ import BuyButton from '../game/BuyButton/BuyButton';
 import EndGameAddedPoints from '../game/EndGameAddedPoints/EndGameAddedPoints';
 import PointsGrowArea from '../game/PointsGrowArea/PointsGrowArea';
 import Timer from '../game/Timer/Timer';
+import HiddenButton from '../game/HiddenButton/HiddenButton';
 import Menu from '../../components/Menu/Menu';
 import ProgressBar from '../game/ProgressBar/ProgressBar';
 import Congratulations from '../game/Congratulations/Congratulations';
@@ -90,7 +91,7 @@ export function Game3DPage() {
     // // TODO: REMOVE LATER
 
     if (
-      !counterIsFinished ||
+      (!counterIsFinished && theme.id === 'hawk') ||
       !theme ||
       !themeAccess[theme.id] ||
       status === 'finished' ||
@@ -128,7 +129,11 @@ export function Game3DPage() {
     return (
       <GhostLoader
         texts={
-          isTransactionLoading ? ['Waiting for transaction confirmation'] : []
+          isTransactionLoading
+            ? [
+                'Transaction may take up to 1 minute.\n\n Please do not close the window and wait for the game to start.'
+              ]
+            : []
         }
       />
     );
@@ -190,6 +195,7 @@ export function Game3DPage() {
       <Menu />
 
       <Congratulations />
+      <HiddenButton />
     </div>
   );
 }

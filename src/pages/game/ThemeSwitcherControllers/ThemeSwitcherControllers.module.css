@@ -1,3 +1,7 @@
+.arrows {
+  transition: opacity 0.5s;
+}
+
 .arrows > div {
   position: absolute;
   top: calc(50% - 24px);
@@ -11,7 +15,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: opacity 0.5s;
 }
 
 .arrows .prev {
@@ -23,5 +26,5 @@
 }
 
 .arrows.is-switching {
-  opacity: 0.5;
+  opacity: 0.4;
 }

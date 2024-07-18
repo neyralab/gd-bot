@@ -15,6 +15,7 @@ import {
   selectTheme
 } from '../../../store/reducers/gameSlice';
 import ShipWaveModel from './ShipWaveModel';
+import ShipTrailModel from './ShipTrailModel';
 
 const ShipModel = forwardRef((_, ref) => {
   const theme = useSelector(selectTheme);
@@ -25,6 +26,7 @@ const ShipModel = forwardRef((_, ref) => {
   const [clock] = useState(() => new THREE.Clock());
   const shipGroupRef = useRef(null);
   const waveGroupRef = useRef(new THREE.Group());
+  const shipTrailModelRef = useRef();
   const [waves, setWaves] = useState([]);
   const flyTimeout = useRef(null);
   const floatingContext = useRef(null);
@@ -90,6 +92,9 @@ const ShipModel = forwardRef((_, ref) => {
   const runPushAnimation = () => {
     runWaveAnimation();
     runShipPushAnimation();
+    if (shipTrailModelRef.current) {
+      shipTrailModelRef.current.runPushAnimation();
+    }
 
     if (flyTimeout.current) {
       clearTimeout(flyTimeout.current);
@@ -174,6 +179,12 @@ const ShipModel = forwardRef((_, ref) => {
     action.setEffectiveTimeScale(3.5);
     action.play();
 
+    gsap.to(shipGroupRef.current.rotation, {
+      x: 0,
+      duration: 1,
+      ease: `power1.inOut`
+    });
+
     /** New */
     gsap.to(shipGroupRef.current.position, {
       y: 30,
@@ -202,6 +213,11 @@ const ShipModel = forwardRef((_, ref) => {
 
       gsap.to(shipGroupRef.current.rotation, {
         y: -Math.PI / 2,
+        duration: 2,
+        ease: `power${cleanupPower}.inOut`
+      });
+      gsap.to(shipGroupRef.current.rotation, {
+        x: 0,
         duration: 2,
         ease: `power${cleanupPower}.inOut`
       });
@@ -282,6 +298,11 @@ const ShipModel = forwardRef((_, ref) => {
           { z: 0, duration: 0.1, ease: 'power1.inOut' }
         ]
       });
+      gsap.to(shipGroupRef.current.rotation, {
+        x: -0.3,
+        duration: .5,
+        ease: 'power4.out'
+      });
     });
   };
 
@@ -325,6 +346,8 @@ const ShipModel = forwardRef((_, ref) => {
         position={[0, -20, 0]}
         rotation={[0, -Math.PI * 2.5, 0]}>
         <primitive object={shipFbx} ref={shipRef} />
+
+        <ShipTrailModel ref={shipTrailModelRef} />
       </group>
 
       <group ref={waveGroupRef}>

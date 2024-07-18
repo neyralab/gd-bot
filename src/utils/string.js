@@ -10,4 +10,15 @@ const getWallet = (wallet) => {
   }
 }
 
-export { getWallet }
+const getNumbers = (value = '') => {
+  if (Number.isInteger(value)) {
+    return value;
+  }
+  return value?.match(/\d+/g)?.join('');
+}
+
+const fomatNumber = (num) => {
+  return Number(num).toLocaleString('en-US');
+}
+
+export { getWallet, fomatNumber, getNumbers }

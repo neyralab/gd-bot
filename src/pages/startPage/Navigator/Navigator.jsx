@@ -10,9 +10,13 @@ import { ReactComponent as DriveIcon } from '../assets/drive.svg';
 import { ReactComponent as TapIcon } from '../assets/tap.svg';
 import { ReactComponent as RewardsIcon } from '../assets/rewards.svg';
 import { ReactComponent as BoostIcon } from '../assets/boost.svg';
+import { ReactComponent as ConvertIcon } from '../assets/convertor.svg';
 // import { ReactComponent as LanguageIcon } from '../assets/language.svg';
+import { isDevEnv } from '../../../utils/isDevEnv';
 
 import styles from './Navigator.module.css';
+
+const HIDDEN_OPTION = ['Conver'];
 
 export default function Navigator({
   storage,
@@ -22,6 +26,7 @@ export default function Navigator({
 }) {
   const { t } = useTranslation('system');
   const navigate = useNavigate();
+  const isDev = isDevEnv();
   const ref = useRef(null);
 
   const handleWalletClick = useCallback(() => {

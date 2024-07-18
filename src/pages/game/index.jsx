@@ -12,7 +12,7 @@ import {
   addBalance,
   selectIsTransactionLoading,
   switchTheme,
-  gameCleanup,
+  gameCleanup
 } from '../../store/reducers/gameSlice';
 import { Header } from '../../components/header_v2';
 import Background from './Background/Background';
@@ -31,7 +31,6 @@ import LevelDescription from './LevelDescription/LevelDescription';
 import ThemeSwitcherControllers from './ThemeSwitcherControllers/ThemeSwitcherControllers';
 import ThemeSwitcherMainButton from './ThemeSwitcherMainButton/ThemeSwitcherMainButton';
 import styles from './styles.module.css';
-import DebugButton from './DebugButton';
 
 /** Please, do not add extra selectors or state
  * It will force the component to rerender, that will cause lags and rerenders
@@ -125,7 +124,11 @@ export function GamePage() {
     return (
       <GhostLoader
         texts={
-          isTransactionLoading ? ['Waiting for transaction confirmation'] : []
+          isTransactionLoading
+            ? [
+                'Transaction may take up to 1 minute.\n\n Please do not close the window \n\n wait for the game to start.'
+              ]
+            : []
         }
       />
     );
@@ -190,8 +193,6 @@ export function GamePage() {
       <Menu />
 
       <Congratulations />
-
-      <DebugButton />
     </div>
   );
 }

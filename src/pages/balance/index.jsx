@@ -3,13 +3,16 @@ import { toast } from 'react-toastify';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 
-import { DEFAULT_TARIFFS_NAMES } from '../upgradeStorage';
-import { useBalance } from '../../hooks/useBalance';
+import { getToken } from '../../effects/set-token';
+import { storageConvertEffect } from '../../effects/storageEffects';
+
+import { setUser } from '../../store/reducers/userSlice';
+import { getUserEffect } from '../../effects/userEffects';
 import useButtonVibration from '../../hooks/useButtonVibration';
+import { fomatNumber, getNumbers } from '../../utils/string';
 
 import { Header } from '../../components/header';
 import { Button } from '../../components/button';
-import { FilesInfo } from '../../components/filesInfo';
 import { InfoBox } from '../../components/info';
 import { Range } from '../../components/range';
 
@@ -38,19 +41,51 @@ export const Balance = () => {
   const [loading, setLoading] = useState(false);
   const [pointCount, setPointCount] = useState(0);
   const handleVibrationClick = useButtonVibration();
+  const user = useSelector((state) => state?.user?.data);
 
-  const normalizedSize = useMemo(() => {
-    console.log({ workspacePlan: workspacePlan });
-    return DEFAULT_TARIFFS_NAMES[workspacePlan?.storage];
-  }, [workspacePlan?.storage]);
+  const showErrorMessage = () => {
+    toast.error('Something went wrong', {
+      theme: 'colored',
+      position: 'bottom-center'
+    });
+  } 
 
-  const onUploadFile = useCallback(() => {
-    navigate('/file-upload');
-  }, []);
+  const onFullConvert = async () => {
+    try {
+      if (!(user?.points || 0)) { return; }
+      const cointCount = getNumbers(user?.points || 0);
+      setLoading(true);
+      const res = await storageConvertEffect({ points: cointCount });
+      if (res.message === "success") {
+        const token = await getToken();
+        const updatedUser = await getUserEffect(token);
+        setPointCount(0);
+        dispatch(setUser(updatedUser));
+        setLoading(false);
+      }
+    } catch (error) {
+      showErrorMessage();
+      setLoading(false);
+    }
+  }
 
-  const onUpgradeFile = useCallback(() => {
-    navigate('/upgrade');
-  }, []);
+  const currentConvert = async () => {
+    try {
+      if (!pointCount) { return; }
+      const cointCount = getNumbers(pointCount);
+      setLoading(true);
+      const res = await storageConvertEffect({ points: cointCount });
+      if (res.message === "success") {
+        const token = await getToken();
+        const updatedUser = await getUserEffect(token);
+        dispatch(setUser(updatedUser));
+        setLoading(false);
+      }
+    } catch (error) {
+      showErrorMessage();
+      setLoading(false);
+    }
+  }
 
   return (
     <div className={styles.container}>

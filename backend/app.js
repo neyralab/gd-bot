@@ -11,7 +11,18 @@ import termsHandler from './commands/terms/index.js';
 
 const app = express();
 const bot = new Telegraf(process.env.BOT_TOKEN_SECRET);
-const throttler = telegrafThrottler();
+const throttler = telegrafThrottler({
+  in: {
+    period: 60000, // 60 seconds
+    rate: 10, // 10 messages per minute
+    burst: 10 // Allowing up to 10 messages in a burst
+  },
+  out: {
+    period: 60000,
+    rate: 30,
+    burst: 10
+  }
+});
 bot.use(throttler);
 
 const cache = {};
@@ -36,7 +47,7 @@ bot.start(async (ctx) => {
   if (!cachedUserData) {
     try {
       const url = `${process.env.GD_BACKEND_URL}/apiv2/user/create/telegram`;
-      
+
       console.log({
         url,
         userData
@@ -73,7 +84,7 @@ bot.start(async (ctx) => {
   }
 
   const data = cachedUserData;
-  const referralLink = `https://t.me/${process.env.BOT_NAME}?start=${data?.coupon?.code}`;
+  const referralLink = `https://t.me/${process.env.BOT_NAME}/ghostdrive?startapp=${data?.coupon?.code}`;
   const header =
     '<b>Welcome to Ghostdrive – The Ultimate Drive for the TON Ecosystem!</b>';
   const activitiesText =
@@ -85,15 +96,14 @@ bot.start(async (ctx) => {
   const buttonUrl = process.env.APP_FRONTEND_URL;
   const button = Markup.button.webApp(buttonText, buttonUrl);
   const shareButtonText = 'Share Link';
-  const shareButton = Markup.button.switchToChat(shareButtonText, referralLink);
+  const shareButton = {
+    text: shareButtonText,
+    url: `https://t.me/share/url?url=${encodeURIComponent(referralLink)}`
+  };
 
   const dashboardButton = Markup.button.webApp(
-    'Dashboard',
+    'Ghost Drive',
     `${process.env.APP_FRONTEND_URL}/start`
-  );
-  const playButton = Markup.button.webApp(
-    'Tap to Earn',
-    `${process.env.APP_FRONTEND_URL}/game-3d`
   );
   const followXButton = Markup.button.url(
     'Follow X',
@@ -116,7 +126,6 @@ bot.start(async (ctx) => {
         reply_markup: {
           inline_keyboard: [
             [dashboardButton],
-            [playButton],
             [followXButton],
             [followCommunityButton],
             [followNewsButton],
