@@ -11,7 +11,18 @@ import termsHandler from './commands/terms/index.js';
 
 const app = express();
 const bot = new Telegraf(process.env.BOT_TOKEN_SECRET);
-const throttler = telegrafThrottler();
+const throttler = telegrafThrottler({
+  in: {
+    period: 60000, // 60 seconds
+    rate: 10, // 10 messages per minute
+    burst: 10 // Allowing up to 10 messages in a burst
+  },
+  out: {
+    period: 60000,
+    rate: 30,
+    burst: 10
+  }
+});
 bot.use(throttler);
 
 const cache = {};
