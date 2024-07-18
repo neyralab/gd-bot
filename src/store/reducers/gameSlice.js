@@ -37,6 +37,7 @@ const gameSlice = createSlice({
     balance: { value: 0, label: 0 },
     experienceLevel: 1,
     experiencePoints: 0,
+    maxLevel: 0,
     reachedNewLevel: false,
     roundTimerTimestamp: null,
     roundTimeoutId: null,
@@ -150,6 +151,9 @@ const gameSlice = createSlice({
     },
     setRoundFinal: (state, { payload }) => {
       state.roundFinal = payload;
+    },
+    setMaxLevel: (state, { payload }) => {
+      state.maxLevel = payload;
     }
   }
 });
@@ -211,9 +215,14 @@ export const initGame = createAsyncThunk(
       console.log({ pendingGames });
 
       const state = getState();
+      const maxLevel = levels.length;
       const level = state.user.data.current_level.level;
+      if (level > maxLevel) {
+        level = maxLevel;
+      }
 
       dispatch(setLevels(levels));
+      dispatch(setMaxLevel(levels.length));
       dispatch(setExperienceLevel(level));
       dispatch(setBalance({ label: gameInfo.points, value: 0 }));
       dispatch(setExperiencePoints(gameInfo.points));
@@ -372,13 +381,16 @@ export const addExperience = createAsyncThunk(
 
     /** If user reached new level */
     if (newPoints >= level.tapping_to) {
-      dispatch(setExperienceLevel(state.game.experienceLevel + 1));
+      const newLevel = state.game.experienceLevel + 1;
+      if (newLevel >= state.game.maxLevel) return;
+
+      dispatch(setExperienceLevel(newLevel));
       dispatch(setReachedNewLevel(true)); // Update the new level trigger
       undateSubTheme(
         dispatch,
         state,
         state.game.themes,
-        state.game.experienceLevel + 1
+        newLevel
       ); // Update the hawk subtheme that depends on level
       dispatch(switchTheme({ direction: 'updateCurrent', timeout: 0 })); // Switch theme with updateCurrent status to run update theme animation
 
@@ -526,7 +538,8 @@ export const {
   setCounterCount,
   setCounterIsFinished,
   setRoundFinal,
-  setLastFreeGameEndsAt
+  setLastFreeGameEndsAt,
+  setMaxLevel
 } = gameSlice.actions;
 export default gameSlice.reducer;
 
