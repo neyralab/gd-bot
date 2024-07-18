@@ -11,6 +11,9 @@ const getWallet = (wallet) => {
 }
 
 const getNumbers = (value = '') => {
+  if (Number.isInteger(value)) {
+    return value;
+  }
   return value?.match(/\d+/g)?.join('');
 }
 
