@@ -43,7 +43,7 @@ const DirectionalLight = () => {
       const colorElapsed =
         state.clock.getElapsedTime() - colorTransitionStartTime;
       const delay = 1; // seconds of delay
-      const colorDuration = 5; // Duration of the color transition in seconds
+      const colorDuration = 2.4; // Duration of the color transition in seconds
 
       if (colorElapsed > delay) {
         const t = Math.min((colorElapsed - delay) / colorDuration, 1);

@@ -233,16 +233,22 @@ export const initGame = createAsyncThunk(
 
       /** This function combines backend tiers and frontend themes */
       let newThemes = defaultThemes.map((theme) => {
+        const findLevel = levels.find(el => el.id === level);
         const { tierIdBN, tierId, ...findGame } = games.find(
           (game) => game.multiplier === theme.multiplier
         );
         let newTheme = findGame
-          ? { ...findGame, ...theme, tierId: findGame.id }
+          ? {
+              ...findGame,
+              ...theme,
+              tierId: findGame.id,
+              multiplier: findLevel.multiplier
+            }
           : theme;
         return newTheme;
       });
 
-      /** This function combines frontend color schemes and images for hawk theme. 
+      /** This function combines frontend color schemes and images for hawk theme.
        * Hawk theme can have different colors depends on level */
       newThemes = undateSubTheme(dispatch, state, newThemes, level);
 

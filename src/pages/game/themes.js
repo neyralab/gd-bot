@@ -22,7 +22,7 @@ export const levelSubThemes = [
       emission: '#AEE0FF',
       fog: '#A3C5E7',
       wave: '#4495E7',
-      directionalLight: '#A3C5E7',
+      directionalLight: '#B0C8FA',
       accentEmission: '#1177C0',
       shipTrailEmission: '#3EC2FF'
     },

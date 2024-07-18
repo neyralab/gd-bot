@@ -109,7 +109,7 @@ export function Game3DPage() {
 
     // Update state and timers
     dispatch(addExperience());
-    dispatch(addBalance(1));
+    dispatch(addBalance(theme.multiplier));
   };
 
   const handleEvent = async (event) => {
