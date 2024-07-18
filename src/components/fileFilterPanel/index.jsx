@@ -5,7 +5,6 @@ import { toast } from 'react-toastify';
 
 import {
   selectFileTypesCount,
-  setCurrentFilter,
   setFileTypesCount
 } from '../../store/reducers/filesSlice';
 import { getFileTypesCountEffect } from '../../effects/storageEffects';
@@ -29,7 +28,6 @@ export const FileFilterPanel = () => {
 
   const getFiles = async (type) => {
     navigate(`?type=${type}`);
-    dispatch(setCurrentFilter(type));
   };
 
   const options = [

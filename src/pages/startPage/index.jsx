@@ -65,7 +65,7 @@ export const StartPage = ({ tariffs }) => {
     );
 
     return {
-      total: `${transformSize(String(space_total), 0)}`,
+      total: `${transformSize(String(space_total))}`,
       used: `${fromByteToGb(space_used)}`,
       percent: { label: `${percent || 1}%`, value: percent }
     };
@@ -103,16 +103,13 @@ export const StartPage = ({ tariffs }) => {
           style['to-appear'],
           style['to-appear_active']
         )}>
-        <img
-          src={BannerSource}
-          alt="banner"
-        />
+        <img src={BannerSource} alt="banner" />
         <div className={style['banner-content']}>
           <div className={style['banner-header']}>
             <div className={style['banner-header_img']}>
               <LogoIcon />
             </div>
-            <h1>{storage.size}</h1>
+            <h1>{human?.total}</h1>
           </div>
         </div>
       </div>
@@ -127,7 +124,7 @@ export const StartPage = ({ tariffs }) => {
         openDisconnectModal={setDisconnectWalletModal}
         tasks={tasks}
       />
-      {isDev && (<Nodes wallet={user?.wallet} />)}
+      {isDev && <Nodes wallet={user?.wallet} />}
       <footer className={style.footer}>
         <p className={style['footer-text']}>
           <span
