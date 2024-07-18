@@ -211,6 +211,8 @@ export const initGame = createAsyncThunk(
         dispatch(setStatus('waiting'));
       }
 
+      /** In the hawk theme (tier id 1) we might have subthemes. It depend on levels.
+       * Each level has its own color scheme and images */
       const levelSubTheme =
         levelSubThemes.find((el) => el.level === level) || levelSubThemes[0];
 
