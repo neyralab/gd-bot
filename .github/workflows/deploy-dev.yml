@@ -80,12 +80,10 @@ jobs:
 
     - name: Push To Mercure
       run: |
-        TOPIC=${{ env.MERCURE_TOPIC }}
         HEADER=$(echo -n '{"alg":"HS256","typ":"JWT"}' | openssl base64 -e | tr -d '=' | tr '/+' '_-' | tr -d '\n')
         PAYLOAD=$(echo -n '{"mercure":{"publish":["*"]}}' | openssl base64 -e | tr -d '=' | tr '/+' '_-' | tr -d '\n')
         SIGNATURE=$(echo -n "${HEADER}.${PAYLOAD}" | openssl dgst -sha256 -hmac "${{ env.MERCURE_SECRET }}" -binary | base64 | tr -d '=' | tr '/+' '_-')
-        JWT_TOKEN="$HEADER.$PAYLOAD.$SIGNATURE"
-        curl -s -X POST -H "Authorization: Bearer ${JWT_TOKEN}" -d "topic=${TOPIC}&data=1.0" ${{ env.MERCURE_URL }}
+        curl -s -X POST -H "Authorization: Bearer ${HEADER}.${PAYLOAD}.${SIGNATURE}" -d "topic=${{ env.MERCURE_TOPIC }}&data=1.0" ${{ env.MERCURE_URL }}
 
     - name: Slack Result Notify
       if: always()
