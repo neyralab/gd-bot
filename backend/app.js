@@ -91,12 +91,8 @@ bot.start(async (ctx) => {
   };
 
   const dashboardButton = Markup.button.webApp(
-    'Dashboard',
+    'Ghost Drive',
     `${process.env.APP_FRONTEND_URL}/start`
-  );
-  const playButton = Markup.button.webApp(
-    'Tap to Earn',
-    `${process.env.APP_FRONTEND_URL}/game-3d`
   );
   const followXButton = Markup.button.url(
     'Follow X',
@@ -119,7 +115,6 @@ bot.start(async (ctx) => {
         reply_markup: {
           inline_keyboard: [
             [dashboardButton],
-            [playButton],
             [followXButton],
             [followCommunityButton],
             [followNewsButton],
