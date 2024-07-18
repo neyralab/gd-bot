@@ -38,7 +38,7 @@ import {
 import { INVOICE_TYPE } from '../../../utils/createStarInvoice';
 import { makeInvoice } from '../../../effects/paymentEffect';
 import { useQueryId } from '../../../effects/contracts/useQueryId';
-import { ReactComponent as StarIcon } from '../../../assets/star.svg';
+// import { ReactComponent as StarIcon } from '../../../assets/star.svg';
 import { ReactComponent as TonIcon } from '../../../assets/TON.svg';
 import {
   beforeGame,
@@ -46,7 +46,7 @@ import {
   getActivePayedGame
 } from '../../../effects/gameEffect';
 import { useOnConnect } from '../../../utils/useOnConnect';
-import { isDevEnv } from '../../../utils/isDevEnv';
+// import { isDevEnv } from '../../../utils/isDevEnv';
 import { sleep } from '../../../utils/sleep';
 import styles from './BuyButton.module.css';
 
@@ -66,7 +66,7 @@ export default function BuyButton() {
 
   const user = useSelector((state) => state?.user?.data);
   const contractAddress = useSelector(selectContractAddress);
-  const isDev = isDevEnv();
+  // const isDev = isDevEnv();
   const [isDisabled, setIsDisabled] = useState(false);
 
   const clickHandler = async () => {
@@ -213,9 +213,9 @@ export default function BuyButton() {
     dispatch(handlePaymentSelectModal(false));
   };
 
-  const handleSelect = () => {
-    dispatch(handlePaymentSelectModal(true));
-  };
+  // const handleSelect = () => {
+  //   dispatch(handlePaymentSelectModal(true));
+  // };
 
   const handleStartPayment = (el) => {
     if (el.action === 'ton') {
@@ -239,11 +239,11 @@ export default function BuyButton() {
         <button
           type="button"
           className={classNames(styles.button, styles[theme.id])}
-          onClick={handleSelect}
+          onClick={clickHandler}
         >
-          <StarIcon className={styles['star-icon']} viewBox="0 0 21 21" />
+          <TonIcon className={styles['star-icon']} viewBox="0 0 24 24" />
           <span className={styles.cost}>
-            {theme.stars || 'FREE'}
+            {theme.cost || 'FREE'}
           </span>
           <span
             className={styles.multiplier}
