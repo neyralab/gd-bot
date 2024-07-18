@@ -37,11 +37,11 @@ import GameCanvas from './Models/GameCanvas';
 export function Game3DPage() {
   const dispatch = useDispatch();
 
-  // const backgroundRef = useRef(null);
   const pointsAreaRef = useRef(null);
   const canvasRef = useRef(null);
 
   const isInitialized = useSelector(selectIsInitialized);
+  const userIsInitialized = useSelector((state) => !!state.user.data);
   const theme = useSelector(selectTheme);
   const themeAccess = useSelector(selectThemeAccess);
   const themeIsSwitching = useSelector(
@@ -63,14 +63,14 @@ export function Game3DPage() {
   });
 
   useEffect(() => {
-    if (!isInitialized) {
+    if (!isInitialized && userIsInitialized) {
       dispatch(initGame());
     }
 
     return () => {
       dispatch(gameCleanup());
     };
-  }, []);
+  }, [userIsInitialized]);
 
   /** All the data for the game should be fetched in the store's thunks.
    * Do not add extra actions and side effects.
@@ -124,7 +124,7 @@ export function Game3DPage() {
     }
   };
 
-  if (!isInitialized || isTransactionLoading) {
+  if (!isInitialized || !userIsInitialized || isTransactionLoading) {
     return (
       <GhostLoader
         texts={

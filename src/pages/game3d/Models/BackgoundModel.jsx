@@ -30,7 +30,7 @@ const BackgroundModel = forwardRef((_, ref) => {
 
   const glareRef = useRef(null);
   const [currentGlareImage, setCurrentGlareImage] = useState(
-    `/assets/game-page/glare-color-${theme.id}.png`
+    `/assets/game-page/${theme.glareImg}`
   );
   const glareColorMap = useLoader(TextureLoader, currentGlareImage);
   const glareAlphaMap = useLoader(
@@ -130,7 +130,7 @@ const BackgroundModel = forwardRef((_, ref) => {
           themeChangeOpacityRef.current = Math.max(1 - t, 0); // Fade out
           if (themeChangeOpacityRef.current === 0) {
             setCurrentGlareImage(
-              `/assets/game-page/glare-color-${nextTheme.theme ? nextTheme.theme.id : theme.id}.png`
+              `/assets/game-page/${nextTheme.theme.glareImg}`
             );
             setIsFadingOut(false);
           }

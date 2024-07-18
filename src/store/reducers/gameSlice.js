@@ -1,5 +1,8 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import defaultThemes from '../../pages/game/themes';
+import {
+  themes as defaultThemes,
+  levelSubThemes
+} from '../../pages/game/themes';
 import levels from '../../pages/game/levels';
 import {
   beforeGame,
@@ -172,7 +175,7 @@ const lockTimerCountdown = (dispatch, endTime) => {
 
 export const initGame = createAsyncThunk(
   'game/initGame',
-  async (_, { dispatch }) => {
+  async (_, { dispatch, getState }) => {
     dispatch(setIsInitializing(true));
     dispatch(setIsInitialized(false));
 
@@ -186,7 +189,12 @@ export const initGame = createAsyncThunk(
           getPendingGames({ tierId: 4 })
         ]);
       console.log({ pendingGames });
+
+      const state = getState();
+      const level = state.user.data.current_level.level;
+
       dispatch(setLevels(levels));
+      dispatch(setExperienceLevel(level));
       dispatch(setBalance({ label: gameInfo.points, value: 0 }));
       dispatch(setExperiencePoints(gameInfo.points));
       dispatch(setContractAddress(cAddress));
@@ -203,13 +211,20 @@ export const initGame = createAsyncThunk(
         dispatch(setStatus('waiting'));
       }
 
+      const levelSubTheme =
+        levelSubThemes.find((el) => el.level === level) || levelSubThemes[0];
+
       const newThemes = defaultThemes.map((theme) => {
         const { tierIdBN, tierId, ...findGame } = games.find(
           (game) => game.multiplier === theme.multiplier
         );
-        return findGame
+        let newTheme = findGame
           ? { ...findGame, ...theme, tierId: findGame.id }
           : theme;
+        if (newTheme.id === 'hawk') {
+          newTheme = { ...newTheme, ...levelSubTheme };
+        }
+        return newTheme;
       });
       dispatch(setThemes(newThemes));
 
@@ -445,7 +460,6 @@ export const switchTheme = createAsyncThunk(
       );
     }, timeout);
 
-    
     if (newTheme.id !== 'hawk') {
       const newPendingGames = await getPendingGames({
         tierId: newTheme.tierId
