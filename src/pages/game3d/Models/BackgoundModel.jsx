@@ -130,7 +130,7 @@ const BackgroundModel = forwardRef((_, ref) => {
           themeChangeOpacityRef.current = Math.max(1 - t, 0); // Fade out
           if (themeChangeOpacityRef.current === 0) {
             setCurrentGlareImage(
-              `/assets/game-page/${nextTheme.theme.glareImg}`
+              `/assets/game-page/${nextTheme.theme ? nextTheme.theme.glareImg : theme.glareImg}`
             );
             setIsFadingOut(false);
           }

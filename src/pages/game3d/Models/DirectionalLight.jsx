@@ -67,7 +67,7 @@ const DirectionalLight = () => {
       ref={lightRef}
       position={[1, 1, 1]}
       intensity={2}
-      color={theme.colors.directionalLight}
+      color={localTheme.colors.directionalLight}
     />
   );
 };

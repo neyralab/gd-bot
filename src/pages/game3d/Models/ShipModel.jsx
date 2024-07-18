@@ -167,6 +167,12 @@ const ShipModel = forwardRef((_, ref) => {
   const runThemeChange = () => {
     if (!mixer.current) return;
 
+    /** Do not run flyIn/flyOut animation if theme change conencted with reaching new level */
+    if (nextTheme.direction === 'updateCurrent') {
+      setThemeMaterials(nextTheme.theme || theme);
+      return;
+    }
+
     const action = mixer.current.clipAction(shipFbx.animations[0]);
     if (!action) return;
 

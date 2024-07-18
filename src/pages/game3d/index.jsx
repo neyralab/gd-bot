@@ -21,7 +21,6 @@ import PointsGrowArea from '../game/PointsGrowArea/PointsGrowArea';
 import Timer from '../game/Timer/Timer';
 import Menu from '../../components/Menu/Menu';
 import ProgressBar from '../game/ProgressBar/ProgressBar';
-import Congratulations from '../game/Congratulations/Congratulations';
 import GhostLoader from '../../components/ghostLoader';
 import Counter from '../game/Counter/Counter';
 import Balance from '../game/Balance/Balance';
@@ -192,8 +191,6 @@ export function Game3DPage() {
       </div>
 
       <Menu />
-
-      <Congratulations />
     </div>
   );
 }

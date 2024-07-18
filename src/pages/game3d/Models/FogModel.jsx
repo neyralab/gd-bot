@@ -74,5 +74,7 @@ export default function FogModel() {
     }
   });
 
-  return <fog ref={fogRef} attach="fog" args={[theme.colors.fog, -2, 350]} />;
+  return (
+    <fog ref={fogRef} attach="fog" args={[localTheme.colors.fog, -2, 350]} />
+  );
 }

@@ -3,7 +3,6 @@ import {
   themes as defaultThemes,
   levelSubThemes
 } from '../../pages/game/themes';
-import levels from '../../pages/game/levels';
 import {
   beforeGame,
   endGame,
@@ -173,6 +172,27 @@ const lockTimerCountdown = (dispatch, endTime) => {
   dispatch(setLockIntervalId(intervalId));
 };
 
+const undateSubTheme = (dispatch, state, themes, level) => {
+  /** In the hawk theme (tier id 1) we might have subthemes. It depend on levels.
+   * Each level has its own color scheme and images */
+  const levelSubTheme =
+    levelSubThemes.find((el) => el.level === level) || levelSubThemes[0];
+
+  const newThemes = themes.map((theme) => {
+    if (theme.id === 'hawk') {
+      return { ...theme, ...levelSubTheme };
+    }
+    return theme;
+  });
+
+  dispatch(setThemes(newThemes));
+  if (state.game.themeIndex !== null) {
+    dispatch(setTheme(newThemes[state.game.themeIndex]));
+  }
+
+  return newThemes;
+};
+
 export const initGame = createAsyncThunk(
   'game/initGame',
   async (_, { dispatch, getState }) => {
@@ -211,24 +231,20 @@ export const initGame = createAsyncThunk(
         dispatch(setStatus('waiting'));
       }
 
-      /** In the hawk theme (tier id 1) we might have subthemes. It depend on levels.
-       * Each level has its own color scheme and images */
-      const levelSubTheme =
-        levelSubThemes.find((el) => el.level === level) || levelSubThemes[0];
-
-      const newThemes = defaultThemes.map((theme) => {
+      /** This function combines backend tiers and frontend themes */
+      let newThemes = defaultThemes.map((theme) => {
         const { tierIdBN, tierId, ...findGame } = games.find(
           (game) => game.multiplier === theme.multiplier
         );
         let newTheme = findGame
           ? { ...findGame, ...theme, tierId: findGame.id }
           : theme;
-        if (newTheme.id === 'hawk') {
-          newTheme = { ...newTheme, ...levelSubTheme };
-        }
         return newTheme;
       });
-      dispatch(setThemes(newThemes));
+
+      /** This function combines frontend color schemes and images for hawk theme. 
+       * Hawk theme can have different colors depends on level */
+      newThemes = undateSubTheme(dispatch, state, newThemes, level);
 
       if (pendingGames.length > 0) {
         dispatch(setThemeAccess({ themeId: 'ghost', status: true }));
@@ -257,6 +273,7 @@ export const startRound = createAsyncThunk(
     setRoundFinal({ roundPoins: null, isActive: false });
     dispatch(setRoundTimeoutId(null));
     dispatch(setStatus('playing'));
+    dispatch(setReachedNewLevel(false));
     const state = getState();
     const level = selectLevel(state);
     const gameTime = level?.play_time * 1000;
@@ -346,41 +363,25 @@ export const addExperience = createAsyncThunk(
     if (!level) return;
 
     const newPoints = state.game.experiencePoints + 1;
+
+    /** If user reached new level */
     if (newPoints >= level.tapping_to) {
       dispatch(setExperienceLevel(state.game.experienceLevel + 1));
+      dispatch(setReachedNewLevel(true)); // Update the new level trigger
+      undateSubTheme(
+        dispatch,
+        state,
+        state.game.themes,
+        state.game.experienceLevel + 1
+      ); // Update the hawk subtheme that depends on level
+      dispatch(switchTheme({ direction: 'updateCurrent', timeout: 0 })); // Switch theme with updateCurrent status to run update theme animation
+
       const now = Date.now();
-      const lock = new Date(now.getTime() + level.recharge_mins * 1000 * 60);
+      const lock = new Date(now + level.recharge_mins * 1000 * 60).getTime();
       dispatch(setLockTimerTimestamp(lock));
     }
+
     dispatch(setExperiencePoints(newPoints));
-  }
-);
-
-export const confirmNewlevel = createAsyncThunk(
-  'game/confirmNewLevel',
-  async (_, { dispatch, getState }) => {
-    const state = getState();
-    const levelIndex = levels.findIndex(
-      (el) => el.id === state.game.experienceLevel
-    );
-
-    if (levelIndex >= levels.length - 1) return;
-
-    dispatch(setStatus('waiting'));
-    dispatch(setReachedNewLevel(false));
-    dispatch(
-      setBalance({
-        value: state.game.balance.value + levels[levelIndex - 1].giftPoints,
-        label: state.game.balance.label + levels[levelIndex - 1].giftPoints
-      })
-    );
-
-    if (levels[levelIndex - 1].freeRound) {
-      dispatch(setThemeAccess({ themeId: 'hawk', status: true }));
-      dispatch(setLockTimerTimestamp(null));
-      clearInterval(state.game.lockIntervalId);
-      dispatch(setLockIntervalId(null));
-    }
   }
 );
 
@@ -426,7 +427,7 @@ export const switchTheme = createAsyncThunk(
     const themes = state.game.themes;
     const themeIndex = state.game.themeIndex;
 
-    if (state.game.status === 'playing') return;
+    if (state.game.status === 'playing' && !state.game.reachedNewLevel) return; // Normally, do not change theme iif it's playing mode. However, the theme might be changed if we reached new level. In this case use switch theme with dirrection 'updateCurrent'
     if (!state.game.counter.isFinished) return;
 
     let newThemeIndex;
@@ -437,6 +438,8 @@ export const switchTheme = createAsyncThunk(
     } else if (direction === 'prev') {
       newThemeIndex = (themeIndex - 1 + themes.length) % themes.length;
       if (newThemeIndex >= themes.length - 1 || newThemeIndex < 0) return;
+    } else if (direction === 'updateCurrent') {
+      newThemeIndex = themeIndex;
     }
 
     const newTheme = themes[newThemeIndex];
@@ -473,6 +476,8 @@ export const switchTheme = createAsyncThunk(
     } else {
       dispatch(setStatus('waiting'));
     }
+
+    dispatch(setReachedNewLevel(false));
   }
 );
 
