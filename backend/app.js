@@ -120,11 +120,11 @@ bot.start(async (ctx) => {
     `https://twitter.com/ghostdrive_web3`
   );
   const followCommunityButton = Markup.button.url(
-    'Follow Community',
+    'Community',
     `https://t.me/ghostdrive_web3_chat`
   );
   const followNewsButton = Markup.button.url(
-    'Follow News',
+    'News',
     `https://t.me/ghostdrive_web3`
   );
   try {
@@ -137,7 +137,6 @@ bot.start(async (ctx) => {
           inline_keyboard: [
             [dashboardButton],
             [playButton],
-            [followXButton],
             [followCommunityButton],
             [followNewsButton],
             [shareButton]
@@ -150,7 +149,9 @@ bot.start(async (ctx) => {
     try {
       await ctx.reply(`Error: ${error.message}`);
     } catch (e) {
-      logger.error('Error sending error message after replyWithPhoto error', { error: e });
+      logger.error('Error sending error message after replyWithPhoto error', {
+        error: e
+      });
     }
   }
 });
@@ -163,7 +164,10 @@ bot.on('photo', photoHandler);
 
 bot.on('pre_checkout_query', async (ctx) => {
   try {
-    const response = await axios.post(`${process.env.TG_BILLING_ENDPOINT}`,  ctx.update);
+    const response = await axios.post(
+      `${process.env.TG_BILLING_ENDPOINT}`,
+      ctx.update
+    );
   } catch (error) {
     logger.error('Error in pre_checkout_query:', { error });
   }
@@ -180,7 +184,9 @@ bot.on('successful_payment', async (ctx) => {
       try {
         await ctx.reply('Payment successfully confirmed. Thank you!');
       } catch (replyError) {
-        logger.error('Error sending payment confirmation message', { error: replyError });
+        logger.error('Error sending payment confirmation message', {
+          error: replyError
+        });
       }
     } else {
       try {
@@ -188,7 +194,9 @@ bot.on('successful_payment', async (ctx) => {
           'Payment received, but there was an issue confirming it. Please contact support.'
         );
       } catch (replyError) {
-        logger.error('Error sending payment issue message', { error: replyError });
+        logger.error('Error sending payment issue message', {
+          error: replyError
+        });
       }
     }
   } catch (error) {
@@ -198,7 +206,9 @@ bot.on('successful_payment', async (ctx) => {
         'There was an error processing your payment. Please contact support.'
       );
     } catch (replyError) {
-      logger.error('Error sending payment error message', { error: replyError });
+      logger.error('Error sending payment error message', {
+        error: replyError
+      });
     }
   }
 });
