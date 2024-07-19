@@ -55,13 +55,13 @@ const FileList = ({ files, checkedFile }) => {
   };
 
   return files.length ? (
-    <div className={style.scrollWrapper}>
+    <div className={style.scrollWrapper} id="scrollableDiv">
       <InfiniteScroll
         className={CN(style.filesList, view === 'grid' && style.filesListGrid)}
         dataLength={files.length}
         next={fetchMoreFiles}
         hasMore={hasMore}
-        scrollThreshold={0.7}>
+        scrollableTarget="scrollableDiv">
         {files.map((file) => (
           <FileItem
             file={file}

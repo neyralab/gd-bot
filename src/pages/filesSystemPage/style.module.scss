@@ -102,6 +102,8 @@ header.header {
 
 .scrollWrapper {
   width: 100%;
+  height: calc(100vh - 200px);
+  overflow: auto;
 }
 
 .filesList {
