@@ -1,20 +1,32 @@
 import callLLMProvider from '../utils/callLLMProvider.js';
 import generateImage from '../utils/generateImage.js';
+import logger from '../utils/logger.js';
 
 const state = new Map();
 
 async function textHandler(ctx) {
+  const chatId = ctx.message.chat.id;
+  const userId = ctx.from.id;
+  const messageText = ctx.message.text;
+  logger.info(`Incoming chat message`, {
+    userId,
+    chatId,
+    incomingText: messageText
+  });
+  // Retrieve the chat history from state
+  const data = state.get(chatId) || {};
+  const chatHist = data?.chatHist ? data.chatHist.slice(-5) : [];
+  const chatHistStr = chatHist.join('\n\n');
+
   try {
-    const chatId = ctx.message.chat.id;
-    const messageText = ctx.message.text;
-
-    // Retrieve the chat history from state
-    const data = state.get(chatId) || {};
-    const chatHist = data?.chatHist ? data.chatHist.slice(-5) : [];
-    const chatHistStr = chatHist.join('\n\n');
-
     // Send thinking message
-    const thinkingMsg = await ctx.reply('⚡️ Thinking...');
+    let thinkingMsg;
+    try {
+      thinkingMsg = await ctx.reply('⚡️ Thinking...');
+    } catch (error) {
+      logger.error('Error sending thinking message', { error });
+      return;
+    }
 
     // Call the LLM provider
     const response = await callLLMProvider(
@@ -34,6 +46,11 @@ async function textHandler(ctx) {
 
     // Edit thinking message with LLM response
     try {
+      logger.info(`Outgoing chat message`, {
+        userId,
+        chatId,
+        response: textResponse.trim()
+      });
       await ctx.telegram.editMessageText(
         thinkingMsg.chat.id,
         thinkingMsg.message_id,
@@ -42,66 +59,130 @@ async function textHandler(ctx) {
         { parse_mode: 'Markdown' }
       );
     } catch (err) {
-      console.log('textHandler err 1', err);
       if (err.description === 'Bad Request: message is empty') {
-        await ctx.telegram.editMessageText(
-          thinkingMsg.chat.id,
-          thinkingMsg.message_id,
-          null,
-          'Got it!'
-        );
+        try {
+          await ctx.telegram.editMessageText(
+            thinkingMsg.chat.id,
+            thinkingMsg.message_id,
+            null,
+            'Got it!'
+          );
+        } catch (editError) {
+          logger.error('Error editing empty message', { editError });
+        }
+        logger.error(`Outgoing chat message`, {
+          userId,
+          chatId,
+          response: 'Bad Request: response message is empty'
+        });
       } else {
-        await ctx.telegram.editMessageText(
-          thinkingMsg.chat.id,
-          thinkingMsg.message_id,
-          null,
-          textResponse.trim()
-        );
+        try {
+          await ctx.telegram.editMessageText(
+            thinkingMsg.chat.id,
+            thinkingMsg.message_id,
+            null,
+            textResponse.trim()
+          );
+        } catch (editError) {
+          logger.error('Error editing message', { editError });
+        }
       }
     }
 
     // Handle image generation if imgPrompt is present
     if (imgPrompt) {
-      const genPlaceholder = await ctx.reply('📸 Generating image...');
+      let genPlaceholder;
+      try {
+        genPlaceholder = await ctx.reply('📸 Generating image...');
+      } catch (error) {
+        logger.error('Error sending image generation placeholder', { error });
+        return;
+      }
 
       if (imgPromptValue) {
         try {
+          logger.info(`Incoming prompt for generation`, {
+            userId,
+            chatId,
+            prompt: imgPromptValue
+          });
           const image = await generateImage(imgPromptValue);
           if (image) {
-            await ctx.replyWithPhoto({ source: image });
-            await ctx.telegram.editMessageText(
-              genPlaceholder.chat.id,
-              genPlaceholder.message_id,
-              null,
-              '🚀 Image generated'
-            );
+            logger.info(`Outgoing generated image`, {
+              userId,
+              chatId,
+              prompt: imgPromptValue,
+              image: image.substring(0, 50) + '...'
+            });
+            try {
+              await ctx.replyWithPhoto({ source: image });
+            } catch (replyError) {
+              logger.error('Error sending generated image', { replyError });
+            }
+            try {
+              await ctx.telegram.editMessageText(
+                genPlaceholder.chat.id,
+                genPlaceholder.message_id,
+                null,
+                '🚀 Image generated'
+              );
+            } catch (editError) {
+              logger.error('Error editing image generation message', { editError });
+            }
           } else {
+            try {
+              await ctx.telegram.editMessageText(
+                genPlaceholder.chat.id,
+                genPlaceholder.message_id,
+                null,
+                'Error generating image'
+              );
+            } catch (editError) {
+              logger.error('Error editing image generation error message', { editError });
+            }
+            logger.error(`Error in outgoing generated image`, {
+              userId,
+              chatId,
+              prompt: imgPromptValue
+            });
+          }
+        } catch (err) {
+          try {
             await ctx.telegram.editMessageText(
               genPlaceholder.chat.id,
               genPlaceholder.message_id,
               null,
               'Error generating image'
             );
+          } catch (editError) {
+            logger.error('Error editing image generation error message', { editError });
           }
-        } catch (err) {
+          logger.error(`Error in outgoing generated image`, {
+            userId,
+            chatId,
+            prompt: imgPromptValue
+          });
+        }
+      } else {
+        try {
           await ctx.telegram.editMessageText(
             genPlaceholder.chat.id,
             genPlaceholder.message_id,
             null,
             'Error generating image'
           );
+        } catch (editError) {
+          logger.error('Error editing image generation error message', { editError });
         }
-      } else {
-        await ctx.telegram.editMessageText(
-          genPlaceholder.chat.id,
-          genPlaceholder.message_id,
-          null,
-          'Error generating image'
-        );
       }
     }
   } catch (err) {
     console.log('textHandler global err', err);
+    try {
+      await ctx.reply('An error occurred while processing your message.');
+    } catch (replyError) {
+      logger.error('Error sending error message', { replyError });
+    }
   }
 }
 
