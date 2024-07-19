@@ -139,7 +139,7 @@ const ShipModel = forwardRef((_, ref) => {
           tl.to(shipGroupRef.current.position, {
             y: 0,
             duration: 1.4,
-            ease: 'power3.out'
+            ease: 'back.out(0.7)'
           }).to(shipGroupRef.current.rotation, {
             y: -Math.PI / 2,
             duration: 1.5,
