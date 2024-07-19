@@ -154,20 +154,7 @@ bot.on('photo', photoHandler);
 
 bot.on('pre_checkout_query', async (ctx) => {
   try {
-    const preCheckoutQuery = ctx.preCheckoutQuery;
-    const postBody = JSON.stringify({
-      pre_checkout_query: ctx.preCheckoutQuery
-    });
-    const response = await axios.post(
-      `${process.env.TG_BILLING_ENDPOINT}`,
-      ctx.update
-    );
-    console.error('DEBUG', ctx.update);
-    // if (response.status === 200) {
-    //   await ctx.answerPreCheckoutQuery(true);
-    // } else {
-    //   await ctx.answerPreCheckoutQuery(false, 'Payment could not be processed. Please try again.');
-    // }
+    const response = await axios.post(`${process.env.TG_BILLING_ENDPOINT}`,  ctx.update);
   } catch (error) {
     console.error('Error in pre_checkout_query:', error.message);
   }
