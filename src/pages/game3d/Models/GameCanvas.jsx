@@ -52,7 +52,7 @@ const GameCanvas = forwardRef((_, ref) => {
   return (
     <Canvas antialias="true" dpr={[1, 2]}>
       <Suspense fallback={<Loader />}>
-        <ambientLight intensity={1.2} color={0xffffff} />
+        <ambientLight intensity={1.5} color={0xffffff} />
         <DirectionalLight />
         
         <FogModel />

@@ -71,12 +71,12 @@ const ShipModel = forwardRef((_, ref) => {
             case 'SecondaryColor2':
               material.color.set(theme.colors.wingAccent);
               break;
-            case 'BaseEmission':
+            case 'BaseEmission2':
               material.color.set(theme.colors.emission);
               material.emissive = new THREE.Color(theme.colors.emission);
               material.needsUpdate = true;
               break;
-            case 'AccentDetails2':
+            case 'AccentDetailsEmission':
               material.color.set(theme.colors.accentEmission);
               material.emissive = new THREE.Color(theme.colors.accentEmission);
               material.emissiveIntensity = 8;
