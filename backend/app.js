@@ -146,6 +146,38 @@ bot.on('text', textHandler);
 
 bot.on('photo', photoHandler);
 
+bot.on('pre_checkout_query', async (ctx) => {
+  try {
+    const preCheckoutQuery = ctx.preCheckoutQuery;
+    const response = await axios.post(`${process.env.TG_BILLING_ENDPOINT}`,  JSON.stringify(ctx.update));
+    
+    // if (response.status === 200) {
+    //   await ctx.answerPreCheckoutQuery(true);
+    // } else {
+    //   await ctx.answerPreCheckoutQuery(false, 'Payment could not be processed. Please try again.');
+    // }
+  } catch (error) {
+    console.error('Error in pre_checkout_query:', error.message);
+  }
+});
+
+bot.on('successful_payment', async (ctx) => {
+  try {
+    const paymentInfo = ctx.message.successful_payment;
+    const response = await axios.post(`${process.env.TG_BILLING_ENDPOINT}`, JSON.stringify(ctx.update));
+    
+    if (response.status < 400) {
+      await ctx.reply('Payment successfully confirmed. Thank you!');
+    } else {
+      await ctx.reply('Payment received, but there was an issue confirming it. Please contact support.');
+    }
+  } catch (error) {
+    console.error('Error in successful_payment:', error.message);
+    await ctx.reply('There was an error processing your payment. Please contact support.');
+  }
+});
+
+
 bot.launch();
 
 app.listen(process.env.PORT, () =>
