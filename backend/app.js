@@ -4,6 +4,7 @@ import { Telegraf, Markup } from 'telegraf';
 import fs from 'fs';
 import fetch from 'node-fetch';
 import { telegrafThrottler } from 'telegraf-throttler';
+import axios from 'axios';
 
 import photoHandler from './handlers/photoHandler.js';
 import textHandler from './handlers/textHandler.js';
@@ -105,6 +106,10 @@ bot.start(async (ctx) => {
     'Ghost Drive',
     `${process.env.APP_FRONTEND_URL}/start`
   );
+  const playButton = Markup.button.webApp(
+    'Tap to Earn',
+    `${process.env.APP_FRONTEND_URL}/game-3d`
+  );
   const followXButton = Markup.button.url(
     'Follow X',
     `https://twitter.com/ghostdrive_web3`
@@ -126,6 +131,7 @@ bot.start(async (ctx) => {
         reply_markup: {
           inline_keyboard: [
             [dashboardButton],
+            [playButton],
             [followXButton],
             [followCommunityButton],
             [followNewsButton],
@@ -145,6 +151,49 @@ bot.command('terms', termsHandler);
 bot.on('text', textHandler);
 
 bot.on('photo', photoHandler);
+
+bot.on('pre_checkout_query', async (ctx) => {
+  try {
+    const preCheckoutQuery = ctx.preCheckoutQuery;
+    const postBody = JSON.stringify({
+      pre_checkout_query: ctx.preCheckoutQuery
+    });
+    const response = await axios.post(
+      `${process.env.TG_BILLING_ENDPOINT}`,
+      ctx.update
+    );
+    console.error('DEBUG', ctx.update);
+    // if (response.status === 200) {
+    //   await ctx.answerPreCheckoutQuery(true);
+    // } else {
+    //   await ctx.answerPreCheckoutQuery(false, 'Payment could not be processed. Please try again.');
+    // }
+  } catch (error) {
+    console.error('Error in pre_checkout_query:', error.message);
+  }
+});
+
+bot.on('successful_payment', async (ctx) => {
+  try {
+    const paymentInfo = ctx.message.successful_payment;
+    const response = await axios.post(`${process.env.TG_BILLING_ENDPOINT}`, {
+      message: ctx.message
+    });
+
+    if (response.status < 400) {
+      await ctx.reply('Payment successfully confirmed. Thank you!');
+    } else {
+      await ctx.reply(
+        'Payment received, but there was an issue confirming it. Please contact support.'
+      );
+    }
+  } catch (error) {
+    console.error('Error in successful_payment:', error.message);
+    await ctx.reply(
+      'There was an error processing your payment. Please contact support.'
+    );
+  }
+});
 
 bot.launch();
 
