@@ -151,8 +151,9 @@ bot.on('photo', photoHandler);
 bot.on('pre_checkout_query', async (ctx) => {
   try {
     const preCheckoutQuery = ctx.preCheckoutQuery;
-    const response = await axios.post(`${process.env.TG_BILLING_ENDPOINT}`,  JSON.stringify({pre_checkout_query: ctx.preCheckoutQuery}));
-    
+    const postBody = JSON.stringify({pre_checkout_query: ctx.preCheckoutQuery});
+    const response = await axios.post(`${process.env.TG_BILLING_ENDPOINT}`,  postBody);
+    console.error('DEBUG', postBody);
     // if (response.status === 200) {
     //   await ctx.answerPreCheckoutQuery(true);
     // } else {
