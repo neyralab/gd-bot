@@ -18,24 +18,24 @@ async function textHandler(ctx) {
   const chatHist = data?.chatHist ? data.chatHist.slice(-5) : [];
   const chatHistStr = chatHist.join('\n\n');
 
-  // Send thinking message
-  const thinkingMsg = await ctx.reply('⚡️ Thinking...');
+    // Send thinking message
+    const thinkingMsg = await ctx.reply('⚡️ Thinking...');
 
-  // Call the LLM provider
-  const response = await callLLMProvider(
-    `${chatHistStr}\nUser: ${messageText}\nGhostDrive:`
-  );
+    // Call the LLM provider
+    const response = await callLLMProvider(
+      `${chatHistStr}\nUser: ${messageText}\nGhostDrive:`
+    );
 
-  // Update chat history
-  chatHist.push(`User: ${messageText}\nGhostdrive: ${response}\n`);
-  state.set(chatId, { chatHist });
+    // Update chat history
+    chatHist.push(`User: ${messageText}\nGhostdrive: ${response}\n`);
+    state.set(chatId, { chatHist });
 
-  // Handle response and split for image prompt if present
-  const [textResponse, imgPart] = response.includes('<IMG>')
-    ? response.split('<IMG>')
-    : [response, ''];
-  const imgPrompt = imgPart ? imgPart.match(/{.*}/)[0] : '';
-  const imgPromptValue = imgPrompt ? JSON.parse(imgPrompt).prompt : '';
+    // Handle response and split for image prompt if present
+    const [textResponse, imgPart] = response.includes('<IMG>')
+      ? response.split('<IMG>')
+      : [response, ''];
+    const imgPrompt = imgPart ? imgPart.match(/{.*}/)[0] : '';
+    const imgPromptValue = imgPrompt ? JSON.parse(imgPrompt).prompt : '';
 
   // Edit thinking message with LLM response
   try {
@@ -74,9 +74,9 @@ async function textHandler(ctx) {
     }
   }
 
-  // Handle image generation if imgPrompt is present
-  if (imgPrompt) {
-    const genPlaceholder = await ctx.reply('📸 Generating image...');
+    // Handle image generation if imgPrompt is present
+    if (imgPrompt) {
+      const genPlaceholder = await ctx.reply('📸 Generating image...');
 
     if (imgPromptValue) {
       try {
@@ -134,6 +134,8 @@ async function textHandler(ctx) {
         'Error generating image'
       );
     }
+  } catch (err) {
+    console.log('textHandler global err', err);
   }
 }
 
