@@ -20,7 +20,13 @@ async function textHandler(ctx) {
 
   try {
     // Send thinking message
-    const thinkingMsg = await ctx.reply('⚡️ Thinking...');
+    let thinkingMsg;
+    try {
+      thinkingMsg = await ctx.reply('⚡️ Thinking...');
+    } catch (error) {
+      logger.error('Error sending thinking message', { error });
+      return;
+    }
 
     // Call the LLM provider
     const response = await callLLMProvider(
@@ -54,30 +60,44 @@ async function textHandler(ctx) {
       );
     } catch (err) {
       if (err.description === 'Bad Request: message is empty') {
-        await ctx.telegram.editMessageText(
-          thinkingMsg.chat.id,
-          thinkingMsg.message_id,
-          null,
-          'Got it!'
-        );
+        try {
+          await ctx.telegram.editMessageText(
+            thinkingMsg.chat.id,
+            thinkingMsg.message_id,
+            null,
+            'Got it!'
+          );
+        } catch (editError) {
+          logger.error('Error editing empty message', { editError });
+        }
         logger.error(`Outgoing chat message`, {
           userId,
           chatId,
           response: 'Bad Request: response message is empty'
         });
       } else {
-        await ctx.telegram.editMessageText(
-          thinkingMsg.chat.id,
-          thinkingMsg.message_id,
-          null,
-          textResponse.trim()
-        );
+        try {
+          await ctx.telegram.editMessageText(
+            thinkingMsg.chat.id,
+            thinkingMsg.message_id,
+            null,
+            textResponse.trim()
+          );
+        } catch (editError) {
+          logger.error('Error editing message', { editError });
+        }
       }
     }
 
     // Handle image generation if imgPrompt is present
     if (imgPrompt) {
-      const genPlaceholder = await ctx.reply('📸 Generating image...');
+      let genPlaceholder;
+      try {
+        genPlaceholder = await ctx.reply('📸 Generating image...');
+      } catch (error) {
+        logger.error('Error sending image generation placeholder', { error });
+        return;
+      }
 
       if (imgPromptValue) {
         try {
@@ -94,20 +114,32 @@ async function textHandler(ctx) {
               prompt: imgPromptValue,
               image: image.substring(0, 50) + '...'
             });
-            await ctx.replyWithPhoto({ source: image });
-            await ctx.telegram.editMessageText(
-              genPlaceholder.chat.id,
-              genPlaceholder.message_id,
-              null,
-              '🚀 Image generated'
-            );
+            try {
+              await ctx.replyWithPhoto({ source: image });
+            } catch (replyError) {
+              logger.error('Error sending generated image', { replyError });
+            }
+            try {
+              await ctx.telegram.editMessageText(
+                genPlaceholder.chat.id,
+                genPlaceholder.message_id,
+                null,
+                '🚀 Image generated'
+              );
+            } catch (editError) {
+              logger.error('Error editing image generation message', { editError });
+            }
           } else {
-            await ctx.telegram.editMessageText(
-              genPlaceholder.chat.id,
-              genPlaceholder.message_id,
-              null,
-              'Error generating image'
-            );
+            try {
+              await ctx.telegram.editMessageText(
+                genPlaceholder.chat.id,
+                genPlaceholder.message_id,
+                null,
+                'Error generating image'
+              );
+            } catch (editError) {
+              logger.error('Error editing image generation error message', { editError });
+            }
             logger.error(`Error in outgoing generated image`, {
               userId,
               chatId,
@@ -115,12 +147,16 @@ async function textHandler(ctx) {
             });
           }
         } catch (err) {
-          await ctx.telegram.editMessageText(
-            genPlaceholder.chat.id,
-            genPlaceholder.message_id,
-            null,
-            'Error generating image'
-          );
+          try {
+            await ctx.telegram.editMessageText(
+              genPlaceholder.chat.id,
+              genPlaceholder.message_id,
+              null,
+              'Error generating image'
+            );
+          } catch (editError) {
+            logger.error('Error editing image generation error message', { editError });
+          }
           logger.error(`Error in outgoing generated image`, {
             userId,
             chatId,
@@ -128,16 +164,25 @@ async function textHandler(ctx) {
           });
         }
       } else {
-        await ctx.telegram.editMessageText(
-          genPlaceholder.chat.id,
-          genPlaceholder.message_id,
-          null,
-          'Error generating image'
-        );
+        try {
+          await ctx.telegram.editMessageText(
+            genPlaceholder.chat.id,
+            genPlaceholder.message_id,
+            null,
+            'Error generating image'
+          );
+        } catch (editError) {
+          logger.error('Error editing image generation error message', { editError });
+        }
       }
     }
   } catch (err) {
     console.log('textHandler global err', err);
+    try {
+      await ctx.reply('An error occurred while processing your message.');
+    } catch (replyError) {
+      logger.error('Error sending error message', { replyError });
+    }
   }
 }
 

@@ -35,7 +35,7 @@ async function photoHandler(ctx) {
       chatId,
       error
     });
-    ctx.reply(
+    await ctx.reply(
       'An error occurred while processing the image. Please try again later!'
     );
   }

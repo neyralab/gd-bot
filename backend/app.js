@@ -9,6 +9,7 @@ import axios from 'axios';
 import photoHandler from './handlers/photoHandler.js';
 import textHandler from './handlers/textHandler.js';
 import termsHandler from './commands/terms/index.js';
+import logger from './utils/logger.js';
 
 const app = express();
 const bot = new Telegraf(process.env.BOT_TOKEN_SECRET);
@@ -82,7 +83,7 @@ bot.start(async (ctx) => {
       try {
         await ctx.reply(`Error: ${error.message}`);
       } catch (e) {
-        console.log('err because of err: ', e);
+        logger.error('Error sending error message', { error: e });
       }
       return;
     }
@@ -145,11 +146,11 @@ bot.start(async (ctx) => {
       }
     );
   } catch (error) {
-    console.error('Error replyWithPhoto:', error.message);
+    logger.error('Error replyWithPhoto:', { error });
     try {
       await ctx.reply(`Error: ${error.message}`);
     } catch (e) {
-      console.error('Error replyWithPhoto: after reply err', error);
+      logger.error('Error sending error message after replyWithPhoto error', { error: e });
     }
   }
 });
@@ -164,7 +165,7 @@ bot.on('pre_checkout_query', async (ctx) => {
   try {
     const response = await axios.post(`${process.env.TG_BILLING_ENDPOINT}`,  ctx.update);
   } catch (error) {
-    console.error('Error in pre_checkout_query:', error.message);
+    logger.error('Error in pre_checkout_query:', { error });
   }
 });
 
@@ -176,17 +177,29 @@ bot.on('successful_payment', async (ctx) => {
     });
 
     if (response.status < 400) {
-      await ctx.reply('Payment successfully confirmed. Thank you!');
+      try {
+        await ctx.reply('Payment successfully confirmed. Thank you!');
+      } catch (replyError) {
+        logger.error('Error sending payment confirmation message', { error: replyError });
+      }
     } else {
-      await ctx.reply(
-        'Payment received, but there was an issue confirming it. Please contact support.'
-      );
+      try {
+        await ctx.reply(
+          'Payment received, but there was an issue confirming it. Please contact support.'
+        );
+      } catch (replyError) {
+        logger.error('Error sending payment issue message', { error: replyError });
+      }
     }
   } catch (error) {
-    console.error('Error in successful_payment:', error.message);
-    await ctx.reply(
-      'There was an error processing your payment. Please contact support.'
-    );
+    logger.error('Error in successful_payment:', { error });
+    try {
+      await ctx.reply(
+        'There was an error processing your payment. Please contact support.'
+      );
+    } catch (replyError) {
+      logger.error('Error sending payment error message', { error: replyError });
+    }
   }
 });
 
