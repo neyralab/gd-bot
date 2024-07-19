@@ -1,8 +1,5 @@
 import graylog2 from 'graylog2';
 
-const environment =
-  process.env.BOT_NAME === 'Ghostdrivebotbot' ? 'DEV' : 'PROD';
-
 const logger = new graylog2.graylog({
   servers: [
     {
@@ -10,11 +7,8 @@ const logger = new graylog2.graylog({
       port: process.env.GRAYLOG_PORT_BACK
     }
   ],
-  hostname: 'TG bot',
-  facility: 'backend',
-  defaults: {
-    environment
-  }
+  hostname: process.env.BOT_NAME,
+  facility: 'backend'
 });
 
 export default logger;
