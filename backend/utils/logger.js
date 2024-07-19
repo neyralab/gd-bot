@@ -7,7 +7,7 @@ const logger = new graylog2.graylog({
       port: process.env.GRAYLOG_PORT_BACK
     }
   ],
-  hostname: 'TG bot',
+  hostname: process.env.BOT_NAME,
   facility: 'backend'
 });
 
