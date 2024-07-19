@@ -11,7 +11,7 @@ async function textHandler(ctx) {
   logger.info(`Incoming chat message`, {
     userId,
     chatId,
-    message: messageText
+    incomingText: messageText
   });
   // Retrieve the chat history from state
   const data = state.get(chatId) || {};
