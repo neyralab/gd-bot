@@ -167,7 +167,7 @@ bot.on('pre_checkout_query', async (ctx) => {
 bot.on('successful_payment', async (ctx) => {
   try {
     const paymentInfo = ctx.message.successful_payment;
-    const response = await axios.post(`${process.env.TG_BILLING_ENDPOINT}`, JSON.stringify({message: ctx.message}));
+    const response = await axios.post(`${process.env.TG_BILLING_ENDPOINT}`, {message: ctx.message});
     
     if (response.status < 400) {
       await ctx.reply('Payment successfully confirmed. Thank you!');
