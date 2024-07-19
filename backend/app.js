@@ -4,6 +4,8 @@ import { Telegraf, Markup } from 'telegraf';
 import fs from 'fs';
 import fetch from 'node-fetch';
 import { telegrafThrottler } from 'telegraf-throttler';
+import axios from 'axios';
+
 
 import photoHandler from './handlers/photoHandler.js';
 import textHandler from './handlers/textHandler.js';
