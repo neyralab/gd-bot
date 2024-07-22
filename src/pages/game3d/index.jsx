@@ -27,8 +27,9 @@ import Counter from '../game/Counter/Counter';
 import Balance from '../game/Balance/Balance';
 import Status from '../game/Status/Status';
 import ThemeSwitcherControllers from '../game/ThemeSwitcherControllers/ThemeSwitcherControllers';
-import styles from './styles.module.css';
 import GameCanvas from './Models/GameCanvas';
+import GoldPlayModal from '../game/GoldPlayModal/GoldPlayModal';
+import styles from './styles.module.css';
 
 /** Please, do not add extra selectors or state
  * It will force the component to rerender, that will cause lags and rerenders
@@ -220,6 +221,8 @@ export function Game3DPage() {
       </div>
 
       <Menu />
+
+      <GoldPlayModal />
 
       <HiddenButton />
     </div>

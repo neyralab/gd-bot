@@ -338,7 +338,12 @@ export const finishRound = createAsyncThunk(
       });
 
     if (state.game.reachedNewLevel) {
-      undateSubTheme(dispatch, state, state.game.themes, state.game.experienceLevel); // Update the hawk subtheme that depends on level
+      undateSubTheme(
+        dispatch,
+        state,
+        state.game.themes,
+        state.game.experienceLevel
+      ); // Update the hawk subtheme that depends on level
       setTimeout(() => {
         dispatch(
           switchTheme({
@@ -464,6 +469,17 @@ export const switchTheme = createAsyncThunk(
     } else {
       dispatch(setStatus('waiting'));
     }
+  }
+);
+
+export const confirmNewLevel = createAsyncThunk(
+  'game/confirmNewLevel',
+  async (_, { dispatch }) => {
+    dispatch(setReachedNewLevel(false));
+    dispatch(setThemeAccess({ themeId: 'gold', status: true }));
+    dispatch(
+      switchTheme({ themeId: 'gold', direction: 'updateCurrent', timeout: 0 })
+    );
   }
 );
 

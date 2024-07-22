@@ -227,6 +227,40 @@ export const themes = [
     /** Apply one of subthemes here. */
   },
   {
+    id: 'gold',
+    name: 'Gold',
+    multiplier: 10,
+    cost: 0,
+    data: '0.10MB',
+    colors: {
+      buttonText: '#FFAB6B',
+      experienceBar: {
+        active: {
+          background1: '#FFA500',
+          background2: '#FE6B00',
+          boxShadow: '#FFA500'
+        },
+        empty: {
+          background1: [255, 165, 0],
+          background2: [255, 165, 0],
+          boxShadow: '#FFA500'
+        }
+      },
+
+      shipBase: '#F4CA16',
+      wing: '#F4CA16',
+      wingAccent: '#F4CA16',
+      emission: '#FFE3AE',
+      fog: '#E79191',
+      wave: '#E7AE44',
+      directionalLight: '#CAE199',
+      accentEmission: '#DC4F29',
+      shipTrailEmission: '#FFBB3E'
+    },
+
+    glareImg: 'glare-color-hawk-2.png'
+  },
+  {
     id: 'ghost',
     name: 'Ghost',
     multiplier: 25,
