@@ -242,7 +242,7 @@ export const initGame = createAsyncThunk(
 
       /** This function combines backend tiers and frontend themes */
       let newThemes = defaultThemes.map((theme) => {
-        const findLevel = levels.find(el => el.id === level);
+        const findLevel = levels.find((el) => el.id === level);
         const { tierIdBN, tierId, ...findGame } = games.find(
           (game) => game.multiplier === theme.multiplier
         );
@@ -251,7 +251,8 @@ export const initGame = createAsyncThunk(
               ...findGame,
               ...theme,
               tierId: findGame.id,
-              multiplier: findLevel.multiplier
+              multiplier:
+                theme.id === 'hawk' ? findLevel.multiplier : findGame.multiplier
             }
           : theme;
         return newTheme;
@@ -386,12 +387,7 @@ export const addExperience = createAsyncThunk(
 
       dispatch(setExperienceLevel(newLevel));
       dispatch(setReachedNewLevel(true)); // Update the new level trigger
-      undateSubTheme(
-        dispatch,
-        state,
-        state.game.themes,
-        newLevel
-      ); // Update the hawk subtheme that depends on level
+      undateSubTheme(dispatch, state, state.game.themes, newLevel); // Update the hawk subtheme that depends on level
       dispatch(switchTheme({ direction: 'updateCurrent', timeout: 0 })); // Switch theme with updateCurrent status to run update theme animation
 
       const now = Date.now();

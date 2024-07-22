@@ -56,7 +56,7 @@ const ShipTrailModel = forwardRef((_, ref) => {
 
     if (outerConeRef.current) {
       outerConeRef.current.scale.set(1, scaleOuter, 1);
-      outerConeRef.current.position.y = 480 * (scaleOuter - 1);
+      outerConeRef.current.position.y = 4.8 * (scaleOuter - 1);
       outerConeRef.current.material.emissiveIntensity = emissionIntensityOuter;
       outerConeRef.current.material.opacity = opacityOuter;
     }
@@ -68,7 +68,7 @@ const ShipTrailModel = forwardRef((_, ref) => {
       }
 
       innerConeRef.current.position.y =
-        500 * (1 + scaleOuter) * (scaleInner - 1) + 150;
+        5 * (1 + scaleOuter) * (scaleInner - 1) + 1.5;
       innerConeRef.current.material.emissiveIntensity = emissionIntensityInner;
       innerConeRef.current.material.opacity = opacityInner;
     }
@@ -79,10 +79,10 @@ const ShipTrailModel = forwardRef((_, ref) => {
   };
 
   return (
-    <group ref={groupRef} position={[0, -350, 0]} rotation={[0, 0, -Math.PI]}>
+    <group ref={groupRef} position={[0, -3.5, 0]} rotation={[0, 0, -Math.PI]}>
       {/* Outer Cone */}
       <mesh ref={outerConeRef} position={[0, 0, 0]}>
-        <coneGeometry args={[55, 1000, 12]} openEnded={true} />
+        <coneGeometry args={[0.55, 10, 12]} openEnded={true} />
         <meshStandardMaterial
           color={theme.colors.shipTrailEmission}
           emissive={theme.colors.shipTrailEmission}
@@ -96,7 +96,7 @@ const ShipTrailModel = forwardRef((_, ref) => {
 
       {/* Inner Cone */}
       <mesh ref={innerConeRef} position={[0, 0, 0]}>
-        <coneGeometry args={[22, 600, 12]} openEnded={true} />
+        <coneGeometry args={[0.22, 6, 12]} openEnded={true} />
         <meshStandardMaterial
           color="#FFFFFF"
           emissive="#FFFFFF"

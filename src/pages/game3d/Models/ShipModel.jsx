@@ -6,7 +6,7 @@ import React, {
   forwardRef
 } from 'react';
 import { useFrame, useLoader } from '@react-three/fiber';
-import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { useSelector } from 'react-redux';
 import * as THREE from 'three';
 import gsap from 'gsap';
@@ -20,7 +20,7 @@ import ShipTrailModel from './ShipTrailModel';
 const ShipModel = forwardRef((_, ref) => {
   const theme = useSelector(selectTheme);
   const nextTheme = useSelector(selectNextTheme);
-  const shipFbx = useLoader(FBXLoader, '/assets/game-page/ship.fbx');
+  const shipModel = useLoader(GLTFLoader, '/assets/game-page/ship.glb');
   const shipRef = useRef(null);
   const mixer = useRef(null);
   const [clock] = useState(() => new THREE.Clock());
@@ -36,14 +36,14 @@ const ShipModel = forwardRef((_, ref) => {
   const accentDetails2MaterialRef = useRef(null);
   const [isInitialized, setIsInitialized] = useState(false);
 
-  const scale = 0.0016;
+  const scale = 0.16;
 
   useEffect(() => {
     if (isInitialized) return;
     runInitialAnimation();
     setThemeMaterials(theme);
     setIsInitialized(true);
-  }, [shipFbx, theme]);
+  }, [shipModel, theme]);
 
   useEffect(() => {
     if (!isInitialized || !nextTheme.theme) return;
@@ -71,12 +71,12 @@ const ShipModel = forwardRef((_, ref) => {
             case 'SecondaryColor2':
               material.color.set(theme.colors.wingAccent);
               break;
-            case 'BaseEmission':
+            case 'BaseEmission2':
               material.color.set(theme.colors.emission);
               material.emissive = new THREE.Color(theme.colors.emission);
               material.needsUpdate = true;
               break;
-            case 'AccentDetails2':
+            case 'AccentDetailsEmission':
               material.color.set(theme.colors.accentEmission);
               material.emissive = new THREE.Color(theme.colors.accentEmission);
               material.emissiveIntensity = 8;
@@ -112,20 +112,17 @@ const ShipModel = forwardRef((_, ref) => {
   };
 
   const runInitialAnimation = () => {
-    if (shipFbx.animations.length) {
-      mixer.current = new THREE.AnimationMixer(shipFbx);
-      const action = mixer.current.clipAction(shipFbx.animations[0]);
+    if (shipModel.animations.length) {
+      mixer.current = new THREE.AnimationMixer(shipModel.scene);
+      const action = mixer.current.clipAction(shipModel.animations[0]);
       action.setLoop(THREE.LoopOnce);
       action.clampWhenFinished = true;
-      action.time = 1;
-      action.setEffectiveTimeScale(1);
-      mixer.current.update(0);
-      action.play();
+      action.setEffectiveTimeScale(-1.5);
+      action.time = action.getClip().duration;
 
       setTimeout(() => {
-        action.setEffectiveTimeScale(-1);
         action.play();
-      }, 1000);
+      }, 500);
 
       stopInitialAnimation();
       stopFloatingAnimation();
@@ -142,7 +139,7 @@ const ShipModel = forwardRef((_, ref) => {
           tl.to(shipGroupRef.current.position, {
             y: 0,
             duration: 1.4,
-            ease: 'power3.out'
+            ease: 'back.out(0.7)'
           }).to(shipGroupRef.current.rotation, {
             y: -Math.PI / 2,
             duration: 1.5,
@@ -173,7 +170,7 @@ const ShipModel = forwardRef((_, ref) => {
       return;
     }
 
-    const action = mixer.current.clipAction(shipFbx.animations[0]);
+    const action = mixer.current.clipAction(shipModel.animations[0]);
     if (!action) return;
 
     stopFloatingAnimation();
@@ -306,7 +303,7 @@ const ShipModel = forwardRef((_, ref) => {
       });
       gsap.to(shipGroupRef.current.rotation, {
         x: -0.3,
-        duration: .5,
+        duration: 0.5,
         ease: 'power4.out'
       });
     });
@@ -351,7 +348,7 @@ const ShipModel = forwardRef((_, ref) => {
         ref={shipGroupRef}
         position={[0, -20, 0]}
         rotation={[0, -Math.PI * 2.5, 0]}>
-        <primitive object={shipFbx} ref={shipRef} />
+        <primitive object={shipModel.scene} ref={shipRef} />
 
         <ShipTrailModel ref={shipTrailModelRef} />
       </group>

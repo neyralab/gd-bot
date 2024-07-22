@@ -205,7 +205,7 @@ export const levelSubThemes = [
       shipBase: '#FFFFFF',
       wing: '#FFFFFF',
       wingAccent: '#FFFFFF',
-      emission: '##AFAEFF',
+      emission: '#C8C7FF',
       fog: '#A3D3E7',
       wave: '#4744E7',
       directionalLight: '#A3BFE7',
