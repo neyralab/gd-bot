@@ -8,7 +8,8 @@ import {
 } from '../../store/reducers/workspaceSlice';
 import { getAllTasks } from '../../effects/balanceEffect';
 import { DEFAULT_TARIFFS_NAMES } from '../upgradeStorage';
-import { fromByteToGb, transformSize } from '../../utils/storage';
+import { fromByteToGb } from '../../utils/storage';
+import { transformSize } from '../../utils/transformSize';
 import { isDevEnv } from '../../utils/isDevEnv';
 
 import GhostLoader from '../../components/ghostLoader';
