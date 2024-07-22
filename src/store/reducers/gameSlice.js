@@ -26,13 +26,11 @@ const gameSlice = createSlice({
     isTransactionLoading: false,
     status: 'waiting', // 'waiting', 'playing', 'finished';
     theme: null,
-    themeIndex: null,
     levels: [],
     themeAccess: {
-      hawk: true,
-      lotus: false,
-      gold: false,
-      ghost: false
+      hawk: true, // tier id 1
+      gold: false, // tier id 3
+      ghost: false // tier id 4
     },
     balance: { value: 0, label: 0 },
     experienceLevel: 1,
@@ -54,7 +52,6 @@ const gameSlice = createSlice({
     },
     nextTheme: {
       theme: null,
-      themeIndex: null,
       direction: null,
       isSwitching: false
     }, // for animation purposes only
@@ -90,13 +87,6 @@ const gameSlice = createSlice({
     },
     setTheme: (state, { payload }) => {
       state.theme = payload;
-
-      if (payload && state.themes && state.themes.length) {
-        state.themeIndex =
-          state.themes.findIndex((t) => t.id === state.theme.id) || 0;
-      } else {
-        state.themeIndex = null;
-      }
     },
     setBalance: (state, { payload }) => {
       state.balance = payload;
@@ -186,8 +176,9 @@ const undateSubTheme = (dispatch, state, themes, level) => {
   });
 
   dispatch(setThemes(newThemes));
-  if (state.game.themeIndex !== null) {
-    dispatch(setTheme(newThemes[state.game.themeIndex]));
+  if (state.game.theme) {
+    const foundTheme = newThemes.find((el) => el.id === state.game.theme.id);
+    dispatch(setTheme(foundTheme));
   }
 
   return newThemes;
@@ -345,6 +336,19 @@ export const finishRound = createAsyncThunk(
       .catch((err) => {
         console.log({ endGameErr: err, m: err?.response.data });
       });
+
+    if (state.game.reachedNewLevel) {
+      undateSubTheme(dispatch, state, state.game.themes, state.game.experienceLevel); // Update the hawk subtheme that depends on level
+      setTimeout(() => {
+        dispatch(
+          switchTheme({
+            themeId: state.game.theme.id,
+            direction: 'updateCurrent',
+            timeout: 0
+          })
+        ); // Switch theme with updateCurrent status to run update theme animation
+      }, 100);
+    }
   }
 );
 
@@ -378,12 +382,6 @@ export const addExperience = createAsyncThunk(
 
       dispatch(setExperienceLevel(newLevel));
       dispatch(setReachedNewLevel(true)); // Update the new level trigger
-      undateSubTheme(dispatch, state, state.game.themes, newLevel); // Update the hawk subtheme that depends on level
-      dispatch(switchTheme({ direction: 'updateCurrent', timeout: 0 })); // Switch theme with updateCurrent status to run update theme animation
-
-      const now = Date.now();
-      const lock = new Date(now + level.recharge_mins * 1000 * 60).getTime();
-      dispatch(setLockTimerTimestamp(lock));
     }
 
     dispatch(setExperiencePoints(newPoints));
@@ -427,32 +425,18 @@ export const startCountdown = createAsyncThunk(
 
 export const switchTheme = createAsyncThunk(
   'game/switchTheme',
-  async ({ direction, timeout = 500 }, { dispatch, getState }) => {
+  async ({ themeId, direction, timeout = 500 }, { dispatch, getState }) => {
     const state = getState();
     const themes = state.game.themes;
-    const themeIndex = state.game.themeIndex;
 
-    if (state.game.status === 'playing' && !state.game.reachedNewLevel) return; // Normally, do not change theme iif it's playing mode. However, the theme might be changed if we reached new level. In this case use switch theme with dirrection 'updateCurrent'
+    if (state.game.status === 'playing') return;
     if (!state.game.counter.isFinished) return;
 
-    let newThemeIndex;
-
-    if (direction === 'next') {
-      newThemeIndex = (themeIndex + 1) % themes.length;
-      if (newThemeIndex >= themes.length || newThemeIndex <= 0) return;
-    } else if (direction === 'prev') {
-      newThemeIndex = (themeIndex - 1 + themes.length) % themes.length;
-      if (newThemeIndex >= themes.length - 1 || newThemeIndex < 0) return;
-    } else if (direction === 'updateCurrent') {
-      newThemeIndex = themeIndex;
-    }
-
-    const newTheme = themes[newThemeIndex];
+    const newTheme = themes.find((el) => el.id === themeId);
 
     dispatch(
       setNextTheme({
         theme: newTheme,
-        themeIndex: newThemeIndex,
         direction: direction,
         isSwitching: true
       })
@@ -463,7 +447,6 @@ export const switchTheme = createAsyncThunk(
       dispatch(
         setNextTheme({
           theme: null,
-          themeIndex: null,
           direction: null,
           isSwitching: false
         })
@@ -481,8 +464,6 @@ export const switchTheme = createAsyncThunk(
     } else {
       dispatch(setStatus('waiting'));
     }
-
-    dispatch(setReachedNewLevel(false));
   }
 );
 
@@ -496,6 +477,7 @@ export const gameCleanup = createAsyncThunk(
      * and then clearTimeout() them in this function
      */
     dispatch(setRoundFinal({ roundPoins: null, isActive: false }));
+    dispatch(setReachedNewLevel(false));
   }
 );
 
@@ -538,7 +520,6 @@ export const selectGameId = (state) => state.game.gameId;
 export const selectStatus = (state) => state.game.status;
 export const selectTheme = (state) => state.game.theme;
 export const selectThemes = (state) => state.game.themes;
-export const selectThemeIndex = (state) => state.game.themeIndex;
 export const selectThemeAccess = (state) => state.game.themeAccess;
 export const selectBalance = (state) => state.game.balance;
 export const selectRoundTimerTimestamp = (state) =>

@@ -185,6 +185,8 @@ const ShipModel = forwardRef((_, ref) => {
     if (!action) return;
 
     stopFloatingAnimation();
+    stopFlyAnimation();
+    stopPushAnimation();
 
     action.reset();
     action.setLoop(THREE.LoopOnce);
@@ -216,6 +218,9 @@ const ShipModel = forwardRef((_, ref) => {
   };
 
   const runFloatingAnimation = ({ cleanupPower = 1 }) => {
+    stopInitialAnimation();
+    stopFlyAnimation();
+
     if (!shipGroupRef.current) return;
     floatingContext.current = gsap.context(() => {
       /** Cleanup */
@@ -269,6 +274,7 @@ const ShipModel = forwardRef((_, ref) => {
 
   const runFlyAnimation = () => {
     stopInitialAnimation();
+    stopFloatingAnimation();
 
     flyingContext.current = gsap.context(() => {
       /** Cleanup */

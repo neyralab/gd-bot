@@ -59,10 +59,18 @@ export function Game3DPage() {
 
   const swipeHandlers = useSwipeable({
     onSwipedLeft: () => {
-      dispatch(switchTheme({ direction: 'next', timeout: 2500 }));
+      dispatch(
+        switchTheme({ themeId: 'ghost', direction: 'next', timeout: 2500 })
+      );
     },
     onSwipedRight: () => {
-      dispatch(switchTheme({ direction: 'prev', timeout: 2500 }));
+      dispatch(
+        switchTheme({
+          themeId: themeAccess.gold ? 'gold' : 'hawk',
+          direction: 'prev',
+          timeout: 2500
+        })
+      );
     }
   });
 
