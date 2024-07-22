@@ -4,9 +4,10 @@ import React, {
   forwardRef,
   useImperativeHandle
 } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Canvas } from '@react-three/fiber';
 import { EffectComposer, Bloom } from '@react-three/postprocessing';
-import { Html, useProgress, OrbitControls } from '@react-three/drei';
+import { Html, useProgress } from '@react-three/drei';
 import ShipModel from './ShipModel';
 import BackgroundModel from './BackgoundModel';
 import { useSelector } from 'react-redux';
@@ -16,6 +17,7 @@ import FogModel from './FogModel';
 import DirectionalLight from './DirectionalLight';
 
 function Loader() {
+  const { t } = useTranslation('system');
   const { progress } = useProgress();
   return (
     <Html>
@@ -28,7 +30,7 @@ function Loader() {
           left: '50%',
           transform: 'translate(-50%, -50%)'
         }}>
-        {Math.round(progress)}% loaded
+        {Math.round(progress)}% {t('loading.loaded')}
       </div>
     </Html>
   );

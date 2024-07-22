@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import InfiniteScroll from 'react-infinite-scroll-component';
 
@@ -21,6 +22,7 @@ import CN from 'classnames';
 import style from '../../style.module.scss';
 
 const FileList = ({ files, checkedFile }) => {
+  const { t } = useTranslation('drive');
   const dispatch = useDispatch();
   const filesCount = useSelector(selectFilesCount);
   const currentPage = useSelector(selectFilesPage);
@@ -75,8 +77,8 @@ const FileList = ({ files, checkedFile }) => {
   ) : (
     <div className={style.emptyFilesPage}>
       <FileIcon />
-      <h2 className={style.emptyFilesPage_title}>Files not found</h2>
-      <p className={style.emptyFilesPage_desc}>This page is empty</p>
+      <h2 className={style.emptyFilesPage_title}>{t('dashbord.notFound')}</h2>
+      <p className={style.emptyFilesPage_desc}>{t('dashbord.isEmpty')}</p>
     </div>
   );
 };

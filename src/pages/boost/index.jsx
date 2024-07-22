@@ -87,10 +87,10 @@ export const BoostPage = ({ tariffs, setTariffs }) => {
             modals: ['before', 'success', 'error'],
             notifications: []
           });
-          toast('Payment made successfully.');
+          toast(t(''));
         } else {
           setActiveMultiplier(undefined);
-          toast.error('Something went wrong', {
+          toast.error(t('message.error'), {
             theme: 'colored',
             position: 'bottom-center',
             autoClose: 2500
@@ -101,7 +101,7 @@ export const BoostPage = ({ tariffs, setTariffs }) => {
       }
     } catch (e) {
       console.log({ errrrrr: e });
-      toast.error('Something went wrong', {
+      toast.error(t('message.successPayment'), {
         theme: 'colored',
         position: 'bottom-center'
       });

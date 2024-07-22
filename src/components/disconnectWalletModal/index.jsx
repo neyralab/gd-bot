@@ -1,4 +1,5 @@
 import Modal from 'react-modal';
+import { useTranslation } from 'react-i18next';
 import { useTonConnectUI } from '@tonconnect/ui-react';
 
 import useButtonVibration from '../../hooks/useButtonVibration';
@@ -6,6 +7,7 @@ import useButtonVibration from '../../hooks/useButtonVibration';
 import style from './style.module.scss';
 
 export const DisconnectWalletModal = ({ isOpen, onClose }) => {
+
   const [tonConnectUI] = useTonConnectUI();
   const handleVibrationClick = useButtonVibration();
 

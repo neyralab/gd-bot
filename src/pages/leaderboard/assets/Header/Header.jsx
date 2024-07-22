@@ -1,5 +1,6 @@
 import React from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 import useButtonVibration from '../../../../hooks/useButtonVibration';
 
@@ -7,8 +8,7 @@ import classNames from 'classnames';
 import styles from './Header.module.css';
 
 export default function Header() {
-  const navigate = useNavigate();
-  const onBackButtonClick = () => navigate(-1);
+  const { t } = useTranslation('game');
   const handleVibrationClick = useButtonVibration();
 
   return (
@@ -18,13 +18,13 @@ export default function Header() {
           className={({ isActive }) => classNames(isActive && styles.active)}
           to={'/leadboard/league'}
           onClick={handleVibrationClick()}>
-          League
+          {t('leadboard.league')}
         </NavLink>
         <NavLink
           className={({ isActive }) => classNames(isActive && styles.active)}
           to={'/leadboard/friends'}
           onClick={handleVibrationClick()}>
-          Friends
+          {t('leadboard.friends')}
         </NavLink>
       </div>
     </header>

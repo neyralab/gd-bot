@@ -89,6 +89,22 @@
   "message": {
     "error": "出了些问题",
     "fileRestored": "文件已成功恢复",
-    "failedLoad": "加载计数失败"
+    "failedLoad": "加载计数失败",
+    "fileDeleted": "文件已成功删除",
+    "successPayment": "文件已成功删除",
+    "errorAndRetry": "出了些问题！请再试一次",
+    "received": "您已经获得积分",
+    "oops": "哎呀！",
+    "tryAgain": "Try again",
+    "ok": "OK",
+    "joinTg": "您加入了我们的 TG 频道",
+    "joinYoutube": "您加入了我们的 YouTube 频道",
+    "joinX": "Y您加入了我们的 X 频道",
+    "success": "成功！",
+    "notJoinTG": "您还没有加入我们的TG Chanel",
+    "notJoinYoutube": "您还没有加入我们的 YouTube Chanel",
+    "notJoinX": "您还没有加入我们的X Chanel",
+    "download": "下载",
+    "join": "加入"
   }
 }

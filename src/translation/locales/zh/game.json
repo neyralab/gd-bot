@@ -6,7 +6,7 @@
     "boost": "升压模式"
   },
   "navigate": {
-    "Fly": "飞",
+    "fly": "飞",
     "reachedLevel": "你已经达到等级了"
   },
   "process": {
@@ -22,7 +22,8 @@
     "week": "星期",
     "bonus": "奖金",
     "points": "积分",
-    "users": "用户"
+    "users": "用户",
+    "usersLow": "用户"
   },
   "friends": {
     "inviteGetBonus": "邀请好友并获得奖金！",
@@ -48,6 +49,28 @@
     "history": "历史",
     "tapping": "游戏点击",
     "noHistory": "没有推荐历史",
-    "shareReferral": "分享您的推荐链接即可开始赚钱。"
+    "shareReferral": "分享您的推荐链接即可开始赚钱。",
+    "referral": "积极推荐注册",
+    "wallet": "连接钱包",
+    "download": "下载 Ghost Drive 应用程序并通过 Telegram 登录",
+    "lvl1": "达到 1 个攻关等级时可获得额外奖励",
+    "lvl2": "达到 2 攻关等级可获得额外奖励",
+    "lvl3": "达到 3 攻关等级可获得额外奖励",
+    "lvl4": "达到 4 攻关等级可获得额外奖励",
+    "tapBonus1": "录音额外奖励100000",
+    "tapBonus2": "录音额外奖金250000",
+    "tapBonus3": "录音额外奖金500000",
+    "weeklyBonus": "每周额外奖金",
+    "followX": "关注我们的 X 帐户",
+    "gameTapping": "游戏点击",
+    "inviteFriends": "邀请5位好友",
+    "joinTG": "加入我们的TG频道",
+    "joinTGnew": "加入我们的 TG 新闻频道",
+    "joinYouTube": "加入我们的 YouTube 频道",
+    "purchase": "存储购买",
+    "purchaseReferral": "通过推荐购买存储",
+    "topBonus": "前 100 名奖金",
+    "upload": "上传10个文件",
+    "uploadFile": "上传文件"
   }
 }

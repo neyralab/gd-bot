@@ -6,7 +6,7 @@
     "boost": "Boost mode"
   },
   "navigate": {
-    "Fly": "Fly",
+    "fly": "Fly",
     "reachedLevel": "You've reached level"
   },
   "process": {
@@ -21,8 +21,9 @@
     "friends": "Friends",
     "week": "Week",
     "bonus": "Bonus",
-    "points": "Points",
-    "users": "USERS"
+    "points": "points",
+    "users": "USERS",
+    "usersLow": "Users"
   },
   "friends": {
     "inviteGetBonus": "Invite friends and Get bonus!",
@@ -48,6 +49,28 @@
     "history": "History",
     "tapping": "Game tapping",
     "noHistory": "No Referral History",
-    "shareReferral": "Share your referral link to start earning."
+    "shareReferral": "Share your referral link to start earning.",
+    "referral": "Active referral signup",
+    "wallet": "Connect a wallet",
+    "download": "Download Ghost Drive Аpp and Log In Via Telegram",
+    "lvl1": "Extra bonus for reaching the 1 tapping level",
+    "lvl2": "Extra bonus for reaching the 2 tapping level",
+    "lvl3": "Extra bonus for reaching the 3 tapping level",
+    "lvl4": "Extra bonus for reaching the 4 tapping level",
+    "tapBonus1": "Extra bonus for taping 100000",
+    "tapBonus2": "Extra bonus for taping 250000",
+    "tapBonus3": "Extra bonus for taping 500000",
+    "weeklyBonus": "Extra weekly bonus",
+    "followX": "Follow our X account",
+    "gameTapping": "Game tapping",
+    "inviteFriends": "Invite 5 friends",
+    "joinTG": "Join our TG channel",
+    "joinTGnew": "Join our TG news channel",
+    "joinYouTube": "Join our YouTube channel",
+    "purchase": "Storage purchase",
+    "purchaseReferral": "Storage purchase by referral",
+    "topBonus": "Top 100 Bonus",
+    "upload": "Upload 10 files",
+    "uploadFile": "Upload file"
   }
 }

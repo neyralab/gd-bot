@@ -6,7 +6,7 @@
     "boost": "Mode peningkatan"
   },
   "navigate": {
-    "Fly": "Terbang",
+    "fly": "Terbang",
     "reachedLevel": "Anda telah mencapai level"
   },
   "process": {
@@ -21,8 +21,9 @@
     "friends": "Teman-teman",
     "week": "Pekan",
     "bonus": "Bonusnya",
-    "points": "Poin",
-    "users": "PENGGUNA"
+    "points": "poin",
+    "users": "PENGGUNA",
+    "usersLow": "Pengguna"
   },
   "friends": {
     "inviteGetBonus": "Undang teman dan Dapatkan bonus!",
@@ -48,6 +49,28 @@
     "history": "Sejarah",
     "tapping": "Penyadapan permainan",
     "noHistory": "Tidak Ada Riwayat Referensi",
-    "shareReferral": "Bagikan tautan rujukan Anda untuk mulai menghasilkan."
+    "shareReferral": "Bagikan tautan rujukan Anda untuk mulai menghasilkan.",
+    "referral": "Pendaftaran rujukan aktif",
+    "wallet": "Hubungkan dompet",
+    "download": "Unduh Aplikasi Ghost Drive dan Masuk Melalui Telegram",
+    "lvl1": "Bonus ekstra untuk mencapai level 1 penyadapan",
+    "lvl2": "Bonus ekstra untuk mencapai level 2 penyadapan",
+    "lvl3": "Bonus ekstra untuk mencapai level 3 penyadapan",
+    "lvl4": "Bonus ekstra untuk mencapai level 4 penyadapan",
+    "tapBonus1": "Bonus tambahan untuk merekam 100.000",
+    "tapBonus2": "Bonus tambahan untuk merekam 250000",
+    "tapBonus3": "Bonus tambahan untuk merekam 500.000",
+    "weeklyBonus": "Bonus ekstra mingguan",
+    "followX": "Ikuti akun X kami",
+    "gameTapping": "Penyadapan permainan",
+    "inviteFriends": "Undang 5 teman",
+    "joinTG": "Bergabunglah dengan saluran TG kami",
+    "joinTGnew": "Bergabunglah dengan saluran berita TG kami",
+    "joinYouTube": "Bergabunglah dengan saluran YouTube kami",
+    "purchase": "Pembelian penyimpanan",
+    "purchaseReferral": "Pembelian penyimpanan melalui referensi",
+    "topBonus": "100 Bonus Teratas",
+    "upload": "Unggah 10 file",
+    "uploadFile": "Unggah data"
   }
 }

@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { TelegramShareButton } from 'react-share';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
@@ -29,6 +30,8 @@ import useButtonVibration from '../../hooks/useButtonVibration';
 
 export const FileMenu = () => {
   const dispatch = useDispatch();
+  const { t } = useTranslation('drive');
+  const { t : tSystem } = useTranslation('system');
   const isOpen = useSelector(selectisFileMenuOpen);
   const file = useSelector(selecSelectedFile);
   const location = useLocation();
@@ -63,12 +66,12 @@ export const FileMenu = () => {
     const result = await restoreFileEffect(file.slug, dispatch);
     dispatch(handleFileMenu(false));
     if (result === 'success') {
-      toast.success('File was successfully restored', {
+      toast.success(tSystem('message.fileRestored'), {
         position: 'bottom-center',
         theme: 'colored'
       });
     } else {
-      toast.error('Something went wrong', {
+      toast.error(tSystem('message.error'), {
         theme: 'colored',
         position: 'bottom-center'
       });
@@ -82,11 +85,11 @@ export const FileMenu = () => {
           <li className={style.menu__item}>
             <TelegramShareButton
               url={url}
-              title={`Tap this link to see the file "${file.name}"`}
+              title={`${'dashbord.linkToFile'} "${file.name}"`}
               onClick={handleVibrationClick(onShareClick)}
               className={style.shareOption}>
               <ShareArrowIcon />
-              <span className={style.menu__item__title}>Share</span>
+              <span className={style.menu__item__title}>{t('dashbord.share')}</span>
             </TelegramShareButton>
           </li>
         )}

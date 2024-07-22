@@ -89,6 +89,22 @@
   "message": {
     "error": "Something went wrong",
     "fileRestored": "File was successfully restored",
-    "failedLoad": "Failed to load counts"
+    "failedLoad": "Failed to load counts",
+    "fileDeleted": "File was successfully deleted",
+    "successPayment": "Payment made successfully.",
+    "errorAndRetry": "Something went wrong! Please try again",
+    "received": "You have already received points",
+    "oops": "Oops!",
+    "tryAgain": "Try again",
+    "ok": "OK",
+    "joinTg": "You joined our TG Channel",
+    "joinYoutube": "You joined our Youtube Channel",
+    "joinX": "You joined our X Channel",
+    "success": "Success!",
+    "notJoinTG": "You did not join our TG Chanel",
+    "notJoinYoutube": "You did not join our Youtube Chanel",
+    "notJoinX": "You did not join our X Chanel",
+    "download": "Download",
+    "join": "Join"
   }
 }

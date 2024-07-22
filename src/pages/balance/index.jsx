@@ -44,7 +44,7 @@ export const Balance = () => {
   const user = useSelector((state) => state?.user?.data);
 
   const showErrorMessage = () => {
-    toast.error('Something went wrong', {
+    toast.error(t('message.error'), {
       theme: 'colored',
       position: 'bottom-center'
     });

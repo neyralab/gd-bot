@@ -89,6 +89,22 @@
   "message": {
     "error": "Algo deu errado",
     "fileRestored": "O arquivo foi restaurado com sucesso",
-    "failedLoad": "Falha ao carregar contagens"
+    "failedLoad": "Falha ao carregar contagens",
+    "fileDeleted": "O arquivo foi excluído com sucesso",
+    "successPayment": "O arquivo foi excluído com sucesso",
+    "errorAndRetry": "Algo deu errado! Por favor, tente novamente",
+    "received": "Você já recebeu pontos",
+    "oops": "Ops!",
+    "tryAgain": "Try again",
+    "ok": "OK",
+    "joinTg": "Você se juntou ao nosso canal TG",
+    "joinYoutube": "Você se juntou ao nosso canal no Youtube",
+    "joinX": "Você se juntou ao nosso canal X",
+    "success": "Sucesso!",
+    "notJoinTG": "Você não se juntou ao nosso TG Chanel",
+    "notJoinYoutube": "Você não se inscreveu no nosso canal do Youtube",
+    "notJoinX": "Você não se juntou ao nosso X Chanel",
+    "download": "Download",
+    "join": "Juntar"
   }
 }

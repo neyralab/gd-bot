@@ -89,6 +89,22 @@
   "message": {
     "error": "Algo salió mal",
     "fileRestored": "El archivo fue restaurado exitosamente",
-    "failedLoad": "No se pudieron cargar los recuentos"
+    "failedLoad": "No se pudieron cargar los recuentos",
+    "fileDeleted": "El archivo fue eliminado exitosamente",
+    "successPayment": "El archivo fue eliminado exitosamente",
+    "errorAndRetry": "¡Algo salió mal! Inténtalo de nuevo",
+    "received": "Ya has recibido puntos",
+    "oops": "¡Ups!",
+    "tryAgain": "Try again",
+    "ok": "OK",
+    "joinTg": "Te uniste a nuestro canal TG",
+    "joinYoutube": "Te uniste a nuestro canal de Youtube",
+    "joinX": "Te uniste a nuestro Canal X",
+    "success": "¡Éxito!",
+    "notJoinTG": "No te uniste a nuestro TG Chanel",
+    "notJoinYoutube": "No te uniste a nuestro canal de Youtube",
+    "notJoinX": "No te uniste a nuestro X Chanel",
+    "download": "Descargar",
+    "join": "Unirse"
   }
 }

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { TelegramShareButton } from 'react-share';
+import { useTranslation } from 'react-i18next';
 import Menu from '../../components/Menu/Menu';
 import Task from '../../components/Task/Task';
 import { tasks as tasksFromFile } from './tasks';
@@ -14,6 +15,7 @@ import useButtonVibration from '../../hooks/useButtonVibration';
 
 export default function FriendsPage() {
   const link = useSelector((state) => state.user.link);
+  const { t } = useTranslation('game');
   const dispatch = useDispatch();
 
   const [tasks, setTasks] = useState([]);
@@ -73,7 +75,7 @@ export default function FriendsPage() {
     <div className={styles.container}>
       <div className={styles['title-block']}>
         <img src="/assets/token_friends.png" alt="Token" />
-        <h1>Invite friends and Get bonus!</h1>
+        <h1>{t('friends.inviteGetBonus')}</h1>
       </div>
 
       <div className={styles['tasks-list']}>
@@ -96,7 +98,7 @@ export default function FriendsPage() {
 
       <div className={styles['friends-container']}>
         <h2>
-          Your Friends {friendsAreLoading ? '' : `(${friends.length || 0})`}
+          {t('friends.yourFriends')} {friendsAreLoading ? '' : `(${friends.length || 0})`}
         </h2>
 
         {friendsAreLoading && (
@@ -127,9 +129,9 @@ export default function FriendsPage() {
       <TelegramShareButton
         className={styles['invite-button']}
         url={link.copy}
-        title={'Invite a friend'}
+        title={t('friends.inviteFriend')}
         onClick={handleVibrationClick()}>
-        <span>Invite a friend</span>
+        <span>{t('friends.inviteFriend')}</span>
       </TelegramShareButton>
 
       <Menu />

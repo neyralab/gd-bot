@@ -90,6 +90,22 @@
   "message": {
     "error": "Ada yang salah",
     "fileRestored": "File berhasil dipulihkan",
-    "failedLoad": "Gagal memuat jumlah"
+    "failedLoad": "Gagal memuat jumlah",
+    "fileDeleted": "File berhasil dihapus",
+    "successPayment": "File berhasil dihapus",
+    "errorAndRetry": "Ada yang salah! Silakan coba lagi",
+    "received": "Anda telah menerima poin",
+    "oops": "Ups!",
+    "tryAgain": "Try again",
+    "ok": "OK",
+    "joinTg": "Anda bergabung dengan Saluran TG kami",
+    "joinYoutube": "Anda bergabung dengan Saluran Youtube kami",
+    "joinX": "Anda bergabung dengan X Channel kami",
+    "success": "Kesuksesan!",
+    "notJoinTG": "Anda tidak bergabung dengan TG Chanel kami",
+    "notJoinYoutube": "Anda tidak bergabung dengan Channel Youtube kami",
+    "notJoinX": "Anda tidak bergabung dengan X Chanel kami",
+    "download": "Unduh",
+    "join": "Bergabung"
   }
 }
