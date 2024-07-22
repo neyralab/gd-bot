@@ -12,6 +12,7 @@ import * as THREE from 'three';
 import gsap from 'gsap';
 import {
   selectNextTheme,
+  selectStatus,
   selectTheme
 } from '../../../store/reducers/gameSlice';
 import ShipWaveModel from './ShipWaveModel';
@@ -20,20 +21,24 @@ import ShipTrailModel from './ShipTrailModel';
 const ShipModel = forwardRef((_, ref) => {
   const theme = useSelector(selectTheme);
   const nextTheme = useSelector(selectNextTheme);
+  const status = useSelector(selectStatus);
+
   const shipModel = useLoader(GLTFLoader, '/assets/game-page/ship.glb');
-  const shipRef = useRef(null);
+
   const mixer = useRef(null);
-  const [clock] = useState(() => new THREE.Clock());
+  const shipRef = useRef(null);
   const shipGroupRef = useRef(null);
   const waveGroupRef = useRef(new THREE.Group());
   const shipTrailModelRef = useRef();
-  const [waves, setWaves] = useState([]);
   const flyTimeout = useRef(null);
   const floatingContext = useRef(null);
   const flyingContext = useRef(null);
   const initialContext = useRef(null);
   const pushContext = useRef(null);
   const accentDetails2MaterialRef = useRef(null);
+
+  const [clock] = useState(() => new THREE.Clock());
+  const [waves, setWaves] = useState([]);
   const [isInitialized, setIsInitialized] = useState(false);
 
   const scale = 0.16;
@@ -51,6 +56,12 @@ const ShipModel = forwardRef((_, ref) => {
       runThemeChange();
     }
   }, [nextTheme]);
+
+  useEffect(() => {
+    if (status === 'finished') {
+      runFinishAnimation();
+    }
+  }, [status]);
 
   const setThemeMaterials = (theme) => {
     if (!shipRef.current || !theme) return;
@@ -316,6 +327,39 @@ const ShipModel = forwardRef((_, ref) => {
     }
   };
 
+  const runFinishAnimation = () => {
+    stopPushAnimation();
+    stopFlyAnimation();
+    stopFloatingAnimation();
+
+    /** Cleanup */
+    gsap.to(shipGroupRef.current.position, {
+      z: 0,
+      duration: 0.1,
+      ease: 'power1.out'
+    });
+
+    gsap.to(shipGroupRef.current.rotation, {
+      y: -Math.PI / 2,
+      duration: 0.1,
+      ease: 'power1.out'
+    });
+    gsap.to(shipGroupRef.current.rotation, {
+      x: 0,
+      duration: 0.1,
+      ease: 'power1.out'
+    });
+
+    const action = mixer.current.clipAction(shipModel.animations[1]);
+    action.setLoop(THREE.LoopOnce);
+    action.clampWhenFinished = true;
+    action.setEffectiveTimeScale(3);
+    action.time = 0;
+    action.play();
+
+    setTimeout(() => runFloatingAnimation({ cleanupPower: 1 }), 3000);
+  };
+
   const runWaveAnimation = () => {
     const waveId = Date.now();
     setWaves((prevWaves) => [...prevWaves, waveId]);
@@ -350,7 +394,7 @@ const ShipModel = forwardRef((_, ref) => {
         rotation={[0, -Math.PI * 2.5, 0]}>
         <primitive object={shipModel.scene} ref={shipRef} />
 
-        <ShipTrailModel ref={shipTrailModelRef} />
+        {status === 'playing' && <ShipTrailModel ref={shipTrailModelRef} />}
       </group>
 
       <group ref={waveGroupRef}>
