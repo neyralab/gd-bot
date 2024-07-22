@@ -351,10 +351,10 @@ const ShipModel = forwardRef((_, ref) => {
     });
 
     const action = mixer.current.clipAction(shipModel.animations[1]);
+    action.reset(); 
     action.setLoop(THREE.LoopOnce);
     action.clampWhenFinished = true;
     action.setEffectiveTimeScale(3);
-    action.time = 0;
     action.play();
 
     setTimeout(() => runFloatingAnimation({ cleanupPower: 1 }), 3000);
