@@ -24,7 +24,7 @@ const gameSlice = createSlice({
     gameId: null,
     themes: [],
     isTransactionLoading: false,
-    status: 'finished', // 'waiting', 'playing', 'finished';
+    status: 'waiting', // 'waiting', 'playing', 'finished';
     theme: null,
     themeIndex: null,
     levels: [],
@@ -58,15 +58,11 @@ const gameSlice = createSlice({
       direction: null,
       isSwitching: false
     }, // for animation purposes only
-    pendingGames: [],
-    lastFreeGameEndsAt: null
+    pendingGames: []
   },
   reducers: {
     setPendingGames: (state, { payload }) => {
       state.pendingGames = payload;
-    },
-    setLastFreeGameEndsAt: (state, { payload }) => {
-      state.lastFreeGameEndsAt = payload;
     },
     setIsInitializing: (state, { payload }) => {
       state.isInitializing = payload;
@@ -228,16 +224,11 @@ export const initGame = createAsyncThunk(
       dispatch(setExperiencePoints(gameInfo.points));
       dispatch(setContractAddress(cAddress));
       dispatch(setPendingGames(pendingGames));
-      dispatch(setLastFreeGameEndsAt(gameInfo.game_ends_at));
 
       const now = Date.now();
       if (now <= gameInfo.game_ends_at) {
-        dispatch(setStatus('finished'));
-
         const endTime = gameInfo.game_ends_at;
         lockTimerCountdown(dispatch, endTime);
-      } else {
-        dispatch(setStatus('waiting'));
       }
 
       /** This function combines backend tiers and frontend themes */
@@ -303,8 +294,8 @@ export const startRound = createAsyncThunk(
 
     dispatch(setRoundTimeoutId(timeoutId));
 
-    if (state.game.theme.multiplier === 1) {
-      const game = await beforeGame(null, 1);
+    if (state.game.theme.id === 'hawk') {
+      const game = await beforeGame(null, state.game.theme.tierId);
       const g = await startGame(game.uuid || game.id, null);
       dispatch(setGameId(game?.uuid || game?.id));
     }
@@ -534,7 +525,6 @@ export const {
   setCounterCount,
   setCounterIsFinished,
   setRoundFinal,
-  setLastFreeGameEndsAt,
   setMaxLevel
 } = gameSlice.actions;
 export default gameSlice.reducer;

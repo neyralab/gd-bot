@@ -52,6 +52,9 @@ export function Game3DPage() {
   const counterIsFinished = useSelector(
     (state) => state.game.counter.isFinished
   );
+  const lockTimerTimestamp = useSelector(
+    (state) => state.game.lockTimerTimestamp
+  );
   const [recentlyFinishedLocker, setRecentlyFinishedLocker] = useState(false);
 
   const swipeHandlers = useSwipeable({
@@ -106,6 +109,7 @@ export function Game3DPage() {
 
     if (
       (!counterIsFinished && theme.id === 'hawk') ||
+      (lockTimerTimestamp !== null && theme.id === 'hawk') ||
       !theme ||
       !themeAccess[theme.id] ||
       status === 'finished' ||
