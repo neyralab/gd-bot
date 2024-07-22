@@ -8,8 +8,7 @@ import {
 } from '../../store/reducers/workspaceSlice';
 import { getAllTasks } from '../../effects/balanceEffect';
 import { DEFAULT_TARIFFS_NAMES } from '../upgradeStorage';
-import { transformSize } from '../../utils/transformSize';
-import { fromByteToGb } from '../../utils/storage';
+import { fromByteToGb, transformSize } from '../../utils/storage';
 import { isDevEnv } from '../../utils/isDevEnv';
 
 import GhostLoader from '../../components/ghostLoader';
@@ -109,7 +108,7 @@ export const StartPage = ({ tariffs }) => {
             <div className={style['banner-header_img']}>
               <LogoIcon />
             </div>
-            <h1>{human?.total}</h1>
+            <h1>{transformSize(user.space_total)}</h1>
           </div>
         </div>
       </div>
