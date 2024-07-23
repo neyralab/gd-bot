@@ -9,8 +9,6 @@ import { ReactComponent as LoaderIcon } from '../../../assets/loader.svg';
 
 import style from '../style.module.css';
 
-const BLACK_LIST = ['pshkv'];
-
 export const LeaderboardLeague = () => {
   const [leaderboard, setLeaderboard] = useState([]);
   const [totalUsers, setTotalUsers] = useState(0);
@@ -19,7 +17,7 @@ export const LeaderboardLeague = () => {
   useEffect(() => {
     setIsLoading(true);
     getLeaderboardEffect().then((data) => {
-      setLeaderboard(data?.data?.filter((user) => (!BLACK_LIST.includes(user.username))));
+      setLeaderboard(data?.data);
       if (data?.total_users) setTotalUsers(data?.total_users);
       setIsLoading(false);
     });
