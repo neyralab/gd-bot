@@ -1,4 +1,5 @@
 import { useMemo, useState, useEffect, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import CN from 'classnames';
 
@@ -15,15 +16,18 @@ import { isDevEnv } from '../../utils/isDevEnv';
 import GhostLoader from '../../components/ghostLoader';
 import Nodes from './Nodes/index';
 import { ReactComponent as LogoIcon } from '../../assets/ghost.svg';
+import { ReactComponent as TapIcon } from './assets/tap.svg';
 import { DisconnectWalletModal } from '../../components/disconnectWalletModal';
 import BannerSource from '../../assets/node-banner.webp';
 import PointCounter from './PointCounter/PointCounter';
+import NavigatItem from './Navigator/NavigatItem';
 // import CardsSlider from '../../components/CardsSlider/CardsSlider';
 // import getSliderItems from './SliderItem/sliderItems';
 // import SliderItem from './SliderItem/SliderItem';
 import Navigator from './Navigator/Navigator';
 
 import style from './style.module.css';
+import navigatorStyle from './Navigator/Navigator.module.css';
 
 export const StartPage = ({ tariffs }) => {
   const [tasks, setTasks] = useState([]);
@@ -31,6 +35,7 @@ export const StartPage = ({ tariffs }) => {
   const allWorkspaces = useSelector(selectAllWorkspaces);
   const currentWorkspace = useSelector(selectCurrentWorkspace);
   const user = useSelector((state) => state?.user?.data);
+  const navigate = useNavigate();
   const isDev = isDevEnv();
 
   const getTasks = useCallback(async () => {
@@ -124,6 +129,14 @@ export const StartPage = ({ tariffs }) => {
         openDisconnectModal={setDisconnectWalletModal}
         tasks={tasks}
       />
+      <ul className={CN(navigatorStyle['navigator'], navigatorStyle['to-appear'])}>
+        <NavigatItem
+          name="Mining"
+          icon={<TapIcon />}
+          html={(<span className={CN(navigatorStyle.actionBtn, navigatorStyle.playBtn)}>Play</span>)}
+          onClick={() => navigate('/game-3d')}
+        />
+      </ul>
       {isDev && <Nodes wallet={user?.wallet} />}
       <footer className={style.footer}>
         <p className={style['footer-text']}>
