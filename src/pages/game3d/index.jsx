@@ -104,7 +104,7 @@ export function Game3DPage() {
     // // TODO: REMOVE LATER
 
     if (
-      (!counterIsFinished && theme.id === 'hawk') ||
+      (!counterIsFinished && theme.id === 'ghost') ||
       (lockTimerTimestamp !== null && theme.id === 'hawk') ||
       !theme ||
       !themeAccess[theme.id] ||
