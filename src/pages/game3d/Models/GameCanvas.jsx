@@ -12,6 +12,7 @@ import BackgroundModel from './BackgoundModel';
 import MoveCamera from './MoveCamera';
 import FogModel from './FogModel';
 import DirectionalLight from './DirectionalLight';
+import AmbientLight from './AmbientLight';
 
 function Loader() {
   const { progress } = useProgress();
@@ -52,7 +53,7 @@ const GameCanvas = forwardRef((_, ref) => {
   return (
     <Canvas antialias="true" dpr={[1, 2]}>
       <Suspense fallback={<Loader />}>
-        <ambientLight intensity={1.5} color={0xffffff} />
+        <AmbientLight />
         <DirectionalLight />
         
         <FogModel />

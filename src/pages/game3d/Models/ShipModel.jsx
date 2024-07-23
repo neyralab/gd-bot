@@ -75,12 +75,18 @@ const ShipModel = forwardRef((_, ref) => {
           switch (material.name) {
             case 'BaseMaterial':
               material.color.set(theme.colors.shipBase);
+              material.metalness = theme.shipMetalness;
+              material.roughness = theme.shipRoughness;
               break;
             case 'SecondaryColor':
               material.color.set(theme.colors.wing);
+              material.metalness = theme.shipMetalness;
+              material.roughness = theme.shipRoughness;
               break;
             case 'SecondaryColor2':
               material.color.set(theme.colors.wingAccent);
+              material.metalness = theme.shipMetalness;
+              material.roughness = theme.shipRoughness;
               break;
             case 'BaseEmission2':
               material.color.set(theme.colors.emission);
@@ -357,7 +363,7 @@ const ShipModel = forwardRef((_, ref) => {
     });
 
     const action = mixer.current.clipAction(shipModel.animations[1]);
-    action.reset(); 
+    action.reset();
     action.setLoop(THREE.LoopOnce);
     action.clampWhenFinished = true;
     action.setEffectiveTimeScale(3);

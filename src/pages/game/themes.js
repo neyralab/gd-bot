@@ -27,6 +27,11 @@ export const levelSubThemes = [
       shipTrailEmission: '#3EC2FF'
     },
 
+    ambientLightIntensity: 1.5,
+    directionalLightIntensity: 2,
+    shipMetalness: 0,
+    shipRoughness: 0.43,
+
     glareImg: 'glare-color-hawk-1.png'
   },
 
@@ -57,6 +62,11 @@ export const levelSubThemes = [
       accentEmission: '#DC4F29',
       shipTrailEmission: '#FFBB3E'
     },
+
+    ambientLightIntensity: 1.5,
+    directionalLightIntensity: 2,
+    shipMetalness: 0,
+    shipRoughness: 0.43,
 
     glareImg: 'glare-color-hawk-2.png'
   },
@@ -89,6 +99,11 @@ export const levelSubThemes = [
       shipTrailEmission: '#9E3EFF'
     },
 
+    ambientLightIntensity: 1.5,
+    directionalLightIntensity: 2,
+    shipMetalness: 0,
+    shipRoughness: 0.43,
+
     glareImg: 'glare-color-hawk-3.png'
   },
 
@@ -119,6 +134,11 @@ export const levelSubThemes = [
       accentEmission: '#29C011',
       shipTrailEmission: '#58FF3E'
     },
+
+    ambientLightIntensity: 1.5,
+    directionalLightIntensity: 2,
+    shipMetalness: 0,
+    shipRoughness: 0.43,
 
     glareImg: 'glare-color-hawk-4.png'
   },
@@ -151,6 +171,11 @@ export const levelSubThemes = [
       shipTrailEmission: '#FF3E3E'
     },
 
+    ambientLightIntensity: 1.5,
+    directionalLightIntensity: 2,
+    shipMetalness: 0,
+    shipRoughness: 0.43,
+
     glareImg: 'glare-color-hawk-5.png'
   },
 
@@ -181,6 +206,11 @@ export const levelSubThemes = [
       accentEmission: '#C011C0',
       shipTrailEmission: '#FF3EFF'
     },
+
+    ambientLightIntensity: 1.5,
+    directionalLightIntensity: 2,
+    shipMetalness: 0,
+    shipRoughness: 0.43,
 
     glareImg: 'glare-color-hawk-6.png'
   },
@@ -213,6 +243,11 @@ export const levelSubThemes = [
       shipTrailEmission: '#6360FF'
     },
 
+    ambientLightIntensity: 1.5,
+    directionalLightIntensity: 2,
+    shipMetalness: 0,
+    shipRoughness: 0.43,
+
     glareImg: 'glare-color-hawk-7.png'
   }
 ];
@@ -233,32 +268,37 @@ export const themes = [
     cost: 0,
     data: '0.10MB',
     colors: {
-      buttonText: '#FFAB6B',
+      buttonText: '#FFD56B',
       experienceBar: {
         active: {
-          background1: '#FFA500',
-          background2: '#FE6B00',
-          boxShadow: '#FFA500'
+          background1: '#FEF74F',
+          background2: '#FEC600',
+          boxShadow: '#FEF74F'
         },
         empty: {
-          background1: [255, 165, 0],
-          background2: [255, 165, 0],
-          boxShadow: '#FFA500'
+          background1: [254, 247, 79],
+          background2: [254, 229, 0],
+          boxShadow: '#FEF74F'
         }
       },
 
-      shipBase: '#F4CA16',
-      wing: '#F4CA16',
-      wingAccent: '#F4CA16',
-      emission: '#FFE3AE',
-      fog: '#E79191',
-      wave: '#E7AE44',
-      directionalLight: '#CAE199',
-      accentEmission: '#DC4F29',
-      shipTrailEmission: '#FFBB3E'
+      shipBase: '#FFE944',
+      wing: '#FFE944',
+      wingAccent: '#FFE944',
+      emission: '#FFECAE',
+      fog: '#E7CDAB',
+      wave: '#FFA923',
+      directionalLight: '#F3FFF7',
+      accentEmission: '#FF6E00',
+      shipTrailEmission: '#FFD23E'
     },
 
-    glareImg: 'glare-color-hawk-2.png'
+    ambientLightIntensity: 12,
+    directionalLightIntensity: 4,
+    shipMetalness: 0.97,
+    shipRoughness: 0.6,
+
+    glareImg: 'glare-color-gold.png'
   },
   {
     id: 'ghost',
@@ -291,6 +331,11 @@ export const themes = [
       accentEmission: '#B53EFF',
       shipTrailEmission: '#8EE339'
     },
+
+    ambientLightIntensity: 1.5,
+    directionalLightIntensity: 2,
+    shipMetalness: 0,
+    shipRoughness: 0.43,
 
     glareImg: 'glare-color-ghost.png'
   }

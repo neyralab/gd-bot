@@ -7,7 +7,7 @@ import {
   selectNextTheme
 } from '../../../store/reducers/gameSlice';
 
-const DirectionalLight = () => {
+export default function AmbientLight() {
   const theme = useSelector(selectTheme);
   const nextTheme = useSelector(selectNextTheme);
   const lightRef = useRef();
@@ -40,14 +40,6 @@ const DirectionalLight = () => {
 
       if (elapsed > delay) {
         const t = Math.min((elapsed - delay) / duration, 1);
-        const startColor = new THREE.Color(localTheme.colors.directionalLight);
-        const endColor = new THREE.Color(
-          localNextTheme.theme.colors.directionalLight
-        );
-        const r = THREE.MathUtils.lerp(startColor.r, endColor.r, t);
-        const g = THREE.MathUtils.lerp(startColor.g, endColor.g, t);
-        const b = THREE.MathUtils.lerp(startColor.b, endColor.b, t);
-        lightRef.current.color.setRGB(r, g, b);
 
         // Intensity transition
         const startIntensity = localTheme.directionalLightIntensity;
@@ -63,13 +55,10 @@ const DirectionalLight = () => {
   });
 
   return (
-    <directionalLight
+    <ambientLight
       ref={lightRef}
-      position={[1, 1, 1]}
-      intensity={localTheme.directionalLightIntensity}
-      color={localTheme.colors.directionalLight}
+      intensity={localTheme.ambientLightIntensity}
+      color={0xffffff}
     />
   );
-};
-
-export default DirectionalLight;
+}

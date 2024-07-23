@@ -233,18 +233,15 @@ export default function BuyButton() {
     onClosePaymentModal();
   };
 
-  if (status !== 'playing' && !themeAccess[theme.id] && theme.id !== 'hawk') {
+  if (status !== 'playing' && !themeAccess[theme.id] && theme.id === 'ghost') {
     return (
       <div className={styles['actions-flex']}>
         <button
           type="button"
           className={classNames(styles.button, styles[theme.id])}
-          onClick={clickHandler}
-        >
+          onClick={clickHandler}>
           <TonIcon className={styles['star-icon']} viewBox="0 0 24 24" />
-          <span className={styles.cost}>
-            {theme.cost || 'FREE'}
-          </span>
+          <span className={styles.cost}>{theme.cost || 'FREE'}</span>
           <span
             className={styles.multiplier}
             style={{ color: theme.colors.buttonText }}>
