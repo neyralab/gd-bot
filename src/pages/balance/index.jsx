@@ -48,6 +48,13 @@ export const Balance = () => {
     });
   } 
 
+  const showSuccessMessage = () => {
+    toast.success('Conversion was success', {
+      theme: 'colored',
+      position: 'bottom-center'
+    });
+  } 
+
   const onFullConvert = async () => {
     try {
       if (!(user?.points || 0)) { return; }
@@ -57,6 +64,7 @@ export const Balance = () => {
       if (res.message === "success") {
         const token = await getToken();
         const updatedUser = await getUserEffect(token);
+        showSuccessMessage();
         setPointCount(0);
         dispatch(setUser(updatedUser));
         setLoading(false);
@@ -76,6 +84,8 @@ export const Balance = () => {
       if (res.message === "success") {
         const token = await getToken();
         const updatedUser = await getUserEffect(token);
+        showSuccessMessage();
+        setPointCount(0);
         dispatch(setUser(updatedUser));
         setLoading(false);
       }
