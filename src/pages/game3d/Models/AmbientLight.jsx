@@ -7,7 +7,7 @@ import {
   selectNextTheme
 } from '../../../store/reducers/gameSlice';
 
-const DirectionalLight = () => {
+export default function AmbientLight() {
   const theme = useSelector(selectTheme);
   const nextTheme = useSelector(selectNextTheme);
   const lightRef = useRef();
@@ -38,42 +38,29 @@ const DirectionalLight = () => {
     if (transitionStartTime && localNextTheme.theme && !transitionComplete) {
       const elapsed = state.clock.getElapsedTime() - transitionStartTime;
       const delay = 1; // seconds of delay
-      const colorDuration = 2.4; 
-      const intensityDuration = .5;
+      const duration = 0.5; // Duration of the color transition in seconds
 
       if (elapsed > delay) {
-        const colorT = Math.min((elapsed - delay) / colorDuration, 1); 
-        const intensityT = Math.min((elapsed - delay) / intensityDuration, 1); 
-        const startColor = new THREE.Color(localTheme.colors.directionalLight);
-        const endColor = new THREE.Color(
-          localNextTheme.theme.colors.directionalLight
-        );
-        const r = THREE.MathUtils.lerp(startColor.r, endColor.r, colorT);
-        const g = THREE.MathUtils.lerp(startColor.g, endColor.g, colorT);
-        const b = THREE.MathUtils.lerp(startColor.b, endColor.b, colorT);
-        lightRef.current.color.setRGB(r, g, b);
+        const t = Math.min((elapsed - delay) / duration, 1);
 
         // Intensity transition
-        const startIntensity = localTheme.directionalLightIntensity;
-        const endIntensity = localNextTheme.theme.directionalLightIntensity;
-        const intensity = THREE.MathUtils.lerp(startIntensity, endIntensity, intensityT);
+        const startIntensity = localTheme.ambientLightIntensity;
+        const endIntensity = localNextTheme.theme.ambientLightIntensity;
+        const intensity = THREE.MathUtils.lerp(startIntensity, endIntensity, t);
         lightRef.current.intensity = intensity;
 
-        if (colorT >= 1 && !transitionComplete) { // take the longest duration here
-          setTransitionComplete(true);
+        if (t >= 1 && !transitionComplete) {
+          setTransitionComplete(true); // Mark the transition as complete
         }
       }
     }
   });
 
   return (
-    <directionalLight
+    <ambientLight
       ref={lightRef}
-      position={[1, 1, 1]}
-      intensity={localTheme.directionalLightIntensity}
-      color={localTheme.colors.directionalLight}
+      intensity={localTheme.ambientLightIntensity}
+      color={0xffffff}
     />
   );
-};
-
-export default DirectionalLight;
+}
