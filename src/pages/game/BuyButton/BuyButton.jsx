@@ -38,8 +38,8 @@ import {
 import { INVOICE_TYPE } from '../../../utils/createStarInvoice';
 import { makeInvoice } from '../../../effects/paymentEffect';
 import { useQueryId } from '../../../effects/contracts/useQueryId';
-// import { ReactComponent as StarIcon } from '../../../assets/star.svg';
-import { ReactComponent as TonIcon } from '../../../assets/TON.svg';
+import { ReactComponent as StarIcon } from '../../../assets/star.svg';
+// import { ReactComponent as TonIcon } from '../../../assets/TON.svg';
 import {
   beforeGame,
   startGame,
@@ -213,9 +213,9 @@ export default function BuyButton() {
     dispatch(handlePaymentSelectModal(false));
   };
 
-  // const handleSelect = () => {
-  //   dispatch(handlePaymentSelectModal(true));
-  // };
+  const handleSelect = () => {
+    dispatch(handlePaymentSelectModal(true));
+  };
 
   const handleStartPayment = (el) => {
     if (el.action === 'ton') {
@@ -239,9 +239,9 @@ export default function BuyButton() {
         <button
           type="button"
           className={classNames(styles.button, styles[theme.id])}
-          onClick={clickHandler}
+          onClick={handleSelect}
         >
-          <TonIcon className={styles['star-icon']} viewBox="0 0 24 24" />
+          <StarIcon className={styles['star-icon']} viewBox="0 0 21 21" />
           <span className={styles.cost}>
             {theme.cost || 'FREE'}
           </span>
