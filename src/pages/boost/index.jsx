@@ -109,7 +109,7 @@ export const BoostPage = ({ tariffs, setTariffs }) => {
             modals: ['before', 'success', 'error'],
             notifications: []
           });
-          toast(t(''));
+          toast(t('message.successPayment'));
         } else {
           setActiveMultiplier(undefined);
           toast.error(t('message.error'), {

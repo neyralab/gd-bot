@@ -18,7 +18,7 @@ import { LANGUAGE_LIST } from '../../language';
 import styles from './Navigator.module.css';
 import { capitalize } from '../../../utils/string';
 
-const HIDDEN_OPTION = [6, 7];
+const HIDDEN_OPTION = [5, 6];
 
 export default function Navigator({
   storage,
