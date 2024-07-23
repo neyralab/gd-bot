@@ -2,7 +2,7 @@ version: '3'
 services:
   front:
     container_name: telegram-bot-front
-    build: 
+    build:
       context: ./src
       dockerfile: Dockerfile
     ports:
@@ -14,4 +14,5 @@ services:
       dockerfile: Dockerfile
     ports:
     - "3003:3000"
-    command: npm run serve
+    command: npm start
+    restart: always

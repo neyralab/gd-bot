@@ -6,7 +6,7 @@ import NavigatItem from './NavigatItem';
 import { WalletConnect } from '../WalletConnect';
 import { ReactComponent as WalletIcon } from '../assets/wallet.svg';
 import { ReactComponent as DriveIcon } from '../assets/drive.svg';
-import { ReactComponent as TapIcon } from '../assets/tap.svg';
+// import { ReactComponent as TapIcon } from '../assets/tap.svg';
 import { ReactComponent as RewardsIcon } from '../assets/rewards.svg';
 import { ReactComponent as BoostIcon } from '../assets/boost.svg';
 import { ReactComponent as ConvertIcon } from '../assets/convertor.svg';
@@ -34,13 +34,6 @@ export default function Navigator({
   const NAVIGATION = useMemo(() => {
     const list = [
       {
-        id: 1,
-        name: 'Wallet',
-        icon: <WalletIcon />,
-        html: (<WalletConnect openDisconnectModal={openDisconnectModal} ref={ref} />),
-        onClick: handleWalletClick
-      },
-      {
         id: 2,
         name: 'Drive',
         icon: <DriveIcon />,
@@ -48,29 +41,36 @@ export default function Navigator({
         onClick: () => navigate('/file-upload')
       },
       {
-        id: 3,
-        name: 'Tap',
-        icon: <TapIcon />,
-        html: (<span className={CN(styles.actionBtn, styles.playBtn)}>Play</span>),
-        onClick: () => navigate('/game-3d')
+        id: 1,
+        name: 'Wallet',
+        icon: <WalletIcon />,
+        html: (<WalletConnect openDisconnectModal={openDisconnectModal} ref={ref} />),
+        onClick: handleWalletClick
       },
+      // {
+      //   id: 3,
+      //   name: 'Tap',
+      //   icon: <TapIcon />,
+      //   html: (<span className={CN(styles.actionBtn, styles.playBtn)}>Play</span>),
+      //   onClick: () => navigate('/game-3d')
+      // },
       {
-        id: 4,
-        name: 'Rewards',
+        id: 3,
+        name: 'Tasks',
         icon: <RewardsIcon />,
         html: (<span className={styles.actionBtn}>{tasks?.length || 0}</span>),
         onClick: () => navigate('/task')
       },
       {
-        id: 5,
+        id: 4,
         name: 'Boost',
         icon: <BoostIcon />,
         html: (<span className={styles.actionBtn}>{`X${storage.multiplier}`}</span>),
         onClick: () => navigate('/boost')
       },
       {
-        id: 6,
-        name: 'Conver',
+        id: 5,
+        name: 'Convertor',
         icon: <ConvertIcon />,
         html: (<span className={styles.actionBtn}>Go</span>),
         onClick: () => navigate('/balance')

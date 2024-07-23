@@ -12,7 +12,10 @@ import TonWeb from 'tonweb';
 import { StorageIcon } from './icon';
 import { Header } from '../../components/header';
 import { selectCurrentWorkspace } from '../../store/reducers/workspaceSlice';
-import { handlePaymentSelectModal, selectPaymentSelectModal } from '../../store/reducers/modalSlice';
+import {
+  handlePaymentSelectModal,
+  selectPaymentSelectModal
+} from '../../store/reducers/modalSlice';
 import { DEFAULT_TARIFFS_NAMES } from '../upgradeStorage';
 import { getTonWallet, makeInvoice } from '../../effects/paymentEffect';
 import { storageListEffect } from '../../effects/storageEffects';
@@ -29,18 +32,37 @@ import { sleep } from '../../utils/sleep';
 import styles from './styles.module.css';
 import { getToken } from '../../effects/set-token';
 
+const available_tariffs = {
+  '1GB': 1073741824,
+  '100GB': 107374182400,
+  '1TB': 1099511627776,
+  '3TB': 3298534883328
+};
+
 export const BoostPage = ({ tariffs, setTariffs }) => {
   const [selectedPayment, setSelectedPayment] = useState(null);
   const [activeMultiplier, setActiveMultiplier] = useState();
   const ws = useSelector(selectCurrentWorkspace);
   const isPaymentModalOpen = useSelector(selectPaymentSelectModal);
   const user = useSelector((state) => state.user.data);
-  const spaceTotal = user?.space_total;
   const wallet = useTonWallet();
   const [tonConnectUI] = useTonConnectUI();
   const { open } = useTonConnectModal();
   const dispatch = useDispatch();
   const handleVibrationClick = useButtonVibration();
+
+  const spaceTotal = useMemo(() => {
+    if (user?.space_actual) return user?.space_actual;
+
+    const space = user?.space_total;
+    const tariffs = ['1GB', '100GB', '1TB', '3TB'];
+
+    return tariffs.reduce(
+      (result, tariff) =>
+        space >= available_tariffs[tariff] ? available_tariffs[tariff] : result,
+      available_tariffs['1GB']
+    );
+  }, [user?.space_total, user?.space_actual]);
 
   const currentPrice = useMemo(() => {
     return tariffs?.find((tariff) => tariff.storage === spaceTotal);
@@ -109,40 +131,46 @@ export const BoostPage = ({ tariffs, setTariffs }) => {
   const invoiceCallback = async (result) => {
     try {
       if (result === 'paid') {
-        await sleep(500);    
+        await sleep(500);
         const token = await getToken();
         await storageListEffect(token).then((data) => {
           setTariffs(data);
         });
-      } 
+      }
     } catch (error) {
-      console.log('error')
+      console.log('error');
     }
-  }
+  };
 
   const handleStartPayment = (el) => {
-    if (el.action === "ton") {
+    if (el.action === 'ton') {
       payByTON(el);
     } else {
       const input = `${el?.id};${user.id};${ws}`;
       const theme = {
         multiplier: el.multiplicator,
-        stars: el.stars,
-      }
-      makeInvoice({input, dispatch, callback: invoiceCallback, type: INVOICE_TYPE.boost, theme });
+        stars: el.stars
+      };
+      makeInvoice({
+        input,
+        dispatch,
+        callback: invoiceCallback,
+        type: INVOICE_TYPE.boost,
+        theme
+      });
     }
     onClosePaymentModal();
-  }
+  };
 
   const onClosePaymentModal = () => {
     setSelectedPayment(null);
     dispatch(handlePaymentSelectModal(false));
-  }
+  };
 
   const handleSelect = (el) => {
     setSelectedPayment(el);
     dispatch(handlePaymentSelectModal(true));
-  }
+  };
 
   return (
     <div className={styles.container}>
@@ -160,9 +188,7 @@ export const BoostPage = ({ tariffs, setTariffs }) => {
             </p>
           </div>
           <div className={styles.cost}>
-            <p className={styles.cost_value}>
-              {currentPrice?.stars || '0'}
-            </p>
+            <p className={styles.cost_value}>{currentPrice?.stars || '0'}</p>
             <Star className={styles.current_diamond} viewBox="0 0 21 21" />
           </div>
         </div>
@@ -174,7 +200,9 @@ export const BoostPage = ({ tariffs, setTariffs }) => {
             <li key={index} onClick={handleVibrationClick()}>
               <button
                 disabled={currentPrice?.storage === el?.storage}
-                onClick={() => {handleSelect(el)}}
+                onClick={() => {
+                  handleSelect(el);
+                }}
                 className={CN(
                   styles.item,
                   activeMultiplier?.storage === el.storage && styles.active_item
@@ -183,7 +211,7 @@ export const BoostPage = ({ tariffs, setTariffs }) => {
                   <StorageIcon storage={el} />
                   <div className={styles.item_storage}>
                     <p className={styles.storage}>
-                      {transformSize(el?.storage, 0)}
+                      {transformSize(el?.storage)}
                     </p>
                     <p className={styles.item_text}>Storage per year</p>
                   </div>
@@ -227,12 +255,8 @@ export const BoostPage = ({ tariffs, setTariffs }) => {
       <SlidingModal
         onClose={onClosePaymentModal}
         isOpen={isPaymentModalOpen}
-        snapPoints={[190, 190, 50, 0]}
-      >
-        <PaymentMenu
-          payload={selectedPayment}
-          onClick={handleStartPayment}
-        />
+        snapPoints={[190, 190, 50, 0]}>
+        <PaymentMenu payload={selectedPayment} onClick={handleStartPayment} />
       </SlidingModal>
     </div>
   );
