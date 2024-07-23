@@ -48,13 +48,14 @@ const MoveCamera = () => {
 
     tl.to(camera.position, {
       z: initialPosition + 2,
+      delay: 0.2,
       duration: 0.5,
       ease: 'back.inOut(2)'
     })
       .to(camera.position, {
         z: initialPosition - 4,
         duration: 0.2,
-        delay: 0.7,
+        delay: 0.5,
         ease: 'power3.in'
       })
       .to(camera.position, {

@@ -41,8 +41,8 @@ export default function FogModel() {
     const duration = 4;
 
     // Calculate the new far value using a sine wave
-    const amplitude = 50; // Half of the range (350 - 250) / 2
-    const offset = 300; // Midpoint of the range (350 + 250) / 2
+    const amplitude = 50; // Half of the range (x - 250) / 2
+    const offset = 250; // Midpoint of the range (x + 250) / 2
     fogRef.current.far =
       offset + amplitude * Math.sin((elapsed / duration) * Math.PI * 2);
 
@@ -77,6 +77,6 @@ export default function FogModel() {
   });
 
   return (
-    <fog ref={fogRef} attach="fog" args={[localTheme.colors.fog, -2, 350]} />
+    <fog ref={fogRef} attach="fog" args={[localTheme.colors.fog, -2, 250]} />
   );
 }

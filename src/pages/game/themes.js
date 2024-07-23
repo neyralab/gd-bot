@@ -28,7 +28,8 @@ export const levelSubThemes = [
     },
 
     ambientLightIntensity: 1.5,
-    directionalLightIntensity: 2,
+    directionalLight1Intensity: 2,
+    directionalLight2Intensity: 0.5,
     shipMetalness: 0,
     shipRoughness: 0.43,
 
@@ -64,7 +65,8 @@ export const levelSubThemes = [
     },
 
     ambientLightIntensity: 1.5,
-    directionalLightIntensity: 2,
+    directionalLight1Intensity: 2,
+    directionalLight2Intensity: 0.5,
     shipMetalness: 0,
     shipRoughness: 0.43,
 
@@ -91,8 +93,8 @@ export const levelSubThemes = [
       shipBase: '#FFFFFF',
       wing: '#FFFFFF',
       wingAccent: '#FFFFFF',
-      emission: '#D6AEFF',
-      fog: '#A3B1E7',
+      emission: '#E4C9FF',
+      fog: '#7783B2',
       wave: '#9544E7',
       directionalLight: '#A3B1E7',
       accentEmission: '#8F49D5',
@@ -100,7 +102,8 @@ export const levelSubThemes = [
     },
 
     ambientLightIntensity: 1.5,
-    directionalLightIntensity: 2,
+    directionalLight1Intensity: 2.2,
+    directionalLight2Intensity: 0.5,
     shipMetalness: 0,
     shipRoughness: 0.43,
 
@@ -136,7 +139,8 @@ export const levelSubThemes = [
     },
 
     ambientLightIntensity: 1.5,
-    directionalLightIntensity: 2,
+    directionalLight1Intensity: 2,
+    directionalLight2Intensity: 0.5,
     shipMetalness: 0,
     shipRoughness: 0.43,
 
@@ -163,8 +167,8 @@ export const levelSubThemes = [
       shipBase: '#FFFFFF',
       wing: '#FFFFFF',
       wingAccent: '#FFFFFF',
-      emission: '#FFAEAE',
-      fog: '#DDA3E7',
+      emission: '#FFBBBB',
+      fog: '#BB706C',
       wave: '#E74444',
       directionalLight: '#E7C8A3',
       accentEmission: '#C01111',
@@ -172,7 +176,8 @@ export const levelSubThemes = [
     },
 
     ambientLightIntensity: 1.5,
-    directionalLightIntensity: 2,
+    directionalLight1Intensity: 2,
+    directionalLight2Intensity: 0.5,
     shipMetalness: 0,
     shipRoughness: 0.43,
 
@@ -200,7 +205,7 @@ export const levelSubThemes = [
       wing: '#FFFFFF',
       wingAccent: '#FFFFFF',
       emission: '#FFAEFF',
-      fog: '#A3B9E7',
+      fog: '#8EA1C9',
       wave: '#E744E7',
       directionalLight: '#B3A3E7',
       accentEmission: '#C011C0',
@@ -208,7 +213,8 @@ export const levelSubThemes = [
     },
 
     ambientLightIntensity: 1.5,
-    directionalLightIntensity: 2,
+    directionalLight1Intensity: 2,
+    directionalLight2Intensity: 0.5,
     shipMetalness: 0,
     shipRoughness: 0.43,
 
@@ -244,7 +250,8 @@ export const levelSubThemes = [
     },
 
     ambientLightIntensity: 1.5,
-    directionalLightIntensity: 2,
+    directionalLight1Intensity: 2,
+    directionalLight2Intensity: 0.5,
     shipMetalness: 0,
     shipRoughness: 0.43,
 
@@ -282,23 +289,24 @@ export const themes = [
         }
       },
 
-      shipBase: '#FFE836',
-      wing: '#FFE836',
-      wingAccent: '#FFE836',
+      shipBase: '#FED97B',
+      wing: '#FED97B',
+      wingAccent: '#FED97B',
       emission: '#FFECAE',
-      fog: '#FDE1BC',
-      wave: '#FFA923',
+      fog: '#AE9ED5',
+      wave: '#FFDA23',
       directionalLight: '#F3FFF7',
-      accentEmission: '#FF6E00',
+      accentEmission: '#40832B',
       shipTrailEmission: '#FFD23E'
     },
 
-    ambientLightIntensity: 12,
-    directionalLightIntensity: 4,
-    shipMetalness: 0.97,
+    ambientLightIntensity: 20,
+    directionalLight1Intensity: 2.2,
+    directionalLight2Intensity: 1.1,
+    shipMetalness: 0.98,
     shipRoughness: 0.6,
 
-    glareImg: 'glare-color-gold.png'
+    glareImg: 'glare-color-gold-2.png'
   },
   {
     id: 'ghost',
@@ -333,7 +341,8 @@ export const themes = [
     },
 
     ambientLightIntensity: 1.5,
-    directionalLightIntensity: 2,
+    directionalLight1Intensity: 2,
+    directionalLight2Intensity: 0.5,
     shipMetalness: 0,
     shipRoughness: 0.43,
 
