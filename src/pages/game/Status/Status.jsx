@@ -25,7 +25,8 @@ export default function Status() {
       return (
         <span className={styles['timer-description']}>{t('mode.freePlay')}</span>
       );
-    } else if (themeAccess[theme.id] && !lockTimerTimestamp) {
+    } else if (themeAccess[theme.id]) {
+      if (theme.id === 'hawk' && lockTimerTimestamp) return null;
       if (status === 'waiting') {
         return <span className={styles['timer-description']}>{t('mode.playNow')}</span>;
       } else {

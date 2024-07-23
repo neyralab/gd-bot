@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { useSwipeable } from 'react-swipeable';
@@ -27,8 +27,9 @@ import Counter from '../game/Counter/Counter';
 import Balance from '../game/Balance/Balance';
 import Status from '../game/Status/Status';
 import ThemeSwitcherControllers from '../game/ThemeSwitcherControllers/ThemeSwitcherControllers';
-import styles from './styles.module.css';
 import GameCanvas from './Models/GameCanvas';
+import GoldPlayModal from '../game/GoldPlayModal/GoldPlayModal';
+import styles from './styles.module.css';
 
 /** Please, do not add extra selectors or state
  * It will force the component to rerender, that will cause lags and rerenders
@@ -56,14 +57,24 @@ export function Game3DPage() {
   const lockTimerTimestamp = useSelector(
     (state) => state.game.lockTimerTimestamp
   );
-  const [recentlyFinishedLocker, setRecentlyFinishedLocker] = useState(false);
+  const recentlyFinishedLocker = useSelector(
+    (state) => state.game.recentlyFinishedLocker
+  );
 
   const swipeHandlers = useSwipeable({
     onSwipedLeft: () => {
-      dispatch(switchTheme({ direction: 'next', timeout: 2500 }));
+      dispatch(
+        switchTheme({ themeId: 'ghost', direction: 'next', timeout: 2500 })
+      );
     },
     onSwipedRight: () => {
-      dispatch(switchTheme({ direction: 'prev', timeout: 2500 }));
+      dispatch(
+        switchTheme({
+          themeId: themeAccess.gold ? 'gold' : 'hawk',
+          direction: 'prev',
+          timeout: 2500
+        })
+      );
     }
   });
 
@@ -76,20 +87,6 @@ export function Game3DPage() {
       dispatch(gameCleanup());
     };
   }, [userIsInitialized]);
-
-  useEffect(() => {
-    /** To prevent accidental tap to start another game when just finished */
-
-    if (status === 'finished' && isInitialized) {
-      setRecentlyFinishedLocker(true);
-      const timeout = setTimeout(() => {
-        setRecentlyFinishedLocker(false);
-      }, 3000);
-      return () => {
-        clearTimeout(timeout);
-      };
-    }
-  }, [status]);
 
   /** All the data for the game should be fetched in the store's thunks.
    * Do not add extra actions and side effects.
@@ -206,6 +203,7 @@ export function Game3DPage() {
 
       <Menu />
 
+      <GoldPlayModal />
     </div>
   );
 }
