@@ -19,7 +19,6 @@ import BuyButton from '../game/BuyButton/BuyButton';
 import EndGameAddedPoints from '../game/EndGameAddedPoints/EndGameAddedPoints';
 import PointsGrowArea from '../game/PointsGrowArea/PointsGrowArea';
 import Timer from '../game/Timer/Timer';
-import HiddenButton from '../game/HiddenButton/HiddenButton';
 import Menu from '../../components/Menu/Menu';
 import ProgressBar from '../game/ProgressBar/ProgressBar';
 import Congratulations from '../game/Congratulations/Congratulations';
@@ -195,7 +194,6 @@ export function Game3DPage() {
       <Menu />
 
       <Congratulations />
-      <HiddenButton />
     </div>
   );
 }
