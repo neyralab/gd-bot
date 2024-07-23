@@ -42,8 +42,8 @@ export default function AmbientLight() {
         const t = Math.min((elapsed - delay) / duration, 1);
 
         // Intensity transition
-        const startIntensity = localTheme.directionalLightIntensity;
-        const endIntensity = localNextTheme.theme.directionalLightIntensity;
+        const startIntensity = localTheme.ambientLightIntensity;
+        const endIntensity = localNextTheme.theme.ambientLightIntensity;
         const intensity = THREE.MathUtils.lerp(startIntensity, endIntensity, t);
         lightRef.current.intensity = intensity;
 
