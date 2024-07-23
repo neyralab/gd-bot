@@ -1,0 +1,58 @@
+.container {
+  /*max-width: 391px;*/
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  padding-bottom: 8px;
+  overflow-x: hidden;
+}
+
+.subTitle {
+  font-family: 'Open Sans';
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 18px;
+  color: #FFFFFF99;
+  text-transform: uppercase;
+  margin-top: 20px;
+  margin-bottom: 12px;
+}
+
+.list {
+  background-color: #0f0f0f;
+  border-radius: 10px;
+  padding: 4px 12px;
+}
+
+.item {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px;
+  border-bottom: 1px solid #1D1D1D;
+  cursor: pointer;
+}
+
+.item:last-child {
+  border-bottom: none;
+}
+
+.itemDetail {
+
+}
+
+.lang {
+  font-family: 'SF Pro Text';
+  font-size: 16px;
+  line-height: 19px;
+}
+
+.langOriginal {
+  font-family: 'SF Pro Text';
+  font-size: 12px;
+  line-height: 14px;
+}
+
+.itemStatus {
+  color: #3d88f6;
+}

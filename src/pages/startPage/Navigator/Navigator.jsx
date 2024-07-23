@@ -11,7 +11,7 @@ import { ReactComponent as TapIcon } from '../assets/tap.svg';
 import { ReactComponent as RewardsIcon } from '../assets/rewards.svg';
 import { ReactComponent as BoostIcon } from '../assets/boost.svg';
 import { ReactComponent as ConvertIcon } from '../assets/convertor.svg';
-// import { ReactComponent as LanguageIcon } from '../assets/language.svg';
+import { ReactComponent as LanguageIcon } from '../assets/language.svg';
 import { isDevEnv } from '../../../utils/isDevEnv';
 
 import styles from './Navigator.module.css';
@@ -84,13 +84,13 @@ export default function Navigator({
       //   html: (<span className={styles.actionBtn}>{userNodes}</span>),
       //   onClick: () => navigate('/nodes-welcome')
       // }
-      // {
-      //   id: 7,
-      //   name: 'Language',
-      //   icon: <LanguageIcon />,
-      //   html: (<span className={styles.actionBtn}>Eng</span>),
-      //   onClick: () => {}
-      // },
+      {
+        id: 7,
+        name: t('dashboard.language'),
+        icon: <LanguageIcon />,
+        html: (<span className={styles.actionBtn}>Eng</span>),
+        onClick: () => navigate('/language')
+      },
     ]
 
     if (!isDev) {

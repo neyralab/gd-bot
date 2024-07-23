@@ -26,6 +26,7 @@ import { Balance } from './pages/balance';
 import { Referral } from './pages/referral';
 import { LeaderboardLeague } from './pages/leaderboard/league';
 import { LeaderboardFriends } from './pages/leaderboard/friends';
+import { LanguagePage } from './pages/language';
 import { TaskPage } from './pages/Task';
 import { BoostPage } from './pages/boost';
 import { GamePage } from './pages/game';
@@ -128,6 +129,7 @@ function App() {
           <Route path="/balance" exact element={<Balance />} />
           <Route path="/point-tracker" exact element={<Referral />} />
           <Route path="/task" exact element={<TaskPage />} />
+          <Route path="/language" exact element={<LanguagePage />} />
           <Route
             path="/leadboard/league"
             exact
