@@ -37,10 +37,6 @@
   border-bottom: none;
 }
 
-.itemDetail {
-
-}
-
 .lang {
   font-family: 'SF Pro Text';
   font-size: 16px;
@@ -51,8 +47,10 @@
   font-family: 'SF Pro Text';
   font-size: 12px;
   line-height: 14px;
+  margin-top: 4px;
 }
 
 .itemStatus {
+  align-self: center;
   color: #3d88f6;
 }

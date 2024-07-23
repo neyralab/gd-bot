@@ -106,6 +106,12 @@
     "notJoinYoutube": "You did not join our Youtube Chanel",
     "notJoinX": "You did not join our X Chanel",
     "download": "Download",
-    "join": "Join"
+    "join": "Join",
+    "transaction": "Transaction may take up to 1 minute.\n\n Please do not close the window \n\n wait for the game to start."
+  },
+  "language": {
+    "search": "Search",
+    "cancell": "Cancell",
+    "interface": "Interface language"
   }
 }

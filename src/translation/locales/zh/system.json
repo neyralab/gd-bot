@@ -15,7 +15,7 @@
     "nodes": "节点",
     "howEarn": "怎么玩又赚？",
     "play": "玩",
-    "conver": "康维尔",
+    "conver": "转换器",
     "go": "去",
     "language": "语言",
     "back": "后退"
@@ -106,6 +106,12 @@
     "notJoinYoutube": "您还没有加入我们的 YouTube Chanel",
     "notJoinX": "您还没有加入我们的X Chanel",
     "download": "下载",
-    "join": "加入"
+    "join": "加入",
+    "transaction": "交易最多可能需要 1 分钟。\n\n 请不要关闭窗口 \n\n 等待游戏开始。"
+  },
+  "language": {
+    "search": "搜索",
+    "cancell": "取消",
+    "interface": "界面语言"
   }
 }

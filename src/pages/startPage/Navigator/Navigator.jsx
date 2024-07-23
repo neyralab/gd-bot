@@ -13,10 +13,12 @@ import { ReactComponent as BoostIcon } from '../assets/boost.svg';
 import { ReactComponent as ConvertIcon } from '../assets/convertor.svg';
 import { ReactComponent as LanguageIcon } from '../assets/language.svg';
 import { isDevEnv } from '../../../utils/isDevEnv';
+import { LANGUAGE_LIST } from '../../language';
 
 import styles from './Navigator.module.css';
+import { capitalize } from '../../../utils/string';
 
-const HIDDEN_OPTION = ['Conver'];
+const HIDDEN_OPTION = [6, 7];
 
 export default function Navigator({
   storage,
@@ -24,7 +26,7 @@ export default function Navigator({
   tasks,
   openDisconnectModal
 }) {
-  const { t } = useTranslation('system');
+  const { t, i18n } = useTranslation('system');
   const navigate = useNavigate();
   const isDev = isDevEnv();
   const ref = useRef(null);
@@ -88,17 +90,19 @@ export default function Navigator({
         id: 7,
         name: t('dashboard.language'),
         icon: <LanguageIcon />,
-        html: (<span className={styles.actionBtn}>Eng</span>),
+        html: (<span className={styles.actionBtn}>
+          {capitalize(LANGUAGE_LIST.find((item) => i18n.language === item.abbreviation).shortName)}
+        </span>),
         onClick: () => navigate('/language')
       },
     ]
 
     if (!isDev) {
-      return list.filter((item) => !(HIDDEN_OPTION.includes(item.name)));
+      return list.filter((item) => !(HIDDEN_OPTION.includes(item.id)));
     }
 
     return list
-  }, [storage, tasks, human, handleWalletClick, openDisconnectModal, navigate, isDev])
+  }, [storage, tasks, human, handleWalletClick, openDisconnectModal, navigate, isDev, i18n])
 
   return (
     <ul className={CN(styles['navigator'], styles['to-appear'])}>

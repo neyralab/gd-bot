@@ -15,7 +15,7 @@
     "nodes": "Nós",
     "howEarn": "Como jogar e ganhar?",
     "play": "Jogar",
-    "conver": "Converter",
+    "conver": "Conversor",
     "go": "Ir",
     "language": "Linguagem",
     "back": "Voltar"
@@ -106,6 +106,12 @@
     "notJoinYoutube": "Você não se inscreveu no nosso canal do Youtube",
     "notJoinX": "Você não se juntou ao nosso X Chanel",
     "download": "Download",
-    "join": "Juntar"
+    "join": "Juntar",
+    "transaction": "A transação pode levar até 1 minuto.\n\n Por favor, não feche a janela \n\n espere o jogo começar."
+  },
+  "language": {
+    "search": "Procurar",
+    "cancell": "Cancelar",
+    "interface": "Idioma da interface"
   }
 }

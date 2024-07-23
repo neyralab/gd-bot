@@ -15,7 +15,7 @@
     "nodes": "Node",
     "howEarn": "Bagaimana cara bermain dan menghasilkan?",
     "play": "Bermain",
-    "conver": "Konversi",
+    "conver": "Konverter",
     "go": "Pergi",
     "language": "Bahasa",
     "back": "Kembali"
@@ -107,6 +107,12 @@
     "notJoinYoutube": "Anda tidak bergabung dengan Channel Youtube kami",
     "notJoinX": "Anda tidak bergabung dengan X Chanel kami",
     "download": "Unduh",
-    "join": "Bergabung"
+    "join": "Bergabung",
+    "transaction": "Transaksi mungkin memakan waktu hingga 1 menit.\n\n Harap jangan menutup jendela \n\n menunggu permainan dimulai."
+  },
+  "language": {
+    "search": "Mencari",
+    "cancell": "Batalkan",
+    "interface": "Bahasa antarmuka"
   }
 }
