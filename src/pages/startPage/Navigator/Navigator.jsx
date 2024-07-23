@@ -7,7 +7,7 @@ import NavigatItem from './NavigatItem';
 import { WalletConnect } from '../WalletConnect';
 import { ReactComponent as WalletIcon } from '../assets/wallet.svg';
 import { ReactComponent as DriveIcon } from '../assets/drive.svg';
-import { ReactComponent as TapIcon } from '../assets/tap.svg';
+// import { ReactComponent as TapIcon } from '../assets/tap.svg';
 import { ReactComponent as RewardsIcon } from '../assets/rewards.svg';
 import { ReactComponent as BoostIcon } from '../assets/boost.svg';
 import { ReactComponent as ConvertIcon } from '../assets/convertor.svg';
@@ -39,41 +39,41 @@ export default function Navigator({
     const list = [
       {
         id: 1,
-        name: t('dashboard.wallet'),
-        icon: <WalletIcon />,
-        html: (<WalletConnect openDisconnectModal={openDisconnectModal} ref={ref} />),
-        onClick: handleWalletClick
-      },
-      {
-        id: 2,
         name: t('dashboard.drive'),
         icon: <DriveIcon />,
         html: (<span className={CN(styles.actionBtn, styles.addBt)}>{human.percent.label}</span>),
         onClick: () => navigate('/file-upload')
       },
       {
-        id: 3,
-        name: t('dashboard.tap'),
-        icon: <TapIcon />,
-        html: (<span className={CN(styles.actionBtn, styles.playBtn)}>{t('dashboard.play')}</span>),
-        onClick: () => navigate('/game-3d')
+        id: 2,
+        name: t('dashboard.wallet'),
+        icon: <WalletIcon />,
+        html: (<WalletConnect openDisconnectModal={openDisconnectModal} ref={ref} />),
+        onClick: handleWalletClick
       },
+      // {
+      //   id: 3,
+      //   name: 'Tap',
+      //   icon: <TapIcon />,
+      //   html: (<span className={CN(styles.actionBtn, styles.playBtn)}>Play</span>),
+      //   onClick: () => navigate('/game-3d')
+      // },
       {
-        id: 4,
-        name: t('dashboard.rewards'),
+        id: 3,
+        name: t('dashboard.tasks'),
         icon: <RewardsIcon />,
         html: (<span className={styles.actionBtn}>{tasks?.length || 0}</span>),
         onClick: () => navigate('/task')
       },
       {
-        id: 5,
+        id: 4,
         name: t('dashboard.boost'),
         icon: <BoostIcon />,
         html: (<span className={styles.actionBtn}>{`X${storage.multiplier}`}</span>),
         onClick: () => navigate('/boost')
       },
       {
-        id: 6,
+        id: 5,
         name: t('dashboard.conver'),
         icon: <ConvertIcon />,
         html: (<span className={styles.actionBtn}>{t('dashboard.go')}</span>),
@@ -87,7 +87,7 @@ export default function Navigator({
       //   onClick: () => navigate('/nodes-welcome')
       // }
       {
-        id: 7,
+        id: 6,
         name: t('dashboard.language'),
         icon: <LanguageIcon />,
         html: (<span className={styles.actionBtn}>

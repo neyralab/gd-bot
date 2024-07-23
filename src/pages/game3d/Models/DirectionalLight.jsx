@@ -14,36 +14,49 @@ const DirectionalLight = () => {
   const lightRef = useRef();
   const [colorTransitionStartTime, setColorTransitionStartTime] =
     useState(null);
+  const [localTheme, setLocalTheme] = useState(theme);
+  const [localNextTheme, setLocalNextTheme] = useState(nextTheme);
+  const [transitionComplete, setTransitionComplete] = useState(false);
 
   useEffect(() => {
     if (!nextTheme.theme) return;
+    setLocalNextTheme(nextTheme);
     setColorTransitionStartTime(null); // Reset the color transition start time
   }, [nextTheme.theme]);
+
+  useEffect(() => {
+    if (theme.id !== localTheme.id) {
+      setLocalTheme(theme);
+    }
+  }, [transitionComplete]);
 
   useFrame((state) => {
     if (!colorTransitionStartTime) {
       setColorTransitionStartTime(state.clock.getElapsedTime());
     }
 
-    if (colorTransitionStartTime && nextTheme.theme) {
+    if (
+      colorTransitionStartTime &&
+      localNextTheme.theme &&
+      !transitionComplete
+    ) {
       const colorElapsed =
         state.clock.getElapsedTime() - colorTransitionStartTime;
       const delay = 1; // seconds of delay
-      const colorDuration = 1.8; // Duration of the color transition in seconds
+      const colorDuration = 2.4; // Duration of the color transition in seconds
 
       if (colorElapsed > delay) {
-        const t = (colorElapsed - delay) / colorDuration;
-        if (t < 1) {
-          const startColor = new THREE.Color(theme.colors.directionalLight);
-          const endColor = new THREE.Color(
-            nextTheme.theme.colors.directionalLight
-          );
-          const r = startColor.r + t * (endColor.r - startColor.r);
-          const g = startColor.g + t * (endColor.g - startColor.g);
-          const b = startColor.b + t * (endColor.b - startColor.b);
-          lightRef.current.color.setRGB(r, g, b);
-        } else {
-          lightRef.current.color.set(nextTheme.theme.colors.directionalLight);
+        const t = Math.min((colorElapsed - delay) / colorDuration, 1);
+        const startColor = new THREE.Color(localTheme.colors.directionalLight);
+        const endColor = new THREE.Color(
+          localNextTheme.theme.colors.directionalLight
+        );
+        const r = THREE.MathUtils.lerp(startColor.r, endColor.r, t);
+        const g = THREE.MathUtils.lerp(startColor.g, endColor.g, t);
+        const b = THREE.MathUtils.lerp(startColor.b, endColor.b, t);
+        lightRef.current.color.setRGB(r, g, b);
+        if (t >= 1) {
+          setTransitionComplete(true); // Mark the transition as complete
         }
       }
     }
@@ -53,8 +66,8 @@ const DirectionalLight = () => {
     <directionalLight
       ref={lightRef}
       position={[1, 1, 1]}
-      intensity={2.5}
-      color={theme.colors.directionalLight}
+      intensity={2}
+      color={localTheme.colors.directionalLight}
     />
   );
 };

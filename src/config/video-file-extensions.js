@@ -1,6 +1,7 @@
 export default [
   '.avi',
   '.mpeg',
+  '.mpg',
   '.mp4',
   '.ogv',
   '.webm',
@@ -10,6 +11,9 @@ export default [
   '.rm',
   '.vob',
   '.mkv',
+  '.wmv',
+  '.mov',
+  '.m4v'
 ];
 
 export const videoMediaTypes = [
@@ -19,7 +23,7 @@ export const videoMediaTypes = [
   'video/mp4',
   'video/ogg',
   'video/quicktime',
-  'video/webm',
+  'video/webm'
 ];
 
 export const videoMediaExtentionPreview = [
@@ -36,13 +40,27 @@ export const videoMediaExtentionPreview = [
   '3gp',
   'flv',
   'rm',
-  'vob',
+  'vob'
 ];
+
 export const videoWithoutPreview = ['3g2', 'flv', 'rm', 'vob'];
+
+export const videoWithoutThumbnail = [
+  '3g2',
+  'flv',
+  'rm',
+  'vob',
+  'mpeg',
+  'mpg',
+  'avi',
+  'wmv'
+];
 
 export const videoMediaExtentionContent = [
   'video/avi',
   'video/mpeg',
+  'video/mpg',
   'video/quicktime',
   'video/mp4',
+  'video/x-ms-wmv'
 ];

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Elements } from '@stripe/react-stripe-js';
+import { useTranslation } from 'react-i18next';
 import Modal from 'react-modal';
 
 import { getStripe } from '../../../effects/paymentEffect';
@@ -19,6 +20,7 @@ const BillingModal = ({
   successCallback,
   noPaymentSelector = false
 }) => {
+  const { t } = useTranslation('system');
   const [stripePromise, setStripePromise] = useState(null);
   const appearance = {
     theme: 'flat',
@@ -124,7 +126,7 @@ const BillingModal = ({
           </Elements>
         ) : (
           <div className={styles.loader}>
-            <GhostLoader texts={['Please wait']} />
+            <GhostLoader texts={[t('loading.pleaseWait')]} />
           </div>
         )}
       </div>

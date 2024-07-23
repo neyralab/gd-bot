@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { useSwipeable } from 'react-swipeable';
@@ -20,10 +20,8 @@ import BuyButton from '../game/BuyButton/BuyButton';
 import EndGameAddedPoints from '../game/EndGameAddedPoints/EndGameAddedPoints';
 import PointsGrowArea from '../game/PointsGrowArea/PointsGrowArea';
 import Timer from '../game/Timer/Timer';
-import HiddenButton from '../game/HiddenButton/HiddenButton';
 import Menu from '../../components/Menu/Menu';
 import ProgressBar from '../game/ProgressBar/ProgressBar';
-import Congratulations from '../game/Congratulations/Congratulations';
 import GhostLoader from '../../components/ghostLoader';
 import Counter from '../game/Counter/Counter';
 import Balance from '../game/Balance/Balance';
@@ -40,11 +38,11 @@ export function Game3DPage() {
   const { t } = useTranslation('system');
   const dispatch = useDispatch();
 
-  // const backgroundRef = useRef(null);
   const pointsAreaRef = useRef(null);
   const canvasRef = useRef(null);
 
   const isInitialized = useSelector(selectIsInitialized);
+  const userIsInitialized = useSelector((state) => !!state.user.data);
   const theme = useSelector(selectTheme);
   const themeAccess = useSelector(selectThemeAccess);
   const themeIsSwitching = useSelector(
@@ -55,6 +53,10 @@ export function Game3DPage() {
   const counterIsFinished = useSelector(
     (state) => state.game.counter.isFinished
   );
+  const lockTimerTimestamp = useSelector(
+    (state) => state.game.lockTimerTimestamp
+  );
+  const [recentlyFinishedLocker, setRecentlyFinishedLocker] = useState(false);
 
   const swipeHandlers = useSwipeable({
     onSwipedLeft: () => {
@@ -66,14 +68,28 @@ export function Game3DPage() {
   });
 
   useEffect(() => {
-    if (!isInitialized) {
+    if (!isInitialized && userIsInitialized) {
       dispatch(initGame());
     }
 
     return () => {
       dispatch(gameCleanup());
     };
-  }, []);
+  }, [userIsInitialized]);
+
+  useEffect(() => {
+    /** To prevent accidental tap to start another game when just finished */
+
+    if (status === 'finished' && isInitialized) {
+      setRecentlyFinishedLocker(true);
+      const timeout = setTimeout(() => {
+        setRecentlyFinishedLocker(false);
+      }, 3000);
+      return () => {
+        clearTimeout(timeout);
+      };
+    }
+  }, [status]);
 
   /** All the data for the game should be fetched in the store's thunks.
    * Do not add extra actions and side effects.
@@ -94,10 +110,12 @@ export function Game3DPage() {
 
     if (
       (!counterIsFinished && theme.id === 'hawk') ||
+      (lockTimerTimestamp !== null && theme.id === 'hawk') ||
       !theme ||
       !themeAccess[theme.id] ||
       status === 'finished' ||
-      themeIsSwitching
+      themeIsSwitching ||
+      recentlyFinishedLocker
     )
       return;
 
@@ -113,7 +131,7 @@ export function Game3DPage() {
 
     // Update state and timers
     dispatch(addExperience());
-    dispatch(addBalance(1));
+    dispatch(addBalance(theme.multiplier));
   };
 
   const handleEvent = async (event) => {
@@ -127,7 +145,7 @@ export function Game3DPage() {
     }
   };
 
-  if (!isInitialized || isTransactionLoading) {
+  if (!isInitialized || !userIsInitialized || isTransactionLoading) {
     return (
       <GhostLoader texts={isTransactionLoading ? [t('message.transaction')]: []}/>
     );
@@ -188,8 +206,6 @@ export function Game3DPage() {
 
       <Menu />
 
-      <Congratulations />
-      <HiddenButton />
     </div>
   );
 }

@@ -4,10 +4,12 @@ import { Telegraf, Markup } from 'telegraf';
 import fs from 'fs';
 import fetch from 'node-fetch';
 import { telegrafThrottler } from 'telegraf-throttler';
+import axios from 'axios';
 
 import photoHandler from './handlers/photoHandler.js';
 import textHandler from './handlers/textHandler.js';
 import termsHandler from './commands/terms/index.js';
+import logger from './utils/logger.js';
 
 const app = express();
 const bot = new Telegraf(process.env.BOT_TOKEN_SECRET);
@@ -78,7 +80,11 @@ bot.start(async (ctx) => {
       cachedUserData = await response.json();
       //cache[cacheKey] = cachedUserData;
     } catch (error) {
-      ctx.reply(`Error: ${error.message}`);
+      try {
+        await ctx.reply(`Error: ${error.message}`);
+      } catch (e) {
+        logger.error('Error sending error message', { error: e });
+      }
       return;
     }
   }
@@ -105,16 +111,20 @@ bot.start(async (ctx) => {
     'Ghost Drive',
     `${process.env.APP_FRONTEND_URL}/start`
   );
+  const playButton = Markup.button.webApp(
+    'Tap to Earn',
+    `${process.env.APP_FRONTEND_URL}/game-3d`
+  );
   const followXButton = Markup.button.url(
     'Follow X',
     `https://twitter.com/ghostdrive_web3`
   );
   const followCommunityButton = Markup.button.url(
-    'Follow Community',
+    'Community',
     `https://t.me/ghostdrive_web3_chat`
   );
   const followNewsButton = Markup.button.url(
-    'Follow News',
+    'News',
     `https://t.me/ghostdrive_web3`
   );
   try {
@@ -126,7 +136,7 @@ bot.start(async (ctx) => {
         reply_markup: {
           inline_keyboard: [
             [dashboardButton],
-            [followXButton],
+            [playButton],
             [followCommunityButton],
             [followNewsButton],
             [shareButton]
@@ -135,8 +145,14 @@ bot.start(async (ctx) => {
       }
     );
   } catch (error) {
-    await ctx.reply(`Error: ${error.message}`);
-    console.error('Error replyWithPhoto:', error.message);
+    logger.error('Error replyWithPhoto:', { error });
+    try {
+      await ctx.reply(`Error: ${error.message}`);
+    } catch (e) {
+      logger.error('Error sending error message after replyWithPhoto error', {
+        error: e
+      });
+    }
   }
 });
 
@@ -145,6 +161,57 @@ bot.command('terms', termsHandler);
 bot.on('text', textHandler);
 
 bot.on('photo', photoHandler);
+
+bot.on('pre_checkout_query', async (ctx) => {
+  try {
+    const response = await axios.post(
+      `${process.env.TG_BILLING_ENDPOINT}`,
+      ctx.update
+    );
+  } catch (error) {
+    logger.error('Error in pre_checkout_query:', { error });
+  }
+});
+
+bot.on('successful_payment', async (ctx) => {
+  try {
+    const paymentInfo = ctx.message.successful_payment;
+    const response = await axios.post(`${process.env.TG_BILLING_ENDPOINT}`, {
+      message: ctx.message
+    });
+
+    if (response.status < 400) {
+      try {
+        await ctx.reply('Payment successfully confirmed. Thank you!');
+      } catch (replyError) {
+        logger.error('Error sending payment confirmation message', {
+          error: replyError
+        });
+      }
+    } else {
+      try {
+        await ctx.reply(
+          'Payment received, but there was an issue confirming it. Please contact support.'
+        );
+      } catch (replyError) {
+        logger.error('Error sending payment issue message', {
+          error: replyError
+        });
+      }
+    }
+  } catch (error) {
+    logger.error('Error in successful_payment:', { error });
+    try {
+      await ctx.reply(
+        'There was an error processing your payment. Please contact support.'
+      );
+    } catch (replyError) {
+      logger.error('Error sending payment error message', {
+        error: replyError
+      });
+    }
+  }
+});
 
 bot.launch();
 

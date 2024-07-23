@@ -16,6 +16,7 @@ import {
   selectFileView,
   selectFiles,
   selectSearchAutocomplete,
+  setCurrentFilter,
   setFileTypesCount,
   setSearchAutocomplete,
   setUploadingFile
@@ -64,6 +65,7 @@ export const FilesSystemPage = () => {
 
   useEffect(() => {
     if (currentFileFilter) {
+      dispatch(setCurrentFilter(currentFileFilter));
       dispatch(getFilesAction(1, currentFileFilter));
     }
   }, [currentFileFilter]);
@@ -160,7 +162,7 @@ export const FilesSystemPage = () => {
       (Number(space_used) / space_total + Number.EPSILON) * 100
     );
     return {
-      total: `${transformSize(String(space_total), 0)}`,
+      total: `${transformSize(String(space_total))}`,
       used: `${fromByteToGb(space_used)}`,
       percent: { label: `${percent || 1}%`, value: percent }
     };

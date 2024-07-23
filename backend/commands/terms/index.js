@@ -22,7 +22,12 @@ async function termsHandler(ctx) {
 
     ctx.replyWithHTML(terms, extra);
   } catch (error) {
-    ctx.reply(`Error: ${error.message}`);
+    console.log('Error parsing terms handler', error);
+    try {
+      ctx.reply(`Error: ${error.message}`);
+    } catch (e) {
+      console.log('Error reply temrs', error);
+    }
   }
 }
 

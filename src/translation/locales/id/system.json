@@ -2,15 +2,16 @@
   "loading": {
     "pleaseWait": "Harap tunggu",
     "systemLoading": "sistem sedang memuat...",
-    "loaded": "sarat"
+    "loaded": "sarat",
+    "uploading": "Mengunggah:"
   },
   "dashboard": {
     "rank": "Pangkat",
     "wallet": "Dompet",
     "add": "Menambahkan",
     "drive": "Menyetir",
-    "tap": "Mengetuk",
-    "rewards": "Hadiah",
+    "mining": "Pertambangan",
+    "tasks": "Tugas",
     "boost": "Mendorong",
     "nodes": "Node",
     "howEarn": "Bagaimana cara bermain dan menghasilkan?",

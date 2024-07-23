@@ -37,7 +37,9 @@ export const transformSize = (size = '', decimals = 1, showSize = true) => {
   if (bytes === 0) return `0${showSize ? ' Bytes': ''}`;
   const i = Math.floor(Math.log(bytes) / Math.log(1024));
   const result = parseFloat(bytes / Math.pow(1024, i));
-  return `${Number.isInteger(result.toFixed(decimals)) ? result : result.toFixed(decimals)} ${
+  return `${Number.isInteger(result.toFixed(decimals)) ? result : (
+    (result % 1 === 0) ? result.toFixed(0) : result.toFixed(decimals))
+  } ${
     showSize && sizes[i]
   }`;
 };

@@ -2,15 +2,16 @@
   "loading": {
     "pleaseWait": "Espere por favor",
     "systemLoading": "el sistema se esta cargando...",
-    "loaded": "cargado"
+    "loaded": "cargado",
+    "uploading": "Subiendo:"
   },
   "dashboard": {
     "rank": "Rango",
     "wallet": "Billetera",
     "add": "Agregar",
     "drive": "Conducir",
-    "tap": "Grifo",
-    "rewards": "Recompensas",
+    "mining": "Minería",
+    "tasks": "Tareas",
     "boost": "Aumentar",
     "nodes": "Nodos",
     "howEarn": "¿Cómo jugar y ganar?",

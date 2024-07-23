@@ -2,15 +2,16 @@
   "loading": {
     "pleaseWait": "Por favor, aguarde",
     "systemLoading": "o sistema está carregando...",
-    "loaded": "carregado"
+    "loaded": "carregado",
+    "uploading": "Enviando:"
   },
   "dashboard": {
     "rank": "Classificação",
     "wallet": "Carteira",
     "add": "Adicionar",
     "drive": "Dirigir",
-    "tap": "Tocar",
-    "rewards": "Recompensas",
+    "mining": "Mineração",
+    "tasks": "Tarefas",
     "boost": "Impulsionar",
     "nodes": "Nós",
     "howEarn": "Como jogar e ganhar?",

@@ -10,8 +10,6 @@ import { EffectComposer, Bloom } from '@react-three/postprocessing';
 import { Html, useProgress } from '@react-three/drei';
 import ShipModel from './ShipModel';
 import BackgroundModel from './BackgoundModel';
-import { useSelector } from 'react-redux';
-import { selectTheme } from '../../../store/reducers/gameSlice';
 import MoveCamera from './MoveCamera';
 import FogModel from './FogModel';
 import DirectionalLight from './DirectionalLight';
@@ -37,8 +35,6 @@ function Loader() {
 }
 
 const GameCanvas = forwardRef((_, ref) => {
-  const theme = useSelector(selectTheme);
-
   const shipRef = useRef(null);
   const backgroundRef = useRef(null);
 
@@ -58,7 +54,7 @@ const GameCanvas = forwardRef((_, ref) => {
   return (
     <Canvas antialias="true" dpr={[1, 2]}>
       <Suspense fallback={<Loader />}>
-        <ambientLight intensity={1.2} color={0xffffff} />
+        <ambientLight intensity={1.5} color={0xffffff} />
         <DirectionalLight />
         
         <FogModel />

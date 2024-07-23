@@ -2,20 +2,21 @@
   "loading": {
     "pleaseWait": "Please wait",
     "systemLoading": "the system is loading...",
-    "loaded": "loaded"
+    "loaded": "loaded",
+    "uploading": "Uploading:"
   },
   "dashboard": {
     "rank": "Rank",
     "wallet": "Wallet",
     "add": "Add",
     "drive": "Drive",
-    "tap": "Tap",
-    "rewards": "Rewards",
+    "mining": "Mining",
+    "tasks": "Tasks",
     "boost": "Boost",
     "nodes": "Nodes",
     "howEarn": "How to play and earn?",
     "play": "Play",
-    "conver": "Conver",
+    "conver": "Convertor",
     "go": "Go",
     "language": "Language",
     "back": "Back"

@@ -2,15 +2,16 @@
   "loading": {
     "pleaseWait": "请稍等",
     "systemLoading": "系统正在加载...",
-    "loaded": "已加载"
+    "loaded": "已加载",
+    "uploading": "上传中："
   },
   "dashboard": {
     "rank": "秩",
     "wallet": "钱包",
     "add": "添加",
     "drive": "驾驶",
-    "tap": "轻敲",
-    "rewards": "奖励",
+    "mining": "矿业",
+    "tasks": "任务",
     "boost": "促进",
     "nodes": "节点",
     "howEarn": "怎么玩又赚？",

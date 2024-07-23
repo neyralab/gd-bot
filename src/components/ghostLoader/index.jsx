@@ -1,4 +1,5 @@
 import React, { memo, useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 
 import { selectUploadingProgress } from '../../store/reducers/filesSlice';
@@ -9,6 +10,7 @@ import classNames from 'classnames';
 import s from './ghostLoader.module.css';
 
 function GhostLoader({ texts = [], flashing = true, startup = false }) {
+  const { t } = useTranslation('system');  
   const [currentIndex, setCurrentIndex] = useState(0);
   const { progress, file: uploadingFile } = useSelector(
     selectUploadingProgress
@@ -42,8 +44,8 @@ function GhostLoader({ texts = [], flashing = true, startup = false }) {
       <GhostLogoLoader />
       {startup && (
         <p className={s.startup}>
-          Please wait
-          <br /> the system is loading...
+          {t('loading.pleaseWait')}
+          <br /> {t('loading.systemLoading')}
         </p>
       )}
       {texts.length > 0 && !uploadingProgress && (
@@ -54,7 +56,7 @@ function GhostLoader({ texts = [], flashing = true, startup = false }) {
       {uploadingProgress && (
         <div className={s.textWrapper}>
           <p className={classNames(s.textContent, s.infiniteTyping)}>
-            {`Uploading: ${uploadingProgress}`}
+            {`${t('loading.uploading')} ${uploadingProgress}`}
           </p>
           {flashing && <span className={s.blinkingPipe}>|</span>}
         </div>

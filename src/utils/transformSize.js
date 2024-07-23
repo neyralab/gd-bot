@@ -1,4 +1,4 @@
-export const transformSize = (size = '', decimals = 1, showSize = true) => {
+export const transformSize = (size = '', showSize = true) => {
   const bytes = Number(size);
   const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
   if (bytes === 0) {
@@ -6,9 +6,27 @@ export const transformSize = (size = '', decimals = 1, showSize = true) => {
   }
   const i = Math.floor(Math.log(bytes) / Math.log(1024));
   const result = bytes / Math.pow(1024, i);
-  return `${
-    Number.isInteger(result.toFixed(decimals))
-      ? result
-      : result.toFixed(decimals)
-  }${showSize && sizes[i]}`;
+
+  let formattedResult;
+  if (Number.isInteger(result)) {
+    formattedResult = result.toString();
+  } else {
+    const decimalPart = result - Math.floor(result);
+    if (decimalPart < 0.001) {
+      formattedResult = Math.floor(result).toString();
+    } else if (decimalPart < 0.01) {
+      formattedResult = result.toFixed(3);
+    } else if (decimalPart < 0.1) {
+      formattedResult = result.toFixed(2);
+    } else {
+      formattedResult = result.toFixed(1);
+    }
+  }
+
+  // Remove trailing zeros after the decimal point, but keep whole numbers intact
+  formattedResult = formattedResult.includes('.')
+    ? formattedResult.replace(/\.?0+$/, '')
+    : formattedResult;
+
+  return `${formattedResult}${showSize ? sizes[i] : ''}`;
 };
