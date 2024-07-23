@@ -19,12 +19,14 @@ const DirectionalLight = () => {
   useEffect(() => {
     if (!nextTheme.theme) return;
     setLocalNextTheme(nextTheme);
-    setTransitionStartTime(null); // Reset the transition start time
+    setTransitionStartTime(null);
+    setTransitionComplete(false);
   }, [nextTheme.theme]);
 
   useEffect(() => {
-    if (theme.id !== localTheme.id) {
+    if (transitionComplete) {
       setLocalTheme(theme);
+      setTransitionComplete(false);
     }
   }, [transitionComplete]);
 
@@ -36,27 +38,29 @@ const DirectionalLight = () => {
     if (transitionStartTime && localNextTheme.theme && !transitionComplete) {
       const elapsed = state.clock.getElapsedTime() - transitionStartTime;
       const delay = 1; // seconds of delay
-      const duration = 2.4; // Duration of the color transition in seconds
+      const colorDuration = 2.4; 
+      const intensityDuration = .5;
 
       if (elapsed > delay) {
-        const t = Math.min((elapsed - delay) / duration, 1);
+        const colorT = Math.min((elapsed - delay) / colorDuration, 1); 
+        const intensityT = Math.min((elapsed - delay) / intensityDuration, 1); 
         const startColor = new THREE.Color(localTheme.colors.directionalLight);
         const endColor = new THREE.Color(
           localNextTheme.theme.colors.directionalLight
         );
-        const r = THREE.MathUtils.lerp(startColor.r, endColor.r, t);
-        const g = THREE.MathUtils.lerp(startColor.g, endColor.g, t);
-        const b = THREE.MathUtils.lerp(startColor.b, endColor.b, t);
+        const r = THREE.MathUtils.lerp(startColor.r, endColor.r, colorT);
+        const g = THREE.MathUtils.lerp(startColor.g, endColor.g, colorT);
+        const b = THREE.MathUtils.lerp(startColor.b, endColor.b, colorT);
         lightRef.current.color.setRGB(r, g, b);
 
         // Intensity transition
         const startIntensity = localTheme.directionalLightIntensity;
         const endIntensity = localNextTheme.theme.directionalLightIntensity;
-        const intensity = THREE.MathUtils.lerp(startIntensity, endIntensity, t);
+        const intensity = THREE.MathUtils.lerp(startIntensity, endIntensity, intensityT);
         lightRef.current.intensity = intensity;
 
-        if (t >= 1) {
-          setTransitionComplete(true); // Mark the transition as complete
+        if (colorT >= 1 && !transitionComplete) { // take the longest duration here
+          setTransitionComplete(true);
         }
       }
     }

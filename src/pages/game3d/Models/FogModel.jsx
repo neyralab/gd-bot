@@ -26,8 +26,9 @@ export default function FogModel() {
   }, [nextTheme.theme]);
 
   useEffect(() => {
-    if (theme.id !== localTheme.id) {
+    if (transitionComplete) {
       setLocalTheme(theme);
+      setTransitionComplete(false);
     }
   }, [transitionComplete]);
 
@@ -67,8 +68,9 @@ export default function FogModel() {
         const g = THREE.MathUtils.lerp(startColor.g, endColor.g, t);
         const b = THREE.MathUtils.lerp(startColor.b, endColor.b, t);
         fogRef.current.color.setRGB(r, g, b);
-        if (t >= 1) {
-          setTransitionComplete(true); // Mark the transition as complete
+
+        if (t >= 1 && !transitionComplete) {
+          setTransitionComplete(true); 
         }
       }
     }

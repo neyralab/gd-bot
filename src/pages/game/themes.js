@@ -282,11 +282,11 @@ export const themes = [
         }
       },
 
-      shipBase: '#FFE944',
-      wing: '#FFE944',
-      wingAccent: '#FFE944',
+      shipBase: '#FFE836',
+      wing: '#FFE836',
+      wingAccent: '#FFE836',
       emission: '#FFECAE',
-      fog: '#E7CDAB',
+      fog: '#FDE1BC',
       wave: '#FFA923',
       directionalLight: '#F3FFF7',
       accentEmission: '#FF6E00',

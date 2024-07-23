@@ -224,8 +224,10 @@ const ShipModel = forwardRef((_, ref) => {
   };
 
   const runFloatingAnimation = ({ cleanupPower = 1 }) => {
+    stopFloatingAnimation();
     stopInitialAnimation();
     stopFlyAnimation();
+    stopPushAnimation();
 
     if (!shipGroupRef.current) return;
     floatingContext.current = gsap.context(() => {

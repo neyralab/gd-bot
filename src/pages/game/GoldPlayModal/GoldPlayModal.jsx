@@ -4,9 +4,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import useButtonVibration from '../../../hooks/useButtonVibration';
 import { ReactComponent as CloseIcon } from '../../../assets/close.svg';
 import {
-  confirmNewLevel,
+  confirmGoldPlay,
+  declineGoldPlay,
   selectReachNewLevel,
-  selectStatus
+  selectStatus,
 } from '../../../store/reducers/gameSlice';
 import styles from './GoldPlayModal.module.css';
 
@@ -23,7 +24,11 @@ export default function GoldPlayModal() {
   }, [reachedNewLevel, status]);
 
   const confirmGoldGame = () => {
-    dispatch(confirmNewLevel());
+    dispatch(confirmGoldPlay());
+  };
+
+  const close = () => {
+    dispatch(declineGoldPlay());
   };
 
   return (

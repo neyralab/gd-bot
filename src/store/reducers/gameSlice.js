@@ -55,7 +55,8 @@ const gameSlice = createSlice({
       direction: null,
       isSwitching: false
     }, // for animation purposes only
-    pendingGames: []
+    pendingGames: [],
+    recentlyFinishedLocker: false /** To prevent accidental tap to start another game when just finished */
   },
   reducers: {
     setPendingGames: (state, { payload }) => {
@@ -94,7 +95,7 @@ const gameSlice = createSlice({
     addBalance: (state, { payload }) => {
       state.balance = {
         label: state.balance.label + payload,
-        value: state.balance.value + payload
+        value: state.balance.value + 1
       };
     },
     setRoundTimerTimestamp: (state, { payload }) => {
@@ -140,6 +141,9 @@ const gameSlice = createSlice({
     },
     setMaxLevel: (state, { payload }) => {
       state.maxLevel = payload;
+    },
+    setRecentlyFinishedLocker: (state, { payload }) => {
+      state.recentlyFinishedLocker = payload;
     }
   }
 });
@@ -273,8 +277,7 @@ export const startRound = createAsyncThunk(
     dispatch(setStatus('playing'));
     dispatch(setReachedNewLevel(false));
     const state = getState();
-    const level = selectLevel(state);
-    const gameTime = level?.play_time * 1000;
+    const gameTime = state.game.theme.game_time * 1000;
 
     const endTime = Date.now() + gameTime;
     dispatch(setRoundTimerTimestamp(endTime));
@@ -285,7 +288,7 @@ export const startRound = createAsyncThunk(
 
     dispatch(setRoundTimeoutId(timeoutId));
 
-    if (state.game.theme.id === 'hawk') {
+    if (state.game.theme.id !== 'ghost') {
       const game = await beforeGame(null, state.game.theme.tierId);
       const g = await startGame(game.uuid || game.id, null);
       dispatch(setGameId(game?.uuid || game?.id));
@@ -321,7 +324,11 @@ export const finishRound = createAsyncThunk(
       dispatch(startNewFreeGameCountdown());
     }
     console.log({ gameId });
-    endGame({ id: gameId, taps: state.game.balance.value })
+
+    const taps = state.game.balance.value;
+    dispatch(setBalance({ value: 0, label: state.game.balance.label }));
+
+    endGame({ id: gameId, taps: taps })
       .then((data) => {
         dispatch(
           setRoundFinal({
@@ -330,7 +337,6 @@ export const finishRound = createAsyncThunk(
           })
         );
         dispatch(setUser({ ...state.user.data, points: data?.data || 0 }));
-        dispatch(setBalance({ value: 0, label: state.game.balance.label }));
         dispatch(setPendingGames(filteredGames));
       })
       .catch((err) => {
@@ -344,16 +350,21 @@ export const finishRound = createAsyncThunk(
         state.game.themes,
         state.game.experienceLevel
       ); // Update the hawk subtheme that depends on level
+    }
+
+    if (state.game.theme.id === 'gold') {
       setTimeout(() => {
         dispatch(
           switchTheme({
-            themeId: state.game.theme.id,
-            direction: 'updateCurrent',
-            timeout: 0
+            themeId: 'hawk',
+            direction: 'next',
+            timeout: 2500
           })
-        ); // Switch theme with updateCurrent status to run update theme animation
-      }, 100);
+        );
+      }, 2500); // Firstly we run finish animation (works by default in ShipModel component) and then switch animation (this dispatch).
     }
+
+    dispatch(activateRecentlyFinishedLocker());
   }
 );
 
@@ -390,6 +401,18 @@ export const addExperience = createAsyncThunk(
     }
 
     dispatch(setExperiencePoints(newPoints));
+  }
+);
+
+export const activateRecentlyFinishedLocker = createAsyncThunk(
+  'game/activateRecentlyFinishedLocker',
+  async (_, { dispatch }) => {
+    /** To prevent accidental tap to start another game when just finished */
+    dispatch(setRecentlyFinishedLocker(true));
+
+    setTimeout(() => {
+      dispatch(setRecentlyFinishedLocker(false));
+    }, 3000);
   }
 );
 
@@ -431,6 +454,9 @@ export const startCountdown = createAsyncThunk(
 export const switchTheme = createAsyncThunk(
   'game/switchTheme',
   async ({ themeId, direction, timeout = 500 }, { dispatch, getState }) => {
+    /** direction: next, prev, updateCurrent */
+    /** themeId: hawk, gold, ghost */
+
     const state = getState();
     const themes = state.game.themes;
 
@@ -472,14 +498,27 @@ export const switchTheme = createAsyncThunk(
   }
 );
 
-export const confirmNewLevel = createAsyncThunk(
-  'game/confirmNewLevel',
+export const confirmGoldPlay = createAsyncThunk(
+  'game/confirmGoldPlay',
   async (_, { dispatch }) => {
     dispatch(setReachedNewLevel(false));
     dispatch(setThemeAccess({ themeId: 'gold', status: true }));
     dispatch(
-      switchTheme({ themeId: 'gold', direction: 'updateCurrent', timeout: 0 })
+      switchTheme({ themeId: 'gold', direction: 'next', timeout: 2500 })
     );
+    dispatch(setStatus('waiting'));
+  }
+);
+
+export const declineGoldPlay = createAsyncThunk(
+  'game/declineGoldPlay',
+  async (_, { dispatch }) => {
+    dispatch(setReachedNewLevel(false));
+    dispatch(setThemeAccess({ themeId: 'gold', status: false }));
+    dispatch(
+      switchTheme({ themeId: 'hawk', direction: 'next', timeout: 2500 })
+    );
+    dispatch(setStatus('waiting'));
   }
 );
 
@@ -523,7 +562,8 @@ export const {
   setCounterCount,
   setCounterIsFinished,
   setRoundFinal,
-  setMaxLevel
+  setMaxLevel,
+  setRecentlyFinishedLocker
 } = gameSlice.actions;
 export default gameSlice.reducer;
 

@@ -19,12 +19,14 @@ export default function AmbientLight() {
   useEffect(() => {
     if (!nextTheme.theme) return;
     setLocalNextTheme(nextTheme);
-    setTransitionStartTime(null); // Reset the transition start time
+    setTransitionStartTime(null);
+    setTransitionComplete(false);
   }, [nextTheme.theme]);
 
   useEffect(() => {
-    if (theme.id !== localTheme.id) {
+    if (transitionComplete) {
       setLocalTheme(theme);
+      setTransitionComplete(false);
     }
   }, [transitionComplete]);
 
@@ -36,7 +38,7 @@ export default function AmbientLight() {
     if (transitionStartTime && localNextTheme.theme && !transitionComplete) {
       const elapsed = state.clock.getElapsedTime() - transitionStartTime;
       const delay = 1; // seconds of delay
-      const duration = 2.4; // Duration of the color transition in seconds
+      const duration = 0.5; // Duration of the color transition in seconds
 
       if (elapsed > delay) {
         const t = Math.min((elapsed - delay) / duration, 1);
@@ -47,7 +49,7 @@ export default function AmbientLight() {
         const intensity = THREE.MathUtils.lerp(startIntensity, endIntensity, t);
         lightRef.current.intensity = intensity;
 
-        if (t >= 1) {
+        if (t >= 1 && !transitionComplete) {
           setTransitionComplete(true); // Mark the transition as complete
         }
       }

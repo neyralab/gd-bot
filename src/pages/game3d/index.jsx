@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useSwipeable } from 'react-swipeable';
 import {
@@ -56,7 +56,9 @@ export function Game3DPage() {
   const lockTimerTimestamp = useSelector(
     (state) => state.game.lockTimerTimestamp
   );
-  const [recentlyFinishedLocker, setRecentlyFinishedLocker] = useState(false);
+  const recentlyFinishedLocker = useSelector(
+    (state) => state.game.recentlyFinishedLocker
+  );
 
   const swipeHandlers = useSwipeable({
     onSwipedLeft: () => {
@@ -84,20 +86,6 @@ export function Game3DPage() {
       dispatch(gameCleanup());
     };
   }, [userIsInitialized]);
-
-  useEffect(() => {
-    /** To prevent accidental tap to start another game when just finished */
-
-    if (status === 'finished' && isInitialized) {
-      setRecentlyFinishedLocker(true);
-      const timeout = setTimeout(() => {
-        setRecentlyFinishedLocker(false);
-      }, 3000);
-      return () => {
-        clearTimeout(timeout);
-      };
-    }
-  }, [status]);
 
   /** All the data for the game should be fetched in the store's thunks.
    * Do not add extra actions and side effects.
