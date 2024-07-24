@@ -1,6 +1,7 @@
 .container {
   display: flex;
   gap: 8px;
+  margin-bottom: 20px;
 }
 
 .section {

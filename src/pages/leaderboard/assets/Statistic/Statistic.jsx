@@ -1,5 +1,6 @@
 import React from 'react';
 import CN from 'classnames';
+import { formatLargeNumberExtended } from '../../../../utils/number.js';
 
 import styles from './Statistic.module.css';
 
@@ -11,7 +12,7 @@ export default function Statistic({ totalTaps, totalPoints, totalUsers }) {
         <span
           className={CN(styles.value, styles.green)}
         >
-          {Number(totalUsers).toLocaleString('UTC')}
+          {formatLargeNumberExtended(totalUsers)}
         </span>
       </div>
       <div className={styles.section}>
@@ -19,7 +20,7 @@ export default function Statistic({ totalTaps, totalPoints, totalUsers }) {
         <span
           className={CN(styles.value, styles.yellow)}
         >
-          {Number(totalPoints).toLocaleString('UTC')}
+          {formatLargeNumberExtended(totalPoints)}
         </span>
       </div>
       <div className={styles.section}>
@@ -27,7 +28,7 @@ export default function Statistic({ totalTaps, totalPoints, totalUsers }) {
         <span
           className={CN(styles.value, styles.blue)}
         >
-          {Number(totalTaps).toLocaleString('UTC')}
+          {formatLargeNumberExtended(totalTaps)}
         </span>
       </div>
     </div>
