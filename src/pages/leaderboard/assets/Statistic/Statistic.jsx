@@ -12,7 +12,7 @@ export default function Statistic({ totalTaps, totalPoints, totalUsers }) {
         <span
           className={CN(styles.value, styles.green)}
         >
-          {formatLargeNumberExtended(totalUsers)}
+          {totalUsers && formatLargeNumberExtended(totalUsers)}
         </span>
       </div>
       <div className={styles.section}>
@@ -20,7 +20,7 @@ export default function Statistic({ totalTaps, totalPoints, totalUsers }) {
         <span
           className={CN(styles.value, styles.yellow)}
         >
-          {formatLargeNumberExtended(totalPoints)}
+          {totalPoints && formatLargeNumberExtended(totalPoints)}
         </span>
       </div>
       <div className={styles.section}>
@@ -28,7 +28,7 @@ export default function Statistic({ totalTaps, totalPoints, totalUsers }) {
         <span
           className={CN(styles.value, styles.blue)}
         >
-          {formatLargeNumberExtended(totalTaps)}
+          {totalTaps && formatLargeNumberExtended(totalTaps)}
         </span>
       </div>
     </div>
