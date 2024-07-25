@@ -6,6 +6,7 @@ import React, {
   useMemo
 } from 'react';
 import { Sheet } from 'react-modal-sheet';
+import { useTranslation } from 'react-i18next';
 
 import {
   checkTgChatJoin,
@@ -21,6 +22,7 @@ import classNames from 'classnames';
 import styles from './EarnModal.module.css';
 
 const EarnModal = forwardRef(({ item, onTasksRequireCheck }, ref) => {
+  const { t } = useTranslation('system');
   const modalRef = useRef(null);
   const systemModalRef = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
@@ -62,23 +64,23 @@ const EarnModal = forwardRef(({ item, onTasksRequireCheck }, ref) => {
       let text = '';
       switch (id) {
         case 'JOIN_TG_CHANNEL':
-          text = 'You joined our TG Channel';
+          text = t('message.joinTg');
           break;
         case 'JOIN_YOUTUBE':
-          text = 'You joined our Youtube Channel';
+          text = t('message.joinYoutube');
           break;
         case 'JOIN_TWITTER':
-          text = 'You joined our X Channel';
+          text = t('message,joinX');
           break;
       }
 
       systemModalRef.current.open({
-        title: 'Success!',
+        title: t('message,success'),
         text: text,
         actions: [
           {
             type: 'default',
-            text: 'OK',
+            text: t('message.ok'),
             onClick: () => {
               systemModalRef.current.close();
               onTasksRequireCheck?.();
@@ -90,23 +92,23 @@ const EarnModal = forwardRef(({ item, onTasksRequireCheck }, ref) => {
       let text = '';
       switch (id) {
         case 'JOIN_TG_CHANNEL':
-          text = 'You did not join our TG Chanel';
+          text = t('message.notJoinTG');
           break;
         case 'JOIN_YOUTUBE':
-          text = 'You did not join our Youtube Chanel';
+          text = t('message.notJoinYoutube');
           break;
         case 'JOIN_TWITTER':
-          text = 'You did not join our X Chanel';
+          text =  t('message.notJoinX');
           break;
       }
 
       systemModalRef.current.open({
-        title: 'Oops!',
+        title: t('message,oops'),
         text: text,
         actions: [
           {
             type: 'default',
-            text: 'Try again',
+            text: t('message.tryAgain'),
             onClick: () => {
               checkSocials(id);
               systemModalRef.current.close();
@@ -116,12 +118,12 @@ const EarnModal = forwardRef(({ item, onTasksRequireCheck }, ref) => {
       });
     } else if (res === 'You have already received points') {
       systemModalRef.current.open({
-        title: 'Oops!',
-        text: 'You have already received points',
+        title: t('message,oops'),
+        text: t('message.received'),
         actions: [
           {
             type: 'default',
-            text: 'OK',
+            text: t('message.ok'),
             onClick: () => {
               systemModalRef.current.close();
               onTasksRequireCheck?.();
@@ -131,12 +133,12 @@ const EarnModal = forwardRef(({ item, onTasksRequireCheck }, ref) => {
       });
     } else {
       systemModalRef.current.open({
-        title: 'Oops!',
-        text: 'Something went wrong! Please try again',
+        title: t('message,oops'),
+        text: t('message.errorAndRetry'),
         actions: [
           {
             type: 'default',
-            text: 'OK',
+            text: t('message.ok'),
             onClick: () => {
               systemModalRef.current.close();
             }

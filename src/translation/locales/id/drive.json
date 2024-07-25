@@ -1,0 +1,38 @@
+{
+  "dashbord": {
+    "search": "Mencari",
+    "points": "Poin",
+    "of": "dari",
+    "all": "Semua",
+    "favorites": "Favorit",
+    "pictures": "Foto-foto",
+    "dcuments": "Dokumen",
+    "notes": "Catatan",
+    "audio": "Audio",
+    "video": "Video",
+    "deleted": "Dihapus",
+    "notFound": "File tidak ditemukan",
+    "isEmpty": "Halaman ini kosong",
+    "ghostdrive": "GHOSTDRIVE",
+    "share": "Membagikan",
+    "linkToFile": "Ketuk tautan ini untuk melihat file"
+  },
+  "month": {
+    "jan": "Januari",
+    "feb": "Februari",
+    "mar": "Merusak",
+    "apr": "April",
+    "may": "Mungkin",
+    "jun": "Juni",
+    "jul": "Juli",
+    "aug": "Agustus",
+    "sep": "September",
+    "oct": "Oktober",
+    "nov": "November",
+    "dec": "Desember"
+  },
+  "time": {
+    "am": "saya",
+    "pm": "pm"
+  }
+}

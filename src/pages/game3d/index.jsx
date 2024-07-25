@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import { useSwipeable } from 'react-swipeable';
 import {
   selectStatus,
@@ -21,27 +22,28 @@ import PointsGrowArea from '../game/PointsGrowArea/PointsGrowArea';
 import Timer from '../game/Timer/Timer';
 import Menu from '../../components/Menu/Menu';
 import ProgressBar from '../game/ProgressBar/ProgressBar';
-import Congratulations from '../game/Congratulations/Congratulations';
 import GhostLoader from '../../components/ghostLoader';
 import Counter from '../game/Counter/Counter';
 import Balance from '../game/Balance/Balance';
 import Status from '../game/Status/Status';
 import ThemeSwitcherControllers from '../game/ThemeSwitcherControllers/ThemeSwitcherControllers';
-import styles from './styles.module.css';
 import GameCanvas from './Models/GameCanvas';
+import GoldPlayModal from '../game/GoldPlayModal/GoldPlayModal';
+import styles from './styles.module.css';
 
 /** Please, do not add extra selectors or state
  * It will force the component to rerender, that will cause lags and rerenders
  */
 
 export function Game3DPage() {
+  const { t } = useTranslation('system');
   const dispatch = useDispatch();
 
-  // const backgroundRef = useRef(null);
   const pointsAreaRef = useRef(null);
   const canvasRef = useRef(null);
 
   const isInitialized = useSelector(selectIsInitialized);
+  const userIsInitialized = useSelector((state) => !!state.user.data);
   const theme = useSelector(selectTheme);
   const themeAccess = useSelector(selectThemeAccess);
   const themeIsSwitching = useSelector(
@@ -52,25 +54,39 @@ export function Game3DPage() {
   const counterIsFinished = useSelector(
     (state) => state.game.counter.isFinished
   );
+  const lockTimerTimestamp = useSelector(
+    (state) => state.game.lockTimerTimestamp
+  );
+  const recentlyFinishedLocker = useSelector(
+    (state) => state.game.recentlyFinishedLocker
+  );
 
   const swipeHandlers = useSwipeable({
     onSwipedLeft: () => {
-      dispatch(switchTheme({ direction: 'next', timeout: 2500 }));
+      dispatch(
+        switchTheme({ themeId: 'ghost', direction: 'next', timeout: 2500 })
+      );
     },
     onSwipedRight: () => {
-      dispatch(switchTheme({ direction: 'prev', timeout: 2500 }));
+      dispatch(
+        switchTheme({
+          themeId: themeAccess.gold ? 'gold' : 'hawk',
+          direction: 'prev',
+          timeout: 2500
+        })
+      );
     }
   });
 
   useEffect(() => {
-    if (!isInitialized) {
+    if (!isInitialized && userIsInitialized) {
       dispatch(initGame());
     }
 
     return () => {
       dispatch(gameCleanup());
     };
-  }, []);
+  }, [userIsInitialized]);
 
   /** All the data for the game should be fetched in the store's thunks.
    * Do not add extra actions and side effects.
@@ -90,11 +106,13 @@ export function Game3DPage() {
     // // TODO: REMOVE LATER
 
     if (
-      (!counterIsFinished && theme.id === 'hawk') ||
+      (!counterIsFinished && theme.id === 'ghost') ||
+      (lockTimerTimestamp !== null && theme.id === 'hawk') ||
       !theme ||
       !themeAccess[theme.id] ||
       status === 'finished' ||
-      themeIsSwitching
+      themeIsSwitching ||
+      recentlyFinishedLocker
     )
       return;
 
@@ -110,7 +128,7 @@ export function Game3DPage() {
 
     // Update state and timers
     dispatch(addExperience());
-    dispatch(addBalance(1));
+    dispatch(addBalance(theme.multiplier));
   };
 
   const handleEvent = async (event) => {
@@ -124,17 +142,9 @@ export function Game3DPage() {
     }
   };
 
-  if (!isInitialized || isTransactionLoading) {
+  if (!isInitialized || !userIsInitialized || isTransactionLoading) {
     return (
-      <GhostLoader
-        texts={
-          isTransactionLoading
-            ? [
-                'Transaction may take up to 1 minute.\n\n Please do not close the window and wait for the game to start.'
-              ]
-            : []
-        }
-      />
+      <GhostLoader texts={isTransactionLoading ? [t('message.transaction')]: []}/>
     );
   }
 
@@ -193,7 +203,8 @@ export function Game3DPage() {
 
       <Menu />
 
-      <Congratulations />
+      {/*<Congratulations />*/}
+      {/*<GoldPlayModal />*/}
     </div>
   );
 }

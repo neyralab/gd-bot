@@ -233,7 +233,7 @@ export default function BuyButton() {
     onClosePaymentModal();
   };
 
-  if (status !== 'playing' && !themeAccess[theme.id] && theme.id !== 'hawk') {
+  if (status !== 'playing' && !themeAccess[theme.id] && theme.id === 'ghost') {
     return (
       <div className={styles['actions-flex']}>
         <button

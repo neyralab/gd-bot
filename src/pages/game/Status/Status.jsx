@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
 import { useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import {
   selectLockTimerTimestamp,
   selectStatus,
@@ -13,6 +14,7 @@ export default function Status() {
   const lockTimerTimestamp = useSelector(selectLockTimerTimestamp);
   const theme = useSelector(selectTheme);
   const themeAccess = useSelector(selectThemeAccess);
+  const { t } = useTranslation('game');
 
   const drawTimerDescription = useMemo(() => {
     if (
@@ -21,13 +23,14 @@ export default function Status() {
       theme.id === 'hawk'
     ) {
       return (
-        <span className={styles['timer-description']}>Next free play</span>
+        <span className={styles['timer-description']}>{t('mode.freePlay')}</span>
       );
-    } else if (themeAccess[theme.id] && !lockTimerTimestamp) {
+    } else if (themeAccess[theme.id]) {
+      if (theme.id === 'hawk' && lockTimerTimestamp) return null;
       if (status === 'waiting') {
-        return <span className={styles['timer-description']}>Play now</span>;
+        return <span className={styles['timer-description']}>{t('mode.playNow')}</span>;
       } else {
-        return <span className={styles['timer-description']}>Play mode</span>;
+        return <span className={styles['timer-description']}>{t('mode.play')}</span>;
       }
     } else {
       return null;
@@ -40,7 +43,7 @@ export default function Status() {
       {status !== 'playing' &&
         theme.id !== 'hawk' &&
         !themeAccess[theme.id] && (
-          <span className={styles['actions-description']}>Boost mode</span>
+          <span className={styles['actions-description']}>{t('mode.boost')}</span>
         )}
     </div>
   );
