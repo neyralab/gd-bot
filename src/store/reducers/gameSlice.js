@@ -207,7 +207,7 @@ export const initGame = createAsyncThunk(
 
       const state = getState();
       const maxLevel = levels.length;
-      let level = state.user.data.current_level.level;
+      const level = state.user.data.current_level.level;
       if (level > maxLevel) {
         level = maxLevel;
       }
@@ -350,8 +350,6 @@ export const finishRound = createAsyncThunk(
         state.game.themes,
         state.game.experienceLevel
       ); // Update the hawk subtheme that depends on level
-
-      dispatch(declineGoldPlay());
     }
 
     if (state.game.theme.id === 'gold') {
