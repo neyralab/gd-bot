@@ -24,7 +24,7 @@ export default function Banner1() {
           <div className={styles['banner-description__memory']}>56GB</div>
         )}
         <div className={styles['banner-description__title']}>
-          <h2>{`${t('leadboard.week')}} ${week}: ${t('leadboard.bonus')}`}</h2>
+          <h2>{`${t('leadboard.week')} ${week}: ${t('leadboard.bonus')}`}</h2>
         </div>
         <div className={styles['banner-description__points']}>
           <span>{points.toLocaleString()}</span>
