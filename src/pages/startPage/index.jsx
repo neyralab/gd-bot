@@ -1,5 +1,7 @@
 import { useMemo, useState, useEffect, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import CN from 'classnames';
 
 import {
@@ -8,29 +10,34 @@ import {
 } from '../../store/reducers/workspaceSlice';
 import { getAllTasks } from '../../effects/balanceEffect';
 import { DEFAULT_TARIFFS_NAMES } from '../upgradeStorage';
-import { transformSize } from '../../utils/transformSize';
 import { fromByteToGb } from '../../utils/storage';
+import { transformSize } from '../../utils/transformSize';
 import { isDevEnv } from '../../utils/isDevEnv';
 
 import GhostLoader from '../../components/ghostLoader';
 import Nodes from './Nodes/index';
 import { ReactComponent as LogoIcon } from '../../assets/ghost.svg';
+import { ReactComponent as TapIcon } from './assets/tap.svg';
 import { DisconnectWalletModal } from '../../components/disconnectWalletModal';
 import BannerSource from '../../assets/node-banner.webp';
 import PointCounter from './PointCounter/PointCounter';
+import NavigatItem from './Navigator/NavigatItem';
 // import CardsSlider from '../../components/CardsSlider/CardsSlider';
 // import getSliderItems from './SliderItem/sliderItems';
 // import SliderItem from './SliderItem/SliderItem';
 import Navigator from './Navigator/Navigator';
 
 import style from './style.module.css';
+import navigatorStyle from './Navigator/Navigator.module.css';
 
 export const StartPage = ({ tariffs }) => {
+  const { t } = useTranslation('system');
   const [tasks, setTasks] = useState([]);
   const [disconnectWalletModal, setDisconnectWalletModal] = useState(false);
   const allWorkspaces = useSelector(selectAllWorkspaces);
   const currentWorkspace = useSelector(selectCurrentWorkspace);
   const user = useSelector((state) => state?.user?.data);
+  const navigate = useNavigate();
   const isDev = isDevEnv();
 
   const getTasks = useCallback(async () => {
@@ -109,7 +116,7 @@ export const StartPage = ({ tariffs }) => {
             <div className={style['banner-header_img']}>
               <LogoIcon />
             </div>
-            <h1>{human?.total}</h1>
+            <h1>{transformSize(user.space_total)}</h1>
           </div>
         </div>
       </div>
@@ -124,6 +131,16 @@ export const StartPage = ({ tariffs }) => {
         openDisconnectModal={setDisconnectWalletModal}
         tasks={tasks}
       />
+      <ul className={CN(navigatorStyle['navigator'], navigatorStyle['to-appear'])}>
+        <NavigatItem
+          name={t('dashboard.mining')}
+          icon={<TapIcon />}
+          html={(<span className={CN(navigatorStyle.actionBtn, navigatorStyle.playBtn)}>
+            {t('dashboard.play')}
+          </span>)}
+          onClick={() => navigate('/game-3d')}
+        />
+      </ul>
       {isDev && <Nodes wallet={user?.wallet} />}
       <footer className={style.footer}>
         <p className={style['footer-text']}>
@@ -133,7 +150,7 @@ export const StartPage = ({ tariffs }) => {
             }}>
             GhostDrive.com
           </span>
-          . How to play and earn?{' '}
+          . {t('dashboard.howEarn')}{' '}
         </p>
       </footer>
       {disconnectWalletModal && (

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 import { useDispatch, useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
 import { getToken } from '../../effects/set-token';
 import { storageConvertEffect } from '../../effects/storageEffects';
@@ -17,18 +18,18 @@ import { Range } from '../../components/range';
 
 import styles from './styles.module.css';
 
-const detail = [
+const detail = (t) => [
   {
-    title: '1. Upload Files',
-    text: 'Simply upload your files to Ghostdrive.'
+    title: t('convert.uploadFiles'),
+    text: t('convert.simplyUpload')
   },
   {
-    title: '2. Tapping Game',
-    text: 'For every tap you earn points.'
+    title: t('convert.tappingGame'),
+    text: t('convert.earnPoints')
   },
   {
-    title: '3. Lifetime Storage',
-    text: 'Mine up to 50 GB of Lifetime Storage.'
+    title: t('convert.lifetime'),
+    text: t('convert.mineLifetime')
   }
 ];
 
@@ -36,13 +37,21 @@ export const MAX_POINT_COUNT = 52428800;
 
 export const Balance = () => {
   const dispatch = useDispatch();
+  const { t } = useTranslation('system');
   const [loading, setLoading] = useState(false);
   const [pointCount, setPointCount] = useState(0);
   const handleVibrationClick = useButtonVibration();
   const user = useSelector((state) => state?.user?.data);
 
   const showErrorMessage = () => {
-    toast.error('Something went wrong', {
+    toast.error(t('message.error'), {
+      theme: 'colored',
+      position: 'bottom-center'
+    });
+  } 
+
+  const showSuccessMessage = () => {
+    toast.success('Conversion was success', {
       theme: 'colored',
       position: 'bottom-center'
     });
@@ -57,6 +66,7 @@ export const Balance = () => {
       if (res.message === "success") {
         const token = await getToken();
         const updatedUser = await getUserEffect(token);
+        showSuccessMessage();
         setPointCount(0);
         dispatch(setUser(updatedUser));
         setLoading(false);
@@ -76,6 +86,8 @@ export const Balance = () => {
       if (res.message === "success") {
         const token = await getToken();
         const updatedUser = await getUserEffect(token);
+        showSuccessMessage();
+        setPointCount(0);
         dispatch(setUser(updatedUser));
         setLoading(false);
       }
@@ -87,7 +99,7 @@ export const Balance = () => {
 
   return (
     <div className={styles.container}>
-      <Header label="Storage" />
+      <Header label={t('convert.storage')} />
       <InfoBox
         points={user?.points}
       />
@@ -99,15 +111,15 @@ export const Balance = () => {
       {!!user?.points && (
         <Button
           disabled={loading}
-          label={`Convert ${fomatNumber(user?.points || 0)} points`}
+          label={t('convert.convertPoints').replace('{count}', fomatNumber(user?.points || 0))}
           className={styles.blue_btn}
           onClick={onFullConvert}
         />
       )}
       <div className={styles.info}>
-        <span className={styles['info-exchange']}>1 point equal to 1 kilobyte</span>
-        <h2 className={styles['info-title']}>How to Mine Ghost Drive Space?</h2>
-        {detail.map((item, index) => (
+        <span className={styles['info-exchange']}>{t('convert.equal')}</span>
+        <h2 className={styles['info-title']}>{t('convert.mineSpace')}</h2>
+        {detail(t).map((item, index) => (
           <div key={`detail-${index}`}>
             <p className={styles['option-title']}>{item.title}</p>
             <p className={styles['option-text']}>{item.text}</p>
@@ -116,7 +128,7 @@ export const Balance = () => {
       </div>
       <footer className={styles.footer}>
         <Button
-          label="Convert"
+          label={t('convert.convert')}
           disabled={loading}
           onClick={handleVibrationClick(currentConvert)}
           className={styles.white_btn}

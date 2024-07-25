@@ -4,6 +4,7 @@ import React, {
   useImperativeHandle,
   useCallback
 } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTonAddress, useTonConnectUI } from '@tonconnect/ui-react';
 import { saveUserWallet } from '../../../effects/userEffects';
@@ -12,6 +13,7 @@ import { setUser } from '../../../store/reducers/userSlice';
 import style from './style.module.css';
 
 export const WalletConnect = forwardRef(({ openDisconnectModal }, ref) => {
+  const { t } = useTranslation('system');
   const user = useSelector((state) => state.user.data);
   const address = useTonAddress(true);
   const [tonConnectUI] = useTonConnectUI();
@@ -79,7 +81,7 @@ export const WalletConnect = forwardRef(({ openDisconnectModal }, ref) => {
         </span>
       ) : (
         <button className={style.connect} onClick={handleConnect}>
-          <span>Add</span>
+          <span>{t('dashboard.add')}</span>
         </button>
       )}
     </div>

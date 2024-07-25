@@ -2,10 +2,13 @@ import React from 'react';
 import CN from 'classnames';
 import CountUp from 'react-countup';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 import styles from './PointCounter.module.css';
 
 export default function PointCounter({ points, className, onClick, rank }) {
+  const { t } = useTranslation('system');
+
   const navigate = useNavigate();
 
   const goToAirdrop = () => {
@@ -26,7 +29,7 @@ export default function PointCounter({ points, className, onClick, rank }) {
       </span>
       { rank && (
           <span onClick={gotToLeague} className={styles['name']}>
-          {`Rank: ${rank}`}
+          {`${t('dashboard.rank')}: ${rank}`}
         </span>
       )}
     </div>

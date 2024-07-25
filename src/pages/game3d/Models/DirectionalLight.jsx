@@ -1,61 +1,104 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { useSelector } from 'react-redux';
+import * as THREE from 'three';
 import {
   selectTheme,
   selectNextTheme
 } from '../../../store/reducers/gameSlice';
 
-import * as THREE from 'three';
-
 const DirectionalLight = () => {
   const theme = useSelector(selectTheme);
   const nextTheme = useSelector(selectNextTheme);
-  const lightRef = useRef();
-  const [colorTransitionStartTime, setColorTransitionStartTime] =
-    useState(null);
+  const light1Ref = useRef();
+  const light2Ref = useRef();
+  const [transitionStartTime, setTransitionStartTime] = useState(null);
+  const [localTheme, setLocalTheme] = useState(theme);
+  const [localNextTheme, setLocalNextTheme] = useState(nextTheme);
+  const [transitionComplete, setTransitionComplete] = useState(false);
 
   useEffect(() => {
     if (!nextTheme.theme) return;
-    setColorTransitionStartTime(null); // Reset the color transition start time
+    setLocalNextTheme(nextTheme);
+    setTransitionStartTime(null);
+    setTransitionComplete(false);
   }, [nextTheme.theme]);
 
+  useEffect(() => {
+    if (transitionComplete) {
+      setLocalTheme(theme);
+      setTransitionComplete(false);
+    }
+  }, [transitionComplete]);
+
   useFrame((state) => {
-    if (!colorTransitionStartTime) {
-      setColorTransitionStartTime(state.clock.getElapsedTime());
+    if (!transitionStartTime) {
+      setTransitionStartTime(state.clock.getElapsedTime());
     }
 
-    if (colorTransitionStartTime && nextTheme.theme) {
-      const colorElapsed =
-        state.clock.getElapsedTime() - colorTransitionStartTime;
+    if (transitionStartTime && localNextTheme.theme && !transitionComplete) {
+      const elapsed = state.clock.getElapsedTime() - transitionStartTime;
       const delay = 1; // seconds of delay
-      const colorDuration = 1.8; // Duration of the color transition in seconds
+      const colorDuration = 2.4;
+      const intensityDuration = 0.5;
 
-      if (colorElapsed > delay) {
-        const t = (colorElapsed - delay) / colorDuration;
-        if (t < 1) {
-          const startColor = new THREE.Color(theme.colors.directionalLight);
-          const endColor = new THREE.Color(
-            nextTheme.theme.colors.directionalLight
-          );
-          const r = startColor.r + t * (endColor.r - startColor.r);
-          const g = startColor.g + t * (endColor.g - startColor.g);
-          const b = startColor.b + t * (endColor.b - startColor.b);
-          lightRef.current.color.setRGB(r, g, b);
-        } else {
-          lightRef.current.color.set(nextTheme.theme.colors.directionalLight);
+      if (elapsed > delay) {
+        const colorT = Math.min((elapsed - delay) / colorDuration, 1);
+        const intensityT = Math.min((elapsed - delay) / intensityDuration, 1);
+
+        // Color transition for both lights
+        const startColor = new THREE.Color(localTheme.colors.directionalLight);
+        const endColor = new THREE.Color(
+          localNextTheme.theme.colors.directionalLight
+        );
+        const r = THREE.MathUtils.lerp(startColor.r, endColor.r, colorT);
+        const g = THREE.MathUtils.lerp(startColor.g, endColor.g, colorT);
+        const b = THREE.MathUtils.lerp(startColor.b, endColor.b, colorT);
+        light1Ref.current.color.setRGB(r, g, b);
+        light2Ref.current.color.setRGB(r, g, b);
+
+        // Intensity transition for light 1
+        const startIntensity1 = localTheme.directionalLight1Intensity;
+        const endIntensity1 = localNextTheme.theme.directionalLight1Intensity;
+        const intensity1 = THREE.MathUtils.lerp(
+          startIntensity1,
+          endIntensity1,
+          intensityT
+        );
+        light1Ref.current.intensity = intensity1;
+
+        // Intensity transition for light 2
+        const startIntensity2 = localTheme.directionalLight2Intensity;
+        const endIntensity2 = localNextTheme.theme.directionalLight2Intensity;
+        const intensity2 = THREE.MathUtils.lerp(
+          startIntensity2,
+          endIntensity2,
+          intensityT
+        );
+        light2Ref.current.intensity = intensity2;
+
+        if (colorT >= 1 && intensityT >= 1 && !transitionComplete) {
+          setTransitionComplete(true);
         }
       }
     }
   });
 
   return (
-    <directionalLight
-      ref={lightRef}
-      position={[1, 1, 1]}
-      intensity={2.5}
-      color={theme.colors.directionalLight}
-    />
+    <>
+      <directionalLight
+        ref={light1Ref}
+        position={[100, 0.5, -5]}
+        intensity={localTheme.directionalLight1Intensity}
+        color={localTheme.colors.directionalLight}
+      />
+      <directionalLight
+        ref={light2Ref}
+        position={[-100, -50, 5]}
+        intensity={localTheme.directionalLight2Intensity}
+        color={localTheme.colors.directionalLight}
+      />
+    </>
   );
 };
 

@@ -11,17 +11,14 @@ export const InfoBox = ({ points }) => {
   const navigate = useNavigate();
 
   const goToStorageUpdate = () => {
-    navigate('/upgrade');
-  }
+    navigate('/boost');
+  };
 
   return (
     <div className={styles.container}>
       <div className={styles.header}>
         <p className={styles.value}>{fomatNumber(points || 0)}</p>
-        <span
-          className={styles.text}
-          onClick={goToStorageUpdate}
-        >
+        <span className={styles.text} onClick={goToStorageUpdate}>
           <PlusIcon />
         </span>
       </div>

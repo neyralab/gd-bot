@@ -1,0 +1,76 @@
+{
+  "mode": {
+    "playNow": "Jogue agora",
+    "freePlay": "Próximo jogo grátis",
+    "play": "Modo de jogo",
+    "boost": "Modo de impulso"
+  },
+  "navigate": {
+    "fly": "Voar",
+    "reachedLevel": "Você atingiu o nível"
+  },
+  "process": {
+    "level": "Nível",
+    "players": "Jogadoras",
+    "frens": "Francês",
+    "earn": "Ganhar",
+    "airdrop": "Lançamento aéreo"
+  },
+  "leadboard": {
+    "league": "Liga",
+    "friends": "Amigos",
+    "week": "Semana",
+    "bonus": "Bônus",
+    "points": "pontos",
+    "users": "USUÁRIOS",
+    "usersLow": "Usuários"
+  },
+  "friends": {
+    "inviteGetBonus": "Convide amigos e ganhe bônus!",
+    "inviteFriendCapitalize": "Convidar um amigo",
+    "yourFriends": "Seus amigos",
+    "inviteFriend": "Convidar um amigo"
+  },
+  "earn": {
+    "earn": "Ganhe mais pontos",
+    "storage": "Aumente o armazenamento",
+    "app": "Baixar aplicativo",
+    "friends": "Convide 5 amigos",
+    "upload": "Carregar 10 arquivoss",
+    "followX": "Siga nossa conta X",
+    "joinYouTube": "Junte-se ao nosso canal no YouTube",
+    "joinCommunity": "Junte-se a nossa comunidade",
+    "connectWallet": "Conectar carteira"
+  },
+  "airdrop": {
+    "airdrop": "Lançamento aéreo",
+    "users": "Usuários",
+    "earn": "ganhar",
+    "history": "História",
+    "tapping": "Tocando no jogo",
+    "noHistory": "Sem histórico de referência",
+    "shareReferral": "Compartilhe seu link de indicação para começar a ganhar.",
+    "referral": "Inscrição de referência ativa",
+    "wallet": "Conecte uma carteira",
+    "download": "Baixe o aplicativo Ghost Drive e faça login via Telegram",
+    "lvl1": "Bônus extra por atingir o 1º nível de toque",
+    "lvl2": "Bônus extra por atingir o 2º nível de toque",
+    "lvl3": "Bônus extra por atingir o nível 3 de toque",
+    "lvl4": "Bônus extra por atingir o nível 4 de toque",
+    "tapBonus1": "Bônus extra por gravar 100.000",
+    "tapBonus2": "Bônus extra por gravar 250.000",
+    "tapBonus3": "Bônus extra por gravar 500.000",
+    "weeklyBonus": "Bônus semanal extra",
+    "followX": "Siga nossa conta X",
+    "gameTapping": "Tocando no jogo",
+    "inviteFriends": "Convide 5 amigos",
+    "joinTG": "Junte-se ao nosso canal TG",
+    "joinTGnew": "Junte-se ao nosso canal de notícias TG",
+    "joinYouTube": "Junte-se ao nosso canal no YouTube",
+    "purchase": "Compra de armazenamento",
+    "purchaseReferral": "Compra de armazenamento por indicação",
+    "topBonus": "Bônus dos 100 melhores",
+    "upload": "Carregar 10 arquivos",
+    "uploadFile": "Subir arquivo"
+  }
+}

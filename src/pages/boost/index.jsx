@@ -8,6 +8,7 @@ import {
 } from '@tonconnect/ui-react';
 import { toast } from 'react-toastify';
 import TonWeb from 'tonweb';
+import { useTranslation } from 'react-i18next';
 
 import { StorageIcon } from './icon';
 import { Header } from '../../components/header';
@@ -42,6 +43,7 @@ const available_tariffs = {
 export const BoostPage = ({ tariffs, setTariffs }) => {
   const [selectedPayment, setSelectedPayment] = useState(null);
   const [activeMultiplier, setActiveMultiplier] = useState();
+  const { t } = useTranslation('system');
   const ws = useSelector(selectCurrentWorkspace);
   const isPaymentModalOpen = useSelector(selectPaymentSelectModal);
   const user = useSelector((state) => state.user.data);
@@ -107,10 +109,10 @@ export const BoostPage = ({ tariffs, setTariffs }) => {
             modals: ['before', 'success', 'error'],
             notifications: []
           });
-          toast('Payment made successfully.');
+          toast(t('message.successPayment'));
         } else {
           setActiveMultiplier(undefined);
-          toast.error('Something went wrong', {
+          toast.error(t('message.error'), {
             theme: 'colored',
             position: 'bottom-center',
             autoClose: 2500
@@ -121,7 +123,7 @@ export const BoostPage = ({ tariffs, setTariffs }) => {
       }
     } catch (e) {
       console.log({ errrrrr: e });
-      toast.error('Something went wrong', {
+      toast.error(t('message.successPayment'), {
         theme: 'colored',
         position: 'bottom-center'
       });
@@ -174,9 +176,9 @@ export const BoostPage = ({ tariffs, setTariffs }) => {
 
   return (
     <div className={styles.container}>
-      <Header label={'Boost Points Rewards'} className={styles.backBtn} />
+      <Header label={t('boost.reward')} className={styles.backBtn} />
       <div>
-        <p className={styles.header}>Current multiplier</p>
+        <p className={styles.header}>{t('boost.multiplier')}</p>
         <div className={styles.current_item}>
           <div className={styles.flex}>
             <StorageIcon storage={currentPrice} />
@@ -184,7 +186,7 @@ export const BoostPage = ({ tariffs, setTariffs }) => {
               <span className={styles.span}>
                 {DEFAULT_TARIFFS_NAMES[spaceTotal] || '1GB'}
               </span>
-              {' Storage'}
+              {` ${t('boost.storage')}`}
             </p>
           </div>
           <div className={styles.cost}>
@@ -194,7 +196,7 @@ export const BoostPage = ({ tariffs, setTariffs }) => {
         </div>
       </div>
       <div>
-        <p className={styles.header}>Boost multiplier</p>
+        <p className={styles.header}>{t('boost.boostMultiplier')}</p>
         <ul className={styles.list}>
           {tariffs?.map((el, index) => (
             <li key={index} onClick={handleVibrationClick()}>
@@ -213,7 +215,7 @@ export const BoostPage = ({ tariffs, setTariffs }) => {
                     <p className={styles.storage}>
                       {transformSize(el?.storage)}
                     </p>
-                    <p className={styles.item_text}>Storage per year</p>
+                    <p className={styles.item_text}>{t('boost.storageYear')}</p>
                   </div>
                 </div>
                 <div className={styles.cost}>

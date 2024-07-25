@@ -11,7 +11,8 @@ import { useSelector } from 'react-redux';
 import { fromNano } from '@ton/ton';
 import { useTonConnectUI } from '@tonconnect/ui-react';
 import { toast } from 'react-toastify';
-import { Address, Cell } from '@ton/core';
+import { Address } from '@ton/core';
+import { useTranslation } from 'react-i18next';
 
 import { useContract } from '../../utils/useContract';
 import { NftCollection } from '../../effects/contracts/tact_NftCollection';
@@ -42,6 +43,7 @@ export default function NodesPage() {
   const user = useSelector((state) => state.user.data);
   const handleVibrationClick = useButtonVibration();
   const [tonconnectUI] = useTonConnectUI();
+  const { t } = useTranslation('system');
 
   useEffect(() => {
     refererEffect().then((data) => {
@@ -77,7 +79,7 @@ export default function NodesPage() {
   }, [contract, tonconnectUI.account?.address, user?.wallet]);
 
   const slides = useMemo(() => {
-    return sliderItems.map((el) => {
+    return sliderItems(t).map((el) => {
       return { id: el.id, html: <SliderItem key={el?.id} item={el} /> };
     });
   }, []);
@@ -148,7 +150,7 @@ export default function NodesPage() {
 
   return (
     <div className={styles.container}>
-      <Header label={'Node'} />
+      <Header label={t('node.node')} />
 
       <div className={styles.content}>
         <div
@@ -173,7 +175,7 @@ export default function NodesPage() {
               <div className={styles['banner-header_img']}>
                 <LogoIcon />
               </div>
-              <h1>Nodes</h1>
+              <h1>{t('node.nodes')}</h1>
               <span>
                 <CountUp delay={0.5} end={userNodes} />
               </span>
@@ -185,7 +187,7 @@ export default function NodesPage() {
           <div className={styles['buy-container']}>
             <div className={styles['buy-container__flex-left']}>
               <div className={styles['buy-container__description']}>
-                Available: 1 000
+                {`${t('node.available')}: 1 000`}
               </div>
               <div className={styles['buy-container__cost']}>
                 {nodesCost} <TonIcon  viewBox="0 -2 24 26"  />
@@ -195,8 +197,9 @@ export default function NodesPage() {
               <button
                 type={'button'}
                 onClick={handleVibrationClick(onBuyNode)}
-                className={styles['buy-button']}>
-                Buy
+                className={styles['buy-button']}
+              >
+                {t('node.buy')}
               </button>
             </div>
           </div>

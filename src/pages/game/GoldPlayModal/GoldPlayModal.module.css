@@ -1,0 +1,63 @@
+.container {
+  position: relative;
+  padding: 0 16px 46px 16px;
+}
+
+.header {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  width: 100%;
+}
+
+.close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.close svg {
+  width: 32px;
+  height: 32px;
+}
+
+.content {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.content img {
+  width: 176px;
+  height: 176px;
+  margin-bottom: 10px;
+  object-fit: contain;
+}
+
+.content h3 {
+  font-family: 'Open Sans';
+  font-size: 24px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 30px;
+}
+
+.actions button {
+  border-radius: 12px;
+  width: 100%;
+  padding: 10px;
+  color: black;
+  font-family: 'Open Sans';
+  font-size: 16px;
+  font-weight: 900;
+  text-align: center;
+  text-decoration: none;
+  background: linear-gradient(101deg, #ffd400 3.88%, #fff 52.76%, #fa0 97.89%);
+  text-transform: uppercase;
+}

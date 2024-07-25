@@ -2,6 +2,7 @@ import React, { useMemo, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Address } from '@ton/core';
 import CN from 'classnames';
+import { useTranslation } from 'react-i18next';
 import { useTonConnectUI } from '@tonconnect/ui-react';
 
 import NavigatItem from '../Navigator/NavigatItem';
@@ -15,6 +16,7 @@ import { NftCollection } from '../../../effects/contracts/tact_NftCollection';
 import styles from '../Navigator/Navigator.module.css';
 
 export default function Navigator({ wallet }) {
+  const { t } = useTranslation('system');
   const [userNodes, setUserNodes] = useState('0');
   const contract = useContract(NFT_ADDRESS, NftCollection);
   const navigate = useNavigate();
@@ -38,7 +40,7 @@ export default function Navigator({ wallet }) {
     () => [
       {
         id: 1,
-        name: 'Nodes',
+        name: t('dashboard.nodes'),
         icon: <NodeIcon />,
         html: <span className={styles.actionBtn}>{userNodes}</span>,
         onClick: () => navigate('/nodes-welcome')

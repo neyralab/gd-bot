@@ -2,6 +2,8 @@ import React, { Suspense } from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
+import { I18nextProvider } from 'react-i18next';
+import i18n from './translation/i18n';
 import store from './store/store';
 import { ErrorBoundary } from 'react-error-boundary';
 import { FallbackComponent } from './pages/FallbackComponent';
@@ -23,7 +25,9 @@ root.render(
     <ErrorBoundary FallbackComponent={FallbackComponent} onError={onError}>
       <Suspense fallback={FallbackComponent} onError={onError}>
         <BrowserRouter>
-          <App />
+          <I18nextProvider  i18n={i18n}>
+            <App />
+          </I18nextProvider>
         </BrowserRouter>
       </Suspense>
     </ErrorBoundary>

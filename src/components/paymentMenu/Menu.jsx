@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { ReactComponent as TonIcon } from '../../assets/TON.svg';
 import { ReactComponent as StarIcon  } from '../../assets/star.svg';
@@ -19,6 +20,7 @@ const paymentMethod = [
 ];
 
 export default function Menu({ payload, onClick }) {
+  const { t } = useTranslation('system');
 
   const handleClick = (action) => {
     onClick({ ...payload, action })
@@ -26,7 +28,7 @@ export default function Menu({ payload, onClick }) {
   
   return (
     <div className={styles.menu}>
-      <p className={styles.title}>Choose Payment Method</p>
+      <p className={styles.title}>{t('boost.paymentMethod')}</p>
       <ul className={styles['menu-list']}>
         {paymentMethod.map((item) => (
           <li

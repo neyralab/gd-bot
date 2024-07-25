@@ -23,8 +23,10 @@ export const transformSize = (size = '', showSize = true) => {
     }
   }
 
-  // Remove trailing zeros after the decimal point
-  formattedResult = formattedResult.replace(/\.?0+$/, '');
+  // Remove trailing zeros after the decimal point, but keep whole numbers intact
+  formattedResult = formattedResult.includes('.')
+    ? formattedResult.replace(/\.?0+$/, '')
+    : formattedResult;
 
   return `${formattedResult}${showSize ? sizes[i] : ''}`;
 };

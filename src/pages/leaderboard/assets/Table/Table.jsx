@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import classNames from 'classnames';
 import { LeaderIcon } from '../LeaderIcon';
 import { anonymizeFullName } from '../../../../utils/anonymize';
 import styles from './Table.module.css';
 
 export default function Table({ items, totalUsers }) {
+  const { t: tSystem } = useTranslation('system');
+  const { t } = useTranslation('game');
   const [animatedLeaderIds, setAnimatedLeaderIds] = useState(new Set());
 
   useEffect(() => {
@@ -25,9 +28,9 @@ export default function Table({ items, totalUsers }) {
         <tr className={styles.headerRow}>
           <th className={styles.headerCell}>#</th>
           <th className={styles.headerCell}>
-            {totalUsers ? `${totalUsers} USERS` : `Users`}
+            {totalUsers ? `${totalUsers} ${t('leadboard.users')}` : t('leadboard.usersLow')}
           </th>
-          <th className={styles.headerCell}>Points</th>
+          <th className={styles.headerCell}>{tSystem('task.points')}</th>
         </tr>
       </thead>
       <tbody className={styles.tableBody}>

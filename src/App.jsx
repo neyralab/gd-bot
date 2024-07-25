@@ -15,6 +15,7 @@ import { getUserEffect } from './effects/userEffects';
 import { authorizeUser } from './effects/authorizeUser';
 import { storageListEffect } from './effects/storageEffects';
 import { API_WEB_APP_URL } from './utils/api-urls';
+import { useLanguage } from './utils/useLanguage';
 
 import SharedLayout from './components/sharedLayout';
 import { StartPage } from './pages/startPage';
@@ -25,6 +26,7 @@ import { Balance } from './pages/balance';
 import { Referral } from './pages/referral';
 import { LeaderboardLeague } from './pages/leaderboard/league';
 import { LeaderboardFriends } from './pages/leaderboard/friends';
+import { LanguagePage } from './pages/language';
 import { TaskPage } from './pages/Task';
 import { BoostPage } from './pages/boost';
 import { GamePage } from './pages/game';
@@ -41,6 +43,7 @@ export const tg = window.Telegram.WebApp;
 const GA = 'G-VEPRY1XE4E';
 
 function App() {
+  useLanguage();
   const dispatch = useDispatch();
   const [tariffs, setTariffs] = useState(null);
 
@@ -126,6 +129,7 @@ function App() {
           <Route path="/balance" exact element={<Balance />} />
           <Route path="/point-tracker" exact element={<Referral />} />
           <Route path="/task" exact element={<TaskPage />} />
+          <Route path="/language" exact element={<LanguagePage />} />
           <Route
             path="/leadboard/league"
             exact

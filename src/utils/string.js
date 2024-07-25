@@ -17,8 +17,12 @@ const getNumbers = (value = '') => {
   return value?.match(/\d+/g)?.join('');
 }
 
+const capitalize = (value = '') => {
+  return value.charAt(0).toUpperCase()+ value.slice(1)
+}
+
 const fomatNumber = (num) => {
   return Number(num).toLocaleString('en-US');
 }
 
-export { getWallet, fomatNumber, getNumbers }
+export { getWallet, fomatNumber, getNumbers, capitalize }
