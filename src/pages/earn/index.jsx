@@ -4,6 +4,7 @@ import {
   useTonConnectUI,
   useTonWallet
 } from '@tonconnect/ui-react';
+import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { TelegramShareButton } from 'react-share';
@@ -20,6 +21,7 @@ import EarnModal from './EarnModal/EarnModal';
 import styles from './styles.module.css';
 
 export default function EarnPage() {
+  const { t } = useTranslation('game');
   const [tasks, setTasks] = useState([]);
   const [animatedTaskIds, setAnimatedTaskIds] = useState(new Set());
   const modalRef = useRef(null);
@@ -129,7 +131,7 @@ export default function EarnPage() {
     <div className={styles.container}>
       <div className={styles['title-block']}>
         <img src="/assets/token.png" alt="Token" />
-        <h1>Earn more points</h1>
+        <h1>{t('earn.earn')}</h1>
       </div>
 
       <div className={styles['tasks-list']}>
@@ -144,9 +146,9 @@ export default function EarnPage() {
                 <Task
                   onClick={() => handleClick(task)}
                   isDone={task.isDone}
-                  title={task.title}
                   points={task.points}
                   imgUrl={task.imgUrl}
+                  translatePath={task.translatePath}
                   onTasksRequireCheck={getTasks}
                 />
               </TelegramShareButton>
@@ -155,9 +157,9 @@ export default function EarnPage() {
                 key={task.id}
                 onClick={handleVibrationClick(() => handleClick(task))}
                 isDone={task.isDone}
-                title={task.title}
                 points={task.points}
                 imgUrl={task.imgUrl}
+                translatePath={task.translatePath}
                 onTasksRequireCheck={getTasks}
               />
             );

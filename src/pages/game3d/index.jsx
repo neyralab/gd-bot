@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import { useSwipeable } from 'react-swipeable';
 import {
   selectStatus,
@@ -35,6 +36,7 @@ import styles from './styles.module.css';
  */
 
 export function Game3DPage() {
+  const { t } = useTranslation('system');
   const dispatch = useDispatch();
 
   const pointsAreaRef = useRef(null);
@@ -142,15 +144,7 @@ export function Game3DPage() {
 
   if (!isInitialized || !userIsInitialized || isTransactionLoading) {
     return (
-      <GhostLoader
-        texts={
-          isTransactionLoading
-            ? [
-                'Transaction may take up to 1 minute.\n\n Please do not close the window and wait for the game to start.'
-              ]
-            : []
-        }
-      />
+      <GhostLoader texts={isTransactionLoading ? [t('message.transaction')]: []}/>
     );
   }
 

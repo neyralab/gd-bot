@@ -1,0 +1,76 @@
+{
+  "mode": {
+    "playNow": "Reproducir ahora",
+    "freePlay": "Próxima jugada gratis",
+    "play": "Modo de juego",
+    "boost": "Modo de impulso"
+  },
+  "navigate": {
+    "fly": "Volar",
+    "reachedLevel": "Has alcanzado el nivel"
+  },
+  "process": {
+    "level": "Nivel",
+    "players": "Jugadores",
+    "frens": "Francés",
+    "earn": "Ganar",
+    "airdrop": "Entrega por paracaídas"
+  },
+  "leadboard": {
+    "league": "Liga",
+    "friends": "Amigos",
+    "week": "Semana",
+    "bonus": "Prima",
+    "points": "puntos",
+    "users": "USUARIOS",
+    "usersLow": "Usuarios"
+  },
+  "friends": {
+    "inviteGetBonus": "¡Invita amigos y obtén bonificación!",
+    "inviteFriendCapitalize": "Invita a un amigo",
+    "yourFriends": "Tus amigos",
+    "inviteFriend": "Invita a un amigo"
+  },
+  "earn": {
+    "earn": "Gana más puntos",
+    "storage": "Aumentar el almacenamiento",
+    "app": "Descargar aplicación",
+    "friends": "Invita a 5 amigos",
+    "upload": "Sube 10 archivos",
+    "followX": "Sigue nuestra cuenta X",
+    "joinYouTube": "Únase a nuestro canal de YouTube",
+    "joinCommunity": "Únete a nuestra comunidad",
+    "connectWallet": "Conectar billetera"
+  },
+  "airdrop": {
+    "airdrop": "Entrega por paracaídas",
+    "users": "usuarios",
+    "earn": "ganar",
+    "history": "Historia",
+    "tapping": "Tocando el juego",
+    "noHistory": "Sin historial de referencias",
+    "shareReferral": "Comparta su enlace de referencia para comenzar a ganar.",
+    "referral": "Registro de referencia activo",
+    "wallet": "Conectar una billetera",
+    "download": "Descargue la aplicación Ghost Drive e inicie sesión a través de Telegram",
+    "lvl1": "Bonificación extra por alcanzar el nivel 1 de tapping",
+    "lvl2": "Bonificación extra por alcanzar el nivel 2 de tapping",
+    "lvl3": "Bonificación extra por alcanzar el nivel de 3 toques",
+    "lvl4": "Bonificación extra por alcanzar el nivel 4 de tapping",
+    "tapBonus1": "Bonificación extra por grabar 100000",
+    "tapBonus2": "Bonificación extra por grabar 250000",
+    "tapBonus3": "Bonificación extra por grabar 500000",
+    "weeklyBonus": "Bono semanal adicional",
+    "followX": "Sigue nuestra cuenta X",
+    "gameTapping": "Tocando el juego",
+    "inviteFriends": "Invita a 5 amigos",
+    "joinTG": "Únete a nuestro canal TG",
+    "joinTGnew": "Únase a nuestro canal de noticias TG",
+    "joinYouTube": "Únete a nuestro canal de YouTube",
+    "purchase": "Compra de almacenamiento",
+    "purchaseReferral": "Compra de almacenamiento por referencia",
+    "topBonus": "Bono de los 100 mejores",
+    "upload": "Sube 10 archivos",
+    "uploadFile": "Subir archivo"
+  }
+}

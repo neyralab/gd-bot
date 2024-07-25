@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ReactComponent as ConvertorIcon } from '../../pages/startPage/assets/convertor.svg';
 import { TextInput } from './TextInput';
 import { getNumbers } from '../../utils/string';
@@ -6,6 +7,7 @@ import { transformSize } from '../../utils/storage';
 import styles from './styles.module.css';
 
 export const Range = ({ pointCount, setPointCount, pointBalance }) => {
+  const { t } = useTranslation('system');
   const byteCount = useMemo(() => {
     if (pointCount === 0 || pointCount === '')
       return '0KB'
@@ -27,8 +29,8 @@ export const Range = ({ pointCount, setPointCount, pointBalance }) => {
       </span>
       <div className={styles.right}>
         <p className={styles.count}>{byteCount}</p>
-        <span className={styles.text}>Space</span>
+        <span className={styles.text}>{t('convert.space')}</span>
       </div>
     </div>
   );
-};
+}

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
 import { useBalance } from '../../hooks/useBalance';
 import { referralEffect } from '../../effects/referralEffect';
@@ -7,13 +7,12 @@ import { Header } from '../../components/header';
 import { Tab } from '../../components/tab';
 import { History } from '../../components/history';
 import Menu from '../../components/Menu/Menu';
-
 import styles from './styles.module.css';
 
-const tabs = [
+const tabs = (t) => [
   {
     number: 0,
-    name: 'users',
+    name: t('airdrop.users'),
     key: 'users'
   },
   // {
@@ -23,12 +22,13 @@ const tabs = [
   // },
   {
     number: 0,
-    name: 'earn',
+    name: t('airdrop.earn'),
     key: 'earn'
   }
 ];
 
 export const Referral = () => {
+  const { t } = useTranslation('game');
   const [tabList, setTabs] = useState({
     users: 0,
     // refFiles: 0,
@@ -61,12 +61,11 @@ export const Referral = () => {
     })();
   }, []);
 
-
   return (
     <div className={styles.container}>
       <Header
         hideBack
-        label="Airdrop"
+        label={t('airdrop.airdrop')}
         headerClassName={styles.header}
       />
       <div className={styles.tabs}>
@@ -75,7 +74,7 @@ export const Referral = () => {
             active={!index}
             tab={{
               number: tabList[el] || 0,
-              name: tabs.find((tab) => tab.key === el)?.name
+              name: tabs(t).find((tab) => tab.key === el)?.name
             }}
             key={index}
             onClick={() => {}}

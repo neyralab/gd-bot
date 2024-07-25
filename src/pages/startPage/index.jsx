@@ -1,6 +1,7 @@
 import { useMemo, useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import CN from 'classnames';
 
 import {
@@ -30,6 +31,7 @@ import style from './style.module.css';
 import navigatorStyle from './Navigator/Navigator.module.css';
 
 export const StartPage = ({ tariffs }) => {
+  const { t } = useTranslation('system');
   const [tasks, setTasks] = useState([]);
   const [disconnectWalletModal, setDisconnectWalletModal] = useState(false);
   const allWorkspaces = useSelector(selectAllWorkspaces);
@@ -131,9 +133,11 @@ export const StartPage = ({ tariffs }) => {
       />
       <ul className={CN(navigatorStyle['navigator'], navigatorStyle['to-appear'])}>
         <NavigatItem
-          name="Mining"
+          name={t('dashboard.mining')}
           icon={<TapIcon />}
-          html={(<span className={CN(navigatorStyle.actionBtn, navigatorStyle.playBtn)}>Play</span>)}
+          html={(<span className={CN(navigatorStyle.actionBtn, navigatorStyle.playBtn)}>
+            {t('dashboard.play')}
+          </span>)}
           onClick={() => navigate('/game-3d')}
         />
       </ul>
@@ -146,7 +150,7 @@ export const StartPage = ({ tariffs }) => {
             }}>
             GhostDrive.com
           </span>
-          . How to play and earn?{' '}
+          . {t('dashboard.howEarn')}{' '}
         </p>
       </footer>
       {disconnectWalletModal && (

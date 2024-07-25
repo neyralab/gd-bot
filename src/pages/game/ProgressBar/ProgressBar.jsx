@@ -1,4 +1,5 @@
 import React, { useMemo, useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import classNames from 'classnames';
 import {
@@ -12,6 +13,7 @@ import {
 import styles from './ProgressBar.module.css';
 
 export default function ProgressBar({ themeChangeTimeout = 0 }) {
+  const { t } = useTranslation('game');
   const theme = useSelector(selectTheme);
   const nextTheme = useSelector(selectNextTheme);
   const levels = useSelector(selectLevels);
@@ -53,8 +55,8 @@ export default function ProgressBar({ themeChangeTimeout = 0 }) {
       <div className={styles.description}>
         <span className={styles.level}>
           {reachedNewLevel
-            ? `You've reached level ${experienceLevel}!`
-            : `Level ${experienceLevel - 1}`}
+            ? `${t('navigate.reachedLevel')} ${experienceLevel}!`
+            : `${t('process.level')} ${experienceLevel - 1}`}
         </span>
         <span className={styles.points}>
           {experiencePoints} / {currentLevel?.tapping_to}

@@ -1,0 +1,38 @@
+{
+  "dashbord": {
+    "search": "Procurar",
+    "points": "Pontos",
+    "of": "de",
+    "all": "Todos",
+    "favorites": "Favoritos",
+    "pictures": "Fotos",
+    "dcuments": "Documentos",
+    "notes": "Notas",
+    "audio": "Áudio",
+    "video": "Vídeo",
+    "deleted": "Excluído",
+    "notFound": "Arquivos não encontrados",
+    "isEmpty": "Esta página está vazia",
+    "ghostdrive": "GHOSTDRIVE",
+    "share": "Compartilhar",
+    "linkToFile": "Toque neste link para ver o arquivo"
+  },
+  "month": {
+    "jan": "janeiro",
+    "feb": "fevereiro",
+    "mar": "março",
+    "apr": "abril",
+    "may": "poderia",
+    "jun": "junho",
+    "jul": "julho",
+    "aug": "agosto",
+    "sep": "setembro",
+    "oct": "outubro",
+    "nov": "novembro",
+    "dec": "dezembro"
+  },
+  "time": {
+    "am": "am",
+    "pm": "pm"
+  }
+}

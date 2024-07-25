@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
@@ -44,9 +45,11 @@ import style from './style.module.scss';
 const MAX_FILE_SIZE = 268435456;
 
 export const FilesSystemPage = () => {
+  const { t : tSystem } = useTranslation('system');
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const fileRef = useRef(null);
+  const { t } = useTranslation('drive');
   const files = useSelector(selectFiles);
   const searchFiles = useSelector(selectSearchAutocomplete);
   const view = useSelector(selectFileView);
@@ -70,7 +73,7 @@ export const FilesSystemPage = () => {
   useEffect(() => {
     getFileTypesCountEffect()
       .then((data) => dispatch(setFileTypesCount(data)))
-      .catch(() => toast.error('Failed to load counts'));
+      .catch(() => toast.error(tSystem('message.failedLoad')));
   }, []);
 
   const clearInputsAfterUpload = () => {
@@ -191,7 +194,7 @@ export const FilesSystemPage = () => {
             name="search"
             id="search"
             maxLength="40"
-            placeholder="Search"
+            placeholder={t('dashbord.search')}
             className={style.search__input}
             autoComplete="off"
             onChange={handleInputChange}
@@ -214,9 +217,9 @@ export const FilesSystemPage = () => {
         {user && human && (
           <div className={style.storage_block}>
             <div className={style.storage_text_container}>
-              <p className={style.storage_text}>{`${user?.points} Points`}</p>
+              <p className={style.storage_text}>{`${user?.points} ${t('dashbord.points')}`}</p>
               <p className={style.storage_text}>
-                {human?.percent?.label} of {human?.total}
+                {human?.percent?.label} ${t('dashbord.of')} {human?.total}
               </p>
             </div>
             <div className={style.storage_usage_container}>

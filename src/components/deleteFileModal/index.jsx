@@ -2,6 +2,7 @@ import Modal from 'react-modal';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { useLocation } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 import {
   handleDeleteFileModal,
@@ -22,6 +23,7 @@ import style from './style.module.css';
 
 export const DeleteFileModal = () => {
   const dispatch = useDispatch();
+  const { t } = useTranslation('system');
   const file = useSelector(selecSelectedFile);
   const isOpen = useSelector(selectisDeleteFileModalOpen);
   const location = useLocation();
@@ -45,13 +47,13 @@ export const DeleteFileModal = () => {
     }
     onClose();
     if (result === 'success') {
-      toast('File was successfully deleted', {
+      toast(t('message.fileDeleted'), {
         position: 'bottom-center',
         className: style.notification,
         progressClassName: style.progress
       });
     } else {
-      toast.error('Something went wrong', {
+      toast.error(t('message.error'), {
         theme: 'colored',
         position: 'bottom-center'
       });
