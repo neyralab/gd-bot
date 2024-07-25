@@ -203,8 +203,7 @@ export function Game3DPage() {
 
       <Menu />
 
-      {/*<Congratulations />*/}
-      {/*<GoldPlayModal />*/}
+      {/* <GoldPlayModal /> */}
     </div>
   );
 }
