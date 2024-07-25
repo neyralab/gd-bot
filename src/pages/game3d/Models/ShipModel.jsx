@@ -35,6 +35,7 @@ const ShipModel = forwardRef((_, ref) => {
   const flyingContext = useRef(null);
   const initialContext = useRef(null);
   const pushContext = useRef(null);
+  const finishContext = useRef(null);
   const accentDetails2MaterialRef = useRef(null);
 
   const [clock] = useState(() => new THREE.Clock());
@@ -143,6 +144,7 @@ const ShipModel = forwardRef((_, ref) => {
 
       stopInitialAnimation();
       stopFloatingAnimation();
+      stopFinishAnimation();
 
       initialContext.current = gsap.context(() => {
         if (shipGroupRef.current) {
@@ -345,23 +347,26 @@ const ShipModel = forwardRef((_, ref) => {
     stopPushAnimation();
     stopFlyAnimation();
     stopFloatingAnimation();
+    stopInitialAnimation();
 
-    /** Cleanup */
-    gsap.to(shipGroupRef.current.position, {
-      z: 0,
-      duration: 0.1,
-      ease: 'power1.out'
-    });
+    finishContext.current = gsap.context(() => {
+      /** Cleanup */
+      gsap.to(shipGroupRef.current.position, {
+        z: 0,
+        duration: 0.1,
+        ease: 'power1.out'
+      });
 
-    gsap.to(shipGroupRef.current.rotation, {
-      y: -Math.PI / 2,
-      duration: 0.1,
-      ease: 'power1.out'
-    });
-    gsap.to(shipGroupRef.current.rotation, {
-      x: 0,
-      duration: 0.1,
-      ease: 'power1.out'
+      gsap.to(shipGroupRef.current.rotation, {
+        y: -Math.PI / 2,
+        duration: 0.1,
+        ease: 'power1.out'
+      });
+      gsap.to(shipGroupRef.current.rotation, {
+        x: 0,
+        duration: 0.1,
+        ease: 'power1.out'
+      });
     });
 
     const action = mixer.current.clipAction(shipModel.animations[1]);
@@ -372,6 +377,13 @@ const ShipModel = forwardRef((_, ref) => {
     action.play();
 
     setTimeout(() => runFloatingAnimation({ cleanupPower: 1 }), 3000);
+  };
+
+  const stopFinishAnimation = () => {
+    if (finishContext.current) {
+      finishContext.current.kill();
+      finishContext.current = null;
+    }
   };
 
   const runWaveAnimation = () => {
