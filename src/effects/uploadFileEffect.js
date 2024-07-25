@@ -1,16 +1,16 @@
 import {
   uploadFile,
   LocalFileBuffer,
-  getThumbnailImage
+  getThumbnailImage,
+  getThumbnailVideo
 } from 'gdgateway-client';
 import { toast } from 'react-toastify';
 
 import { getOneTimeToken } from './getOneTimeToken';
 import { uploadFileData } from '../config/upload-file-data';
 import { afterFileUploadAction } from '../store/reducers/filesSlice';
-import imageFileExtensions, {
-  imageMediaTypesPreview
-} from '../config/image-file-extensions';
+import { imagesWithoutPreview } from '../config/image-file-extensions';
+import { videoWithoutThumbnail } from '../config/video-file-extensions';
 
 export const uploadFileEffect = async ({ files, dispatch }) => {
   let progresses = {};
@@ -63,19 +63,35 @@ export const uploadFileEffect = async ({ files, dispatch }) => {
           startedAt: file?.startedAt,
           is_telegram: true
         });
-        const uploadedFile = result.data.data;
-        if (
-          imageMediaTypesPreview.includes(uploadedFile.mime) &&
-          imageFileExtensions.includes(`.${uploadedFile.extension}`)
-        ) {
-          await getThumbnailImage({
-            file,
-            quality: 3,
-            oneTimeToken,
-            endpoint: gateway.url,
-            slug: uploadedFile?.slug
-          });
+        const uploadedFile = result?.data?.data;
+        try {
+          if (
+            uploadedFile?.mime.startsWith('image') &&
+            !imagesWithoutPreview.includes(`.${uploadedFile?.extension}`)
+          ) {
+            thumbnail = await getThumbnailImage({
+              file,
+              quality: 3,
+              oneTimeToken,
+              endpoint: gateway.url,
+              slug: uploadedFile?.slug
+            });
+          } else if (
+            uploadedFile?.mime.startsWith('video') &&
+            !videoWithoutThumbnail.includes(uploadedFile?.extension)
+          ) {
+            thumbnail = await getThumbnailVideo({
+              file,
+              quality: 3,
+              oneTimeToken,
+              endpoint: gateway.url,
+              slug: uploadedFile?.slug
+            });
+          }
+        } catch (error) {
+          console.error(error);
         }
+
         dispatch(afterFileUploadAction(result.data));
 
         if (!result) {
