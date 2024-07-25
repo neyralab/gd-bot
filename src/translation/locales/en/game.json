@@ -22,8 +22,12 @@
     "week": "Week",
     "bonus": "Bonus",
     "points": "points",
+    "rank": "rank",
     "users": "USERS",
-    "usersLow": "Users"
+    "usersLow": "Users",
+    "totalUsers": "Total users:",
+    "totalPoints": "Total points:",
+    "totalTaps": "Total taps:"
   },
   "friends": {
     "inviteGetBonus": "Invite friends and Get bonus!",

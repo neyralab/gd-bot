@@ -55,6 +55,7 @@
     "extraBonus": "Bonificación extra por alcanzar el nivel 1 de tapping",
     "tgChannel": "Únete a nuestro canal TG",
     "tgNewsChannel": "Únase a nuestro canal de noticias TG",
+    "joinYouTube": "Únete a nuestro canal de YouTube",
     "xAccount": "Sigue nuestra cuenta X",
     "storagePurchase": "Compra de almacenamiento",
     "extraBonusLvl2": "Bonificación extra por alcanzar el nivel 2 de tapping",
@@ -77,7 +78,7 @@
     "storage": "Almacenamiento",
     "enterPoints": "Introducir puntos",
     "space": "Espacio",
-    "convertPoints": "Convertir {count} puntos",
+    "convertPoints": "Convertidor {count} puntos",
     "equal": "1 punto equivale a 1 kilobyte",
     "mineSpace": "¿Cómo extraer el espacio de Ghost Drive?",
     "uploadFiles": "1. Subir archivos",
@@ -86,7 +87,7 @@
     "earnPoints": "Por cada toque ganas puntos.",
     "lifetime": "3. Almacenamiento de por vida",
     "mineLifetime": "Extrae hasta 50 GB de almacenamiento de por vida.",
-    "convert": "Convertir"
+    "convert": "Convertidor"
   },
   "message": {
     "error": "Algo salió mal",
@@ -108,7 +109,8 @@
     "notJoinX": "No te uniste a nuestro X Chanel",
     "download": "Descargar",
     "join": "Unirse",
-    "transaction": "La transacción puede tardar hasta 1 minuto.\n\n No cierres la ventana. \n\n espera a que comience el juego."
+    "transaction": "La transacción puede tardar hasta 1 minuto.\n\n No cierres la ventana. \n\n espera a que comience el juego.",
+    "conversionSuccess": "La conversión fue un éxito"
   },
   "language": {
     "search": "Buscar",

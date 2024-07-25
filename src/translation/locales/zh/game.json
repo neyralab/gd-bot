@@ -23,7 +23,11 @@
     "bonus": "奖金",
     "points": "积分",
     "users": "用户",
-    "usersLow": "用户"
+    "rank": "秩",
+    "usersLow": "用户",
+    "totalUsers": "用户总数：",
+    "totalPoints": "总积分：",
+    "totalTaps": "总点击数："
   },
   "friends": {
     "inviteGetBonus": "邀请好友并获得奖金！",

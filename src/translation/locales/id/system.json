@@ -55,6 +55,7 @@
     "extraBonus": "Bonus ekstra untuk mencapai level 1 penyadapan",
     "tgChannel": "Bergabunglah dengan saluran TG kami",
     "tgNewsChannel": "Bergabunglah dengan saluran berita TG kami",
+    "joinYouTube": "Bergabunglah dengan saluran YouTube kami",
     "xAccount": "Ikuti akun X kami",
     "storagePurchase": "Pembelian penyimpanan",
     "extraBonusLvl2": "Bonus ekstra untuk mencapai level 2 penyadapan",
@@ -78,7 +79,7 @@
     "storage": "Penyimpanan",
     "enterPoints": "Masukkan poin",
     "space": "Ruang angkasa",
-    "convertPoints": "Konversikan {count} poin",
+    "convertPoints": "Konverter {count} poin",
     "equal": "1 poin sama dengan 1 kilobyte",
     "mineSpace": "Bagaimana Cara Menambang Ruang Ghost Drive?",
     "uploadFiles": "1. Unggah File",
@@ -87,7 +88,7 @@
     "earnPoints": "Untuk setiap ketukan Anda mendapatkan poin.",
     "lifetime": "3. Penyimpanan Seumur Hidup",
     "mineLifetime": "Tambang Penyimpanan Seumur Hidup hingga 50 GB.",
-    "convert": "Mengubah"
+    "convert": "Konverter"
   },
   "message": {
     "error": "Ada yang salah",
@@ -109,7 +110,8 @@
     "notJoinX": "Anda tidak bergabung dengan X Chanel kami",
     "download": "Unduh",
     "join": "Bergabung",
-    "transaction": "Transaksi mungkin memakan waktu hingga 1 menit.\n\n Harap jangan menutup jendela \n\n menunggu permainan dimulai."
+    "transaction": "Transaksi mungkin memakan waktu hingga 1 menit.\n\n Harap jangan menutup jendela \n\n menunggu permainan dimulai.",
+    "conversionSuccess": "Konversi berhasil"
   },
   "language": {
     "search": "Mencari",
