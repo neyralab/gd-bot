@@ -55,6 +55,7 @@
     "extraBonus": "达到 1 个攻关等级可获得额外奖励",
     "tgChannel": "加入我们的TG频道",
     "tgNewsChannel": "加入我们的 TG 新闻频道",
+    "joinYouTube": "加入我们的 YouTube 频道",
     "xAccount": "关注我们的 X 帐户",
     "storagePurchase": "存储购买",
     "extraBonusLvl2": "达到 2 攻关等级可获得额外奖励",
@@ -108,7 +109,8 @@
     "notJoinX": "您还没有加入我们的X Chanel",
     "download": "下载",
     "join": "加入",
-    "transaction": "交易最多可能需要 1 分钟。\n\n 请不要关闭窗口 \n\n 等待游戏开始。"
+    "transaction": "交易最多可能需要 1 分钟。\n\n 请不要关闭窗口 \n\n 等待游戏开始。",
+    "conversionSuccess": "转换成功"
   },
   "language": {
     "search": "搜索",

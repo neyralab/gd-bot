@@ -2,9 +2,11 @@ import { useEffect } from "react";
 import moment from 'moment';
 import i18n from 'i18next';
 
+const LANGUAGE_KEY = 'language'
+
 const useLanguage = () => {
   useEffect(() => {
-    const languageDetection = localStorage.getItem('language') as string;
+    const languageDetection = localStorage.getItem(LANGUAGE_KEY) as string;
     if (languageDetection === null) {
       const language = navigator.language.toLowerCase();
       if (language.includes('zh')) {
@@ -30,4 +32,19 @@ const useLanguage = () => {
   }, []);
 }
 
-export { useLanguage };
+const useResetLanguage = () => {
+  useEffect(() => {
+    const languageDetection = localStorage.getItem(LANGUAGE_KEY) as string;
+
+    if (languageDetection && languageDetection !== "en") {
+      localStorage.removeItem(LANGUAGE_KEY);
+      i18n.changeLanguage('en');
+      moment.locale('en');
+    } else if (!languageDetection && i18n.language !== "en") {
+      i18n.changeLanguage('en');
+      moment.locale('en');
+    }
+  },  []) 
+}
+
+export { useLanguage, useResetLanguage };

@@ -1,9 +1,11 @@
 import React, { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import useWeeklyTimer from '../../../../utils/useWeeklyTimer';
 import { getWeekNumber } from '../../../../utils/dates';
 import styles from './Banner2.module.css';
 
 export default function Banner2() {
+  const { t } = useTranslation('game');
   const timer = useWeeklyTimer();
   const points = 25000;
 
@@ -18,7 +20,7 @@ export default function Banner2() {
       </div>
       <div className={styles['banner-description']}>
         <div className={styles['banner-description__title']}>
-          <h2>Week {week}: Bonus</h2>
+          <h2>{t('leadboard.week')} {week}: {t('leadboard.bonus')}</h2>
         </div>
         <div className={styles['banner-description__points']}>
           <span>{points.toLocaleString()}</span>

@@ -22,8 +22,12 @@
     "week": "Semana",
     "bonus": "Bônus",
     "points": "pontos",
+    "rank": "classificação",
     "users": "USUÁRIOS",
-    "usersLow": "Usuários"
+    "usersLow": "Usuários",
+    "totalUsers": "Total de usuários:",
+    "totalPoints": "Total de pontos::",
+    "totalTaps": "Toques totais:"
   },
   "friends": {
     "inviteGetBonus": "Convide amigos e ganhe bônus!",

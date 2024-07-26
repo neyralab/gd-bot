@@ -22,8 +22,12 @@
     "week": "Pekan",
     "bonus": "Bonusnya",
     "points": "poin",
+    "rank": "pangkat",
     "users": "PENGGUNA",
-    "usersLow": "Pengguna"
+    "usersLow": "Pengguna",
+    "totalUsers": "Jumlah pengguna:",
+    "totalPoints": "Jumlah poin::",
+    "totalTaps": "Jumlah ketukan:"
   },
   "friends": {
     "inviteGetBonus": "Undang teman dan Dapatkan bonus!",

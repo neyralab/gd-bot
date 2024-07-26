@@ -51,7 +51,7 @@ export const Balance = () => {
   } 
 
   const showSuccessMessage = () => {
-    toast.success('Conversion was success', {
+    toast.success(t('message.conversionSuccess'), {
       theme: 'colored',
       position: 'bottom-center'
     });

@@ -7,6 +7,8 @@ import { useTranslation } from 'react-i18next';
 import { Header } from '../../components/header';
 import { getAllTasks, getBalanceEffect } from '../../effects/balanceEffect';
 import { handleTasks } from '../../store/reducers/taskSlice';
+import { getKeyTranslate } from '../../translation/utils';
+import translateEng from '../../translation/locales/en/system.json';
 
 import styles from './styles.module.css';
 
@@ -65,7 +67,7 @@ export const TaskPage = () => {
               key={index}
               className={CN(el?.done && styles.done, styles.item)}>
               <p className={styles.item_text}>
-                {el?.point?.text || el?.text}
+                {t(getKeyTranslate(translateEng, el?.point?.text || el?.text))}
               </p>
               <p
                 className={
