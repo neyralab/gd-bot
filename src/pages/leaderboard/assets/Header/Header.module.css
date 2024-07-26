@@ -1,10 +1,17 @@
 .pageHeader {
   position: relative;
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   align-items: center;
   gap: 16px;
   margin-bottom: 32px;
+}
+
+.rank {
+  font-family: 'Open Sans';
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 27px;
 }
 
 .pageHeader h2 {
