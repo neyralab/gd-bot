@@ -82,7 +82,10 @@ export const Referral = () => {
         ))}
       </div>
 
-      <History history={balance.history} />
+      <History
+        history={balance.history}
+        loading={balance.loading}
+      />
 
       <Menu />
     </div>

@@ -6,14 +6,15 @@ import gameJson from '../../translation/locales/en/game.json';
 import { ReactComponent as Cloud } from '../../assets/clock.svg';
 import styles from './styles.module.css';
 
-export const History = ({ history }) => {
+export const History = ({ history, loading }) => {
   const { t } = useTranslation('game');
+
   return (
     <div className={styles.container}>
       <p className={styles.history}>{t('airdrop.history')}</p>
       <ul className={styles.list}>
-        {!history?.length ? (
-          <NoHistory />
+        {(!history?.length || loading) ? (
+          <NoHistory loading={loading} />
         ) : (
           history.map((el, index) => (
             <li key={index} className={styles.item}>

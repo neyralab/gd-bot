@@ -9,7 +9,7 @@ import { storageConvertEffect } from '../../effects/storageEffects';
 import { setUser } from '../../store/reducers/userSlice';
 import { getUserEffect } from '../../effects/userEffects';
 import useButtonVibration from '../../hooks/useButtonVibration';
-import { fomatNumber, getNumbers } from '../../utils/string';
+import { getNumbers } from '../../utils/string';
 
 import { Header } from '../../components/header';
 import { Button } from '../../components/button';
@@ -57,26 +57,6 @@ export const Balance = () => {
     });
   } 
 
-  const onFullConvert = async () => {
-    try {
-      if (!(user?.points || 0)) { return; }
-      const cointCount = getNumbers(user?.points || 0);
-      setLoading(true);
-      const res = await storageConvertEffect({ points: cointCount });
-      if (res.message === "success") {
-        const token = await getToken();
-        const updatedUser = await getUserEffect(token);
-        showSuccessMessage();
-        setPointCount(0);
-        dispatch(setUser(updatedUser));
-        setLoading(false);
-      }
-    } catch (error) {
-      showErrorMessage();
-      setLoading(false);
-    }
-  }
-
   const currentConvert = async () => {
     try {
       if (!pointCount) { return; }
@@ -108,14 +88,12 @@ export const Balance = () => {
         setPointCount={setPointCount}
         pointBalance={user?.points}
       />
-      {!!user?.points && (
-        <Button
-          disabled={loading}
-          label={t('convert.convertPoints').replace('{count}', fomatNumber(user?.points || 0))}
-          className={styles.blue_btn}
-          onClick={onFullConvert}
-        />
-      )}
+      <Button
+        label={t('convert.convert')}
+        disabled={loading}
+        onClick={handleVibrationClick(currentConvert)}
+        className={styles.white_btn}
+      />
       <div className={styles.info}>
         <span className={styles['info-exchange']}>{t('convert.equal')}</span>
         <h2 className={styles['info-title']}>{t('convert.mineSpace')}</h2>
@@ -126,14 +104,6 @@ export const Balance = () => {
           </div>
         ))}
       </div>
-      <footer className={styles.footer}>
-        <Button
-          label={t('convert.convert')}
-          disabled={loading}
-          onClick={handleVibrationClick(currentConvert)}
-          className={styles.white_btn}
-        />
-      </footer>
     </div>
   );
 };
