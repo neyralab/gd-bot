@@ -207,7 +207,7 @@ export const initGame = createAsyncThunk(
 
       const state = getState();
       const maxLevel = levels.length;
-      const level = state.user.data.current_level.level;
+      let level = state.user.data.current_level.level;
       if (level > maxLevel) {
         level = maxLevel;
       }
