@@ -11,7 +11,8 @@ export default function Banner1() {
   const isHidden = true;
 
   const week = useMemo(() => {
-    return getWeekNumber(new Date(Date.UTC(2024, 6, 4, 8)));
+    const startDate = new Date(Date.UTC(2024, 6, 1, 8));
+    return getWeekNumber(startDate);
   }, []);
 
   return (
