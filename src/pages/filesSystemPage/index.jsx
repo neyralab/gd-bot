@@ -219,7 +219,7 @@ export const FilesSystemPage = () => {
             <div className={style.storage_text_container}>
               <p className={style.storage_text}>{`${user?.points} ${t('dashbord.points')}`}</p>
               <p className={style.storage_text}>
-                {human?.percent?.label} ${t('dashbord.of')} {human?.total}
+                {human?.percent?.label} {t('dashbord.of')} {human?.total}
               </p>
             </div>
             <div className={style.storage_usage_container}>
