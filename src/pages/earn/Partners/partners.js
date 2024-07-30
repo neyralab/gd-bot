@@ -8,7 +8,7 @@ const tasks = [
     title: "Join PonchKick TG bot",
     translatePath: "earn.joinTGtempl",
     points: 10000,
-    imgUrl: "/assets/ponchKick.png",
+    imgUrl: "/assets/ponchKick.webp",
     joinLink: "https://t.me/PonchKick_bot/ponchiqs?startapp=6794973908"
   },
   {
@@ -17,7 +17,7 @@ const tasks = [
     title: "Follow PonchKick TG channel",
     translatePath: "earn.followTGchannelTemp",
     points: 10000,
-    imgUrl: "/assets/ponchKick.png",
+    imgUrl: "/assets/ponchKick.webp",
     joinLink: "https://t.me/ponchiqs"
   },
   {
@@ -26,7 +26,7 @@ const tasks = [
     title: "Follow PonchKick X Account",
     translatePath: "earn.followXtemp",
     points: 10000,
-    imgUrl: "/assets/ponchKick.png",
+    imgUrl: "/assets/ponchKick.webp",
     joinLink: "https://x.com/ponchiqs?s=21"
   },
 
@@ -38,7 +38,7 @@ const tasks = [
     title: "Join OBIX TG bot",
     translatePath: "earn.joinTGtempl",
     points: 20000,
-    imgUrl: "/assets/obix.png",
+    imgUrl: "/assets/obix.webp",
     joinLink: "https://t.me/obix_bot?start=1090262402"
   },
 
@@ -50,7 +50,7 @@ const tasks = [
     title: "Join TonParty TG bot",
     translatePath: "earn.joinTGtempl",
     points: 20000,
-    imgUrl: "/assets/tonParty.png",
+    imgUrl: "/assets/tonParty.webp",
     joinLink: "https://t.me/tonparty_bot/party?startapp=ref_o2aocwpj"
   },
 
@@ -62,7 +62,7 @@ const tasks = [
     title: "Join HoldCoin TG bot",
     translatePath: "earn.joinTGtempl",
     points: 10000,
-    imgUrl: "/assets/holdCoin.png",
+    imgUrl: "/assets/holdCoin.webp",
     joinLink: "https://t.me/theHoldCoinBot/app?startapp=ref_4khx40cb"
   },
   {
@@ -71,7 +71,7 @@ const tasks = [
     title: "Follow HoldCoin TG channel",
     translatePath: "earn.followTGchannelTemp",
     points: 10000,
-    imgUrl: "/assets/holdCoin.png",
+    imgUrl: "/assets/holdCoin.webp",
     joinLink: "https://t.me/+TnwvxtibcNxmODc1"
   },
 
@@ -82,7 +82,7 @@ const tasks = [
     title: "Join PirateClash TG bot",
     translatePath: "earn.joinTGtempl",
     points: 10000,
-    imgUrl: "/assets/pirateClash.png",
+    imgUrl: "/assets/pirateClash.webp",
     joinLink: "https://t.me/pirate_frenzy_bot/piratefrenzy?startapp=HuYHeX0a5d"
   },
   {
@@ -91,7 +91,7 @@ const tasks = [
     title: "Follow PirateClash TG channel",
     translatePath: "earn.followTGchannelTemp",
     points: 10000,
-    imgUrl: "/assets/pirateClash.png",
+    imgUrl: "/assets/pirateClash.webp",
     joinLink: "https://t.me/PirateClashChannel"
   },
   {
@@ -100,7 +100,7 @@ const tasks = [
     title: "Follow PirateClash X Account",
     translatePath: "earn.followXtemp",
     points: 10000,
-    imgUrl: "/assets/pirateClash.png",
+    imgUrl: "/assets/pirateClash.webp",
     joinLink: "https://x.com/PirateClash_HQ"
   },
 
@@ -112,7 +112,7 @@ const tasks = [
   //   title: "Join BIllion Gems TG bot",
   //   translatePath: "",
   //   points: 20000,
-  //   imgUrl: "/assets/billionGems.png",
+  //   imgUrl: "/assets/billionGems.webp",
   //   joinLink: "https://t.me/billiongems_bot/?start=66249fffcd2f"
   // },
 
@@ -124,7 +124,7 @@ const tasks = [
     title: "Join MineTon TG bot",
     translatePath: "earn.joinTGtempl",
     points: 10000,
-    imgUrl: "/assets/mineTon.png",
+    imgUrl: "/assets/mineTon.webp",
     joinLink: "https://t.me/mineton_app_bot?start=57uwmfrh"
   },
   {
@@ -133,7 +133,7 @@ const tasks = [
     title: "Follow MineTon TG channel",
     translatePath: "earn.followTGchannelTemp",
     points: 10000,
-    imgUrl: "/assets/mineTon.png",
+    imgUrl: "/assets/mineTon.webp",
     joinLink: "http://t.me/mineTON_channel"
   },
 
@@ -145,7 +145,7 @@ const tasks = [
     title: "Join PopLaunch TG bot",
     translatePath: "earn.joinTGtempl",
     points: 10000,
-    imgUrl: "/assets/popLaunch.png",
+    imgUrl: "/assets/popLaunch.webp",
     joinLink: "https://t.me/Poplaunchbot?start=r_111666_620915756"
   },
   {
@@ -154,7 +154,7 @@ const tasks = [
     title: "Follow PopLaunch TG channel",
     translatePath: "earn.followTGchannelTemp",
     points: 10000,
-    imgUrl: "/assets/popLaunch.png",
+    imgUrl: "/assets/popLaunch.webp",
     joinLink: "https://t.me/mobiverse_announcement"
   },
   {
@@ -163,7 +163,7 @@ const tasks = [
     title: "Follow PopLaunch X Account",
     translatePath: "earn.followXtemp",
     points: 10000,
-    imgUrl: "/assets/popLaunch.png",
+    imgUrl: "/assets/popLaunch.webp",
     joinLink: "https://twitter.com/Mobiverse_game"
   },
 
@@ -175,7 +175,7 @@ const tasks = [
     title: "Join TonBox TG bot",
     translatePath: "earn.joinTGtempl",
     points: 10000,
-    imgUrl: "/assets/tonBox.png",
+    imgUrl: "/assets/tonBox.webp",
     joinLink: "https://t.me/boom?start=6e4gMePEe4r9P49BaoTgU1"
   },
 ];
