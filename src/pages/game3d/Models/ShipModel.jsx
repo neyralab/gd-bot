@@ -131,7 +131,7 @@ const ShipModel = forwardRef((_, ref) => {
 
   const runInitialAnimation = () => {
     if (shipModel.animations.length) {
-      mixer.current = new THREE.AnimationMixer(shipModel.scene);
+      mixer.current = new THREE.AnimationMixer(shipModel.scene); // action.reset() does not help to reset animation completely
       const action = mixer.current.clipAction(shipModel.animations[0]);
       action.setLoop(THREE.LoopOnce);
       action.clampWhenFinished = true;
@@ -181,14 +181,13 @@ const ShipModel = forwardRef((_, ref) => {
   };
 
   const runThemeChange = () => {
-    if (!mixer.current) return;
-
     /** Do not run flyIn/flyOut animation if theme change conencted with reaching new level */
     if (nextTheme.direction === 'updateCurrent') {
       setThemeMaterials(nextTheme.theme || theme);
       return;
     }
 
+    mixer.current = new THREE.AnimationMixer(shipModel.scene); // action.reset() does not help to reset animation completely
     const action = mixer.current.clipAction(shipModel.animations[0]);
     if (!action) return;
 
@@ -196,7 +195,6 @@ const ShipModel = forwardRef((_, ref) => {
     stopFlyAnimation();
     stopPushAnimation();
 
-    action.reset();
     action.setLoop(THREE.LoopOnce);
     action.clampWhenFinished = true;
     action.time = 0;
@@ -369,8 +367,8 @@ const ShipModel = forwardRef((_, ref) => {
       });
     });
 
+    mixer.current = new THREE.AnimationMixer(shipModel.scene); // action.reset() does not help to reset animation completely
     const action = mixer.current.clipAction(shipModel.animations[1]);
-    action.reset();
     action.setLoop(THREE.LoopOnce);
     action.clampWhenFinished = true;
     action.setEffectiveTimeScale(3);
