@@ -6,9 +6,9 @@
     "all": "全部",
     "favorites": "收藏夹",
     "pictures": "图片",
-    "dcuments": "文件",
+    "documents": "文件",
     "notes": "笔记",
-    "audio": "声音的",
+    "audio": "音频",
     "video": "视频",
     "deleted": "已删除",
     "notFound": "未找到文件",
@@ -18,12 +18,12 @@
     "linkToFile": "点按此链接即可查看文件"
   },
   "month": {
-    "jan": "扬",
+    "jan": "一月",
     "feb": "二月",
     "mar": "三月",
     "apr": "四月",
-    "may": "可能",
-    "jun": "君",
+    "may": "五月",
+    "jun": "六月",
     "jul": "七月",
     "aug": "八月",
     "sep": "九月",
@@ -32,7 +32,7 @@
     "dec": "十二月"
   },
   "time": {
-    "am": "是",
+    "am": "上午",
     "pm": "下午"
   }
 }

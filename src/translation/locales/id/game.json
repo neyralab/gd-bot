@@ -26,7 +26,7 @@
     "users": "PENGGUNA",
     "usersLow": "Pengguna",
     "totalUsers": "Jumlah pengguna:",
-    "totalPoints": "Jumlah poin::",
+    "totalPoints": "Jumlah poin:",
     "totalTaps": "Jumlah ketukan:"
   },
   "friends": {
@@ -44,7 +44,10 @@
     "followX": "Ikuti Akun X Kami",
     "joinYouTube": "Bergabunglah dengan Saluran YouTube Kami",
     "joinCommunity": "Bergabunglah dengan Komunitas Kami",
-    "connectWallet": "Hubungkan Dompet"
+    "connectWallet": "Hubungkan Dompet",
+    "joinTGtempl": "Bergabung dengan bot TG {name}",
+    "followTGchannelTemp": "Ikuti saluran TG {name}",
+    "followXtemp": "Ikuti Akun X {name}"
   },
   "airdrop": {
     "airdrop": "Tetesan udara",
@@ -62,7 +65,7 @@
     "lvl3": "Bonus ekstra untuk mencapai level 3 penyadapan",
     "lvl4": "Bonus ekstra untuk mencapai level 4 penyadapan",
     "tapBonus1": "Bonus tambahan untuk merekam 100.000",
-    "tapBonus2": "Bonus tambahan untuk merekam 250000",
+    "tapBonus2": "Bonus tambahan untuk merekam 250.000",
     "tapBonus3": "Bonus tambahan untuk merekam 500.000",
     "weeklyBonus": "Bonus ekstra mingguan",
     "followX": "Ikuti akun X kami",
