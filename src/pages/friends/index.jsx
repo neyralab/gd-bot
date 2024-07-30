@@ -15,6 +15,15 @@ import useButtonVibration from '../../hooks/useButtonVibration';
 import { getKeyTranslate } from '../../translation/utils/index';
 import gameJson from '../../translation/locales/en/game.json';
 
+const FRIEND_TASK = {
+  id: 'invite_more',
+  isDone: false,
+  title: "Invite 25 Premium friends",
+  points: '1M',
+  imgUrl: '/assets/likeGold.png',
+  translatePath: '',
+}
+
 export default function FriendsPage() {
   const link = useSelector((state) => state.user.link);
   const { t } = useTranslation('game');
@@ -31,12 +40,13 @@ export default function FriendsPage() {
   useEffect(() => {
     getAllTasks().then((res) => {
       dispatch(handleTasks(res));
-      setTasks(
-        tasksFromFile.map((el) => {
+      setTasks([
+        ...tasksFromFile.map((el) => {
           const realTask = res.find((task) => task.action === el.action);
           return realTask ? { ...el, points: realTask?.amount || 0 } : el;
-        })
-      );
+        }),
+        FRIEND_TASK
+      ]);
     });
 
     setFriendsAreLoading(true);
@@ -76,7 +86,6 @@ export default function FriendsPage() {
   return (
     <div className={styles.container}>
       <div className={styles['title-block']}>
-        <img src="/assets/token_friends.png" alt="Token" />
         <h1>{t('friends.inviteGetBonus')}</h1>
       </div>
 
@@ -98,6 +107,14 @@ export default function FriendsPage() {
           }
         })}
       </div>
+
+      <TelegramShareButton
+        className={styles['invite-button']}
+        url={link.copy}
+        title={t('friends.inviteFriend')}
+        onClick={handleVibrationClick()}>
+        <span>{t('friends.inviteFriend')}</span>
+      </TelegramShareButton>
 
       <div className={styles['friends-container']}>
         <h2>
@@ -128,14 +145,6 @@ export default function FriendsPage() {
           </div>
         )}
       </div>
-
-      <TelegramShareButton
-        className={styles['invite-button']}
-        url={link.copy}
-        title={t('friends.inviteFriend')}
-        onClick={handleVibrationClick()}>
-        <span>{t('friends.inviteFriend')}</span>
-      </TelegramShareButton>
 
       <Menu />
     </div>

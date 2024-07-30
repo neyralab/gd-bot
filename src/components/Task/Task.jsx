@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import styles from './Task.module.css';
 
 export default function Task({ isDone, title, points, imgUrl, onClick, translatePath }) {
-  const formattedPoints = Number(points).toLocaleString();
+  const formattedPoints = Number.isInteger(points) ? Number(points).toLocaleString() : points;
   const { t } = useTranslation('game');
 
   return (
