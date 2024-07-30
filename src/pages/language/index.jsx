@@ -109,7 +109,11 @@ export const LanguagePage = () => {
       {!!list.length && 
         (<ul className={styles.list} >
           {list.map(({ title, translate, abbreviation }) => (
-            <li onClick={() => {changeLanguage(abbreviation)}} className={styles.item}>
+            <li
+              onClick={() => {changeLanguage(abbreviation)}}
+              className={styles.item}
+              key={abbreviation}
+            >
               <div>
                 <p className={styles.lang}>{title}</p>
                 <p className={styles.langOriginal}>{translate}</p>

@@ -44,7 +44,10 @@
     "followX": "Siga nossa conta X",
     "joinYouTube": "Junte-se ao nosso canal no YouTube",
     "joinCommunity": "Junte-se a nossa comunidade",
-    "connectWallet": "Conectar carteira"
+    "connectWallet": "Conectar carteira",
+    "joinTGtempl": "Junte-se ao bot TG de {name}",
+    "followTGchannelTemp": "Siga o canal TG de {name}",
+    "followXtemp": "Siga a conta X de {name}"
   },
   "airdrop": {
     "airdrop": "Lançamento aéreo",

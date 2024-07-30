@@ -44,7 +44,10 @@
     "followX": "关注我们的 X 帐户",
     "joinYouTube": "加入我们的 YouTube 频道",
     "joinCommunity": "加入我们的社区",
-    "connectWallet": "连接钱包"
+    "connectWallet": "连接钱包",
+    "joinTGtempl": "加入 {name} TG 机器人",
+    "followTGchannelTemp": "关注 {name} TG 频道",
+    "followXtemp": "关注 {name} 的 X 帐户"
   },
   "airdrop": {
     "airdrop": "空投",

@@ -1,38 +1,25 @@
 import React, { useState, useEffect, useRef } from 'react';
-import {
-  useTonAddress,
-  useTonConnectUI,
-  useTonWallet
-} from '@tonconnect/ui-react';
-import { useTranslation } from 'react-i18next';
-import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import { TelegramShareButton } from 'react-share';
 
 import { tasks as tasksFromFile } from './tasks';
-import { saveUserWallet } from '../../effects/userEffects';
 import { checkAllEarnTasks } from '../../effects/EarnEffect';
-import useButtonVibration from '../../hooks/useButtonVibration';
 
 import Menu from '../../components/Menu/Menu';
-import Task from '../../components/Task/Task';
+import Tasks from './Tasks/index';
+import Partners from './Partners';
+import Mission from './Mission';
 import EarnModal from './EarnModal/EarnModal';
+import Segmented from '../../components/segmented';
+import { Header } from '../../components/header';
 
 import styles from './styles.module.css';
 
+const DEFAULT_SEGMENT_OPTION = 'task'
+
 export default function EarnPage() {
-  const { t } = useTranslation('game');
   const [tasks, setTasks] = useState([]);
-  const [animatedTaskIds, setAnimatedTaskIds] = useState(new Set());
-  const modalRef = useRef(null);
+  const [activeSegment, setActiveSegment] = useState(DEFAULT_SEGMENT_OPTION);
   const [modalSelectedTask, setModalSelectedTask] = useState(null);
-  const [tonConnectUI] = useTonConnectUI();
-  const address = useTonAddress(true);
-  const wallet = useTonWallet();
-  const user = useSelector((state) => state.user.data);
-  const link = useSelector((state) => state.user.link);
-  const navigate = useNavigate();
-  const handleVibrationClick = useButtonVibration();
+  const modalRef = useRef(null);
 
   const getTasks = async () => {
     try {
@@ -71,103 +58,75 @@ export default function EarnPage() {
     getTasks();
   }, []);
 
-  useEffect(() => {
-    const notAnimatedTasks = tasks.filter((el) => !animatedTaskIds.has(el.id));
+  const segmentOption = [
+    {
+      title: 'Task',
+      name: 'task',
+      onClick: () => { setActiveSegment('task') }
+    },
+    {
+      title: 'Partners',
+      name: 'partner',
+      onClick: () => { setActiveSegment('partner') }
+    },
+    {
+      title: 'Missions',
+      name: 'mission',
+      onClick: () => { setActiveSegment('mission') }
+    },
+  ];
 
-    notAnimatedTasks.forEach((task, index) => {
-      setTimeout(() => {
-        setAnimatedTaskIds((prevIds) => new Set(prevIds).add(task.id));
-      }, index * 100);
-    });
-  }, [tasks]);
-
-  useEffect(() => {
-    if (user !== null && !user.wallet && address && wallet) {
-      (async () => {
-        const res = await saveUserWallet({
-          account: {
-            ...wallet?.account,
-            uiAddress: address
-          }
-        });
-        getTasks();
-        console.log({ saveUserWallet: res });
-      })();
-    }
-  }, [address, user, user?.wallet, wallet]);
-
-  const handleClick = (task) => {
-    switch (task.id) {
-      case 'JOIN_YOUTUBE':
-      case 'JOIN_TG_CHANNEL':
-      case 'JOIN_TWITTER':
-      case 'DOWNLOAD_APP':
-        setModalSelectedTask(task);
-        setTimeout(() => {
-          modalRef.current.open();
-        }, 10);
-        break;
-
-      case 'WALLET_CONNECTION':
-        address && tonConnectUI.disconnect();
-        tonConnectUI.openModal();
-        break;
-
-      case 'STORAGE_PURCHASE':
-        navigate('/boost');
-        break;
-
-      case 'UPLOAD_10_FILES':
-        navigate('/file-upload');
-        break;
-
+  const renderList = () => {
+    switch (activeSegment) {
+      case 'task':
+        return (
+          <Tasks
+            tasks={tasks}
+            modalRef={modalRef}
+            getTasks={getTasks}
+            setModalSelectedTask={setModalSelectedTask}
+          />
+        );
+      case 'partner':
+        return (
+          <Partners
+            getTasks={getTasks}
+            setModalSelectedTask={setModalSelectedTask}
+          />
+        );
+      case 'mission':
+        return (
+          <Mission
+            setModalSelectedTask={setModalSelectedTask}
+          />
+        );
       default:
-        console.log(task);
-        break;
+        <Tasks
+          tasks={tasks}
+          getTasks={getTasks}
+          setModalSelectedTask={setModalSelectedTask}
+        />
     }
-  };
+  }
 
   return (
     <div className={styles.container}>
-      <div className={styles['title-block']}>
+      <Header label="Ghost Drive App" />
+
+      {/* <div className={styles['title-block']}>
         <img src="/assets/token.png" alt="Token" />
         <h1>{t('earn.earn')}</h1>
-      </div>
+      </div> */}
 
-      <div className={styles['tasks-list']}>
-        {tasks.map((task) => {
-          if (animatedTaskIds.has(task.id)) {
-            return task.id === 'INVITE_5_FRIENDS' ? (
-              <TelegramShareButton
-                url={link.copy}
-                key={task.id}
-                title={'Share this link with friends'}
-                onClick={handleVibrationClick()}>
-                <Task
-                  onClick={() => handleClick(task)}
-                  isDone={task.isDone}
-                  points={task.points}
-                  imgUrl={task.imgUrl}
-                  translatePath={task.translatePath}
-                  onTasksRequireCheck={getTasks}
-                />
-              </TelegramShareButton>
-            ) : (
-              <Task
-                key={task.id}
-                onClick={handleVibrationClick(() => handleClick(task))}
-                isDone={task.isDone}
-                points={task.points}
-                imgUrl={task.imgUrl}
-                translatePath={task.translatePath}
-                onTasksRequireCheck={getTasks}
-              />
-            );
-          } else {
-            return null;
-          }
-        })}
-      </div>
+      <h1 className={styles.title}>Earn more points</h1>
+      <p className={styles.text}>You will get GDP points for each completed task</p>
+
+      <Segmented
+        options={segmentOption}
+        active={activeSegment}
+      />
+
+      { renderList() }
 
       <Menu />
 
