@@ -31,7 +31,8 @@
 }
 
 .textContent,
-.blinkingPipe {
+.blinkingPipe,
+.cursor {
   font-family: 'SF Pro Text';
   text-transform: uppercase;
   background: linear-gradient(90deg, #e55d87 0%, #5fc3e4 100%);
@@ -45,12 +46,32 @@
   font-weight: 400;
   white-space: wrap;
   overflow: hidden;
-  max-width: 300px;
+  max-width: 90vw;
   text-align: center;
 }
 
 .infiniteTyping {
   animation: typingAnimation 3s steps(50) infinite;
+}
+
+.typingText {
+  font-family: monospace;
+  line-height: 1.5;
+  min-height: 3em;
+}
+
+.cursor {
+  animation: blink 0.7s infinite;
+}
+
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
 }
 
 @keyframes typingAnimation {

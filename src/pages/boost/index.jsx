@@ -106,10 +106,14 @@ export const BoostPage = ({ tariffs, setTariffs }) => {
             ]
           };
           await tonConnectUI.sendTransaction(transaction, {
-            modals: ['before', 'success', 'error'],
+            modals: ['before', 'error'],
             notifications: []
           });
-          toast(t('message.successPayment'));
+          toast.success(t('message.successPayment'), {
+            theme: 'colored',
+            position: 'bottom-center',
+            autoClose: 2500
+          });
         } else {
           setActiveMultiplier(undefined);
           toast.error(t('message.error'), {
