@@ -12,7 +12,7 @@
     "video": "Video",
     "deleted": "Eliminado",
     "notFound": "Archivos no encontrados",
-    "isEmpty": "Esta pagina esta vacia",
+    "isEmpty": "Esta página está vacía",
     "ghostdrive": "GHOSTDRIVE",
     "share": "Compartir",
     "linkToFile": "Toque este enlace para ver el archivo"
@@ -22,7 +22,7 @@
     "feb": "Feb",
     "mar": "Mar",
     "apr": "Abr",
-    "may": "Puede",
+    "may": "May",
     "jun": "Jun",
     "jul": "Jul",
     "aug": "Ago",
@@ -32,7 +32,7 @@
     "dec": "Dic"
   },
   "time": {
-    "am": "soy",
+    "am": "am",
     "pm": "pm"
   }
 }
