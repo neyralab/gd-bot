@@ -21,6 +21,27 @@ const useLanguage = () => {
       } else if (language.includes('es')) {
         i18n.changeLanguage('es');
         moment.locale('es');
+      } else if (language.includes('uk')) {
+        i18n.changeLanguage('uk');
+        moment.locale('uk');
+      } else if (language.includes('ru')) {
+        i18n.changeLanguage('ru');
+        moment.locale('ru');
+      } else if (language.includes('vi')) {
+        i18n.changeLanguage('vi');
+        moment.locale('vi');
+      } else if (language.includes('ja')) {
+        i18n.changeLanguage('ja');
+        moment.locale('ja');
+      } else if (language.includes('de')) {
+        i18n.changeLanguage('de');
+        moment.locale('de');
+      } else if (language.includes('fr')) {
+        i18n.changeLanguage('fr');
+        moment.locale('fr');
+      } else if (language.includes('ko')) {
+        i18n.changeLanguage('ko');
+        moment.locale('ko');
       } else {
         i18n.changeLanguage('en');
         moment.locale('en');

@@ -1,0 +1,80 @@
+{
+  "mode": {
+    "playNow": "今すぐプレイ",
+    "freePlay": "次の無料プレイ",
+    "play": "プレイモード",
+    "boost": "ブーストモード"
+  },
+  "navigate": {
+    "fly": "飛ぶ",
+    "reachedLevel": "レベルに達しました"
+  },
+  "process": {
+    "level": "レベル",
+    "players": "プレイヤー",
+    "frens": "友達",
+    "earn": "稼ぐ",
+    "airdrop": "エアドロップ"
+  },
+  "leadboard": {
+    "league": "リーグ",
+    "friends": "友達",
+    "week": "週",
+    "bonus": "ボーナス",
+    "points": "ポイント",
+    "rank": "ランク",
+    "users": "ユーザー",
+    "usersLow": "ユーザー",
+    "totalUsers": "総ユーザー数:",
+    "totalPoints": "総ポイント数:",
+    "totalTaps": "総タップ数:"
+  },
+  "friends": {
+    "inviteGetBonus": "友達を招待してボーナスを獲得！",
+    "inviteFriendCapitalize": "友達を招待",
+    "yourFriends": "あなたの友達",
+    "inviteFriend": "友達を招待する"
+  },
+  "earn": {
+    "earn": "もっとポイントを稼ぐ",
+    "storage": "ストレージをブースト",
+    "app": "アプリをダウンロード",
+    "friends": "5人の友達を招待",
+    "upload": "10ファイルをアップロード",
+    "followX": "Xアカウントをフォロー",
+    "joinYouTube": "YouTubeチャンネルに参加",
+    "joinCommunity": "コミュニティに参加",
+    "connectWallet": "ウォレットを接続"
+  },
+  "airdrop": {
+    "airdrop": "エアドロップ",
+    "users": "ユーザー",
+    "earn": "稼ぐ",
+    "history": "履歴",
+    "tapping": "タップゲーム",
+    "noHistory": "リファラル履歴なし",
+    "shareReferral": "リファラルリンクを共有して稼ぎ始めましょう。",
+    "referral": "アクティブなリファラル登録",
+    "wallet": "ウォレットを接続",
+    "download": "Ghost Driveアプリをダウンロードし、Telegramでログイン",
+    "lvl1": "1タップレベルに到達で追加ボーナス",
+    "lvl2": "2タップレベルに到達で追加ボーナス",
+    "lvl3": "3タップレベルに到達で追加ボーナス",
+    "lvl4": "4タップレベルに到達で追加ボーナス",
+    "tapBonus1": "100,000タップで追加ボーナス",
+    "tapBonus2": "250,000タップで追加ボーナス",
+    "tapBonus3": "500,000タップで追加ボーナス",
+    "weeklyBonus": "毎週の追加ボーナス",
+    "followX": "Xアカウントをフォロー",
+    "gameTapping": "タップゲーム",
+    "inviteFriends": "5人の友達を招待",
+    "joinTG": "TGチャンネルに参加",
+    "joinTGnew": "TGニュースチャンネルに参加",
+    "joinYouTube": "YouTubeチャンネルに参加",
+    "purchase": "ストレージの購入",
+    "purchaseReferral": "リファラルによるストレージ購入",
+    "topBonus": "トップ100ボーナス",
+    "upload": "10ファイルをアップロード",
+    "uploadFile": "ファイルをアップロード"
+  }
+}
