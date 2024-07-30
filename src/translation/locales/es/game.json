@@ -22,8 +22,12 @@
     "week": "Semana",
     "bonus": "Prima",
     "points": "puntos",
+    "rank": "rango",
     "users": "USUARIOS",
-    "usersLow": "Usuarios"
+    "usersLow": "Usuarios",
+    "totalUsers": "Usuarios totales:",
+    "totalPoints": "Puntos totales:",
+    "totalTaps": "Grifos totales:"
   },
   "friends": {
     "inviteGetBonus": "¡Invita amigos y obtén bonificación!",

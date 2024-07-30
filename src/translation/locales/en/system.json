@@ -55,6 +55,7 @@
     "extraBonus": "Extra bonus for reaching the 1 tapping level",
     "tgChannel": "Join our TG channel",
     "tgNewsChannel": "Join our TG news channel",
+    "joinYouTube": "Join our YouTube channel",
     "xAccount": "Follow our X account",
     "storagePurchase": "Storage purchase",
     "extraBonusLvl2": "Extra bonus for reaching the 2 tapping level",
@@ -108,7 +109,8 @@
     "notJoinX": "You did not join our X Chanel",
     "download": "Download",
     "join": "Join",
-    "transaction": "Transaction may take up to 1 minute.\n\n Please do not close the window \n\n wait for the game to start."
+    "transaction": "Transaction may take up to 1 minute.\n\n Please do not close the window \n\n wait for the game to start.",
+    "conversionSuccess": "Conversion was success"
   },
   "language": {
     "search": "Search",
