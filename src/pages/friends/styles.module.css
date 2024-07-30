@@ -41,12 +41,6 @@
   text-align: center;
 }
 
-.title-block img {
-  width: 128px;
-  height: 119px;
-  object-fit: contain;
-}
-
 .tasks-list {
   display: flex;
   flex-direction: column;
@@ -88,15 +82,12 @@
 }
 
 .invite-button {
-  position: fixed;
-  bottom: 90px;
+  margin-top: 8px;
   width: 100%;
-  left: 0;
 }
 
 .invite-button span {
-  width: calc(100% - 32px);
-  margin: 0 16px;
+  width: 100%;
   padding: 16px;
   color: black;
   background: white;

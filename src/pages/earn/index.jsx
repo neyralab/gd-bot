@@ -119,7 +119,7 @@ export default function EarnPage() {
       </div> */}
 
       <h1 className={styles.title}>Earn more points</h1>
-      <p className={styles.text}>You will get GDP points for each completed task</p>
+      <p className={styles.text}>You will get GDP for each completed task</p>
 
       <Segmented
         options={segmentOption}
