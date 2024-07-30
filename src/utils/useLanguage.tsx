@@ -7,7 +7,7 @@ const LANGUAGE_KEY = 'language'
 const useLanguage = () => {
   useEffect(() => {
     const languageDetection = localStorage.getItem(LANGUAGE_KEY) as string;
-    if (languageDetection === null) {
+    if (languageDetection === null) {      
       const language = navigator.language.toLowerCase();
       if (language.includes('zh')) {
         i18n.changeLanguage('zh');
