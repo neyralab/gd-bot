@@ -21,6 +21,7 @@ export const LeaderboardLeague = () => {
     setIsLoading(true);
     getLeaderboardEffect().then((data) => {
       console.log(data);
+      if (!data) return;
       setLeaderboard(data?.data?.filter((user) => (!BLACK_LIST.includes(user.username))));
       setInfo({
         totalTaps: data?.total_taps || 0,
