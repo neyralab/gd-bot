@@ -12,6 +12,8 @@ import { ReactComponent as LoaderIcon } from '../../assets/loader.svg';
 import { getAllTasks } from '../../effects/balanceEffect';
 import { handleTasks } from '../../store/reducers/taskSlice';
 import useButtonVibration from '../../hooks/useButtonVibration';
+import { getKeyTranslate } from '../../translation/utils/index';
+import gameJson from '../../translation/locales/en/game.json';
 
 export default function FriendsPage() {
   const link = useSelector((state) => state.user.link);
@@ -88,6 +90,7 @@ export default function FriendsPage() {
                 title={task.title}
                 points={task.points}
                 imgUrl={task.imgUrl}
+                translatePath={getKeyTranslate(gameJson, task.title)}
               />
             );
           } else {

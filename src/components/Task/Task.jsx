@@ -13,7 +13,7 @@ export default function Task({ isDone, title, points, imgUrl, onClick, translate
       onClick={onClick}>
       <img className={styles.img} src={imgUrl} alt={title} />
       <div className={styles.name}>
-        <strong>{t(translatePath)}</strong>
+        <strong>{t(translatePath) || title}</strong>
       </div>
       <div className={styles.points}>
         <span>+{formattedPoints}</span>
