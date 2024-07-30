@@ -39,14 +39,18 @@ import { INVOICE_TYPE } from '../../../utils/createStarInvoice';
 import { makeInvoice } from '../../../effects/paymentEffect';
 import { useQueryId } from '../../../effects/contracts/useQueryId';
 import { ReactComponent as StarIcon } from '../../../assets/star.svg';
-// import { ReactComponent as TonIcon } from '../../../assets/TON.svg';
+import { ReactComponent as TonIcon } from '../../../assets/TON.svg';
 import {
   beforeGame,
   startGame,
   getActivePayedGame
 } from '../../../effects/gameEffect';
 import { useOnConnect } from '../../../utils/useOnConnect';
-// import { isDevEnv } from '../../../utils/isDevEnv';
+import {
+  isAnyPaymentEnabled,
+  isAllPaymentEnabled,
+  isStarsPaymentEnabled,
+} from '../../../utils/paymentChecker';
 import { sleep } from '../../../utils/sleep';
 import styles from './BuyButton.module.css';
 
@@ -217,33 +221,51 @@ export default function BuyButton() {
     dispatch(handlePaymentSelectModal(true));
   };
 
+  const handleStartStarsPayment = () => {
+    const input = `${0};${theme.tierId};${user.id}`;
+    makeInvoice({
+      input,
+      dispatch,
+      callback: invoiceCallback,
+      type: INVOICE_TYPE.game,
+      theme
+    });
+  }
+
   const handleStartPayment = (el) => {
     if (el.action === 'ton') {
-      clickHandler(el);
+      clickHandler();
     } else {
-      const input = `${0};${theme.tierId};${user.id}`;
-      makeInvoice({
-        input,
-        dispatch,
-        callback: invoiceCallback,
-        type: INVOICE_TYPE.game,
-        theme
-      });
+      handleStartStarsPayment();
     }
     onClosePaymentModal();
   };
 
-  if (status !== 'playing' && !themeAccess[theme.id] && theme.id === 'ghost') {
+  const hanldePyamentBtnClick = () => {
+    if (isAllPaymentEnabled) {
+      handleSelect();
+    } else if (isStarsPaymentEnabled) {
+      handleStartStarsPayment();
+    } else {
+      clickHandler();
+    }
+  }
+
+  if (status !== 'playing' && !themeAccess[theme.id] && theme.id === 'ghost' && isAnyPaymentEnabled) {
     return (
       <div className={styles['actions-flex']}>
         <button
           type="button"
           className={classNames(styles.button, styles[theme.id])}
-          onClick={handleSelect}
+          onClick={hanldePyamentBtnClick}
         >
-          <StarIcon className={styles['star-icon']} viewBox="0 0 21 21" />
+          {isStarsPaymentEnabled ? (
+            <StarIcon className={styles['star-icon']} viewBox="0 0 21 21" />
+            ) : (
+            <TonIcon className={styles['star-icon']} viewBox="0 0 24 24" />
+          )}
           <span className={styles.cost}>
-            {theme.cost || 'FREE'}
+            {isStarsPaymentEnabled ? theme.stars : theme.cost || 'FREE'}
           </span>
           <span
             className={styles.multiplier}
