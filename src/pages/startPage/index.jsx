@@ -55,14 +55,14 @@ export const StartPage = ({ tariffs }) => {
   }, [getTasks]);
 
   const storage = useMemo(() => {
-    const size = DEFAULT_TARIFFS_NAMES[user?.space_total] || '1GB';
+    const size = DEFAULT_TARIFFS_NAMES[user?.space_actual] || '1GB';
     return {
       size,
       multiplier:
-        tariffs?.find((el) => el.storage === user?.space_total)
+        tariffs?.find((el) => el.storage === user?.space_actual)
           ?.multiplicator || 1
     };
-  }, [user?.space_total, tariffs]);
+  }, [user?.space_actual, tariffs]);
 
   const human = useMemo(() => {
     if (!user) return;
