@@ -11,24 +11,24 @@ const tasks = [
     imgUrl: "/assets/ponchKick.webp",
     joinLink: "https://t.me/PonchKick_bot/ponchiqs?startapp=6794973908"
   },
-  {
-    id: "JOIN_PONCH_KICK_TG_CHANNEL",
-    isDone: false,
-    title: "Follow PonchKick TG channel",
-    translatePath: "earn.followTGchannelTemp",
-    points: 10000,
-    imgUrl: "/assets/ponchKick.webp",
-    joinLink: "https://t.me/ponchiqs"
-  },
-  {
-    id: "JOIN_PONCH_KICK_X_ACCOUNT",
-    isDone: false,
-    title: "Follow PonchKick X Account",
-    translatePath: "earn.followXtemp",
-    points: 10000,
-    imgUrl: "/assets/ponchKick.webp",
-    joinLink: "https://x.com/ponchiqs?s=21"
-  },
+  // {
+  //   id: "JOIN_PONCH_KICK_TG_CHANNEL",
+  //   isDone: false,
+  //   title: "Follow PonchKick TG channel",
+  //   translatePath: "earn.followTGchannelTemp",
+  //   points: 10000,
+  //   imgUrl: "/assets/ponchKick.webp",
+  //   joinLink: "https://t.me/ponchiqs"
+  // },
+  // {
+  //   id: "JOIN_PONCH_KICK_X_ACCOUNT",
+  //   isDone: false,
+  //   title: "Follow PonchKick X Account",
+  //   translatePath: "earn.followXtemp",
+  //   points: 10000,
+  //   imgUrl: "/assets/ponchKick.webp",
+  //   joinLink: "https://x.com/ponchiqs?s=21"
+  // },
 
     //// OBIX
 
@@ -65,15 +65,15 @@ const tasks = [
     imgUrl: "/assets/holdCoin.webp",
     joinLink: "https://t.me/theHoldCoinBot/app?startapp=ref_4khx40cb"
   },
-  {
-    id: "JOIN_HOLD_COIN_TG_CHANNEL",
-    isDone: false,
-    title: "Follow HoldCoin TG channel",
-    translatePath: "earn.followTGchannelTemp",
-    points: 10000,
-    imgUrl: "/assets/holdCoin.webp",
-    joinLink: "https://t.me/+TnwvxtibcNxmODc1"
-  },
+  // {
+  //   id: "JOIN_HOLD_COIN_TG_CHANNEL",
+  //   isDone: false,
+  //   title: "Follow HoldCoin TG channel",
+  //   translatePath: "earn.followTGchannelTemp",
+  //   points: 10000,
+  //   imgUrl: "/assets/holdCoin.webp",
+  //   joinLink: "https://t.me/+TnwvxtibcNxmODc1"
+  // },
 
   /// PIRATE_CLASH 
   {
@@ -85,24 +85,24 @@ const tasks = [
     imgUrl: "/assets/pirateClash.webp",
     joinLink: "https://t.me/pirate_frenzy_bot/piratefrenzy?startapp=HuYHeX0a5d"
   },
-  {
-    id: "JOIN_PIRATE_CLASH_TG_CHANNEL",
-    isDone: false,
-    title: "Follow PirateClash TG channel",
-    translatePath: "earn.followTGchannelTemp",
-    points: 10000,
-    imgUrl: "/assets/pirateClash.webp",
-    joinLink: "https://t.me/PirateClashChannel"
-  },
-  {
-    id: "JOIN_PIRATE_CLASH_X_ACCOUNT",
-    isDone: false,
-    title: "Follow PirateClash X Account",
-    translatePath: "earn.followXtemp",
-    points: 10000,
-    imgUrl: "/assets/pirateClash.webp",
-    joinLink: "https://x.com/PirateClash_HQ"
-  },
+  // {
+  //   id: "JOIN_PIRATE_CLASH_TG_CHANNEL",
+  //   isDone: false,
+  //   title: "Follow PirateClash TG channel",
+  //   translatePath: "earn.followTGchannelTemp",
+  //   points: 10000,
+  //   imgUrl: "/assets/pirateClash.webp",
+  //   joinLink: "https://t.me/PirateClashChannel"
+  // },
+  // {
+  //   id: "JOIN_PIRATE_CLASH_X_ACCOUNT",
+  //   isDone: false,
+  //   title: "Follow PirateClash X Account",
+  //   translatePath: "earn.followXtemp",
+  //   points: 10000,
+  //   imgUrl: "/assets/pirateClash.webp",
+  //   joinLink: "https://x.com/PirateClash_HQ"
+  // },
 
   //// BILLION_GEMS
 
@@ -127,15 +127,15 @@ const tasks = [
     imgUrl: "/assets/mineTon.webp",
     joinLink: "https://t.me/mineton_app_bot?start=57uwmfrh"
   },
-  {
-    id: "JOIN_MINE_TON_TG_CHANNEL",
-    isDone: false,
-    title: "Follow MineTon TG channel",
-    translatePath: "earn.followTGchannelTemp",
-    points: 10000,
-    imgUrl: "/assets/mineTon.webp",
-    joinLink: "http://t.me/mineTON_channel"
-  },
+  // {
+  //   id: "JOIN_MINE_TON_TG_CHANNEL",
+  //   isDone: false,
+  //   title: "Follow MineTon TG channel",
+  //   translatePath: "earn.followTGchannelTemp",
+  //   points: 10000,
+  //   imgUrl: "/assets/mineTon.webp",
+  //   joinLink: "http://t.me/mineTON_channel"
+  // },
 
   /// POP_LAUNCH
 
@@ -148,24 +148,24 @@ const tasks = [
     imgUrl: "/assets/popLaunch.webp",
     joinLink: "https://t.me/Poplaunchbot?start=r_111666_620915756"
   },
-  {
-    id: "JOIN_POP_LAUNCH_TG_CHANNEL",
-    isDone: false,
-    title: "Follow PopLaunch TG channel",
-    translatePath: "earn.followTGchannelTemp",
-    points: 10000,
-    imgUrl: "/assets/popLaunch.webp",
-    joinLink: "https://t.me/mobiverse_announcement"
-  },
-  {
-    id: "JOIN_POP_LAUNCH_X_ACCOUNT",
-    isDone: false,
-    title: "Follow PopLaunch X Account",
-    translatePath: "earn.followXtemp",
-    points: 10000,
-    imgUrl: "/assets/popLaunch.webp",
-    joinLink: "https://twitter.com/Mobiverse_game"
-  },
+  // {
+  //   id: "JOIN_POP_LAUNCH_TG_CHANNEL",
+  //   isDone: false,
+  //   title: "Follow PopLaunch TG channel",
+  //   translatePath: "earn.followTGchannelTemp",
+  //   points: 10000,
+  //   imgUrl: "/assets/popLaunch.webp",
+  //   joinLink: "https://t.me/mobiverse_announcement"
+  // },
+  // {
+  //   id: "JOIN_POP_LAUNCH_X_ACCOUNT",
+  //   isDone: false,
+  //   title: "Follow PopLaunch X Account",
+  //   translatePath: "earn.followXtemp",
+  //   points: 10000,
+  //   imgUrl: "/assets/popLaunch.webp",
+  //   joinLink: "https://twitter.com/Mobiverse_game"
+  // },
 
     /// TON_BOX
 
