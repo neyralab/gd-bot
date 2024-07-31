@@ -53,7 +53,7 @@ export const FileFilterPanel = () => {
       callback: () => getFiles('image')
     },
     {
-      name: t('dashbord.dcuments'),
+      name: t('dashbord.documents'),
       value: types?.docs,
       icon: icons.doc,
       callback: () => getFiles('docs')

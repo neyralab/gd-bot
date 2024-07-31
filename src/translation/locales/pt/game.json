@@ -47,7 +47,12 @@
     "connectWallet": "Conectar Carteira",
     "joinTGtempl": "Junte-se ao bot TG de {name}",
     "followTGchannelTemp": "Siga o canal TG de {name}",
-    "followXtemp": "Siga a conta X de {name}"
+    "followXtemp": "Siga a conta X de {name}",
+    "getReward": "Você receberá PIB por cada tarefa concluída",
+    "task": "Tarefa",
+    "partner": "Parceiros",
+    "mission": "Missões",
+    "start": "Iniciar"
   },
   "airdrop": {
     "airdrop": "Airdrop",

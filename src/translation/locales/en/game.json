@@ -47,7 +47,12 @@
     "connectWallet": "Connect Wallet",
     "joinTGtempl": "Join {name} TG bot",
     "followTGchannelTemp": "Follow {name} TG channel",
-    "followXtemp": "Follow {name} X Account"
+    "followXtemp": "Follow {name} X Account",
+    "getReward": "You will get GDP for each completed task",
+    "task": "Task",
+    "partner": "Partners",
+    "mission": "Missions",
+    "start": "Start"
   },
   "airdrop": {
     "airdrop": "Airdrop",

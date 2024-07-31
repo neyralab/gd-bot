@@ -47,7 +47,12 @@
     "connectWallet": "Conectar billetera",
     "joinTGtempl": "Únete al bot TG de {name}",
     "followTGchannelTemp": "Sigue el canal TG de {name}",
-    "followXtemp": "Sigue la cuenta X de {name}"
+    "followXtemp": "Sigue la cuenta X de {name}",
+    "getReward": "Obtendrás GDP por cada tarea completada",
+    "task": "Tarea",
+    "partner": "Socios",
+    "mission": "Misiones",
+    "start": "Iniciar"
   },
   "airdrop": {
     "airdrop": "Entrega por paracaídas",

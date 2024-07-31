@@ -44,7 +44,15 @@
     "followX": "Xアカウントをフォロー",
     "joinYouTube": "YouTubeチャンネルに参加",
     "joinCommunity": "コミュニティに参加",
-    "connectWallet": "ウォレットを接続"
+    "connectWallet": "ウォレットを接続",
+    "joinTGtempl": "{name}のTGボットに参加",
+    "followTGchannelTemp": "{name}のTGチャンネルをフォロー",
+    "followXtemp": "{name}のXアカウントをフォロー",
+    "getReward": "完了したタスクごとにGDPを獲得できます",
+    "task": "タスク",
+    "partner": "パートナー",
+    "mission": "ミッション",
+    "start": "開始"
   },
   "airdrop": {
     "airdrop": "エアドロップ",

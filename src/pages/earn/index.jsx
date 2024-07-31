@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { tasks as tasksFromFile } from './tasks';
 import { isEnabledPartners } from '../../utils/featureFlags';
@@ -16,6 +17,7 @@ import styles from './styles.module.css';
 const DEFAULT_SEGMENT_OPTION = 'task'
 
 export default function EarnPage() {
+  const { t } = useTranslation('game');
   const [tasks, setTasks] = useState([]);
   const [activeSegment, setActiveSegment] = useState(DEFAULT_SEGMENT_OPTION);
   const [modalSelectedTask, setModalSelectedTask] = useState(null);
@@ -63,22 +65,22 @@ export default function EarnPage() {
     !isEnabledPartners && disabledTabs.push('partner');
     return [
       {
-        title: 'Task',
+        title: t('earn.task'),
         name: 'task',
         onClick: () => { setActiveSegment('task') }
       },
       {
-        title: 'Partners',
+        title: t('earn.partner'),
         name: 'partner',
         onClick: () => { setActiveSegment('partner') }
       },
       {
-        title: 'Missions',
+        title: t('earn.mission'),
         name: 'mission',
         onClick: () => { setActiveSegment('mission') }
       }
     ].filter((tab) => !disabledTabs.includes(tab.name))
-  }, []);
+  }, [t]);
 
   const renderList = () => {
     switch (activeSegment) {
@@ -122,8 +124,8 @@ export default function EarnPage() {
         <h1>{t('earn.earn')}</h1>
       </div> */}
 
-      <h1 className={styles.title}>Earn more points</h1>
-      <p className={styles.text}>You will get GDP for each completed task</p>
+      <h1 className={styles.title}>{t('earn.earn')}</h1>
+      <p className={styles.text}>{t('earn.getReward')}</p>
 
       <Segmented
         options={segmentOption}

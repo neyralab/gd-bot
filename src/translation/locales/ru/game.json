@@ -44,7 +44,15 @@
     "followX": "Следите за нашим аккаунтом X",
     "joinYouTube": "Подпишитесь на наш YouTube-канал",
     "joinCommunity": "Присоединяйтесь к нашему сообществу",
-    "connectWallet": "Подключите кошелек"
+    "connectWallet": "Подключите кошелек",
+    "joinTGtempl": "Присоединяйтесь к боту {name} в TG",
+    "followTGchannelTemp": "Подписывайтесь на канал {name} в TG",
+    "followXtemp": "Подписывайтесь на аккаунт {name} в X",
+    "getReward": "Вы получите GDP за каждую выполненную задачу",
+    "task": "Задача",
+    "partner": "Партнеры",
+    "mission": "Миссии",
+    "start": "Старт"
   },
   "airdrop": {
     "airdrop": "Airdrop",

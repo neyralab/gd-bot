@@ -24,7 +24,7 @@ export default function Task({ isDone, title, points, imgUrl, onClick, translate
           className={styles.actionBtn}
           onClick={() => {}}
         >
-          Start
+          {t('earn.start')}
         </button>
       )}
     </div>

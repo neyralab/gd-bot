@@ -47,7 +47,12 @@
     "connectWallet": "连接钱包",
     "joinTGtempl": "加入 {name} TG 机器人",
     "followTGchannelTemp": "关注 {name} TG 频道",
-    "followXtemp": "关注 {name} 的 X 帐户"
+    "followXtemp": "关注 {name} 的 X 帐户",
+    "getReward": "完成每项任务后，您将获得GDP",
+    "task": "任务",
+    "partner": "合作伙伴",
+    "mission": "任务",
+    "start": "开始"
   },
   "airdrop": {
     "airdrop": "空投",
