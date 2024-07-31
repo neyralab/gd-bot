@@ -110,7 +110,8 @@
     "download": "ダウンロード",
     "join": "参加",
     "transaction": "取引には最大1分かかる場合があります。\n\n ウィンドウを閉じないでください \n\n ゲームの開始を待ってください。",
-    "conversionSuccess": "変換が成功しました"
+    "conversionSuccess": "変換が成功しました",
+    "canceledTransaction": "トランザクションはユーザーによってキャンセルされました"
   },
   "language": {
     "search": "検索",

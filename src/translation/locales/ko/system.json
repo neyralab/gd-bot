@@ -110,7 +110,8 @@
     "download": "다운로드",
     "join": "가입",
     "transaction": "거래는 최대 1분이 걸릴 수 있습니다.\n\n 창을 닫지 마시고 \n\n 게임이 시작될 때까지 기다려주세요.",
-    "conversionSuccess": "변환 성공"
+    "conversionSuccess": "변환 성공",
+    "canceledTransaction": "거래가 사용자에 의해 취소되었습니다"
   },
   "language": {
     "search": "검색",

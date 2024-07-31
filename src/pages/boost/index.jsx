@@ -127,9 +127,13 @@ export const BoostPage = ({ tariffs, setTariffs }) => {
       }
     } catch (e) {
       console.log({ errrrrr: e });
-      toast.error(t('message.successPayment'), {
+      const errorMessage = e?.message?.includes('Canceled by the user')
+        ? t('message.canceledTransaction')
+        : t('message.errorAndRetry');
+      toast.error(errorMessage, {
         theme: 'colored',
-        position: 'bottom-center'
+        position: 'bottom-center',
+        autoClose: 2500
       });
     }
   };

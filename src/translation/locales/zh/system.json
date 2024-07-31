@@ -110,7 +110,8 @@
     "download": "下载",
     "join": "加入",
     "transaction": "交易可能需要最多1分钟。\n\n 请不要关闭窗口 \n\n 等待游戏开始。",
-    "conversionSuccess": "转换成功"
+    "conversionSuccess": "转换成功",
+    "canceledTransaction": "交易被用户取消了"
   },
   "language": {
     "search": "搜索",
