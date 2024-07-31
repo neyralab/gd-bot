@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 
 import { tasks as tasksFromFile } from './tasks';
-import { isDisplayPartners } from '../../utils/featureFlags';
+import { isEnabledPartners } from '../../utils/featureFlags';
 import { checkAllEarnTasks } from '../../effects/EarnEffect';
 
 import Menu from '../../components/Menu/Menu';
@@ -60,7 +60,7 @@ export default function EarnPage() {
 
   const segmentOption = useMemo(() => {
     const disabledTabs = [];
-    !isDisplayPartners && disabledTabs.push('partner');
+    !isEnabledPartners && disabledTabs.push('partner');
     return [
       {
         title: 'Task',
