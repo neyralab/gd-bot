@@ -110,7 +110,8 @@
     "download": "Unduh",
     "join": "Bergabung",
     "transaction": "Transaksi dapat memakan waktu hingga 1 menit.\n\n Tolong jangan tutup jendela \n\n tunggu permainan dimulai.",
-    "conversionSuccess": "Konversi berhasil"
+    "conversionSuccess": "Konversi berhasil",
+    "canceledTransaction": "Transaksi dibatalkan oleh pengguna"
   },
   "language": {
     "search": "Cari",

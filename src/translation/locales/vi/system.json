@@ -110,7 +110,8 @@
     "download": "Tải xuống",
     "join": "Tham gia",
     "transaction": "Giao dịch có thể mất đến 1 phút.\n\n Vui lòng không đóng cửa sổ \n\n chờ đợi trò chơi bắt đầu.",
-    "conversionSuccess": "Chuyển đổi thành công"
+    "conversionSuccess": "Chuyển đổi thành công",
+    "canceledTransaction": "Giao dịch đã bị hủy bởi người dùng"
   },
   "language": {
     "search": "Tìm kiếm",

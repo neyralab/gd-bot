@@ -110,7 +110,8 @@
     "download": "Download",
     "join": "Join",
     "transaction": "Transaction may take up to 1 minute.\n\n Please do not close the window \n\n wait for the game to start.",
-    "conversionSuccess": "Conversion successful"
+    "conversionSuccess": "Conversion successful",
+    "canceledTransaction": "Transaction was canceled by the user"
   },
   "language": {
     "search": "Search",
