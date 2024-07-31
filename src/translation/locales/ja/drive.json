@@ -1,0 +1,38 @@
+{
+  "dashbord": {
+    "search": "検索",
+    "points": "ポイント",
+    "of": "の",
+    "all": "全て",
+    "favorites": "お気に入り",
+    "pictures": "画像",
+    "dcuments": "書類",
+    "notes": "メモ",
+    "audio": "音声",
+    "video": "ビデオ",
+    "deleted": "削除済み",
+    "notFound": "ファイルが見つかりません",
+    "isEmpty": "このページは空です",
+    "ghostdrive": "GHOSTDRIVE",
+    "share": "共有する",
+    "linkToFile": "このリンクをクリックしてファイルを表示"
+  },
+  "month": {
+    "jan": "1月",
+    "feb": "2月",
+    "mar": "3月",
+    "apr": "4月",
+    "may": "5月",
+    "jun": "6月",
+    "jul": "7月",
+    "aug": "8月",
+    "sep": "9月",
+    "oct": "10月",
+    "nov": "11月",
+    "dec": "12月"
+  },
+  "time": {
+    "am": "午前",
+    "pm": "午後"
+  }
+}

@@ -1,0 +1,80 @@
+{
+  "mode": {
+    "playNow": "Chơi ngay",
+    "freePlay": "Chơi miễn phí tiếp theo",
+    "play": "Chế độ chơi",
+    "boost": "Chế độ tăng cường"
+  },
+  "navigate": {
+    "fly": "Bay",
+    "reachedLevel": "Bạn đã đạt đến cấp độ"
+  },
+  "process": {
+    "level": "Cấp độ",
+    "players": "Người chơi",
+    "frens": "Bạn bè",
+    "earn": "Kiếm",
+    "airdrop": "Airdrop"
+  },
+  "leadboard": {
+    "league": "Liên đoàn",
+    "friends": "Bạn bè",
+    "week": "Tuần",
+    "bonus": "Tiền thưởng",
+    "points": "điểm",
+    "rank": "xếp hạng",
+    "users": "NGƯỜI DÙNG",
+    "usersLow": "Người dùng",
+    "totalUsers": "Tổng số người dùng:",
+    "totalPoints": "Tổng điểm:",
+    "totalTaps": "Tổng số lần nhấp:"
+  },
+  "friends": {
+    "inviteGetBonus": "Mời bạn bè và nhận tiền thưởng!",
+    "inviteFriendCapitalize": "Mời bạn",
+    "yourFriends": "Bạn bè của bạn",
+    "inviteFriend": "Mời một người bạn"
+  },
+  "earn": {
+    "earn": "Kiếm thêm điểm",
+    "storage": "Tăng cường lưu trữ",
+    "app": "Tải ứng dụng",
+    "friends": "Mời 5 bạn bè",
+    "upload": "Tải lên 10 tệp",
+    "followX": "Theo dõi tài khoản X của chúng tôi",
+    "joinYouTube": "Tham gia kênh YouTube của chúng tôi",
+    "joinCommunity": "Tham gia cộng đồng của chúng tôi",
+    "connectWallet": "Kết nối ví"
+  },
+  "airdrop": {
+    "airdrop": "Airdrop",
+    "users": "người dùng",
+    "earn": "kiếm",
+    "history": "Lịch sử",
+    "tapping": "Trò chơi nhấp",
+    "noHistory": "Không có lịch sử giới thiệu",
+    "shareReferral": "Chia sẻ liên kết giới thiệu của bạn để bắt đầu kiếm tiền.",
+    "referral": "Đăng ký giới thiệu hoạt động",
+    "wallet": "Kết nối ví",
+    "download": "Tải xuống ứng dụng Ghost Drive và đăng nhập qua Telegram",
+    "lvl1": "Tiền thưởng bổ sung cho việc đạt đến cấp độ nhấp 1",
+    "lvl2": "Tiền thưởng bổ sung cho việc đạt đến cấp độ nhấp 2",
+    "lvl3": "Tiền thưởng bổ sung cho việc đạt đến cấp độ nhấp 3",
+    "lvl4": "Tiền thưởng bổ sung cho việc đạt đến cấp độ nhấp 4",
+    "tapBonus1": "Tiền thưởng bổ sung cho 100000 lần nhấp",
+    "tapBonus2": "Tiền thưởng bổ sung cho 250000 lần nhấp",
+    "tapBonus3": "Tiền thưởng bổ sung cho 500000 lần nhấp",
+    "weeklyBonus": "Tiền thưởng hàng tuần bổ sung",
+    "followX": "Theo dõi tài khoản X của chúng tôi",
+    "gameTapping": "Trò chơi nhấp",
+    "inviteFriends": "Mời 5 bạn bè",
+    "joinTG": "Tham gia kênh TG của chúng tôi",
+    "joinTGnew": "Tham gia kênh tin tức TG của chúng tôi",
+    "joinYouTube": "Tham gia kênh YouTube của chúng tôi",
+    "purchase": "Mua lưu trữ",
+    "purchaseReferral": "Mua lưu trữ thông qua giới thiệu",
+    "topBonus": "Tiền thưởng top 100",
+    "upload": "Tải lên 10 tệp",
+    "uploadFile": "Tải lên tệp"
+  }
+}

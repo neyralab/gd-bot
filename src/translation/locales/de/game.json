@@ -1,0 +1,81 @@
+
+{
+  "mode": {
+    "playNow": "Jetzt spielen",
+    "freePlay": "Nächstes kostenloses Spiel",
+    "play": "Spielmodus",
+    "boost": "Boost-Modus"
+  },
+  "navigate": {
+    "fly": "Fliegen",
+    "reachedLevel": "Du hast das Level erreicht"
+  },
+  "process": {
+    "level": "Level",
+    "players": "Spieler",
+    "frens": "Freunde",
+    "earn": "Verdienen",
+    "airdrop": "Airdrop"
+  },
+  "leadboard": {
+    "league": "Liga",
+    "friends": "Freunde",
+    "week": "Woche",
+    "bonus": "Bonus",
+    "points": "Punkte",
+    "rank": "Rang",
+    "users": "NUTZER",
+    "usersLow": "Nutzer",
+    "totalUsers": "Gesamtnutzer:",
+    "totalPoints": "Gesamtpunkte:",
+    "totalTaps": "Gesamtanzahl der Taps:"
+  },
+  "friends": {
+    "inviteGetBonus": "Lade Freunde ein und erhalte einen Bonus!",
+    "inviteFriendCapitalize": "Lade einen Freund ein",
+    "yourFriends": "Deine Freunde",
+    "inviteFriend": "Einen Freund einladen"
+  },
+  "earn": {
+    "earn": "Mehr Punkte verdienen",
+    "storage": "Speicher erweitern",
+    "app": "App herunterladen",
+    "friends": "Lade 5 Freunde ein",
+    "upload": "10 Dateien hochladen",
+    "followX": "Folge unserem X-Account",
+    "joinYouTube": "Tritt unserem YouTube-Kanal bei",
+    "joinCommunity": "Tritt unserer Community bei",
+    "connectWallet": "Wallet verbinden"
+  },
+  "airdrop": {
+    "airdrop": "Airdrop",
+    "users": "Nutzer",
+    "earn": "verdienen",
+    "history": "Verlauf",
+    "tapping": "Tapping-Spiel",
+    "noHistory": "Keine Referral-Historie",
+    "shareReferral": "Teile deinen Referral-Link, um zu verdienen.",
+    "referral": "Aktive Referral-Anmeldung",
+    "wallet": "Wallet verbinden",
+    "download": "Ghost Drive App herunterladen und über Telegram anmelden",
+    "lvl1": "Zusätzlicher Bonus für das Erreichen des 1. Tapping-Levels",
+    "lvl2": "Zusätzlicher Bonus für das Erreichen des 2. Tapping-Levels",
+    "lvl3": "Zusätzlicher Bonus für das Erreichen des 3. Tapping-Levels",
+    "lvl4": "Zusätzlicher Bonus für das Erreichen des 4. Tapping-Levels",
+    "tapBonus1": "Zusätzlicher Bonus für 100000 Taps",
+    "tapBonus2": "Zusätzlicher Bonus für 250000 Taps",
+    "tapBonus3": "Zusätzlicher Bonus für 500000 Taps",
+    "weeklyBonus": "Zusätzlicher wöchentlicher Bonus",
+    "followX": "Folge unserem X-Account",
+    "gameTapping": "Tapping-Spiel",
+    "inviteFriends": "Lade 5 Freunde ein",
+    "joinTG": "Tritt unserem TG-Kanal bei",
+    "joinTGnew": "Tritt unserem TG-News-Kanal bei",
+    "joinYouTube": "Tritt unserem YouTube-Kanal bei",
+    "purchase": "Speicher kaufen",
+    "purchaseReferral": "Speicherkauf durch Referral",
+    "topBonus": "Top 100 Bonus",
+    "upload": "10 Dateien hochladen",
+    "uploadFile": "Datei hochladen"
+  }
+}
