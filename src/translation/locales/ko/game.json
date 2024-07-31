@@ -44,7 +44,15 @@
     "followX": "X 계정 팔로우",
     "joinYouTube": "YouTube 채널 가입",
     "joinCommunity": "커뮤니티 가입",
-    "connectWallet": "지갑 연결"
+    "connectWallet": "지갑 연결",
+    "joinTGtempl": "{name} TG 봇에 가입하세요",
+    "followTGchannelTemp": "{name} TG 채널을 팔로우하세요",
+    "followXtemp": "{name} X 계정을 팔로우하세요",
+    "getReward": "완료된 작업마다 GDP를 받습니다",
+    "task": "작업",
+    "partner": "파트너",
+    "mission": "미션",
+    "start": "시작"
   },
   "airdrop": {
     "airdrop": "에어드롭",

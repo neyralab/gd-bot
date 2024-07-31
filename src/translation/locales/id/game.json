@@ -47,7 +47,12 @@
     "connectWallet": "Hubungkan Dompet",
     "joinTGtempl": "Bergabung dengan bot TG {name}",
     "followTGchannelTemp": "Ikuti saluran TG {name}",
-    "followXtemp": "Ikuti Akun X {name}"
+    "followXtemp": "Ikuti Akun X {name}",
+    "getReward": "Anda akan mendapatkan GDP untuk setiap tugas yang diselesaikan",
+    "task": "Tugas",
+    "partner": "Mitra",
+    "mission": "Misi",
+    "start": "Mulai"
   },
   "airdrop": {
     "airdrop": "Tetesan udara",

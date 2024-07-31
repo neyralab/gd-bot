@@ -45,7 +45,15 @@
     "followX": "Folge unserem X-Account",
     "joinYouTube": "Tritt unserem YouTube-Kanal bei",
     "joinCommunity": "Tritt unserer Community bei",
-    "connectWallet": "Wallet verbinden"
+    "connectWallet": "Wallet verbinden",
+    "joinTGtempl": "Trete dem {name} TG-Bot bei",
+    "followTGchannelTemp": "Folge dem {name} TG-Kanal",
+    "followXtemp": "Folge dem {name} X-Account",
+    "getReward": "Du erhältst GDP für jede abgeschlossene Aufgabe",
+    "task": "Aufgabe",
+    "partner": "Partner",
+    "mission": "Missionen",
+    "start": "Start"
   },
   "airdrop": {
     "airdrop": "Airdrop",

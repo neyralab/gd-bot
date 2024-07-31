@@ -44,7 +44,15 @@
     "followX": "Theo dõi tài khoản X của chúng tôi",
     "joinYouTube": "Tham gia kênh YouTube của chúng tôi",
     "joinCommunity": "Tham gia cộng đồng của chúng tôi",
-    "connectWallet": "Kết nối ví"
+    "connectWallet": "Kết nối ví",
+    "joinTGtempl": "Tham gia bot TG của {name}",
+    "followTGchannelTemp": "Theo dõi kênh TG của {name}",
+    "followXtemp": "Theo dõi tài khoản X của {name}",
+    "getReward": "Bạn sẽ nhận được GDP cho mỗi nhiệm vụ hoàn thành",
+    "task": "Nhiệm vụ",
+    "partner": "Đối tác",
+    "mission": "Nhiệm vụ",
+    "start": "Bắt đầu"
   },
   "airdrop": {
     "airdrop": "Airdrop",
