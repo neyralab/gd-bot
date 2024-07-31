@@ -110,11 +110,11 @@
     "download": "Download",
     "join": "Join",
     "transaction": "Transaction may take up to 1 minute.\n\n Please do not close the window \n\n wait for the game to start.",
-    "conversionSuccess": "Conversion was success"
+    "conversionSuccess": "Conversion successful"
   },
   "language": {
     "search": "Search",
-    "cancell": "Cancell",
+    "cancel": "Cancel",
     "interface": "Interface language"
   }
 }

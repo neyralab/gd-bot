@@ -114,7 +114,7 @@
   },
   "language": {
     "search": "搜索",
-    "cancell": "取消",
+    "cancel": "取消",
     "interface": "界面语言"
   }
 }

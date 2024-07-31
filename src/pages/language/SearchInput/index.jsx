@@ -42,10 +42,10 @@ const SearchInput = ({ value, onChange, onClose }) => {
         </div>
       </div>
       <span
-        className={CN(styles.cancellBtn, (isOpen || !!value) && styles.cancellBtnActive)}
+        className={CN(styles.cancelBtn, (isOpen || !!value) && styles.cancelBtnActive)}
         onClick={onClose}
       >
-        {t('language.cancell')}
+        {t('language.cancel')}
       </span>
     </div>
   );
