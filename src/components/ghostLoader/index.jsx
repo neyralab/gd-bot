@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useMemo, useState } from 'react';
+import React, { memo, useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 
@@ -10,37 +10,76 @@ import classNames from 'classnames';
 import s from './ghostLoader.module.css';
 
 function GhostLoader({ texts = [], flashing = true, startup = false }) {
-  const { t } = useTranslation('system');  
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const { t } = useTranslation('system');
+  const [displayText, setDisplayText] = useState('');
   const { progress, file: uploadingFile } = useSelector(
     selectUploadingProgress
   );
 
+  const currentTextRef = useRef('');
+  const charIndexRef = useRef(0);
+  const textIndexRef = useRef(0);
+  const timeoutRef = useRef(null);
+  const lastUpdateTimeRef = useRef(0);
+  const throttledProgressRef = useRef(null);
+
   const uploadingProgress = useMemo(() => {
     if (uploadingFile) {
       const percentage = (progress / uploadingFile?.size) * 100;
-      return `${Math.round(percentage)}%`;
-    } else {
-      return null;
+      return `${t('loading.uploading')} ${Math.round(percentage)}%`;
     }
-  }, [progress, uploadingFile?.size]);
+    return null;
+  }, [progress, uploadingFile?.size, t]);
+
+  // Throttle uploadingProgress updates
+  useEffect(() => {
+    const currentTime = Date.now();
+    if (uploadingProgress && currentTime - lastUpdateTimeRef.current >= 2000) {
+      throttledProgressRef.current = uploadingProgress;
+      lastUpdateTimeRef.current = currentTime;
+    }
+  }, [uploadingProgress]);
 
   useEffect(() => {
-    if (texts.length > 1) {
-      const interval = setInterval(() => {
-        setCurrentIndex((prevIndex) => (prevIndex + 1) % texts.length);
-      }, 5000);
+    const allTexts = throttledProgressRef.current
+      ? [throttledProgressRef.current]
+      : texts;
 
-      return () => {
-        clearInterval(interval);
-      };
+    const animateText = () => {
+      if (charIndexRef.current < currentTextRef.current.length) {
+        setDisplayText(
+          currentTextRef.current.slice(0, charIndexRef.current + 1)
+        );
+        charIndexRef.current++;
+        timeoutRef.current = setTimeout(animateText, 50);
+      } else {
+        timeoutRef.current = setTimeout(() => {
+          setDisplayText('');
+          charIndexRef.current = 0;
+          textIndexRef.current = (textIndexRef.current + 1) % allTexts.length;
+          currentTextRef.current = allTexts[textIndexRef.current];
+          animateText();
+        }, 2000);
+      }
+    };
+
+    if (allTexts.length > 0) {
+      currentTextRef.current = allTexts[0];
+      charIndexRef.current = 0;
+      textIndexRef.current = 0;
+      setDisplayText(currentTextRef.current[0] || '');
+      animateText();
     }
-  }, [texts]);
+
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, [texts, throttledProgressRef.current, t]);
 
   return (
-    <div
-      className={classNames(startup ? s.startupWrapper : s.wrapper)}
-      key={texts[currentIndex]}>
+    <div className={classNames(startup ? s.startupWrapper : s.wrapper)}>
       <GhostLogoLoader />
       {startup && (
         <p className={s.startup}>
@@ -48,17 +87,12 @@ function GhostLoader({ texts = [], flashing = true, startup = false }) {
           <br /> {t('loading.systemLoading')}
         </p>
       )}
-      {texts.length > 0 && !uploadingProgress && (
+      {(texts.length > 0 || throttledProgressRef.current) && (
         <div className={s.textWrapper}>
-          <p className={s.textContent}>{texts[currentIndex]}</p>
-        </div>
-      )}
-      {uploadingProgress && (
-        <div className={s.textWrapper}>
-          <p className={classNames(s.textContent, s.infiniteTyping)}>
-            {`${t('loading.uploading')} ${uploadingProgress}`}
+          <p className={classNames(s.textContent, s.typingText)}>
+            {displayText}
+            <span className={s.cursor}>|</span>
           </p>
-          {flashing && <span className={s.blinkingPipe}>|</span>}
         </div>
       )}
     </div>
