@@ -169,15 +169,15 @@ const tasks = [
 
     /// TON_BOX
 
-  {
-    id: "JOIN_TON_BOX_TG_BOT",
-    isDone: false,
-    title: "Join TonBox TG bot",
-    translatePath: "earn.joinTGtempl",
-    points: 10000,
-    imgUrl: "/assets/tonBox.webp",
-    joinLink: "https://t.me/boom?start=6e4gMePEe4r9P49BaoTgU1"
-  },
+  // {
+  //   id: "JOIN_TON_BOX_TG_BOT",
+  //   isDone: false,
+  //   title: "Join TonBox TG bot",
+  //   translatePath: "earn.joinTGtempl",
+  //   points: 10000,
+  //   imgUrl: "/assets/tonBox.webp",
+  //   joinLink: "https://t.me/boom?start=6e4gMePEe4r9P49BaoTgU1"
+  // },
 ];
 
 export { tasks };
