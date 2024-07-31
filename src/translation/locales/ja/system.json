@@ -114,7 +114,7 @@
   },
   "language": {
     "search": "検索",
-    "cancell": "キャンセル",
+    "cancel": "キャンセル",
     "interface": "インターフェースの言語"
   }
 }

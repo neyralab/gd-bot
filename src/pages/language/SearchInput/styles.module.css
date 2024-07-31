@@ -57,7 +57,7 @@
   outline: none;
 }
 
-.cancellBtn {
+.cancelBtn {
   cursor: pointer;
   width: 60px;
   display: flex;
@@ -68,6 +68,6 @@
   top: 10px;
 }
 
-.cancellBtnActive {
+.cancelBtnActive {
   right: 0px;
 }
