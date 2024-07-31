@@ -1,0 +1,38 @@
+{
+  "dashbord": {
+    "search": "Tìm kiếm",
+    "points": "Điểm",
+    "of": "của",
+    "all": "Tất cả",
+    "favorites": "Yêu thích",
+    "pictures": "Hình ảnh",
+    "dcuments": "Tài liệu",
+    "notes": "Ghi chú",
+    "audio": "Âm thanh",
+    "video": "Video",
+    "deleted": "Đã xóa",
+    "notFound": "Không tìm thấy tệp",
+    "isEmpty": "Trang này trống",
+    "ghostdrive": "GHOSTDRIVE",
+    "share": "Chia sẻ",
+    "linkToFile": "Nhấp vào liên kết này để xem tệp"
+  },
+  "month": {
+    "jan": "Tháng 1",
+    "feb": "Tháng 2",
+    "mar": "Tháng 3",
+    "apr": "Tháng 4",
+    "may": "Tháng 5",
+    "jun": "Tháng 6",
+    "jul": "Tháng 7",
+    "aug": "Tháng 8",
+    "sep": "Tháng 9",
+    "oct": "Tháng 10",
+    "nov": "Tháng 11",
+    "dec": "Tháng 12"
+  },
+  "time": {
+    "am": "sáng",
+    "pm": "chiều"
+  }
+}

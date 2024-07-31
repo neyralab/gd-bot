@@ -29,11 +29,11 @@
 
 .info {
   display: flex;
+  width: calc(100% - 70px);
 }
 
 .text {
-  display: flex;
-  flex-direction: column;
+  display: grid;
   margin-left: 8px;
 }
 
@@ -57,6 +57,9 @@
   line-height: 21px;
   letter-spacing: 0.01em;
   text-align: left;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .count {

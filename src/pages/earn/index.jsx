@@ -1,6 +1,7 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 
 import { tasks as tasksFromFile } from './tasks';
+import { isEnabledPartners } from '../../utils/featureFlags';
 import { checkAllEarnTasks } from '../../effects/EarnEffect';
 
 import Menu from '../../components/Menu/Menu';
@@ -9,7 +10,6 @@ import Partners from './Partners';
 import Mission from './Mission';
 import EarnModal from './EarnModal/EarnModal';
 import Segmented from '../../components/segmented';
-import { Header } from '../../components/header';
 
 import styles from './styles.module.css';
 
@@ -58,23 +58,27 @@ export default function EarnPage() {
     getTasks();
   }, []);
 
-  const segmentOption = [
-    {
-      title: 'Task',
-      name: 'task',
-      onClick: () => { setActiveSegment('task') }
-    },
-    {
-      title: 'Partners',
-      name: 'partner',
-      onClick: () => { setActiveSegment('partner') }
-    },
-    {
-      title: 'Missions',
-      name: 'mission',
-      onClick: () => { setActiveSegment('mission') }
-    },
-  ];
+  const segmentOption = useMemo(() => {
+    const disabledTabs = [];
+    !isEnabledPartners && disabledTabs.push('partner');
+    return [
+      {
+        title: 'Task',
+        name: 'task',
+        onClick: () => { setActiveSegment('task') }
+      },
+      {
+        title: 'Partners',
+        name: 'partner',
+        onClick: () => { setActiveSegment('partner') }
+      },
+      {
+        title: 'Missions',
+        name: 'mission',
+        onClick: () => { setActiveSegment('mission') }
+      }
+    ].filter((tab) => !disabledTabs.includes(tab.name))
+  }, []);
 
   const renderList = () => {
     switch (activeSegment) {
@@ -111,7 +115,7 @@ export default function EarnPage() {
 
   return (
     <div className={styles.container}>
-      <Header label="Ghost Drive App" />
+      {/* <Header label="Ghost Drive App" /> */}
 
       {/* <div className={styles['title-block']}>
         <img src="/assets/token.png" alt="Token" />

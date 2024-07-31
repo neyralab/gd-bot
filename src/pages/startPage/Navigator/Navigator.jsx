@@ -12,13 +12,12 @@ import { ReactComponent as RewardsIcon } from '../assets/rewards.svg';
 import { ReactComponent as BoostIcon } from '../assets/boost.svg';
 import { ReactComponent as ConvertIcon } from '../assets/convertor.svg';
 import { ReactComponent as LanguageIcon } from '../assets/language.svg';
+import { isEnabledConverter, isEnabledMultilanguage } from '../../../utils/featureFlags';
 import { isDevEnv } from '../../../utils/isDevEnv';
 import { LANGUAGE_LIST } from '../../language';
 
 import styles from './Navigator.module.css';
 import { capitalize } from '../../../utils/string';
-
-const HIDDEN_OPTION = [6];
 
 export default function Navigator({
   storage,
@@ -30,6 +29,13 @@ export default function Navigator({
   const navigate = useNavigate();
   const isDev = isDevEnv();
   const ref = useRef(null);
+
+  const HIDDEN_OPTION = useMemo(() => {
+    const array = [];
+    !isEnabledConverter && array.push(5);
+    !isEnabledMultilanguage && array.push(6);
+    return array;
+  }, []);
 
   const handleWalletClick = useCallback(() => {
     ref.current.handleClick()
@@ -97,11 +103,7 @@ export default function Navigator({
       },
     ]
 
-    if (!isDev) {
-      return list.filter((item) => !(HIDDEN_OPTION.includes(item.id)));
-    }
-
-    return list
+    return list.filter((item) => !(HIDDEN_OPTION.includes(item.id)));
   }, [storage, tasks, human, handleWalletClick, openDisconnectModal, navigate, isDev, i18n])
 
   return (

@@ -39,7 +39,49 @@ export const LANGUAGE_LIST = [
     shortName: 'chi',
     abbreviation: 'zh'
   },
-]
+  {
+    title: 'Ukrainian',
+    translate: 'Українська',
+    shortName: 'ukr',
+    abbreviation: 'uk'
+  },
+  {
+    title: 'Russian',
+    translate: 'Русский',
+    shortName: 'rus',
+    abbreviation: 'ru'
+  },
+  {
+    title: 'Vietnamese',
+    translate: 'Tiếng Việt',
+    shortName: 'vie',
+    abbreviation: 'vi'
+  },
+  {
+    title: 'Japanese',
+    translate: '日本語',
+    shortName: 'jpn',
+    abbreviation: 'ja'
+  },
+  {
+    title: 'German',
+    translate: 'Deutsch',
+    shortName: 'deu',
+    abbreviation: 'de'
+  },
+  {
+    title: 'French',
+    translate: 'Français',
+    shortName: 'fre',
+    abbreviation: 'fr'
+  },
+  {
+    title: 'Korean',
+    translate: '한국어',
+    shortName: 'kor',
+    abbreviation: 'ko'
+  },
+];
 
 export const LanguagePage = () => {
   const { t, i18n } = useTranslation('system');
@@ -52,27 +94,9 @@ export const LanguagePage = () => {
   }, [i18n.language])
 
   const changeLanguage = (option) => {
-    if (option === 'zh') {
-      i18n.changeLanguage('zh');
-      moment.locale('zh-cn');
-      localStorage.setItem('language', 'zh');
-    } else if (option === 'en') {
-      i18n.changeLanguage('en');
-      moment.locale('en');
-      localStorage.setItem('language', 'en');
-    } else if (option === 'id') {
-      i18n.changeLanguage('id');
-      moment.locale('id');
-      localStorage.setItem('language', 'id');
-    } else if (option === 'pt') {
-      i18n.changeLanguage('pt');
-      moment.locale('pt');
-      localStorage.setItem('language', 'pt');
-    } else if (option === 'es') {
-      i18n.changeLanguage('es');
-      moment.locale('es');
-      localStorage.setItem('language', 'es');
-    }
+    i18n.changeLanguage(option);
+    moment.locale(option);
+    localStorage.setItem('language', option);
     setLang(option);
   };
 
