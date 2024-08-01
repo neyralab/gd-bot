@@ -52,7 +52,16 @@
     "task": "任务",
     "partner": "合作伙伴",
     "mission": "任务",
-    "start": "开始"
+    "start": "开始",
+    "playWith": "与 {name} 一起玩！",
+    "tapGame": "{name} 力量点击游戏",
+    "spin": "与 {name} 一起旋转赢取",
+    "holdToEarn": "按住以赚取，升级并探索",
+    "play": "玩 {name}",
+    "beFirst": "成为第一个拥有 {name} 的人",
+    "joinAirdrop": "加入 {name} 机器人并立即获得空投",
+    "launchAndGetUSDT": "启动 ${name} 并获得真实的 USDT",
+    "playAndWin": "玩 {name} 并赢取"
   },
   "airdrop": {
     "airdrop": "空投",

@@ -52,7 +52,16 @@
     "task": "タスク",
     "partner": "パートナー",
     "mission": "ミッション",
-    "start": "開始"
+    "start": "開始",
+    "playWith": "{name}と遊ぼう！",
+    "tapGame": "{name} パワータップゲーム",
+    "spin": "{name}で回して勝とう",
+    "holdToEarn": "保持して稼ぎ、レベルアップして探索しよう",
+    "play": "{name}をプレイ",
+    "beFirst": "{name}で最初になろう",
+    "joinAirdrop": "{name}ボットに参加して、すぐにエアドロップをゲット",
+    "launchAndGetUSDT": "{name}を起動して、本物のUSDTを手に入れよう",
+    "playAndWin": "{name}をプレイして勝とう"
   },
   "airdrop": {
     "airdrop": "エアドロップ",

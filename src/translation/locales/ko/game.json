@@ -52,7 +52,16 @@
     "task": "작업",
     "partner": "파트너",
     "mission": "미션",
-    "start": "시작"
+    "start": "시작",
+    "playWith": "{name}와 함께 놀기!",
+    "tapGame": "{name} 파워 탭 게임",
+    "spin": "{name}로 돌려서 이기기",
+    "holdToEarn": "유지하여 수익을 얻고, 레벨 업하며 탐험하세요",
+    "play": "{name} 플레이하기",
+    "beFirst": "{name}와 함께 첫 번째가 되세요",
+    "joinAirdrop": "{name} 봇에 가입하고 즉시 에어드롭 받기",
+    "launchAndGetUSDT": "{name}를 실행하고 진짜 USDT를 받으세요",
+    "playAndWin": "{name}를 플레이하고 승리하세요"
   },
   "airdrop": {
     "airdrop": "에어드롭",

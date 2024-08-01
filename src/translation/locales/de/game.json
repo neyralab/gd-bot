@@ -53,7 +53,16 @@
     "task": "Aufgabe",
     "partner": "Partner",
     "mission": "Missionen",
-    "start": "Start"
+    "start": "Start",
+    "playWith": "Spiele mit {name}!",
+    "tapGame": "{name} Power Tap Spiel",
+    "spin": "Drehe, um mit {name} zu gewinnen",
+    "holdToEarn": "Halte, um zu verdienen, Level Up und erkunden",
+    "play": "Spiele {name}",
+    "beFirst": "Sei der Erste mit {name}",
+    "joinAirdrop": "Trete dem {name} Bot bei & erhalte sofort Airdrop",
+    "launchAndGetUSDT": "Starte {name} & ERHALTE ECHTE USDT",
+    "playAndWin": "Spiele {name} & gewinne"
   },
   "airdrop": {
     "airdrop": "Airdrop",

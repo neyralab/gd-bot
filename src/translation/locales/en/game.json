@@ -52,7 +52,16 @@
     "task": "Task",
     "partner": "Partners",
     "mission": "Missions",
-    "start": "Start"
+    "start": "Start",
+    "playWith": "Play With {name}!",
+    "tapGame": "{name} Power Tap game",
+    "spin": "Spin To Win With {name}",
+    "holdToEarn": "Hold To Earn, Level Up,& explore",
+    "play": "Play {name}",
+    "beFirst": "Be the First with {name}",
+    "joinAirdrop": "Join {name} bot & Get Instant Airdrop",
+    "launchAndGetUSDT": "Launch ${name} &GET REAL USDT",
+    "playAndWin": "Play {name} & Win"
   },
   "airdrop": {
     "airdrop": "Airdrop",
