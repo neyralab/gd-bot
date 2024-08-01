@@ -52,7 +52,16 @@
     "task": "Tugas",
     "partner": "Mitra",
     "mission": "Misi",
-    "start": "Mulai"
+    "start": "Mulai",
+    "playWith": "Bermain dengan {name}!",
+    "tapGame": "Game Tap Daya {name}",
+    "spin": "Putar untuk Menang dengan {name}",
+    "holdToEarn": "Tahan untuk Mendapatkan, Naik Level, & Jelajahi",
+    "play": "Mainkan {name}",
+    "beFirst": "Jadilah yang Pertama dengan {name}",
+    "joinAirdrop": "Bergabung dengan bot {name} & Dapatkan Airdrop Instan",
+    "launchAndGetUSDT": "Luncurkan ${name} & DAPATKAN USDT ASLI",
+    "playAndWin": "Mainkan {name} & Menangkan"
   },
   "airdrop": {
     "airdrop": "Tetesan udara",

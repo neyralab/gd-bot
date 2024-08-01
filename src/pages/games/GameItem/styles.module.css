@@ -1,0 +1,45 @@
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  min-height: 38px;
+  padding: 12px 24px;
+  border: 0.8px solid #242424;
+  background: #121212;
+  border-radius: 12px;
+}
+
+.info {
+  display: flex;
+  align-items: center;
+}
+
+.icon {
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  border-radius: 5px;
+}
+
+.text {
+  padding-left: 12px;
+  font-family: 'SF Pro Text';
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 18px;
+  align-self: center;
+}
+
+.btn {
+  font-family: 'SF Pro Text';
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 17px;
+  text-align: center;
+  padding: 8px 18px;
+  background: #FFFFFF1A;
+  border-radius: 27px;
+  color: #fff;
+  margin-left: 12px;
+}

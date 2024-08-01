@@ -52,7 +52,16 @@
     "task": "Задача",
     "partner": "Партнеры",
     "mission": "Миссии",
-    "start": "Старт"
+    "start": "Старт",
+    "playWith": "Играй с {name}!",
+    "tapGame": "Игра на скорость {name}",
+    "spin": "Крути и выигрывай с {name}",
+    "holdToEarn": "Держи, чтобы заработать, повысить уровень и исследовать",
+    "play": "Играй в {name}",
+    "beFirst": "Будь первым с {name}",
+    "joinAirdrop": "Присоединяйся к боту {name} и получай мгновенный airdrop",
+    "launchAndGetUSDT": "Запусти {name} и ПОЛУЧИ РЕАЛЬНЫЕ USDT",
+    "playAndWin": "Играй в {name} и выигрывай"
   },
   "airdrop": {
     "airdrop": "Airdrop",

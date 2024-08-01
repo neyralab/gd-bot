@@ -52,7 +52,16 @@
     "task": "Nhiệm vụ",
     "partner": "Đối tác",
     "mission": "Nhiệm vụ",
-    "start": "Bắt đầu"
+    "start": "Bắt đầu",
+    "playWith": "Chơi với {name}!",
+    "tapGame": "Trò chơi {name} Power Tap",
+    "spin": "Quay để thắng với {name}",
+    "holdToEarn": "Giữ để kiếm tiền, lên cấp và khám phá",
+    "play": "Chơi {name}",
+    "beFirst": "Hãy là người đầu tiên với {name}",
+    "joinAirdrop": "Tham gia bot {name} & nhận ngay Airdrop",
+    "launchAndGetUSDT": "Khởi chạy ${name} & NHẬN USDT THỰC",
+    "playAndWin": "Chơi {name} & Thắng"
   },
   "airdrop": {
     "airdrop": "Airdrop",

@@ -77,10 +77,10 @@ export const FileFilterPanel = () => {
       callback: () => getFiles('video')
     },
     {
-      name: t('dashbord.deleted'),
+      name: t('dashbord.games'),
       value: types?.deleted,
-      icon: icons.delete,
-      callback: () => getFiles('delete')
+      icon: icons.game,
+      callback: () => { navigate('/games') }
     }
   ];
   return (
