@@ -111,7 +111,8 @@
     "join": "Rejoindre",
     "transaction": "La transaction peut prendre jusqu'à 1 minute.\n\n Veuillez ne pas fermer la fenêtre \n\n attendez que le jeu commence.",
     "conversionSuccess": "Conversion réussie",
-    "canceledTransaction": "La transaction a été annulée par l'utilisateur"
+    "canceledTransaction": "La transaction a été annulée par l'utilisateur",
+    "reachedMaxTaps": "Nous avons détecté un nombre suspect d'actions par jeu. Assurez-vous de ne pas utiliser d'applications tierces susceptibles d'affecter les actions en jeu."
   },
   "language": {
     "search": "Rechercher",
