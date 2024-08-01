@@ -23,7 +23,6 @@ import PointsGrowArea from './PointsGrowArea/PointsGrowArea';
 import Timer from './Timer/Timer';
 import Menu from '../../components/Menu/Menu';
 import ProgressBar from './ProgressBar/ProgressBar';
-import Congratulations from './Congratulations/Congratulations';
 import GhostLoader from '../../components/ghostLoader';
 import Counter from './Counter/Counter';
 import Balance from './Balance/Balance';
@@ -185,8 +184,6 @@ export function GamePage() {
       </div>
 
       <Menu />
-
-      <Congratulations />
     </div>
   );
 }
