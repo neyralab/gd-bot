@@ -19,44 +19,82 @@ const gameSlice = createSlice({
   name: 'game',
   initialState: {
     isInitializing: false,
+
     isInitialized: false,
+
     contractAddress: null,
+
     gameId: null,
+
     themes: [],
+
     isTransactionLoading: false,
-    status: 'waiting', // 'waiting', 'playing', 'finished';
+
+    /** 'waiting', 'playing', 'finished' */
+    status: 'waiting',
+
     theme: null,
+
     levels: [],
+
     themeAccess: {
       hawk: true, // tier id 1
       gold: false, // tier id 3
       ghost: false // tier id 4
     },
+
     balance: { value: 0, label: 0 },
+
     experienceLevel: 1,
+
     experiencePoints: 0,
+
     maxLevel: 0,
+
     reachedNewLevel: false,
+
     roundTimerTimestamp: null,
+
     roundTimeoutId: null,
+
     lockTimerTimestamp: null,
+
     lockIntervalId: null,
+
     counter: {
       isActive: false,
       count: null,
       isFinished: true
     },
+
     roundFinal: {
       isActive: false,
       roundPoints: null
     },
+
+    /** nextTheme is for animation purposes only */
     nextTheme: {
       theme: null,
       direction: null,
       isSwitching: false
-    }, // for animation purposes only
+    },
+
     pendingGames: [],
-    recentlyFinishedLocker: false /** To prevent accidental tap to start another game when just finished */
+
+    /** To prevent accidental tap to start another game when just finished */
+    recentlyFinishedLocker: false,
+
+    /** gameModal - simple modal with img, title, description and onClose action. No other functional.
+     * This modal can be either null or
+     * {
+     *   isOpen: boolean;
+     *   img?: string; // url path
+     *   title?: string;
+     *   description?: string;
+     *   onClose?: () => void;
+     * }
+     */
+    gameModal: null
   },
   reducers: {
     setPendingGames: (state, { payload }) => {
@@ -144,6 +182,9 @@ const gameSlice = createSlice({
     },
     setRecentlyFinishedLocker: (state, { payload }) => {
       state.recentlyFinishedLocker = payload;
+    },
+    setGameModal: (state, { payload }) => {
+      state.gameModal = payload;
     }
   }
 });
@@ -327,6 +368,18 @@ export const finishRound = createAsyncThunk(
 
     const taps = state.game.balance.value;
     dispatch(setBalance({ value: 0, label: state.game.balance.label }));
+
+    if (state.game.theme.id === 'ghost') {
+      dispatch(
+        setGameModal({
+          isOpen: true,
+          title: 'We need some time to review the transaction.',
+          description:
+            'Please check your points in about 5 minutes to see the updated status.',
+          img: '/assets/hands-heart.png'
+        })
+      );
+    }
 
     endGame({ id: gameId, taps: taps })
       .then((data) => {
@@ -566,7 +619,8 @@ export const {
   setCounterIsFinished,
   setRoundFinal,
   setMaxLevel,
-  setRecentlyFinishedLocker
+  setRecentlyFinishedLocker,
+  setGameModal
 } = gameSlice.actions;
 export default gameSlice.reducer;
 

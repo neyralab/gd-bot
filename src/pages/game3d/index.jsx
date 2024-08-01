@@ -29,6 +29,7 @@ import Status from '../game/Status/Status';
 import ThemeSwitcherControllers from '../game/ThemeSwitcherControllers/ThemeSwitcherControllers';
 import GameCanvas from './Models/GameCanvas';
 import GoldPlayModal from '../game/GoldPlayModal/GoldPlayModal';
+import GameModal from '../game/GameModal/GameModal';
 import styles from './styles.module.css';
 
 /** Please, do not add extra selectors or state
@@ -144,7 +145,9 @@ export function Game3DPage() {
 
   if (!isInitialized || !userIsInitialized || isTransactionLoading) {
     return (
-      <GhostLoader texts={isTransactionLoading ? [t('message.transaction')]: []}/>
+      <GhostLoader
+        texts={isTransactionLoading ? [t('message.transaction')] : []}
+      />
     );
   }
 
@@ -204,6 +207,8 @@ export function Game3DPage() {
       <Menu />
 
       <GoldPlayModal />
+      
+      <GameModal />
     </div>
   );
 }

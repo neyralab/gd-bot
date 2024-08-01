@@ -4,7 +4,7 @@
   height: 100%;
   top: 0;
   left: 0;
-  z-index: 1000;
+  z-index: 99999999;
   backdrop-filter: blur(8px);
   overflow: hidden;
   animation: ApperAnimation1 0.2s ease-out;
@@ -31,10 +31,11 @@
   transform: translate(-50%, -50%);
   padding: 48px;
   display: flex;
+  gap: 8px;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  animation: ApperAnimation2 1s ease-out;
+  animation: ApperAnimation2 0.5s ease-out;
 }
 
 @keyframes ApperAnimation2 {
@@ -52,15 +53,17 @@
   background-position: center center;
   background-size: contain;
   background-repeat: no-repeat;
+  margin-bottom: 24px;
 }
 
-.points {
-  font-size: 62px;
-  font-weight: 500;
-  padding-right: 20px;
+.title {
+  font-size: 13px;
+  font-weight: 600;
+  text-align: center;
+  text-transform: uppercase;
 }
 
 .description {
-  font-size: 15px;
+  font-size: 13px;
   text-align: center;
 }
