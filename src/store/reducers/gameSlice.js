@@ -84,15 +84,9 @@ const gameSlice = createSlice({
     /** To prevent accidental tap to start another game when just finished */
     recentlyFinishedLocker: false,
 
-    /** gameModal - simple modal with img, title, description and onClose action. No other functional.
-     * This modal can be either null or
-     * {
-     *   isOpen: boolean;
-     *   img?: string; // url path
-     *   title?: string;
-     *   description?: string;
-     *   onClose?: () => void;
-     * }
+    /** Fancy modal
+     * Check GameModal component for parameters
+     * Right now it accepts values: null, 'TIME_FOR_TRANSACTION'
      */
     gameModal: null
   },
@@ -370,15 +364,7 @@ export const finishRound = createAsyncThunk(
     dispatch(setBalance({ value: 0, label: state.game.balance.label }));
 
     if (state.game.theme.id === 'ghost') {
-      dispatch(
-        setGameModal({
-          isOpen: true,
-          title: 'We need some time to review the transaction.',
-          description:
-            'Please check your points in about 5 minutes to see the updated status.',
-          img: '/assets/hands-heart.png'
-        })
-      );
+      dispatch(setGameModal('TIME_FOR_TRANSACTION'));
     }
 
     endGame({ id: gameId, taps: taps })

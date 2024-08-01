@@ -93,5 +93,9 @@
     "topBonus": "前100名奖金",
     "upload": "上传10个文件",
     "uploadFile": "上传文件"
+  },
+  "message": {
+    "someTimeForTransaction": "我们需要一些时间来审核该交易。",
+    "checkYourPointsLater": "请在大约 5 分钟后检查您的积分以查看更新的状态。"
   }
 }

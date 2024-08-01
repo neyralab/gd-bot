@@ -1,11 +1,35 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import { setGameModal } from '../../../store/reducers/gameSlice';
 import styles from './GameModal.module.css';
 
 export default function GameModal() {
   const dispatch = useDispatch();
-  const gameModalInfo = useSelector((state) => state.game.gameModal);
+  const { t } = useTranslation('game');
+  const gameModalType = useSelector((state) => state.game.gameModal);
+  const [gameModalInfo, setGameModalInfo] = useState();
+
+  useEffect(() => {
+    if (!gameModalType) {
+      setGameModalInfo(null);
+      return;
+    }
+
+    let title = null;
+    let description = null;
+    let img = null;
+
+    switch (gameModalType) {
+      case 'TIME_FOR_TRANSACTION':
+        title = t('message.someTimeForTransaction');
+        description = t('message.checkYourPointsLater');
+        img = '/assets/hands-heart.png';
+        break;
+    }
+
+    setGameModalInfo({ title, description, img });
+  }, [gameModalType]);
 
   const clickHandler = () => {
     gameModalInfo.onClose?.();

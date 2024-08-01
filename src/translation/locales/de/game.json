@@ -94,5 +94,9 @@
     "topBonus": "Top 100 Bonus",
     "upload": "10 Dateien hochladen",
     "uploadFile": "Datei hochladen"
+  },
+  "message": {
+    "someTimeForTransaction": "Wir benötigen etwas Zeit, um die Transaktion zu prüfen.",
+    "checkYourPointsLater": "Bitte überprüfen Sie Ihre Punkte in etwa 5 Minuten, um den aktualisierten Status anzuzeigen."
   }
 }
