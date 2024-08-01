@@ -403,8 +403,6 @@ export const finishRound = createAsyncThunk(
         state.game.themes,
         state.game.experienceLevel
       ); // Update the hawk subtheme that depends on level
-
-      dispatch(declineGoldPlay());
     }
 
     if (state.game.theme.id === 'gold') {
