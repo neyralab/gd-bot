@@ -43,13 +43,18 @@ const gameSlice = createSlice({
       ghost: false // tier id 4
     },
 
-    balance: { value: 0, label: 0 },
+    balance: {
+      value: 0, // taps
+      label: 0 // points
+    },
 
     experienceLevel: 1,
 
     experiencePoints: 0,
 
     maxLevel: 0,
+
+    maxTaps: 1200,
 
     reachedNewLevel: false,
 
@@ -94,7 +99,13 @@ const gameSlice = createSlice({
      *   onClose?: () => void;
      * }
      */
-    gameModal: null
+    gameModal: null,
+
+    /** Alerts
+     * Check SystemModalWrapper component and it's child SystemModal for parameters
+     * Right now it accepts values: null, 'REACHED_MAX_TAPS'
+     */
+    systemModal: null
   },
   reducers: {
     setPendingGames: (state, { payload }) => {
@@ -185,6 +196,9 @@ const gameSlice = createSlice({
     },
     setGameModal: (state, { payload }) => {
       state.gameModal = payload;
+    },
+    setSystemModal: (state, { payload }) => {
+      state.systemModal = payload;
     }
   }
 });
@@ -346,6 +360,13 @@ export const finishRound = createAsyncThunk(
     const filteredGames = pendingGames.filter((el) => el.uuid !== gameId);
     console.log({ filteredGames });
 
+    const userIsCheater = state.game.balance.value >= state.game.maxTaps;
+
+    if (userIsCheater) {
+      dispatch(setSystemModal('REACHED_MAX_TAPS'));
+      return;
+    }
+
     dispatch(setStatus(filteredGames.length ? 'waiting' : 'finished'));
     dispatch(setRoundTimerTimestamp(null));
     dispatch(setRoundTimeoutId(null));
@@ -434,8 +455,8 @@ export const startNewFreeGameCountdown = createAsyncThunk(
   }
 );
 
-export const addExperience = createAsyncThunk(
-  'game/addExperience',
+export const proceedTap = createAsyncThunk(
+  'game/proceedTap',
   async (_, { dispatch, getState }) => {
     const state = getState();
     const level = selectLevel(state);
@@ -444,8 +465,8 @@ export const addExperience = createAsyncThunk(
 
     const newPoints = state.game.experiencePoints + 1;
 
-    /** If user reached new level */
     if (newPoints >= level.tapping_to) {
+      /** If user reached new level */
       const newLevel = state.game.experienceLevel + 1;
       if (newLevel >= state.game.maxLevel) return;
 
@@ -453,6 +474,7 @@ export const addExperience = createAsyncThunk(
       dispatch(setReachedNewLevel(true)); // Update the new level trigger
     }
 
+    dispatch(addBalance(state.game.theme.multiplier));
     dispatch(setExperiencePoints(newPoints));
   }
 );
@@ -618,7 +640,8 @@ export const {
   setRoundFinal,
   setMaxLevel,
   setRecentlyFinishedLocker,
-  setGameModal
+  setGameModal,
+  setSystemModal
 } = gameSlice.actions;
 export default gameSlice.reducer;
 

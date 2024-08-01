@@ -111,7 +111,8 @@
     "join": "Beitreten",
     "transaction": "Die Transaktion kann bis zu 1 Minute dauern.\n\n Bitte schließe das Fenster nicht \n\n warte, bis das Spiel beginnt.",
     "conversionSuccess": "Konvertierung erfolgreich",
-    "canceledTransaction": "Die Transaktion wurde vom Benutzer abgebrochen"
+    "canceledTransaction": "Die Transaktion wurde vom Benutzer abgebrochen",
+    "reachedMaxTaps": "Wir haben eine verdächtige Anzahl von Aktionen pro Spiel festgestellt. Stellen Sie sicher, dass Sie keine Anwendungen von Drittanbietern verwenden, die die Aktionen im Spiel beeinträchtigen könnten."
   },
   "language": {
     "search": "Suche",

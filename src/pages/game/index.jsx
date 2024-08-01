@@ -7,10 +7,9 @@ import {
   selectTheme,
   startRound,
   selectThemeAccess,
-  addExperience,
+  proceedTap,
   initGame,
   selectIsInitialized,
-  addBalance,
   selectIsTransactionLoading,
   switchTheme,
   gameCleanup
@@ -106,8 +105,7 @@ export function GamePage() {
     pointsAreaRef.current.runAnimation();
 
     // Update state and timers
-    dispatch(addExperience());
-    dispatch(addBalance(1));
+    dispatch(proceedTap());
   };
 
   const handleEvent = async (event) => {
