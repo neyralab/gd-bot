@@ -84,5 +84,9 @@
     "topBonus": "100 Bonus Teratas",
     "upload": "Unggah 10 file",
     "uploadFile": "Unggah data"
+  },
+  "message": {
+    "someTimeForTransaction": "Kami perlu waktu untuk meninjau transaksi tersebut.",
+    "checkYourPointsLater": "Silakan periksa poin Anda dalam waktu sekitar 5 menit untuk melihat status terkini."
   }
 }

@@ -84,5 +84,9 @@
     "topBonus": "Tiền thưởng top 100",
     "upload": "Tải lên 10 tệp",
     "uploadFile": "Tải lên tệp"
+  },
+  "message": {
+    "someTimeForTransaction": "Chúng tôi cần thời gian để xem xét giao dịch.",
+    "checkYourPointsLater": "Vui lòng kiểm tra điểm của bạn sau khoảng 5 phút để xem trạng thái cập nhật."
   }
 }

@@ -84,5 +84,9 @@
     "topBonus": "상위 100 보너스",
     "upload": "파일 10개 업로드",
     "uploadFile": "파일 업로드"
+  },
+  "message": {
+    "someTimeForTransaction": "거래를 검토하는 데 시간이 필요합니다.",
+    "checkYourPointsLater": "약 5분 후에 포인트를 확인하시면 업데이트된 상태를 확인하실 수 있습니다."
   }
 }

@@ -84,5 +84,9 @@
     "topBonus": "Bono de los 100 mejores",
     "upload": "Sube 10 archivos",
     "uploadFile": "Subir archivo"
+  },
+  "message": {
+    "someTimeForTransaction": "Necesitamos algo de tiempo para revisar la transacción.",
+    "checkYourPointsLater": "Verifique sus puntos en aproximadamente 5 minutos para ver el estado actualizado."
   }
 }

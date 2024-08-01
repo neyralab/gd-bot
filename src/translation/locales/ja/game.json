@@ -84,5 +84,9 @@
     "topBonus": "トップ100ボーナス",
     "upload": "10ファイルをアップロード",
     "uploadFile": "ファイルをアップロード"
+  },
+  "message": {
+    "someTimeForTransaction": "取引を確認するには少し時間が必要です。",
+    "checkYourPointsLater": "更新されたステータスを確認するには、約 5 分後にポイントを確認してください。"
   }
 }

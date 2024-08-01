@@ -84,5 +84,9 @@
     "topBonus": "Bonus Top 100",
     "upload": "Télécharger 10 fichiers",
     "uploadFile": "Télécharger un fichier"
+  },
+  "message": {
+    "someTimeForTransaction": "Nous avons besoin de temps pour examiner la transaction.",
+    "checkYourPointsLater": "Veuillez vérifier vos points dans environ 5 minutes pour voir le statut mis à jour."
   }
 }
