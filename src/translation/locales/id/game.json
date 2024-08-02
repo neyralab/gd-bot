@@ -25,9 +25,9 @@
     "rank": "pangkat",
     "users": "PENGGUNA",
     "usersLow": "Pengguna",
-    "totalUsers": "Jumlah pengguna:",
-    "totalPoints": "Jumlah poin:",
-    "totalTaps": "Jumlah ketukan:"
+    "totalUsers": "Pengguna:",
+    "totalPoints": "Token:",
+    "totalTaps": "Penambangan:"
   },
   "friends": {
     "inviteGetBonus": "Undang teman dan Dapatkan bonus!",

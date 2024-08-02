@@ -11,7 +11,7 @@
   },
   "process": {
     "level": "Nível",
-    "players": "Jogadores",
+    "players": "Jogas",
     "frens": "Amigos",
     "earn": "Ganhar",
     "airdrop": "Airdrop"
@@ -25,9 +25,9 @@
     "rank": "classificação",
     "users": "USUÁRIOS",
     "usersLow": "Usuários",
-    "totalUsers": "Total de usuários:",
-    "totalPoints": "Total de pontos:",
-    "totalTaps": "Total de toques:"
+    "totalUsers": "Usuários:",
+    "totalPoints": "Tokens:",
+    "totalTaps": "Mineração:"
   },
   "friends": {
     "inviteGetBonus": "Convide amigos e ganhe bônus!",
