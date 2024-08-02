@@ -37,7 +37,7 @@
     "eachNode": "Jeder Knoten kommt mit einem Anteil von 10.000 Ghost Drive Tokens, was dir eine bedeutende Position gibt"
   },
   "boost": {
-    "reward": "Boost-Punkte-Belohnungen",
+    "upgradeStorage": "Speicher aufrüsten",
     "multiplier": "Aktueller Multiplikator",
     "storage": "Speicher",
     "boostMultiplier": "Boost-Multiplikator",

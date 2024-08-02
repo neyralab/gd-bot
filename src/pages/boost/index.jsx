@@ -184,7 +184,7 @@ export const BoostPage = ({ tariffs, setTariffs }) => {
 
   return (
     <div className={styles.container}>
-      <Header label={t('boost.reward')} className={styles.backBtn} />
+      <Header label={t('boost.upgradeStorage')} className={styles.backBtn} />
       <div>
         <p className={styles.header}>{t('boost.multiplier')}</p>
         <div className={styles.current_item}>

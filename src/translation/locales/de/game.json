@@ -28,13 +28,14 @@
     "usersLow": "Nutzer",
     "totalUsers": "Gesamtnutzer:",
     "totalPoints": "Gesamtpunkte:",
-    "totalTaps": "Gesamtanzahl der Taps:"
+    "totalTaps": "Mining:"
   },
   "friends": {
     "inviteGetBonus": "Lade Freunde ein und erhalte einen Bonus!",
     "inviteFriendCapitalize": "Lade einen Freund ein",
     "yourFriends": "Deine Freunde",
-    "inviteFriend": "Einen Freund einladen"
+    "inviteFriend": "Einen Freund einladen",
+    "invitePremiumFriend": "Lade 25 Premium-Freunde ein"
   },
   "earn": {
     "earn": "Mehr Punkte verdienen",

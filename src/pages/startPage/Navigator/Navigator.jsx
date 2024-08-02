@@ -45,7 +45,7 @@ export default function Navigator({
     const list = [
       {
         id: 1,
-        name: t('dashboard.drive'),
+        name: 'G: Drive',
         icon: <DriveIcon />,
         html: (<span className={CN(styles.actionBtn, styles.addBt)}>{human.percent.label}</span>),
         onClick: () => navigate('/file-upload')

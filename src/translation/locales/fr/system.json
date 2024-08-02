@@ -37,7 +37,7 @@
     "eachNode": "Chaque nœud est livré avec une participation de 10 000 Tokens Ghost Drive, vous donnant une position significative"
   },
   "boost": {
-    "reward": "Récompenses de points de boost",
+    "upgradeStorage": "Mettre à niveau le stockage",
     "multiplier": "Multiplicateur actuel",
     "storage": "Stockage",
     "boostMultiplier": "Multiplicateur de boost",

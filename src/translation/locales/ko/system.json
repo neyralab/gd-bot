@@ -37,7 +37,7 @@
     "eachNode": "각 노드는 10,000 고스트드라이브 토큰의 지분을 보유하고 있어 중요한 위치를 제공합니다"
   },
   "boost": {
-    "reward": "부스트 포인트 보상",
+    "upgradeStorage": "저장 공간 업그레이드",
     "multiplier": "현재 배수",
     "storage": "스토리지",
     "boostMultiplier": "부스트 배수",
