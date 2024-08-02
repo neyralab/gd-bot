@@ -38,9 +38,9 @@
   },
   "boost": {
     "upgradeStorage": "Nâng cấp lưu trữ",
-    "multiplier": "Hệ số hiện tại",
+    "multiplier": "Gói hiện tại",
     "storage": "Lưu trữ",
-    "boostMultiplier": "Hệ số tăng cường",
+    "boostMultiplier": "Thành viên Prime",
     "storageYear": "Lưu trữ mỗi năm",
     "paymentMethod": "Chọn phương thức thanh toán"
   },

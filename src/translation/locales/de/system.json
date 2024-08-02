@@ -38,9 +38,9 @@
   },
   "boost": {
     "upgradeStorage": "Speicher aufrüsten",
-    "multiplier": "Aktueller Multiplikator",
+    "multiplier": "Aktueller Plan",
     "storage": "Speicher",
-    "boostMultiplier": "Boost-Multiplikator",
+    "boostMultiplier": "Prime-Mitglieder",
     "storageYear": "Speicher pro Jahr",
     "paymentMethod": "Zahlungsmethode wählen"
   },
