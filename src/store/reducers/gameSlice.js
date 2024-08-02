@@ -573,12 +573,21 @@ export const confirmGoldPlay = createAsyncThunk(
 
 export const declineGoldPlay = createAsyncThunk(
   'game/declineGoldPlay',
-  async (_, { dispatch }) => {
+  async (_, { dispatch, getState }) => {
+    const state = getState();
     dispatch(setReachedNewLevel(false));
     dispatch(setThemeAccess({ themeId: 'gold', status: false }));
-    dispatch(
-      switchTheme({ themeId: 'hawk', direction: 'next', timeout: 2500 })
-    );
+
+    if (state.game.theme.id === 'hawk') {
+      // only hawk has subthemes, and we need to update them
+      dispatch(
+        switchTheme({
+          themeId: 'hawk',
+          direction: 'next',
+          timeout: 2500
+        })
+      );
+    }
     dispatch(setStatus('waiting'));
   }
 );
@@ -586,12 +595,6 @@ export const declineGoldPlay = createAsyncThunk(
 export const gameCleanup = createAsyncThunk(
   'game/gameCleanup',
   async (_, { dispatch }) => {
-    /** Right now in cleanup we need only this
-     * In the future we might need to clean all the game.
-     * If it so, please pay attention that we have setTimeouts that are very tricky.
-     * Some of the timeoutIds you will need to store in this slice
-     * and then clearTimeout() them in this function
-     */
     dispatch(setRoundFinal({ roundPoins: null, isActive: false }));
     dispatch(setReachedNewLevel(false));
     dispatch(setStatus('waiting'));

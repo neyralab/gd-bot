@@ -5,7 +5,6 @@ import {
   selectNextTheme,
   selectStatus,
   selectTheme,
-  selectThemeAccess,
   switchTheme
 } from '../../../store/reducers/gameSlice';
 import styles from './ThemeSwitcherControllers.module.css';
@@ -16,7 +15,6 @@ export default function ThemeSwitcherControllers({ themeChangeTimeout }) {
   const status = useSelector(selectStatus);
   const theme = useSelector(selectTheme);
   const nextTheme = useSelector(selectNextTheme);
-  const themeAccess = useSelector(selectThemeAccess);
   const counterIsFinished = useSelector(
     (state) => state.game.counter.isFinished
   );
@@ -30,8 +28,8 @@ export default function ThemeSwitcherControllers({ themeChangeTimeout }) {
 
       if (direction === 'next') {
         themeId = 'ghost';
-      } else if (themeAccess.ghost) {
-        themeId = 'gold';
+      } else {
+        themeId = 'hawk';
       }
 
       dispatch(
@@ -57,7 +55,7 @@ export default function ThemeSwitcherControllers({ themeChangeTimeout }) {
           </div>
         )}
 
-        {theme.id !== 'ghost' && (
+        {theme.id === 'hawk' && (
           <div className={styles.next} onClick={(e) => clickHandler(e, 'next')}>
             {'>'}
           </div>

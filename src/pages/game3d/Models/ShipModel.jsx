@@ -234,16 +234,14 @@ const ShipModel = forwardRef((_, ref) => {
       /** Cleanup */
       gsap.to(shipGroupRef.current.position, {
         z: 0,
+        y: 0,
+        x: 0,
         duration: 1,
         ease: `power${cleanupPower}.inOut`
       });
 
       gsap.to(shipGroupRef.current.rotation, {
         y: -Math.PI / 2,
-        duration: 2,
-        ease: `power${cleanupPower}.inOut`
-      });
-      gsap.to(shipGroupRef.current.rotation, {
         x: 0,
         duration: 2,
         ease: `power${cleanupPower}.inOut`
