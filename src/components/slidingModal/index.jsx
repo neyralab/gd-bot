@@ -1,9 +1,16 @@
 import React, { useRef } from 'react';
 import { Sheet } from 'react-modal-sheet';
+import CN from 'classnames';
 
 import './style.css';
 
-export const SlidingModal = ({ onClose, isOpen, children, ...rest }) => {
+export const SlidingModal = ({
+  onClose,
+  isOpen,
+  children,
+  backgroundClass,
+  ...rest
+}) => {
   const ref = useRef();
 
   return (
@@ -13,9 +20,9 @@ export const SlidingModal = ({ onClose, isOpen, children, ...rest }) => {
       onClose={onClose}
       snapPoints={[175, 90, 50, 0]}
       initialSnap={1}
-      {...rest}
-      >
-      <Sheet.Container className="react-modal-sheet-container">
+      {...rest}>
+      <Sheet.Container
+        className={CN('react-modal-sheet-container', backgroundClass)}>
         <Sheet.Header className="react-modal-sheet-header" />
         <Sheet.Content>{children}</Sheet.Content>
       </Sheet.Container>
