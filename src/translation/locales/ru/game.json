@@ -25,15 +25,16 @@
     "rank": "рейтинг",
     "users": "ПОЛЬЗОВАТЕЛИ",
     "usersLow": "Пользователи",
-    "totalUsers": "Всего пользователей:",
-    "totalPoints": "Всего баллов:",
-    "totalTaps": "Всего нажатий:"
+    "totalUsers": "Пользователи:",
+    "totalPoints": "Баллы:",
+    "totalTaps": "Майнинг:"
   },
   "friends": {
     "inviteGetBonus": "Пригласите друзей и получите бонус!",
     "inviteFriendCapitalize": "Пригласите Друга",
     "yourFriends": "Ваши Друзья",
-    "inviteFriend": "Пригласить друга"
+    "inviteFriend": "Пригласить друга",
+    "invitePremiumFriend": "Пригласите 25 друзей с Premium"
   },
   "earn": {
     "earn": "Зарабатывайте больше баллов",

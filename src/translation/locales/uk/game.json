@@ -25,15 +25,16 @@
     "rank": "рейтинг",
     "users": "КОРИСТУВАЧІ",
     "usersLow": "Користувачі",
-    "totalUsers": "Загальна кількість користувачів:",
-    "totalPoints": "Загальна кількість балів:",
-    "totalTaps": "Загальна кількість натискань:"
+    "totalUsers": "Користувачі:",
+    "totalPoints": "Бали:",
+    "totalTaps": "Майнінг:"
   },
   "friends": {
     "inviteGetBonus": "Запросіть друзів і отримайте бонус!",
     "inviteFriendCapitalize": "Запросіть Друга",
     "yourFriends": "Ваші Друзі",
-    "inviteFriend": "Запросіть друга"
+    "inviteFriend": "Запросіть друга",
+    "invitePremiumFriend": "Запросіть 25 друзів з Premium"
   },
   "earn": {
     "earn": "Заробляйте більше балів",

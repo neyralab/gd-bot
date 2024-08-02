@@ -25,15 +25,16 @@
     "rank": "classement",
     "users": "UTILISATEURS",
     "usersLow": "Utilisateurs",
-    "totalUsers": "Nombre total d'utilisateurs :",
-    "totalPoints": "Nombre total de points :",
-    "totalTaps": "Nombre total de taps :"
+    "totalUsers": "Utilisateurs:",
+    "totalPoints": "Points:",
+    "totalTaps": "Minage:"
   },
   "friends": {
     "inviteGetBonus": "Invitez des amis et obtenez un bonus !",
     "inviteFriendCapitalize": "Invitez un ami",
     "yourFriends": "Vos amis",
-    "inviteFriend": "Inviter un ami"
+    "inviteFriend": "Inviter un ami",
+    "invitePremiumFriend": "Invite 25 amis Premium"
   },
   "earn": {
     "earn": "Gagner plus de points",

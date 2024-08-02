@@ -37,7 +37,7 @@
     "eachNode": "Кожна нода йде з часткою 10,000 Ghost Drive Tokens, надаючи вам значну позицію"
   },
   "boost": {
-    "reward": "Нагороди за прискорення балів",
+    "upgradeStorage": "Оновити сховище",
     "multiplier": "Поточний множник",
     "storage": "Сховище",
     "boostMultiplier": "Множник прискорення",

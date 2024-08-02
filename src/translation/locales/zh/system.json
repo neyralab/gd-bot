@@ -37,7 +37,7 @@
     "eachNode": "每个节点都附带10,000个Ghost Drive代币的股份，给您一个显著的位置"
   },
   "boost": {
-    "reward": "提升积分奖励",
+    "upgradeStorage": "升级存储",
     "multiplier": "当前倍增器",
     "storage": "存储",
     "boostMultiplier": "提升倍增器",

@@ -21,7 +21,7 @@ const FRIEND_TASK = {
   title: "Invite 25 Premium friends",
   points: '1M',
   imgUrl: '/assets/likeGold.png',
-  translatePath: '',
+  translatePath: 'friends.invitePremiumFriend',
 }
 
 export default function FriendsPage() {

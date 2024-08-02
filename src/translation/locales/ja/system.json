@@ -37,7 +37,7 @@
     "eachNode": "各ノードには10,000 Ghost Drive Tokensの持ち分が付いており、重要な地位を提供します"
   },
   "boost": {
-    "reward": "ブーストポイントの報酬",
+    "upgradeStorage": "ストレージをアップグレード",
     "multiplier": "現在の乗数",
     "storage": "ストレージ",
     "boostMultiplier": "ブースト乗数",
