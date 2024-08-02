@@ -38,9 +38,9 @@
   },
   "boost": {
     "upgradeStorage": "升级存储",
-    "multiplier": "当前倍增器",
+    "multiplier": "当前计划",
     "storage": "存储",
-    "boostMultiplier": "提升倍增器",
+    "boostMultiplier": "Prime 会员",
     "storageYear": "每年的存储",
     "paymentMethod": "选择支付方式"
   },

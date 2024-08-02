@@ -38,9 +38,9 @@
   },
   "boost": {
     "upgradeStorage": "Mettre à niveau le stockage",
-    "multiplier": "Multiplicateur actuel",
+    "multiplier": "Plan actuel",
     "storage": "Stockage",
-    "boostMultiplier": "Multiplicateur de boost",
+    "boostMultiplier": "Membres Prime",
     "storageYear": "Stockage par an",
     "paymentMethod": "Choisir le mode de paiement"
   },

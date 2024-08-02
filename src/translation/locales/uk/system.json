@@ -38,9 +38,9 @@
   },
   "boost": {
     "upgradeStorage": "Оновити сховище",
-    "multiplier": "Поточний множник",
+    "multiplier": "Поточний план",
     "storage": "Сховище",
-    "boostMultiplier": "Множник прискорення",
+    "boostMultiplier": "Prime-учасники",
     "storageYear": "Сховище за рік",
     "paymentMethod": "Виберіть спосіб оплати"
   },

@@ -11,7 +11,7 @@
   },
   "process": {
     "level": "Cấp độ",
-    "players": "Người chơi",
+    "players": "Game thủ",
     "frens": "Bạn bè",
     "earn": "Kiếm",
     "airdrop": "Airdrop"
@@ -25,9 +25,9 @@
     "rank": "xếp hạng",
     "users": "NGƯỜI DÙNG",
     "usersLow": "Người dùng",
-    "totalUsers": "Tổng số người dùng:",
-    "totalPoints": "Tổng điểm:",
-    "totalTaps": "Tổng số lần nhấp:"
+    "totalUsers": "Người dùng:",
+    "totalPoints": "Mã thông báo:",
+    "totalTaps": "Khai thác:"
   },
   "friends": {
     "inviteGetBonus": "Mời bạn bè và nhận tiền thưởng!",

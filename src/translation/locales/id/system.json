@@ -38,9 +38,9 @@
   },
   "boost": {
     "upgradeStorage": "Tingkatkan penyimpanan",
-    "multiplier": "Pengganda saat ini",
+    "multiplier": "Paket saat ini",
     "storage": "Penyimpanan",
-    "boostMultiplier": "Pengganda Boost",
+    "boostMultiplier": "Anggota Prime",
     "storageYear": "Penyimpanan per tahun",
     "paymentMethod": "Pilih Metode Pembayaran"
   },

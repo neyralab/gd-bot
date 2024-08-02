@@ -38,9 +38,9 @@
   },
   "boost": {
     "upgradeStorage": "저장 공간 업그레이드",
-    "multiplier": "현재 배수",
+    "multiplier": "현재 플랜",
     "storage": "스토리지",
-    "boostMultiplier": "부스트 배수",
+    "boostMultiplier": "프라임 회원",
     "storageYear": "연간 스토리지",
     "paymentMethod": "결제 방법 선택"
   },
