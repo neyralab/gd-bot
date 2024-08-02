@@ -6,6 +6,7 @@ const modalSlice = createSlice({
     fileMenu: false,
     deleteFileModal: false,
     paymentSelectModal: false,
+    filePreviewModal: false
   },
   reducers: {
     handleDeleteFileModal: (state, { payload }) => {
@@ -16,14 +17,23 @@ const modalSlice = createSlice({
     },
     handleFileMenu: (state, { payload }) => {
       state.fileMenu = payload;
+    },
+    handleFilePreviewModal: (state, { payload }) => {
+      state.filePreviewModal = payload;
     }
   }
 });
 
-export const { handleDeleteFileModal, handleFileMenu, handlePaymentSelectModal } = modalSlice.actions;
+export const {
+  handleDeleteFileModal,
+  handleFileMenu,
+  handlePaymentSelectModal,
+  handleFilePreviewModal
+} = modalSlice.actions;
 export default modalSlice.reducer;
 
 export const selectisFileMenuOpen = (state) => state.modal.fileMenu;
+export const selectIsFilePreviewOpen = (state) => state.modal.filePreviewModal;
 export const selectisDeleteFileModalOpen = (state) =>
   state.modal.deleteFileModal;
 export const selectPaymentSelectModal = (state) =>

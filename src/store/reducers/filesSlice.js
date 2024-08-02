@@ -83,6 +83,9 @@ const filesSlice = createSlice({
         file.id === payload.id ? payload : file
       );
       state.files = [...updatedFiles];
+      if (state.selectedFile.id === payload.id) {
+        state.selectedFile = { ...state.selectedFile, ...payload };
+      }
     },
     setFileTypesCount: (state, { payload }) => {
       state.typesCount = payload;
