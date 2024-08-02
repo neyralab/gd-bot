@@ -46,12 +46,17 @@
 }
 
 .item {
+  position: relative;
   border: 0.5px dotted white;
   border-radius: 16px;
   padding: 16px 24px;
   display: flex;
   justify-content: space-between;
   margin: 12px 0;
+  animation: AppearAnim 0.5s ease-out forwards;
+  transform: translateX(100%) scale(0.2);
+  opacity: 0;
+  transition: border-color 0.2s;
 }
 
 .footer {
@@ -78,4 +83,17 @@
 }
 .done p {
   color: #00df06;
+}
+
+@keyframes AppearAnim {
+  0% {
+    transform: translateX(100%) scale(0.2);
+    max-height: 0px;
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0%) scale(1);
+    max-height: 100px;
+    opacity: 1;
+  }
 }
