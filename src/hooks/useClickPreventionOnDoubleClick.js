@@ -1,4 +1,5 @@
 import { useRef } from 'react';
+import { sleep } from '../utils/sleep';
 
 export const useCancellablePromises = () => {
   const pendingPromises = useRef([]);
@@ -37,15 +38,13 @@ export const cancellablePromise = (promise) => {
   };
 };
 
-export const delay = (n) => new Promise((resolve) => setTimeout(resolve, n));
-
 const useClickPreventionOnDoubleClick = (onClick, onDoubleClick) => {
   const api = useCancellablePromises();
 
   const handleClick = (e) => {
     e.persist();
     api.clearPendingPromises();
-    const waitForClick = cancellablePromise(delay(300));
+    const waitForClick = cancellablePromise(sleep(300));
     api.appendPendingPromise(waitForClick);
 
     return waitForClick.promise

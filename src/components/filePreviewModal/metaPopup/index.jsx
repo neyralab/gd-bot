@@ -33,10 +33,12 @@ const MetaPopup = ({ file, setInfoPopupOpen, infoPopupOpen }) => {
           <li className={style.item}>
             Size: <span>{transformSize(file.size)}</span>
           </li>
-          <li className={style.item}>
-            Hash: <span>{file?.ipfs_hash}</span>{' '}
-            {file?.ipfs_hash && <CopyButton onClick={copyHash} />}
-          </li>
+          {file?.ipfs_hash && (
+            <li className={style.item}>
+              Hash: <span>{file?.ipfs_hash}</span>
+              <CopyButton onClick={copyHash} />
+            </li>
+          )}
           <li className={style.item}>
             Created: <span>{formattedDate}</span>
           </li>
