@@ -354,7 +354,9 @@ export const finishRound = createAsyncThunk(
     const filteredGames = pendingGames.filter((el) => el.uuid !== gameId);
     console.log({ filteredGames });
 
-    const userIsCheater = state.game.balance.value >= state.game.maxTaps;
+    const userIsCheater =
+      state.game.balance.value >= state.game.maxTaps &&
+      state.game.theme.id !== 'gold'; // gold game does not have limits on taps
 
     if (userIsCheater) {
       dispatch(setSystemModal('REACHED_MAX_TAPS'));
