@@ -67,3 +67,25 @@ export const checkXJoin = async () => {
     return e?.response?.data?.errors;
   }
 };
+
+export const getAllPartners = async () => {
+  const url = `${API_PATH}/aff/missions/active-goals`;
+
+  try {
+    const { data } = await axiosInstance.get(url);
+    return data
+  } catch (e) {
+    return e?.response?.data?.errors;
+  }
+};
+
+export const checkTaskIsDone = async (id) => {
+  const url = `${API_PATH}/aff/missions/verify/${id}`;
+
+  try {
+    const { data } = await axiosInstance.post(url);
+    return data
+  } catch (e) {
+    return e?.response?.data?.errors;
+  }
+};

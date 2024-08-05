@@ -112,7 +112,8 @@
     "transaction": "Transaksi dapat memakan waktu hingga 1 menit.\n\n Tolong jangan tutup jendela \n\n tunggu permainan dimulai.",
     "conversionSuccess": "Konversi berhasil",
     "canceledTransaction": "Transaksi dibatalkan oleh pengguna",
-    "reachedMaxTaps": "Kami telah mendeteksi sejumlah tindakan mencurigakan per game. Pastikan Anda tidak menggunakan aplikasi pihak ketiga yang dapat memengaruhi tindakan dalam game."
+    "reachedMaxTaps": "Kami telah mendeteksi sejumlah tindakan mencurigakan per game. Pastikan Anda tidak menggunakan aplikasi pihak ketiga yang dapat memengaruhi tindakan dalam game.",
+    "reward": "Hadiah telah diterima"
   },
   "language": {
     "search": "Cari",

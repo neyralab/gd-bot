@@ -112,7 +112,8 @@
     "transaction": "Giao dịch có thể mất đến 1 phút.\n\n Vui lòng không đóng cửa sổ \n\n chờ đợi trò chơi bắt đầu.",
     "conversionSuccess": "Chuyển đổi thành công",
     "canceledTransaction": "Giao dịch đã bị hủy bởi người dùng",
-    "reachedMaxTaps": "Chúng tôi đã phát hiện một số lượng hành động đáng ngờ cho mỗi trò chơi. Hãy đảm bảo rằng bạn không sử dụng các ứng dụng của bên thứ ba có thể ảnh hưởng đến các hành động trong trò chơi."
+    "reachedMaxTaps": "Chúng tôi đã phát hiện một số lượng hành động đáng ngờ cho mỗi trò chơi. Hãy đảm bảo rằng bạn không sử dụng các ứng dụng của bên thứ ba có thể ảnh hưởng đến các hành động trong trò chơi.",
+    "reward": "Phần thưởng đã được nhận"
   },
   "language": {
     "search": "Tìm kiếm",
