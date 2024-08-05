@@ -41,6 +41,14 @@
   border-color: #01d807;
 }
 
+.done .name {
+  text-decoration: line-through;
+}
+
+.done .info {
+  width: initial;
+}
+
 .container > * {
   flex-shrink: 0;
 }
@@ -98,4 +106,9 @@
   line-height: 17px;
   text-align: center;
   color: #FFFFFF;
+}
+
+.actionVerify {
+  color: #000;
+  background-color: #01D807;
 }

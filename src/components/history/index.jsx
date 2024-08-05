@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { NoHistory } from './empty';
-import { getKeyTranslate } from '../../translation/utils';
+import { getHistoryTranslate } from '../../translation/utils';
 import gameJson from '../../translation/locales/en/game.json';
 
 import { ReactComponent as Cloud } from '../../assets/clock.svg';
@@ -21,7 +21,9 @@ export const History = ({ history, loading }) => {
               <Cloud width={32} height={32} />
               <div className={styles.text_container}>
                 <p className={styles.value}>{el.points}</p>
-                <p className={styles.text}>{t(getKeyTranslate(gameJson, el?.text || el?.point?.text))}</p>
+                <p className={styles.text}>
+                  {getHistoryTranslate(gameJson, el?.text || el?.point?.text, t)}
+                </p>
               </div>
             </li>
           ))

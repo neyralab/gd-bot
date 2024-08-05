@@ -112,7 +112,8 @@
     "transaction": "A transação pode levar até 1 minuto.\n\n Por favor, não feche a janela \n\n aguarde o início do jogo.",
     "conversionSuccess": "Conversão bem-sucedida",
     "canceledTransaction": "A transação foi cancelada pelo usuário",
-    "reachedMaxTaps": "Detetámos uma quantidade suspeita de ações por jogo. Certifique-se de que não utiliza aplicações de terceiros que possam afetar as ações do jogo."
+    "reachedMaxTaps": "Detetámos uma quantidade suspeita de ações por jogo. Certifique-se de que não utiliza aplicações de terceiros que possam afetar as ações do jogo.",
+    "reward": "A recompensa foi recebida"
   },
   "language": {
     "search": "Pesquisar",

@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 
 import { tasks as tasksFromFile } from './tasks';
 import { isEnabledPartners } from '../../utils/featureFlags';
-import { checkAllEarnTasks } from '../../effects/EarnEffect';
+import { checkAllEarnTasks, getAllPartners } from '../../effects/EarnEffect';
 import { getAllTasks, getBalanceEffect } from '../../effects/balanceEffect';
 import { handleTasks } from '../../store/reducers/taskSlice';
 
@@ -24,6 +24,7 @@ export default function EarnPage() {
   const { t } = useTranslation('game');
   const [tasks, setTasks] = useState([]);
   const [missions, setMissions] = useState([]);
+  const [partners, setPartners] = useState([]);
   const [activeSegment, setActiveSegment] = useState(DEFAULT_SEGMENT_OPTION);
   const [modalSelectedTask, setModalSelectedTask] = useState(null);
   const modalRef = useRef(null);
@@ -80,7 +81,17 @@ export default function EarnPage() {
     }
   }
 
+  const getPartners = async () => {
+    try {
+      const partnersList = await getAllPartners();
+      setPartners(partnersList || []);
+    } catch (error) {
+      setPartners([]);
+    }
+  }
+
   useEffect(() => {
+    getPartners();
     getMission();
     getTasks();
   }, []);
@@ -121,8 +132,8 @@ export default function EarnPage() {
       case 'partner':
         return (
           <Partners
-            getTasks={getTasks}
-            setModalSelectedTask={setModalSelectedTask}
+            partners={partners}
+            setPartners={setPartners}
           />
         );
       case 'mission':

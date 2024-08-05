@@ -112,7 +112,8 @@
     "transaction": "Transaction may take up to 1 minute.\n\n Please do not close the window \n\n wait for the game to start.",
     "conversionSuccess": "Conversion successful",
     "canceledTransaction": "Transaction was canceled by the user",
-    "reachedMaxTaps": "We have detected a suspicious amount of actions per game. Make sure you are not using third-party applications that may affect in-game actions."
+    "reachedMaxTaps": "We have detected a suspicious amount of actions per game. Make sure you are not using third-party applications that may affect in-game actions.",
+    "reward": "The reward was received"
   },
   "language": {
     "search": "Search",
