@@ -1,9 +1,10 @@
-import React, { useState, useEffect, useRef, useMemo } from 'react';
+import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { tasks as tasksFromFile } from './tasks';
 import { isEnabledPartners } from '../../utils/featureFlags';
+import { handlePartners, selectPartners } from '../../store/reducers/taskSlice';
 import { checkAllEarnTasks, getAllPartners } from '../../effects/EarnEffect';
 import { getAllTasks, getBalanceEffect } from '../../effects/balanceEffect';
 import { handleTasks } from '../../store/reducers/taskSlice';
@@ -21,10 +22,10 @@ const DEFAULT_SEGMENT_OPTION = 'task'
 
 export default function EarnPage() {
   const dispatch = useDispatch();
+  const partners = useSelector(selectPartners);
   const { t } = useTranslation('game');
   const [tasks, setTasks] = useState([]);
   const [missions, setMissions] = useState([]);
-  const [partners, setPartners] = useState([]);
   const [activeSegment, setActiveSegment] = useState(DEFAULT_SEGMENT_OPTION);
   const [modalSelectedTask, setModalSelectedTask] = useState(null);
   const modalRef = useRef(null);
@@ -81,17 +82,14 @@ export default function EarnPage() {
     }
   }
 
-  const getPartners = async () => {
-    try {
-      const partnersList = await getAllPartners();
-      setPartners(partnersList || []);
-    } catch (error) {
-      setPartners([]);
+  useEffect(() => {
+    if (!partners.length) {
+      getAllPartners()
+        .then((data) => dispatch(handlePartners(data)))
     }
-  }
+  }, [partners])
 
   useEffect(() => {
-    getPartners();
     getMission();
     getTasks();
   }, []);
@@ -118,6 +116,10 @@ export default function EarnPage() {
     ].filter((tab) => !disabledTabs.includes(tab.name))
   }, [t]);
 
+  const handlePartnersUpdate = useCallback((data) => {
+    dispatch(handlePartners(data));
+  }, [dispatch])
+
   const renderList = () => {
     switch (activeSegment) {
       case 'task':
@@ -133,7 +135,7 @@ export default function EarnPage() {
         return (
           <Partners
             partners={partners}
-            setPartners={setPartners}
+            setPartners={handlePartnersUpdate}
           />
         );
       case 'mission':

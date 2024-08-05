@@ -67,7 +67,8 @@
     "extraBonusLvl6": "Bono extra por alcanzar el nivel 6 de tapping",
     "extraBonusLvl7": "Bono extra por alcanzar el nivel 7 de tapping",
     "points": "Puntos",
-    "point": "Punto"
+    "point": "Punto",
+    "invitePremiumFriend": "Invita a 25 amigos Premium"
   },
   "wallet": {
     "disconnect": "¿Estás seguro de que quieres desconectar?",

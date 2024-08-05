@@ -67,7 +67,8 @@
     "extraBonusLvl6": "6タップレベルに到達で追加ボーナス",
     "extraBonusLvl7": "7タップレベルに到達で追加ボーナス",
     "points": "ポイント",
-    "point": "ポイント"
+    "point": "ポイント",
+    "invitePremiumFriend": "25人のプレミアムフレンドを招待"
   },
   "wallet": {
     "disconnect": "本当に切断しますか？",
