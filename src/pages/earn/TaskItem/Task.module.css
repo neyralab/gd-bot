@@ -43,6 +43,7 @@
 
 .done .name {
   text-decoration: line-through;
+  width: calc(100% - 40px);
 }
 
 .done .info {
