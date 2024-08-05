@@ -5,7 +5,11 @@ import { useLocation } from 'react-router-dom';
 import moment from 'moment';
 import cn from 'classnames';
 
-import { selectFileView } from '../../store/reducers/filesSlice';
+import {
+  selectFileView,
+  setSelectedFile
+} from '../../store/reducers/filesSlice';
+import { handleFilePreviewModal } from '../../store/reducers/modalSlice';
 import {
   getFilePreviewEffect,
   updateFileFavoriteEffect
@@ -16,6 +20,7 @@ import imageFileExtensions, {
   imagesWithoutPreview
 } from '../../config/image-file-extensions';
 import useButtonVibration from '../../hooks/useButtonVibration';
+import { useClickHandler } from '../../hooks/useClickHandler';
 
 import CustomFolderIcon from '../../components/customFileIcon/CustomFolderIcon';
 import CustomFileSmallIcon from '../../components/customFileIcon/CustomFileSmallIcon';
@@ -79,6 +84,13 @@ export const FileItem = ({
 
   const onMenuClick = () => callback(file);
 
+  const onFileDoubleClickHandler = () => {
+    dispatch(setSelectedFile(file));
+    dispatch(handleFilePreviewModal(true));
+  };
+
+  const onClickHandler = useClickHandler(onFileDoubleClickHandler, () => {});
+
   const FavButton = (
     <button
       className={cn(
@@ -101,7 +113,7 @@ export const FileItem = ({
   return (
     <>
       {view === 'grid' ? (
-        <li className={style.fileSquare} id={file.id}>
+        <li className={style.fileSquare} id={file.id} onClick={onClickHandler}>
           {FavButton}
           {MenuButton}
           <div className={style.previewWrapper}>
@@ -131,7 +143,7 @@ export const FileItem = ({
           </div>
         </li>
       ) : (
-        <li className={style.fileList}>
+        <li className={style.fileList} onClick={onClickHandler}>
           {FavButton}
           {MenuButton}
           <div className={style.fileListPreview}>

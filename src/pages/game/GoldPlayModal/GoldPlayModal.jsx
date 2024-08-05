@@ -7,7 +7,7 @@ import {
   confirmGoldPlay,
   declineGoldPlay,
   selectReachNewLevel,
-  selectStatus,
+  selectStatus
 } from '../../../store/reducers/gameSlice';
 import styles from './GoldPlayModal.module.css';
 
@@ -20,14 +20,18 @@ export default function GoldPlayModal() {
   const handleVibrationClick = useButtonVibration();
 
   useEffect(() => {
-    setIsOpen(reachedNewLevel && status !== 'playing');
+    if (reachedNewLevel && status !== 'playing') {
+      setIsOpen(true);
+    }
   }, [reachedNewLevel, status]);
 
   const confirmGoldGame = () => {
+    setIsOpen(false);
     dispatch(confirmGoldPlay());
   };
 
   const close = () => {
+    setIsOpen(false);
     dispatch(declineGoldPlay());
   };
 

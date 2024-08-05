@@ -55,7 +55,7 @@ export default function ProgressBar({ themeChangeTimeout = 0 }) {
       <div className={styles.description}>
         <span className={styles.level}>
           {reachedNewLevel
-            ? `${t('navigate.reachedLevel')} ${experienceLevel + 1}!`
+            ? `${t('navigate.reachedLevel')} ${experienceLevel}!`
             : `${t('process.level')} ${experienceLevel}`}
         </span>
         <span className={styles.points}>

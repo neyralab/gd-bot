@@ -45,7 +45,7 @@ import style from './style.module.scss';
 const MAX_FILE_SIZE = 268435456;
 
 export const FilesSystemPage = () => {
-  const { t : tSystem } = useTranslation('system');
+  const { t: tSystem } = useTranslation('system');
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const fileRef = useRef(null);
@@ -217,7 +217,10 @@ export const FilesSystemPage = () => {
         {user && human && (
           <div className={style.storage_block}>
             <div className={style.storage_text_container}>
-              <p className={style.storage_text}>{`${user?.points} ${t('dashbord.points')}`}</p>
+              <p
+                className={
+                  style.storage_text
+                }>{`${user?.points} ${t('dashbord.points')}`}</p>
               <p className={style.storage_text}>
                 {human?.percent?.label} {t('dashbord.of')} {human?.total}
               </p>
@@ -249,7 +252,7 @@ export const FilesSystemPage = () => {
 
         {areFilesLoading && (
           <div className={style.loaderWrapper}>
-            <GhostLoader />
+            <GhostLoader texts={[tSystem('loading.uploading')]} />
           </div>
         )}
       </section>

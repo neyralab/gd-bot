@@ -6,7 +6,8 @@ const tasks = [
     id: "JOIN_PONCH_KICK_TG_BOT",
     isDone: false,
     title: "Join PonchKick TG bot",
-    translatePath: "earn.joinTGtempl",
+    text: "Play With PonchKick!",
+    translatePath: "earn.playWith",
     points: 10000,
     imgUrl: "/assets/ponchKick.webp",
     joinLink: "https://t.me/PonchKick_bot/ponchiqs?startapp=6794973908"
@@ -36,7 +37,8 @@ const tasks = [
     id: "JOIN_OBIX_TG_BOT",
     isDone: false,
     title: "Join OBIX TG bot",
-    translatePath: "earn.joinTGtempl",
+    text: "OBIX Power Tap game",
+    translatePath: "earn.tapGame",
     points: 20000,
     imgUrl: "/assets/obix.webp",
     joinLink: "https://t.me/obix_bot?start=1090262402"
@@ -48,7 +50,8 @@ const tasks = [
     id: "JOIN_TON_PARTY_TG_BOT",
     isDone: false,
     title: "Join TonParty TG bot",
-    translatePath: "earn.joinTGtempl",
+    text: "Spin To Win With TonParty",
+    translatePath: "earn.spin",
     points: 20000,
     imgUrl: "/assets/tonParty.webp",
     joinLink: "https://t.me/tonparty_bot/party?startapp=ref_o2aocwpj"
@@ -60,7 +63,8 @@ const tasks = [
     id: "JOIN_HOLD_COIN_TG_BOT",
     isDone: false,
     title: "Join HoldCoin TG bot",
-    translatePath: "earn.joinTGtempl",
+    text: "Hold To Earn, Level Up,& explore",
+    translatePath: "earn.holdToEarn",
     points: 10000,
     imgUrl: "/assets/holdCoin.webp",
     joinLink: "https://t.me/theHoldCoinBot/app?startapp=ref_4khx40cb"
@@ -80,7 +84,8 @@ const tasks = [
     id: "JOIN_PIRATE_CLASH_TG_BOT",
     isDone: false,
     title: "Join PirateClash TG bot",
-    translatePath: "earn.joinTGtempl",
+    text: "Play Pirate Frenzy",
+    translatePath: "earn.play",
     points: 10000,
     imgUrl: "/assets/pirateClash.webp",
     joinLink: "https://t.me/pirate_frenzy_bot/piratefrenzy?startapp=HuYHeX0a5d"
@@ -106,15 +111,16 @@ const tasks = [
 
   //// BILLION_GEMS
 
-  // {
-  //   id: "JOIN_BILLION_GEMS_TG_BOT",
-  //   isDone: false,
-  //   title: "Join BIllion Gems TG bot",
-  //   translatePath: "",
-  //   points: 20000,
-  //   imgUrl: "/assets/billionGems.webp",
-  //   joinLink: "https://t.me/billiongems_bot/?start=66249fffcd2f"
-  // },
+  {
+    id: "JOIN_BILLION_GEMS_TG_BOT",
+    isDone: false,
+    title: "Join BIllion Gems TG bot",
+    text: "Be the First with Billion Gems",
+    translatePath: "earn.beFirst",
+    points: 20000,
+    imgUrl: "/assets/billionGems.webp",
+    joinLink: "https://t.me/billiongems_bot/?start=66249fffcd2f"
+  },
 
   //// MINE_TON
 
@@ -122,7 +128,8 @@ const tasks = [
     id: "JOIN_MINE_TON_TG_BOT",
     isDone: false,
     title: "Join MineTon TG bot",
-    translatePath: "earn.joinTGtempl",
+    text: "Join mineTON bot & Get Instant Airdrop",
+    translatePath: "earn.joinAirdrop",
     points: 10000,
     imgUrl: "/assets/mineTon.webp",
     joinLink: "https://t.me/mineton_app_bot?start=57uwmfrh"
@@ -143,7 +150,8 @@ const tasks = [
     id: "JOIN_POP_LAUNCH_TG_BOT",
     isDone: false,
     title: "Join PopLaunch TG bot",
-    translatePath: "earn.joinTGtempl",
+    text: "Play Poplaunch",
+    translatePath: "earn.play",
     points: 10000,
     imgUrl: "/assets/popLaunch.webp",
     joinLink: "https://t.me/Poplaunchbot?start=r_111666_620915756"
@@ -169,14 +177,26 @@ const tasks = [
 
     /// TON_BOX
 
+  // {
+  //   id: "JOIN_TON_BOX_TG_BOT",
+  //   isDone: false,
+  //   title: "Join TonBox TG bot",
+  //   translatePath: "earn.joinTGtempl",
+  //   points: 10000,
+  //   imgUrl: "/assets/tonBox.webp",
+  //   joinLink: "https://t.me/boom?start=6e4gMePEe4r9P49BaoTgU1"
+  // },
+
+  /// ILLA
+
   {
-    id: "JOIN_TON_BOX_TG_BOT",
+    id: "JOIN_ILLA_TG_BOT",
     isDone: false,
-    title: "Join TonBox TG bot",
-    translatePath: "earn.joinTGtempl",
-    points: 10000,
-    imgUrl: "/assets/tonBox.webp",
-    joinLink: "https://t.me/boom?start=6e4gMePEe4r9P49BaoTgU1"
+    title: "Join ILLA TG bot",
+    translatePath: "earn.playAndWin",
+    points: 20000,
+    imgUrl: "/assets/illa.webp",
+    joinLink: "https://t.me/Toon_Game_Bot?start=6006610593"
   },
 ];
 

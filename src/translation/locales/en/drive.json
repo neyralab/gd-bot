@@ -6,7 +6,7 @@
     "all": "All",
     "favorites": "Favorites",
     "pictures": "Pictures",
-    "dcuments": "Documents",
+    "documents": "Documents",
     "notes": "Notes",
     "audio": "Audio",
     "video": "Video",
@@ -15,7 +15,8 @@
     "isEmpty": "This page is empty",
     "ghostdrive": "GHOSTDRIVE",
     "share": "Share",
-    "linkToFile": "Tap this link to see the file"
+    "linkToFile": "Tap this link to see the file",
+    "games": "Games"
   },
   "month": {
     "jan": "Jan",

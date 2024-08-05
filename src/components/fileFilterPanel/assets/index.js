@@ -6,6 +6,7 @@ import { ReactComponent as FavIcon } from './fav.svg';
 import { ReactComponent as PicturesIcon } from './pictures.svg';
 import { ReactComponent as VideoIcon } from './video.svg';
 import { ReactComponent as NotesIcon } from './notes.svg';
+import { ReactComponent as GameIcon } from './game.svg';
 
 const icons = {
   all: AllIcon,
@@ -15,7 +16,8 @@ const icons = {
   fav: FavIcon,
   pictures: PicturesIcon,
   video: VideoIcon,
-  notes: NotesIcon
+  notes: NotesIcon,
+  game: GameIcon
 };
 
 export default icons;

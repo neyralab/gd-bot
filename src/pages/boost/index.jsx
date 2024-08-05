@@ -106,10 +106,14 @@ export const BoostPage = ({ tariffs, setTariffs }) => {
             ]
           };
           await tonConnectUI.sendTransaction(transaction, {
-            modals: ['before', 'success', 'error'],
+            modals: ['before', 'error'],
             notifications: []
           });
-          toast(t('message.successPayment'));
+          toast.success(t('message.successPayment'), {
+            theme: 'colored',
+            position: 'bottom-center',
+            autoClose: 2500
+          });
         } else {
           setActiveMultiplier(undefined);
           toast.error(t('message.error'), {
@@ -123,9 +127,13 @@ export const BoostPage = ({ tariffs, setTariffs }) => {
       }
     } catch (e) {
       console.log({ errrrrr: e });
-      toast.error(t('message.successPayment'), {
+      const errorMessage = e?.message?.includes('Canceled by the user')
+        ? t('message.canceledTransaction')
+        : t('message.errorAndRetry');
+      toast.error(errorMessage, {
         theme: 'colored',
-        position: 'bottom-center'
+        position: 'bottom-center',
+        autoClose: 2500
       });
     }
   };
@@ -176,7 +184,7 @@ export const BoostPage = ({ tariffs, setTariffs }) => {
 
   return (
     <div className={styles.container}>
-      <Header label={t('boost.reward')} className={styles.backBtn} />
+      <Header label={t('boost.upgradeStorage')} className={styles.backBtn} />
       <div>
         <p className={styles.header}>{t('boost.multiplier')}</p>
         <div className={styles.current_item}>

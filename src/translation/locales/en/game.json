@@ -33,7 +33,8 @@
     "inviteGetBonus": "Invite friends and Get bonus!",
     "inviteFriendCapitalize": "Invite a Friend",
     "yourFriends": "Your Friends",
-    "inviteFriend": "Invite a friend"
+    "inviteFriend": "Invite a friend",
+    "invitePremiumFriend": "Invite 25 Premium friends"
   },
   "earn": {
     "earn": "Earn more points",
@@ -45,9 +46,25 @@
     "joinYouTube": "Join Our YouTube Channel",
     "joinCommunity": "Join Our Community",
     "connectWallet": "Connect Wallet",
-    "joinTGtempl": "Join {name} TG bot",
-    "followTGchannelTemp": "Follow {name} TG channel",
-    "followXtemp": "Follow {name} X Account"
+    "joinTGtempl": "Join {name} Telegram bot",
+    "joinTGtemplShort": "Join {name} TG bot",
+    "followTGchannelTemp": "Follow {name} Telegram channel",
+    "followXtemp": "Follow {name} X Account",
+    "getReward": "You will get GDP for each completed task",
+    "task": "Task",
+    "partner": "Partners",
+    "mission": "Missions",
+    "start": "Start",
+    "claim": "Claim",
+    "playWith": "Play With {name}!",
+    "tapGame": "{name} Power Tap game",
+    "spin": "Spin To Win With {name}",
+    "holdToEarn": "Hold To Earn, Level Up,& explore",
+    "play": "Play {name}",
+    "beFirst": "Be the First with {name}",
+    "joinAirdrop": "Join {name} bot & Get Instant Airdrop",
+    "launchAndGetUSDT": "Launch ${name} &GET REAL USDT",
+    "playAndWin": "Play {name} & Win"
   },
   "airdrop": {
     "airdrop": "Airdrop",
@@ -79,5 +96,9 @@
     "topBonus": "Top 100 Bonus",
     "upload": "Upload 10 files",
     "uploadFile": "Upload file"
+  },
+  "message": {
+    "someTimeForTransaction": "We need some time to review the transaction.",
+    "checkYourPointsLater": "Please check your points in about 5 minutes to see the updated status."
   }
 }

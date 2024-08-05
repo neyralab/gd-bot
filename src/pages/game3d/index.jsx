@@ -7,10 +7,9 @@ import {
   selectTheme,
   startRound,
   selectThemeAccess,
-  addExperience,
+  proceedTap,
   initGame,
   selectIsInitialized,
-  addBalance,
   selectIsTransactionLoading,
   switchTheme,
   gameCleanup
@@ -29,6 +28,8 @@ import Status from '../game/Status/Status';
 import ThemeSwitcherControllers from '../game/ThemeSwitcherControllers/ThemeSwitcherControllers';
 import GameCanvas from './Models/GameCanvas';
 import GoldPlayModal from '../game/GoldPlayModal/GoldPlayModal';
+import GameModal from '../game/GameModal/GameModal';
+import SystemModalWrapper from '../game/SystemModalWrapper/SystemModalWrapper';
 import styles from './styles.module.css';
 
 /** Please, do not add extra selectors or state
@@ -127,8 +128,7 @@ export function Game3DPage() {
     canvasRef.current?.runPushAnimation();
 
     // Update state and timers
-    dispatch(addExperience());
-    dispatch(addBalance(theme.multiplier));
+    dispatch(proceedTap());
   };
 
   const handleEvent = async (event) => {
@@ -144,7 +144,9 @@ export function Game3DPage() {
 
   if (!isInitialized || !userIsInitialized || isTransactionLoading) {
     return (
-      <GhostLoader texts={isTransactionLoading ? [t('message.transaction')]: []}/>
+      <GhostLoader
+        texts={isTransactionLoading ? [t('message.transaction')] : []}
+      />
     );
   }
 
@@ -203,7 +205,11 @@ export function Game3DPage() {
 
       <Menu />
 
-      {/* <GoldPlayModal /> */}
+      <GoldPlayModal />
+
+      <GameModal />
+
+      <SystemModalWrapper />
     </div>
   );
 }

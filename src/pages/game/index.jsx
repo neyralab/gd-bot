@@ -7,10 +7,9 @@ import {
   selectTheme,
   startRound,
   selectThemeAccess,
-  addExperience,
+  proceedTap,
   initGame,
   selectIsInitialized,
-  addBalance,
   selectIsTransactionLoading,
   switchTheme,
   gameCleanup
@@ -23,7 +22,6 @@ import PointsGrowArea from './PointsGrowArea/PointsGrowArea';
 import Timer from './Timer/Timer';
 import Menu from '../../components/Menu/Menu';
 import ProgressBar from './ProgressBar/ProgressBar';
-import Congratulations from './Congratulations/Congratulations';
 import GhostLoader from '../../components/ghostLoader';
 import Counter from './Counter/Counter';
 import Balance from './Balance/Balance';
@@ -107,8 +105,7 @@ export function GamePage() {
     pointsAreaRef.current.runAnimation();
 
     // Update state and timers
-    dispatch(addExperience());
-    dispatch(addBalance(1));
+    dispatch(proceedTap());
   };
 
   const handleEvent = async (event) => {
@@ -185,8 +182,6 @@ export function GamePage() {
       </div>
 
       <Menu />
-
-      <Congratulations />
     </div>
   );
 }

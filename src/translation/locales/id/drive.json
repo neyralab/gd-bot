@@ -6,7 +6,7 @@
     "all": "Semua",
     "favorites": "Favorit",
     "pictures": "Foto-foto",
-    "dcuments": "Dokumen",
+    "documents": "Dokumen",
     "notes": "Catatan",
     "audio": "Audio",
     "video": "Video",
@@ -15,7 +15,8 @@
     "isEmpty": "Halaman ini kosong",
     "ghostdrive": "GHOSTDRIVE",
     "share": "Membagikan",
-    "linkToFile": "Ketuk tautan ini untuk melihat file"
+    "linkToFile": "Ketuk tautan ini untuk melihat file",
+    "games": "Permainan"
   },
   "month": {
     "jan": "Januari",

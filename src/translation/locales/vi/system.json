@@ -37,10 +37,10 @@
     "eachNode": "Mỗi nút đi kèm với cổ phần 10.000 Ghost Drive Tokens, mang lại cho bạn vị trí đáng kể"
   },
   "boost": {
-    "reward": "Phần thưởng tăng cường điểm",
-    "multiplier": "Hệ số hiện tại",
+    "upgradeStorage": "Nâng cấp lưu trữ",
+    "multiplier": "Gói hiện tại",
     "storage": "Lưu trữ",
-    "boostMultiplier": "Hệ số tăng cường",
+    "boostMultiplier": "Thành viên Prime",
     "storageYear": "Lưu trữ mỗi năm",
     "paymentMethod": "Chọn phương thức thanh toán"
   },
@@ -110,11 +110,14 @@
     "download": "Tải xuống",
     "join": "Tham gia",
     "transaction": "Giao dịch có thể mất đến 1 phút.\n\n Vui lòng không đóng cửa sổ \n\n chờ đợi trò chơi bắt đầu.",
-    "conversionSuccess": "Chuyển đổi thành công"
+    "conversionSuccess": "Chuyển đổi thành công",
+    "canceledTransaction": "Giao dịch đã bị hủy bởi người dùng",
+    "reachedMaxTaps": "Chúng tôi đã phát hiện một số lượng hành động đáng ngờ cho mỗi trò chơi. Hãy đảm bảo rằng bạn không sử dụng các ứng dụng của bên thứ ba có thể ảnh hưởng đến các hành động trong trò chơi.",
+    "reward": "Phần thưởng đã được nhận"
   },
   "language": {
     "search": "Tìm kiếm",
-    "cancell": "Hủy bỏ",
+    "cancel": "Hủy bỏ",
     "interface": "Ngôn ngữ giao diện"
   }
 }

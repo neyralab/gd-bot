@@ -11,7 +11,7 @@
   },
   "process": {
     "level": "Cấp độ",
-    "players": "Người chơi",
+    "players": "Game thủ",
     "frens": "Bạn bè",
     "earn": "Kiếm",
     "airdrop": "Airdrop"
@@ -25,15 +25,16 @@
     "rank": "xếp hạng",
     "users": "NGƯỜI DÙNG",
     "usersLow": "Người dùng",
-    "totalUsers": "Tổng số người dùng:",
-    "totalPoints": "Tổng điểm:",
-    "totalTaps": "Tổng số lần nhấp:"
+    "totalUsers": "Người dùng:",
+    "totalPoints": "Mã thông báo:",
+    "totalTaps": "Khai thác:"
   },
   "friends": {
     "inviteGetBonus": "Mời bạn bè và nhận tiền thưởng!",
     "inviteFriendCapitalize": "Mời bạn",
     "yourFriends": "Bạn bè của bạn",
-    "inviteFriend": "Mời một người bạn"
+    "inviteFriend": "Mời một người bạn",
+    "invitePremiumFriend": "Mời 25 bạn Premium"
   },
   "earn": {
     "earn": "Kiếm thêm điểm",
@@ -44,7 +45,26 @@
     "followX": "Theo dõi tài khoản X của chúng tôi",
     "joinYouTube": "Tham gia kênh YouTube của chúng tôi",
     "joinCommunity": "Tham gia cộng đồng của chúng tôi",
-    "connectWallet": "Kết nối ví"
+    "connectWallet": "Kết nối ví",
+    "joinTGtempl": "Tham gia bot Telegram của {name}",
+    "joinTGtemplShort": "Tham gia bot TG của {name}",
+    "followTGchannelTemp": "Theo dõi kênh Telegram của {name}",
+    "followXtemp": "Theo dõi tài khoản X của {name}",
+    "getReward": "Bạn sẽ nhận được GDP cho mỗi nhiệm vụ hoàn thành",
+    "task": "Nhiệm vụ",
+    "partner": "Đối tác",
+    "mission": "Nhiệm vụ",
+    "start": "Bắt đầu",
+    "claim": "Nhận",
+    "playWith": "Chơi với {name}!",
+    "tapGame": "Trò chơi {name} Power Tap",
+    "spin": "Quay để thắng với {name}",
+    "holdToEarn": "Giữ để kiếm tiền, lên cấp và khám phá",
+    "play": "Chơi {name}",
+    "beFirst": "Hãy là người đầu tiên với {name}",
+    "joinAirdrop": "Tham gia bot {name} & nhận ngay Airdrop",
+    "launchAndGetUSDT": "Khởi chạy ${name} & NHẬN USDT THỰC",
+    "playAndWin": "Chơi {name} & Thắng"
   },
   "airdrop": {
     "airdrop": "Airdrop",
@@ -76,5 +96,9 @@
     "topBonus": "Tiền thưởng top 100",
     "upload": "Tải lên 10 tệp",
     "uploadFile": "Tải lên tệp"
+  },
+  "message": {
+    "someTimeForTransaction": "Chúng tôi cần thời gian để xem xét giao dịch.",
+    "checkYourPointsLater": "Vui lòng kiểm tra điểm của bạn sau khoảng 5 phút để xem trạng thái cập nhật."
   }
 }

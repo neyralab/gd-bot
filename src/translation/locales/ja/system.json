@@ -37,10 +37,10 @@
     "eachNode": "各ノードには10,000 Ghost Drive Tokensの持ち分が付いており、重要な地位を提供します"
   },
   "boost": {
-    "reward": "ブーストポイントの報酬",
-    "multiplier": "現在の乗数",
+    "upgradeStorage": "ストレージをアップグレード",
+    "multiplier": "現在のプラン",
     "storage": "ストレージ",
-    "boostMultiplier": "ブースト乗数",
+    "boostMultiplier": "プライムメンバ",
     "storageYear": "年間ストレージ",
     "paymentMethod": "支払い方法を選択"
   },
@@ -110,11 +110,14 @@
     "download": "ダウンロード",
     "join": "参加",
     "transaction": "取引には最大1分かかる場合があります。\n\n ウィンドウを閉じないでください \n\n ゲームの開始を待ってください。",
-    "conversionSuccess": "変換が成功しました"
+    "conversionSuccess": "変換が成功しました",
+    "canceledTransaction": "トランザクションはユーザーによってキャンセルされました",
+    "reachedMaxTaps": "ゲームごとに疑わしい量のアクションが検出されました。ゲーム内のアクションに影響を与える可能性のあるサードパーティ製アプリケーションを使用していないことを確認してください。",
+    "reward": "T報酬が受け取られました"
   },
   "language": {
     "search": "検索",
-    "cancell": "キャンセル",
+    "cancel": "キャンセル",
     "interface": "インターフェースの言語"
   }
 }

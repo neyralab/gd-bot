@@ -15,8 +15,7 @@ import { getUserEffect } from './effects/userEffects';
 import { authorizeUser } from './effects/authorizeUser';
 import { storageListEffect } from './effects/storageEffects';
 import { API_WEB_APP_URL } from './utils/api-urls';
-import { useLanguage, useResetLanguage } from './utils/useLanguage';
-import { isDevEnv } from './utils/isDevEnv';
+import { useLanguage } from './utils/useLanguage';
 
 import SharedLayout from './components/sharedLayout';
 import { StartPage } from './pages/startPage';
@@ -28,9 +27,9 @@ import { Referral } from './pages/referral';
 import { LeaderboardLeague } from './pages/leaderboard/league';
 import { LeaderboardFriends } from './pages/leaderboard/friends';
 import { LanguagePage } from './pages/language';
-import { TaskPage } from './pages/Task';
 import { BoostPage } from './pages/boost';
 import { GamePage } from './pages/game';
+import { GamesPage } from './pages/games';
 import { Game3DPage } from './pages/game3d';
 import { IntroPage } from './pages/intro';
 import EarnPage from './pages/earn';
@@ -44,10 +43,9 @@ export const tg = window.Telegram.WebApp;
 const GA = 'G-VEPRY1XE4E';
 
 function App() {
-  const isDev = isDevEnv();
+  useLanguage();
   const dispatch = useDispatch();
   const [tariffs, setTariffs] = useState(null);
-  isDev ? useLanguage() : useResetLanguage();
 
   const currentUser = {
     initData: tg.initData
@@ -130,7 +128,7 @@ function App() {
           />
           <Route path="/balance" exact element={<Balance />} />
           <Route path="/point-tracker" exact element={<Referral />} />
-          <Route path="/task" exact element={<TaskPage />} />
+          <Route path="/games" exact element={<GamesPage />} />
           <Route path="/language" exact element={<LanguagePage />} />
           <Route
             path="/leadboard/league"

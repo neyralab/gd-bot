@@ -19,44 +19,87 @@ const gameSlice = createSlice({
   name: 'game',
   initialState: {
     isInitializing: false,
+
     isInitialized: false,
+
     contractAddress: null,
+
     gameId: null,
+
     themes: [],
+
     isTransactionLoading: false,
-    status: 'waiting', // 'waiting', 'playing', 'finished';
+
+    /** 'waiting', 'playing', 'finished' */
+    status: 'waiting',
+
     theme: null,
+
     levels: [],
+
     themeAccess: {
       hawk: true, // tier id 1
       gold: false, // tier id 3
       ghost: false // tier id 4
     },
-    balance: { value: 0, label: 0 },
+
+    balance: {
+      value: 0, // taps
+      label: 0 // points
+    },
+
     experienceLevel: 1,
+
     experiencePoints: 0,
+
     maxLevel: 0,
+
+    maxTaps: 1200,
+
     reachedNewLevel: false,
+
     roundTimerTimestamp: null,
+
     roundTimeoutId: null,
+
     lockTimerTimestamp: null,
+
     lockIntervalId: null,
+
     counter: {
       isActive: false,
       count: null,
       isFinished: true
     },
+
     roundFinal: {
       isActive: false,
       roundPoints: null
     },
+
+    /** nextTheme is for animation purposes only */
     nextTheme: {
       theme: null,
       direction: null,
       isSwitching: false
-    }, // for animation purposes only
+    },
+
     pendingGames: [],
-    recentlyFinishedLocker: false /** To prevent accidental tap to start another game when just finished */
+
+    /** To prevent accidental tap to start another game when just finished */
+    recentlyFinishedLocker: false,
+
+    /** Fancy modal
+     * Check GameModal component for parameters
+     * Right now it accepts values: null, 'TIME_FOR_TRANSACTION'
+     */
+    gameModal: null,
+
+    /** Alerts
+     * Check SystemModalWrapper component and it's child SystemModal for parameters
+     * Right now it accepts values: null, 'REACHED_MAX_TAPS'
+     */
+    systemModal: null
   },
   reducers: {
     setPendingGames: (state, { payload }) => {
@@ -144,6 +187,12 @@ const gameSlice = createSlice({
     },
     setRecentlyFinishedLocker: (state, { payload }) => {
       state.recentlyFinishedLocker = payload;
+    },
+    setGameModal: (state, { payload }) => {
+      state.gameModal = payload;
+    },
+    setSystemModal: (state, { payload }) => {
+      state.systemModal = payload;
     }
   }
 });
@@ -305,6 +354,15 @@ export const finishRound = createAsyncThunk(
     const filteredGames = pendingGames.filter((el) => el.uuid !== gameId);
     console.log({ filteredGames });
 
+    const userIsCheater =
+      state.game.balance.value >= state.game.maxTaps &&
+      state.game.theme.id !== 'gold'; // gold game does not have limits on taps
+
+    if (userIsCheater) {
+      dispatch(setSystemModal('REACHED_MAX_TAPS'));
+      return;
+    }
+
     dispatch(setStatus(filteredGames.length ? 'waiting' : 'finished'));
     dispatch(setRoundTimerTimestamp(null));
     dispatch(setRoundTimeoutId(null));
@@ -328,6 +386,10 @@ export const finishRound = createAsyncThunk(
     const taps = state.game.balance.value;
     dispatch(setBalance({ value: 0, label: state.game.balance.label }));
 
+    if (state.game.theme.id === 'ghost') {
+      dispatch(setGameModal('TIME_FOR_TRANSACTION'));
+    }
+
     endGame({ id: gameId, taps: taps })
       .then((data) => {
         dispatch(
@@ -350,8 +412,6 @@ export const finishRound = createAsyncThunk(
         state.game.themes,
         state.game.experienceLevel
       ); // Update the hawk subtheme that depends on level
-
-      dispatch(declineGoldPlay());
     }
 
     if (state.game.theme.id === 'gold') {
@@ -383,8 +443,8 @@ export const startNewFreeGameCountdown = createAsyncThunk(
   }
 );
 
-export const addExperience = createAsyncThunk(
-  'game/addExperience',
+export const proceedTap = createAsyncThunk(
+  'game/proceedTap',
   async (_, { dispatch, getState }) => {
     const state = getState();
     const level = selectLevel(state);
@@ -393,8 +453,8 @@ export const addExperience = createAsyncThunk(
 
     const newPoints = state.game.experiencePoints + 1;
 
-    /** If user reached new level */
     if (newPoints >= level.tapping_to) {
+      /** If user reached new level */
       const newLevel = state.game.experienceLevel + 1;
       if (newLevel >= state.game.maxLevel) return;
 
@@ -402,6 +462,7 @@ export const addExperience = createAsyncThunk(
       dispatch(setReachedNewLevel(true)); // Update the new level trigger
     }
 
+    dispatch(addBalance(state.game.theme.multiplier));
     dispatch(setExperiencePoints(newPoints));
   }
 );
@@ -514,12 +575,21 @@ export const confirmGoldPlay = createAsyncThunk(
 
 export const declineGoldPlay = createAsyncThunk(
   'game/declineGoldPlay',
-  async (_, { dispatch }) => {
+  async (_, { dispatch, getState }) => {
+    const state = getState();
     dispatch(setReachedNewLevel(false));
     dispatch(setThemeAccess({ themeId: 'gold', status: false }));
-    dispatch(
-      switchTheme({ themeId: 'hawk', direction: 'next', timeout: 2500 })
-    );
+
+    if (state.game.theme.id === 'hawk') {
+      // only hawk has subthemes, and we need to update them
+      dispatch(
+        switchTheme({
+          themeId: 'hawk',
+          direction: 'next',
+          timeout: 2500
+        })
+      );
+    }
     dispatch(setStatus('waiting'));
   }
 );
@@ -527,12 +597,6 @@ export const declineGoldPlay = createAsyncThunk(
 export const gameCleanup = createAsyncThunk(
   'game/gameCleanup',
   async (_, { dispatch }) => {
-    /** Right now in cleanup we need only this
-     * In the future we might need to clean all the game.
-     * If it so, please pay attention that we have setTimeouts that are very tricky.
-     * Some of the timeoutIds you will need to store in this slice
-     * and then clearTimeout() them in this function
-     */
     dispatch(setRoundFinal({ roundPoins: null, isActive: false }));
     dispatch(setReachedNewLevel(false));
     dispatch(setStatus('waiting'));
@@ -566,7 +630,9 @@ export const {
   setCounterIsFinished,
   setRoundFinal,
   setMaxLevel,
-  setRecentlyFinishedLocker
+  setRecentlyFinishedLocker,
+  setGameModal,
+  setSystemModal
 } = gameSlice.actions;
 export default gameSlice.reducer;
 

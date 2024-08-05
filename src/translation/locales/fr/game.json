@@ -25,15 +25,16 @@
     "rank": "classement",
     "users": "UTILISATEURS",
     "usersLow": "Utilisateurs",
-    "totalUsers": "Nombre total d'utilisateurs :",
-    "totalPoints": "Nombre total de points :",
-    "totalTaps": "Nombre total de taps :"
+    "totalUsers": "Utilisateurs:",
+    "totalPoints": "Points:",
+    "totalTaps": "Minage:"
   },
   "friends": {
     "inviteGetBonus": "Invitez des amis et obtenez un bonus !",
     "inviteFriendCapitalize": "Invitez un ami",
     "yourFriends": "Vos amis",
-    "inviteFriend": "Inviter un ami"
+    "inviteFriend": "Inviter un ami",
+    "invitePremiumFriend": "Invite 25 amis Premium"
   },
   "earn": {
     "earn": "Gagner plus de points",
@@ -44,7 +45,26 @@
     "followX": "Suivez notre compte X",
     "joinYouTube": "Rejoignez notre chaîne YouTube",
     "joinCommunity": "Rejoignez notre communauté",
-    "connectWallet": "Connecter le portefeuille"
+    "connectWallet": "Connecter le portefeuille",
+    "joinTGtempl": "Rejoignez le bot Telegram de {name}",
+    "joinTGtemplShort": "Rejoignez le bot TG de {name}",
+    "followTGchannelTemp": "Suivez le canal Telegram de {name}",
+    "followXtemp": "Suivez le compte X de {name}",
+    "getReward": "Vous recevrez du PIB pour chaque tâche accomplie",
+    "task": "Tâche",
+    "partner": "Partenaires",
+    "mission": "Missions",
+    "start": "Démarrer",
+    "claim": "Recevoir",
+    "playWith": "Joue avec {name} !",
+    "tapGame": "Jeu de Tap de puissance {name}",
+    "spin": "Tourne pour gagner avec {name}",
+    "holdToEarn": "Maintiens pour gagner, monter de niveau et explorer",
+    "play": "Joue à {name}",
+    "beFirst": "Sois le premier avec {name}",
+    "joinAirdrop": "Rejoins le bot {name} et reçois un airdrop instantané",
+    "launchAndGetUSDT": "Lance ${name} et OBTIENS DES USDT RÉELS",
+    "playAndWin": "Joue à {name} et gagne"
   },
   "airdrop": {
     "airdrop": "Airdrop",
@@ -76,5 +96,9 @@
     "topBonus": "Bonus Top 100",
     "upload": "Télécharger 10 fichiers",
     "uploadFile": "Télécharger un fichier"
+  },
+  "message": {
+    "someTimeForTransaction": "Nous avons besoin de temps pour examiner la transaction.",
+    "checkYourPointsLater": "Veuillez vérifier vos points dans environ 5 minutes pour voir le statut mis à jour."
   }
 }

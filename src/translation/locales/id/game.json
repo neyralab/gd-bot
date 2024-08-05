@@ -14,7 +14,7 @@
     "players": "Pemain",
     "frens": "Frens",
     "earn": "Menghasilkan",
-    "airdrop": "Tetesan udara"
+    "airdrop": "Airdrop"
   },
   "leadboard": {
     "league": "Liga",
@@ -25,15 +25,16 @@
     "rank": "pangkat",
     "users": "PENGGUNA",
     "usersLow": "Pengguna",
-    "totalUsers": "Jumlah pengguna:",
-    "totalPoints": "Jumlah poin:",
-    "totalTaps": "Jumlah ketukan:"
+    "totalUsers": "Pengguna:",
+    "totalPoints": "Token:",
+    "totalTaps": "Penambangan:"
   },
   "friends": {
     "inviteGetBonus": "Undang teman dan Dapatkan bonus!",
     "inviteFriendCapitalize": "Undang Seorang teman",
     "yourFriends": "Teman Anda",
-    "inviteFriend": "Undang Seorang teman"
+    "inviteFriend": "Undang Seorang teman",
+    "invitePremiumFriend": "Undang 25 teman Premium"
   },
   "earn": {
     "earn": "Hasilkan lebih banyak poin",
@@ -45,9 +46,25 @@
     "joinYouTube": "Bergabunglah dengan Saluran YouTube Kami",
     "joinCommunity": "Bergabunglah dengan Komunitas Kami",
     "connectWallet": "Hubungkan Dompet",
-    "joinTGtempl": "Bergabung dengan bot TG {name}",
-    "followTGchannelTemp": "Ikuti saluran TG {name}",
-    "followXtemp": "Ikuti Akun X {name}"
+    "joinTGtempl": "Bergabung dengan bot Telegram {name}",
+    "joinTGtemplShort": "Bergabung dengan bot TG {name}",
+    "followTGchannelTemp": "Ikuti saluran Telegram {name}",
+    "followXtemp": "Ikuti Akun X {name}",
+    "getReward": "Anda akan mendapatkan GDP untuk setiap tugas yang diselesaikan",
+    "task": "Tugas",
+    "partner": "Mitra",
+    "mission": "Misi",
+    "start": "Mulai",
+    "claim": "Menerima",
+    "playWith": "Bermain dengan {name}!",
+    "tapGame": "Game Tap Daya {name}",
+    "spin": "Putar untuk Menang dengan {name}",
+    "holdToEarn": "Tahan untuk Mendapatkan, Naik Level, & Jelajahi",
+    "play": "Mainkan {name}",
+    "beFirst": "Jadilah yang Pertama dengan {name}",
+    "joinAirdrop": "Bergabung dengan bot {name} & Dapatkan Airdrop Instan",
+    "launchAndGetUSDT": "Luncurkan ${name} & DAPATKAN USDT ASLI",
+    "playAndWin": "Mainkan {name} & Menangkan"
   },
   "airdrop": {
     "airdrop": "Tetesan udara",
@@ -79,5 +96,9 @@
     "topBonus": "100 Bonus Teratas",
     "upload": "Unggah 10 file",
     "uploadFile": "Unggah data"
+  },
+  "message": {
+    "someTimeForTransaction": "Kami perlu waktu untuk meninjau transaksi tersebut.",
+    "checkYourPointsLater": "Silakan periksa poin Anda dalam waktu sekitar 5 menit untuk melihat status terkini."
   }
 }

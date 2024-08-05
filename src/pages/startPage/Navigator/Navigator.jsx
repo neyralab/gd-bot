@@ -32,8 +32,8 @@ export default function Navigator({
 
   const HIDDEN_OPTION = useMemo(() => {
     const array = [];
-    !isEnabledConverter && array.push(5);
-    !isEnabledMultilanguage && array.push(6);
+    !isEnabledConverter && array.push(4);
+    !isEnabledMultilanguage && array.push(5);
     return array;
   }, []);
 
@@ -45,7 +45,7 @@ export default function Navigator({
     const list = [
       {
         id: 1,
-        name: t('dashboard.drive'),
+        name: 'G: Drive',
         icon: <DriveIcon />,
         html: (<span className={CN(styles.actionBtn, styles.addBt)}>{human.percent.label}</span>),
         onClick: () => navigate('/file-upload')
@@ -66,20 +66,13 @@ export default function Navigator({
       // },
       {
         id: 3,
-        name: t('dashboard.tasks'),
-        icon: <RewardsIcon />,
-        html: (<span className={styles.actionBtn}>{tasks?.length || 0}</span>),
-        onClick: () => navigate('/task')
-      },
-      {
-        id: 4,
         name: t('dashboard.boost'),
         icon: <BoostIcon />,
         html: (<span className={styles.actionBtn}>{`X${storage.multiplier}`}</span>),
         onClick: () => navigate('/boost')
       },
       {
-        id: 5,
+        id: 4,
         name: t('dashboard.conver'),
         icon: <ConvertIcon />,
         html: (<span className={styles.actionBtn}>{t('dashboard.go')}</span>),
@@ -93,7 +86,7 @@ export default function Navigator({
       //   onClick: () => navigate('/nodes-welcome')
       // }
       {
-        id: 6,
+        id: 5,
         name: t('dashboard.language'),
         icon: <LanguageIcon />,
         html: (<span className={styles.actionBtn}>

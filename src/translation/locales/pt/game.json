@@ -11,7 +11,7 @@
   },
   "process": {
     "level": "Nível",
-    "players": "Jogadores",
+    "players": "Jogas",
     "frens": "Amigos",
     "earn": "Ganhar",
     "airdrop": "Airdrop"
@@ -25,15 +25,16 @@
     "rank": "classificação",
     "users": "USUÁRIOS",
     "usersLow": "Usuários",
-    "totalUsers": "Total de usuários:",
-    "totalPoints": "Total de pontos:",
-    "totalTaps": "Total de toques:"
+    "totalUsers": "Usuários:",
+    "totalPoints": "Tokens:",
+    "totalTaps": "Mineração:"
   },
   "friends": {
     "inviteGetBonus": "Convide amigos e ganhe bônus!",
     "inviteFriendCapitalize": "Convide um Amigo",
     "yourFriends": "Seus Amigos",
-    "inviteFriend": "Convide um amigo"
+    "inviteFriend": "Convide um amigo",
+    "invitePremiumFriend": "Convide 25 amigos Premium"
   },
   "earn": {
     "earn": "Ganhe mais pontos",
@@ -45,9 +46,25 @@
     "joinYouTube": "Junte-se ao nosso Canal do YouTube",
     "joinCommunity": "Junte-se à Nossa Comunidade",
     "connectWallet": "Conectar Carteira",
-    "joinTGtempl": "Junte-se ao bot TG de {name}",
-    "followTGchannelTemp": "Siga o canal TG de {name}",
-    "followXtemp": "Siga a conta X de {name}"
+    "joinTGtempl": "Junte-se ao bot Telegram de {name}",
+    "joinTGtemplShort": "Junte-se ao bot TG de {name}",
+    "followTGchannelTemp": "Siga o canal Telegram de {name}",
+    "followXtemp": "Siga a conta X de {name}",
+    "getReward": "Você receberá PIB por cada tarefa concluída",
+    "task": "Tarefa",
+    "partner": "Parceiros",
+    "mission": "Missões",
+    "start": "Iniciar",
+    "claim": "Receber",
+    "playWith": "Jogue com {name}!",
+    "tapGame": "Jogo de Toque {name}",
+    "spin": "Gire para ganhar com {name}",
+    "holdToEarn": "Segure para ganhar, subir de nível e explorar",
+    "play": "Jogue {name}",
+    "beFirst": "Seja o primeiro com {name}",
+    "joinAirdrop": "Junte-se ao bot {name} e receba airdrop instantâneo",
+    "launchAndGetUSDT": "Lance {name} e GANHE USDT REAL",
+    "playAndWin": "Jogue {name} e ganhe"
   },
   "airdrop": {
     "airdrop": "Airdrop",
@@ -79,5 +96,9 @@
     "topBonus": "Bônus Top 100",
     "upload": "Carregar 10 arquivos",
     "uploadFile": "Carregar arquivo"
+  },
+  "message": {
+    "someTimeForTransaction": "Precisamos de algum tempo para analisar a transação.",
+    "checkYourPointsLater": "Please check your points in about 5 minutes to see the updated status."
   }
 }

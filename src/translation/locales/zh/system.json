@@ -37,10 +37,10 @@
     "eachNode": "每个节点都附带10,000个Ghost Drive代币的股份，给您一个显著的位置"
   },
   "boost": {
-    "reward": "提升积分奖励",
-    "multiplier": "当前倍增器",
+    "upgradeStorage": "升级存储",
+    "multiplier": "当前计划",
     "storage": "存储",
-    "boostMultiplier": "提升倍增器",
+    "boostMultiplier": "Prime 会员",
     "storageYear": "每年的存储",
     "paymentMethod": "选择支付方式"
   },
@@ -110,11 +110,14 @@
     "download": "下载",
     "join": "加入",
     "transaction": "交易可能需要最多1分钟。\n\n 请不要关闭窗口 \n\n 等待游戏开始。",
-    "conversionSuccess": "转换成功"
+    "conversionSuccess": "转换成功",
+    "canceledTransaction": "交易被用户取消了",
+    "reachedMaxTaps": "我们检测到每个游戏中存在大量可疑操作。请确保您没有使用可能影响游戏内操作的第三方应用程序。",
+    "reward": "奖励已收到"
   },
   "language": {
     "search": "搜索",
-    "cancell": "取消",
+    "cancel": "取消",
     "interface": "界面语言"
   }
 }

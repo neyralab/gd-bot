@@ -18,7 +18,7 @@ export default function Header() {
   return (
     <header className={styles.pageHeader}>
       <span className={styles.rank}>
-        { location.pathname === '/leadboard/league' && (`Rank ${user?.rank}`) }
+        { (location.pathname === '/leadboard/league' && user?.rank) && (`Rank ${user?.rank}`) }
       </span>
       <div className={styles.navigation}>
         <NavLink

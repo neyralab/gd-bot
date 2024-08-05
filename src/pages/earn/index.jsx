@@ -1,8 +1,12 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useDispatch } from 'react-redux';
 
 import { tasks as tasksFromFile } from './tasks';
 import { isEnabledPartners } from '../../utils/featureFlags';
-import { checkAllEarnTasks } from '../../effects/EarnEffect';
+import { checkAllEarnTasks, getAllPartners } from '../../effects/EarnEffect';
+import { getAllTasks, getBalanceEffect } from '../../effects/balanceEffect';
+import { handleTasks } from '../../store/reducers/taskSlice';
 
 import Menu from '../../components/Menu/Menu';
 import Tasks from './Tasks/index';
@@ -16,7 +20,11 @@ import styles from './styles.module.css';
 const DEFAULT_SEGMENT_OPTION = 'task'
 
 export default function EarnPage() {
+  const dispatch = useDispatch();
+  const { t } = useTranslation('game');
   const [tasks, setTasks] = useState([]);
+  const [missions, setMissions] = useState([]);
+  const [partners, setPartners] = useState([]);
   const [activeSegment, setActiveSegment] = useState(DEFAULT_SEGMENT_OPTION);
   const [modalSelectedTask, setModalSelectedTask] = useState(null);
   const modalRef = useRef(null);
@@ -54,7 +62,37 @@ export default function EarnPage() {
     }
   };
 
+  const getMission = async () => {
+    try {
+      const allMissions = await getAllTasks();
+      dispatch(handleTasks(allMissions));
+      const {
+        data: { data: userTasks }
+      } = await getBalanceEffect();
+      const realTasks = allMissions.map((task) =>
+        userTasks.find((userTask) => task.action === userTask?.point?.action)
+          ? { ...task, done: true }
+          : { ...task, done: false }
+      );
+      setMissions(realTasks.sort((a, b) => a.amount - b.amount));
+    } catch (error) {
+      console.error('Error fetching tasks:', error);
+      setMissions([]);
+    }
+  }
+
+  const getPartners = async () => {
+    try {
+      const partnersList = await getAllPartners();
+      setPartners(partnersList || []);
+    } catch (error) {
+      setPartners([]);
+    }
+  }
+
   useEffect(() => {
+    getPartners();
+    getMission();
     getTasks();
   }, []);
 
@@ -63,22 +101,22 @@ export default function EarnPage() {
     !isEnabledPartners && disabledTabs.push('partner');
     return [
       {
-        title: 'Task',
+        title: t('earn.task'),
         name: 'task',
         onClick: () => { setActiveSegment('task') }
       },
       {
-        title: 'Partners',
+        title: t('earn.partner'),
         name: 'partner',
         onClick: () => { setActiveSegment('partner') }
       },
       {
-        title: 'Missions',
+        title: t('earn.mission'),
         name: 'mission',
         onClick: () => { setActiveSegment('mission') }
       }
     ].filter((tab) => !disabledTabs.includes(tab.name))
-  }, []);
+  }, [t]);
 
   const renderList = () => {
     switch (activeSegment) {
@@ -94,13 +132,14 @@ export default function EarnPage() {
       case 'partner':
         return (
           <Partners
-            getTasks={getTasks}
-            setModalSelectedTask={setModalSelectedTask}
+            partners={partners}
+            setPartners={setPartners}
           />
         );
       case 'mission':
         return (
           <Mission
+            tasks={missions}
             setModalSelectedTask={setModalSelectedTask}
           />
         );
@@ -122,8 +161,8 @@ export default function EarnPage() {
         <h1>{t('earn.earn')}</h1>
       </div> */}
 
-      <h1 className={styles.title}>Earn more points</h1>
-      <p className={styles.text}>You will get GDP for each completed task</p>
+      <h1 className={styles.title}>{t('earn.earn')}</h1>
+      <p className={styles.text}>{t('earn.getReward')}</p>
 
       <Segmented
         options={segmentOption}

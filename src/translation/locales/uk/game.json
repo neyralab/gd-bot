@@ -25,15 +25,16 @@
     "rank": "рейтинг",
     "users": "КОРИСТУВАЧІ",
     "usersLow": "Користувачі",
-    "totalUsers": "Загальна кількість користувачів:",
-    "totalPoints": "Загальна кількість балів:",
-    "totalTaps": "Загальна кількість натискань:"
+    "totalUsers": "Користувачі:",
+    "totalPoints": "Бали:",
+    "totalTaps": "Майнінг:"
   },
   "friends": {
     "inviteGetBonus": "Запросіть друзів і отримайте бонус!",
     "inviteFriendCapitalize": "Запросіть Друга",
     "yourFriends": "Ваші Друзі",
-    "inviteFriend": "Запросіть друга"
+    "inviteFriend": "Запросіть друга",
+    "invitePremiumFriend": "Запросіть 25 друзів з Premium"
   },
   "earn": {
     "earn": "Заробляйте більше балів",
@@ -44,7 +45,26 @@
     "followX": "Слідкуйте за нашим обліковим записом X",
     "joinYouTube": "Приєднуйтесь до нашого YouTube-каналу",
     "joinCommunity": "Приєднуйтесь до нашої спільноти",
-    "connectWallet": "Підключіть гаманець"
+    "connectWallet": "Підключіть гаманець",
+    "joinTGtempl": "Приєднуйтеся до Telegram-бота {name}",
+    "joinTGtemplShort": "Приєднуйтеся до TG-бота {name}",
+    "followTGchannelTemp": "Слідуйте за каналом {name} в Telegram",
+    "followXtemp": "Слідуйте за акаунтом {name} в X",
+    "getReward": "Ви отримаєте GDP за кожне виконане завдання",
+    "task": "Завдання",
+    "partner": "Партнери",
+    "mission": "Місії",
+    "start": "Старт",
+    "claim": "Отримати",
+    "playWith": "Грай з {name}!",
+    "tapGame": "Гра на швидкість {name}",
+    "spin": "Крути й вигравай з {name}",
+    "holdToEarn": "Тримай, щоб заробляти, підвищувати рівень та досліджувати",
+    "play": "Грай у {name}",
+    "beFirst": "Будь першим з {name}",
+    "joinAirdrop": "Приєднуйся до бота {name} і отримуй миттєвий airdrop",
+    "launchAndGetUSDT": "Запусти {name} і ОТРИМАЙ СПРАВЖНІ USDT",
+    "playAndWin": "Грай у {name} і вигравай"
   },
   "airdrop": {
     "airdrop": "Airdrop",
@@ -76,5 +96,9 @@
     "topBonus": "Бонус топ 100",
     "upload": "Завантажте 10 файлів",
     "uploadFile": "Завантажити файл"
+  },
+  "message": {
+    "someTimeForTransaction": "Нам потрібен час, щоб перевірити трансакцію.",
+    "checkYourPointsLater": "Будь ласка, перевірте свої бали приблизно через 5 хвилин, щоб побачити оновлений статус."
   }
 }

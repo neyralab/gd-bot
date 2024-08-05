@@ -11,10 +11,10 @@
   },
   "process": {
     "level": "Nivel",
-    "players": "Jugadores",
+    "players": "Jogas",
     "frens": "Frens",
     "earn": "Ganar",
-    "airdrop": "Entrega por paracaídas"
+    "airdrop": "Airdrop"
   },
   "leadboard": {
     "league": "Liga",
@@ -25,15 +25,16 @@
     "rank": "rango",
     "users": "USUARIOS",
     "usersLow": "Usuarios",
-    "totalUsers": "Usuarios totales:",
-    "totalPoints": "Puntos totales:",
-    "totalTaps": "Taps totales:"
+    "totalUsers": "Usuarios:",
+    "totalPoints": "Tokens:",
+    "totalTaps": "Minería:"
   },
   "friends": {
     "inviteGetBonus": "¡Invita amigos y obtén bonificación!",
     "inviteFriendCapitalize": "Invita a un amigo",
     "yourFriends": "Tus amigos",
-    "inviteFriend": "Invita a un amigo"
+    "inviteFriend": "Invita a un amigo",
+    "invitePremiumFriend": "Invita a 25 amigos Premium"
   },
   "earn": {
     "earn": "Gana más puntos",
@@ -45,9 +46,25 @@
     "joinYouTube": "Únete a nuestro canal de YouTube",
     "joinCommunity": "Únete a nuestra comunidad",
     "connectWallet": "Conectar billetera",
-    "joinTGtempl": "Únete al bot TG de {name}",
-    "followTGchannelTemp": "Sigue el canal TG de {name}",
-    "followXtemp": "Sigue la cuenta X de {name}"
+    "joinTGtempl": "Únete al bot Telegram de {name}",
+    "joinTGtemplShort": "Únete al bot TG de {name}",
+    "followTGchannelTemp": "Sigue el canal Telegram de {name}",
+    "followXtemp": "Sigue la cuenta X de {name}",
+    "getReward": "Obtendrás GDP por cada tarea completada",
+    "task": "Tarea",
+    "partner": "Socios",
+    "mission": "Misiones",
+    "start": "Iniciar",
+    "claim": "Recibir",
+    "playWith": "¡Juega con {name}!",
+    "tapGame": "Juego de Tap de poder {name}",
+    "spin": "Gira para ganar con {name}",
+    "holdToEarn": "Mantén para ganar, subir de nivel y explorar",
+    "play": "Juega {name}",
+    "beFirst": "Sé el primero con {name}",
+    "joinAirdrop": "Únete al bot de {name} y recibe un airdrop instantáneo",
+    "launchAndGetUSDT": "Lanza ${name} y OBTÉN USDT REAL",
+    "playAndWin": "Juega {name} y gana"
   },
   "airdrop": {
     "airdrop": "Entrega por paracaídas",
@@ -79,5 +96,9 @@
     "topBonus": "Bono de los 100 mejores",
     "upload": "Sube 10 archivos",
     "uploadFile": "Subir archivo"
+  },
+  "message": {
+    "someTimeForTransaction": "Necesitamos algo de tiempo para revisar la transacción.",
+    "checkYourPointsLater": "Verifique sus puntos en aproximadamente 5 minutos para ver el estado actualizado."
   }
 }

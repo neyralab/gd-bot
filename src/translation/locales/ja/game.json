@@ -33,7 +33,8 @@
     "inviteGetBonus": "友達を招待してボーナスを獲得！",
     "inviteFriendCapitalize": "友達を招待",
     "yourFriends": "あなたの友達",
-    "inviteFriend": "友達を招待する"
+    "inviteFriend": "友達を招待する",
+    "invitePremiumFriend": "25人のプレミアムフレンドを招待"
   },
   "earn": {
     "earn": "もっとポイントを稼ぐ",
@@ -44,7 +45,26 @@
     "followX": "Xアカウントをフォロー",
     "joinYouTube": "YouTubeチャンネルに参加",
     "joinCommunity": "コミュニティに参加",
-    "connectWallet": "ウォレットを接続"
+    "connectWallet": "ウォレットを接続",
+    "joinTGtempl": "{name}のTelegramボットに参加",
+    "joinTGtemplShort": "{name}のTGボットに参加",
+    "followTGchannelTemp": "{name}のTelegramチャンネルをフォロー",
+    "followXtemp": "{name}のXアカウントをフォロー",
+    "getReward": "完了したタスクごとにGDPを獲得できます",
+    "task": "タスク",
+    "partner": "パートナー",
+    "mission": "ミッション",
+    "start": "開始",
+    "claim": "受け取る",
+    "playWith": "{name}と遊ぼう！",
+    "tapGame": "{name} パワータップゲーム",
+    "spin": "{name}で回して勝とう",
+    "holdToEarn": "保持して稼ぎ、レベルアップして探索しよう",
+    "play": "{name}をプレイ",
+    "beFirst": "{name}で最初になろう",
+    "joinAirdrop": "{name}ボットに参加して、すぐにエアドロップをゲット",
+    "launchAndGetUSDT": "{name}を起動して、本物のUSDTを手に入れよう",
+    "playAndWin": "{name}をプレイして勝とう"
   },
   "airdrop": {
     "airdrop": "エアドロップ",
@@ -76,5 +96,9 @@
     "topBonus": "トップ100ボーナス",
     "upload": "10ファイルをアップロード",
     "uploadFile": "ファイルをアップロード"
+  },
+  "message": {
+    "someTimeForTransaction": "取引を確認するには少し時間が必要です。",
+    "checkYourPointsLater": "更新されたステータスを確認するには、約 5 分後にポイントを確認してください。"
   }
 }

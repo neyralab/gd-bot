@@ -33,7 +33,8 @@
     "inviteGetBonus": "邀请朋友并获得奖金！",
     "inviteFriendCapitalize": "邀请朋友",
     "yourFriends": "你的朋友们",
-    "inviteFriend": "邀请朋友"
+    "inviteFriend": "邀请朋友",
+    "invitePremiumFriend": "邀请25位高级好友"
   },
   "earn": {
     "earn": "赚取更多积分",
@@ -45,9 +46,25 @@
     "joinYouTube": "加入我们的YouTube频道",
     "joinCommunity": "加入我们的社区",
     "connectWallet": "连接钱包",
-    "joinTGtempl": "加入 {name} TG 机器人",
-    "followTGchannelTemp": "关注 {name} TG 频道",
-    "followXtemp": "关注 {name} 的 X 帐户"
+    "joinTGtempl": "加入 {name} Telegram 机器人",
+    "joinTGtemplShort": "加入 {name} TG 机器人",
+    "followTGchannelTemp": "关注 {name} Telegram 频道",
+    "followXtemp": "关注 {name} 的 X 帐户",
+    "getReward": "完成每项任务后，您将获得GDP",
+    "task": "任务",
+    "partner": "合作伙伴",
+    "mission": "任务",
+    "start": "开始",
+    "claim": "接收",
+    "playWith": "与 {name} 一起玩！",
+    "tapGame": "{name} 力量点击游戏",
+    "spin": "与 {name} 一起旋转赢取",
+    "holdToEarn": "按住以赚取，升级并探索",
+    "play": "玩 {name}",
+    "beFirst": "成为第一个拥有 {name} 的人",
+    "joinAirdrop": "加入 {name} 机器人并立即获得空投",
+    "launchAndGetUSDT": "启动 ${name} 并获得真实的 USDT",
+    "playAndWin": "玩 {name} 并赢取"
   },
   "airdrop": {
     "airdrop": "空投",
@@ -79,5 +96,9 @@
     "topBonus": "前100名奖金",
     "upload": "上传10个文件",
     "uploadFile": "上传文件"
+  },
+  "message": {
+    "someTimeForTransaction": "我们需要一些时间来审核该交易。",
+    "checkYourPointsLater": "请在大约 5 分钟后检查您的积分以查看更新的状态。"
   }
 }

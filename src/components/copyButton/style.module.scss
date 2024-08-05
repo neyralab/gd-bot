@@ -1,0 +1,11 @@
+.copyButton {
+  cursor: pointer;
+  width: 24px;
+  height: 24px;
+  color: #fff;
+  & svg {
+    width: 24px;
+    height: 24px;
+    margin-left: 10px;
+  }
+}

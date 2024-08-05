@@ -1,5 +1,6 @@
 import { API_PATH } from '../utils/api-urls';
 import axiosInstance from './axiosInstance';
+import { filterUniqueByParam } from '../utils/array';
 
 export const checkAllEarnTasks = async () => {
   const url = `${API_PATH}/user/earn`;
@@ -63,6 +64,32 @@ export const checkXJoin = async () => {
     } else {
       throw Error();
     }
+  } catch (e) {
+    return e?.response?.data?.errors;
+  }
+};
+
+export const getAllPartners = async () => {
+  const url = `${API_PATH}/aff/missions/active-goals`;
+
+  try {
+    const { data } = await axiosInstance.get(url);
+    if (Array.isArray(data)) {
+      const filteredList = filterUniqueByParam(data, 'name');
+      return filteredList;
+    }
+    return data
+  } catch (e) {
+    return e?.response?.data?.errors;
+  }
+};
+
+export const checkTaskIsDone = async (id) => {
+  const url = `${API_PATH}/aff/missions/verify/${id}`;
+
+  try {
+    const { data } = await axiosInstance.post(url);
+    return data
   } catch (e) {
     return e?.response?.data?.errors;
   }

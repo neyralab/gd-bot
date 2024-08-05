@@ -37,10 +37,10 @@
     "eachNode": "Chaque nœud est livré avec une participation de 10 000 Tokens Ghost Drive, vous donnant une position significative"
   },
   "boost": {
-    "reward": "Récompenses de points de boost",
-    "multiplier": "Multiplicateur actuel",
+    "upgradeStorage": "Mettre à niveau le stockage",
+    "multiplier": "Plan actuel",
     "storage": "Stockage",
-    "boostMultiplier": "Multiplicateur de boost",
+    "boostMultiplier": "Membres Prime",
     "storageYear": "Stockage par an",
     "paymentMethod": "Choisir le mode de paiement"
   },
@@ -110,11 +110,14 @@
     "download": "Télécharger",
     "join": "Rejoindre",
     "transaction": "La transaction peut prendre jusqu'à 1 minute.\n\n Veuillez ne pas fermer la fenêtre \n\n attendez que le jeu commence.",
-    "conversionSuccess": "La conversion a été un succès"
+    "conversionSuccess": "Conversion réussie",
+    "canceledTransaction": "La transaction a été annulée par l'utilisateur",
+    "reachedMaxTaps": "Nous avons détecté un nombre suspect d'actions par jeu. Assurez-vous de ne pas utiliser d'applications tierces susceptibles d'affecter les actions en jeu.",
+    "reward": "La récompense a été reçue"
   },
   "language": {
     "search": "Rechercher",
-    "cancell": "Annuler",
+    "cancel": "Annuler",
     "interface": "Langue de l'interface"
   }
 }

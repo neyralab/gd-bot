@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { fomatNumber, getNumbers } from '../../../utils/string';
 import { MAX_POINT_COUNT } from '../../../pages/balance';
@@ -7,6 +8,7 @@ import { useClickOutside } from '../../../utils/useClickOutside';
 import styles from './styles.module.css';
 
 export const TextInput = ({ pointCount, setPointCount, pointBalance }) => {
+  const { t } = useTranslation('system');
   const textInputRef = useRef(null);
   const [show, setShow] = useState(false);
 
@@ -61,7 +63,7 @@ export const TextInput = ({ pointCount, setPointCount, pointBalance }) => {
         /> :
         <p className={styles.count}>{pointCount || 0}</p>
       }
-      <span className={styles.text}>Enter points</span>
+      <span className={styles.text}>{t('convert.enterPoints')}</span>
     </div>
   );
 };

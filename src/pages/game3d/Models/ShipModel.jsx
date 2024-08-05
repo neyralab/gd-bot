@@ -36,6 +36,8 @@ const ShipModel = forwardRef((_, ref) => {
   const initialContext = useRef(null);
   const pushContext = useRef(null);
   const finishContext = useRef(null);
+  const finishTimeout = useRef(null);
+  const themeChangeContext = useRef(null);
   const accentDetails2MaterialRef = useRef(null);
 
   const [clock] = useState(() => new THREE.Clock());
@@ -130,6 +132,8 @@ const ShipModel = forwardRef((_, ref) => {
   };
 
   const runInitialAnimation = () => {
+    stopAllAnimations();
+
     if (shipModel.animations.length) {
       mixer.current = new THREE.AnimationMixer(shipModel.scene); // action.reset() does not help to reset animation completely
       const action = mixer.current.clipAction(shipModel.animations[0]);
@@ -142,17 +146,11 @@ const ShipModel = forwardRef((_, ref) => {
         action.play();
       }, 500);
 
-      stopInitialAnimation();
-      stopFloatingAnimation();
-      stopFinishAnimation();
-
       initialContext.current = gsap.context(() => {
         if (shipGroupRef.current) {
           const tl = gsap.timeline({
             onComplete: () => {
-              if (!flyTimeout || !flyTimeout.current) {
-                runFloatingAnimation({ cleanupPower: 1 });
-              }
+              runFloatingAnimation({ cleanupPower: 1 });
             }
           });
           tl.to(shipGroupRef.current.position, {
@@ -181,6 +179,7 @@ const ShipModel = forwardRef((_, ref) => {
   };
 
   const runThemeChange = () => {
+    stopAllAnimations();
     /** Do not run flyIn/flyOut animation if theme change conencted with reaching new level */
     if (nextTheme.direction === 'updateCurrent') {
       setThemeMaterials(nextTheme.theme || theme);
@@ -191,59 +190,59 @@ const ShipModel = forwardRef((_, ref) => {
     const action = mixer.current.clipAction(shipModel.animations[0]);
     if (!action) return;
 
-    stopFloatingAnimation();
-    stopFlyAnimation();
-    stopPushAnimation();
-
     action.setLoop(THREE.LoopOnce);
     action.clampWhenFinished = true;
     action.time = 0;
     action.setEffectiveTimeScale(3.5);
     action.play();
 
-    gsap.to(shipGroupRef.current.rotation, {
-      x: 0,
-      duration: 1,
-      ease: `power1.inOut`
-    });
+    themeChangeContext.current = gsap.context(() => {
+      gsap.to(shipGroupRef.current.rotation, {
+        x: 0,
+        duration: 1,
+        ease: `power1.inOut`
+      });
 
-    /** New */
-    gsap.to(shipGroupRef.current.position, {
-      y: 30,
-      duration: 1,
-      ease: 'back.in(1)',
-      delay: 0.2,
-      onComplete: () => {
-        shipGroupRef.current.rotation.y = -Math.PI * 2.5;
-        shipGroupRef.current.position.y = -20;
-        shipGroupRef.current.position.z = 0;
-        runInitialAnimation();
-        setThemeMaterials(nextTheme.theme || theme);
-      }
+      /** New */
+      gsap.to(shipGroupRef.current.position, {
+        y: 30,
+        duration: 1,
+        ease: 'back.in(1)',
+        delay: 0.2,
+        onComplete: () => {
+          shipGroupRef.current.rotation.y = -Math.PI * 2.5;
+          shipGroupRef.current.position.y = -20;
+          shipGroupRef.current.position.z = 0;
+          runInitialAnimation();
+          setThemeMaterials(nextTheme.theme || theme);
+        }
+      });
     });
   };
 
+  const stopThemeChangeAnimation = () => {
+    if (themeChangeContext.current) {
+      themeChangeContext.current.kill();
+      themeChangeContext.current = null;
+    }
+  };
+
   const runFloatingAnimation = ({ cleanupPower = 1 }) => {
-    stopFloatingAnimation();
-    stopInitialAnimation();
-    stopFlyAnimation();
-    stopPushAnimation();
+    stopAllAnimations();
 
     if (!shipGroupRef.current) return;
     floatingContext.current = gsap.context(() => {
       /** Cleanup */
       gsap.to(shipGroupRef.current.position, {
         z: 0,
+        y: 0,
+        x: 0,
         duration: 1,
         ease: `power${cleanupPower}.inOut`
       });
 
       gsap.to(shipGroupRef.current.rotation, {
         y: -Math.PI / 2,
-        duration: 2,
-        ease: `power${cleanupPower}.inOut`
-      });
-      gsap.to(shipGroupRef.current.rotation, {
         x: 0,
         duration: 2,
         ease: `power${cleanupPower}.inOut`
@@ -281,8 +280,7 @@ const ShipModel = forwardRef((_, ref) => {
   };
 
   const runFlyAnimation = () => {
-    stopInitialAnimation();
-    stopFloatingAnimation();
+    stopAllAnimations();
 
     flyingContext.current = gsap.context(() => {
       /** Cleanup */
@@ -310,6 +308,9 @@ const ShipModel = forwardRef((_, ref) => {
   };
 
   const stopFlyAnimation = () => {
+    if (flyTimeout.current) {
+      clearTimeout(flyTimeout.current);
+    }
     if (flyingContext.current) {
       flyingContext.current.kill();
       flyingContext.current = null;
@@ -317,7 +318,12 @@ const ShipModel = forwardRef((_, ref) => {
   };
 
   const runShipPushAnimation = () => {
+    // Do not use stopAllAnimations, because we need fly animation to be continued
+    stopInitialAnimation();
     stopPushAnimation();
+    stopFloatingAnimation();
+    stopFinishAnimation();
+    stopThemeChangeAnimation();
 
     pushContext.current = gsap.context(() => {
       gsap.to(shipGroupRef.current.position, {
@@ -342,10 +348,7 @@ const ShipModel = forwardRef((_, ref) => {
   };
 
   const runFinishAnimation = () => {
-    stopPushAnimation();
-    stopFlyAnimation();
-    stopFloatingAnimation();
-    stopInitialAnimation();
+    stopAllAnimations();
 
     finishContext.current = gsap.context(() => {
       /** Cleanup */
@@ -357,10 +360,6 @@ const ShipModel = forwardRef((_, ref) => {
 
       gsap.to(shipGroupRef.current.rotation, {
         y: -Math.PI / 2,
-        duration: 0.1,
-        ease: 'power1.out'
-      });
-      gsap.to(shipGroupRef.current.rotation, {
         x: 0,
         duration: 0.1,
         ease: 'power1.out'
@@ -374,10 +373,16 @@ const ShipModel = forwardRef((_, ref) => {
     action.setEffectiveTimeScale(3);
     action.play();
 
-    setTimeout(() => runFloatingAnimation({ cleanupPower: 1 }), 3000);
+    finishTimeout.current = setTimeout(
+      () => runFloatingAnimation({ cleanupPower: 1 }),
+      2600
+    );
   };
 
   const stopFinishAnimation = () => {
+    if (finishTimeout.current) {
+      clearTimeout(finishTimeout.current);
+    }
     if (finishContext.current) {
       finishContext.current.kill();
       finishContext.current = null;
@@ -391,6 +396,15 @@ const ShipModel = forwardRef((_, ref) => {
 
   const removeWave = (id) => {
     setWaves((prevWaves) => prevWaves.filter((el) => el !== id));
+  };
+
+  const stopAllAnimations = () => {
+    stopInitialAnimation();
+    stopPushAnimation();
+    stopFlyAnimation();
+    stopFloatingAnimation();
+    stopFinishAnimation();
+    stopThemeChangeAnimation();
   };
 
   useFrame(() => {

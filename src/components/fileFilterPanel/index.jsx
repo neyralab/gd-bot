@@ -8,6 +8,7 @@ import {
   selectFileTypesCount,
   setFileTypesCount
 } from '../../store/reducers/filesSlice';
+import { tasks } from '../../pages/earn/Partners/partners';
 import { getFileTypesCountEffect } from '../../effects/storageEffects';
 import useButtonVibration from '../../hooks/useButtonVibration';
 
@@ -53,7 +54,7 @@ export const FileFilterPanel = () => {
       callback: () => getFiles('image')
     },
     {
-      name: t('dashbord.dcuments'),
+      name: t('dashbord.documents'),
       value: types?.docs,
       icon: icons.doc,
       callback: () => getFiles('docs')
@@ -77,10 +78,10 @@ export const FileFilterPanel = () => {
       callback: () => getFiles('video')
     },
     {
-      name: t('dashbord.deleted'),
-      value: types?.deleted,
-      icon: icons.delete,
-      callback: () => getFiles('delete')
+      name: t('dashbord.games'),
+      value: tasks.length,
+      icon: icons.game,
+      callback: () => { navigate('/games') }
     }
   ];
   return (
