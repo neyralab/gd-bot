@@ -15,8 +15,7 @@ import { getUserEffect } from './effects/userEffects';
 import { authorizeUser } from './effects/authorizeUser';
 import { storageListEffect } from './effects/storageEffects';
 import { API_WEB_APP_URL } from './utils/api-urls';
-import { useLanguage, useResetLanguage } from './utils/useLanguage';
-import { isDevEnv } from './utils/isDevEnv';
+import { useLanguage } from './utils/useLanguage';
 
 import SharedLayout from './components/sharedLayout';
 import { StartPage } from './pages/startPage';
@@ -44,10 +43,9 @@ export const tg = window.Telegram.WebApp;
 const GA = 'G-VEPRY1XE4E';
 
 function App() {
-  const isDev = isDevEnv();
+  useLanguage();
   const dispatch = useDispatch();
   const [tariffs, setTariffs] = useState(null);
-  isDev ? useLanguage() : useResetLanguage();
 
   const currentUser = {
     initData: tg.initData
