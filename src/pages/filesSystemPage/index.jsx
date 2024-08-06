@@ -54,7 +54,7 @@ export const FilesSystemPage = () => {
   const { t } = useTranslation('drive');
   const files = useSelector(selectFiles);
   const searchFiles = useSelector(selectSearchAutocomplete);
-  const partners = useSelector(selectPartners);
+  const { games } = useSelector(selectPartners);
   const view = useSelector(selectFileView);
   const [areFilesLoading, setAreFilesLoading] = useState(false);
   const [searchValue, setSearchValue] = useState('');
@@ -80,12 +80,12 @@ export const FilesSystemPage = () => {
   }, []);
 
   useEffect(() => {
-    if (!partners.length) {
+    if (!games.length) {
       getAllPartners()
         .then((data) => dispatch(handlePartners(data)))
         .catch(() => toast.error(tSystem('message.failedLoad')));
     }
-  }, [partners])
+  }, [games])
 
   const clearInputsAfterUpload = () => {
     const dataTransfer = new DataTransfer();

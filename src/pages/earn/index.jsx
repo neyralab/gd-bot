@@ -22,7 +22,7 @@ const DEFAULT_SEGMENT_OPTION = 'task'
 
 export default function EarnPage() {
   const dispatch = useDispatch();
-  const partners = useSelector(selectPartners);
+  const { tasks: partnerTasks } = useSelector(selectPartners);
   const { t } = useTranslation('game');
   const [tasks, setTasks] = useState([]);
   const [missions, setMissions] = useState([]);
@@ -83,11 +83,13 @@ export default function EarnPage() {
   }
 
   useEffect(() => {
-    if (!partners.length) {
+    if (!partnerTasks.length) {
       getAllPartners()
-        .then((data) => dispatch(handlePartners(data)))
+        .then((data) => {
+          dispatch(handlePartners(data))
+        })
     }
-  }, [partners])
+  }, [partnerTasks])
 
   useEffect(() => {
     getMission();
@@ -134,7 +136,7 @@ export default function EarnPage() {
       case 'partner':
         return (
           <Partners
-            partners={partners}
+            partners={partnerTasks}
             setPartners={handlePartnersUpdate}
           />
         );

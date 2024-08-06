@@ -31,27 +31,27 @@ const formaData = (list, t) => {
 export const GamesPage = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation('game');
-  const partners = useSelector(selectPartners);
-  const [list, setList] = useState(formaData(partners, t));
+  const { games } = useSelector(selectPartners);
+  const [list, setList] = useState(formaData(games, t));
   const [search, setSearch] = useState('');
 
   useEffect(() => {
-    if (!partners?.length) {
+    if (!games?.length) {
       getAllPartners()
         .then((data) => dispatch(handlePartners(data)))
     } else {
-      setList(formaData(partners, t))
+      setList(formaData(games, t))
     }
-  }, [partners])
+  }, [games])
 
   const handleChange =  useCallback((value) => {
     setSearch(value);
     if (value) {
-      const filteredList = formaData(partners, t).
+      const filteredList = formaData(games, t).
         filter((item) => (item.name.toLowerCase().includes(value.toLowerCase())));
       setList(filteredList);
     } else {
-      setList(formaData(partners, t));
+      setList(formaData(games, t));
     }
   }, [t])
 

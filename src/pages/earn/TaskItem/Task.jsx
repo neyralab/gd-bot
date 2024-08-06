@@ -1,9 +1,10 @@
-import React, { useMemo, useCallback } from 'react';
+import React, { useMemo, useCallback, useState } from 'react';
 import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
 
 import {
   getPartnerTranslate,
+  PARTNER_TASK_TYPES,
   getPartnerName,
   getParnterIcon,
   isNeedVerify,
@@ -15,19 +16,19 @@ import { getToken } from '../../../effects/set-token';
 
 import styles from './Task.module.css';
 
-export default function Task({ description, done, rewardParams, id, doVerify }) {
+export default function Task({ type, description, name, done, rewardParams, id, doVerify }) {
   const { t } = useTranslation('game');
   const formattedPoints = useMemo(() => Number(rewardParams).toLocaleString(), [rewardParams]);
-  const partnerName = useMemo(() => getPartnerName(description), [description]);
+  const partnerName = useMemo(() => getPartnerName(name), [name]);
   const partnerTranslate = useMemo(() => getPartnerTranslate(description, t, gameTranslateJSON), [description, t]);
-  const needVerify = useMemo(() => isNeedVerify(id),[id]);
+  const [needVerify, setNeedVerify] = useState(isNeedVerify(id),[id]);
 
   const goToLink = useCallback(async () => {
     try {
       const token = await getToken();
       const partnertList = JSON.parse(localStorage.getItem(PARTNER_KEY) || '[]');
       localStorage.setItem(PARTNER_KEY, JSON.stringify([...partnertList, id]));
-      description
+      setTimeout(() => {setNeedVerify(isNeedVerify(id))}, [1000]);
       window.location.href = `${API_PATH}/aff/missions/exit/${id}?bearer=${token}`;
     } catch (error) {
       console.warn(error)      
@@ -50,7 +51,7 @@ export default function Task({ description, done, rewardParams, id, doVerify }) 
           className={styles.actionBtn}
           onClick={goToLink}
         >
-          {t('earn.start')}
+          {t(PARTNER_TASK_TYPES.bot === type ? 'earn.start' : 'earn.follow')}
         </button>
       )
     } else 
@@ -62,7 +63,7 @@ export default function Task({ description, done, rewardParams, id, doVerify }) 
       <div className={styles.info}>
         <img
           className={styles.img}
-          src={getParnterIcon(description)}
+          src={getParnterIcon(name)}
           alt={partnerName}
         />
         <div className={styles.text}>

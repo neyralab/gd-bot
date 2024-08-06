@@ -4,14 +4,18 @@ const taskSlice = createSlice({
   name: 'task',
   initialState: {
     tasks: [],
-    partners: []
+    partners: {
+      games: [],
+      tasks: []
+    }
   },
   reducers: {
     handleTasks: (state, { payload }) => {
       state.tasks = payload;
     },
     handlePartners: (state, { payload }) => {
-      state.partners = payload;
+      state.partners.games = payload?.games || [];
+      state.partners.tasks = payload?.tasks || [];
     }
   }
 });
