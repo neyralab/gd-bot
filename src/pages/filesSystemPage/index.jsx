@@ -24,6 +24,8 @@ import {
 import { getFileTypesCountEffect } from '../../effects/storageEffects';
 import { uploadFileEffect } from '../../effects/uploadFileEffect';
 import { autoCompleteSearchEffect } from '../../effects/filesEffects';
+import { getAllPartners } from '../../effects/EarnEffect';
+import { handlePartners, selectPartners } from '../../store/reducers/taskSlice';
 import { transformSize } from '../../utils/transformSize';
 import { fromByteToGb } from '../../utils/storage';
 import useButtonVibration from '../../hooks/useButtonVibration';
@@ -52,6 +54,7 @@ export const FilesSystemPage = () => {
   const { t } = useTranslation('drive');
   const files = useSelector(selectFiles);
   const searchFiles = useSelector(selectSearchAutocomplete);
+  const partners = useSelector(selectPartners);
   const view = useSelector(selectFileView);
   const [areFilesLoading, setAreFilesLoading] = useState(false);
   const [searchValue, setSearchValue] = useState('');
@@ -75,6 +78,14 @@ export const FilesSystemPage = () => {
       .then((data) => dispatch(setFileTypesCount(data)))
       .catch(() => toast.error(tSystem('message.failedLoad')));
   }, []);
+
+  useEffect(() => {
+    if (!partners.length) {
+      getAllPartners()
+        .then((data) => dispatch(handlePartners(data)))
+        .catch(() => toast.error(tSystem('message.failedLoad')));
+    }
+  }, [partners])
 
   const clearInputsAfterUpload = () => {
     const dataTransfer = new DataTransfer();
