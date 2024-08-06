@@ -67,7 +67,8 @@
     "extraBonusLvl6": "达到第6点击级别的额外奖励",
     "extraBonusLvl7": "达到第7点击级别的额外奖励",
     "points": "积分",
-    "point": "积分"
+    "point": "积分",
+    "invitePremiumFriend": "邀请25位高级好友"
   },
   "wallet": {
     "disconnect": "您确定要断开连接吗？",

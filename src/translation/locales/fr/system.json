@@ -67,7 +67,8 @@
     "extraBonusLvl6": "Bonus supplémentaire pour atteindre le niveau 6 de taps",
     "extraBonusLvl7": "Bonus supplémentaire pour atteindre le niveau 7 de taps",
     "points": "Points",
-    "point": "Point"
+    "point": "Point",
+    "invitePremiumFriend": "Invite 25 amis Premium"
   },
   "wallet": {
     "disconnect": "Êtes-vous sûr de vouloir déconnecter ?",

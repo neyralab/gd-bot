@@ -8,7 +8,7 @@ import {
   selectFileTypesCount,
   setFileTypesCount
 } from '../../store/reducers/filesSlice';
-import { tasks } from '../../pages/earn/Partners/partners';
+import { selectPartners } from '../../store/reducers/taskSlice';
 import { getFileTypesCountEffect } from '../../effects/storageEffects';
 import useButtonVibration from '../../hooks/useButtonVibration';
 
@@ -18,6 +18,7 @@ import style from './style.module.scss';
 
 export const FileFilterPanel = () => {
   const types = useSelector(selectFileTypesCount);
+  const partners = useSelector(selectPartners);
   const { t } = useTranslation('drive');
   const { t: tSystem } = useTranslation('system');
   const dispatch = useDispatch();
@@ -79,7 +80,7 @@ export const FileFilterPanel = () => {
     },
     {
       name: t('dashbord.games'),
-      value: tasks.length,
+      value: partners.length,
       icon: icons.game,
       callback: () => { navigate('/games') }
     }

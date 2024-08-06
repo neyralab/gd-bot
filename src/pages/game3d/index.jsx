@@ -71,7 +71,7 @@ export function Game3DPage() {
     onSwipedRight: () => {
       dispatch(
         switchTheme({
-          themeId: themeAccess.gold ? 'gold' : 'hawk',
+          themeId: 'hawk',
           direction: 'prev',
           timeout: 2500
         })

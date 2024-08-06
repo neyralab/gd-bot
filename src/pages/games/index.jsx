@@ -1,35 +1,57 @@
-import React, { useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useTranslation } from 'react-i18next';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { Header } from "../../components/header";
+import { getAllPartners } from '../../effects/EarnEffect';
 import { SearchInput } from "./SearchInput";
 import Game from './GameItem';
-import { tasks } from '../earn/Partners/partners';
+import { handlePartners, selectPartners } from '../../store/reducers/taskSlice';
+
+import { GAMES } from './games.js';
 
 import styles from './styles.module.css';
 
 const formaData = (list, t) => {
-  return list.map((item) => ({
-    ...item,
-    gameName: item.title.substring(5, item.title.length - 7),
-    translatedText: t(item.translatePath)
-      .replace('{name}', item.title.substring(4, item.title.length - 7))
-  }))
+  return list.map((item) => {
+    const selectedGame = Object.values(GAMES)
+    .find((game) => game.name === item.name)
+    if (item) {
+      return ({
+        ...item,
+        ...selectedGame,
+        translatedText: t(selectedGame.translate).replace('{name}', selectedGame.productName)
+      })
+    } else {
+      return ({ ...item, gameTranslate: "", translate: "", image: "" })
+    }
+  })
 }
 
 export const GamesPage = () => {
+  const dispatch = useDispatch();
   const { t } = useTranslation('game');
-  const [list, setList] = useState(formaData(tasks, t));
+  const partners = useSelector(selectPartners);
+  const [list, setList] = useState(formaData(partners, t));
   const [search, setSearch] = useState('');
+
+  useEffect(() => {
+    if (!partners?.length) {
+      getAllPartners()
+        .then((data) => dispatch(handlePartners(data)))
+    } else {
+      setList(formaData(partners, t))
+    }
+  }, [partners])
 
   const handleChange =  useCallback((value) => {
     setSearch(value);
     if (value) {
-      const filteredList = formaData(tasks, t).
-        filter((item) => (item.gameName.toLowerCase().includes(value.toLowerCase())));
+      const filteredList = formaData(partners, t).
+        filter((item) => (item.name.toLowerCase().includes(value.toLowerCase())));
       setList(filteredList);
     } else {
-      setList(formaData(tasks, t));
+      setList(formaData(partners, t));
     }
   }, [t])
 
@@ -43,11 +65,9 @@ export const GamesPage = () => {
       <ul className={styles.gameList}>
         {list.map((item) => (
           <Game
-            isDone={false}
             title={item.title}
-            points={item.points}
-            imgUrl={item.imgUrl}
-            joinLink={item.joinLink}
+            imgUrl={item.image}
+            joinLink={item.url}
             translatedText={item.translatedText}
           />
         ))}
