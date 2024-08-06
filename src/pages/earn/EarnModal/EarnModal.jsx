@@ -70,12 +70,12 @@ const EarnModal = forwardRef(({ item, onTasksRequireCheck }, ref) => {
           text = t('message.joinYoutube');
           break;
         case 'JOIN_TWITTER':
-          text = t('message,joinX');
+          text = t('message.joinX');
           break;
       }
 
       systemModalRef.current.open({
-        title: t('message,success'),
+        title: t('message.success'),
         text: text,
         actions: [
           {
@@ -103,7 +103,7 @@ const EarnModal = forwardRef(({ item, onTasksRequireCheck }, ref) => {
       }
 
       systemModalRef.current.open({
-        title: t('message,oops'),
+        title: t('message.oops'),
         text: text,
         actions: [
           {
@@ -118,7 +118,7 @@ const EarnModal = forwardRef(({ item, onTasksRequireCheck }, ref) => {
       });
     } else if (res === 'You have already received points') {
       systemModalRef.current.open({
-        title: t('message,oops'),
+        title: t('message.oops'),
         text: t('message.received'),
         actions: [
           {
@@ -133,7 +133,7 @@ const EarnModal = forwardRef(({ item, onTasksRequireCheck }, ref) => {
       });
     } else {
       systemModalRef.current.open({
-        title: t('message,oops'),
+        title: t('message.oops'),
         text: t('message.errorAndRetry'),
         actions: [
           {
