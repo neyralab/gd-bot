@@ -15,6 +15,12 @@ const getPartnerName = (title) => {
     return matchSecond[1];
   }
 
+  if (title.startsWith('Join') && title.endsWith('TG bot')) {
+    return title.substring(5, title.length - 7);
+  } else if (title.startsWith('Join') && title.endsWith('Telegram bot')) {
+    title.substring(5, title.length - 13);
+  }
+
   return ''
 }
 
@@ -26,8 +32,7 @@ const getPartnerTranslate = (text, t, translateJSON) => {
 }
 
 const getParnterIcon = (text) => {
-  const name = getPartnerName(text).replace(' ', '');
-
+  const name = getPartnerName(text).replaceAll(' ', '');
   return `/assets/${name.toLowerCase()}.webp`
 }
 
