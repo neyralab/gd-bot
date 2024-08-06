@@ -338,9 +338,29 @@ export const startRound = createAsyncThunk(
     dispatch(setRoundTimeoutId(timeoutId));
 
     if (state.game.theme.id !== 'ghost') {
-      const game = await beforeGame(null, state.game.theme.tierId);
-      const g = await startGame(game.uuid || game.id, null);
-      dispatch(setGameId(game?.uuid || game?.id));
+      try {
+        const game = await beforeGame(null, state.game.theme.tierId);
+        try {
+          const g = await startGame(game.uuid || game.id, null);
+          dispatch(setGameId(game?.uuid || game?.id));
+        } catch (err) {
+          console.log({ startGameErr: err, m: err?.response?.data });
+          dispatch(
+            setSystemModal({
+              type: 'START_GAME_ERROR',
+              message: err?.response?.data?.errors || 'Unexpected Error'
+            })
+          );
+        }
+      } catch (err) {
+        console.log({ beforeGameErr: err, m: err?.response?.data });
+        dispatch(
+          setSystemModal({
+            type: 'BEFORE_GAME_ERROR',
+            message: err?.response?.data?.errors || 'Unexpected Error'
+          })
+        );
+      }
     }
   }
 );
@@ -359,7 +379,7 @@ export const finishRound = createAsyncThunk(
       state.game.theme.id !== 'gold'; // gold game does not have limits on taps
 
     if (userIsCheater) {
-      dispatch(setSystemModal('REACHED_MAX_TAPS'));
+      dispatch(setSystemModal({ type: 'REACHED_MAX_TAPS' }));
       return;
     }
 
@@ -403,6 +423,12 @@ export const finishRound = createAsyncThunk(
       })
       .catch((err) => {
         console.log({ endGameErr: err, m: err?.response.data });
+        dispatch(
+          setSystemModal({
+            type: 'END_GAME_ERROR',
+            message: err?.response?.data?.errors || 'Unexpected Error'
+          })
+        );
       });
 
     if (state.game.reachedNewLevel) {
