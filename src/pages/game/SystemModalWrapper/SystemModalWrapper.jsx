@@ -21,22 +21,6 @@ export default function SystemModalWrapper() {
     let actions = [];
 
     switch (systemModal.type) {
-      case 'REACHED_MAX_TAPS':
-        title = t('message.error');
-        description = t('message.reachedMaxTaps');
-        actions = [
-          {
-            type: 'default',
-            text: t('message.ok'),
-            onClick: () => {
-              systemModalRef.current.close();
-              dispatch(setSystemModal(null));
-              window.location.reload(); // too many dependencies to turn them back, it's simplier to refresh the page
-            }
-          }
-        ];
-        break;
-
       case 'END_GAME_ERROR':
       case 'START_GAME_ERROR':
       case 'BEFORE_GAME_ERROR':
