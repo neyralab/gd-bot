@@ -14,11 +14,11 @@ const getPartnerName = (title) => {
   } else if (matchSecond) {
     return matchSecond[1];
   }
-
+  
   if (title.startsWith('Join') && title.endsWith('TG bot')) {
     return title.substring(5, title.length - 7);
   } else if (title.startsWith('Join') && title.endsWith('Telegram bot')) {
-    title.substring(5, title.length - 13);
+    return title.substring(5, title.length - 13);
   }
 
   return ''
