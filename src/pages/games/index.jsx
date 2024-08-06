@@ -16,7 +16,7 @@ const formaData = (list, t) => {
   return list.map((item) => {
     const selectedGame = Object.values(GAMES)
     .find((game) => game.name === item.name)
-    if (item) {
+    if (selectedGame) {
       return ({
         ...item,
         ...selectedGame,
