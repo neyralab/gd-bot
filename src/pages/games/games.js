@@ -4,7 +4,7 @@ const GAMES = {
     name: "Join PonchKick TG bot",
     gameTranslate: "earn.playWith",
     translate: "earn.joinTGtempl",
-    image: "/assets/ponchKick.webp"
+    image: "/assets/ponchkick.webp"
   },
   obix: {
     productName: 'OBIX',
@@ -18,42 +18,42 @@ const GAMES = {
     name: "Join TonParty TG bot",
     gameTranslate: "earn.spin",
     translate: "earn.joinTGtempl",
-    image: "/assets/tonParty.webp"
+    image: "/assets/tonparty.webp"
   },
   holdcoin: {
     productName: 'HoldCoin',
     name: "Join HoldCoin TG bot",
     gameTranslate: "earn.holdToEarn",
     translate: "earn.joinTGtempl",
-    image: "/assets/holdCoin.webp"
+    image: "/assets/holdcoin.webp"
   },
   pirateclash: {
     productName: 'PirateClash',
     name: "Join PirateClash TG bot",
     gameTranslate: "earn.play",
     translate: "earn.joinTGtempl",
-    image: "/assets/pirateClash.webp"
+    image: "/assets/pirateclash.webp"
   },
   mineton: {
     productName: 'MineTon',
     name: "Join MineTon TG bot",
     gameTranslate: "earn.joinAirdrop",
     translate: "earn.joinTGtempl",
-    image: "/assets/mineTon.webp"
+    image: "/assets/mineton.webp"
   },
   poplaunch: {
     productName: 'PopLaunch',
     name: "Join PopLaunch TG bot",
     gameTranslate: "earn.play",
     translate: "earn.joinTGtempl",
-    image: "/assets/popLaunch.webp"
+    image: "/assets/poplaunch.webp"
   },
   tonbox: {
     productName: 'TonBox',
     name: "Join TonBox TG bot",
     gameTranslate: "earn.launchAndGetUSDT",
     translate: "earn.joinTGtempl",
-    image: "/assets/tonBox.webp"
+    image: "/assets/tonbox.webp"
   }
 }
 
