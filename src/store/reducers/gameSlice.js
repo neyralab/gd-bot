@@ -54,8 +54,6 @@ const gameSlice = createSlice({
 
     maxLevel: 0,
 
-    maxTaps: 1200,
-
     reachedNewLevel: false,
 
     roundTimerTimestamp: null,
@@ -373,15 +371,6 @@ export const finishRound = createAsyncThunk(
     const gameId = state.game.gameId;
     const filteredGames = pendingGames.filter((el) => el.uuid !== gameId);
     console.log({ filteredGames });
-
-    const userIsCheater =
-      state.game.balance.value >= state.game.maxTaps &&
-      state.game.theme.id !== 'gold'; // gold game does not have limits on taps
-
-    if (userIsCheater) {
-      dispatch(setSystemModal({ type: 'REACHED_MAX_TAPS' }));
-      return;
-    }
 
     dispatch(setStatus(filteredGames.length ? 'waiting' : 'finished'));
     dispatch(setRoundTimerTimestamp(null));
