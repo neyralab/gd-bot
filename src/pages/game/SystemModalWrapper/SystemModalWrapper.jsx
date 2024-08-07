@@ -11,19 +11,21 @@ export default function SystemModalWrapper() {
   const dispatch = useDispatch();
   const { t } = useTranslation('system');
   const systemModalRef = useRef(null);
-  const systemModalType = useSelector((state) => state.game.systemModal);
+  const systemModal = useSelector((state) => state.game.systemModal);
 
   useEffect(() => {
-    if (!systemModalType) return;
+    if (!systemModal) return;
 
     let title = null;
     let description = null;
     let actions = [];
 
-    switch (systemModalType) {
-      case 'REACHED_MAX_TAPS':
+    switch (systemModal.type) {
+      case 'END_GAME_ERROR':
+      case 'START_GAME_ERROR':
+      case 'BEFORE_GAME_ERROR':
         title = t('message.error');
-        description = t('message.reachedMaxTaps');
+        description = systemModal.message;
         actions = [
           {
             type: 'default',
@@ -31,7 +33,6 @@ export default function SystemModalWrapper() {
             onClick: () => {
               systemModalRef.current.close();
               dispatch(setSystemModal(null));
-              window.location.reload(); // too many dependencies to turn them back, it's simplier to refresh the page
             }
           }
         ];
@@ -43,7 +44,7 @@ export default function SystemModalWrapper() {
       text: description,
       actions: actions
     });
-  }, [systemModalType]);
+  }, [systemModal]);
 
   return <SystemModal ref={systemModalRef} />;
 }
