@@ -18,7 +18,7 @@ import style from './style.module.scss';
 
 export const FileFilterPanel = () => {
   const types = useSelector(selectFileTypesCount);
-  const partners = useSelector(selectPartners);
+  const { games } = useSelector(selectPartners);
   const { t } = useTranslation('drive');
   const { t: tSystem } = useTranslation('system');
   const dispatch = useDispatch();
@@ -80,7 +80,7 @@ export const FileFilterPanel = () => {
     },
     {
       name: t('dashbord.games'),
-      value: partners.length,
+      value: games.length,
       icon: icons.game,
       callback: () => { navigate('/games') }
     }

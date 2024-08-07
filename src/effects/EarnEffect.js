@@ -1,6 +1,6 @@
 import { API_PATH } from '../utils/api-urls';
 import axiosInstance from './axiosInstance';
-import { filterUniqueByParam } from '../utils/array';
+import { formatPartnerResponce } from '../pages/earn/Partners/utils';
 
 export const checkAllEarnTasks = async () => {
   const url = `${API_PATH}/user/earn`;
@@ -74,11 +74,7 @@ export const getAllPartners = async () => {
 
   try {
     const { data } = await axiosInstance.get(url);
-    if (Array.isArray(data)) {
-      const filteredList = filterUniqueByParam(data, 'name');
-      return filteredList;
-    }
-    return data
+    return formatPartnerResponce(data);
   } catch (e) {
     return e?.response?.data?.errors;
   }
