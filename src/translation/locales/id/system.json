@@ -114,7 +114,8 @@
     "conversionSuccess": "Konversi berhasil",
     "canceledTransaction": "Transaksi dibatalkan oleh pengguna",
     "reachedMaxTaps": "Kami telah mendeteksi sejumlah tindakan mencurigakan per game. Pastikan Anda tidak menggunakan aplikasi pihak ketiga yang dapat memengaruhi tindakan dalam game.",
-    "reward": "Hadiah telah diterima"
+    "reward": "Hadiah telah diterima",
+    "ckeckError": "Pemeriksaan gagal. Silakan coba lagi nanti."
   },
   "language": {
     "search": "Cari",

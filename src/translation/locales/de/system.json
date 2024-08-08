@@ -114,7 +114,8 @@
     "conversionSuccess": "Konvertierung erfolgreich",
     "canceledTransaction": "Die Transaktion wurde vom Benutzer abgebrochen",
     "reachedMaxTaps": "Wir haben eine verdächtige Anzahl von Aktionen pro Spiel festgestellt. Stellen Sie sicher, dass Sie keine Anwendungen von Drittanbietern verwenden, die die Aktionen im Spiel beeinträchtigen könnten.",
-    "reward": "Die Belohnung wurde erhalten"
+    "reward": "Die Belohnung wurde erhalten",
+    "ckeckError": "Überprüfung fehlgeschlagen. Bitte versuchen Sie es später erneut."
   },
   "language": {
     "search": "Suche",
