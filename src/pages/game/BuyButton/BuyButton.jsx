@@ -24,6 +24,7 @@ import {
   selectThemeAccess,
   selectThemes,
   setGameId,
+  setGameInfo,
   setIsTransactionLoading,
   setLockIntervalId,
   setLockTimerTimestamp,
@@ -124,6 +125,7 @@ export default function BuyButton() {
       const pendingGame = await beforeGame(null, Number(plan.tierId));
       console.log({ pendingGame });
       dispatch(setGameId(pendingGame?.uuid || pendingGame.id));
+      dispatch(setGameInfo(pendingGame));
 
       await contract.send(
         {
@@ -147,6 +149,7 @@ export default function BuyButton() {
               tx
             );
             dispatch(setGameId(game.uuid || game?.id));
+            dispatch(setGameInfo(game));
             console.log({ PPPPP: tx, game });
             dispatch(setIsTransactionLoading(false));
             afterBought();
@@ -164,6 +167,7 @@ export default function BuyButton() {
             //   Number(lastTxValue)
             // );
             // dispatch(setGameId(game.uuid || game?.id));
+            // dispatch(setGameInfo(game));
             // console.log({ PPPPP: lastTxValue, game });
             // dispatch(setIsTransactionLoading(false));
             // afterBought();
@@ -206,6 +210,7 @@ export default function BuyButton() {
         dispatch(setStatus('waiting'));
         const pendingGame = await getActivePayedGame();
         dispatch(setGameId(pendingGame?.uuid || pendingGame.id));
+        dispatch(setGameInfo(pendingGame));
         afterBought();
       }
     } catch (error) {

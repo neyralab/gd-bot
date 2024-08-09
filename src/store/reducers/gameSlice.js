@@ -84,6 +84,8 @@ const gameSlice = createSlice({
 
     pendingGames: [],
 
+    gameInfo: null,
+
     /** To prevent accidental tap to start another game when just finished */
     recentlyFinishedLocker: false,
 
@@ -191,6 +193,9 @@ const gameSlice = createSlice({
     },
     setSystemModal: (state, { payload }) => {
       state.systemModal = payload;
+    },
+    setGameInfo: (state, { payload }) => {
+      state.gameInfo = payload;
     }
   }
 });
@@ -302,6 +307,7 @@ export const initGame = createAsyncThunk(
           setTheme(newThemes.find((el) => el.tierId === pendingGame.tier_id))
         );
         dispatch(setGameId(pendingGame.uuid || pendingGame.id));
+        dispatch(setGameInfo(pendingGame));
       } else {
         dispatch(setTheme(newThemes[0]));
       }
@@ -341,6 +347,7 @@ export const startRound = createAsyncThunk(
         try {
           const g = await startGame(game.uuid || game.id, null);
           dispatch(setGameId(game?.uuid || game?.id));
+          dispatch(setGameInfo(game));
         } catch (err) {
           console.log({ startGameErr: err, m: err?.response?.data });
           dispatch(
@@ -385,6 +392,7 @@ export const finishRound = createAsyncThunk(
       const firstPendingGame = filteredGames[0];
       console.log({ firstPendingGame });
       dispatch(setGameId(firstPendingGame.uuid || firstPendingGame?.id));
+      dispatch(setGameInfo(firstPendingGame));
     }
 
     if (state.game.theme.id === 'hawk') {
@@ -395,7 +403,11 @@ export const finishRound = createAsyncThunk(
     const taps = state.game.balance.value;
     dispatch(setBalance({ value: 0, label: state.game.balance.label }));
 
-    if (state.game.theme.id === 'ghost') {
+    if (state.game.theme.id === 'ghost' && state.game.gameInfo.txid) {
+      /** This modal should be seen only if the game was paid
+       * AND it was bought with TON.
+       * If txid is not null, that means the game was bought with TON
+       */
       dispatch(setGameModal('TIME_FOR_TRANSACTION'));
     }
 
@@ -647,7 +659,8 @@ export const {
   setMaxLevel,
   setRecentlyFinishedLocker,
   setGameModal,
-  setSystemModal
+  setSystemModal,
+  setGameInfo
 } = gameSlice.actions;
 export default gameSlice.reducer;
 

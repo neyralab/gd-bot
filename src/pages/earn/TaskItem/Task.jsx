@@ -6,17 +6,16 @@ import {
   getPartnerTranslate,
   PARTNER_TASK_TYPES,
   getPartnerName,
-  getParnterIcon,
   isNeedVerify,
   PARTNER_KEY
 } from '../Partners/utils';
 import gameTranslateJSON from '../../../translation/locales/en/game.json';
-import { API_PATH } from '../../../utils/api-urls';
+import { API_PATH, API_PATH_ROOT } from '../../../utils/api-urls';
 import { getToken } from '../../../effects/set-token';
 
 import styles from './Task.module.css';
 
-export default function Task({ type, description, name, done, rewardParams, id, doVerify }) {
+export default function Task({ type, logo, description, name, done, rewardParams, id, doVerify }) {
   const { t } = useTranslation('game');
   const formattedPoints = useMemo(() => Number(rewardParams).toLocaleString(), [rewardParams]);
   const partnerName = useMemo(() => getPartnerName(name), [name]);
@@ -63,7 +62,7 @@ export default function Task({ type, description, name, done, rewardParams, id, 
       <div className={styles.info}>
         <img
           className={styles.img}
-          src={getParnterIcon(name)}
+          src={logo ? `${API_PATH_ROOT}${logo}` : '/assets/task.png'}
           alt={partnerName}
         />
         <div className={styles.text}>

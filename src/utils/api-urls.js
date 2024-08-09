@@ -1,4 +1,5 @@
 export const API_PATH = `${import.meta.env.VITE_API_PATH}`;
+export const API_PATH_ROOT = `${import.meta.env.VITE_API_PATH}`.replace(/\/api$/, "");
 export const API_AUTHORIZATION = `${import.meta.env.VITE_API_PATH}/tg/auth/telegram`;
 export const API_COUPON = `${import.meta.env.VITE_API_PATH}/use/coupon`;
 export const API_FILE_SHARING = `${import.meta.env.VITE_SHARING_FILE_URL}`;
