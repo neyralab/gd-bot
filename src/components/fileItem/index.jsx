@@ -19,8 +19,6 @@ import imageFileExtensions, {
   imageMediaTypesPreview,
   imagesWithoutPreview
 } from '../../config/image-file-extensions';
-import useButtonVibration from '../../hooks/useButtonVibration';
-import { useClickHandler } from '../../hooks/useClickHandler';
 
 import CustomFolderIcon from '../../components/customFileIcon/CustomFolderIcon';
 import CustomFileSmallIcon from '../../components/customFileIcon/CustomFileSmallIcon';
@@ -41,7 +39,6 @@ export const FileItem = ({
   const currentView = useSelector(selectFileView);
   const user = useSelector((state) => state?.user?.data);
   const dispatch = useDispatch();
-  const handleVibrationClick = useButtonVibration();
   const view = fileView || currentView;
   const [preview, setPreview] = useState(null);
   const isFileChecked = file.id === checkedFile.id;
@@ -78,18 +75,24 @@ export const FileItem = ({
     }
   }, []);
 
-  const toggleFavorite = () => {
+  const toggleFavorite = (e) => {
+    e?.preventDefault();
+    e?.stopPropagation();
+    window?.Telegram?.WebApp?.HapticFeedback?.impactOccurred('soft');
     updateFileFavoriteEffect(file.slug, dispatch);
   };
 
-  const onMenuClick = () => callback(file);
+  const onMenuClick = (e) => {
+    e?.preventDefault();
+    e?.stopPropagation();
+    window?.Telegram?.WebApp?.HapticFeedback?.impactOccurred('soft');
+    callback(file);
+  };
 
-  const onFileDoubleClickHandler = () => {
+  const onClickHandler = () => {
     dispatch(setSelectedFile(file));
     dispatch(handleFilePreviewModal(true));
   };
-
-  const onClickHandler = useClickHandler(onFileDoubleClickHandler, () => {});
 
   const FavButton = (
     <button
@@ -97,7 +100,7 @@ export const FileItem = ({
         style.fileMenuButton,
         view === 'grid' ? style.favBtnGrid : style.favBtnList
       )}
-      onClick={handleVibrationClick(toggleFavorite)}>
+      onClick={toggleFavorite}>
       {isFavorite ? <FavoriteActiveIcon /> : <FavoriteIcon />}
     </button>
   );
@@ -105,7 +108,7 @@ export const FileItem = ({
   const MenuButton = (
     <button
       className={cn(style.fileMenuButton, isFileChecked && style.selectedFile)}
-      onClick={handleVibrationClick(onMenuClick)}>
+      onClick={onMenuClick}>
       <DotsIcon />
     </button>
   );
