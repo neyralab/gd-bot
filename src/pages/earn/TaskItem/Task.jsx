@@ -10,7 +10,7 @@ import {
   PARTNER_KEY
 } from '../Partners/utils';
 import gameTranslateJSON from '../../../translation/locales/en/game.json';
-import { API_PATH_ROOT } from '../../../utils/api-urls';
+import { API_PATH, API_PATH_ROOT } from '../../../utils/api-urls';
 import { getToken } from '../../../effects/set-token';
 
 import styles from './Task.module.css';
