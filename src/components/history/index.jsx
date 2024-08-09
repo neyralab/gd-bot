@@ -22,7 +22,7 @@ export const History = ({ history, loading }) => {
               <div className={styles.text_container}>
                 <p className={styles.value}>{el.points}</p>
                 <p className={styles.text}>
-                  {getHistoryTranslate(gameJson, el?.text || el?.point?.text, t) || el.text}
+                  {getHistoryTranslate(gameJson, el?.text || el?.point?.text, t) || el?.text}
                 </p>
               </div>
             </li>
