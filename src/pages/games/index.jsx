@@ -66,9 +66,9 @@ export const GamesPage = () => {
         {list.map((item) => (
           <Game
             title={item.title}
-            imgUrl={item.image}
             joinLink={item.url}
             translatedText={item.translatedText}
+            logo={item.logo}
           />
         ))}
       </ul>
