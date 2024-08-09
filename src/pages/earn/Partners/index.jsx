@@ -50,17 +50,19 @@ export default function Partners({ partners, setPartners }) {
         const partner = partners.find((item) => item.id == id);
         claimPointsModalRef.current.open(partner.rewardParams);
       } else {
-        toast.error(t('message.tryAgain'), {
+        toast.error(t('message.ckeckError'), {
           theme: 'colored',
           position: 'bottom-center',
-          autoClose: 5000
+          autoClose: 5000,
+          style: {backgroundColor: "#f4b20b"}
         });
       }
     } catch (error) {
-      toast.error(t('message.tryAgain'), {
+      toast.error(t('message.ckeckError'), {
         theme: 'colored',
         position: 'bottom-center',
-        autoClose: 5000
+        autoClose: 5000,
+        style: {backgroundColor: "#f4b20b"}
       });
     }
   }, []);

@@ -114,7 +114,8 @@
     "conversionSuccess": "변환 성공",
     "canceledTransaction": "거래가 사용자에 의해 취소되었습니다",
     "reachedMaxTaps": "게임당 의심스러운 양의 액션을 감지했습니다. 게임 내 액션에 영향을 줄 수 있는 타사 애플리케이션을 사용하지 않도록 하세요.",
-    "reward": "보상이 수령되었습니다"
+    "reward": "보상이 수령되었습니다",
+    "ckeckError": "확인에 실패했습니다. 나중에 다시 시도해 주세요"
   },
   "language": {
     "search": "검색",

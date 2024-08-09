@@ -114,7 +114,8 @@
     "conversionSuccess": "Conversion réussie",
     "canceledTransaction": "La transaction a été annulée par l'utilisateur",
     "reachedMaxTaps": "Nous avons détecté un nombre suspect d'actions par jeu. Assurez-vous de ne pas utiliser d'applications tierces susceptibles d'affecter les actions en jeu.",
-    "reward": "La récompense a été reçue"
+    "reward": "La récompense a été reçue",
+    "ckeckError": "Vérification échouée. Veuillez réessayer plus tard."
   },
   "language": {
     "search": "Rechercher",
