@@ -102,18 +102,6 @@ export const FilesSystemPage = () => {
 
   const handleFileUpload = async (event) => {
     const files = event.target.files;
-    if (files[0].size > MAX_FILE_SIZE) {
-      clearInputsAfterUpload();
-      toast.info(
-        'Max file size to upload is reached. You can not upload files larger than 256MB',
-        {
-          theme: 'colored',
-          position: 'bottom-center',
-          autoClose: 5000
-        }
-      );
-      return;
-    }
     try {
       setAreFilesLoading(true);
       dispatch(setUploadingFile(files[0]));

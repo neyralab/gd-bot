@@ -114,7 +114,7 @@ export const uploadFileEffect = async ({ files, dispatch }) => {
             }
           );
         } else {
-          toast.error('Sorry, something went wrong! Please reload the page', {
+          toast.error(e?.response?.data?.message || 'Sorry, something went wrong! Please reload the page', {
             theme: 'colored',
             position: 'bottom-center',
             autoClose: 5000
