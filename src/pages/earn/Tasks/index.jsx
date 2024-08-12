@@ -55,6 +55,9 @@ export default function Tasks({ tasks, getTasks, setModalSelectedTask, modalRef 
       case 'JOIN_YOUTUBE':
       case 'JOIN_TG_CHANNEL':
       case 'JOIN_TWITTER':
+      case 'JOIN_INSTAGRAM':
+      case 'JOIN_GITHUB':
+      case 'JOIN_TG_NEWS_CHANNEL':
       case 'DOWNLOAD_APP':
         setModalSelectedTask(task);
         setTimeout(() => {

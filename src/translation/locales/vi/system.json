@@ -115,7 +115,13 @@
     "canceledTransaction": "Giao dịch đã bị hủy bởi người dùng",
     "reachedMaxTaps": "Chúng tôi đã phát hiện một số lượng hành động đáng ngờ cho mỗi trò chơi. Hãy đảm bảo rằng bạn không sử dụng các ứng dụng của bên thứ ba có thể ảnh hưởng đến các hành động trong trò chơi.",
     "reward": "Phần thưởng đã được nhận",
-    "ckeckError": "Kiểm tra thất bại. Vui lòng thử lại sau."
+    "ckeckError": "Kiểm tra thất bại. Vui lòng thử lại sau.",
+    "joinInstagram": "Bạn đã tham gia kênh Instagram của chúng tôi",
+    "joinGithub": "Bạn đã tham gia kênh Github của chúng tôi",
+    "joinTGnews": "Bạn đã tham gia kênh tin tức TG của chúng tôi",
+    "notJoinInstagram": "Bạn đã không tham gia kênh Instagram của chúng tôi",
+    "notJoinGithub": "Bạn đã không tham gia kênh Github của chúng tôi",
+    "notJoinTGnews": "Bạn đã không tham gia kênh tin tức TG của chúng tôi"
   },
   "language": {
     "search": "Tìm kiếm",

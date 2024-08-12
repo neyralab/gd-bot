@@ -67,7 +67,10 @@
     "beFirst": "Be the First with {name}",
     "joinAirdrop": "Join {name} bot & Get Instant Airdrop",
     "launchAndGetUSDT": "Launch ${name} &GET REAL USDT",
-    "playAndWin": "Play {name} & Win"
+    "playAndWin": "Play {name} & Win",
+    "joinInstagram": "Join our Instagram",
+    "joinGit": "Join our Github",
+    "joinNewsTg": "Join Our News Channel"
   },
   "airdrop": {
     "airdrop": "Airdrop",

@@ -115,7 +115,13 @@
     "canceledTransaction": "Transaksi dibatalkan oleh pengguna",
     "reachedMaxTaps": "Kami telah mendeteksi sejumlah tindakan mencurigakan per game. Pastikan Anda tidak menggunakan aplikasi pihak ketiga yang dapat memengaruhi tindakan dalam game.",
     "reward": "Hadiah telah diterima",
-    "ckeckError": "Pemeriksaan gagal. Silakan coba lagi nanti."
+    "ckeckError": "Pemeriksaan gagal. Silakan coba lagi nanti.",
+    "joinInstagram": "Anda telah bergabung dengan saluran Instagram kami",
+    "joinGithub": "Anda telah bergabung dengan saluran Github kami",
+    "joinTGnews": "Anda telah bergabung dengan saluran berita TG kami",
+    "notJoinInstagram": "Anda tidak bergabung dengan saluran Instagram kami",
+    "notJoinGithub": "Anda tidak bergabung dengan saluran Github kami",
+    "notJoinTGnews": "Anda tidak bergabung dengan saluran berita TG kami"  
   },
   "language": {
     "search": "Cari",

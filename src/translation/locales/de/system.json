@@ -115,7 +115,13 @@
     "canceledTransaction": "Die Transaktion wurde vom Benutzer abgebrochen",
     "reachedMaxTaps": "Wir haben eine verdächtige Anzahl von Aktionen pro Spiel festgestellt. Stellen Sie sicher, dass Sie keine Anwendungen von Drittanbietern verwenden, die die Aktionen im Spiel beeinträchtigen könnten.",
     "reward": "Die Belohnung wurde erhalten",
-    "ckeckError": "Überprüfung fehlgeschlagen. Bitte versuchen Sie es später erneut."
+    "ckeckError": "Überprüfung fehlgeschlagen. Bitte versuchen Sie es später erneut.",
+    "joinInstagram": "Sie haben unserem Instagram-Kanal beigetreten",
+    "joinGithub": "Sie haben unserem Github-Kanal beigetreten",
+    "joinTGnews": "Sie haben unserem News-TG-Kanal beigetreten",
+    "notJoinInstagram": "Sie sind unserem Instagram-Kanal nicht beigetreten",
+    "notJoinGithub": "Sie sind unserem Github-Kanal nicht beigetreten",
+    "notJoinTGnews": "Sie sind unserem News-TG-Kanal nicht beigetreten"  
   },
   "language": {
     "search": "Suche",

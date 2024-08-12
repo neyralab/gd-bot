@@ -67,7 +67,10 @@
     "beFirst": "{name}で最初になろう",
     "joinAirdrop": "{name}ボットに参加して、すぐにエアドロップをゲット",
     "launchAndGetUSDT": "{name}を起動して、本物のUSDTを手に入れよう",
-    "playAndWin": "{name}をプレイして勝とう"
+    "playAndWin": "{name}をプレイして勝とう",
+    "joinInstagram": "私たちのInstagramに参加する",
+    "joinGit": "私たちのGithubに参加する",
+    "joinNewsTg": "私たちのニュースチャンネルに参加する"
   },
   "airdrop": {
     "airdrop": "エアドロップ",
