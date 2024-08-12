@@ -11,6 +11,8 @@
   align-items: center;
   flex-direction: column;
   padding: 0 0 8px;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .fileMenuButton {
@@ -23,6 +25,8 @@
   background: #303030;
   width: 24px;
   height: 24px;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
 }
 .fileMenuButton svg {
   fill: #ffffff;

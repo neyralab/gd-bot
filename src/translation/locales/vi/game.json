@@ -67,7 +67,10 @@
     "beFirst": "Hãy là người đầu tiên với {name}",
     "joinAirdrop": "Tham gia bot {name} & nhận ngay Airdrop",
     "launchAndGetUSDT": "Khởi chạy ${name} & NHẬN USDT THỰC",
-    "playAndWin": "Chơi {name} & Thắng"
+    "playAndWin": "Chơi {name} & Thắng",
+    "joinInstagram": "Tham gia Instagram của chúng tôi",
+    "joinGit": "Tham gia Github của chúng tôi",
+    "joinNewsTg": "Tham gia kênh tin tức của chúng tôi"
   },
   "airdrop": {
     "airdrop": "Airdrop",

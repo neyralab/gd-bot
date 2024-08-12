@@ -18,7 +18,11 @@ export const checkTgJoin = async () => {
 
   try {
     const { data } = await axiosInstance.get(url);
-    return data && data.message && data.message === 'success';
+    if (data?.message === 'success') {
+      return 'success';
+    } else {
+      throw Error();
+    }
   } catch (e) {
     return false;
   }
@@ -69,6 +73,36 @@ export const checkXJoin = async () => {
   }
 };
 
+export const checkInstagramJoin = async () => {
+  const url = `${API_PATH}/join/instagram`;
+
+  try {
+    const { data } = await axiosInstance.get(url);
+    if (data?.message === 'success') {
+      return 'success';
+    } else {
+      throw Error();
+    }
+  } catch (e) {
+    return e?.response?.data?.errors;
+  }
+};
+
+export const checkGithubJoin = async () => {
+  const url = `${API_PATH}/join/github`;
+
+  try {
+    const { data } = await axiosInstance.get(url);
+    if (data?.message === 'success') {
+      return 'success';
+    } else {
+      throw Error();
+    }
+  } catch (e) {
+    return e?.response?.data?.errors;
+  }
+};
+
 export const getAllPartners = async () => {
   const url = `${API_PATH}/aff/missions/active-goals`;
 
@@ -90,3 +124,18 @@ export const checkTaskIsDone = async (id) => {
     return e?.response?.data?.errors;
   }
 };
+
+export const trackSocial = async (id) => {
+  const url = `${API_PATH}/track/social`;
+
+  try {
+    const { data } = await axiosInstance.post(url, { type: id });
+    if (data?.message === 'success') {
+      return 'success';
+    } else {
+      throw Error();
+    }
+  } catch (e) {
+    return e?.response?.data?.errors;
+  }
+}

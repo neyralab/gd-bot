@@ -10,16 +10,28 @@ import { useTranslation } from 'react-i18next';
 
 import {
   checkTgChatJoin,
+  checkTgJoin,
   checkXJoin,
-  checkYoutubeJoin
+  checkGithubJoin,
+  checkInstagramJoin,
+  checkYoutubeJoin,
+  trackSocial,
 } from '../../../effects/EarnEffect';
 import useButtonVibration from '../../../hooks/useButtonVibration';
 
 import { ReactComponent as CloseIcon } from '../../../assets/close.svg';
 import SystemModal from '../../../components/SystemModal/SystemModal';
+import { SOCIAL } from '../../../config/contracts';
 
 import classNames from 'classnames';
 import styles from './EarnModal.module.css';
+
+const socialDependence = {
+  JOIN_TWITTER: 'TWITTER',
+  JOIN_YOUTUBE: 'YOUTUBE',
+  JOIN_INSTAGRAM: 'INSTAGRAM',
+  JOIN_GITHUB: 'GITHUB'
+}
 
 const EarnModal = forwardRef(({ item, onTasksRequireCheck }, ref) => {
   const { t } = useTranslation('system');
@@ -53,7 +65,16 @@ const EarnModal = forwardRef(({ item, onTasksRequireCheck }, ref) => {
       case 'JOIN_TWITTER':
         fn = checkXJoin;
         break;
-    }
+      case 'JOIN_TG_NEWS_CHANNEL':
+        fn = checkTgJoin;
+        break;
+      case 'JOIN_INSTAGRAM':
+        fn = checkInstagramJoin;
+        break;
+      case 'JOIN_GITHUB':
+        fn = checkGithubJoin;
+        break;
+      }
 
     const res = fn ? await fn() : null;
     runSystemModal(id, res);
@@ -71,6 +92,15 @@ const EarnModal = forwardRef(({ item, onTasksRequireCheck }, ref) => {
           break;
         case 'JOIN_TWITTER':
           text = t('message.joinX');
+          break;
+        case 'JOIN_TG_NEWS_CHANNEL':
+          text = t('message.joinTGnews');
+          break;
+        case 'JOIN_INSTAGRAM':
+          text = t('message.joinInstagram');
+          break;
+        case 'JOIN_GITHUB':
+          text = t('message.joinGithub');
           break;
       }
 
@@ -99,6 +129,15 @@ const EarnModal = forwardRef(({ item, onTasksRequireCheck }, ref) => {
           break;
         case 'JOIN_TWITTER':
           text =  t('message.notJoinX');
+          break;
+        case 'JOIN_TG_NEWS_CHANNEL':
+          text = t('message.notJoinTGnews');
+          break;
+        case 'JOIN_INSTAGRAM':
+          text = t('message.notJoinInstagram');
+          break;
+        case 'JOIN_GITHUB':
+          text = t('message.notJoinGithub');
           break;
       }
 
@@ -148,6 +187,20 @@ const EarnModal = forwardRef(({ item, onTasksRequireCheck }, ref) => {
     }
   };
 
+  const handleSocial = async () => {
+    try {
+      if (
+        item.id !== 'DOWNLOAD_APP' &&
+        item.id !== 'JOIN_TG_CHANNEL' &&
+        item.id !== 'JOIN_TG_NEWS_CHANNEL'
+      ) {
+        await trackSocial(SOCIAL[socialDependence[item.id]]);
+      }
+    } catch (error) {
+      console.warn(error)
+    }
+  }
+
   const drawJoinButton = useMemo(() => {
     if (!item) return null;
 
@@ -157,7 +210,7 @@ const EarnModal = forwardRef(({ item, onTasksRequireCheck }, ref) => {
           href={item.joinLink}
           target="_blank"
           className={classNames(styles.button, styles['join-button'])}
-          onClick={handleVibrationClick()}>
+          onClick={handleVibrationClick(handleSocial)}>
           {item.id === 'DOWNLOAD_APP' ? 'Download' : 'Join'}
         </a>
       );
@@ -173,6 +226,9 @@ const EarnModal = forwardRef(({ item, onTasksRequireCheck }, ref) => {
       case 'JOIN_TG_CHANNEL':
       case 'JOIN_YOUTUBE':
       case 'JOIN_TWITTER':
+      case 'JOIN_TG_NEWS_CHANNEL':
+      case 'JOIN_INSTAGRAM':
+      case 'JOIN_GITHUB':
         return (
           <button
             className={classNames(styles.button, styles['check-button'])}

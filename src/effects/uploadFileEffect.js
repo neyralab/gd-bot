@@ -27,13 +27,14 @@ export const uploadFileEffect = async ({ files, dispatch }) => {
       try {
         const {
           data: {
-            user_token: { token: oneTimeToken },
+            user_token,
             gateway
           }
-        } = await getOneTimeToken({
+        } = await getOneTimeToken([{
           filesize: file.size,
           filename: file.name
-        });
+        }]);
+        const oneTimeToken = user_token[0].token;
         let result;
         const { handlers, callbacks } = uploadFileData;
 
@@ -114,7 +115,9 @@ export const uploadFileEffect = async ({ files, dispatch }) => {
             }
           );
         } else {
-          toast.error('Sorry, something went wrong! Please reload the page', {
+          toast.error(e?.response?.data?.errors || e?.response?.data?.message ||
+            'Sorry, something went wrong! Please reload the page',
+            {
             theme: 'colored',
             position: 'bottom-center',
             autoClose: 5000

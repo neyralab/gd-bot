@@ -67,7 +67,10 @@
     "beFirst": "Seja o primeiro com {name}",
     "joinAirdrop": "Junte-se ao bot {name} e receba airdrop instantâneo",
     "launchAndGetUSDT": "Lance {name} e GANHE USDT REAL",
-    "playAndWin": "Jogue {name} e ganhe"
+    "playAndWin": "Jogue {name} e ganhe",
+    "joinInstagram": "Junte-se ao nosso Instagram",
+    "joinGit": "Junte-se ao nosso Github",
+    "joinNewsTg": "Junte-se ao nosso canal de notícias"
   },
   "airdrop": {
     "airdrop": "Airdrop",

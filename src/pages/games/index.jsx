@@ -57,7 +57,7 @@ export const GamesPage = () => {
 
   return (
     <div className={styles.container}>
-      <Header label="Ghost Drive" />
+      <Header />
       <SearchInput
         value={search}
         setValue={handleChange}

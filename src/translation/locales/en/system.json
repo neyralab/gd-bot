@@ -115,7 +115,13 @@
     "canceledTransaction": "Transaction was canceled by the user",
     "reachedMaxTaps": "We have detected a suspicious amount of actions per game. Make sure you are not using third-party applications that may affect in-game actions.",
     "reward": "The reward was received",
-    "ckeckError": "Check failed. Please try again later."
+    "ckeckError": "Check failed. Please try again later.",
+    "joinInstagram": "You joined our Instagram Channel",
+    "joinGithub": "You joined our Github Channel",
+    "joinTGnews": "You joined our News TG Channel",
+    "notJoinInstagram": "You did not join our Instagram Channel",
+    "notJoinGithub": "You did not join our Github Channel",
+    "notJoinTGnews": "You did not join our News TG Channel"
   },
   "language": {
     "search": "Search",

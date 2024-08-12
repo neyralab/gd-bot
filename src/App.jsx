@@ -53,6 +53,7 @@ function App() {
 
   useEffect(() => {
     ReactGA.initialize(GA);
+    tg.disableVerticalSwipes();
   }, []);
 
   function splitString(str) {
