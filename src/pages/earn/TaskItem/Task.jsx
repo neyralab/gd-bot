@@ -15,6 +15,8 @@ import { getToken } from '../../../effects/set-token';
 
 import styles from './Task.module.css';
 
+const TWO_MINUTES = 120000;
+
 export default function Task({ type, logo, description, name, done, rewardParams, id, doVerify }) {
   const { t } = useTranslation('game');
   const formattedPoints = useMemo(() => Number(rewardParams).toLocaleString(), [rewardParams]);
@@ -27,7 +29,7 @@ export default function Task({ type, logo, description, name, done, rewardParams
       const token = await getToken();
       const partnertList = JSON.parse(localStorage.getItem(PARTNER_KEY) || '[]');
       localStorage.setItem(PARTNER_KEY, JSON.stringify([...partnertList, id]));
-      setTimeout(() => {setNeedVerify(isNeedVerify(id))}, [120000]);
+      setTimeout(() => {setNeedVerify(isNeedVerify(id))}, [TWO_MINUTES]);
       window.location.href = `${API_PATH}/aff/missions/exit/${id}?bearer=${token}`;
     } catch (error) {
       console.warn(error)      
