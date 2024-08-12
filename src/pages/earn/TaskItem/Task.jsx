@@ -27,7 +27,7 @@ export default function Task({ type, logo, description, name, done, rewardParams
       const token = await getToken();
       const partnertList = JSON.parse(localStorage.getItem(PARTNER_KEY) || '[]');
       localStorage.setItem(PARTNER_KEY, JSON.stringify([...partnertList, id]));
-      setTimeout(() => {setNeedVerify(isNeedVerify(id))}, [1000]);
+      setTimeout(() => {setNeedVerify(isNeedVerify(id))}, [120000]);
       window.location.href = `${API_PATH}/aff/missions/exit/${id}?bearer=${token}`;
     } catch (error) {
       console.warn(error)      
