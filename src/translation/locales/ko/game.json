@@ -67,7 +67,10 @@
     "beFirst": "{name}와 함께 첫 번째가 되세요",
     "joinAirdrop": "{name} 봇에 가입하고 즉시 에어드롭 받기",
     "launchAndGetUSDT": "{name}를 실행하고 진짜 USDT를 받으세요",
-    "playAndWin": "{name}를 플레이하고 승리하세요"
+    "playAndWin": "{name}를 플레이하고 승리하세요",
+    "joinInstagram": "우리 Instagram에 가입하세요",
+    "joinGit": "우리 Github에 가입하세요",
+    "joinNewsTg": "우리 뉴스 채널에 가입하세요"
   },
   "airdrop": {
     "airdrop": "에어드롭",

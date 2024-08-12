@@ -115,7 +115,13 @@
     "canceledTransaction": "A transação foi cancelada pelo usuário",
     "reachedMaxTaps": "Detetámos uma quantidade suspeita de ações por jogo. Certifique-se de que não utiliza aplicações de terceiros que possam afetar as ações do jogo.",
     "reward": "A recompensa foi recebida",
-    "ckeckError": "Verificação falhou. Por favor, tente novamente mais tarde."
+    "ckeckError": "Verificação falhou. Por favor, tente novamente mais tarde.",
+    "joinInstagram": "Você se juntou ao nosso canal do Instagram",
+    "joinGithub": "Você se juntou ao nosso canal do Github",
+    "joinTGnews": "Você se juntou ao nosso canal de notícias TG",
+    "notJoinInstagram": "Você não se juntou ao nosso canal do Instagram",
+    "notJoinGithub": "Você não se juntou ao nosso canal do Github",
+    "notJoinTGnews": "Você não se juntou ao nosso canal de notícias TG"
   },
   "language": {
     "search": "Pesquisar",

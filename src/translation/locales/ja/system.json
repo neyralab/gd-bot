@@ -115,7 +115,13 @@
     "canceledTransaction": "トランザクションはユーザーによってキャンセルされました",
     "reachedMaxTaps": "ゲームごとに疑わしい量のアクションが検出されました。ゲーム内のアクションに影響を与える可能性のあるサードパーティ製アプリケーションを使用していないことを確認してください。",
     "reward": "T報酬が受け取られました",
-    "ckeckError": "チェックに失敗しました。後でもう一度お試しください"
+    "ckeckError": "チェックに失敗しました。後でもう一度お試しください",
+    "joinInstagram": "Instagramチャンネルに参加しました",
+    "joinGithub": "Githubチャンネルに参加しました",
+    "joinTGnews": "ニュースTGチャンネルに参加しました",
+    "notJoinInstagram": "Instagramチャンネルに参加しませんでした",
+    "notJoinGithub": "Githubチャンネルに参加しませんでした",
+    "notJoinTGnews": "ニュースTGチャンネルに参加しませんでした"
   },
   "language": {
     "search": "検索",

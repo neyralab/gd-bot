@@ -67,7 +67,10 @@
     "beFirst": "Jadilah yang Pertama dengan {name}",
     "joinAirdrop": "Bergabung dengan bot {name} & Dapatkan Airdrop Instan",
     "launchAndGetUSDT": "Luncurkan ${name} & DAPATKAN USDT ASLI",
-    "playAndWin": "Mainkan {name} & Menangkan"
+    "playAndWin": "Mainkan {name} & Menangkan",
+    "joinInstagram": "Bergabunglah dengan Instagram kami",
+    "joinGit": "Bergabunglah dengan Github kami",
+    "joinNewsTg": "Bergabunglah dengan saluran berita kami"
   },
   "airdrop": {
     "airdrop": "Tetesan udara",

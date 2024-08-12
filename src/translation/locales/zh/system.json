@@ -115,7 +115,13 @@
     "canceledTransaction": "交易被用户取消了",
     "reachedMaxTaps": "我们检测到每个游戏中存在大量可疑操作。请确保您没有使用可能影响游戏内操作的第三方应用程序。",
     "reward": "奖励已收到",
-    "ckeckError": "检查失败。请稍后再试"
+    "ckeckError": "检查失败。请稍后再试",
+    "joinInstagram": "您已加入我们的Instagram频道",
+    "joinGithub": "您已加入我们的Github频道",
+    "joinTGnews": "您已加入我们的新闻TG频道",
+    "notJoinInstagram": "您未加入我们的Instagram频道",
+    "notJoinGithub": "您未加入我们的Github频道",
+    "notJoinTGnews": "您未加入我们的新闻TG频道"
   },
   "language": {
     "search": "搜索",
