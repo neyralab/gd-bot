@@ -36,6 +36,9 @@ import EarnPage from './pages/earn';
 import FriendsPage from './pages/friends';
 import NodesWelcomePage from './pages/nodes-welcome';
 import NodesPage from './pages/nodes';
+import NotAllow from './pages/notAllow';
+
+import { isPhone } from './utils/client';
 
 import './App.css';
 
@@ -56,10 +59,6 @@ function App() {
     tg.disableVerticalSwipes();
   }, []);
 
-  function splitString(str) {
-    const halfLength = Math.floor(str.length / 2);
-    return [str.substring(0, halfLength), str.substring(halfLength)];
-  }
   const onPageLoad = async () => {
     try {
       dispatch(setInitData(currentUser.initData));
@@ -103,6 +102,10 @@ function App() {
   const onClose = () => {
     tg.close();
   };
+
+  if (!isPhone()) {
+    return <NotAllow />
+  }
 
   return (
     <TonConnectUIProvider
