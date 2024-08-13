@@ -68,7 +68,9 @@
     "extraBonusLvl7": "7탭 레벨 도달 추가 보너스",
     "points": "포인트",
     "point": "포인트",
-    "invitePremiumFriend": "25명의 프리미엄 친구를 초대하세요 "
+    "invitePremiumFriend": "25명의 프리미엄 친구를 초대하세요",
+    "joinInstagramLong": "Instagram 채널에 가입하세요",
+    "joinGitLong": "Github 채널에 가입하세요"
   },
   "wallet": {
     "disconnect": "연결을 끊으시겠습니까?",

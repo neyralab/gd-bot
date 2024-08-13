@@ -68,7 +68,9 @@
     "extraBonusLvl7": "7タップレベルに到達で追加ボーナス",
     "points": "ポイント",
     "point": "ポイント",
-    "invitePremiumFriend": "25人のプレミアムフレンドを招待"
+    "invitePremiumFriend": "25人のプレミアムフレンドを招待",
+    "joinInstagramLong": "Instagramチャンネルに参加する",
+    "joinGitLong": "Githubチャンネルに参加する"
   },
   "wallet": {
     "disconnect": "本当に切断しますか？",
