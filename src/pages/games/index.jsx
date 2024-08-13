@@ -65,6 +65,7 @@ export const GamesPage = () => {
       <ul className={styles.gameList}>
         {list.map((item) => (
           <Game
+            key={item.id}
             title={item.title}
             joinLink={item.url}
             translatedText={item.translatedText}
