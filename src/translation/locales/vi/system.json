@@ -68,7 +68,9 @@
     "extraBonusLvl7": "Tiền thưởng bổ sung cho việc đạt đến cấp độ nhấp 7",
     "points": "Điểm",
     "point": "Điểm",
-    "invitePremiumFriend": "Mời 25 bạn Premium"
+    "invitePremiumFriend": "Mời 25 bạn Premium",
+    "joinInstagramLong": "Tham gia kênh Instagram của chúng tôi",
+    "joinGitLong": "Tham gia kênh Github của chúng tôi"
   },
   "wallet": {
     "disconnect": "Bạn có chắc chắn muốn ngắt kết nối không?",

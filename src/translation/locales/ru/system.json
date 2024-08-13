@@ -68,7 +68,9 @@
     "extraBonusLvl7": "Дополнительный бонус за достижение 7 уровня нажатий",
     "points": "Баллы",
     "point": "Баллы",
-    "invitePremiumFriend": "Пригласите 25 друзей с Premium"
+    "invitePremiumFriend": "Пригласите 25 друзей с Premium",
+    "joinInstagramLong": "Присоединяйтесь к нашему каналу в Instagram",
+    "joinGitLong": "Присоединяйтесь к нашему каналу на Github"
   },
   "wallet": {
     "disconnect": "Вы уверены, что хотите отключить?",
