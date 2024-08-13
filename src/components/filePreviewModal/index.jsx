@@ -72,6 +72,7 @@ export const FilePreviewModal = () => {
       const cidData = await getFileCids({ slug: file.slug });
       const {
         data: {
+          jwt_ott,
           user_tokens: { token: oneTimeToken },
           gateway,
           upload_chunk_size
@@ -85,7 +86,8 @@ export const FilePreviewModal = () => {
         isEncrypted: false,
         uploadChunkSize:
           upload_chunk_size[file.slug] || gateway.upload_chunk_size,
-        cidData
+        cidData,
+        jwtOneTimeToken: jwt_ott
       });
       if (blob) {
         const realBlob = new Blob([blob]);

@@ -15,6 +15,7 @@ export const getFilePreviewEffect = async (
 ) => {
   const {
     data: {
+      jwt_ott,
       user_tokens: { token: oneTimeToken },
       gateway
     }
@@ -26,7 +27,8 @@ export const getFilePreviewEffect = async (
     return axiosInstance
       .create({
         headers: {
-          'One-Time-Token': oneTimeToken
+          'One-Time-Token': oneTimeToken,
+          'X-Download-OTT-JWT': jwt_ott
         }
       })
       .get(url, null, {
@@ -48,7 +50,8 @@ export const getFilePreviewEffect = async (
     return axiosInstance
       .create({
         headers: {
-          'one-time-token': oneTimeToken
+          'one-time-token': oneTimeToken,
+          'X-Download-OTT-JWT': jwt_ott
         }
       })
       .get(url, {
@@ -75,6 +78,7 @@ export const getTotalDownloadFileSize = (files) => {
 export const downloadFileEffect = async (file, afterCb) => {
   const {
     data: {
+      jwt_ott,
       user_tokens: { token: oneTimeToken },
       gateway,
       upload_chunk_size
@@ -88,7 +92,8 @@ export const downloadFileEffect = async (file, afterCb) => {
     endpoint: gateway.url,
     isEncrypted: false,
     signal: controller.signal,
-    uploadChunkSize: upload_chunk_size[file.slug] || gateway.upload_chunk_size
+    uploadChunkSize: upload_chunk_size[file.slug] || gateway.upload_chunk_size,
+    jwtOneTimeToken: jwt_ott
   });
   if (blob && !blob?.failed) {
     const realBlob = new Blob([blob]);

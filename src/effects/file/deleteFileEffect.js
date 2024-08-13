@@ -26,6 +26,7 @@ export const deleteFileEffect = async (slug, dispatch) => {
 export const permanentlyDeleteFileEffect = async (file, dispatch) => {
   const {
     data: {
+      jwt_ott,
       user_tokens: { token: oneTimeToken },
       gateway
     }
@@ -36,7 +37,8 @@ export const permanentlyDeleteFileEffect = async (file, dispatch) => {
   return await axios
     .create({
       headers: {
-        'one-time-token': oneTimeToken
+        'one-time-token': oneTimeToken,
+        'X-Delete-OTT-JWT': jwt_ott
       }
     })
     .delete(url, { data: [file.slug] })
