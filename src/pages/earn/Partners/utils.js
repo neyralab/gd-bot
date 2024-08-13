@@ -2,9 +2,6 @@ import { getKeyTranslate } from '../../../translation/utils';
 
 const PARTNER_KEY = 'partnertsToVerify';
 
-const joinRegex = /Join (\w+) Telegram bot/;
-const joinShortRegex = /Join (\w+) TG bot/;
-
 const PARTNER_TASK_TYPES = {
   bot: 'tg-bot',
   channel: 'tg-channel',
@@ -36,32 +33,26 @@ const PARTNER_SIZES = [
     start: 'Follow',
     end: 'Twitter (X)',
     size: -12
-  }
+  },
+  {
+    start: 'Join',
+    end: 'Telegram bot',
+    size: -13
+  },
 ]
 
 const getPartnerNameSize = (name) => {
   const size = PARTNER_SIZES.find((item) => (
     name.endsWith(item.end) && name.startsWith(item.start)
   ));
-
   if (size)
     return size
 
   return ''
 }
 
-const getPartnerName = (title) => {
-  const match = title.match(joinRegex);
-  const matchSecond = title.match(joinShortRegex)
-
-  if (match) {
-    return match[1];
-  } else if (matchSecond) {
-    return matchSecond[1];
-  }
-  
+const getPartnerName = (title) => {  
   const cutSize = getPartnerNameSize(title);
-
   if (cutSize) {
     return title.substring(cutSize.start.length + 1, title.length + cutSize.size);
   }
@@ -114,7 +105,7 @@ const formatPartnerResponce = (data) => {
           const item = innerObject[innerKey];
 
           if (item.name.endsWith("TG bot") && !gameNames.has(item.name)) {
-            result.games.push(item);
+            result.games.push({ ...item, translate: "earn.joinTGtempl" });
             gameNames.add(item.name);
           }
 
@@ -136,7 +127,6 @@ const formatPartnerResponce = (data) => {
 }
 
 export {
-  joinRegex,
   PARTNER_KEY,
   isNeedVerify,
   getPartnerName,

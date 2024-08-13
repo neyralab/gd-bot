@@ -68,7 +68,9 @@
     "extraBonusLvl7": "Zusätzlicher Bonus für das Erreichen des 7. Tapping-Levels",
     "points": "Punkte",
     "point": "Punkt",
-    "invitePremiumFriend": "Lade 25 Premium-Freunde ein"
+    "invitePremiumFriend": "Lade 25 Premium-Freunde ein",
+    "joinInstagramLong": "Treten Sie unserem Instagram-Kanal bei",
+    "joinGitLong": "Treten Sie unserem Github-Kanal bei"
   },
   "wallet": {
     "disconnect": "Möchtest du wirklich die Verbindung trennen?",

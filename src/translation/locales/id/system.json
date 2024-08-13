@@ -68,7 +68,9 @@
     "extraBonusLvl7": "Bonus tambahan untuk mencapai level tapping 7",
     "points": "Poin",
     "point": "Poin",
-    "invitePremiumFriend": "Undang 25 teman Premium"
+    "invitePremiumFriend": "Undang 25 teman Premium",
+    "joinInstagramLong": "Bergabunglah dengan saluran Instagram kami",
+    "joinGitLong": "Bergabunglah dengan saluran Github kami"
   },
   "wallet": {
     "disconnect": "Apakah Anda yakin ingin memutuskan?",
