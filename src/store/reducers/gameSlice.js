@@ -22,6 +22,8 @@ const gameSlice = createSlice({
 
     isInitialized: false,
 
+    isCanvasLoaded: false,
+
     contractAddress: null,
 
     gameId: null,
@@ -110,6 +112,9 @@ const gameSlice = createSlice({
     },
     setIsInitialized: (state, { payload }) => {
       state.isInitialized = payload;
+    },
+    setCanvasLoaded: (state, { payload }) => {
+      state.isCanvasLoaded = payload;
     },
     setContractAddress: (state, { payload }) => {
       state.contractAddress = payload;
@@ -627,6 +632,7 @@ export const gameCleanup = createAsyncThunk(
     dispatch(setRoundFinal({ roundPoins: null, isActive: false }));
     dispatch(setReachedNewLevel(false));
     dispatch(setStatus('waiting'));
+    dispatch(setCanvasLoaded(false));
   }
 );
 
@@ -634,6 +640,7 @@ export const {
   setPendingGames,
   setIsInitializing,
   setIsInitialized,
+  setCanvasLoaded,
   setContractAddress,
   setThemes,
   setGameId,
