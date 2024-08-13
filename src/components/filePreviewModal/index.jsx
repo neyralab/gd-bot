@@ -34,6 +34,8 @@ import { ReactComponent as SendIcon } from './assets/send.svg';
 
 import style from './styles.module.scss';
 
+Modal.setAppElement('#root');
+
 export const FilePreviewModal = () => {
   const { t } = useTranslation('drive');
   const handleVibrationClick = useButtonVibration();
@@ -112,16 +114,19 @@ export const FilePreviewModal = () => {
 
   const actions = [
     {
+      id: 1,
       icon: <FavIcon color={isFavorite ? '#24ADFA' : '#fff'} />,
       action: toggleFavorite
     },
     {
+      id: 2,
       icon: <InfoIcon />,
       action: () => {
         setInfoPopupOpen(true);
       }
     },
     {
+      id: 3,
       icon: (
         <TelegramShareButton
           url={url}
@@ -162,8 +167,10 @@ export const FilePreviewModal = () => {
               )}
             </div>
             <div className={style.actions}>
-              {actions.map(({ icon, action }) => (
-                <div onClick={handleVibrationClick(action)}>{icon}</div>
+              {actions.map(({ id, icon, action }) => (
+                <div key={id} onClick={handleVibrationClick(action)}>
+                  {icon}
+                </div>
               ))}
             </div>
           </div>
