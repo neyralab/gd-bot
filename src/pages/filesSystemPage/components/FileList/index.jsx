@@ -15,13 +15,14 @@ import {
 } from '../../../../store/reducers/filesSlice';
 import { handleFileMenu } from '../../../../store/reducers/modalSlice';
 
+import GhostLoader from '../../../../components/ghostLoader';
 import { FileItem } from '../../../../components/fileItem';
 import { ReactComponent as FileIcon } from '../../../../assets/file_draft.svg';
 
 import CN from 'classnames';
 import style from '../../style.module.scss';
 
-const FileList = ({ files, checkedFile }) => {
+const FileList = ({ files, checkedFile, loading }) => {
   const { t } = useTranslation('drive');
   const dispatch = useDispatch();
   const filesCount = useSelector(selectFilesCount);
@@ -55,6 +56,14 @@ const FileList = ({ files, checkedFile }) => {
     dispatch(setPage(nextPage));
     dispatch(getFilesAction(nextPage));
   };
+
+  if (loading) {
+    return (
+      <div className={style.loader}>
+        <GhostLoader />
+      </div>
+    )
+  }
 
   return files.length ? (
     <div className={style.scrollWrapper} id="scrollableDiv">
