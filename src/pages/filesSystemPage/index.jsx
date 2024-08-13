@@ -15,6 +15,7 @@ import {
   selectFileTypesCount,
   selectFileView,
   selectFiles,
+  selectFilesLoading,
   selectSearchAutocomplete,
   setCurrentFilter,
   setFileTypesCount,
@@ -54,6 +55,7 @@ export const FilesSystemPage = () => {
   const { t } = useTranslation('drive');
   const files = useSelector(selectFiles);
   const searchFiles = useSelector(selectSearchAutocomplete);
+  const loading = useSelector(selectFilesLoading);
   const { games } = useSelector(selectPartners);
   const view = useSelector(selectFileView);
   const [areFilesLoading, setAreFilesLoading] = useState(false);
@@ -243,7 +245,7 @@ export const FilesSystemPage = () => {
                 {view === 'grid' ? <ListIcon /> : <GridIcon />}
               </button>
             </div>
-            <FileList files={fileList} checkedFile={checkedFile} />
+            <FileList loading={loading} files={fileList} checkedFile={checkedFile} />
           </>
         ) : (
           <FileFilterPanel />
