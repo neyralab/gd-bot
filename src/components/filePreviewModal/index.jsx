@@ -34,6 +34,8 @@ import { ReactComponent as SendIcon } from './assets/send.svg';
 
 import style from './styles.module.scss';
 
+Modal.setAppElement('#root');
+
 export const FilePreviewModal = () => {
   const { t } = useTranslation('drive');
   const handleVibrationClick = useButtonVibration();
