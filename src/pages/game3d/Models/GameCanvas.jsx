@@ -25,6 +25,10 @@ function Loader() {
   const { progress } = useProgress();
 
   useEffect(() => {
+    dispatch(setCanvasLoaded(false));
+  }, []);
+
+  useEffect(() => {
     if (progress === 100 && !canvasIsLoaded) {
       setTimeout(() => {
         dispatch(setCanvasLoaded(true));
