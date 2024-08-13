@@ -68,7 +68,9 @@
     "extraBonusLvl7": "Bonus supplémentaire pour atteindre le niveau 7 de taps",
     "points": "Points",
     "point": "Point",
-    "invitePremiumFriend": "Invite 25 amis Premium"
+    "invitePremiumFriend": "Invite 25 amis Premium",
+    "joinInstagramLong": "Rejoignez notre chaîne Instagram",
+    "joinGitLong": "Rejoignez notre chaîne Github"
   },
   "wallet": {
     "disconnect": "Êtes-vous sûr de vouloir déconnecter ?",

@@ -68,7 +68,9 @@
     "extraBonusLvl7": "达到第7点击级别的额外奖励",
     "points": "积分",
     "point": "积分",
-    "invitePremiumFriend": "邀请25位高级好友"
+    "invitePremiumFriend": "邀请25位高级好友",
+    "joinInstagramLong": "加入我们的Instagram频道",
+    "joinGitLong": "加入我们的Github频道"
   },
   "wallet": {
     "disconnect": "您确定要断开连接吗？",

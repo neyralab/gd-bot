@@ -68,7 +68,9 @@
     "extraBonusLvl7": "Bônus extra por atingir o nível 7 de toques",
     "points": "Pontos",
     "point": "Ponto",
-    "invitePremiumFriend": "Convide 25 amigos Premium"
+    "invitePremiumFriend": "Convide 25 amigos Premium",
+    "joinInstagramLong": "Junte-se ao nosso canal do Instagram",
+    "joinGitLong": "Junte-se ao nosso canal do Github"
   },
   "wallet": {
     "disconnect": "Tem certeza de que deseja desconectar?",
