@@ -56,17 +56,19 @@ const MainButton = ({ onPushAnimation }) => {
     }
   });
 
-  const clickHandler = async (e) => {
+  const tapHandler = async (e) => {
     e?.preventDefault();
     e?.stopPropagation();
 
-    // // TODO: REMOVE LATER
-    // onPushAnimation?.();
-    // canvasRef.current?.runPushAnimation();
+    // Run animations
+    onPushAnimation?.();
+    pointsAreaRef.current.runAnimation();
 
-    // return;
-    // // TODO: REMOVE LATER
+    // Update state and timers
+    dispatch(proceedTap());
+  };
 
+  const handleEvent = async (event) => {
     if (
       (!counterIsFinished && theme.id === 'ghost') ||
       (lockTimerTimestamp !== null && theme.id === 'hawk') ||
@@ -85,22 +87,13 @@ const MainButton = ({ onPushAnimation }) => {
 
     window?.Telegram?.WebApp?.HapticFeedback?.impactOccurred('soft');
 
-    // Run animations
-    onPushAnimation?.();
-    pointsAreaRef.current.runAnimation();
-
-    // Update state and timers
-    dispatch(proceedTap());
-  };
-
-  const handleEvent = async (event) => {
     if (event.type.startsWith('touch')) {
       const touches = event.changedTouches;
       for (let i = 0; i < touches.length; i++) {
-        await clickHandler(event);
+        await tapHandler(event);
       }
     } else {
-      await clickHandler(event);
+      await tapHandler(event);
     }
   };
 
