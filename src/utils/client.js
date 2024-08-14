@@ -37,3 +37,10 @@ export function isiOS() {
   // iPad on iOS 13 detection
   || (navigator.userAgent.includes("Mac") && "ontouchend" in document)
 }
+
+export function isPhone() {
+  const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+  if (/android/i.test(userAgent)) { return true }
+  if (/iPhone|iPad|iPod/i.test(userAgent)) { return true }
+  return false;
+}
