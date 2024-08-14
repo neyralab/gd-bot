@@ -48,7 +48,6 @@ export function Game3DPage() {
   }, [userIsInitialized]);
 
   const onPushAnimation = () => {
-    console.log('on push animation worked');
     canvasRef.current?.runPushAnimation();
   };
 

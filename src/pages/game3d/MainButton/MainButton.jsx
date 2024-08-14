@@ -67,15 +67,6 @@ const MainButton = ({ onPushAnimation }) => {
     // return;
     // // TODO: REMOVE LATER
 
-    console.log(!counterIsFinished && theme.id === 'ghost')
-    console.log(lockTimerTimestamp !== null && theme.id === 'hawk')
-    console.log(!theme)
-    console.log(!themeAccess[theme.id])
-    console.log(status === 'finished')
-    console.log(themeIsSwitching)
-    console.log(recentlyFinishedLocker)
-    console.log(!isCanvasLoaded)
-
     if (
       (!counterIsFinished && theme.id === 'ghost') ||
       (lockTimerTimestamp !== null && theme.id === 'hawk') ||
@@ -95,7 +86,6 @@ const MainButton = ({ onPushAnimation }) => {
     window?.Telegram?.WebApp?.HapticFeedback?.impactOccurred('soft');
 
     // Run animations
-    console.log('run animaions');
     onPushAnimation?.();
     pointsAreaRef.current.runAnimation();
 
