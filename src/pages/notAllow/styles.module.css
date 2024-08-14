@@ -34,6 +34,7 @@
   line-height: 24px;
   letter-spacing: 0.06px;
   text-align: center;
+  text-transform: uppercase;
 }
 
 .text {
@@ -43,6 +44,7 @@
   line-height: 24px;
   letter-spacing: 0.06px;
   text-align: center;
+  text-transform: uppercase;
 }
 
 .detail {
