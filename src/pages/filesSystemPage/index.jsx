@@ -29,6 +29,7 @@ import { getAllPartners } from '../../effects/EarnEffect';
 import { handlePartners, selectPartners } from '../../store/reducers/taskSlice';
 import { transformSize } from '../../utils/transformSize';
 import { fromByteToGb } from '../../utils/storage';
+import { getResponseError } from '../../utils/string';
 import useButtonVibration from '../../hooks/useButtonVibration';
 
 import { FileFilterPanel } from '../../components/fileFilterPanel';
@@ -110,7 +111,7 @@ export const FilesSystemPage = () => {
       await uploadFileEffect({ files, dispatch });
     } catch (error) {
       toast.error(
-        'Something went wrong during upload. Please try again later!',
+        getResponseError(error),
         {
           theme: 'colored',
           position: 'bottom-center',
