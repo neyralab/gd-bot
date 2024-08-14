@@ -11,6 +11,7 @@ import { uploadFileData } from '../config/upload-file-data';
 import { afterFileUploadAction } from '../store/reducers/filesSlice';
 import { imagesWithoutPreview } from '../config/image-file-extensions';
 import { videoWithoutThumbnail } from '../config/video-file-extensions';
+import { getResponseError } from '../utils/string';
 
 export const uploadFileEffect = async ({ files, dispatch }) => {
   let progresses = {};
@@ -118,10 +119,8 @@ export const uploadFileEffect = async ({ files, dispatch }) => {
             }
           );
         } else {
-          toast.error(
-            e?.response?.data?.errors ||
-              e?.response?.data?.message ||
-              'Sorry, something went wrong! Please reload the page',
+
+          toast.error(getResponseError(e),
             {
               theme: 'colored',
               position: 'bottom-center',
