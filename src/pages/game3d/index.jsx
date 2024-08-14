@@ -45,6 +45,7 @@ export function Game3DPage() {
 
   const isInitialized = useSelector(selectIsInitialized);
   const userIsInitialized = useSelector((state) => !!state.user.data);
+  const isCanvasLoaded = useSelector((state) => state.game.isCanvasLoaded);
   const theme = useSelector(selectTheme);
   const themeAccess = useSelector(selectThemeAccess);
   const themeIsSwitching = useSelector(
@@ -64,22 +65,22 @@ export function Game3DPage() {
 
   const swipeHandlers = useSwipeable({
     onSwipedLeft: () => {
-      if (theme.id !== 'ghost') {
-        dispatch(
-          switchTheme({ themeId: 'ghost', direction: 'next', timeout: 2500 })
-        );
-      }
+      if (!isCanvasLoaded || theme.id === 'ghost') return;
+
+      dispatch(
+        switchTheme({ themeId: 'ghost', direction: 'next', timeout: 2500 })
+      );
     },
     onSwipedRight: () => {
-      if (theme.id !== 'hawk') {
-        dispatch(
-          switchTheme({
-            themeId: 'hawk',
-            direction: 'prev',
-            timeout: 2500
-          })
-        );
-      }
+      if (!isCanvasLoaded || theme.id === 'hawk') return;
+
+      dispatch(
+        switchTheme({
+          themeId: 'hawk',
+          direction: 'prev',
+          timeout: 2500
+        })
+      );
     }
   });
 
@@ -117,7 +118,8 @@ export function Game3DPage() {
       !themeAccess[theme.id] ||
       status === 'finished' ||
       themeIsSwitching ||
-      recentlyFinishedLocker
+      recentlyFinishedLocker ||
+      !isCanvasLoaded
     )
       return;
 

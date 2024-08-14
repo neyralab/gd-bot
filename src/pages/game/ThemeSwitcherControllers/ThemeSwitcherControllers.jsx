@@ -12,6 +12,7 @@ import styles from './ThemeSwitcherControllers.module.css';
 export default function ThemeSwitcherControllers({ themeChangeTimeout }) {
   const dispatch = useDispatch();
 
+  const canvasIsLoaded = useSelector((state) => state.game.isCanvasLoaded);
   const status = useSelector(selectStatus);
   const theme = useSelector(selectTheme);
   const nextTheme = useSelector(selectNextTheme);
@@ -42,7 +43,7 @@ export default function ThemeSwitcherControllers({ themeChangeTimeout }) {
     }
   };
 
-  if (status !== 'playing' && counterIsFinished) {
+  if (status !== 'playing' && counterIsFinished && canvasIsLoaded) {
     return (
       <div
         className={classNames(
