@@ -485,10 +485,10 @@ export const proceedTap = createAsyncThunk(
 
     const newPoints = state.game.experiencePoints + 1;
 
-    if (newPoints >= level.tapping_to) {
+    if (newPoints > level.tapping_to) {
       /** If user reached new level */
       const newLevel = state.game.experienceLevel + 1;
-      if (newLevel >= state.game.maxLevel) return;
+      if (newLevel > state.game.maxLevel) return;
 
       dispatch(setExperienceLevel(newLevel));
       dispatch(setReachedNewLevel(true)); // Update the new level trigger
