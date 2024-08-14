@@ -23,7 +23,7 @@ const link = [
     name: 'github',
     title: 'GitHub',
     link: 'https://github.com/neyralab',
-    icon: "/assets/github.png"
+    icon: "/assets/github2.png"
   },
 ];
 
