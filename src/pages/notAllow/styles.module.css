@@ -16,8 +16,9 @@
 
 .qrWrapper > img {
   width: 70%;
-  padding: 20% 0 4% 0;
+  padding: 17% 0 0 0;
   max-height: 100%;
+  object-fit: contain;
 }
 
 .info {
