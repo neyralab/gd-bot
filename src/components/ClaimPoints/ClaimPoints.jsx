@@ -79,7 +79,6 @@ const ClaimPoints = forwardRef((_, ref) => {
 
   const runTokenAnimation = () => {
     if (!imgContainerRef.current) return;
-    window?.Telegram?.WebApp?.HapticFeedback?.impactOccurred('soft');
 
     const tokenId = Date.now();
 
@@ -95,6 +94,8 @@ const ClaimPoints = forwardRef((_, ref) => {
   const onTokenAnimationCompleted = (tokenId) => {
     runPushAnimation();
     runWaveAnimation();
+
+    window?.Telegram?.WebApp?.HapticFeedback?.impactOccurred('soft');
 
     setTokens((prevTokens) => prevTokens.filter((el) => el.id !== tokenId));
   };

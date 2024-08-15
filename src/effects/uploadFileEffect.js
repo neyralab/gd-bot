@@ -11,6 +11,7 @@ import { uploadFileData } from '../config/upload-file-data';
 import { afterFileUploadAction } from '../store/reducers/filesSlice';
 import { imagesWithoutPreview } from '../config/image-file-extensions';
 import { videoWithoutThumbnail } from '../config/video-file-extensions';
+import { getResponseError } from '../utils/string';
 
 export const uploadFileEffect = async ({ files, dispatch }) => {
   let progresses = {};
@@ -26,15 +27,15 @@ export const uploadFileEffect = async ({ files, dispatch }) => {
       index++;
       try {
         const {
-          data: {
-            user_token,
-            gateway
+          data: { user_token, gateway, jwt_ott }
+        } = await getOneTimeToken([
+          {
+            filesize: file.size,
+            filename: file.name
           }
-        } = await getOneTimeToken([{
-          filesize: file.size,
-          filename: file.name
-        }]);
+        ]);
         const oneTimeToken = user_token[0].token;
+        const jwtOneTimeToken = jwt_ott[0];
         let result;
         const { handlers, callbacks } = uploadFileData;
 
@@ -62,7 +63,8 @@ export const uploadFileEffect = async ({ files, dispatch }) => {
           progress: progresses[file?.folderData?.uploadId],
           totalSize: file?.folderSize,
           startedAt: file?.startedAt,
-          is_telegram: true
+          is_telegram: true,
+          jwtOneTimeToken
         });
         const uploadedFile = result?.data?.data;
         try {
@@ -75,7 +77,8 @@ export const uploadFileEffect = async ({ files, dispatch }) => {
               quality: 3,
               oneTimeToken,
               endpoint: gateway.url,
-              slug: uploadedFile?.slug
+              slug: uploadedFile?.slug,
+              jwtOneTimeToken
             });
           } else if (
             uploadedFile?.mime.startsWith('video') &&
@@ -86,7 +89,8 @@ export const uploadFileEffect = async ({ files, dispatch }) => {
               quality: 3,
               oneTimeToken,
               endpoint: gateway.url,
-              slug: uploadedFile?.slug
+              slug: uploadedFile?.slug,
+              jwtOneTimeToken
             });
           }
         } catch (error) {
@@ -115,13 +119,14 @@ export const uploadFileEffect = async ({ files, dispatch }) => {
             }
           );
         } else {
-          toast.error(e?.response?.data?.errors || e?.response?.data?.message ||
-            'Sorry, something went wrong! Please reload the page',
+
+          toast.error(getResponseError(e),
             {
-            theme: 'colored',
-            position: 'bottom-center',
-            autoClose: 5000
-          });
+              theme: 'colored',
+              position: 'bottom-center',
+              autoClose: 5000
+            }
+          );
         }
       }
     };

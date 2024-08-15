@@ -256,6 +256,43 @@ export const levelSubThemes = [
     shipRoughness: 0.43,
 
     glareImg: 'glare-color-hawk-7.png'
+  },
+
+  {
+    level: 8,
+    colors: {
+      buttonText: '#FEFB4F',
+      experienceBar: {
+        active: {
+          background1: '#FEFB4F',
+          background2: '#FEB600',
+          boxShadow: '#F9D523'
+        },
+        empty: {
+          background1: [254, 242, 79],
+          background2: [150, 103, 56],
+          boxShadow: '#F9D523'
+        }
+      },
+
+      shipBase: '#FFFFFF',
+      wing: '#FFFFFF',
+      wingAccent: '#FFFFFF',
+      emission: '#FAFF94',
+      fog: '#E7BAA3',
+      wave: '#E7CC44',
+      directionalLight: '#E7DCA3',
+      accentEmission: '#F6DC5D',
+      shipTrailEmission: '#FFE460'
+    },
+
+    ambientLightIntensity: 1.5,
+    directionalLight1Intensity: 2,
+    directionalLight2Intensity: 0.5,
+    shipMetalness: 0,
+    shipRoughness: 0.43,
+
+    glareImg: 'glare-color-hawk-8.png'
   }
 ];
 
@@ -306,8 +343,9 @@ export const themes = [
     shipMetalness: 0.98,
     shipRoughness: 0.6,
 
-    glareImg: 'glare-color-gold-2.png'
+    glareImg: 'glare-color-gold.png'
   },
+  
   {
     id: 'ghost',
     name: 'Ghost',

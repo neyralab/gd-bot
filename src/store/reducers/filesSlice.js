@@ -15,6 +15,7 @@ const filesSlice = createSlice({
     count: 0,
     page: 1,
     files: [],
+    loading: false,
     searchAutocomplete: [],
     selectedFile: {},
     direction: 'asc',
@@ -75,6 +76,9 @@ const filesSlice = createSlice({
     setUploadingFile: (state, { payload }) => {
       state.uploadingFile.file = payload;
     },
+    setLoading: (state, { payload }) => {
+      state.loading = payload;
+    },
     setCurrentFilter: (state, { payload }) => {
       state.currentFilter = payload;
     },
@@ -109,6 +113,7 @@ export const {
   clearFiles,
   setSelectedFile,
   setFiles,
+  setLoading,
   deleteFile,
   changeuploadingProgress,
   changeTimeLeft,
@@ -133,6 +138,7 @@ export const afterFileUploadAction =
 export const getFilesAction =
   (filesPage, type) => async (dispatch, getState) => {
     const currentFilter = type ?? getState()?.files?.currentFilter;
+    dispatch(setLoading(true));
 
     try {
       let files;
@@ -152,12 +158,14 @@ export const getFilesAction =
       }
       dispatch(setFiles(files?.data));
       dispatch(setCount(files?.count));
+      dispatch(setLoading(false));
     } catch (error) {
       toast.error('Sorry, something went wrong. Please try again later');
     }
   };
 
 export const selectFiles = (state) => state.files.files;
+export const selectFilesLoading = (state) => state.files.loading;
 export const selectFilesCount = (state) => state.files.count;
 export const selectFilesPage = (state) => state.files.page;
 export const selectSearchAutocomplete = (state) =>

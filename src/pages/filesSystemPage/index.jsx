@@ -15,6 +15,7 @@ import {
   selectFileTypesCount,
   selectFileView,
   selectFiles,
+  selectFilesLoading,
   selectSearchAutocomplete,
   setCurrentFilter,
   setFileTypesCount,
@@ -28,6 +29,7 @@ import { getAllPartners } from '../../effects/EarnEffect';
 import { handlePartners, selectPartners } from '../../store/reducers/taskSlice';
 import { transformSize } from '../../utils/transformSize';
 import { fromByteToGb } from '../../utils/storage';
+import { getResponseError } from '../../utils/string';
 import useButtonVibration from '../../hooks/useButtonVibration';
 
 import { FileFilterPanel } from '../../components/fileFilterPanel';
@@ -54,6 +56,7 @@ export const FilesSystemPage = () => {
   const { t } = useTranslation('drive');
   const files = useSelector(selectFiles);
   const searchFiles = useSelector(selectSearchAutocomplete);
+  const loading = useSelector(selectFilesLoading);
   const { games } = useSelector(selectPartners);
   const view = useSelector(selectFileView);
   const [areFilesLoading, setAreFilesLoading] = useState(false);
@@ -108,7 +111,7 @@ export const FilesSystemPage = () => {
       await uploadFileEffect({ files, dispatch });
     } catch (error) {
       toast.error(
-        'Something went wrong during upload. Please try again later!',
+        getResponseError(error),
         {
           theme: 'colored',
           position: 'bottom-center',
@@ -243,7 +246,7 @@ export const FilesSystemPage = () => {
                 {view === 'grid' ? <ListIcon /> : <GridIcon />}
               </button>
             </div>
-            <FileList files={fileList} checkedFile={checkedFile} />
+            <FileList loading={loading} files={fileList} checkedFile={checkedFile} />
           </>
         ) : (
           <FileFilterPanel />

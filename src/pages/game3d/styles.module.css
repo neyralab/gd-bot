@@ -38,37 +38,6 @@
   height: 100%;
 }
 
-.main-button-inner-container {
-  position: relative;
-  width: 100%;
-  height: 100%;
-}
-
-.main-button-touch-area {
-  width: 100%;
-  height: 100%;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  -webkit-tap-highlight-color: transparent;
-
-  cursor: pointer;
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}
-
-.counter-container {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
-
 .level-description-container {
   position: absolute;
   top: calc(50% + 60px);
@@ -97,14 +66,6 @@
   font-size: 21px;
   font-weight: 100;
   text-transform: uppercase;
-}
-
-.points-grow-area-container {
-  position: absolute;
-  top: 100px;
-  left: 0;
-  width: 100%;
-  height: 40%;
 }
 
 .actions-container {

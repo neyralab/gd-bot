@@ -22,6 +22,8 @@ const gameSlice = createSlice({
 
     isInitialized: false,
 
+    isCanvasLoaded: false,
+
     contractAddress: null,
 
     gameId: null,
@@ -110,6 +112,9 @@ const gameSlice = createSlice({
     },
     setIsInitialized: (state, { payload }) => {
       state.isInitialized = payload;
+    },
+    setCanvasLoaded: (state, { payload }) => {
+      state.isCanvasLoaded = payload;
     },
     setContractAddress: (state, { payload }) => {
       state.contractAddress = payload;
@@ -480,10 +485,10 @@ export const proceedTap = createAsyncThunk(
 
     const newPoints = state.game.experiencePoints + 1;
 
-    if (newPoints >= level.tapping_to) {
+    if (newPoints > level.tapping_to) {
       /** If user reached new level */
       const newLevel = state.game.experienceLevel + 1;
-      if (newLevel >= state.game.maxLevel) return;
+      if (newLevel > state.game.maxLevel) return;
 
       dispatch(setExperienceLevel(newLevel));
       dispatch(setReachedNewLevel(true)); // Update the new level trigger
@@ -634,6 +639,7 @@ export const {
   setPendingGames,
   setIsInitializing,
   setIsInitialized,
+  setCanvasLoaded,
   setContractAddress,
   setThemes,
   setGameId,

@@ -14,6 +14,24 @@ export const tasks = [
       : 'https://play.google.com/store/apps/details?id=com.wise.data.ghostdrive'
   },
   {
+    id: 'JOIN_INSTAGRAM',
+    isDone: false,
+    title: 'Join our Instagram',
+    translatePath: 'earn.joinInstagram',
+    points: 0,
+    imgUrl: '/assets/instagram.png',
+    joinLink: 'https://www.instagram.com/ghostdrive_web3?igsh=MWwxeTkxa25sOGZtYQ=='
+  },
+  {
+    id: 'JOIN_TG_NEWS_CHANNEL',
+    isDone: false,
+    title: 'Join Our News Channel',
+    translatePath: 'earn.joinNewsTg',
+    points: 0,
+    imgUrl: '/assets/telegram.png',
+    joinLink: 'https://t.me/ghostdrive_web3'
+  },
+  {
     id: 'STORAGE_PURCHASE',
     isDone: false,
     title: 'Boost Storage',
@@ -71,24 +89,6 @@ export const tasks = [
     translatePath: 'earn.connectWallet',
     points: 0,
     imgUrl: '/assets/money.png'
-  },
-  {
-    id: 'JOIN_TG_NEWS_CHANNEL',
-    isDone: false,
-    title: 'Join Our News Channel',
-    translatePath: 'earn.joinNewsTg',
-    points: 0,
-    imgUrl: '/assets/telegram.png',
-    joinLink: 'https://t.me/ghostdrive_web3'
-  },
-  {
-    id: 'JOIN_INSTAGRAM',
-    isDone: false,
-    title: 'Join our Instagram',
-    translatePath: 'earn.joinInstagram',
-    points: 0,
-    imgUrl: '/assets/instagram.png',
-    joinLink: 'https://www.instagram.com/ghostdrive_web3?igsh=MWwxeTkxa25sOGZtYQ=='
   },
   {
     id: 'JOIN_GITHUB',

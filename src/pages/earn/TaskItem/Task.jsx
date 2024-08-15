@@ -16,6 +16,7 @@ import { getToken } from '../../../effects/set-token';
 import styles from './Task.module.css';
 
 const TIME_DELAY = 120000;
+const DEFAULT_TASK_IMAGE = '/assets/task.png';
 
 export default function Task({ type, logo, description, name, done, rewardParams, id, doVerify }) {
   const { t } = useTranslation('game');
@@ -59,13 +60,18 @@ export default function Task({ type, logo, description, name, done, rewardParams
       return ''
   }, [needVerify, done, id])
 
+  const setUpDefaultLogo = (e) => {
+    e.target.src = DEFAULT_TASK_IMAGE;
+  }
+
   return (
     <div className={classNames(styles.container, done && styles.done)}>
       <div className={styles.info}>
         <img
           className={styles.img}
-          src={logo ? `${API_PATH_ROOT}${logo}` : '/assets/task.png'}
+          src={logo ? `${API_PATH_ROOT}${logo}` : DEFAULT_TASK_IMAGE}
           alt={partnerName}
+          onError={setUpDefaultLogo}
         />
         <div className={styles.text}>
           <span className={styles.name}>{partnerTranslate}</span>

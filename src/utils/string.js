@@ -25,4 +25,14 @@ const fomatNumber = (num) => {
   return Number(num).toLocaleString('en-US');
 }
 
-export { getWallet, fomatNumber, getNumbers, capitalize }
+const getResponseError = (error, defMessage = 'Sorry, something went wrong! Please reload the page') => {
+  let res = error?.response?.data?.errors ||
+    error?.response?.data?.message;
+  if (!res && error instanceof Error){
+    res = error.toString();
+  }
+
+  return res || defMessage;
+}
+
+export { getWallet, fomatNumber, getNumbers, capitalize, getResponseError }

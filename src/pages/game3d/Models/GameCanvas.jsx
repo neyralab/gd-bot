@@ -2,12 +2,15 @@ import React, {
   Suspense,
   useRef,
   forwardRef,
-  useImperativeHandle
+  useImperativeHandle,
+  useEffect
 } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { Canvas } from '@react-three/fiber';
 import { EffectComposer, Bloom } from '@react-three/postprocessing';
 import { Html, useProgress } from '@react-three/drei';
+import { setCanvasLoaded } from '../../../store/reducers/gameSlice';
 import ShipModel from './ShipModel';
 import BackgroundModel from './BackgoundModel';
 import MoveCamera from './MoveCamera';
@@ -16,8 +19,19 @@ import DirectionalLight from './DirectionalLight';
 import AmbientLight from './AmbientLight';
 
 function Loader() {
+  const dispatch = useDispatch();
+  const canvasIsLoaded = useSelector((state) => state.game.isCanvasLoaded);
   const { t } = useTranslation('system');
   const { progress } = useProgress();
+
+  useEffect(() => {
+    if (progress === 100 && !canvasIsLoaded) {
+      setTimeout(() => {
+        dispatch(setCanvasLoaded(true));
+      }, 500);
+    }
+  }, [progress]);
+
   return (
     <Html>
       <div
@@ -57,7 +71,7 @@ const GameCanvas = forwardRef((_, ref) => {
       <Suspense fallback={<Loader />}>
         <AmbientLight />
         <DirectionalLight />
-        
+
         <FogModel />
 
         <BackgroundModel ref={backgroundRef} />
