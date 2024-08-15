@@ -1,7 +1,8 @@
 import React from 'react';
 import { useTimer } from 'react-timer-hook';
-import styles from './FortuneTimer.module.scss';
+import { formatTime } from '../../../utils/dates';
 import { ReactComponent as StarIcon } from '../../../assets/star.svg';
+import styles from './FortuneTimer.module.scss';
 
 export default function FortuneTimer({ timestamp, onComplete }) {
   const { seconds, minutes, hours } = useTimer({
@@ -19,7 +20,8 @@ export default function FortuneTimer({ timestamp, onComplete }) {
     <div className={styles.container}>
       <div className={styles.description}>The next spin starts in</div>
       <div className={styles.timer}>
-        {hours || '24'}:{minutes || '00'}:{seconds || '00'}
+        {formatTime(hours || 24)}:{formatTime(minutes || 0)}:
+        {formatTime(seconds || 0)}
       </div>
       <div className={styles.actions}>
         <button onClick={onBuy}>
