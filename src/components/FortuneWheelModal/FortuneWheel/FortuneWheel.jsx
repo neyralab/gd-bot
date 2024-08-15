@@ -30,7 +30,9 @@ export default function FortuneWheel({ onSpinned }) {
 
   const swipeHandlers = useSwipeable({
     onSwiped: () => {
-      startSpin();
+      if (!isSpinning && !gameIsFinished) {
+        startSpin();
+      }
     }
   });
 
