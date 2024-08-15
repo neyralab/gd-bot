@@ -16,7 +16,7 @@ const wheelDivisions = [
   { id: 8, points: 1000 }
 ];
 
-export default function FortuneWheel() {
+export default function FortuneWheel({ onSpinned }) {
   const wheelRef = useRef(null);
   const speedRef = useRef(0);
   const angleRef = useRef(0);
@@ -42,8 +42,12 @@ export default function FortuneWheel() {
      */
     const rotateWheel = () => {
       const speedAngleMultiplier = 4;
-      angleRef.current += speedRef.current * speedAngleMultiplier;
-      wheelRef.current.style.transform = `rotate(${angleRef.current}deg)`;
+      if (angleRef.current !== null) {
+        angleRef.current += speedRef.current * speedAngleMultiplier;
+      }
+      if (wheelRef.current !== null) {
+        wheelRef.current.style.transform = `rotate(${angleRef.current}deg)`;
+      }
       spinEffectAnimationFrameId.current = requestAnimationFrame(rotateWheel);
     };
 
@@ -151,6 +155,8 @@ export default function FortuneWheel() {
         setIsSpinning(false);
         setGameIsFinished(true);
         setShowCongratulations(true);
+        // TODO: timeout after congratulations
+        onSpinned?.();
       }
     });
   };

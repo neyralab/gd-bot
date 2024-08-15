@@ -7,12 +7,15 @@ import React, {
 import { Sheet } from 'react-modal-sheet';
 import { ReactComponent as CloseIcon } from '../../assets/close.svg';
 import useButtonVibration from '../../hooks/useButtonVibration';
-import styles from './FortuneWheelModal.module.scss';
 import FortuneWheel from './FortuneWheel/FortuneWheel';
+import FortuneTimer from './FortuneTimer/FortuneTimer';
+import styles from './FortuneWheelModal.module.scss';
 
 const FortuneWheelModal = forwardRef((_, ref) => {
   const modalRef = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
+  const [isAvailable, setIsAvailable] = useState(true);
+  const [availableTimestamp, setAvailableTimestamp] = useState(null);
   const handleVibrationClick = useButtonVibration();
 
   const open = () => {
@@ -21,6 +24,14 @@ const FortuneWheelModal = forwardRef((_, ref) => {
 
   const close = () => {
     setIsOpen(false);
+  };
+
+  const onFortuneWheelSpinned = () => {
+    const currentTimestamp = Date.now();
+    const oneDayInMilliseconds = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+    const nextAvailableSpinTimestamp = currentTimestamp + oneDayInMilliseconds;
+    setAvailableTimestamp(nextAvailableSpinTimestamp);
+    setIsAvailable(false);
   };
 
   useImperativeHandle(ref, () => ({
@@ -39,7 +50,7 @@ const FortuneWheelModal = forwardRef((_, ref) => {
           <Sheet.Scroller>
             <div className={styles.container}>
               <div className={styles.header}>
-                <h2>Earn GhostDrive Points</h2>
+                <h2>{isAvailable && 'Earn GhostDrive Points'}</h2>
 
                 <div
                   className={styles.close}
@@ -47,10 +58,22 @@ const FortuneWheelModal = forwardRef((_, ref) => {
                   <CloseIcon />
                 </div>
               </div>
-              <strong className={styles.description}>Free Spin</strong>
+              
+              {isAvailable && (
+                <strong className={styles.description}>Free Spin</strong>
+              )}
 
               <div className={styles.content}>
-                <FortuneWheel />
+                {isAvailable && (
+                  <FortuneWheel onSpinned={onFortuneWheelSpinned} />
+                )}
+
+                {!isAvailable && (
+                  <FortuneTimer
+                    timestamp={availableTimestamp}
+                    onComplete={() => setIsAvailable(true)}
+                  />
+                )}
               </div>
             </div>
           </Sheet.Scroller>
