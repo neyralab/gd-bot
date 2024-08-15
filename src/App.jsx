@@ -16,6 +16,8 @@ import { authorizeUser } from './effects/authorizeUser';
 import { storageListEffect } from './effects/storageEffects';
 import { API_WEB_APP_URL } from './utils/api-urls';
 import { useLanguage } from './utils/useLanguage';
+import { isDevEnv } from './utils/isDevEnv';
+import { isPhone } from './utils/client';
 
 import SharedLayout from './components/sharedLayout';
 import { StartPage } from './pages/startPage';
@@ -38,9 +40,9 @@ import NodesWelcomePage from './pages/nodes-welcome';
 import NodesPage from './pages/nodes';
 import NotAllow from './pages/notAllow';
 
-import { isPhone } from './utils/client';
-
 import './App.css';
+
+const ALLOW_PREVIEW = isPhone() || isDevEnv();
 
 export const tg = window.Telegram.WebApp;
 const GA = 'G-VEPRY1XE4E';
@@ -51,7 +53,7 @@ function App() {
   const [tariffs, setTariffs] = useState(null);
 
   const currentUser = {
-    initData: tg.initData
+    initData: "query_id=AAF4xIcbAAAAAHjEhxu6f5qd&user=%7B%22id%22%3A461882488%2C%22first_name%22%3A%22Vasya%22%2C%22last_name%22%3A%22Popovych%22%2C%22username%22%3A%22BrendonHit0%22%2C%22language_code%22%3A%22uk%22%2C%22allows_write_to_pm%22%3Atrue%7D&auth_date=1722606924&hash=ffdd881a7bfbb9831f1c45b7214a1770af5e90a891e39c0ec6e1a77a659f73b1"
   };
 
   useEffect(() => {
@@ -96,14 +98,14 @@ function App() {
     tg?.expand();
     tg?.enableClosingConfirmation();
     console.log('tg:', tg);
-    onPageLoad();
+    ALLOW_PREVIEW && onPageLoad();
   }, []);
 
   const onClose = () => {
     tg.close();
   };
 
-  if (!isPhone()) {
+  if (!ALLOW_PREVIEW) {
     return <NotAllow />
   }
 
