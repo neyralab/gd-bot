@@ -84,7 +84,7 @@ export default function FortuneWheel({ spinId, onSpinned }) {
     setGameIsFinished(false);
     setReward(null);
     runSpinAnimation1();
-    
+
     startSpin(spinId)
       .then((res) => {
         setTimeout(() => getReward(res.points), 3000); // wait for the server response and run reward function
@@ -134,13 +134,12 @@ export default function FortuneWheel({ spinId, onSpinned }) {
     const matchingEntries = wheelDivisions.filter(
       (entry) => entry.points === points
     );
-
     // Randomly select one of the matching entries
     const randomIndex = Math.floor(Math.random() * matchingEntries.length);
 
-    setReward(wheelDivisions[randomIndex]);
-    console.log(wheelDivisions[randomIndex]);
-    checkAngleAndStop(randomIndex);
+    setReward(matchingEntries[randomIndex]);
+    console.log(matchingEntries[randomIndex]);
+    checkAngleAndStop();
   };
 
   const checkAngleAndStop = () => {

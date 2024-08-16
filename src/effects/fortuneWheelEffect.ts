@@ -10,7 +10,6 @@ interface Spin {
 }
 
 interface StartSpinResponse {
-  message: 'string';
   points: number;
 }
 
