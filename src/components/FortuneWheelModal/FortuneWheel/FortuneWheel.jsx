@@ -2,6 +2,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import classNames from 'classnames';
 import { useSwipeable } from 'react-swipeable';
 import { gsap } from 'gsap';
+import { startFreeSpin } from '../../../effects/fortuneWheelEffect';
 import BackgroundSvg from './BackgroundSvg';
 import Congratulations from '../Congratulations/Congratulations';
 import styles from './FortuneWheel.module.scss';
@@ -78,7 +79,14 @@ export default function FortuneWheel({ onSpinned }) {
     setGameIsFinished(false);
     setReward(null);
     runSpinAnimation1();
-    setTimeout(getReward, 3000); // wait for the server response and run reward function
+    startFreeSpin()
+      .then((res) => {
+        console.log(res);
+        setTimeout(getReward, 3000); // wait for the server response and run reward function
+      })
+      .catch((e) => {
+        console.log(e);
+      });
   };
 
   const runSpinAnimation1 = () => {
