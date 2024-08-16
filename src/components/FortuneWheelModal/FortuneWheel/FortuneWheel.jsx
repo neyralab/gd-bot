@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import { useSwipeable } from 'react-swipeable';
 import { gsap } from 'gsap';
 import BackgroundSvg from './BackgroundSvg';
+import Congratulations from '../Congratulations/Congratulations';
 import styles from './FortuneWheel.module.scss';
 
 const wheelDivisions = [
@@ -72,6 +73,7 @@ export default function FortuneWheel({ onSpinned }) {
   }, [reward]);
 
   const startSpin = () => {
+    window?.Telegram?.WebApp?.HapticFeedback?.impactOccurred('soft');
     setIsSpinning(true);
     setGameIsFinished(false);
     setReward(null);
@@ -157,10 +159,17 @@ export default function FortuneWheel({ onSpinned }) {
         setIsSpinning(false);
         setGameIsFinished(true);
         setShowCongratulations(true);
-        // TODO: timeout after congratulations
-        onSpinned?.();
+        window?.Telegram?.WebApp?.HapticFeedback?.impactOccurred('soft');
+        setTimeout(() => {
+          closeCongratulations();
+        }, 4000);
       }
     });
+  };
+
+  const closeCongratulations = () => {
+    setShowCongratulations(false);
+    onSpinned?.();
   };
 
   return (
@@ -207,6 +216,10 @@ export default function FortuneWheel({ onSpinned }) {
           Spin
         </button>
       </div>
+
+      {showCongratulations && (
+        <Congratulations onClick={closeCongratulations} />
+      )}
     </div>
   );
 }
