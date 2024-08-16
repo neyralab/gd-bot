@@ -95,6 +95,7 @@
   },
   "message": {
     "error": "Etwas ist schiefgelaufen",
+    "serverError": "Serverfehler",
     "fileRestored": "Datei wurde erfolgreich wiederhergestellt",
     "failedLoad": "Anzahl konnte nicht geladen werden",
     "fileDeleted": "Datei wurde erfolgreich gelöscht",

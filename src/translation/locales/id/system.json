@@ -95,6 +95,7 @@
   },
   "message": {
     "error": "Terjadi kesalahan",
+    "serverError": "Kesalahan Server",
     "fileRestored": "File berhasil dipulihkan",
     "failedLoad": "Gagal memuat hitungan",
     "fileDeleted": "File berhasil dihapus",
