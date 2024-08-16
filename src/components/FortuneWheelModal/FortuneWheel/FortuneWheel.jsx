@@ -25,15 +25,18 @@ export default function FortuneWheel({ spinId, onSpinned }) {
 
   const systemModalRef = useRef(null);
   const wheelRef = useRef(null);
-  const speedRef = useRef(0);
-  const angleRef = useRef(0);
-  const spinEffectAnimationFrameId = useRef(null);
-  const checkAngleAnimationFrameId = useRef(null);
-
+  const spinIntervalId = useRef(null);
   const [isSpinning, setIsSpinning] = useState(false);
-  const [reward, setReward] = useState(null);
   const [gameIsFinished, setGameIsFinished] = useState(false);
   const [showCongratulations, setShowCongratulations] = useState(false);
+
+  /** I need both useState and useRef
+   * useState for classes/states update in the render view
+   * but useRef is the only thing setInterval understands
+   * otherwise it takes the value of reward that was defined on interval creation
+   */
+  const rewardRef = useRef(null);
+  const [reward, setReward] = useState(null);
 
   const swipeHandlers = useSwipeable({
     onSwiped: () => {
@@ -44,45 +47,19 @@ export default function FortuneWheel({ spinId, onSpinned }) {
   });
 
   useEffect(() => {
-    /** This is a Spin Effect
-     * ---------------------
-     * It checks the current speed and rotate the wheel based on the speed.
-     * Turn this effect off if you need to change the wheel's position based on time/data, not speed
-     */
-    const rotateWheel = () => {
-      const speedAngleMultiplier = 4;
-      if (angleRef.current !== null) {
-        angleRef.current += speedRef.current * speedAngleMultiplier;
-      }
-      if (wheelRef.current !== null) {
-        wheelRef.current.style.transform = `rotate(${angleRef.current}deg)`;
-      }
-      spinEffectAnimationFrameId.current = requestAnimationFrame(rotateWheel);
-    };
-
-    rotateWheel();
-
     return () => {
-      if (spinEffectAnimationFrameId.current) {
-        cancelAnimationFrame(spinEffectAnimationFrameId.current);
-      }
-      if (checkAngleAnimationFrameId.current) {
-        cancelAnimationFrame(checkAngleAnimationFrameId.current);
+      if (spinIntervalId.current) {
+        clearInterval(spinIntervalId.current);
       }
     };
   }, []);
-
-  useEffect(() => {
-    if (reward) {
-      checkAngleAndStop();
-    }
-  }, [reward]);
 
   const startSpinHandler = () => {
     window?.Telegram?.WebApp?.HapticFeedback?.impactOccurred('soft');
     setIsSpinning(true);
     setGameIsFinished(false);
     setReward(null);
+    rewardRef.current = null;
     runSpinAnimation1();
 
     startSpin(spinId)
@@ -107,24 +84,77 @@ export default function FortuneWheel({ spinId, onSpinned }) {
   };
 
   const runSpinAnimation1 = () => {
-    gsap.to(speedRef, {
-      current: -0.2,
+    /** Animation that turns the wheel slightly back */
+    gsap.to(wheelRef.current, {
+      rotation: '-40',
       duration: 0.6,
       ease: 'power1.inOut',
-      onUpdate: () => {
-        speedRef.current = gsap.getProperty(speedRef, 'current');
-      },
       onComplete: runSpinAnimation2
     });
   };
 
   const runSpinAnimation2 = () => {
-    gsap.to(speedRef, {
-      current: 1,
-      duration: 0.4,
+    /** Animation that increases speed of the wheel up to 1 turn */
+    gsap.to(wheelRef.current, {
+      rotation: '360',
+      duration: 1.6,
       ease: 'power1.in',
-      onUpdate: () => {
-        speedRef.current = gsap.getProperty(speedRef, 'current');
+      onComplete: runContinueSpinAnimation
+    });
+  };
+
+  const runContinueSpinAnimation = () => {
+    /** Linear animation that supposed to be repeated until we get a backend result */
+    clearInterval(spinIntervalId.current);
+
+    const rotate = () => {
+      gsap.to(wheelRef.current, {
+        rotation: '+=360',
+        duration: 1,
+        ease: 'none'
+      });
+    };
+
+    spinIntervalId.current = setInterval(() => {
+      if (rewardRef.current) {
+        clearInterval(spinIntervalId.current);
+        runStopAnimation();
+      } else {
+        rotate();
+      }
+    }, 1000);
+
+    rotate();
+  };
+
+  const runStopAnimation = () => {
+    /** Animation, that starts from 0 relative rotation point
+     * goes some turns + additional degrees up to the division
+     * that backend chose
+     */
+    if (!rewardRef.current) return;
+
+    const rewardIndex = wheelDivisions.findIndex(
+      (el) => el.id === rewardRef.current.id
+    );
+    const anglePerDivision = 360 / wheelDivisions.length;
+    const finalAngle = 360 - rewardIndex * anglePerDivision;
+    const turns = 1;
+    const turnsInDeg = turns * 360;
+    const totalRotation = turnsInDeg + finalAngle; // 2 full turns + additional rotation
+
+    gsap.to(wheelRef.current, {
+      rotation: `+=${totalRotation}`,
+      duration: 4 * turns + 0.2 * rewardIndex,
+      ease: 'back.out(0.5)',
+      onComplete: () => {
+        setIsSpinning(false);
+        setGameIsFinished(true);
+        setShowCongratulations(true);
+        window?.Telegram?.WebApp?.HapticFeedback?.impactOccurred('soft');
+        setTimeout(() => {
+          closeCongratulations();
+        }, 4000);
       }
     });
   };
@@ -138,64 +168,8 @@ export default function FortuneWheel({ spinId, onSpinned }) {
     const randomIndex = Math.floor(Math.random() * matchingEntries.length);
 
     setReward(matchingEntries[randomIndex]);
+    rewardRef.current = matchingEntries[randomIndex];
     console.log(matchingEntries[randomIndex]);
-    checkAngleAndStop();
-  };
-
-  const checkAngleAndStop = () => {
-    /** It's difficult, but let me explain.
-     *
-     * When we need to stop the wheel,
-     * this function checks the angle of the wheel.
-     * It will run the stop animation when the reward element hits the 0 point.
-     *
-     * So we get the reward. Let it be reward with id 4.
-     * Then this function checks if id 4 hits the 0 degree,
-     * then it runs the funtion that will decrease the speed for some time
-     * aka stops the wheel
-     */
-    if (!reward) return;
-    const rewardIndex = wheelDivisions.findIndex((el) => el.id === reward.id);
-    const anglePerDivision = 360 / wheelDivisions.length;
-    const finalAngle = 360 - rewardIndex * anglePerDivision;
-    const targetAngle = finalAngle % 360;
-
-    const checkAngle = () => {
-      const currentRotation = angleRef.current % 360;
-      const angleDifference = (targetAngle - currentRotation + 360) % 360;
-
-      if (angleDifference < 5) {
-        runStopAnimation();
-      } else {
-        checkAngleAnimationFrameId.current = requestAnimationFrame(checkAngle);
-      }
-    };
-
-    checkAngle();
-  };
-
-  const runStopAnimation = () => {
-    if (checkAngleAnimationFrameId.current) {
-      cancelAnimationFrame(checkAngleAnimationFrameId.current);
-    }
-
-    gsap.to(speedRef, {
-      current: 0,
-      duration: 3.025, // One of Vadym's favourite magic numbers :D
-      ease: 'back.out(0.5)',
-      onUpdate: () => {
-        speedRef.current = gsap.getProperty(speedRef, 'current');
-      },
-      onComplete: () => {
-        setIsSpinning(false);
-        setGameIsFinished(true);
-        setShowCongratulations(true);
-        window?.Telegram?.WebApp?.HapticFeedback?.impactOccurred('soft');
-        setTimeout(() => {
-          closeCongratulations();
-        }, 4000);
-      }
-    });
   };
 
   const closeCongratulations = () => {
