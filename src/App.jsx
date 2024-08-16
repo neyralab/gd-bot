@@ -16,6 +16,8 @@ import { authorizeUser } from './effects/authorizeUser';
 import { storageListEffect } from './effects/storageEffects';
 import { API_WEB_APP_URL } from './utils/api-urls';
 import { useLanguage } from './utils/useLanguage';
+import { isDevEnv } from './utils/isDevEnv';
+import { isPhone } from './utils/client';
 
 import SharedLayout from './components/sharedLayout';
 import { StartPage } from './pages/startPage';
@@ -38,9 +40,9 @@ import NodesWelcomePage from './pages/nodes-welcome';
 import NodesPage from './pages/nodes';
 import NotAllow from './pages/notAllow';
 
-import { isPhone } from './utils/client';
-
 import './App.css';
+
+const ALLOW_PREVIEW = isPhone() || isDevEnv();
 
 export const tg = window.Telegram.WebApp;
 const GA = 'G-VEPRY1XE4E';
@@ -96,14 +98,14 @@ function App() {
     tg?.expand();
     tg?.enableClosingConfirmation();
     console.log('tg:', tg);
-    onPageLoad();
+    ALLOW_PREVIEW && onPageLoad();
   }, []);
 
   const onClose = () => {
     tg.close();
   };
 
-  if (!isPhone()) {
+  if (!ALLOW_PREVIEW) {
     return <NotAllow />
   }
 
