@@ -95,6 +95,7 @@
   },
   "message": {
     "error": "Có lỗi xảy ra",
+    "serverError": "Lỗi máy chủ",
     "fileRestored": "Tệp đã được khôi phục thành công",
     "failedLoad": "Không tải được số lượng",
     "fileDeleted": "Tệp đã được xóa thành công",

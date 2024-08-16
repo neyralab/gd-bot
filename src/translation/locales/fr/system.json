@@ -95,6 +95,7 @@
   },
   "message": {
     "error": "Quelque chose a mal tourné",
+    "serverError": "Erreur du serveur",
     "fileRestored": "Le fichier a été restauré avec succès",
     "failedLoad": "Échec du chargement des comptes",
     "fileDeleted": "Le fichier a été supprimé avec succès",

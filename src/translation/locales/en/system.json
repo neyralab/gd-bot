@@ -95,6 +95,7 @@
   },
   "message": {
     "error": "Something went wrong",
+    "serverError": "Server error",
     "fileRestored": "File was successfully restored",
     "failedLoad": "Failed to load counts",
     "fileDeleted": "File was successfully deleted",

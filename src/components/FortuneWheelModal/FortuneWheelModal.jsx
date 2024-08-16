@@ -6,19 +6,23 @@ import React, {
   useEffect
 } from 'react';
 import { Sheet } from 'react-modal-sheet';
-import { ReactComponent as CloseIcon } from '../../assets/close.svg';
-import useButtonVibration from '../../hooks/useButtonVibration';
-import FortuneWheel from './FortuneWheel/FortuneWheel';
-import FortuneTimer from './FortuneTimer/FortuneTimer';
-import styles from './FortuneWheelModal.module.scss';
+import { useTranslation } from 'react-i18next';
 import {
   getLastPlayedFreeSpin,
   getPendingSpins
 } from '../../effects/fortuneWheelEffect';
+import { ReactComponent as CloseIcon } from '../../assets/close.svg';
+import useButtonVibration from '../../hooks/useButtonVibration';
+import FortuneWheel from './FortuneWheel/FortuneWheel';
+import FortuneTimer from './FortuneTimer/FortuneTimer';
 import Loader2 from '../Loader2/Loader2';
+import SystemModal from '../SystemModal/SystemModal';
+import styles from './FortuneWheelModal.module.scss';
 
 const FortuneWheelModal = forwardRef((_, ref) => {
   const modalRef = useRef(null);
+  const systemModalRef = useRef(null);
+  const { t } = useTranslation('system');
   const [isOpen, setIsOpen] = useState(false);
   const [isInitialized, setIsInitialized] = useState(false);
   const [isAvailable, setIsAvailable] = useState(true); // 'free', pendingGame, false
@@ -32,6 +36,10 @@ const FortuneWheelModal = forwardRef((_, ref) => {
       getInitialData();
     }
   }, [isOpen]);
+
+  useEffect(() => {
+    checkAvailable();
+  }, [freeSpinTimestamp, lastPlayedFreeSpin]);
 
   const open = () => {
     setIsOpen(true);
@@ -53,10 +61,20 @@ const FortuneWheelModal = forwardRef((_, ref) => {
       setLastPlayedFreeSpin(lastPlayedFreeSpinRes);
       setPendingSpins(pendingSpinsRes);
       setIsInitialized(true);
-
-      checkAvailable();
     } catch (error) {
-      console.log('Error', error);
+      systemModalRef.current.open({
+        title: t('message.error'),
+        text: error.response?.data?.errors || t('message.serverError'),
+        actions: [
+          {
+            type: 'default',
+            text: t('message.ok'),
+            onClick: () => {
+              systemModalRef.current.close();
+            }
+          }
+        ]
+      });
     }
   };
 
@@ -97,55 +115,61 @@ const FortuneWheelModal = forwardRef((_, ref) => {
   }));
 
   return (
-    <Sheet
-      ref={modalRef}
-      isOpen={isOpen}
-      onClose={close}
-      detent="content-height">
-      <Sheet.Container className="react-modal-sheet-container">
-        <Sheet.Header className="react-modal-sheet-header" />
-        <Sheet.Content>
-          <Sheet.Scroller>
-            <div className={styles.container}>
-              <div className={styles.header}>
-                <h2>
-                  {isInitialized && isAvailable && 'Earn GhostDrive Points'}
-                </h2>
+    <>
+      <Sheet
+        ref={modalRef}
+        isOpen={isOpen}
+        onClose={close}
+        detent="content-height">
+        <Sheet.Container className="react-modal-sheet-container">
+          <Sheet.Header className="react-modal-sheet-header" />
+          <Sheet.Content>
+            <Sheet.Scroller>
+              <div className={styles.container}>
+                <div className={styles.header}>
+                  <h2>
+                    {isInitialized && isAvailable && 'Earn GhostDrive Points'}
+                  </h2>
 
-                <div
-                  className={styles.close}
-                  onClick={handleVibrationClick(close)}>
-                  <CloseIcon />
+                  <div
+                    className={styles.close}
+                    onClick={handleVibrationClick(close)}>
+                    <CloseIcon />
+                  </div>
+                </div>
+
+                {isInitialized && isAvailable && (
+                  <strong className={styles.description}>Free Spin</strong>
+                )}
+
+                <div className={styles.content}>
+                  {!isInitialized && (
+                    <div className={styles['loader-container']}>
+                      <Loader2 />
+                    </div>
+                  )}
+
+                  {isInitialized && isAvailable !== false && (
+                    <FortuneWheel onSpinned={onFortuneWheelSpinned} />
+                  )}
+
+                  {isInitialized &&
+                    freeSpinTimestamp &&
+                    isAvailable === false && (
+                      <FortuneTimer
+                        timestamp={freeSpinTimestamp}
+                        onComplete={onTimerCompleted}
+                      />
+                    )}
                 </div>
               </div>
+            </Sheet.Scroller>
+          </Sheet.Content>
+        </Sheet.Container>
+      </Sheet>
 
-              {isInitialized && isAvailable && (
-                <strong className={styles.description}>Free Spin</strong>
-              )}
-
-              <div className={styles.content}>
-                {!isInitialized && (
-                  <div className={styles['loader-container']}>
-                    <Loader2 />
-                  </div>
-                )}
-
-                {isInitialized && isAvailable !== false && (
-                  <FortuneWheel onSpinned={onFortuneWheelSpinned} />
-                )}
-
-                {isInitialized && isAvailable === false && (
-                  <FortuneTimer
-                    timestamp={freeSpinTimestamp}
-                    onComplete={onTimerCompleted}
-                  />
-                )}
-              </div>
-            </div>
-          </Sheet.Scroller>
-        </Sheet.Content>
-      </Sheet.Container>
-    </Sheet>
+      <SystemModal ref={systemModalRef} />
+    </>
   );
 });
 

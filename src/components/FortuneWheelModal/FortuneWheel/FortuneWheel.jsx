@@ -1,10 +1,12 @@
 import React, { useRef, useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import classNames from 'classnames';
 import { useSwipeable } from 'react-swipeable';
 import { gsap } from 'gsap';
 import { startFreeSpin } from '../../../effects/fortuneWheelEffect';
 import BackgroundSvg from './BackgroundSvg';
 import Congratulations from '../Congratulations/Congratulations';
+import SystemModal from '../../SystemModal/SystemModal';
 import styles from './FortuneWheel.module.scss';
 
 const wheelDivisions = [
@@ -19,6 +21,9 @@ const wheelDivisions = [
 ];
 
 export default function FortuneWheel({ onSpinned }) {
+  const { t } = useTranslation('system');
+
+  const systemModalRef = useRef(null);
   const wheelRef = useRef(null);
   const speedRef = useRef(0);
   const angleRef = useRef(0);
@@ -81,11 +86,22 @@ export default function FortuneWheel({ onSpinned }) {
     runSpinAnimation1();
     startFreeSpin()
       .then((res) => {
-        console.log(res);
         setTimeout(getReward, 3000); // wait for the server response and run reward function
       })
-      .catch((e) => {
-        console.log(e);
+      .catch((error) => {
+        systemModalRef.current.open({
+          title: t('message.error'),
+          text: error.response?.data?.errors || t('message.serverError'),
+          actions: [
+            {
+              type: 'default',
+              text: t('message.ok'),
+              onClick: () => {
+                systemModalRef.current.close();
+              }
+            }
+          ]
+        });
       });
   };
 
@@ -181,53 +197,59 @@ export default function FortuneWheel({ onSpinned }) {
   };
 
   return (
-    <div className={styles.container}>
-      <div {...swipeHandlers} className={styles['inner-container']}>
-        <div className={styles.wheel} ref={wheelRef}>
-          <div className={styles['wheel-rotation-container']}>
-            {wheelDivisions.map((el, i) => {
-              const angle = i * (360 / wheelDivisions.length);
-              return (
-                <div
-                  key={el.id}
-                  className={classNames(
-                    styles.division,
-                    gameIsFinished &&
-                      reward &&
-                      reward.id === el.id &&
-                      styles.active
-                  )}
-                  style={{
-                    transform: `translate(-50%, -50%) rotate(${angle}deg)`
-                  }}>
-                  <div className={styles['division-inner-container']}>
-                    <div className={styles.background}>
-                      <BackgroundSvg
-                        active={gameIsFinished && reward && reward.id === el.id}
-                      />
-                    </div>
-                    <div className={styles.title}>
-                      <img src="/assets/token.png" alt="Token" />
-                      <span>{el.points}</span>
+    <>
+      <div className={styles.container}>
+        <div {...swipeHandlers} className={styles['inner-container']}>
+          <div className={styles.wheel} ref={wheelRef}>
+            <div className={styles['wheel-rotation-container']}>
+              {wheelDivisions.map((el, i) => {
+                const angle = i * (360 / wheelDivisions.length);
+                return (
+                  <div
+                    key={el.id}
+                    className={classNames(
+                      styles.division,
+                      gameIsFinished &&
+                        reward &&
+                        reward.id === el.id &&
+                        styles.active
+                    )}
+                    style={{
+                      transform: `translate(-50%, -50%) rotate(${angle}deg)`
+                    }}>
+                    <div className={styles['division-inner-container']}>
+                      <div className={styles.background}>
+                        <BackgroundSvg
+                          active={
+                            gameIsFinished && reward && reward.id === el.id
+                          }
+                        />
+                      </div>
+                      <div className={styles.title}>
+                        <img src="/assets/token.png" alt="Token" />
+                        <span>{el.points}</span>
+                      </div>
                     </div>
                   </div>
-                </div>
-              );
-            })}
+                );
+              })}
+            </div>
           </div>
+
+          <button
+            className={styles['start-button']}
+            onClick={startSpin}
+            disabled={isSpinning || gameIsFinished}>
+            Spin
+          </button>
         </div>
 
-        <button
-          className={styles['start-button']}
-          onClick={startSpin}
-          disabled={isSpinning || gameIsFinished}>
-          Spin
-        </button>
+        {showCongratulations && (
+          <Congratulations onClick={closeCongratulations} />
+        )}
       </div>
 
-      {showCongratulations && (
-        <Congratulations onClick={closeCongratulations} />
-      )}
-    </div>
+      <SystemModal ref={systemModalRef} />
+    </>
   );
 }

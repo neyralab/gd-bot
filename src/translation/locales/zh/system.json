@@ -95,6 +95,7 @@
   },
   "message": {
     "error": "出了点问题",
+    "serverError": "服务器错误",
     "fileRestored": "文件成功恢复",
     "failedLoad": "加载计数失败",
     "fileDeleted": "文件成功删除",
