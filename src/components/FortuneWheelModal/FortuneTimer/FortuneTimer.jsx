@@ -24,9 +24,9 @@ export default function FortuneTimer({ timestamp, onComplete }) {
         {formatTime(seconds || 0)}
       </div>
       <div className={styles.actions}>
-        <button onClick={onBuy}>
+        {/* <button onClick={onBuy}>
           <span>1 Spin</span> <b>400</b> <StarIcon />
-        </button>
+        </button> */}
       </div>
     </div>
   );
