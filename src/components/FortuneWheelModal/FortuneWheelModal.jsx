@@ -90,6 +90,8 @@ const FortuneWheelModal = forwardRef((_, ref) => {
       } else {
         spinAvailable = 'free';
       }
+    } else {
+      spinAvailable = 'free';
     }
 
     if (pendingSpins) {
