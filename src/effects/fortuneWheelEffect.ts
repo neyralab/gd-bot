@@ -9,6 +9,11 @@ interface Spin {
   purchase_id: null | number;
 }
 
+interface StartSpinResponse {
+  message: 'string';
+  points: number;
+}
+
 export const getLastPlayedFreeSpin = async () => {
   const url = `${API_PATH}/last/spin`;
   const { data } = await axiosInstance.get<{ data: Spin | null }>(url);
@@ -21,9 +26,8 @@ export const getPendingSpins = async () => {
   return data.data;
 };
 
-export const startFreeSpin = async () => {
-  const url = `${API_PATH}/spin`;
-  const { data } = await axiosInstance.post<Effect<Spin>>(url);
-  console.log(data);
+export const startSpin = async (id?: number | null) => {
+  const url = id ? `${API_PATH}/spin/${id}` : `${API_PATH}/spin`;
+  const { data } = await axiosInstance.post<Effect<StartSpinResponse>>(url);
   return data;
 };

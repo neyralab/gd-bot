@@ -25,7 +25,7 @@ const FortuneWheelModal = forwardRef((_, ref) => {
   const { t } = useTranslation('system');
   const [isOpen, setIsOpen] = useState(false);
   const [isInitialized, setIsInitialized] = useState(false);
-  const [isAvailable, setIsAvailable] = useState(true); // 'free', pendingGame, false
+  const [available, setAvailable] = useState(true); // 'free', pendingGame, false
   const [freeSpinTimestamp, setFreeSpinTimestamp] = useState(null);
   const [lastPlayedFreeSpin, setLastPlayedFreeSpin] = useState(null);
   const [pendingSpins, setPendingSpins] = useState([]);
@@ -79,7 +79,7 @@ const FortuneWheelModal = forwardRef((_, ref) => {
   };
 
   const checkAvailable = () => {
-    let spinIsAvailable = false;
+    let spinAvailable = false;
 
     if (lastPlayedFreeSpin && lastPlayedFreeSpin.expired_at) {
       const expiredAt = new Date(lastPlayedFreeSpin.expired_at).getTime();
@@ -88,18 +88,18 @@ const FortuneWheelModal = forwardRef((_, ref) => {
       if (expiredAt > currentTimestamp) {
         setFreeSpinTimestamp(expiredAt);
       } else {
-        spinIsAvailable = 'free';
+        spinAvailable = 'free';
       }
     }
 
     if (pendingSpins) {
       setPendingSpins(pendingSpins || []);
       if (pendingSpins.length) {
-        spinIsAvailable = pendingSpins[0];
+        spinAvailable = pendingSpins[0];
       }
     }
 
-    setIsAvailable(spinIsAvailable);
+    setAvailable(spinAvailable);
   };
 
   const onFortuneWheelSpinned = () => {
@@ -128,7 +128,7 @@ const FortuneWheelModal = forwardRef((_, ref) => {
               <div className={styles.container}>
                 <div className={styles.header}>
                   <h2>
-                    {isInitialized && isAvailable && 'Earn GhostDrive Points'}
+                    {isInitialized && available && 'Earn GhostDrive Points'}
                   </h2>
 
                   <div
@@ -138,7 +138,7 @@ const FortuneWheelModal = forwardRef((_, ref) => {
                   </div>
                 </div>
 
-                {isInitialized && isAvailable && (
+                {isInitialized && available && (
                   <strong className={styles.description}>Free Spin</strong>
                 )}
 
@@ -149,13 +149,16 @@ const FortuneWheelModal = forwardRef((_, ref) => {
                     </div>
                   )}
 
-                  {isInitialized && isAvailable !== false && (
-                    <FortuneWheel onSpinned={onFortuneWheelSpinned} />
+                  {isInitialized && available !== false && (
+                    <FortuneWheel
+                      spinId={available.id || null}
+                      onSpinned={onFortuneWheelSpinned}
+                    />
                   )}
 
                   {isInitialized &&
                     freeSpinTimestamp &&
-                    isAvailable === false && (
+                    available === false && (
                       <FortuneTimer
                         timestamp={freeSpinTimestamp}
                         onComplete={onTimerCompleted}

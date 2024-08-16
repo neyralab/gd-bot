@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import classNames from 'classnames';
 import { useSwipeable } from 'react-swipeable';
 import { gsap } from 'gsap';
-import { startFreeSpin } from '../../../effects/fortuneWheelEffect';
+import { startSpin } from '../../../effects/fortuneWheelEffect';
 import BackgroundSvg from './BackgroundSvg';
 import Congratulations from '../Congratulations/Congratulations';
 import SystemModal from '../../SystemModal/SystemModal';
@@ -20,7 +20,7 @@ const wheelDivisions = [
   { id: 8, points: 1000 }
 ];
 
-export default function FortuneWheel({ onSpinned }) {
+export default function FortuneWheel({ spinId, onSpinned }) {
   const { t } = useTranslation('system');
 
   const systemModalRef = useRef(null);
@@ -38,7 +38,7 @@ export default function FortuneWheel({ onSpinned }) {
   const swipeHandlers = useSwipeable({
     onSwiped: () => {
       if (!isSpinning && !gameIsFinished) {
-        startSpin();
+        startSpinHandler();
       }
     }
   });
@@ -78,15 +78,16 @@ export default function FortuneWheel({ onSpinned }) {
     }
   }, [reward]);
 
-  const startSpin = () => {
+  const startSpinHandler = () => {
     window?.Telegram?.WebApp?.HapticFeedback?.impactOccurred('soft');
     setIsSpinning(true);
     setGameIsFinished(false);
     setReward(null);
     runSpinAnimation1();
-    startFreeSpin()
+    
+    startSpin(spinId)
       .then((res) => {
-        setTimeout(getReward, 3000); // wait for the server response and run reward function
+        setTimeout(() => getReward(res.points), 3000); // wait for the server response and run reward function
       })
       .catch((error) => {
         systemModalRef.current.open({
@@ -128,8 +129,15 @@ export default function FortuneWheel({ onSpinned }) {
     });
   };
 
-  const getReward = () => {
-    const randomIndex = Math.floor(Math.random() * wheelDivisions.length);
+  const getReward = (points) => {
+    // Filter the wheelDivisions array to get all entries with the matching points
+    const matchingEntries = wheelDivisions.filter(
+      (entry) => entry.points === points
+    );
+
+    // Randomly select one of the matching entries
+    const randomIndex = Math.floor(Math.random() * matchingEntries.length);
+
     setReward(wheelDivisions[randomIndex]);
     console.log(wheelDivisions[randomIndex]);
     checkAngleAndStop(randomIndex);
@@ -238,7 +246,7 @@ export default function FortuneWheel({ onSpinned }) {
 
           <button
             className={styles['start-button']}
-            onClick={startSpin}
+            onClick={startSpinHandler}
             disabled={isSpinning || gameIsFinished}>
             Spin
           </button>
