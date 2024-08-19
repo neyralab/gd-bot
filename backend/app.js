@@ -109,7 +109,7 @@ bot.start(async (ctx) => {
   };
 
   const dashboardButton = Markup.button.webApp(
-    'GhostDrive App',
+    'Open App',
     `${process.env.APP_FRONTEND_URL}/start`
   );
   const playButton = Markup.button.webApp(
@@ -125,7 +125,7 @@ bot.start(async (ctx) => {
     `https://t.me/ghostdrive_web3_chat`
   );
   const followNewsButton = Markup.button.url(
-    'Follow Community',
+    'Join The Community',
     `https://t.me/ghostdrive_web3`
   );
   try {
@@ -135,11 +135,7 @@ bot.start(async (ctx) => {
         caption: `${header}\n\n${activitiesText}`,
         parse_mode: 'HTML',
         reply_markup: {
-          inline_keyboard: [
-            [dashboardButton],
-            [followNewsButton],
-            [supportButton]
-          ]
+          inline_keyboard: [[dashboardButton], [followNewsButton]]
         }
       }
     );
