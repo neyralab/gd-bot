@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { useBalance } from '../../hooks/useBalance';
 import { referralEffect } from '../../effects/referralEffect';
+import { getBalanceEffect } from '../../effects/balanceEffect';
 import { Header } from '../../components/header';
 import { Tab } from '../../components/tab';
 import { History } from '../../components/history';
@@ -15,11 +15,6 @@ const tabs = (t) => [
     name: t('airdrop.users'),
     key: 'users'
   },
-  // {
-  //   number: 0,
-  //   name: 'referral files',
-  //   key: 'refFiles'
-  // },
   {
     number: 0,
     name: t('airdrop.earn'),
@@ -31,28 +26,29 @@ export const Referral = () => {
   const { t } = useTranslation('game');
   const [tabList, setTabs] = useState({
     users: 0,
-    // refFiles: 0,
     earn: 0
   });
-  const balance = useBalance();
-  console.log({ balance });
 
   useEffect(() => {
-    setTabs((prevState) => ({
-      ...prevState,
-      // refFiles: balance?.fileCnt,
-      earn: balance?.points
-    }));
-  }, [balance]);
+    (async () => {
+      try {
+        const { data } = await getBalanceEffect({ page: 1 });
+        setTabs((prevState) => ({
+          ...prevState,
+          earn: data?.points
+        }));
+        console.log({ getBalanceEffect: data });
+      } catch (error) {
+        console.log({ getBalanceEffectErr: error });
+      }
+    })();
 
-  useEffect(() => {
     (async () => {
       try {
         const { data } = await referralEffect();
         setTabs((prevState) => ({
           ...prevState,
-          users: data?.data?.current_usage,
-          earn: data.data?.points
+          users: data?.data?.current_usage
         }));
         console.log({ referralEffect: data });
       } catch (error) {
@@ -82,10 +78,7 @@ export const Referral = () => {
         ))}
       </div>
 
-      <History
-        history={balance.history}
-        loading={balance.loading}
-      />
+      <History />
 
       <Menu />
     </div>
