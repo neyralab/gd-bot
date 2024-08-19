@@ -17,7 +17,6 @@ import { storageListEffect } from './effects/storageEffects';
 import { API_WEB_APP_URL } from './utils/api-urls';
 import { useLanguage } from './utils/useLanguage';
 import { isDevEnv } from './utils/isDevEnv';
-import { isPhone } from './utils/client';
 
 import SharedLayout from './components/sharedLayout';
 import { StartPage } from './pages/startPage';
@@ -42,7 +41,7 @@ import NotAllow from './pages/notAllow';
 
 import './App.css';
 
-const ALLOW_PREVIEW = isPhone() || isDevEnv();
+const ALLOW_PREVIEW = import.meta.env.VITE_FEATUE_MOB_ONLY || isDevEnv();
 
 export const tg = window.Telegram.WebApp;
 const GA = 'G-VEPRY1XE4E';
@@ -106,7 +105,7 @@ function App() {
   };
 
   if (!ALLOW_PREVIEW) {
-    return <NotAllow />
+    return <NotAllow />;
   }
 
   return (
