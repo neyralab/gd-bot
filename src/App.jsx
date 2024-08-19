@@ -37,10 +37,11 @@ import FriendsPage from './pages/friends';
 import NodesWelcomePage from './pages/nodes-welcome';
 import NodesPage from './pages/nodes';
 import NotAllow from './pages/notAllow';
-
-import { isPhone } from './utils/client';
+import { isEnabledMobileOnly } from './utils/featureFlags';
 
 import './App.css';
+
+const ALLOW_PREVIEW = !isEnabledMobileOnly || isDevEnv();
 
 export const tg = window.Telegram.WebApp;
 const GA = 'G-VEPRY1XE4E';
@@ -96,15 +97,15 @@ function App() {
     tg?.expand();
     tg?.enableClosingConfirmation();
     console.log('tg:', tg);
-    onPageLoad();
+    ALLOW_PREVIEW && onPageLoad();
   }, []);
 
   const onClose = () => {
     tg.close();
   };
 
-  if (!isPhone()) {
-    return <NotAllow />
+  if (!ALLOW_PREVIEW) {
+    return <NotAllow />;
   }
 
   return (
