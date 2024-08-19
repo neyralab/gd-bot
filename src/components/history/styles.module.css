@@ -70,3 +70,17 @@
     font-family: "SF Pro Text", sans-serif;
     color: white;
 }
+
+.list-loader {
+    text-align: center;
+    padding: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.list-loader > *:first-child {
+    width: 32px;
+    height: 32px;
+}
