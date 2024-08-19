@@ -38,10 +38,11 @@ import FriendsPage from './pages/friends';
 import NodesWelcomePage from './pages/nodes-welcome';
 import NodesPage from './pages/nodes';
 import NotAllow from './pages/notAllow';
+import { isEnabledMobileOnly } from './utils/featureFlags';
 
 import './App.css';
 
-const ALLOW_PREVIEW = import.meta.env.VITE_FEATUE_MOB_ONLY || isDevEnv();
+const ALLOW_PREVIEW = !isEnabledMobileOnly || isDevEnv();
 
 export const tg = window.Telegram.WebApp;
 const GA = 'G-VEPRY1XE4E';
