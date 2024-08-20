@@ -130,5 +130,24 @@
     "search": "Cari",
     "cancel": "Batal",
     "interface": "Bahasa antarmuka"
+  },
+  "share": {
+    "share": "Bagikan",
+    "successfullySend": "Anda berhasil mengirim {size} ke {name}",
+    "shareStorage": "Bagikan Penyimpanan",
+    "storage": "Penyimpanan",
+    "increaseStorage": "Kapasitas penyimpanan Anda telah meningkat sebesar {size}",
+    "increaseStorageDesc": "Kami senang memberi tahu Anda bahwa ruang penyimpanan Anda telah ditingkatkan. Anda sekarang memiliki tambahan {size}.",
+    "declineIncrease": "Penawaran perluasan penyimpanan ditolak",
+    "declineIncreaseDesc": "Anda telah memilih untuk tidak menerima peningkatan penyimpanan {size}. Kapasitas penyimpanan Anda saat ini tetap tidak berubah.",
+    "areYouSure": "Apakah Anda yakin ingin menolak hadiah Anda?",
+    "decline": "Tolak",
+    "accept": "Terima",
+    "offerDeclined": "Penawaran Hadiah Penyimpanan Ditolak",
+    "offerDeclinedDesc": "Kami ingin memberi tahu Anda bahwa hadiah penyimpanan {size} yang Anda kirimkan ke {name} telah ditolak. Penerima memilih untuk tidak menerima penyimpanan tambahan saat ini.",
+    "offerAccept": "Hadiah penyimpanan Anda diterima!",
+    "offerAcceptDesc": "Kabar baik! Hadiah penyimpanan {size} yang Anda kirimkan untuk {name} telah diterima. Penerima sekarang menikmati ruang tambahan. Terima kasih telah membantu mereka!",
+    "tryAgain": "Coba lagi",
+    "ok": "OK"
   }
 }

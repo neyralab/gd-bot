@@ -130,5 +130,24 @@
     "search": "検索",
     "cancel": "キャンセル",
     "interface": "インターフェースの言語"
+  },
+  "share": {
+    "share": "共有する",
+    "successfullySend": "{size}を{name}に正常に送信しました",
+    "shareStorage": "ストレージを共有する",
+    "storage": "ストレージ",
+    "increaseStorage": "ストレージ容量が{size}増加しました",
+    "increaseStorageDesc": "ストレージスペースがアップグレードされたことをお知らせします。追加の{size}が利用可能です。",
+    "declineIncrease": "ストレージ拡張オファーが拒否されました",
+    "declineIncreaseDesc": "ストレージの増加{size}を受け入れないことを選択しました。現在のストレージ容量は変更されていません。",
+    "areYouSure": "プレゼントを辞退してもよろしいですか?",
+    "decline": "辞退する",
+    "accept": "受け入れる",
+    "offerDeclined": "ストレージギフトオファーが拒否されました",
+    "offerDeclinedDesc": "{name}に送った{size}のストレージギフトが拒否されたことをお知らせします。受取人は現時点で追加のストレージを受け取らないことを選択しました。",
+    "offerAccept": "ストレージギフトが受け入れられました！",
+    "offerAcceptDesc": "良い知らせです！ {name}のために送った{size}のストレージギフトが受け入れられました。受取人は現在、追加のスペースを楽しんでいます。ご支援ありがとうございます！",
+    "tryAgain": "もう一度試す",
+    "ok": "OK"
   }
 }

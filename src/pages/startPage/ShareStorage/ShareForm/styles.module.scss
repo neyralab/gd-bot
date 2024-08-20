@@ -1,0 +1,192 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  padding: 12px 16px 40px 16px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.header-title {
+  font-family: 'SF Pro Text';
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 36px;
+  letter-spacing: 0.01em;
+  text-align: left;
+  margin: 0;
+}
+
+.slider {
+  margin-top: 20px;
+}
+
+.form {
+  margin-top: 16px;
+}
+
+.input-container {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  height: 54px;
+  padding: 16px;
+  top: 92px;
+  left: 16px;
+  gap: 0px;
+  border-radius: 10px;
+  border: 0.5px solid #FFFFFF4D;
+}
+
+.input-field {
+  display: flex;
+}
+
+.footer-action {
+  font-family: 'Open Sans';
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 21px;
+  letter-spacing: 0.01em;
+  background: #151517;
+  border-radius: 8px;
+  color: #fff;
+}
+
+.input > input, .input > span {
+  font-family: 'SF Pro Text';
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 27px;  
+}
+
+.input-text {
+  font-family: 'SF Pro Text';
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+}
+
+.input > input {
+  background-color: transparent;
+  border: none;
+  outline: none;
+  padding: 0;
+  color: #fff;
+}
+
+.input > input::-webkit-outer-spin-button,
+.input > input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.input-size {
+  font-family: 'SF Pro Text';
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 27px;
+  color: #999999;
+}
+
+.input-size-prefix {
+  font-family: 'SF Pro Text';
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 27px;
+  color: #fff;
+  margin-left: 0.1em;
+}
+
+.username-input {
+  position: relative;
+  width: 100%;
+  height: 43px;
+  margin-top: 18px;
+  padding: 16px 11px;
+  margin-bottom: 20px;
+  background: #151517;
+  border: none;
+  border-radius: 8px;
+  outline: none;
+  caret-color: #fff;
+  color: #fff;
+}
+
+.username-input::after {
+  content: '@';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 10px;
+  height: 10px;
+}
+
+.username-input ::placeholder {
+  color: #999999;
+}
+
+.footer-action-disabled {
+  color: #999999;
+  cursor: not-allowed;
+}
+
+@media (max-width: 768px) {
+  .footer-action {
+    outline: none;
+  }
+}
+
+/// 
+/// GIFT STYLES
+/// 
+
+.gift {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.gift-header {
+  width: 100%;
+  margin-top: 4px;
+}
+
+.gift-header-badget {
+  height: 25px;
+  padding: 2px 8px 2px 8px;
+  border-radius: 8px;
+  background-color: #0a2d4b;
+  color: #027de9;
+  font-family: 'SF Pro Text';
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 21px;
+  letter-spacing: 0.01em;
+}
+
+.gift-preview > h1 {
+  display: flex;
+  justify-content: center;
+  font-family: 'SF Pro Text';
+  font-size: 30px;
+  font-weight: 700;
+  line-height: 36px;
+  margin-top: 8px;
+}
+
+.gift-action {
+  width: 100%;
+  height: 48px;
+  padding: 12px 20px 12px 20px;
+  border-radius: 8px;
+  color: #fff;
+  background-color: #007DE9;
+}
+
+.gift-action-disabled {
+  color: #999999;
+  background-color: #007DE9;
+}

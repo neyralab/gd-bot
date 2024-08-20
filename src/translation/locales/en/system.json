@@ -130,5 +130,24 @@
     "search": "Search",
     "cancel": "Cancel",
     "interface": "Interface language"
+  },
+  "share": {
+    "share": "Share",
+    "successfullySend": "You successfully send {size} to {name}",
+    "shareStorage": "Share Storage",
+    "storage": "Storage",
+    "increaseStorage": "Your storage capacity has increased by {size}",
+    "increaseStorageDesc": "We're excited to inform you that your storage space has been upgraded. You now have an additional {size}.",
+    "declineIncrease": "Storage expansion offer declined",
+    "declineIncreaseDesc": "You’ve chosen not to accept the {size} storage increase. Your current storage capacity remains unchanged.",
+    "areYouSure": "Are you sure you want to Decline your present?",
+    "decline": "Decline",
+    "accept": "Accept",
+    "offerDeclined": "Storage Gift Offer Declined",
+    "offerDeclinedDesc": "We wanted to let you know that the {size} storage gift you sent to {name} was declined. The recipient has chosen not to accept the additional storage at this time.",
+    "offerAccept": "Your storage gift was accepted!",
+    "offerAcceptDesc": "Great news! The {size} storage gift you sent for {name} has been accepted. The recipient is now enjoying the additional space. Thank you for helping them out!",
+    "tryAgain": "Try again",
+    "ok": "OK"
   }
 }

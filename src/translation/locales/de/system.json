@@ -130,5 +130,24 @@
     "search": "Suche",
     "cancel": "Beenden",
     "interface": "Schnittstellensprache"
+  },
+  "share": {
+    "share": "Teilen",
+    "successfullySend": "Sie haben erfolgreich {size} an {name} gesendet",
+    "shareStorage": "Speicher teilen",
+    "storage": "Speicher",
+    "increaseStorage": "Ihre Speicherkapazität wurde um {size} erhöht",
+    "increaseStorageDesc": "Wir freuen uns, Ihnen mitteilen zu können, dass Ihr Speicherplatz erweitert wurde. Sie haben jetzt zusätzlich {size}.",
+    "declineIncrease": "Angebot zur Speichererweiterung abgelehnt",
+    "declineIncreaseDesc": "Sie haben sich entschieden, die Speichererweiterung um {size} nicht anzunehmen. Ihre aktuelle Speicherkapazität bleibt unverändert.",
+    "areYouSure": "Sind Sie sicher, dass Sie Ihr Geschenk ablehnen möchten?",
+    "decline": "Ablehnen",
+    "accept": "Akzeptieren",
+    "offerDeclined": "Speichergeschenk-Angebot abgelehnt",
+    "offerDeclinedDesc": "Wir wollten Sie darüber informieren, dass das von Ihnen gesendete Speichergeschenk über {size} an {name} abgelehnt wurde. Der Empfänger hat sich entschieden, den zusätzlichen Speicherplatz nicht anzunehmen.",
+    "offerAccept": "Ihr Speichergeschenk wurde akzeptiert!",
+    "offerAcceptDesc": "Gute Nachrichten! Das von Ihnen gesendete Speichergeschenk über {size} für {name} wurde akzeptiert. Der Empfänger nutzt nun den zusätzlichen Speicherplatz. Vielen Dank für Ihre Unterstützung!",
+    "tryAgain": "Erneut versuchen",
+    "ok": "OK"
   }
 }
