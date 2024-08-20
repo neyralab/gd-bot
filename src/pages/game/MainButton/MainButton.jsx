@@ -1,97 +1,121 @@
-import React, {
-  useRef,
-  useImperativeHandle,
-  forwardRef,
-  useEffect
-} from 'react';
-import classNames from 'classnames';
-import styles from './MainButton.module.css';
+import React, { useRef } from 'react';
+import { useSwipeable } from 'react-swipeable';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  selectStatus,
+  selectTheme,
+  startRound,
+  selectThemeAccess,
+  proceedTap,
+  switchTheme
+} from '../../../store/reducers/gameSlice';
+import EndGameAddedPoints from '../EndGameAddedPoints/EndGameAddedPoints';
+import PointsGrowArea from '../PointsGrowArea/PointsGrowArea';
+import Counter from '../Counter/Counter';
+import styles from './MainButton.module.scss';
 
-/** Please, do not add extra selectors or state
- * It will force the component to rerender, that will cause lags and rerenders
- */
-const MainButton = forwardRef(({ theme }, ref) => {
-  const containerRef = useRef(null);
-  const iconRef = useRef(null);
-  const frame1Ref = useRef(null);
-  const frame2Ref = useRef(null);
-  const frame3Ref = useRef(null);
-  const frame4Ref = useRef(null);
+const MainButton = ({ onPushAnimation }) => {
+  const pointsAreaRef = useRef(null);
 
-  const iconContainerRef = useRef(null);
+  const dispatch = useDispatch();
+  const isCanvasLoaded = useSelector((state) => state.game.isCanvasLoaded);
+  const theme = useSelector(selectTheme);
+  const themeAccess = useSelector(selectThemeAccess);
+  const themeIsSwitching = useSelector(
+    (state) => state.game.nextTheme.isSwitching
+  );
+  const status = useSelector(selectStatus, (prev, next) => prev === next);
+  const counterIsFinished = useSelector(
+    (state) => state.game.counter.isFinished
+  );
+  const lockTimerTimestamp = useSelector(
+    (state) => state.game.lockTimerTimestamp
+  );
+  const recentlyFinishedLocker = useSelector(
+    (state) => state.game.recentlyFinishedLocker
+  );
 
-  useEffect(() => {
-    iconContainerRef.current.classList.remove(styles['travel-animation']);
-    void iconContainerRef.current.offsetWidth; // Trigger a reflow (force re-render)
-    iconContainerRef.current.classList.add(styles['travel-animation']);
-  }, [theme]);
+  const swipeHandlers = useSwipeable({
+    onSwipedLeft: () => {
+      if (!isCanvasLoaded || theme.id === 'ghost') return;
 
-  const runAnimation = () => {
-    let items = [
-      containerRef,
-      iconRef,
-      frame1Ref,
-      frame2Ref,
-      frame3Ref,
-      frame4Ref
-    ];
+      dispatch(
+        switchTheme({ themeId: 'ghost', direction: 'next', timeout: 2500 })
+      );
+    },
+    onSwipedRight: () => {
+      if (!isCanvasLoaded || theme.id === 'hawk') return;
 
-    // Clear any existing animations and start from the beginning
-    items.forEach((itemRef, i) => {
-      if (itemRef.current) {
-        itemRef.current.classList.remove(styles['btn-animation-' + i]);
+      dispatch(
+        switchTheme({
+          themeId: 'hawk',
+          direction: 'prev',
+          timeout: 2500
+        })
+      );
+    }
+  });
 
-        // Using setTimeout to ensure the class is removed before adding it again
-        setTimeout(() => {
-          itemRef.current.classList.add(styles['btn-animation-' + i]);
-        }, 1);
-      }
-    });
+  const tapHandler = async (e) => {
+    e?.preventDefault();
+    e?.stopPropagation();
+
+    // Run animations
+    onPushAnimation?.();
+    pointsAreaRef.current.runAnimation();
+
+    // Update state and timers
+    dispatch(proceedTap());
   };
 
-  useImperativeHandle(ref, () => ({
-    runAnimation: runAnimation
-  }));
+  const handleEvent = async (event) => {
+    if (
+      (!counterIsFinished && theme.id === 'ghost') ||
+      (lockTimerTimestamp !== null && theme.id === 'hawk') ||
+      !theme ||
+      !themeAccess[theme.id] ||
+      status === 'finished' ||
+      themeIsSwitching ||
+      recentlyFinishedLocker ||
+      !isCanvasLoaded
+    )
+      return;
+
+    if (status === 'waiting') {
+      dispatch(startRound());
+    }
+
+    window?.Telegram?.WebApp?.HapticFeedback?.impactOccurred('soft');
+
+    if (event.type.startsWith('touch')) {
+      const touches = event.changedTouches;
+      for (let i = 0; i < touches.length; i++) {
+        await tapHandler(event);
+      }
+    } else {
+      await tapHandler(event);
+    }
+  };
 
   return (
     <div
-      ref={containerRef}
-      className={classNames(styles.container, theme && styles[theme.id])}>
-      <div
-        className={classNames(styles.frame, styles.frame1)}
-        ref={frame1Ref}
-        style={{
-          backgroundImage: `url('/assets/game-page/frame-1-${theme.id}.png')`
-        }}></div>
-      <div
-        className={classNames(styles.frame, styles.frame2)}
-        ref={frame2Ref}
-        style={{
-          backgroundImage: `url('/assets/game-page/frame-2-${theme.id}.png')`
-        }}></div>
-      <div
-        className={classNames(styles.frame, styles.frame3)}
-        ref={frame3Ref}
-        style={{
-          backgroundImage: `url('/assets/game-page/frame-3-${theme.id}.png')`
-        }}></div>
-      <div
-        className={classNames(styles.frame, styles.frame4)}
-        ref={frame4Ref}
-        style={{
-          backgroundImage: `url('/assets/game-page/frame-4-${theme.id}.png')`
-        }}></div>
+      className={styles['main-button-touch-area']}
+      {...(status !== 'playing' ? swipeHandlers : {})}
+      onTouchEnd={handleEvent}
+      onMouseUp={handleEvent}>
+      <div className={styles['points-grow-area-container']}>
+        <PointsGrowArea ref={pointsAreaRef} />
+      </div>
 
-      <div className={styles['icon-container']} ref={iconContainerRef}>
-        <div
-          className={styles.icon}
-          ref={iconRef}
-          style={{
-            backgroundImage: `url('/assets/game-page/ship-${theme.id}.png')`
-          }}></div>
+      <div className={styles['main-button-inner-container']}>
+        <EndGameAddedPoints />
+      </div>
+
+      <div className={styles['counter-container']}>
+        <Counter />
       </div>
     </div>
   );
-});
+};
 
 export default MainButton;
