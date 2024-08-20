@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  useMemo,
+  useCallback
+} from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -15,10 +21,11 @@ import Partners from './Partners';
 import Mission from './Mission';
 import EarnModal from './EarnModal/EarnModal';
 import Segmented from '../../components/segmented';
+import FortuneWheelModal from '../../components/FortuneWheelModal/FortuneWheelModal';
 
 import styles from './styles.module.css';
 
-const DEFAULT_SEGMENT_OPTION = 'task'
+const DEFAULT_SEGMENT_OPTION = 'task';
 
 export default function EarnPage() {
   const dispatch = useDispatch();
@@ -28,7 +35,8 @@ export default function EarnPage() {
   const [missions, setMissions] = useState([]);
   const [activeSegment, setActiveSegment] = useState(DEFAULT_SEGMENT_OPTION);
   const [modalSelectedTask, setModalSelectedTask] = useState(null);
-  const modalRef = useRef(null);
+  const earnModalRef = useRef(null);
+  const fortuneWheelModalRef = useRef(null);
 
   const getTasks = async () => {
     try {
@@ -80,16 +88,15 @@ export default function EarnPage() {
       console.error('Error fetching tasks:', error);
       setMissions([]);
     }
-  }
+  };
 
   useEffect(() => {
     if (!partnerTasks.length) {
-      getAllPartners()
-        .then((data) => {
-          dispatch(handlePartners(data))
-        })
+      getAllPartners().then((data) => {
+        dispatch(handlePartners(data));
+      });
     }
-  }, [partnerTasks])
+  }, [partnerTasks]);
 
   useEffect(() => {
     getMission();
@@ -103,24 +110,33 @@ export default function EarnPage() {
       {
         title: t('earn.task'),
         name: 'task',
-        onClick: () => { setActiveSegment('task') }
+        onClick: () => {
+          setActiveSegment('task');
+        }
       },
       {
         title: t('earn.partner'),
         name: 'partner',
-        onClick: () => { setActiveSegment('partner') }
+        onClick: () => {
+          setActiveSegment('partner');
+        }
       },
       {
         title: t('earn.mission'),
         name: 'mission',
-        onClick: () => { setActiveSegment('mission') }
+        onClick: () => {
+          setActiveSegment('mission');
+        }
       }
-    ].filter((tab) => !disabledTabs.includes(tab.name))
+    ].filter((tab) => !disabledTabs.includes(tab.name));
   }, [t]);
 
-  const handlePartnersUpdate = useCallback((data) => {
-    dispatch(handlePartners(data));
-  }, [dispatch])
+  const handlePartnersUpdate = useCallback(
+    (data) => {
+      dispatch(handlePartners(data));
+    },
+    [dispatch]
+  );
 
   const renderList = () => {
     switch (activeSegment) {
@@ -128,7 +144,7 @@ export default function EarnPage() {
         return (
           <Tasks
             tasks={tasks}
-            modalRef={modalRef}
+            earnModalRef={earnModalRef}
             getTasks={getTasks}
             setModalSelectedTask={setModalSelectedTask}
           />
@@ -152,32 +168,37 @@ export default function EarnPage() {
           tasks={tasks}
           getTasks={getTasks}
           setModalSelectedTask={setModalSelectedTask}
-        />
+        />;
     }
-  }
+  };
+
+  const openFortuneWheel = () => {
+    fortuneWheelModalRef.current.open();
+  };
 
   return (
     <div className={styles.container}>
-      {/* <Header label="Ghost Drive App" /> */}
+      <div className={styles['title-block']}>
+        <div className={styles['title-inner-block']}>
+          <span className={styles.spacer}></span>
+          <h1 className={styles.title}>{t('earn.earn')}</h1>
+          <button onClick={openFortuneWheel}>
+            <img src="/assets/fortune-wheel.png" alt="Fortune Wheel" />
+          </button>
+        </div>
 
-      {/* <div className={styles['title-block']}>
-        <img src="/assets/token.png" alt="Token" />
-        <h1>{t('earn.earn')}</h1>
-      </div> */}
+        <p className={styles.text}>{t('earn.getReward')}</p>
+      </div>
 
-      <h1 className={styles.title}>{t('earn.earn')}</h1>
-      <p className={styles.text}>{t('earn.getReward')}</p>
+      <Segmented options={segmentOption} active={activeSegment} />
 
-      <Segmented
-        options={segmentOption}
-        active={activeSegment}
-      />
-
-      { renderList() }
+      {renderList()}
 
       <Menu />
 
-      <EarnModal ref={modalRef} item={modalSelectedTask} />
+      <EarnModal ref={earnModalRef} item={modalSelectedTask} />
+
+      <FortuneWheelModal ref={fortuneWheelModalRef} />
     </div>
   );
 }

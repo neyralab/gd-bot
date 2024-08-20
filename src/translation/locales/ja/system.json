@@ -95,6 +95,7 @@
   },
   "message": {
     "error": "エラーが発生しました",
+    "serverError": "サーバーエラー",
     "fileRestored": "ファイルが正常に復元されました",
     "failedLoad": "数の読み込みに失敗しました",
     "fileDeleted": "ファイルが正常に削除されました",

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState, useRef } from 'react';
 import Modal from 'react-modal';
 import { useDispatch, useSelector } from 'react-redux';
 import { TelegramShareButton } from 'react-share';
@@ -36,8 +36,11 @@ import style from './styles.module.scss';
 
 Modal.setAppElement('#root');
 
+const ESCAPE_CONTENT_DOWNLOAD = ['audio', 'encrypt'];
+
 export const FilePreviewModal = () => {
   const { t } = useTranslation('drive');
+  const wrapper = useRef(null);
   const handleVibrationClick = useButtonVibration();
   const isOpen = useSelector(selectIsFilePreviewOpen);
   const file = useSelector(selecSelectedFile);
@@ -60,7 +63,7 @@ export const FilePreviewModal = () => {
     if (file?.slug) {
       const canPreview = getPreviewFileType(file, '   ');
       setLoading(true);
-      if (canPreview && canPreview !== 'encrypt') {
+      if (canPreview && !ESCAPE_CONTENT_DOWNLOAD.includes(canPreview)) {
         getContent();
       } else {
         setLoading(false);
@@ -153,13 +156,20 @@ export const FilePreviewModal = () => {
             <GhostLoader />
           </div>
         ) : (
-          <div className={style.wrapper}>
+          <div
+            className={style.wrapper}
+            ref={wrapper}
+          >
             <button
               className={style.back}
               onClick={handleVibrationClick(onClose)}>
               Back
             </button>{' '}
-            <PreviewContent fileContent={fileContent} file={file} />
+            <PreviewContent
+              wrapper={wrapper}
+              fileContent={fileContent}
+              file={file}
+            />
             <div className={style.info}>
               <h3>{file.name}</h3>
               {file?.user && (

@@ -95,6 +95,7 @@
   },
   "message": {
     "error": "문제가 발생했습니다",
+    "serverError": "서버 오류",
     "fileRestored": "파일이 성공적으로 복원되었습니다",
     "failedLoad": "카운트를 불러오지 못했습니다",
     "fileDeleted": "파일이 성공적으로 삭제되었습니다",

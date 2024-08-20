@@ -95,6 +95,7 @@
   },
   "message": {
     "error": "Algo deu errado",
+    "serverError": "Erro no servidor",
     "fileRestored": "Arquivo restaurado com sucesso",
     "failedLoad": "Falha ao carregar contagens",
     "fileDeleted": "Arquivo excluído com sucesso",

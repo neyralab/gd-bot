@@ -1,0 +1,18 @@
+.congratulations {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  bottom: 0;
+  left: 0;
+  overflow: hidden;
+
+  img {
+    left: 50%;
+    bottom: 0;
+    transform: translateX(-50%);
+    position: absolute;
+    width: 500px;
+    height: 500px;
+    object-fit: contain;
+  }
+}

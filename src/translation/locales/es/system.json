@@ -95,6 +95,7 @@
   },
   "message": {
     "error": "Algo salió mal",
+    "serverError": "Error del servidor",
     "fileRestored": "El archivo fue restaurado con éxito",
     "failedLoad": "No se pudieron cargar los recuentos",
     "fileDeleted": "El archivo fue eliminado con éxito",
