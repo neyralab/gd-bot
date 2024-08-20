@@ -21,6 +21,7 @@
   outline: none;
   opacity: 0.9;
   border-radius: 5px;
+  touch-action: none; /* Важливо для мобільних пристроїв */
 }
 
 .slider::-webkit-slider-thumb {
@@ -31,6 +32,7 @@
   border-radius: 50%;
   background: white;
   cursor: pointer;
+  touch-action: pan-x; /* Дозволяє горизонтальне перетягування на мобільних */
 }
 
 .slider::-moz-range-thumb {
@@ -39,6 +41,7 @@
   border-radius: 50%;
   background: white;
   cursor: pointer;
+  touch-action: pan-x; /* Дозволяє горизонтальне перетягування на мобільних */
 }
 
 @media (max-width: 768px) {

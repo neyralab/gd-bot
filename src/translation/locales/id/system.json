@@ -66,7 +66,7 @@
     "extraBonusLvl5": "Bonus tambahan untuk mencapai level tapping 5",
     "extraBonusLvl6": "Bonus tambahan untuk mencapai level tapping 6",
     "extraBonusLvl7": "Bonus tambahan untuk mencapai level tapping 7",
-    "extraBonusLvl8": "Bonus ekstra untuk mencapai level tapping 8",
+    "extraBonusLvl8": "Bonus tambahan untuk mencapai level tapping 8",
     "points": "Poin",
     "point": "Poin",
     "invitePremiumFriend": "Undang 25 teman Premium",
@@ -91,7 +91,8 @@
     "earnPoints": "Untuk setiap ketukan, Anda mendapatkan poin.",
     "lifetime": "3. Penyimpanan Seumur Hidup",
     "mineLifetime": "Tambang hingga 50 GB Penyimpanan Seumur Hidup.",
-    "convert": "Konversi"
+    "convert": "Konversi",
+    "convertLimit": "Ukuran konversi maksimum adalah 50GB."
   },
   "message": {
     "error": "Terjadi kesalahan",

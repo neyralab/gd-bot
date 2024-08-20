@@ -91,7 +91,8 @@
     "earnPoints": "每次点击您都能赚取积分。",
     "lifetime": "3. 终身存储",
     "mineLifetime": "最多挖掘50GB的终身存储。",
-    "convert": "转换"
+    "convert": "转换",
+    "convertLimit": "最大转换大小为50GB。"
   },
   "message": {
     "error": "出了点问题",

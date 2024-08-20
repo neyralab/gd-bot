@@ -91,7 +91,8 @@
     "earnPoints": "A cada toque, você ganha pontos.",
     "lifetime": "3. Armazenamento Vitalício",
     "mineLifetime": "Mine até 50 GB de Armazenamento Vitalício.",
-    "convert": "Converter"
+    "convert": "Converter",
+    "convertLimit": "O tamanho máximo de conversão é de 50GB."
   },
   "message": {
     "error": "Algo deu errado",

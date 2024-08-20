@@ -91,7 +91,8 @@
     "earnPoints": "Por cada toque ganas puntos.",
     "lifetime": "3. Almacenamiento de por vida",
     "mineLifetime": "Mina hasta 50 GB de almacenamiento de por vida.",
-    "convert": "Convertir"
+    "convert": "Convertir",
+    "convertLimit": "El tamaño máximo de conversión es de 50GB."
   },
   "message": {
     "error": "Algo salió mal",

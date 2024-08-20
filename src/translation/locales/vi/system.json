@@ -91,7 +91,8 @@
     "earnPoints": "Mỗi lần nhấp bạn sẽ nhận được điểm.",
     "lifetime": "3. Lưu trữ trọn đời",
     "mineLifetime": "Khai thác lên đến 50 GB lưu trữ trọn đời.",
-    "convert": "Chuyển đổi"
+    "convert": "Chuyển đổi",
+    "convertLimit": "Kích thước chuyển đổi tối đa là 50GB."
   },
   "message": {
     "error": "Có lỗi xảy ra",
