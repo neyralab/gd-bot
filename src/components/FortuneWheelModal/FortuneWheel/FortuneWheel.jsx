@@ -5,7 +5,7 @@ import { useSwipeable } from 'react-swipeable';
 import { gsap } from 'gsap';
 import { startSpin } from '../../../effects/fortuneWheelEffect';
 import BackgroundSvg from './BackgroundSvg';
-import Congratulations from '../Congratulations/Congratulations';
+import Confetti from '../../Confetti/Confetti';
 import SystemModal from '../../SystemModal/SystemModal';
 import styles from './FortuneWheel.module.scss';
 
@@ -154,7 +154,7 @@ export default function FortuneWheel({ spinId, onSpinned }) {
         window?.Telegram?.WebApp?.HapticFeedback?.impactOccurred('soft');
         setTimeout(() => {
           closeCongratulations();
-        }, 4000);
+        }, 4500);
       }
     });
   };
@@ -226,7 +226,7 @@ export default function FortuneWheel({ spinId, onSpinned }) {
         </div>
 
         {showCongratulations && (
-          <Congratulations onClick={closeCongratulations} />
+          <Confetti onClick={closeCongratulations} />
         )}
       </div>
 
