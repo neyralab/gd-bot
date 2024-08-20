@@ -131,5 +131,24 @@
     "search": "Tìm kiếm",
     "cancel": "Hủy bỏ",
     "interface": "Ngôn ngữ giao diện"
+  },
+  "share": {
+    "share": "Chia sẻ",
+    "successfullySend": "Bạn đã gửi thành công {size} cho {name}",
+    "shareStorage": "Chia sẻ dung lượng lưu trữ",
+    "storage": "Dung lượng lưu trữ",
+    "increaseStorage": "Dung lượng lưu trữ của bạn đã tăng thêm {size}",
+    "increaseStorageDesc": "Chúng tôi vui mừng thông báo rằng dung lượng lưu trữ của bạn đã được nâng cấp. Bạn hiện có thêm {size}.",
+    "declineIncrease": "Đề xuất mở rộng dung lượng lưu trữ đã bị từ chối",
+    "declineIncreaseDesc": "Bạn đã chọn không chấp nhận việc tăng dung lượng lưu trữ {size}. Dung lượng lưu trữ hiện tại của bạn không thay đổi.",
+    "areYouSure": "Bạn có chắc chắn muốn từ chối món quà của mình?",
+    "decline": "Từ chối",
+    "accept": "Chấp nhận",
+    "offerDeclined": "Lời đề nghị quà tặng dung lượng lưu trữ đã bị từ chối",
+    "offerDeclinedDesc": "Chúng tôi muốn thông báo với bạn rằng món quà tặng dung lượng lưu trữ {size} mà bạn đã gửi cho {name} đã bị từ chối. Người nhận đã chọn không nhận thêm dung lượng lưu trữ vào thời điểm này.",
+    "offerAccept": "Quà tặng dung lượng lưu trữ của bạn đã được chấp nhận!",
+    "offerAcceptDesc": "Tin tuyệt vời! Món quà tặng dung lượng lưu trữ {size} mà bạn đã gửi cho {name} đã được chấp nhận. Người nhận hiện đang tận hưởng không gian bổ sung. Cảm ơn bạn đã giúp họ!",
+    "tryAgain": "Thử lại",
+    "ok": "OK"
   }
 }

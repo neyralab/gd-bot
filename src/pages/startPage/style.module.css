@@ -83,13 +83,20 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 24px;
 }
 
 .banner-header_img svg {
   height: 24px;
   width: 24px;
   color: white;
+}
+
+.banner-header-share-btn {
+  font-family: 'SF Pro Text';
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 21px;
+  margin-left: 8px;
 }
 
 .banner-header h1 {

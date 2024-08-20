@@ -131,5 +131,24 @@
     "search": "Pesquisar",
     "cancel": "Cancelar",
     "interface": "Idioma da interface"
+  },
+  "share": {
+    "share": "Compartilhar",
+    "successfullySend": "Você enviou com sucesso {size} para {name}",
+    "shareStorage": "Compartilhar Armazenamento",
+    "storage": "Armazenamento",
+    "increaseStorage": "Sua capacidade de armazenamento aumentou em {size}",
+    "increaseStorageDesc": "Estamos entusiasmados em informar que seu espaço de armazenamento foi atualizado. Agora você tem {size} adicionais.",
+    "declineIncrease": "Oferta de expansão de armazenamento recusada",
+    "declineIncreaseDesc": "Você optou por não aceitar o aumento de armazenamento de {size}. Sua capacidade de armazenamento atual permanece inalterada.",
+    "areYouSure": "Tem certeza de que deseja recusar o seu presente?",
+    "decline": "Recusar",
+    "accept": "Aceitar",
+    "offerDeclined": "Oferta de presente de armazenamento recusada",
+    "offerDeclinedDesc": "Gostaríamos de informar que o presente de armazenamento de {size} que você enviou para {name} foi recusado. O destinatário optou por não aceitar o armazenamento adicional neste momento.",
+    "offerAccept": "Seu presente de armazenamento foi aceito!",
+    "offerAcceptDesc": "Ótimas notícias! O presente de armazenamento de {size} que você enviou para {name} foi aceito. O destinatário agora está aproveitando o espaço adicional. Obrigado por ajudá-los!",
+    "tryAgain": "Tente novamente",
+    "ok": "OK"
   }
 }

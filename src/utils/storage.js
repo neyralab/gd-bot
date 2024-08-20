@@ -1,3 +1,11 @@
+const units = {
+  B: 1,
+  KB: 1024,
+  MB: 1024 ** 2,
+  GB: 1024 ** 3,
+  TB: 1024 ** 4
+};
+
 export const fromByteToMb = (bytes) => {
   const mb = Number(bytes) / 1048576;
   const res = mb === 0 ? 0 : mb.toFixed(2);
@@ -43,3 +51,21 @@ export const transformSize = (size = '', decimals = 1, showSize = true) => {
     showSize && sizes[i]
   }`;
 };
+
+export const fromMbToBytes = (mb) => {
+  const bytes = mb * 1024 * 1024;
+  return bytes;
+}
+
+export const parseSizeToBytes = (sizeStr) => {
+  const regex = /^([\d.]+)\s*(B|KB|MB|GB|TB)$/i;
+  const match = sizeStr.match(regex);
+
+  if (match) {
+      const value = parseFloat(match[1]);
+      const unit = match[2].toUpperCase();
+      return value * (units[unit] || 1);
+  } else {
+      throw new Error("Invalid size format");
+  }
+}

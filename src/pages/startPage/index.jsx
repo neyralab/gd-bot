@@ -1,4 +1,4 @@
-import { useMemo, useState, useEffect, useCallback } from 'react';
+import { useRef, useMemo, useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
@@ -9,6 +9,7 @@ import {
   selectCurrentWorkspace
 } from '../../store/reducers/workspaceSlice';
 import { getAllTasks } from '../../effects/balanceEffect';
+import { getStorageNotificationsEffect, readNotificationEffect, storageSendEffect } from '../../effects/storageEffects';
 import { DEFAULT_TARIFFS_NAMES } from '../upgradeStorage';
 import { fromByteToGb } from '../../utils/storage';
 import { transformSize } from '../../utils/transformSize';
@@ -20,19 +21,25 @@ import { ReactComponent as LogoIcon } from '../../assets/ghost.svg';
 import { ReactComponent as TapIcon } from './assets/tap.svg';
 import { DisconnectWalletModal } from '../../components/disconnectWalletModal';
 import BannerSource from '../../assets/node-banner.webp';
+import ShareStorage from './ShareStorage';
 import PointCounter from './PointCounter/PointCounter';
+import SystemModal from '../../components/SystemModal/SystemModal';
 import NavigatItem from './Navigator/NavigatItem';
-// import CardsSlider from '../../components/CardsSlider/CardsSlider';
-// import getSliderItems from './SliderItem/sliderItems';
-// import SliderItem from './SliderItem/SliderItem';
 import Navigator from './Navigator/Navigator';
+
+import { parseSizeToBytes } from '../../utils/storage';
 
 import style from './style.module.css';
 import navigatorStyle from './Navigator/Navigator.module.css';
 
+const initialNotificationState = {sender: {unread: [], readed: []}, recipient: []}
+
 export const StartPage = ({ tariffs }) => {
+  const systemModalRef = useRef(null);
   const { t } = useTranslation('system');
   const [tasks, setTasks] = useState([]);
+  const [showShareModal, setShowShareModal] = useState(false);
+  const [notifications, setNotifications] = useState(initialNotificationState);
   const [disconnectWalletModal, setDisconnectWalletModal] = useState(false);
   const allWorkspaces = useSelector(selectAllWorkspaces);
   const currentWorkspace = useSelector(selectCurrentWorkspace);
@@ -50,9 +57,30 @@ export const StartPage = ({ tariffs }) => {
     }
   }, []);
 
+  const getStorageNotifications = useCallback(async () => {
+    try {
+      const data = await getStorageNotificationsEffect();
+      setNotifications(data);
+    } catch (error) {
+      setNotifications(initialNotificationState);
+    }
+  }, []);
+
   useEffect(() => {
     getTasks();
-  }, [getTasks]);
+    getStorageNotifications();
+  }, [getTasks, getStorageNotifications]);
+
+  useEffect(() => {
+    if (!!notifications?.sender?.unread?.length && systemModalRef.current) {
+      const notification = notifications?.sender?.unread[0];
+      if (notification.text.includes('rejected')) {
+        handleRejectNotification(notification);
+      } else {
+        handleAcceptNotification(notification);
+      }
+    }
+  }, [notifications, systemModalRef.current])
 
   const storage = useMemo(() => {
     const size = DEFAULT_TARIFFS_NAMES[user?.space_actual] || '1GB';
@@ -78,14 +106,6 @@ export const StartPage = ({ tariffs }) => {
     };
   }, [user]);
 
-  // const sliderItems = useMemo(() => getSliderItems(storage.size), [storage])
-
-  // const slides = useMemo(() => {
-  //   return sliderItems.map((el) => {
-  //     return { id: el.id, html: <SliderItem key={el?.id} item={el} /> };
-  //   });
-  // }, [sliderItems]);
-
   if (!allWorkspaces && !currentWorkspace) {
     return (
       <div className={style.home_container}>
@@ -96,6 +116,87 @@ export const StartPage = ({ tariffs }) => {
 
   const openInNewTab = (url) => {
     window.open(url, '_blank', 'noreferrer');
+  };
+
+  const onOpenShareModal = () => {
+    setShowShareModal(true);
+  };
+
+  const onCloseShareModal = () => {
+    setShowShareModal(false);
+  };
+
+  const onCloseGift = () => {
+    setNotifications(initialNotificationState);
+    setShowShareModal(false);
+  };
+
+  const readNotification =async (id) => {
+    try {
+      await readNotificationEffect(id);
+    } catch (error) {
+      console.warn(error)
+    }
+  };
+
+  const handleAcceptNotification = async (item) => {
+    try {
+      const splitedText = item?.text?.split(' ');
+      const name = splitedText[0];
+      const size = splitedText[4];
+      await readNotification(item.id);
+      setNotifications((notif) => ({ ...notif, sender: { ...notif.sender, unread: notif.sender.unread.filter((itemFilter) => item.id !== itemFilter.id) } }))
+      systemModalRef.current.open({
+        title: t('share.offerAccept'),
+        text: t('share.offerAcceptDesc').replace('{size}', size).replace('{name}', name),
+       });
+    } catch (error) {
+      console.warn(error)
+    }
+  };
+
+  const handleRejectNotification = async (item) => {
+    try {
+      const splitedText = item?.text?.split(' ');
+      const name = splitedText[0];
+      const size = splitedText[4];
+      systemModalRef.current.open({
+        title: t('share.offerDeclined'),
+        text: t('share.offerDeclinedDesc').replace('{size}', size).replace('{name}', name),
+        actions: [
+          {
+            type: 'primary',
+            text: t('share.tryAgain'),
+            onClick: async () => {
+              try {
+                await storageSendEffect({
+                  storage: parseSizeToBytes(size),
+                  username: name.replace('@', '')
+                })
+                await readNotification(item.id)
+                systemModalRef.current.close();                
+              } catch (error) {
+                systemModalRef.current.close();                
+              }
+            }
+          },
+          {
+            type: 'primary',
+            text: t('share.ok'),
+            onClick: () => {
+              try {
+                readNotification(item.id);
+                systemModalRef.current.close();                 
+              } catch (error) {
+                systemModalRef.current.close();                 
+              }
+            }
+          },
+        ]
+       });
+    } catch (error) {
+      console.warn(error)
+    }
   };
 
   return (
@@ -112,9 +213,10 @@ export const StartPage = ({ tariffs }) => {
         )}>
         <img src={BannerSource} alt="banner" />
         <div className={style['banner-content']}>
-          <div className={style['banner-header']}>
+          <div onClick={onOpenShareModal} className={style['banner-header']}>
             <div className={style['banner-header_img']}>
               <LogoIcon />
+              <span className={style['banner-header-share-btn']}>{t('share.share')}</span>
             </div>
             <h1>{transformSize(user.space_total)}</h1>
           </div>
@@ -159,6 +261,16 @@ export const StartPage = ({ tariffs }) => {
           onClose={() => setDisconnectWalletModal(false)}
         />
       )}
+      {(showShareModal || !!notifications.recipient.length) && (
+        <ShareStorage
+          giftData={notifications.recipient}
+          isOpen={showShareModal || !!notifications.recipient.length}
+          onClose={onCloseShareModal}
+          onCloseGift={onCloseGift}
+          systemModalRef={systemModalRef}
+        />
+      )}
+      <SystemModal ref={systemModalRef} />
     </div>
   );
 };
