@@ -30,9 +30,8 @@ import { LeaderboardLeague } from './pages/leaderboard/league';
 import { LeaderboardFriends } from './pages/leaderboard/friends';
 import { LanguagePage } from './pages/language';
 import { BoostPage } from './pages/boost';
-import { GamePage } from './pages/game';
 import { GamesPage } from './pages/games';
-import { Game3DPage } from './pages/game3d';
+import { GamePage } from './pages/game';
 import { IntroPage } from './pages/intro';
 import EarnPage from './pages/earn';
 import FriendsPage from './pages/friends';
@@ -147,8 +146,7 @@ function App() {
             element={<LeaderboardFriends />}
           />
           <Route path="/friends" exact element={<FriendsPage />} />
-          <Route path="/game" exact element={<GamePage />} />
-          <Route path="/game-3d" exact element={<Game3DPage />} />
+          <Route path="/game-3d" exact element={<GamePage />} />
           <Route
             path="/boost"
             exact

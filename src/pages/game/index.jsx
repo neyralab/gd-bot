@@ -1,34 +1,26 @@
 import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useSwipeable } from 'react-swipeable';
 import { useTranslation } from 'react-i18next';
 import {
-  selectStatus,
-  selectTheme,
-  startRound,
-  selectThemeAccess,
-  proceedTap,
   initGame,
   selectIsInitialized,
   selectIsTransactionLoading,
-  switchTheme,
   gameCleanup
 } from '../../store/reducers/gameSlice';
 import { Header } from '../../components/header_v2';
-import Background from './Background/Background';
 import BuyButton from './BuyButton/BuyButton';
-import EndGameAddedPoints from './EndGameAddedPoints/EndGameAddedPoints';
-import PointsGrowArea from './PointsGrowArea/PointsGrowArea';
 import Timer from './Timer/Timer';
 import Menu from '../../components/Menu/Menu';
 import ProgressBar from './ProgressBar/ProgressBar';
 import GhostLoader from '../../components/ghostLoader';
-import Counter from './Counter/Counter';
 import Balance from './Balance/Balance';
 import Status from './Status/Status';
-import LevelDescription from './LevelDescription/LevelDescription';
 import ThemeSwitcherControllers from './ThemeSwitcherControllers/ThemeSwitcherControllers';
-import ThemeSwitcherMainButton from './ThemeSwitcherMainButton/ThemeSwitcherMainButton';
+import GameCanvas from './Models/GameCanvas';
+import GoldPlayModal from './GoldPlayModal/GoldPlayModal';
+import GameModal from './GameModal/GameModal';
+import SystemModalWrapper from './SystemModalWrapper/SystemModalWrapper';
+import MainButton from './MainButton/MainButton';
 import styles from './styles.module.css';
 
 /** Please, do not add extra selectors or state
@@ -39,40 +31,25 @@ export function GamePage() {
   const { t } = useTranslation('system');
   const dispatch = useDispatch();
 
-  const backgroundRef = useRef(null);
-  const pointsAreaRef = useRef(null);
-  const mainButtonRef = useRef(null);
+  const canvasRef = useRef(null);
 
   const isInitialized = useSelector(selectIsInitialized);
-  const theme = useSelector(selectTheme);
-  const themeAccess = useSelector(selectThemeAccess);
-  const themeIsSwitching = useSelector(
-    (state) => state.game.nextTheme.isSwitching
-  );
-  const status = useSelector(selectStatus, (prev, next) => prev === next);
+  const userIsInitialized = useSelector((state) => !!state.user.data);
   const isTransactionLoading = useSelector(selectIsTransactionLoading);
-  const counterIsFinished = useSelector(
-    (state) => state.game.counter.isFinished
-  );
-
-  const swipeHandlers = useSwipeable({
-    onSwipedLeft: () => {
-      dispatch(switchTheme({ direction: 'next', timeout: 500 }));
-    },
-    onSwipedRight: () => {
-      dispatch(switchTheme({ direction: 'prev', timeout: 500 }));
-    }
-  });
 
   useEffect(() => {
-    if (!isInitialized) {
+    if (!isInitialized && userIsInitialized) {
       dispatch(initGame());
     }
 
     return () => {
       dispatch(gameCleanup());
     };
-  }, []);
+  }, [userIsInitialized]);
+
+  const onPushAnimation = () => {
+    canvasRef.current?.runPushAnimation();
+  };
 
   /** All the data for the game should be fetched in the store's thunks.
    * Do not add extra actions and side effects.
@@ -80,108 +57,58 @@ export function GamePage() {
    * otherwise, it will cause lags and rerenders
    */
 
-  const clickHandler = async (e) => {
-    e?.preventDefault();
-    e?.stopPropagation();
-
-    if (
-      !counterIsFinished ||
-      !theme ||
-      !themeAccess[theme.id] ||
-      status === 'finished' ||
-      themeIsSwitching
-    )
-      return;
-
-    if (status === 'waiting') {
-      dispatch(startRound());
-    }
-
-    window?.Telegram?.WebApp?.HapticFeedback?.impactOccurred('soft');
-
-    // Run animations
-    mainButtonRef.current.runAnimation();
-    backgroundRef.current.runAnimation();
-    pointsAreaRef.current.runAnimation();
-
-    // Update state and timers
-    dispatch(proceedTap());
-  };
-
-  const handleEvent = async (event) => {
-    if (event.type.startsWith('touch')) {
-      const touches = event.changedTouches;
-      for (let i = 0; i < touches.length; i++) {
-        await clickHandler(event);
-      }
-    } else {
-      await clickHandler(event);
-    }
-  };
-
-  if (!isInitialized || isTransactionLoading) {
+  if (!isInitialized || !userIsInitialized || isTransactionLoading) {
     return (
-      <GhostLoader texts={isTransactionLoading ? [t('message.transaction')]: []}/>
+      <GhostLoader
+        texts={isTransactionLoading ? [t('message.transaction')] : []}
+      />
     );
   }
 
   return (
     <div className={styles.container}>
-      <Background ref={backgroundRef} />
       <Header />
 
       <div className={styles.content}>
-        <div className={styles['content-inner-container']}>
-          <div className={styles['balance-container']}>
-            <Balance />
+        <div className={styles['canvas-container']}>
+          <div className={styles.canvas}>
+            <GameCanvas ref={canvasRef} />
           </div>
+        </div>
 
-          <div className={styles['timer-container']}>
-            <Timer />
-            <Status />
+        <div className={styles['balance-container']}>
+          <Balance />
+        </div>
+
+        <div className={styles['timer-container']}>
+          <Timer />
+          <Status />
+        </div>
+
+        <div className={styles['main-button-container']}>
+          <MainButton onPushAnimation={onPushAnimation} />
+
+          <div className={styles['theme-switcher-container']}>
+            <ThemeSwitcherControllers themeChangeTimeout={2500} />
           </div>
+        </div>
 
-          <div className={styles['main-button-container']}>
-            <div
-              className={styles['main-button-touch-area']}
-              {...(status !== 'playing' ? swipeHandlers : {})}
-              onTouchEnd={handleEvent}
-              onMouseUp={handleEvent}>
-              <div className={styles['points-grow-area-container']}>
-                <PointsGrowArea ref={pointsAreaRef} />
-              </div>
+        <div className={styles['actions-container']}>
+          <BuyButton />
+        </div>
 
-              <div className={styles['main-button-inner-container']}>
-                <ThemeSwitcherMainButton ref={mainButtonRef} />
-
-                <EndGameAddedPoints />
-              </div>
-
-              <div className={styles['level-description-container']}>
-                <LevelDescription />
-              </div>
-
-              <div className={styles['counter-container']}>
-                <Counter />
-              </div>
-            </div>
-
-            <div className={styles['theme-switcher-container']}>
-              <ThemeSwitcherControllers themeChangeTimeout={500} />
-            </div>
-          </div>
-
-          <div className={styles['actions-container']}>
-            <BuyButton />
-          </div>
-
-          <div className={styles['experience-container']}>
-            <ProgressBar themeChangeTimeout={200} />
-          </div>
+        <div className={styles['experience-container']}>
+          <ProgressBar themeChangeTimeout={1000} />
         </div>
       </div>
 
       <Menu />
+
+      <GoldPlayModal />
+
+      <GameModal />
+
+      <SystemModalWrapper />
     </div>
   );
 }
