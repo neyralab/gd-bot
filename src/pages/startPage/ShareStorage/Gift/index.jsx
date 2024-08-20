@@ -34,7 +34,7 @@ const Gift = ({ onCloseGift, giftData, systemModalRef }) => {
         const updatedUser = await getUserEffect(token);
         dispatch(setUser(updatedUser));
         systemModalRef.current.open({
-          title: t('increaseStorage').replace('{size}', size),
+          title: t('share.increaseStorage').replace('{size}', size),
           text: t('share.increaseStorageDesc').replace('{size}', size),
          });
         setLoading(false);

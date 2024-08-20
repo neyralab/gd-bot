@@ -36,6 +36,7 @@ const initialNotificationState = {sender: {unread: [], readed: []}, recipient: [
 
 export const StartPage = ({ tariffs }) => {
   const systemModalRef = useRef(null);
+  const wrapperRef = useRef(null);
   const { t } = useTranslation('system');
   const [tasks, setTasks] = useState([]);
   const [showShareModal, setShowShareModal] = useState(false);
@@ -72,7 +73,7 @@ export const StartPage = ({ tariffs }) => {
   }, [getTasks, getStorageNotifications]);
 
   useEffect(() => {
-    if (!!notifications?.sender?.unread?.length && systemModalRef.current) {
+    if (!!notifications?.sender?.unread?.length && wrapperRef.current) {
       const notification = notifications?.sender?.unread[0];
       if (notification.text.includes('rejected')) {
         handleRejectNotification(notification);
@@ -80,7 +81,7 @@ export const StartPage = ({ tariffs }) => {
         handleAcceptNotification(notification);
       }
     }
-  }, [notifications, systemModalRef.current])
+  }, [notifications, wrapperRef.current])
 
   const storage = useMemo(() => {
     const size = DEFAULT_TARIFFS_NAMES[user?.space_actual] || '1GB';
@@ -199,8 +200,15 @@ export const StartPage = ({ tariffs }) => {
     }
   };
 
+  const handleCloseNotification = () =>{
+    if (!!notifications?.sender?.unread?.length) {
+      const notification = notifications?.sender?.unread[0];
+      readNotification(notification.id);
+    }
+  }
+
   return (
-    <div className={`${style.container}`}>
+    <div ref={wrapperRef} className={`${style.container}`}>
       {/* <header className={style.header}>
         <CardsSlider items={slides} timeout={15000} />
       </header> */}
@@ -270,7 +278,10 @@ export const StartPage = ({ tariffs }) => {
           systemModalRef={systemModalRef}
         />
       )}
-      <SystemModal ref={systemModalRef} />
+      <SystemModal
+        handleClose={handleCloseNotification}
+        ref={systemModalRef}
+      />
     </div>
   );
 };
