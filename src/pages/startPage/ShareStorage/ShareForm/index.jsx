@@ -22,7 +22,7 @@ import styles from './styles.module.scss';
 const oneGBinBytes = 1073741824;
 const minUsernameLength = 3;
 
-const ShareStorage = ({ onClose }) => {
+const ShareStorage = ({ onClose, handleFullScreeView }) => {
   const dispatch = useDispatch();
   const inputRef = useRef(null);
   const { t } = useTranslation('system');
@@ -121,6 +121,8 @@ const ShareStorage = ({ onClose }) => {
               value={inputValue}
               className={styles['input']}
               onChange={onChangeSize}
+              onFocus={() => {handleFullScreeView(true)}}
+              onBlur={() => {handleFullScreeView(false)}}
             />
             <span className={styles['input-size-prefix']}>MB</span>
             <span className={styles['input-size']}>{`/${fromByteToMb(user.space_available)}MB`}</span>
@@ -138,6 +140,8 @@ const ShareStorage = ({ onClose }) => {
           className={styles["username-input"]}
           placeholder="@Username"
           onChange={onUserNameChange}
+          onFocus={() => {handleFullScreeView(true)}}
+          onBlur={() => {handleFullScreeView(false)}}
         />
       </div>
       <div className={styles['footer']}>

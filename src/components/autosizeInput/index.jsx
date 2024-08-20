@@ -4,7 +4,8 @@ const AutosizeInput = forwardRef(function MyInput({
   type = 'text',
   value,
   className,
-  onChange
+  onChange,
+  ...rest
 }, ref) {
   const spanRef = useRef(null);
 
@@ -27,6 +28,7 @@ const AutosizeInput = forwardRef(function MyInput({
         value={value}
         onChange={handleChange}
         style={{ width: 'auto' }}
+        {...rest}
       />
       <span
         ref={spanRef}
