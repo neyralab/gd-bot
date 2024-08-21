@@ -1,6 +1,6 @@
-import CN from 'classnames';
 import { useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import CN from 'classnames';
 import {
   useTonConnectModal,
   useTonConnectUI,
@@ -18,6 +18,7 @@ import {
   selectPaymentSelectModal
 } from '../../store/reducers/modalSlice';
 import { DEFAULT_TARIFFS_NAMES } from '../upgradeStorage';
+import { getPaymentTypesEffect } from '../../effects/paymentEffect';
 import { getTonWallet, makeInvoice } from '../../effects/paymentEffect';
 import { storageListEffect } from '../../effects/storageEffects';
 import { SlidingModal } from '../../components/slidingModal';
@@ -152,24 +153,31 @@ export const BoostPage = ({ tariffs, setTariffs }) => {
     }
   };
 
-  const handleStartPayment = (el) => {
-    if (el.action === 'ton') {
-      payByTON(el);
-    } else {
-      const input = `${el?.id};${user.id};${ws}`;
-      const theme = {
-        multiplier: el.multiplicator,
-        stars: el.stars
-      };
-      makeInvoice({
-        input,
-        dispatch,
-        callback: invoiceCallback,
-        type: INVOICE_TYPE.boost,
-        theme
-      });
+  const handleStartPayment = async (el) => {
+    try {
+      if (el.action === 'ton') {
+        payByTON(el);
+      } else {
+        const paymentTypes = await getPaymentTypesEffect(dispatch);
+        const paymentType = paymentTypes.find((el) => el.Key === 'storage');
+        const input = `${paymentType.Type};${el?.id};${user.id};${ws}`;
+        const theme = {
+          multiplier: el.multiplicator,
+          stars: el.stars
+        };
+        makeInvoice({
+          input,
+          dispatch,
+          callback: invoiceCallback,
+          type: INVOICE_TYPE.boost,
+          theme
+        });
+      }
+      onClosePaymentModal(); 
+    } catch (error) {
+      console.warn(error);
+      onClosePaymentModal(); 
     }
-    onClosePaymentModal();
   };
 
   const onClosePaymentModal = () => {
