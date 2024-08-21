@@ -76,7 +76,7 @@ export const getTonWallet = async (dispatch, comment) => {
 export const makeInvoice = async ({ input, dispatch, callback, type, theme }) => {
   try {
     const encoder = new NumberEncoder();
-    const byteArray = encoder.encodeNumbers(input, [1, 8, 8]);
+    const byteArray = encoder.encodeNumbers(input, [1,1,8,8]);
     const base64String = encoder.encodeToBase64(byteArray);
 
     const invoiceInput = createInvoice({
@@ -120,6 +120,22 @@ export const sendStarInvoice = async (dispatch, invoice) => {
     )
 
     return link?.data?.data?.invoice_link || ''
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export const getPaymentTypesEffect = async (dispatch) => {
+  try {
+    const token = await dispatch(connectUserV8());
+    const { data } = await axios
+      .create({
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }).get(`${API_NEYRA}/gateway/billing/retrieve_types`);
+
+    return data?.data || ''
   } catch (error) {
     console.log(error);
   }

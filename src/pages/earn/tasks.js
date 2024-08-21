@@ -123,5 +123,5 @@ export const tasksText = {
   INVITE_25_PREMIUM_FRIENDS: 'Invite 25 Premium friends',
   JOIN_INSTAGRAM: 'Join our Instagram channel',
   JOIN_GITHUB: 'Join our Github channel',
-  TAP_LEVEL_8: 'Extra bonus for reaching the'
+  TAP_LEVEL_8: 'Extra bonus for reaching the 8 tapping level'
 }
