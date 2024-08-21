@@ -50,7 +50,7 @@ export default function EarnPage() {
       const gameEndsAt = parseInt(game.game.game_ends_at, 10);
       return gameEndsAt >= last24Hours && gameEndsAt <= now;
     });
-  }, []);
+  }, [earnedRecords]);
 
   const getTasks = async () => {
     try {
