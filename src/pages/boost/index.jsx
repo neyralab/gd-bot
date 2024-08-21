@@ -18,7 +18,7 @@ import {
   selectPaymentSelectModal
 } from '../../store/reducers/modalSlice';
 import { DEFAULT_TARIFFS_NAMES } from '../upgradeStorage';
-import { getPaymentTypesEffect } from '../../effects/paymentEffect';
+// import { getPaymentTypesEffect } from '../../effects/paymentEffect';
 import { getTonWallet, makeInvoice } from '../../effects/paymentEffect';
 import { storageListEffect } from '../../effects/storageEffects';
 import { SlidingModal } from '../../components/slidingModal';
@@ -158,9 +158,9 @@ export const BoostPage = ({ tariffs, setTariffs }) => {
       if (el.action === 'ton') {
         payByTON(el);
       } else {
-        const paymentTypes = await getPaymentTypesEffect(dispatch);
-        const paymentType = paymentTypes.find((el) => el.Key === 'storage');
-        const input = `${paymentType.Type};${el?.id};${user.id};${ws}`;
+        // const paymentTypes = await getPaymentTypesEffect(dispatch);
+        // const paymentType = paymentTypes.find((el) => el.Key === 'storage');
+        const input = `${el?.id};${user.id};${ws}`;
         const theme = {
           multiplier: el.multiplicator,
           stars: el.stars

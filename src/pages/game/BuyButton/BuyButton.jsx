@@ -14,7 +14,7 @@ import {
 
 import { GDTapBooster } from '../../../effects/contracts/tact_GDTapBooster';
 import { getHexByBoc } from '../../../effects/contracts/helper';
-import { getPaymentTypesEffect } from '../../../effects/paymentEffect';
+// import { getPaymentTypesEffect } from '../../../effects/paymentEffect';
 import { SlidingModal } from '../../../components/slidingModal';
 import PaymentMenu from '../../../components/paymentMenu/Menu';
 
@@ -229,9 +229,9 @@ export default function BuyButton() {
 
   const handleStartStarsPayment = async () => {
     try {
-      const paymentTypes = await getPaymentTypesEffect(dispatch);
-      const paymentType = paymentTypes.find((el) => el.Key === 'tap_game');
-      const input = `${paymentType.Type};${0};${theme.tierId};${user.id}`;
+      // const paymentTypes = await getPaymentTypesEffect(dispatch);
+      // const paymentType = paymentTypes.find((el) => el.Key === 'tap_game');
+      const input = `${0};${theme.tierId};${user.id}`;
       makeInvoice({
         input,
         dispatch,
