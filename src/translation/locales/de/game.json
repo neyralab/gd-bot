@@ -71,7 +71,11 @@
     "playAndWin": "Spiele {name} & gewinne",
     "joinInstagram": "Tritt unserem Instagram bei",
     "joinGit": "Tritt unserem Github bei",
-    "joinNewsTg": "Tritt unserem Nachrichtenkanal bei"
+    "joinNewsTg": "Tritt unserem Nachrichtenkanal bei",
+    "freeSpin": "Freispiel",
+    "earnGPoints": "GhostDrive-Punkte sammeln",
+    "spinWheel": "Drehen",
+    "wheelNextSpin": "Der nächste Spin startet in"
   },
   "airdrop": {
     "airdrop": "Airdrop",

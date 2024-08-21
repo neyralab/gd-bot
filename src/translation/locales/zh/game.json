@@ -70,7 +70,10 @@
     "playAndWin": "玩 {name} 并赢取",
     "joinInstagram": "加入我们的Instagram",
     "joinGit": "加入我们的Github",
-    "joinNewsTg": "加入我们的新闻频道"
+    "joinNewsTg": "加入我们的新闻频道",
+    "freeSpin": "免费旋转",
+    "earnGPoints": "赚取 GhostDrive 积分",
+    "spinWheel": "旋转"
   },
   "airdrop": {
     "airdrop": "空投",
@@ -105,7 +108,8 @@
     "purchaseReferral": "通过推荐购买存储",
     "topBonus": "前100名奖金",
     "upload": "上传10个文件",
-    "uploadFile": "上传文件"
+    "uploadFile": "上传文件",
+    "wheelNextSpin": "下一轮开始于"
   },
   "message": {
     "someTimeForTransaction": "我们需要一些时间来审核该交易。",

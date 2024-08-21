@@ -21,7 +21,8 @@ const wheelDivisions = [
 ];
 
 export default function FortuneWheel({ spinId, onSpinned }) {
-  const { t } = useTranslation('system');
+  const ts = useTranslation('system');
+  const tg = useTranslation('game');
 
   const systemModalRef = useRef(null);
   const wheelRef = useRef(null);
@@ -68,12 +69,12 @@ export default function FortuneWheel({ spinId, onSpinned }) {
       })
       .catch((error) => {
         systemModalRef.current.open({
-          title: t('message.error'),
-          text: error.response?.data?.errors || t('message.serverError'),
+          title: ts.t('message.error'),
+          text: error.response?.data?.errors || ts.t('message.serverError'),
           actions: [
             {
               type: 'default',
-              text: t('message.ok'),
+              text: ts.t('message.ok'),
               onClick: () => {
                 systemModalRef.current.close();
               }
@@ -221,13 +222,11 @@ export default function FortuneWheel({ spinId, onSpinned }) {
             className={styles['start-button']}
             onClick={startSpinHandler}
             disabled={isSpinning || gameIsFinished}>
-            Spin
+            {tg.t('earn.spinWheel')}
           </button>
         </div>
 
-        {showCongratulations && (
-          <Confetti onClick={closeCongratulations} />
-        )}
+        {showCongratulations && <Confetti onClick={closeCongratulations} />}
       </div>
 
       <SystemModal ref={systemModalRef} />

@@ -70,7 +70,11 @@
     "playAndWin": "Грай у {name} і вигравай",
     "joinInstagram": "Приєднуйтесь до нашого Instagram",
     "joinGit": "Приєднуйтесь до нашого Github",
-    "joinNewsTg": "Приєднуйтесь до нашого новинного каналу"
+    "joinNewsTg": "Приєднуйтесь до нашого новинного каналу",
+    "freeSpin": "Безкоштовне обертання",
+    "earnGPoints": "Заробити бали GhostDrive",
+    "spinWheel": "Обертати",
+    "wheelNextSpin": "Наступний раунд розпочнеться через"
   },
   "airdrop": {
     "airdrop": "Airdrop",
