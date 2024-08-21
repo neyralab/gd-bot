@@ -46,7 +46,7 @@ export default function Mission({ tasks }) {
               key={index}
               className={CN(task?.done && styles.done, styles.item)}>
               <p className={styles.item_text}>
-                {t(getKeyTranslate(translateEng, task?.point?.text || task?.text))}
+                {t(getKeyTranslate(translateEng, task?.point?.text || task?.text || ''))}
               </p>
               <p
                 className={
