@@ -107,6 +107,9 @@
     "upload": "Tải lên 10 tệp",
     "uploadFile": "Tải lên tệp"
   },
+  "advertisement": {
+    "watchAndPlay": "Xem quảng cáo để nhận 300 điểm và chơi lại"
+  },
   "message": {
     "someTimeForTransaction": "Chúng tôi cần thời gian để xem xét giao dịch.",
     "checkYourPointsLater": "Vui lòng kiểm tra điểm của bạn sau khoảng 5 phút để xem trạng thái cập nhật."

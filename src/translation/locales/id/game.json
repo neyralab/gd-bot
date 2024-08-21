@@ -107,6 +107,9 @@
     "upload": "Unggah 10 file",
     "uploadFile": "Unggah data"
   },
+  "advertisement": {
+    "watchAndPlay": "Tonton iklan untuk mendapatkan 300 poin dan bermain lagi"
+  },
   "message": {
     "someTimeForTransaction": "Kami perlu waktu untuk meninjau transaksi tersebut.",
     "checkYourPointsLater": "Silakan periksa poin Anda dalam waktu sekitar 5 menit untuk melihat status terkini."

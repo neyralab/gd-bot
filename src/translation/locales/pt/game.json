@@ -107,6 +107,9 @@
     "upload": "Carregar 10 arquivos",
     "uploadFile": "Carregar arquivo"
   },
+  "advertisement": {
+    "watchAndPlay": "Veja o anúncio para ganhar 300 pontos e jogar novamente"
+  },
   "message": {
     "someTimeForTransaction": "Precisamos de algum tempo para analisar a transação.",
     "checkYourPointsLater": "Please check your points in about 5 minutes to see the updated status."

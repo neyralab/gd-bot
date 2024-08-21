@@ -107,6 +107,9 @@
     "upload": "上传10个文件",
     "uploadFile": "上传文件"
   },
+  "advertisement": {
+    "watchAndPlay": "观看广告可获得 300 分并再次玩"
+  },
   "message": {
     "someTimeForTransaction": "我们需要一些时间来审核该交易。",
     "checkYourPointsLater": "请在大约 5 分钟后检查您的积分以查看更新的状态。"

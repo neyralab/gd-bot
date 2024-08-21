@@ -107,6 +107,9 @@
     "upload": "Télécharger 10 fichiers",
     "uploadFile": "Télécharger un fichier"
   },
+  "advertisement": {
+    "watchAndPlay": "Regardez la publicité pour obtenir 300 points et rejouer"
+  },
   "message": {
     "someTimeForTransaction": "Nous avons besoin de temps pour examiner la transaction.",
     "checkYourPointsLater": "Veuillez vérifier vos points dans environ 5 minutes pour voir le statut mis à jour."

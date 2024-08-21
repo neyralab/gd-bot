@@ -91,7 +91,17 @@ const gameSlice = createSlice({
     /** To prevent accidental tap to start another game when just finished */
     recentlyFinishedLocker: false,
 
-    /** Fancy modal
+    /** Shows an offer to watch an advertisement
+     * When the free game is finished, this modal should appear
+     * and offer our user to watch an advertisement to play another game.
+     * If user accepts the offer, advertisement modal should be seen
+     * Parameters: null or {previewUrl: string, previewColor: string; videoUrl: string}
+     */
+    advertisementOfferModal: null,
+    advertisementModal: null,
+
+    /** Fancy modal with some information/notification.
+     * Right now is used to show 'We need some time to review the transaction'
      * Check GameModal component for parameters
      * Right now it accepts values: null, 'TIME_FOR_TRANSACTION'
      */
@@ -193,6 +203,12 @@ const gameSlice = createSlice({
     setRecentlyFinishedLocker: (state, { payload }) => {
       state.recentlyFinishedLocker = payload;
     },
+    setAdvertisementOfferModal: (state, { payload }) => {
+      state.advertisementOfferModal = payload;
+    },
+    setAdvertisementModal: (state, { payload }) => {
+      state.advertisementModal = payload;
+    },
     setGameModal: (state, { payload }) => {
       state.gameModal = payload;
     },
@@ -217,6 +233,7 @@ const lockTimerCountdown = (dispatch, endTime) => {
       dispatch(setLockIntervalId(null));
       dispatch(setStatus('waiting'));
       dispatch(setThemeAccess({ themeId: 'hawk', status: true }));
+      dispatch(setAdvertisementOfferModal(null));
     }
   }, 1000);
 
@@ -250,6 +267,11 @@ export const initGame = createAsyncThunk(
   async (_, { dispatch, getState }) => {
     dispatch(setIsInitializing(true));
     dispatch(setIsInitialized(false));
+
+    // TODO: make request to server to get an advertisement and remove this request
+    dispatch(
+      setAdvertisementOfferModal({ previewUrl: '/assets/dummy/logo2.jpg' })
+    );
 
     try {
       const [levels, gameInfo, cAddress, games, pendingGames] =
@@ -402,6 +424,10 @@ export const finishRound = createAsyncThunk(
 
     if (state.game.theme.id === 'hawk') {
       dispatch(startNewFreeGameCountdown());
+      // TODO: make request to server to get an advertisement
+      dispatch(
+        setAdvertisementOfferModal({ previewUrl: '/assets/dummy/logo2.jpg' })
+      );
     }
     console.log({ gameId });
 
@@ -632,6 +658,10 @@ export const gameCleanup = createAsyncThunk(
     dispatch(setRoundFinal({ roundPoins: null, isActive: false }));
     dispatch(setReachedNewLevel(false));
     dispatch(setStatus('waiting'));
+    dispatch(setAdvertisementOfferModal(null));
+    dispatch(setAdvertisementModal(null));
+    dispatch(setGameModal(null));
+    dispatch(setSystemModal(null));
   }
 );
 
@@ -664,6 +694,8 @@ export const {
   setRoundFinal,
   setMaxLevel,
   setRecentlyFinishedLocker,
+  setAdvertisementOfferModal,
+  setAdvertisementModal,
   setGameModal,
   setSystemModal,
   setGameInfo
