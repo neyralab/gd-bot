@@ -13,6 +13,7 @@ import { setExperienceLevel } from './store/reducers/gameSlice';
 
 import { getUserEffect } from './effects/userEffects';
 import { authorizeUser } from './effects/authorizeUser';
+import { setPaymentTypesEffect } from './effects/paymentEffect';
 import { storageListEffect } from './effects/storageEffects';
 import { API_WEB_APP_URL } from './utils/api-urls';
 import { useLanguage } from './utils/useLanguage';
@@ -84,6 +85,7 @@ function App() {
         dispatch(setCurrentWorkspace(data?.ws_id));
         dispatch(setWorkspacePlan(data?.workspace_plan));
       });
+      await setPaymentTypesEffect(dispatch);
       await storageListEffect(token).then((data) => {
         setTariffs(data);
       });
