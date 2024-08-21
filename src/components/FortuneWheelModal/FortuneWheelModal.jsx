@@ -151,12 +151,14 @@ const FortuneWheelModal = forwardRef((_, ref) => {
                     </div>
                   )}
 
-                  {isInitialized && available !== false && (
-                    <FortuneWheel
-                      spinId={available.id || null}
-                      onSpinned={onFortuneWheelSpinned}
-                    />
-                  )}
+                  {isInitialized &&
+                    !freeSpinTimestamp &&
+                    available !== false && (
+                      <FortuneWheel
+                        spinId={available.id || null}
+                        onSpinned={onFortuneWheelSpinned}
+                      />
+                    )}
 
                   {isInitialized &&
                     freeSpinTimestamp &&
