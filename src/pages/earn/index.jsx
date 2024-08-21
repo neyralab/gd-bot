@@ -7,8 +7,9 @@ import React, {
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
+import moment from 'moment';
 
-import { tasks as tasksFromFile } from './tasks';
+import { tasks as tasksFromFile, tasksText } from './tasks';
 import { isEnabledPartners } from '../../utils/featureFlags';
 import { handlePartners, selectPartners } from '../../store/reducers/taskSlice';
 import { checkAllEarnTasks, getAllPartners } from '../../effects/EarnEffect';
@@ -33,10 +34,23 @@ export default function EarnPage() {
   const { t } = useTranslation('game');
   const [tasks, setTasks] = useState([]);
   const [missions, setMissions] = useState([]);
+  const [earnedRecords, setEarnedRecords] = useState([]);
   const [activeSegment, setActiveSegment] = useState(DEFAULT_SEGMENT_OPTION);
   const [modalSelectedTask, setModalSelectedTask] = useState(null);
   const earnModalRef = useRef(null);
   const fortuneWheelModalRef = useRef(null);
+
+  const showWheel = useMemo(() => {
+    const now = moment().unix();
+    const last24Hours = now - 24 * 60 * 60;
+    return earnedRecords.some(game => {
+      if (game.text !== "Game tapping") {
+        return false;
+      }
+      const gameEndsAt = parseInt(game.game.game_ends_at, 10);
+      return gameEndsAt >= last24Hours && gameEndsAt <= now;
+    });
+  }, []);
 
   const getTasks = async () => {
     try {
@@ -78,10 +92,9 @@ export default function EarnPage() {
       const {
         data: { data: userTasks }
       } = await getBalanceEffect();
+      setEarnedRecords(userTasks);
       const realTasks = allMissions.map((task) =>
-        userTasks.find((userTask) => task.action === userTask?.point?.action)
-          ? { ...task, done: true }
-          : { ...task, done: false }
+        ({ ...task, text: tasksText[task.action], done: !!task.earn })
       );
       setMissions(realTasks.sort((a, b) => a.amount - b.amount));
     } catch (error) {
@@ -182,9 +195,11 @@ export default function EarnPage() {
         <div className={styles['title-inner-block']}>
           <span className={styles.spacer}></span>
           <h1 className={styles.title}>{t('earn.earn')}</h1>
-          <button onClick={openFortuneWheel}>
-            <img src="/assets/fortune-wheel.png" alt="Fortune Wheel" />
-          </button>
+          {showWheel ? (
+            <button onClick={openFortuneWheel}>
+              <img src="/assets/fortune-wheel.png" alt="Fortune Wheel" />
+            </button>
+          ) : (<span className={styles.spacer}></span>)}
         </div>
 
         <p className={styles.text}>{t('earn.getReward')}</p>
