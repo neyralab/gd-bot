@@ -3,11 +3,11 @@ import CN from 'classnames';
 
 import styles from './styles.module.scss';
 
-const Slider = ({className, value, onChange, maxValue}) => {
-  const procent = useMemo(() => ((value/maxValue)*100).toFixed(1), [value, maxValue]);
+const Slider = ({ className, value, onChange, maxValue }) => {
+  const procent = useMemo(() => ((value / maxValue) * 100).toFixed(1), [value, maxValue]);
 
   const handleChange = (event) => {
-    onChange(event.target.value);
+    onChange(Number(event.target.value));
   };
 
   return (

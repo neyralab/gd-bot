@@ -91,7 +91,8 @@
     "earnPoints": "탭할 때마다 포인트를 적립합니다.",
     "lifetime": "3. 평생 스토리지",
     "mineLifetime": "최대 50GB의 평생 스토리지를 마이닝합니다.",
-    "convert": "변환"
+    "convert": "변환",
+    "convertLimit": "최대 변환 크기는 50GB입니다."
   },
   "message": {
     "error": "문제가 발생했습니다",

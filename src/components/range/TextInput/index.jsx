@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 
 import { fomatNumber, getNumbers } from '../../../utils/string';
 import { MAX_POINT_COUNT } from '../../../pages/balance';
@@ -35,8 +36,13 @@ export const TextInput = ({ pointCount, setPointCount, pointBalance }) => {
     }
 
     const nextValue = Number(getNumbers(value));
-    if (nextValue > pointBalance || MAX_POINT_COUNT < nextValue)
-      return ;
+    if (nextValue > pointBalance)
+      return;
+
+    if (MAX_POINT_COUNT < nextValue) {
+      toast.error(t('convert.convertLimit'));
+      return;
+    }
 
     setPointCount(fomatNumber(nextValue) || 0);
   }

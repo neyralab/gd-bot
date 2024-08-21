@@ -58,7 +58,6 @@ const ShareStorage = ({ onClose, handleFullScreeView }) => {
 
   const onChangeSize = (size) => {
     const value = Number(size);
-    console.log(size, availableSize.mb)
     if (size <= availableSize.mb) {
       setIputValue(value);
     }

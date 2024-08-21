@@ -91,7 +91,8 @@
     "earnPoints": "For every tap you earn points. ",
     "lifetime": "3. Lifetime Storage",
     "mineLifetime": "Mine up to 50 GB of Lifetime Storage.",
-    "convert": "Convert"
+    "convert": "Convert",
+    "convertLimit": "The max convert size is 50GB."
   },
   "message": {
     "error": "Something went wrong",

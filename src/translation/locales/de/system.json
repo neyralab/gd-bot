@@ -91,7 +91,8 @@
     "earnPoints": "Für jeden Tap erhältst du Punkte.",
     "lifetime": "3. Lebenslanger Speicher",
     "mineLifetime": "Minen bis zu 50 GB lebenslangen Speicher.",
-    "convert": "Umwandeln"
+    "convert": "Umwandeln",
+    "convertLimit": "Die maximale Konvertierungsgröße beträgt 50GB."
   },
   "message": {
     "error": "Etwas ist schiefgelaufen",

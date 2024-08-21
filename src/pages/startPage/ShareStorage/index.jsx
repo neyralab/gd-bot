@@ -8,7 +8,7 @@ import { isPhone } from "../../../utils/client";
 
 const snapPoints = {
   gift: [420, 420, 50, 0],
-  form: [360, 360, 50, 0]
+  form: [400, 360, 50, 0]
 }
 
 const ShareStorage = ({ isOpen, onClose, giftData, onCloseGift, systemModalRef }) => {

@@ -91,7 +91,8 @@
     "earnPoints": "Pour chaque tap, vous gagnez des points.",
     "lifetime": "3. Stockage à vie",
     "mineLifetime": "Mine jusqu'à 50 Go de stockage à vie.",
-    "convert": "Convertir"
+    "convert": "Convertir",
+    "convertLimit": "La taille de conversion maximale est de 50GB."
   },
   "message": {
     "error": "Quelque chose a mal tourné",
