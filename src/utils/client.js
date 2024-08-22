@@ -44,3 +44,8 @@ export function isPhone() {
   if (/iPhone|iPad|iPod/i.test(userAgent)) { return true }
   return false;
 }
+
+export function isWebPlatform() {
+  console.log('ancestorOrigins => ', window.location.ancestorOrigins);
+  return window.location.ancestorOrigins.contains('https://web.telegram.org');
+}
