@@ -136,7 +136,8 @@
   "share": {
     "share": "Bagikan",
     "successfullySend": "Anda berhasil mengirim {size} ke {name}",
-    "shareStorage": "Bagikan Penyimpanan",
+    "shareStorage": "Kirim Hadiah ke (G:Drive)",
+    "shareGift": "Hadiah Ghost Drive",
     "storage": "Penyimpanan",
     "increaseStorage": "Kapasitas penyimpanan Anda telah meningkat sebesar {size}",
     "increaseStorageDesc": "Kami senang memberi tahu Anda bahwa ruang penyimpanan Anda telah ditingkatkan. Anda sekarang memiliki tambahan {size}.",

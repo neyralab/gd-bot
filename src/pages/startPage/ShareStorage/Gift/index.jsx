@@ -101,7 +101,7 @@ const Gift = ({ onCloseGift, giftData, systemModalRef }) => {
   return (
     <div className={styles['container']}>
       <div className={styles['header']}>
-        <h1 className={styles['header-title']}>{t('share.shareStorage')}</h1>
+        <h1 className={styles['header-title']}>{t('share.shareGift')}</h1>
         <button
           onClick={handleReject}
           className={styles['header-button']}

@@ -136,7 +136,8 @@
   "share": {
     "share": "分享",
     "successfullySend": "您已成功将 {size} 发送给 {name}",
-    "shareStorage": "分享存储空间",
+    "shareStorage": "发送礼物给 (G:Drive)",
+    "shareGift": "Ghost Drive 礼物",
     "storage": "存储空间",
     "increaseStorage": "您的存储容量已增加 {size}",
     "increaseStorageDesc": "我们很高兴地通知您，您的存储空间已升级。您现在拥有额外的 {size}。",

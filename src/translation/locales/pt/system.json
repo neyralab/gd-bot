@@ -136,7 +136,8 @@
   "share": {
     "share": "Compartilhar",
     "successfullySend": "Você enviou com sucesso {size} para {name}",
-    "shareStorage": "Compartilhar Armazenamento",
+    "shareStorage": "Enviar presente para (G:Drive)",
+    "shareGift": "Presente Ghost Drive",
     "storage": "Armazenamento",
     "increaseStorage": "Sua capacidade de armazenamento aumentou em {size}",
     "increaseStorageDesc": "Estamos entusiasmados em informar que seu espaço de armazenamento foi atualizado. Agora você tem {size} adicionais.",
