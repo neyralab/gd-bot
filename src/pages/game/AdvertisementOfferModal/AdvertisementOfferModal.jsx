@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import classNames from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import { setAdvertisementOfferModal } from '../../../store/reducers/gameSlice';
+import { setAdvertisementModal, setAdvertisementOfferModal } from '../../../store/reducers/gameSlice';
 import { ReactComponent as PlayIcon } from '../../../assets/play_media.svg';
 import styles from './AdvertisementOfferModal.module.scss';
 
@@ -49,6 +49,7 @@ export default function AdvertisementOfferModal() {
     if (!isClickable) return;
     e?.preventDefault();
     e?.stopPropagation();
+    dispatch(setAdvertisementModal({videoUrl: advertisementOfferModal.videoUrl}))
     dispatch(setAdvertisementOfferModal(null));
   };
 

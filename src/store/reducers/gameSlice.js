@@ -270,7 +270,10 @@ export const initGame = createAsyncThunk(
 
     // TODO: make request to server to get an advertisement and remove this request
     dispatch(
-      setAdvertisementOfferModal({ previewUrl: '/assets/dummy/logo2.jpg' })
+      setAdvertisementOfferModal({
+        previewUrl: '/assets/dummy/logo2.jpg',
+        videoUrl: '/assets/dummy/cat-video-vertical.mp4'
+      })
     );
 
     try {
@@ -446,7 +449,9 @@ export const finishRound = createAsyncThunk(
       .then((data) => {
         dispatch(
           setRoundFinal({
-            roundPoints: state.game.balance.value,
+            roundPoints:
+              state.game.balance.value * state.game.theme.multiplier ||
+              undefined,
             isActive: true
           })
         );
@@ -498,6 +503,23 @@ export const startNewFreeGameCountdown = createAsyncThunk(
     const freezeTime = level?.recharge_mins * 60 * 1000;
     const endTime = Date.now() + freezeTime;
     lockTimerCountdown(dispatch, endTime);
+  }
+);
+
+export const refreshFreeGame = createAsyncThunk(
+  'game/refreshFreeGame',
+  async (_, { dispatch }) => {
+    dispatch(setLockIntervalId(null));
+    dispatch(setLockTimerTimestamp(null));
+    dispatch(setAdvertisementModal(null));
+    dispatch(setStatus('waiting'));
+    dispatch(setThemeAccess({ themeId: 'hawk', status: true }));
+    dispatch(
+      setRoundFinal({
+        roundPoints: 300,
+        isActive: true
+      })
+    );
   }
 );
 
