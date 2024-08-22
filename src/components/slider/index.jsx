@@ -20,19 +20,6 @@ const Slider = ({ className, value, onChange, maxValue }) => {
     }
   };
 
-  useEffect(() => {
-    const sliderElement = sliderRef.current;
-    if (sliderElement) {
-      sliderElement.addEventListener('touchmove', handleTouchMove);
-    }
-
-    return () => {
-      if (sliderElement) {
-        sliderElement.removeEventListener('touchmove', handleTouchMove);
-      }
-    };
-  }, [handleTouchMove]);
-
   return (
     <div className={CN(styles["slider-container"], className)}>
       <input
@@ -43,6 +30,7 @@ const Slider = ({ className, value, onChange, maxValue }) => {
         className={styles["slider"]}
         onChange={handleChange}
         ref={sliderRef}
+        onTouchMove={handleTouchMove}
         style={{
           background: `linear-gradient(to right, #fff 0%, #fff ${procent}%, #333 ${procent}%, #333 100%)`,
         }}
