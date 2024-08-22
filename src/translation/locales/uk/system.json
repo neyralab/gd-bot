@@ -136,7 +136,8 @@
   "share": {
     "share": "Поділитися",
     "successfullySend": "Ви успішно надіслали {size} користувачу {name}",
-    "shareStorage": "Поділитися сховищем",
+    "shareStorage": "Надіслати подарунок (G:Drive)",
+    "shareGift": "Подарунок Ghost Drive",
     "storage": "Сховище",
     "increaseStorage": "Ємність вашого сховища збільшена на {size}",
     "increaseStorageDesc": "Раді повідомити, що ваш простір для зберігання було оновлено. Тепер у вас є додаткові {size}.",
