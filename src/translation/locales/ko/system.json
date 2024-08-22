@@ -71,7 +71,8 @@
     "point": "포인트",
     "invitePremiumFriend": "25명의 프리미엄 친구를 초대하세요",
     "joinInstagramLong": "Instagram 채널에 가입하세요",
-    "joinGitLong": "Github 채널에 가입하세요"
+    "joinGitLong": "Github 채널에 가입하세요",
+    "watchVideo": "비디오 보기"
   },
   "wallet": {
     "disconnect": "연결을 끊으시겠습니까?",
@@ -124,7 +125,9 @@
     "joinTGnews": "뉴스 TG 채널에 가입했습니다",
     "notJoinInstagram": "Instagram 채널에 가입하지 않았습니다",
     "notJoinGithub": "Github 채널에 가입하지 않았습니다",
-    "notJoinTGnews": "뉴스 TG 채널에 가입하지 않았습니다"
+    "notJoinTGnews": "뉴스 TG 채널에 가입하지 않았습니다",
+    "watchedVideo": "동영상을 시청했습니다",
+    "noWatchedVideo": "동영상을 시청하지 않았습니다"
   },
   "language": {
     "search": "검색",

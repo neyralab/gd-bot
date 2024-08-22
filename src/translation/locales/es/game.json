@@ -70,7 +70,12 @@
     "playAndWin": "Juega {name} y gana",
     "joinInstagram": "Únete a nuestro Instagram",
     "joinGit": "Únete a nuestro Github'",
-    "joinNewsTg": "Únete a nuestro canal de noticias"
+    "joinNewsTg": "Únete a nuestro canal de noticias",
+    "freeSpin": "Giro gratis",
+    "earnGPoints": "Gana puntos GhostDrive",
+    "spinWheel": "Girar",
+    "wheelNextSpin": "El siguiente giro comienza en",
+    "watchVideo": "Ver video"
   },
   "airdrop": {
     "airdrop": "Entrega por paracaídas",
@@ -87,6 +92,10 @@
     "lvl2": "Bonificación extra por alcanzar el nivel 2 de tapping",
     "lvl3": "Bonificación extra por alcanzar el nivel 3 de tapping",
     "lvl4": "Bonificación extra por alcanzar el nivel 4 de tapping",
+    "lvl5": "Bonificación extra por alcanzar el nivel 5 de tapping",
+    "lvl6": "Bonificación extra por alcanzar el nivel 6 de tapping",
+    "lvl7": "Bonificación extra por alcanzar el nivel 7 de tapping",
+    "lvl8": "Bonificación extra por alcanzar el nivel 8 de tapping",
     "tapBonus1": "Bonificación extra por grabar 100,000",
     "tapBonus2": "Bonificación extra por grabar 250,000",
     "tapBonus3": "Bonificación extra por grabar 500,000",

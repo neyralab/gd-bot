@@ -70,7 +70,12 @@
     "playAndWin": "Jogue {name} e ganhe",
     "joinInstagram": "Junte-se ao nosso Instagram",
     "joinGit": "Junte-se ao nosso Github",
-    "joinNewsTg": "Junte-se ao nosso canal de notícias"
+    "joinNewsTg": "Junte-se ao nosso canal de notícias",
+    "freeSpin": "Rodada Grátis",
+    "earnGPoints": "Ganhe pontos GhostDrive",
+    "spinWheel": "Girar",
+    "wheelNextSpin": "A próxima ronda começa em",
+    "watchVideo": "Assistir vídeo"
   },
   "airdrop": {
     "airdrop": "Airdrop",
@@ -87,6 +92,10 @@
     "lvl2": "Bônus extra por atingir o nível 2 de toques",
     "lvl3": "Bônus extra por atingir o nível 3 de toques",
     "lvl4": "Bônus extra por atingir o nível 4 de toques",
+    "lvl5": "Bônus extra por atingir o nível 5 de toques",
+    "lvl6": "Bônus extra por atingir o nível 6 de toques",
+    "lvl7": "Bônus extra por atingir o nível 7 de toques",
+    "lvl8": "Bônus extra por atingir o nível 8 de toques",
     "tapBonus1": "Bônus extra por tocar 100000",
     "tapBonus2": "Bônus extra por tocar 250000",
     "tapBonus3": "Bônus extra por tocar 500000",

@@ -70,7 +70,12 @@
     "playAndWin": "Mainkan {name} & Menangkan",
     "joinInstagram": "Bergabunglah dengan Instagram kami",
     "joinGit": "Bergabunglah dengan Github kami",
-    "joinNewsTg": "Bergabunglah dengan saluran berita kami"
+    "joinNewsTg": "Bergabunglah dengan saluran berita kami",
+    "freeSpin": "Putaran Gratis",
+    "earnGPoints": "Dapatkan Poin GhostDrive",
+    "spinWheel": "Memutar",
+    "wheelNextSpin": "Putaran berikutnya dimulai di",
+    "watchVideo": "Tonton video"
   },
   "airdrop": {
     "airdrop": "Tetesan udara",
@@ -87,6 +92,10 @@
     "lvl2": "Bonus ekstra untuk mencapai level 2 penyadapan",
     "lvl3": "Bonus ekstra untuk mencapai level 3 penyadapan",
     "lvl4": "Bonus ekstra untuk mencapai level 4 penyadapan",
+    "lvl5": "Bonus ekstra untuk mencapai level 5 penyadapan",
+    "lvl6": "Bonus ekstra untuk mencapai level 6 penyadapan",
+    "lvl7": "Bonus ekstra untuk mencapai level 7 penyadapan",
+    "lvl8": "Bonus ekstra untuk mencapai level 8 penyadapan",
     "tapBonus1": "Bonus tambahan untuk merekam 100.000",
     "tapBonus2": "Bonus tambahan untuk merekam 250.000",
     "tapBonus3": "Bonus tambahan untuk merekam 500.000",

@@ -70,7 +70,12 @@
     "playAndWin": "{name}를 플레이하고 승리하세요",
     "joinInstagram": "우리 Instagram에 가입하세요",
     "joinGit": "우리 Github에 가입하세요",
-    "joinNewsTg": "우리 뉴스 채널에 가입하세요"
+    "joinNewsTg": "우리 뉴스 채널에 가입하세요",
+    "freeSpin": "무료 스핀",
+    "earnGPoints": "GhostDrive 포인트 획득",
+    "spinWheel": "회전",
+    "wheelNextSpin": "다음 스핀은 시작됩니다",
+    "watchVideo": "비디오 보기"
   },
   "airdrop": {
     "airdrop": "에어드롭",
@@ -87,6 +92,10 @@
     "lvl2": "2탭 레벨 도달 추가 보너스",
     "lvl3": "3탭 레벨 도달 추가 보너스",
     "lvl4": "4탭 레벨 도달 추가 보너스",
+    "lvl5": "5탭 레벨 도달 추가 보너스",
+    "lvl6": "6탭 레벨 도달 추가 보너스",
+    "lvl7": "7탭 레벨 도달 추가 보너스",
+    "lvl8": "8탭 레벨 도달 추가 보너스",
     "tapBonus1": "100000탭 추가 보너스",
     "tapBonus2": "250000탭 추가 보너스",
     "tapBonus3": "500000탭 추가 보너스",

@@ -125,6 +125,21 @@ export const checkTaskIsDone = async (id) => {
   }
 };
 
+export const checkWatchVideo = async () => {
+  const url = `${API_PATH}/watch/video`;
+
+  try {
+    const { data } = await axiosInstance.get(url);
+    if (data?.message === 'success') {
+      return 'success';
+    } else {
+      throw Error();
+    }
+  } catch (e) {
+    return e?.response?.data?.errors;
+  }
+};
+
 export const trackSocial = async (id) => {
   const url = `${API_PATH}/track/social`;
 

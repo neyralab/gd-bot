@@ -71,7 +71,8 @@
     "point": "Poin",
     "invitePremiumFriend": "Undang 25 teman Premium",
     "joinInstagramLong": "Bergabunglah dengan saluran Instagram kami",
-    "joinGitLong": "Bergabunglah dengan saluran Github kami"
+    "joinGitLong": "Bergabunglah dengan saluran Github kami",
+    "watchVideo": "Tonton video"
   },
   "wallet": {
     "disconnect": "Apakah Anda yakin ingin memutuskan?",
@@ -124,7 +125,9 @@
     "joinTGnews": "Anda telah bergabung dengan saluran berita TG kami",
     "notJoinInstagram": "Anda tidak bergabung dengan saluran Instagram kami",
     "notJoinGithub": "Anda tidak bergabung dengan saluran Github kami",
-    "notJoinTGnews": "Anda tidak bergabung dengan saluran berita TG kami"  
+    "notJoinTGnews": "Anda tidak bergabung dengan saluran berita TG kami",
+    "watchedVideo": "Anda telah menonton video",
+    "noWatchedVideo": "Anda belum menonton video"
   },
   "language": {
     "search": "Cari",
