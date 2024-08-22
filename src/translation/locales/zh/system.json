@@ -71,7 +71,8 @@
     "point": "积分",
     "invitePremiumFriend": "邀请25位高级好友",
     "joinInstagramLong": "加入我们的Instagram频道",
-    "joinGitLong": "加入我们的Github频道"
+    "joinGitLong": "加入我们的Github频道",
+    "watchVideo": "观看视频"
   },
   "wallet": {
     "disconnect": "您确定要断开连接吗？",
@@ -126,7 +127,9 @@
     "joinTGnews": "您已加入我们的新闻TG频道",
     "notJoinInstagram": "您未加入我们的Instagram频道",
     "notJoinGithub": "您未加入我们的Github频道",
-    "notJoinTGnews": "您未加入我们的新闻TG频道"
+    "notJoinTGnews": "您未加入我们的新闻TG频道",
+    "watchedVideo": "您已观看视频",
+    "noWatchedVideo": "您尚未观看视频"
   },
   "language": {
     "search": "搜索",
