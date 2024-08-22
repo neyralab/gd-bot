@@ -71,7 +71,8 @@
     "point": "ポイント",
     "invitePremiumFriend": "25人のプレミアムフレンドを招待",
     "joinInstagramLong": "Instagramチャンネルに参加する",
-    "joinGitLong": "Githubチャンネルに参加する"
+    "joinGitLong": "Githubチャンネルに参加する",
+    "watchVideo": "動画を見る"
   },
   "wallet": {
     "disconnect": "本当に切断しますか？",
@@ -124,7 +125,9 @@
     "joinTGnews": "ニュースTGチャンネルに参加しました",
     "notJoinInstagram": "Instagramチャンネルに参加しませんでした",
     "notJoinGithub": "Githubチャンネルに参加しませんでした",
-    "notJoinTGnews": "ニュースTGチャンネルに参加しませんでした"
+    "notJoinTGnews": "ニュースTGチャンネルに参加しませんでした",
+    "watchedVideo": "ビデオを視聴しました",
+    "noWatchedVideo": "ビデオを視聴していません"
   },
   "language": {
     "search": "検索",

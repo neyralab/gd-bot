@@ -71,7 +71,8 @@
     "point": "Бали",
     "invitePremiumFriend": "Запросіть 25 друзів з Premium",
     "joinInstagramLong": "Приєднуйтеся до нашого каналу в Instagram",
-    "joinGitLong": "Приєднуйтеся до нашого каналу на Github"
+    "joinGitLong": "Приєднуйтеся до нашого каналу на Github",
+    "watchVideo": "Дивитися відео"
   },
   "wallet": {
     "disconnect": "Ви впевнені, що хочете відключити?",
@@ -124,7 +125,9 @@
     "joinTGnews": "Ви приєдналися до нашого новинного каналу TG",
     "notJoinInstagram": "Ви не приєдналися до нашого каналу в Instagram",
     "notJoinGithub": "Ви не приєдналися до нашого каналу на Github",
-    "notJoinTGnews": "Ви не приєдналися до нашого новинного каналу TG"
+    "notJoinTGnews": "Ви не приєдналися до нашого новинного каналу TG",
+    "watchedVideo": "Ви переглянули відео",
+    "noWatchedVideo": "Ви не переглянули відео"
   },
   "language": {
     "search": "Пошук",

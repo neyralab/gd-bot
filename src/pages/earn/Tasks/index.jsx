@@ -15,7 +15,7 @@ import Task from '../../../components/Task/Task';
 
 import styles from './styles.module.css';
 
-export default function Tasks({ tasks, getTasks, setModalSelectedTask, modalRef }) {
+export default function Tasks({ tasks, getTasks, setModalSelectedTask, earnModalRef }) {
   const [animatedTaskIds, setAnimatedTaskIds] = useState(new Set());
   const [tonConnectUI] = useTonConnectUI();
   const address = useTonAddress(true);
@@ -57,11 +57,12 @@ export default function Tasks({ tasks, getTasks, setModalSelectedTask, modalRef 
       case 'JOIN_TWITTER':
       case 'JOIN_INSTAGRAM':
       case 'JOIN_GITHUB':
+      case 'WATCH_VIDEO':
       case 'JOIN_TG_NEWS_CHANNEL':
       case 'DOWNLOAD_APP':
         setModalSelectedTask(task);
         setTimeout(() => {
-          modalRef.current.open();
+          earnModalRef.current.open();
         }, 10);
         break;
 

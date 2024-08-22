@@ -71,7 +71,8 @@
     "point": "Point",
     "invitePremiumFriend": "Invite 25 amis Premium",
     "joinInstagramLong": "Rejoignez notre chaîne Instagram",
-    "joinGitLong": "Rejoignez notre chaîne Github"
+    "joinGitLong": "Rejoignez notre chaîne Github",
+    "watchVideo": "Regarder la vidéo"
   },
   "wallet": {
     "disconnect": "Êtes-vous sûr de vouloir déconnecter ?",
@@ -124,7 +125,9 @@
     "joinTGnews": "Vous avez rejoint notre chaîne d'actualités TG",
     "notJoinInstagram": "Vous n'avez pas rejoint notre chaîne Instagram",
     "notJoinGithub": "Vous n'avez pas rejoint notre chaîne Github",
-    "notJoinTGnews": "Vous n'avez pas rejoint notre chaîne d'actualités TG"  
+    "notJoinTGnews": "Vous n'avez pas rejoint notre chaîne d'actualités TG",
+    "watchedVideo": "Vous avez regardé la vidéo",
+    "noWatchedVideo": "Vous n'avez pas regardé la vidéo"
   },
   "language": {
     "search": "Rechercher",

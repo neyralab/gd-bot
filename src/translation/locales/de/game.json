@@ -71,7 +71,12 @@
     "playAndWin": "Spiele {name} & gewinne",
     "joinInstagram": "Tritt unserem Instagram bei",
     "joinGit": "Tritt unserem Github bei",
-    "joinNewsTg": "Tritt unserem Nachrichtenkanal bei"
+    "joinNewsTg": "Tritt unserem Nachrichtenkanal bei",
+    "freeSpin": "Freispiel",
+    "earnGPoints": "GhostDrive-Punkte sammeln",
+    "spinWheel": "Drehen",
+    "wheelNextSpin": "Der nächste Spin startet in",
+    "watchVideo": "Video ansehen"
   },
   "airdrop": {
     "airdrop": "Airdrop",
@@ -88,6 +93,10 @@
     "lvl2": "Zusätzlicher Bonus für das Erreichen des 2. Tapping-Levels",
     "lvl3": "Zusätzlicher Bonus für das Erreichen des 3. Tapping-Levels",
     "lvl4": "Zusätzlicher Bonus für das Erreichen des 4. Tapping-Levels",
+    "lvl5": "Zusätzlicher Bonus für das Erreichen des 5. Tapping-Levels",
+    "lvl6": "Zusätzlicher Bonus für das Erreichen des 6. Tapping-Levels",
+    "lvl7": "Zusätzlicher Bonus für das Erreichen des 7. Tapping-Levels",
+    "lvl8": "Zusätzlicher Bonus für das Erreichen des 8. Tapping-Levels",
     "tapBonus1": "Zusätzlicher Bonus für 100000 Taps",
     "tapBonus2": "Zusätzlicher Bonus für 250000 Taps",
     "tapBonus3": "Zusätzlicher Bonus für 500000 Taps",

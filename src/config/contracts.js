@@ -4,7 +4,8 @@ const SOCIAL = {
   INSTAGRAM: 1,
   GITHUB: 2,
   TWITTER: 3,
-  YOUTUBE: 4
+  YOUTUBE: 4,
+  WATCH: 5
 }
 
 export { NFT_ADDRESS, SOCIAL };

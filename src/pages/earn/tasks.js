@@ -99,4 +99,40 @@ export const tasks = [
     imgUrl: '/assets/github.png',
     joinLink: 'https://github.com/neyralab'
   },
+  {
+    id: 'WATCH_VIDEO',
+    isDone: false,
+    title: 'Watch video',
+    translatePath: 'earn.watchVideo',
+    points: 0,
+    imgUrl: '/assets/youtube.png',
+    joinLink: 'https://youtu.be/EHDzXihUUbc'
+  },
 ];
+export const tasksText = {
+  UPLOAD_FILE_FREE: 'Upload file',
+  STORAGE_PURCHASE: 'Storage purchase',
+  STORAGE_PURCHASE_BY_REFERRAL: 'Storage purchase by referral',
+  REFERRAL_SIGNUP: 'Active referral signup',
+  DOWNLOAD_APP: 'Download Ghost Drive Аpp and Log In Via Telegram',
+  WALLET_CONNECTION: 'Connect a wallet',
+  INVITE_5_FRIENDS: 'Invite 5 friends',
+  UPLOAD_10_FILES: 'Upload 10 files',
+  TAP_LEVEL_1: 'Extra bonus for reaching the 1 tapping level',
+  TAP_LEVEL_2: 'Extra bonus for reaching the 2 tapping level',
+  TAP_LEVEL_3: 'Extra bonus for reaching the 3 tapping level',
+  JOIN_TG_CHANNEL: 'Join our TG channel',
+  JOIN_TG_NEWS_CHANNEL: 'Join our TG news channel',
+  JOIN_TWITTER: 'Follow our X account',
+  JOIN_YOUTUBE: 'Join our YouTube channel',
+  TAP_LEVEL_4: 'Extra bonus for reaching the 4 tapping level',
+  TAP_LEVEL_5: 'Extra bonus for reaching the 5 tapping level',
+  TAP_LEVEL_6: 'Extra bonus for reaching the 6 tapping level',
+  TAP_LEVEL_7: 'Extra bonus for reaching the 7 tapping level',
+  INVITE_25_PREMIUM_FRIENDS: 'Invite 25 Premium friends',
+  JOIN_INSTAGRAM: 'Join our Instagram channel',
+  JOIN_GITHUB: 'Join our Github channel',
+  TAP_LEVEL_8: 'Extra bonus for reaching the 8 tapping level',
+  TAP_LEVEL_8: 'Extra bonus for reaching the 8 tapping level',
+  WATCH_VIDEO: 'Watch video'
+}
