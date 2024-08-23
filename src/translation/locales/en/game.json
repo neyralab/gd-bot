@@ -11,8 +11,8 @@
   },
   "process": {
     "level": "Level",
-    "players": "Players",
-    "frens": "Frens",
+    "players": "Top100",
+    "frens": "Friends",
     "earn": "Earn",
     "airdrop": "Airdrop"
   },

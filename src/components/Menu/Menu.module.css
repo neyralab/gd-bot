@@ -1,13 +1,13 @@
 .container {
   position: fixed;
-  max-width: 95%;
+  width: 100%;
+  max-width: 320px;
+  height: 56px;
   left: 50%;
   bottom: 12px;
   transform: translateX(-50%);
-  background: #2c2e31b2;
-  backdrop-filter: blur(8px);
+  backdrop-filter: blur(2px);
   border-radius: 10px;
-  padding: 4px 8px;
   text-align: center;
   white-space: nowrap;
   overflow-y: auto;
@@ -19,8 +19,50 @@
   display: none;
 }
 
+.content {
+  display: flex;
+  width: 100%;
+  justify-content: space-around;
+  position: absolute;
+  bottom: 5px;
+  left: 0;
+  right: 0;
+}
+
+.bg {
+  position: relative;
+  bottom: -16px;
+  left: 0;
+  right: 0;
+}
+
+.bg-line1 {
+  position: absolute;
+  left: 18%;
+  bottom: 5px;
+}
+
+.bg-line2 {
+  position: absolute;
+  left: 40%;
+  bottom: 5px;
+}
+
+.bg-line3 {
+  position: absolute;
+  left: 60%;
+  bottom: 5px;
+  transform: scaleX(-1);
+}
+
+.bg-line4 {
+  position: absolute;
+  left: 77%;
+  bottom: 5px;
+  transform: scaleX(-1);
+}
+
 .item {
-  padding: 8px;
   width: 55px;
   border-radius: 10px;
   text-decoration: none;
@@ -31,37 +73,39 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin: auto 4px;
-}
-
-.item.active {
-  background-color: #151619;
+  padding-bottom: 2px;
 }
 
 .icon {
-  width: 24px;
-  height: 24px;
+  width: 40px;
+  height: 40px;
   color: white;
-  opacity: 0.6;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.item.active .icon {
-  opacity: 1;
+.icon > svg > path {
+  stroke: url(#paint0_linear_9111_5063);
+  stroke-width: 0.7; 
 }
 
-.icon > svg {
-  width: 100%;
-  height: 100%;
+.item.active > .icon > svg > path {
+  fill: url(#paint0_linear_9111_5063);
 }
 
-.img-icon {
-  background: url(../../assets/logo-menu.png);
-  background-position: center center;
-  background-size: contain;
-  background-repeat: no-repeat;
+.gradient {
+  position: absolute;
+  opacity: 0;
 }
 
 .text {
+  font-family: 'IBM Plex Mono';
+  font-size: 9px;
+  font-weight: 400;
+  line-height: 11.7px;
+  text-align: center;
   color: white;
-  font-size: 11px;
+  margin-top: 2px;
+  text-transform: uppercase;
 }
