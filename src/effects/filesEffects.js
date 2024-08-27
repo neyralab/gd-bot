@@ -6,7 +6,11 @@ import { saveBlob, downloadFile } from 'gdgateway-client';
 
 export const getDownloadOTT = (body) => {
   const url = `${API_PATH}/download/generate/token`;
-  return axiosInstance.post(url, body);
+  return axiosInstance.post(url, body, {
+    headers: {
+      'X-Action': 5
+    }
+  });
 };
 
 export const getFilePreviewEffect = async (
@@ -261,16 +265,8 @@ export const createStreamEffect = async (slug) => {
         gateway
       }
     } = await getDownloadOTT([{ slug }]);
-    const url = `${gateway.url}/prepare/stream/${slug}`;
-    const data = await axios.create({
-        headers: oneTimeToken && {
-          'one-time-token': oneTimeToken,
-          'X-Download-OTT-JWT': jwt_ott,
-        },
-      })
-      .get(url);
-
-    return data.data;
+    const url = `${gateway.url}/stream/${slug}/${oneTimeToken}`;
+    return url;
   } catch (error) {
     throw Error(error);
   }
