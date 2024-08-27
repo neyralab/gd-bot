@@ -102,6 +102,14 @@ export const FilePreviewModal = () => {
           setFileContent(text);
           setLoading(false);
           return;
+        } else if (
+          file.extension === 'pdf' ||
+          file.extension === 'xls' ||
+          file.extension === 'xlsx'
+        ) {
+          setFileContent(realBlob);
+          setLoading(false);
+          return;
         }
         setFileContent(url);
         setLoading(false);
@@ -156,10 +164,7 @@ export const FilePreviewModal = () => {
             <GhostLoader />
           </div>
         ) : (
-          <div
-            className={style.wrapper}
-            ref={wrapper}
-          >
+          <div className={style.wrapper} ref={wrapper}>
             <button
               className={style.back}
               onClick={handleVibrationClick(onClose)}>
