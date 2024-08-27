@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { DebounceInput } from 'react-debounce-input';
+import { gsap } from 'gsap';
 
 import {
   changeFileView,
@@ -88,7 +89,7 @@ export const FilesSystemPage = () => {
         .then((data) => dispatch(handlePartners(data)))
         .catch(() => toast.error(tSystem('message.failedLoad')));
     }
-  }, [games])
+  }, [games]);
 
   const clearInputsAfterUpload = () => {
     const dataTransfer = new DataTransfer();
@@ -110,14 +111,11 @@ export const FilesSystemPage = () => {
       dispatch(setUploadingFile(files[0]));
       await uploadFileEffect({ files, dispatch });
     } catch (error) {
-      toast.error(
-        getResponseError(error),
-        {
-          theme: 'colored',
-          position: 'bottom-center',
-          autoClose: 5000
-        }
-      );
+      toast.error(getResponseError(error), {
+        theme: 'colored',
+        position: 'bottom-center',
+        autoClose: 5000
+      });
     } finally {
       setAreFilesLoading(false);
       clearInputsAfterUpload();
@@ -176,6 +174,66 @@ export const FilesSystemPage = () => {
     setSearchValue('');
   };
 
+  useEffect(() => {
+    /** Animation */
+    gsap.fromTo(
+      `.${style.buttonsWrapper}`,
+      {
+        opacity: 0,
+        scale: 0.5,
+        y: 50
+      },
+      {
+        delay: 0.7,
+        opacity: 1,
+        scale: 1,
+        y: 0,
+        duration: 0.5,
+        ease: 'back.out(0.5)'
+      }
+    );
+
+    gsap.fromTo(
+      `.${style.search}`,
+      {
+        opacity: 0,
+        scale: 0.5,
+        y: -50
+      },
+      {
+        opacity: 1,
+        scale: 1,
+        y: 0,
+        duration: 0.5,
+        ease: 'back.out(0.5)'
+      }
+    );
+  }, []);
+
+  useEffect(() => {
+    /** Animation */
+    if (user && human) {
+      gsap.fromTo(
+        `.${style.storage_block}`,
+        {
+          opacity: 0,
+          scale: 0.8,
+          y: -20,
+          x: 200
+        },
+        {
+          opacity: 1,
+          scale: 1,
+          y: 0,
+          x: 0,
+          duration: 0.3,
+          delay: 0.1,
+          ease: 'back.out(0.5)'
+        }
+      );
+    }
+  }, [user, human]);
+
   if (!types || !human || !user) {
     return (
       <div className={style.loaderContainer}>
@@ -188,6 +246,7 @@ export const FilesSystemPage = () => {
     <div className={style.container}>
       {currentFileFilter && <Header headerClassName={style.header} />}
       <header className={style.filesHeader}></header>
+
       <section className={style.wrapper}>
         <div className={style.search}>
           <DebounceInput
@@ -216,6 +275,7 @@ export const FilesSystemPage = () => {
             </div>
           )}
         </div>
+
         {user && human && (
           <div className={style.storage_block}>
             <div className={style.storage_text_container}>
@@ -246,7 +306,11 @@ export const FilesSystemPage = () => {
                 {view === 'grid' ? <ListIcon /> : <GridIcon />}
               </button>
             </div>
-            <FileList loading={loading} files={fileList} checkedFile={checkedFile} />
+            <FileList
+              loading={loading}
+              files={fileList}
+              checkedFile={checkedFile}
+            />
           </>
         ) : (
           <FileFilterPanel />
@@ -258,6 +322,7 @@ export const FilesSystemPage = () => {
           </div>
         )}
       </section>
+
       {!areFilesLoading && (
         <div className={style.buttonsWrapper}>
           <div className={style.uploadButton} onClick={handleVibrationClick()}>

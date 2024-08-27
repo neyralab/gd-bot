@@ -2,7 +2,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 20px 16px 50px;
+  padding: 20px 16px 0px 16px;
   height: 100%;
   width: 100%;
 }
@@ -80,6 +80,7 @@ header.header {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  overflow: hidden;
 }
 
 .listHeader {
@@ -254,4 +255,7 @@ header.header {
   justify-content: center;
   align-items: center;
   margin-top: 161px;
+}
+.file-wrapper {
+  display: block;
 }
