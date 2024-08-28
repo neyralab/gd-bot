@@ -28,24 +28,3 @@
   line-height: 16px;
   color: #FFFFFF99;
 }
-
-.to-appear {
-  opacity: 0;
-  transform: scale(0);
-  animation: AppearAnim 0.5s ease-out forwards;
-}
-
-@keyframes AppearAnim {
-  0% {
-    transform: scale(0.5);
-    opacity: 0;
-  }
-  70% {
-    transform: scale(1.1);
-    opacity: 1;
-  }
-  100% {
-    transform: scale(1);
-    opacity: 1;
-  }
-}

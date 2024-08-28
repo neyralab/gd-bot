@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import CN from 'classnames';
 import {
@@ -9,6 +9,7 @@ import {
 import { toast } from 'react-toastify';
 import TonWeb from 'tonweb';
 import { useTranslation } from 'react-i18next';
+import gsap from 'gsap';
 
 import { StorageIcon } from './icon';
 import { Header } from '../../components/header';
@@ -54,6 +55,49 @@ export const BoostPage = ({ tariffs, setTariffs }) => {
   const { open } = useTonConnectModal();
   const dispatch = useDispatch();
   const handleVibrationClick = useButtonVibration();
+
+  useEffect(() => {
+    if (!tariffs) return;
+    
+    /** Animation */
+    gsap.fromTo(
+      `[data-animation="boost-animation-1"]`,
+      {
+        opacity: 0,
+        x: window.innerWidth + 200,
+        y: -window.innerHeight + 500,
+        scale: 0
+      },
+      {
+        opacity: 1,
+        x: 0,
+        y: 0,
+        scale: 1,
+        stagger: 0.05,
+        duration: 0.5,
+        delay: 0.2,
+        ease: 'back.out(0.2)'
+      }
+    );
+
+    gsap.fromTo(
+      `[data-animation="boost-animation-2"]`,
+      {
+        opacity: 0,
+        x: 100,
+        scale: 0.5
+      },
+      {
+        opacity: 1,
+        x: 0,
+        scale: 1,
+        stagger: 0.2,
+        duration: 0.5,
+        delay: 0.1,
+        ease: 'back.out(0.2)'
+      }
+    );
+  }, [tariffs]);
 
   const spaceTotal = useMemo(() => {
     if (user?.space_actual) return user?.space_actual;
@@ -172,7 +216,7 @@ export const BoostPage = ({ tariffs, setTariffs }) => {
         theme
       });
     }
-    onClosePaymentModal(); 
+    onClosePaymentModal();
   };
 
   const onClosePaymentModal = () => {
@@ -189,8 +233,10 @@ export const BoostPage = ({ tariffs, setTariffs }) => {
     <div className={styles.container}>
       <Header label={t('boost.upgradeStorage')} className={styles.backBtn} />
       <div>
-        <p className={styles.header}>{t('boost.multiplier')}</p>
-        <div className={styles.current_item}>
+        <p data-animation="boost-animation-2" className={styles.header}>
+          {t('boost.multiplier')}
+        </p>
+        <div data-animation="boost-animation-1" className={styles.current_item}>
           <div className={styles.flex}>
             <StorageIcon storage={currentPrice} />
             <p className={styles.current_storage}>
@@ -207,10 +253,15 @@ export const BoostPage = ({ tariffs, setTariffs }) => {
         </div>
       </div>
       <div>
-        <p className={styles.header}>{t('boost.boostMultiplier')}</p>
+        <p data-animation="boost-animation-2" className={styles.header}>
+          {t('boost.boostMultiplier')}
+        </p>
         <ul className={styles.list}>
           {tariffs?.map((el, index) => (
-            <li key={index} onClick={handleVibrationClick()}>
+            <li
+              data-animation="boost-animation-1"
+              key={index}
+              onClick={handleVibrationClick()}>
               <button
                 disabled={currentPrice?.storage === el?.storage}
                 onClick={() => {

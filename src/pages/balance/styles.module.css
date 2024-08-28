@@ -20,6 +20,7 @@
   color: #ffffff99;
   text-transform: uppercase;
   margin: 0;
+  display: inline-block;
 }
 
 .info-title {
@@ -58,6 +59,3 @@
   height: 45px;
 }
 
-.animation1, .animation2 {
-  display: block;
-}

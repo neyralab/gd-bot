@@ -2,7 +2,6 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  background-color: #151517;
   border-radius: 10px;
   margin-top: 20px;
 }
@@ -13,6 +12,17 @@
   align-items: center;
   padding: 11px 16px;
   height: 54px;
+  background-color: #151517;
+
+  &:first-child {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+  }
+
+  &:last-child {
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+  }
 }
 
 .navigat-left {
@@ -36,39 +46,18 @@
   font-weight: 500;
   line-height: 17px;
   text-align: center;
-  background-color: #36363B;
+  background-color: #36363b;
   padding: 6px 16px;
   border-radius: 23px;
-  color: #CECED8;
+  color: #ceced8;
 }
 
 .addBtn {
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   color: #000000;
 }
 
 .playBtn {
-  background-color: #BFFB50;
+  background-color: #bffb50;
   color: #000000;
-}
-
-.to-appear {
-  opacity: 0;
-  transform: scale(0);
-  animation: AppearAnim 0.5s ease-out forwards;
-}
-
-@keyframes AppearAnim {
-  0% {
-    transform: scale(0.5);
-    opacity: 0;
-  }
-  70% {
-    transform: scale(1.1);
-    opacity: 1;
-  }
-  100% {
-    transform: scale(1);
-    opacity: 1;
-  }
 }
