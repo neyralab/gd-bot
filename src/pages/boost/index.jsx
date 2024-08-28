@@ -58,7 +58,7 @@ export const BoostPage = ({ tariffs, setTariffs }) => {
 
   useEffect(() => {
     if (!tariffs) return;
-    
+
     /** Animation */
     gsap.fromTo(
       `[data-animation="boost-animation-1"]`,
@@ -232,90 +232,79 @@ export const BoostPage = ({ tariffs, setTariffs }) => {
   return (
     <div className={styles.container}>
       <Header label={t('boost.upgradeStorage')} className={styles.backBtn} />
-      <div>
-        <p data-animation="boost-animation-2" className={styles.header}>
-          {t('boost.multiplier')}
-        </p>
-        <div data-animation="boost-animation-1" className={styles.current_item}>
-          <div className={styles.flex}>
-            <StorageIcon storage={currentPrice} />
-            <p className={styles.current_storage}>
-              <span className={styles.span}>
-                {DEFAULT_TARIFFS_NAMES[spaceTotal] || '1GB'}
-              </span>
-              {` ${t('boost.storage')}`}
+
+      {tariffs && (
+        <>
+          <div>
+            <p data-animation="boost-animation-2" className={styles.header}>
+              {t('boost.multiplier')}
             </p>
-          </div>
-          <div className={styles.cost}>
-            <p className={styles.cost_value}>{currentPrice?.stars || '0'}</p>
-            <Star className={styles.current_diamond} viewBox="0 0 21 21" />
-          </div>
-        </div>
-      </div>
-      <div>
-        <p data-animation="boost-animation-2" className={styles.header}>
-          {t('boost.boostMultiplier')}
-        </p>
-        <ul className={styles.list}>
-          {tariffs?.map((el, index) => (
-            <li
+
+            <div
               data-animation="boost-animation-1"
-              key={index}
-              onClick={handleVibrationClick()}>
-              <button
-                disabled={currentPrice?.storage === el?.storage}
-                onClick={() => {
-                  handleSelect(el);
-                }}
-                className={CN(
-                  styles.item,
-                  activeMultiplier?.storage === el.storage && styles.active_item
-                )}>
-                <div className={styles.flex}>
-                  <StorageIcon storage={el} />
-                  <div className={styles.item_storage}>
-                    <p className={styles.storage}>
-                      {transformSize(el?.storage)}
-                    </p>
-                    <p className={styles.item_text}>{t('boost.storageYear')}</p>
-                  </div>
-                </div>
-                <div className={styles.cost}>
-                  <p className={styles.cost_value}>{el?.stars}</p>
-                  <Star className={styles.cost_svg} viewBox="0 0 21 21" />
-                </div>
-              </button>
-            </li>
-          ))}
-        </ul>
-        {/*<div>*/}
-        {/*  <div className={styles.info_header}>*/}
-        {/*    <Info />*/}
-        {/*    <p className={styles.header}>How it works?</p>*/}
-        {/*  </div>*/}
-        {/*  <p className={styles.info_text}>*/}
-        {/*    We also offer a Points Booster package that includes additional*/}
-        {/*    storage space for one year. Enhance your earning potential and enjoy*/}
-        {/*    expanded storage capabilities:*/}
-        {/*  </p>*/}
-        {/*  <ul className={styles.info_list}>*/}
-        {/*    {infoData.map((el, index) => (*/}
-        {/*      <li key={index} className={styles.info_item}>*/}
-        {/*        {el}*/}
-        {/*      </li>*/}
-        {/*    ))}*/}
-        {/*  </ul>*/}
-        {/*</div>*/}
-      </div>
-      {/*<footer className={styles.footer}>*/}
-      {/*  <Button*/}
-      {/*    disabled={!activeMultiplier}*/}
-      {/*    label="Pay"*/}
-      {/*    onClick={payByTON}*/}
-      {/*    img={<PayIcon className={styles.pay_icon} />}*/}
-      {/*    className={CN(styles.pay_btn, !activeMultiplier && styles.disabled)}*/}
-      {/*  />*/}
-      {/*</footer>*/}
+              className={styles.current_item}>
+              <div className={styles.flex}>
+                <StorageIcon storage={currentPrice} />
+                <p className={styles.current_storage}>
+                  <span className={styles.span}>
+                    {DEFAULT_TARIFFS_NAMES[spaceTotal] || '1GB'}
+                  </span>
+                  {` ${t('boost.storage')}`}
+                </p>
+              </div>
+              <div className={styles.cost}>
+                <p className={styles.cost_value}>
+                  {currentPrice?.stars || '0'}
+                </p>
+                <Star className={styles.current_diamond} viewBox="0 0 21 21" />
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <p data-animation="boost-animation-2" className={styles.header}>
+              {t('boost.boostMultiplier')}
+            </p>
+
+            <ul className={styles.list}>
+              {tariffs?.map((el, index) => (
+                <li
+                  data-animation="boost-animation-1"
+                  key={index}
+                  onClick={handleVibrationClick()}>
+                  <button
+                    disabled={currentPrice?.storage === el?.storage}
+                    onClick={() => {
+                      handleSelect(el);
+                    }}
+                    className={CN(
+                      styles.item,
+                      activeMultiplier?.storage === el.storage &&
+                        styles.active_item
+                    )}>
+                    <div className={styles.flex}>
+                      <StorageIcon storage={el} />
+                      <div className={styles.item_storage}>
+                        <p className={styles.storage}>
+                          {transformSize(el?.storage)}
+                        </p>
+                        <p className={styles.item_text}>
+                          {t('boost.storageYear')}
+                        </p>
+                      </div>
+                    </div>
+                    <div className={styles.cost}>
+                      <p className={styles.cost_value}>{el?.stars}</p>
+                      <Star className={styles.cost_svg} viewBox="0 0 21 21" />
+                    </div>
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </>
+      )}
+
       <SlidingModal
         onClose={onClosePaymentModal}
         isOpen={isPaymentModalOpen}
