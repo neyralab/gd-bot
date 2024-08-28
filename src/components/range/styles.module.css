@@ -1,7 +1,8 @@
 .container {
   display: flex;
   padding: 10px 16px;
-  border: 1px solid #303030;
+  border: 1px solid #1e1e1e;
+  background-color: #0f0f0f;
   border-radius: 10px;
   height: 60px;
 }
@@ -37,10 +38,12 @@
   line-height: 14px;
 }
 
-.left .count, .left .text {
+.left .count,
+.left .text {
   text-align: left;
 }
 
-.right .count, .right .text  {
+.right .count,
+.right .text {
   text-align: right;
 }

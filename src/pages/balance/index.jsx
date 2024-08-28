@@ -1,7 +1,9 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
+import classNames from 'classnames';
+import gsap from 'gsap';
 
 import { getToken } from '../../effects/set-token';
 import { storageConvertEffect } from '../../effects/storageEffects';
@@ -43,27 +45,69 @@ export const Balance = () => {
   const handleVibrationClick = useButtonVibration();
   const user = useSelector((state) => state?.user?.data);
 
+  useEffect(() => {
+    /** Animation */
+    gsap.fromTo(
+      `.${styles.animation2}`,
+      {
+        opacity: 0,
+        y: -100,
+        scale: 0
+      },
+      {
+        opacity: 1,
+        x: 0,
+        y: 0,
+        scale: 1,
+        duration: .8,
+        ease: 'back.out(0.2)'
+      }
+    );
+
+    gsap.fromTo(
+      `.${styles.animation1}`,
+      {
+        opacity: 0,
+        x: window.innerWidth + 200,
+        y: -window.innerHeight + 500,
+        scale: 0
+      },
+      {
+        opacity: 1,
+        x: 0,
+        y: 0,
+        scale: 1,
+        stagger: 0.05,
+        duration: 0.5,
+        delay: 0.2,
+        ease: 'back.out(0.2)'
+      }
+    );
+  }, []);
+
   const showErrorMessage = () => {
     toast.error(t('message.error'), {
       theme: 'colored',
       position: 'bottom-center'
     });
-  } 
+  };
 
   const showSuccessMessage = () => {
     toast.success(t('message.conversionSuccess'), {
       theme: 'colored',
       position: 'bottom-center'
     });
-  } 
+  };
 
   const currentConvert = async () => {
     try {
-      if (!pointCount) { return; }
+      if (!pointCount) {
+        return;
+      }
       const cointCount = getNumbers(pointCount);
       setLoading(true);
       const res = await storageConvertEffect({ points: cointCount });
-      if (res.message === "success") {
+      if (res.message === 'success') {
         const token = await getToken();
         const updatedUser = await getUserEffect(token);
         showSuccessMessage();
@@ -75,30 +119,42 @@ export const Balance = () => {
       showErrorMessage();
       setLoading(false);
     }
-  }
+  };
 
   return (
     <div className={styles.container}>
       <Header label={t('convert.storage')} />
-      <InfoBox
-        points={user?.points}
-      />
-      <Range
-        pointCount={pointCount}
-        setPointCount={setPointCount}
-        pointBalance={user?.points}
-      />
-      <Button
-        label={t('convert.convert')}
-        disabled={loading}
-        onClick={handleVibrationClick(currentConvert)}
-        className={styles.white_btn}
-      />
+      <div className={styles.animation2}>
+        <InfoBox points={user?.points} />
+      </div>
+
+      <div className={styles.animation1}>
+        <Range
+          pointCount={pointCount}
+          setPointCount={setPointCount}
+          pointBalance={user?.points}
+        />
+      </div>
+
+      <div className={styles.animation1}>
+        <Button
+          label={t('convert.convert')}
+          disabled={loading}
+          onClick={handleVibrationClick(currentConvert)}
+          className={styles.white_btn}
+        />
+      </div>
+
       <div className={styles.info}>
-        <span className={styles['info-exchange']}>{t('convert.equal')}</span>
-        <h2 className={styles['info-title']}>{t('convert.mineSpace')}</h2>
+        <span
+          className={classNames(styles['info-exchange'], styles.animation1)}>
+          {t('convert.equal')}
+        </span>
+        <h2 className={classNames(styles['info-title'], styles.animation1)}>
+          {t('convert.mineSpace')}
+        </h2>
         {detail(t).map((item, index) => (
-          <div key={`detail-${index}`}>
+          <div key={`detail-${index}`} className={styles.animation1}>
             <p className={styles['option-title']}>{item.title}</p>
             <p className={styles['option-text']}>{item.text}</p>
           </div>

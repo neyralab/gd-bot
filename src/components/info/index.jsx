@@ -1,14 +1,23 @@
+import { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-
-import { ReactComponent as CircleBackgroundIcon } from '../../assets/background.svg';
+import { useCountUp } from 'react-countup';
 import { ReactComponent as PlusIcon } from '../../assets/boldPlusIcon.svg';
-
 import { fomatNumber } from '../../utils/string';
-
-import styles from './styles.module.css';
+import styles from './styles.module.scss';
 
 export const InfoBox = ({ points }) => {
   const navigate = useNavigate();
+  const countUpRef = useRef(null);
+  const { update: countUpUpdate } = useCountUp({
+    ref: countUpRef,
+    start: 0,
+    end: fomatNumber(points || 0),
+    duration: 2.4
+  });
+
+  useEffect(() => {
+    countUpUpdate(points);
+  }, [points]);
 
   const goToStorageUpdate = () => {
     navigate('/boost');
@@ -17,13 +26,13 @@ export const InfoBox = ({ points }) => {
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <p className={styles.value}>{fomatNumber(points || 0)}</p>
+        <p ref={countUpRef} className={styles.value}></p>
         <span className={styles.text} onClick={goToStorageUpdate}>
           <PlusIcon />
         </span>
       </div>
       <div className={styles.circle}>
-        <CircleBackgroundIcon />
+        <img src="/assets/storage-circle.png" />
       </div>
     </div>
   );
