@@ -94,7 +94,7 @@ const CircleAudioPlayer = ({ file, wrapper }) => {
         <audio
           ref={audioRef}
           onEnded={onFinish}
-          src={ipfsAudio ? `https://${ipfsAudio}` : undefined}
+          src={ipfsAudio ? ipfsAudio : undefined}
         />
         <div
           className={styles['controls']}
