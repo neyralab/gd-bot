@@ -2,7 +2,6 @@ import { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCountUp } from 'react-countup';
 import { ReactComponent as PlusIcon } from '../../assets/boldPlusIcon.svg';
-import { fomatNumber } from '../../utils/string';
 import styles from './styles.module.scss';
 
 export const InfoBox = ({ points }) => {
@@ -11,7 +10,7 @@ export const InfoBox = ({ points }) => {
   const { update: countUpUpdate } = useCountUp({
     ref: countUpRef,
     start: 0,
-    end: fomatNumber(points || 0),
+    end: points || 0,
     duration: 2.4
   });
 
