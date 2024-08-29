@@ -48,7 +48,7 @@ export const Balance = () => {
   useEffect(() => {
     /** Animation */
     gsap.fromTo(
-      `.${styles.animation2}`,
+      `[data-animation="balance-animation-2"]`,
       {
         opacity: 0,
         y: -100,
@@ -59,13 +59,13 @@ export const Balance = () => {
         x: 0,
         y: 0,
         scale: 1,
-        duration: .8,
+        duration: 0.8,
         ease: 'back.out(0.2)'
       }
     );
 
     gsap.fromTo(
-      `.${styles.animation1}`,
+      `[data-animation="balance-animation-1"]`,
       {
         opacity: 0,
         x: window.innerWidth + 200,
@@ -124,11 +124,11 @@ export const Balance = () => {
   return (
     <div className={styles.container}>
       <Header label={t('convert.storage')} />
-      <div className={styles.animation2}>
+      <div data-animation="balance-animation-2">
         <InfoBox points={user?.points} />
       </div>
 
-      <div className={styles.animation1}>
+      <div data-animation="balance-animation-1">
         <Range
           pointCount={pointCount}
           setPointCount={setPointCount}
@@ -136,7 +136,7 @@ export const Balance = () => {
         />
       </div>
 
-      <div className={styles.animation1}>
+      <div data-animation="balance-animation-1">
         <Button
           label={t('convert.convert')}
           disabled={loading}
@@ -146,15 +146,14 @@ export const Balance = () => {
       </div>
 
       <div className={styles.info}>
-        <span
-          className={classNames(styles['info-exchange'], styles.animation1)}>
+        <span data-animation="balance-animation-1" className={styles['info-exchange']}>
           {t('convert.equal')}
         </span>
-        <h2 className={classNames(styles['info-title'], styles.animation1)}>
+        <h2 data-animation="balance-animation-1" className={styles['info-title']}>
           {t('convert.mineSpace')}
         </h2>
         {detail(t).map((item, index) => (
-          <div key={`detail-${index}`} className={styles.animation1}>
+          <div key={`detail-${index}`} data-animation="balance-animation-1">
             <p className={styles['option-title']}>{item.title}</p>
             <p className={styles['option-text']}>{item.text}</p>
           </div>

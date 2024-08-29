@@ -34,7 +34,7 @@ export const FileFilterPanel = () => {
   useEffect(() => {
     /** Animation */
     gsap.fromTo(
-      `.${style.item}`,
+      `[data-animation="files-grid-animation-1"]`,
       {
         opacity: 0,
         x: window.innerWidth + 200,
@@ -116,6 +116,7 @@ export const FileFilterPanel = () => {
       {options.map(({ name, value, icon: Icon, callback }) => (
         <li
           key={name}
+          data-animation="files-grid-animation-1"
           className={style.item}
           onClick={handleVibrationClick(callback)}>
           <div>

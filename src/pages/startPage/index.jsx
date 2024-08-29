@@ -3,13 +3,18 @@ import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import CN from 'classnames';
+import gsap from 'gsap';
 
 import {
   selectAllWorkspaces,
   selectCurrentWorkspace
 } from '../../store/reducers/workspaceSlice';
 import { getAllTasks } from '../../effects/balanceEffect';
-import { getStorageNotificationsEffect, readNotificationEffect, storageSendEffect } from '../../effects/storageEffects';
+import {
+  getStorageNotificationsEffect,
+  readNotificationEffect,
+  storageSendEffect
+} from '../../effects/storageEffects';
 import { DEFAULT_TARIFFS_NAMES } from '../upgradeStorage';
 import { fromByteToGb } from '../../utils/storage';
 import { transformSize } from '../../utils/transformSize';
@@ -26,13 +31,14 @@ import PointCounter from './PointCounter/PointCounter';
 import SystemModal from '../../components/SystemModal/SystemModal';
 import NavigatItem from './Navigator/NavigatItem';
 import Navigator from './Navigator/Navigator';
-
 import { parseSizeToBytes } from '../../utils/storage';
-
 import style from './style.module.css';
-import navigatorStyle from './Navigator/Navigator.module.css';
+import navigatorStyle from './Navigator/Navigator.module.scss';
 
-const initialNotificationState = {sender: {unread: [], readed: []}, recipient: []}
+const initialNotificationState = {
+  sender: { unread: [], readed: [] },
+  recipient: []
+};
 
 export const StartPage = ({ tariffs }) => {
   const systemModalRef = useRef(null);
@@ -81,7 +87,50 @@ export const StartPage = ({ tariffs }) => {
         handleAcceptNotification(notification);
       }
     }
-  }, [notifications, wrapperRef.current])
+  }, [notifications, wrapperRef.current]);
+
+  useEffect(() => {
+    if (!allWorkspaces && !currentWorkspace) return;
+
+    /** Animation */
+    gsap.fromTo(
+      `[data-animation="start-page-animation-1"]`,
+      {
+        opacity: 0,
+        x: window.innerWidth + 200,
+        y: -window.innerHeight + 500,
+        scale: 0
+      },
+      {
+        opacity: 1,
+        x: 0,
+        y: 0,
+        scale: 1,
+        stagger: 0.05,
+        duration: 0.5,
+        delay: 0.2,
+        ease: 'back.out(0.2)'
+      }
+    );
+
+    gsap.fromTo(
+      `[data-animation="start-page-animation-2"]`,
+      {
+        opacity: 0,
+        y: -100,
+        scale: 0.5
+      },
+      {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        stagger: 0.2,
+        duration: 0.5,
+        delay: 0.1,
+        ease: 'back.out(0.2)'
+      }
+    );
+  }, [allWorkspaces, currentWorkspace]);
 
   const storage = useMemo(() => {
     const size = DEFAULT_TARIFFS_NAMES[user?.space_actual] || '1GB';
@@ -107,13 +156,7 @@ export const StartPage = ({ tariffs }) => {
     };
   }, [user]);
 
-  if (!allWorkspaces && !currentWorkspace) {
-    return (
-      <div className={style.home_container}>
-        <GhostLoader startup />
-      </div>
-    );
-  }
+  
 
   const openInNewTab = (url) => {
     window.open(url, '_blank', 'noreferrer');
@@ -132,11 +175,11 @@ export const StartPage = ({ tariffs }) => {
     setShowShareModal(false);
   };
 
-  const readNotification =async (id) => {
+  const readNotification = async (id) => {
     try {
       await readNotificationEffect(id);
     } catch (error) {
-      console.warn(error)
+      console.warn(error);
     }
   };
 
@@ -146,13 +189,23 @@ export const StartPage = ({ tariffs }) => {
       const name = splitedText[0];
       const size = splitedText[4];
       await readNotification(item.id);
-      setNotifications((notif) => ({ ...notif, sender: { ...notif.sender, unread: notif.sender.unread.filter((itemFilter) => item.id !== itemFilter.id) } }))
+      setNotifications((notif) => ({
+        ...notif,
+        sender: {
+          ...notif.sender,
+          unread: notif.sender.unread.filter(
+            (itemFilter) => item.id !== itemFilter.id
+          )
+        }
+      }));
       systemModalRef.current.open({
         title: t('share.offerAccept'),
-        text: t('share.offerAcceptDesc').replace('{size}', size).replace('{name}', name),
-       });
+        text: t('share.offerAcceptDesc')
+          .replace('{size}', size)
+          .replace('{name}', name)
+      });
     } catch (error) {
-      console.warn(error)
+      console.warn(error);
     }
   };
 
@@ -163,7 +216,9 @@ export const StartPage = ({ tariffs }) => {
       const size = splitedText[4];
       systemModalRef.current.open({
         title: t('share.offerDeclined'),
-        text: t('share.offerDeclinedDesc').replace('{size}', size).replace('{name}', name),
+        text: t('share.offerDeclinedDesc')
+          .replace('{size}', size)
+          .replace('{name}', name),
         actions: [
           {
             type: 'primary',
@@ -173,11 +228,11 @@ export const StartPage = ({ tariffs }) => {
                 await storageSendEffect({
                   storage: parseSizeToBytes(size),
                   username: name.replace('@', '')
-                })
-                await readNotification(item.id)
-                systemModalRef.current.close();                
+                });
+                await readNotification(item.id);
+                systemModalRef.current.close();
               } catch (error) {
-                systemModalRef.current.close();                
+                systemModalRef.current.close();
               }
             }
           },
@@ -187,71 +242,80 @@ export const StartPage = ({ tariffs }) => {
             onClick: () => {
               try {
                 readNotification(item.id);
-                systemModalRef.current.close();                 
+                systemModalRef.current.close();
               } catch (error) {
-                systemModalRef.current.close();                 
+                systemModalRef.current.close();
               }
             }
-          },
+          }
         ]
-       });
+      });
     } catch (error) {
-      console.warn(error)
+      console.warn(error);
     }
   };
 
-  const handleCloseNotification = () =>{
+  const handleCloseNotification = () => {
     if (!!notifications?.sender?.unread?.length) {
       const notification = notifications?.sender?.unread[0];
       readNotification(notification.id);
     }
+  };
+
+  if (!allWorkspaces && !currentWorkspace) {
+    return (
+      <div className={style.home_container}>
+        <GhostLoader startup />
+      </div>
+    );
   }
 
   return (
     <div ref={wrapperRef} className={`${style.container}`}>
-      {/* <header className={style.header}>
-        <CardsSlider items={slides} timeout={15000} />
-      </header> */}
-      <div
-        className={CN(
-          style.card,
-          style.banner,
-          style['to-appear'],
-          style['to-appear_active']
-        )}>
+      <div data-animation="start-page-animation-2" className={CN(style.card, style.banner)}>
         <img src={BannerSource} alt="banner" />
         <div className={style['banner-content']}>
           <div onClick={onOpenShareModal} className={style['banner-header']}>
             <div className={style['banner-header_img']}>
               <LogoIcon />
-              <span className={style['banner-header-share-btn']}>{t('share.share')}</span>
+              <span className={style['banner-header-share-btn']}>
+                {t('share.share')}
+              </span>
             </div>
             <h1>{transformSize(user.space_total)}</h1>
           </div>
         </div>
       </div>
+
       <PointCounter
         points={user?.points}
         className={style[`point-counter`]}
         rank={user?.rank}
       />
+
       <Navigator
         storage={storage}
         human={human}
         openDisconnectModal={setDisconnectWalletModal}
         tasks={tasks}
       />
-      <ul className={CN(navigatorStyle['navigator'], navigatorStyle['to-appear'])}>
+
+      <ul className={CN(navigatorStyle['navigator'])}>
         <NavigatItem
           name={t('dashboard.mining')}
           icon={<TapIcon />}
-          html={(<span className={CN(navigatorStyle.actionBtn, navigatorStyle.playBtn)}>
-            {t('dashboard.play')}
-          </span>)}
+          html={
+            <span
+              className={CN(navigatorStyle.actionBtn, navigatorStyle.playBtn)}>
+              {t('dashboard.play')}
+            </span>
+          }
           onClick={() => navigate('/game-3d')}
         />
       </ul>
+
       {isDev && <Nodes wallet={user?.wallet} />}
+
       <footer className={style.footer}>
         <p className={style['footer-text']}>
           <span
@@ -263,12 +327,14 @@ export const StartPage = ({ tariffs }) => {
           . {t('dashboard.howEarn')}{' '}
         </p>
       </footer>
+
       {disconnectWalletModal && (
         <DisconnectWalletModal
           isOpen={disconnectWalletModal}
           onClose={() => setDisconnectWalletModal(false)}
         />
       )}
+
       {(showShareModal || !!notifications.recipient.length) && (
         <ShareStorage
           giftData={notifications.recipient}
@@ -278,10 +344,8 @@ export const StartPage = ({ tariffs }) => {
           systemModalRef={systemModalRef}
         />
       )}
-      <SystemModal
-        handleClose={handleCloseNotification}
-        ref={systemModalRef}
-      />
+
+      <SystemModal handleClose={handleCloseNotification} ref={systemModalRef} />
     </div>
   );
 };
