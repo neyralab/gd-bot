@@ -4,7 +4,7 @@ import CN from 'classnames';
 import { useClickOutside } from '../../../utils/useClickOutside';
 import { ReactComponent as SearchIcon } from '../../../assets/search.svg';
 
-import styles from './styles.module.css';
+import styles from './styles.module.scss';
 
 const SearchInput = ({ value, onChange, onClose }) => {
   const { t } = useTranslation('system');
@@ -15,23 +15,30 @@ const SearchInput = ({ value, onChange, onClose }) => {
   const onClick = () => {
     setIsOpen(true);
     inputRef.current.focus();
-  }
+  };
 
   const handleClickOutside = () => {
     setIsOpen(false);
-  }
+  };
 
   useClickOutside(inputContainerRef, handleClickOutside);
 
   return (
-    <div className={styles.container}>
+    <div data-animation="language-animation-3" className={styles.container}>
       <div
         ref={inputContainerRef}
         onClick={onClick}
-        className={CN(styles.inputContainer, (isOpen || !!value) && styles.inputContainerActive)}
-      >
-        <div className={CN(styles.content, (isOpen || !!value) && styles.contentActive)}>
-          <SearchIcon viewBox='0 0 20 20' className={styles.icon} />
+        className={CN(
+          styles.inputContainer,
+          (isOpen || !!value) && styles.inputContainerActive
+        )}>
+        <div
+          className={CN(
+            styles.content,
+            (isOpen || !!value) && styles.contentActive
+          )}>
+          <SearchIcon viewBox="0 0 20 20" className={styles.icon} />
+
           <input
             value={value}
             ref={inputRef}
@@ -41,10 +48,13 @@ const SearchInput = ({ value, onChange, onClose }) => {
           />
         </div>
       </div>
+
       <span
-        className={CN(styles.cancelBtn, (isOpen || !!value) && styles.cancelBtnActive)}
-        onClick={onClose}
-      >
+        className={CN(
+          styles.cancelBtn,
+          (isOpen || !!value) && styles.cancelBtnActive
+        )}
+        onClick={onClose}>
         {t('language.cancel')}
       </span>
     </div>

@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import moment from 'moment';
+import gsap from 'gsap';
 
 import { Header } from '../../components/header';
 import { ReactComponent as CheckIcon } from '../../assets/check.svg';
 import SearchInput from './SearchInput';
 
-import styles from './styles.module.css';
+import styles from './styles.module.scss';
 
 export const LANGUAGE_LIST = [
   {
@@ -80,7 +81,7 @@ export const LANGUAGE_LIST = [
     translate: '한국어',
     shortName: 'kor',
     abbreviation: 'ko'
-  },
+  }
 ];
 
 export const LanguagePage = () => {
@@ -91,7 +92,65 @@ export const LanguagePage = () => {
 
   useEffect(() => {
     setLang(i18n.language);
-  }, [i18n.language])
+  }, [i18n.language]);
+
+  useEffect(() => {
+    if (!list) return;
+
+    /** Animation */
+    gsap.fromTo(
+      `[data-animation="language-animation-1"]`,
+      {
+        opacity: 0,
+        x: window.innerWidth + 200,
+        y: -window.innerHeight + 500,
+        scale: 0
+      },
+      {
+        opacity: 1,
+        x: 0,
+        y: 0,
+        scale: 1,
+        stagger: 0.05,
+        duration: 0.5,
+        delay: 0.15,
+        ease: 'back.out(0.2)'
+      }
+    );
+
+    gsap.fromTo(
+      `[data-animation="language-animation-2"]`,
+      {
+        opacity: 0,
+        x: 100,
+        scale: 0.5
+      },
+      {
+        opacity: 1,
+        x: 0,
+        scale: 1,
+        delay: 0.1,
+        duration: 0.5,
+        ease: 'back.out(0.2)'
+      }
+    );
+
+    gsap.fromTo(
+      `[data-animation="language-animation-3"]`,
+      {
+        opacity: 0,
+        x: 200,
+        scale: 0.5
+      },
+      {
+        opacity: 1,
+        x: 0,
+        scale: 1,
+        duration: 0.5,
+        ease: 'back.out(0.2)'
+      }
+    );
+  }, [list]);
 
   const changeLanguage = (option) => {
     i18n.changeLanguage(option);
@@ -103,52 +162,53 @@ export const LanguagePage = () => {
   const onChange = ({ target: { value } }) => {
     if (value) {
       setSearchValue(value);
-      const filteredList = LANGUAGE_LIST.filter((item) => (
-        item.title.includes(value) ||
-        item.translate.includes(value) ||
-        item.shortName.includes(value) ||
-        item.abbreviation.includes(value)
-      ));
+      const filteredList = LANGUAGE_LIST.filter(
+        (item) =>
+          item.title.includes(value) ||
+          item.translate.includes(value) ||
+          item.shortName.includes(value) ||
+          item.abbreviation.includes(value)
+      );
       setList(filteredList);
     } else {
       setSearchValue('');
       setList(LANGUAGE_LIST);
     }
-  }
+  };
 
   const onReset = () => {
     setSearchValue('');
     setList(LANGUAGE_LIST);
-  }
+  };
 
   return (
     <div className={styles.container}>
       <Header label={t('dashboard.language')} />
-      <SearchInput
-        value={searchValue}
-        onChange={onChange}
-        onClose={onReset}
-      />
-      <h2 className={styles.subTitle}>{t('language.interface')}</h2>
-      {!!list.length && 
-        (<ul className={styles.list} >
+      <SearchInput value={searchValue} onChange={onChange} onClose={onReset} />
+      <h2 data-animation="language-animation-2" className={styles.subTitle}>
+        {t('language.interface')}
+      </h2>
+      {!!list.length && (
+        <ul className={styles.list}>
           {list.map(({ title, translate, abbreviation }) => (
             <li
-              onClick={() => {changeLanguage(abbreviation)}}
+              onClick={() => {
+                changeLanguage(abbreviation);
+              }}
               className={styles.item}
               key={abbreviation}
-            >
+              data-animation="language-animation-1">
               <div>
                 <p className={styles.lang}>{title}</p>
                 <p className={styles.langOriginal}>{translate}</p>
               </div>
               <span className={styles.itemStatus}>
-                { abbreviation === lang && <CheckIcon /> }
+                {abbreviation === lang && <CheckIcon />}
               </span>
             </li>
           ))}
-        </ul>)
-      }
+        </ul>
+      )}
     </div>
   );
 };
