@@ -6,6 +6,7 @@ import DefaultPreview from './defaultPreview';
 import VideoPreview from './VideoPreview';
 import PdfPreview from './PdfPreview';
 import ExcelPreview from './ExcelPreview';
+import TxtPreview from './TxtPreview';
 
 const PreviewContent = ({ fileContent, file, wrapper }) => {
   const [previewFileType, setPreviewFileType] = useState(
@@ -23,6 +24,8 @@ const PreviewContent = ({ fileContent, file, wrapper }) => {
       return <PdfPreview file={file} fileContent={fileContent} />;
     case 'xlsx':
       return <ExcelPreview file={file} fileContent={fileContent} />;
+    case 'txt':
+      return <TxtPreview fileContent={fileContent} />;
     default:
       return <DefaultPreview file={file} />;
   }

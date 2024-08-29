@@ -97,7 +97,7 @@ export const FilePreviewModal = () => {
       if (blob) {
         const realBlob = new Blob([blob]);
         const url = URL.createObjectURL(realBlob);
-        if (file.extension === 'svg') {
+        if (file.extension === 'svg' || file.extension === 'txt') {
           const text = await realBlob.text();
           setFileContent(text);
           setLoading(false);
