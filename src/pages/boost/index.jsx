@@ -192,9 +192,11 @@ export const BoostPage = ({ tariffs, setTariffs }) => {
         await storageListEffect(token).then((data) => {
           setTariffs(data);
         });
+      } else {
+        console.warn(`error: The payment was not completed. ${result}`)
       }
     } catch (error) {
-      console.log('error');
+      console.warn('error: ', error);
     }
   };
 
