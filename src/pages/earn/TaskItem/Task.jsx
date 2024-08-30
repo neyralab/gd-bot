@@ -18,54 +18,72 @@ import styles from './Task.module.css';
 const TIME_DELAY = 120000;
 const DEFAULT_TASK_IMAGE = '/assets/task.png';
 
-export default function Task({ type, logo, description, name, done, rewardParams, id, doVerify }) {
+export default function Task({
+  type,
+  logo,
+  description,
+  name,
+  done,
+  rewardParams,
+  id,
+  doVerify
+}) {
   const { t } = useTranslation('game');
-  const formattedPoints = useMemo(() => Number(rewardParams).toLocaleString(), [rewardParams]);
+  const formattedPoints = useMemo(
+    () => Number(rewardParams).toLocaleString(),
+    [rewardParams]
+  );
   const partnerName = useMemo(() => getPartnerName(name), [name]);
-  const partnerTranslate = useMemo(() => getPartnerTranslate(description, t, gameTranslateJSON), [description, t]);
-  const [needVerify, setNeedVerify] = useState(isNeedVerify(id),[id]);
+  const partnerTranslate = useMemo(
+    () => getPartnerTranslate(description, t, gameTranslateJSON),
+    [description, t]
+  );
+  const [needVerify, setNeedVerify] = useState(isNeedVerify(id), [id]);
 
   const goToLink = useCallback(async () => {
     try {
       const token = await getToken();
-      const partnertList = JSON.parse(localStorage.getItem(PARTNER_KEY) || '[]');
+      const partnertList = JSON.parse(
+        localStorage.getItem(PARTNER_KEY) || '[]'
+      );
       localStorage.setItem(PARTNER_KEY, JSON.stringify([...partnertList, id]));
-      setTimeout(() => {setNeedVerify(isNeedVerify(id))}, [TIME_DELAY]);
+      setTimeout(() => {
+        setNeedVerify(isNeedVerify(id));
+      }, [TIME_DELAY]);
       window.location.href = `${API_PATH}/aff/missions/exit/${id}?bearer=${token}`;
     } catch (error) {
-      console.warn(error)      
+      console.warn(error);
     }
-  }, [id])
+  }, [id]);
 
   const renderActionBtn = useCallback(() => {
     if (!done && needVerify) {
       return (
         <button
           className={classNames(styles.actionBtn, styles.actionVerify)}
-          onClick={() => {doVerify(id)}}
-        >
+          onClick={() => {
+            doVerify(id);
+          }}>
           {t('earn.claim')}
         </button>
-      )
+      );
     } else if (!done) {
       return (
-        <button
-          className={styles.actionBtn}
-          onClick={goToLink}
-        >
+        <button className={styles.actionBtn} onClick={goToLink}>
           {t(PARTNER_TASK_TYPES.bot === type ? 'earn.start' : 'earn.follow')}
         </button>
-      )
-    } else 
-      return ''
-  }, [needVerify, done, id])
+      );
+    } else return '';
+  }, [needVerify, done, id]);
 
   const setUpDefaultLogo = (e) => {
     e.target.src = DEFAULT_TASK_IMAGE;
-  }
+  };
 
   return (
-    <div className={classNames(styles.container, done && styles.done)}>
+    <div
+      data-animation="task-animation-1"
+      className={classNames(styles.container, done && styles.done)}>
       <div className={styles.info}>
         <img
           className={styles.img}
