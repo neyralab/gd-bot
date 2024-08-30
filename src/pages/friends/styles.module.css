@@ -56,20 +56,6 @@
 .friends-container h2 {
   font-size: 16px;
   font-weight: 500;
-  animation: SubTitleAppearAnim 0.5s ease-out 0.2s forwards;
-  opacity: 0;
-  transform: scale(0);
-}
-
-@keyframes SubTitleAppearAnim {
-  0% {
-    transform: scale(0);
-    opacity: 0;
-  }
-  100% {
-    transform: scale(1);
-    opacity: 1;
-  }
 }
 
 .friends-list {
@@ -84,6 +70,10 @@
 .invite-button {
   margin-top: 8px;
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .invite-button span {
@@ -119,4 +109,8 @@
   100% {
     transform: rotate(360deg);
   }
+}
+
+.initial-state-for-animation {
+  opacity: 0;
 }
