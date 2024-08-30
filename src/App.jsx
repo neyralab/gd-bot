@@ -40,9 +40,12 @@ import NodesWelcomePage from './pages/nodes-welcome';
 import NodesPage from './pages/nodes';
 import NotAllow from './pages/notAllow';
 
+import { isEnabledMobileOnly } from './utils/featureFlags';
+import { isWebPlatform} from './utils/client';
+
 import './App.css';
 
-const ALLOW_PREVIEW = isPhone() || isDevEnv();
+const ALLOW_PREVIEW = !!isEnabledMobileOnly || !isWebPlatform(tg);
 
 export const tg = window.Telegram.WebApp;
 const GA = 'G-VEPRY1XE4E';
