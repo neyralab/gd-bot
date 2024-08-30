@@ -45,7 +45,6 @@ export function isPhone() {
   return false;
 }
 
-export function isWebPlatform() {
-  console.log('ancestorOrigins => ', window.location.ancestorOrigins);
-  return window.location.ancestorOrigins.contains('https://web.telegram.org');
+export function isWebPlatform(tgClient) {
+  return tgClient?.tplatform === 'weba';
 }

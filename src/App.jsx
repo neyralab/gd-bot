@@ -44,7 +44,7 @@ import { isWebPlatform} from './utils/client';
 
 import './App.css';
 
-const ALLOW_PREVIEW = !!isEnabledMobileOnly || !isWebPlatform();
+const ALLOW_PREVIEW = !!isEnabledMobileOnly || !isWebPlatform(tg);
 
 export const tg = window.Telegram.WebApp;
 const GA = 'G-VEPRY1XE4E';
