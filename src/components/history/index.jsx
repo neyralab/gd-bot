@@ -20,7 +20,7 @@ export const History = () => {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const itemsPerPage = 50;
-  const animatedItems = useRef(new Set());
+  const highestAnimatedIndex = useRef(-1);
 
   useEffect(() => {
     getData(page);
@@ -29,8 +29,8 @@ export const History = () => {
   const runItemsAnimation = (visibleStartIndex, visibleStopIndex) => {
     const newItems = [];
     for (let i = visibleStartIndex; i <= visibleStopIndex; i++) {
-      if (!animatedItems.current.has(i) && i < history.length) {
-        animatedItems.current.add(i);
+      if (i > highestAnimatedIndex.current && i < history.length) {
+        highestAnimatedIndex.current = i;
         newItems.push(`[data-animation="history-animation-3"][data-index="${i}"]`);
       }
     }
