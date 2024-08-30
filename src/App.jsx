@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { TonConnectUIProvider } from '@tonconnect/ui-react';
@@ -45,15 +45,14 @@ import { isWebPlatform} from './utils/client';
 
 import './App.css';
 
-const ALLOW_PREVIEW = !!isEnabledMobileOnly || !isWebPlatform(tg);
-
 export const tg = window.Telegram.WebApp;
 const GA = 'G-VEPRY1XE4E';
 
 function App() {
-  useLanguage();
-  const dispatch = useDispatch();
+  const ALLOW_PREVIEW = useMemo(() => (!!isEnabledMobileOnly || !isWebPlatform(tg)), [tg]);
   const [tariffs, setTariffs] = useState(null);
+  const dispatch = useDispatch();
+  useLanguage();
 
   const currentUser = {
     initData: tg.initData
