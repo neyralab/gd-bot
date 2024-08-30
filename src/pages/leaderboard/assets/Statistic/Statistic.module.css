@@ -12,6 +12,7 @@
   flex-grow: 1;
   border: 1px solid #FFFFFF33;
   padding: 8px 10px;
+  opacity: 0;
 }
 
 .title {

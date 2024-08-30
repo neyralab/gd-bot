@@ -14,7 +14,11 @@ const BLACK_LIST = ['pshkv'];
 
 export const LeaderboardLeague = () => {
   const [leaderboard, setLeaderboard] = useState([]);
-  const [info, setInfo] = useState({ totalTaps: 0, totalPoints: 0, totalUsers: 0 });
+  const [info, setInfo] = useState({
+    totalTaps: 0,
+    totalPoints: 0,
+    totalUsers: 0
+  });
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -22,12 +26,14 @@ export const LeaderboardLeague = () => {
     getLeaderboardEffect().then((data) => {
       console.log(data);
       if (!data) return;
-      setLeaderboard(data?.data?.filter((user) => (!BLACK_LIST.includes(user.username))));
+      setLeaderboard(
+        data?.data?.filter((user) => !BLACK_LIST.includes(user.username))
+      );
       setInfo({
         totalTaps: data?.total_taps || 0,
         totalPoints: data?.total_points || 0,
         totalUsers: data?.total_users || 0
-      })
+      });
       setIsLoading(false);
     });
   }, []);
@@ -40,8 +46,6 @@ export const LeaderboardLeague = () => {
         <Banner1 />
       </div>
 
-      <Statistic {...info} />
-
       {isLoading && (
         <div className={style.loader}>
           <LoaderIcon />
@@ -49,7 +53,10 @@ export const LeaderboardLeague = () => {
       )}
 
       {!isLoading && leaderboard.length > 0 && (
-        <Table items={leaderboard} totalUsers={info.totalUsers} />
+        <>
+          <Statistic {...info} />
+          <Table items={leaderboard} totalUsers={info.totalUsers} />
+        </>
       )}
 
       <Menu />
