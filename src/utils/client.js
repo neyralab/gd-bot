@@ -46,5 +46,5 @@ export function isPhone() {
 }
 
 export function isWebPlatform(tgClient) {
-  return tgClient?.tplatform === 'weba';
+  return tgClient?.platform === 'weba';
 }
