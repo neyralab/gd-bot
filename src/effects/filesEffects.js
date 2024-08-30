@@ -1,14 +1,14 @@
-import axios from 'axios';
 import { updateFile } from '../store/reducers/filesSlice';
 import { API_PATH } from '../utils/api-urls';
 import axiosInstance from './axiosInstance';
 import { saveBlob, downloadFile } from 'gdgateway-client';
+import { FILE_ACTIONS } from '../config/contracts';
 
 export const getDownloadOTT = (body) => {
   const url = `${API_PATH}/download/generate/token`;
   return axiosInstance.post(url, body, {
     headers: {
-      'X-Action': 5
+      'X-Action': FILE_ACTIONS.downloaded
     }
   });
 };
