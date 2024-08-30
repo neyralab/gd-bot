@@ -10,7 +10,7 @@ import useButtonVibration from '../../hooks/useButtonVibration';
 
 import styles from './SystemModal.module.css';
 
-const SystemModal = forwardRef((_, ref) => {
+const SystemModal = forwardRef(({ handleClose }, ref) => {
   const [isOpen, setIsOpen] = useState(false);
   const [title, setTitle] = useState('');
   const [text, setText] = useState('');
@@ -34,6 +34,7 @@ const SystemModal = forwardRef((_, ref) => {
     setTitle('');
     setText('');
     setActions([]);
+    handleClose && handleClose();
   };
 
   useImperativeHandle(ref, () => ({

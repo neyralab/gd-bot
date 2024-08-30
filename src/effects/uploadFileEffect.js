@@ -31,7 +31,8 @@ export const uploadFileEffect = async ({ files, dispatch }) => {
         } = await getOneTimeToken([
           {
             filesize: file.size,
-            filename: file.name
+            filename: file.name,
+            isPublic: true,
           }
         ]);
         const oneTimeToken = user_token[0].token;
@@ -52,7 +53,8 @@ export const uploadFileEffect = async ({ files, dispatch }) => {
           file.type,
           file.folderId,
           file.uploadId,
-          async () => file.arrayBuffer()
+          async () => file.arrayBuffer(),
+          () => file.stream()
         );
         result = await uploadFile({
           file: localFileBuffer,
@@ -63,7 +65,6 @@ export const uploadFileEffect = async ({ files, dispatch }) => {
           progress: progresses[file?.folderData?.uploadId],
           totalSize: file?.folderSize,
           startedAt: file?.startedAt,
-          is_telegram: true,
           jwtOneTimeToken
         });
         const uploadedFile = result?.data?.data;

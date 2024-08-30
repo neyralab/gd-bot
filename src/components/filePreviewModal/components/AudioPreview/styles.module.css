@@ -1,0 +1,104 @@
+
+.player-ackground::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url(/assets/audio-preview.png);
+  background-size: cover; /* Змінює розмір зображення, щоб воно покривало весь елемент */
+  background-position: center;
+  opacity: 0.5; /* Задає прозорість */
+  z-index: -1;
+}
+
+.player-container {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.circle-audio-player {
+  width: 100%;
+  position: relative;
+  border-radius: 50%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: white;
+}
+
+.controls {
+  position: absolute;
+  top: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 10px;
+  border-radius: 50%;
+  background-image: url(/assets/audio-preview.png);
+  background-size: cover;
+  z-index: 1;
+}
+
+.circle-audio-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  background: #00000066;
+  border: 1px solid;
+  border-image-source: linear-gradient(180deg, rgba(0, 201, 229, 0.44717) 0%, rgba(30, 253, 253, 0.0001) 103.74%);
+  cursor: pointer;
+  border-radius: 50%;
+}
+
+.circle-audio-play-button {
+  width: 80px;
+  height: 80px;
+}
+
+.progress-container {
+  position: relative;
+  width: 100%;
+  cursor: pointer;
+}
+
+.circle-audio-svg {
+  position: absolute;
+  top: 0;
+  left: 20px;
+  transform: rotate(-90deg); /* Починаємо з верхньої частини кола */
+  overflow: initial;
+}
+
+.progress-background {
+  fill: none;
+  stroke: #e0e0e0;
+}
+
+.progress {
+  fill: none;
+  stroke: url(#gradient);
+}
+
+.indicator {
+  position: absolute;
+  top: calc(50% - 10px);
+  left: calc(50% - 10px);
+  transform-origin: center center;
+}
+
+.indicator-dot {
+  width: 20px;
+  height: 20px;
+  background: linear-gradient(90deg, #00F2FE 0%, #4FACFE 100%);
+  border-radius: 50%;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}

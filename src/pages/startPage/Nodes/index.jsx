@@ -13,7 +13,7 @@ import { useContract } from '../../../utils/useContract';
 import { NFT_ADDRESS } from '../../../config/contracts';
 import { NftCollection } from '../../../effects/contracts/tact_NftCollection';
 
-import styles from '../Navigator/Navigator.module.css';
+import styles from '../Navigator/Navigator.module.scss';
 
 export default function Navigator({ wallet }) {
   const { t } = useTranslation('system');

@@ -92,10 +92,12 @@
     "earnPoints": "Für jeden Tap erhältst du Punkte.",
     "lifetime": "3. Lebenslanger Speicher",
     "mineLifetime": "Minen bis zu 50 GB lebenslangen Speicher.",
-    "convert": "Umwandeln"
+    "convert": "Umwandeln",
+    "convertLimit": "Die maximale Konvertierungsgröße beträgt 50GB."
   },
   "message": {
     "error": "Etwas ist schiefgelaufen",
+    "serverError": "Serverfehler",
     "fileRestored": "Datei wurde erfolgreich wiederhergestellt",
     "failedLoad": "Anzahl konnte nicht geladen werden",
     "fileDeleted": "Datei wurde erfolgreich gelöscht",
@@ -133,5 +135,25 @@
     "search": "Suche",
     "cancel": "Beenden",
     "interface": "Schnittstellensprache"
+  },
+  "share": {
+    "share": "Teilen",
+    "successfullySend": "Sie haben erfolgreich {size} an {name} gesendet",
+    "shareStorage": "Geschenk senden an (G:Drive)",
+    "shareGift": "Ghost Drive Geschenk",
+    "storage": "Speicher",
+    "increaseStorage": "Ihre Speicherkapazität wurde um {size} erhöht",
+    "increaseStorageDesc": "Wir freuen uns, Ihnen mitteilen zu können, dass Ihr Speicherplatz erweitert wurde. Sie haben jetzt zusätzlich {size}.",
+    "declineIncrease": "Angebot zur Speichererweiterung abgelehnt",
+    "declineIncreaseDesc": "Sie haben sich entschieden, die Speichererweiterung um {size} nicht anzunehmen. Ihre aktuelle Speicherkapazität bleibt unverändert.",
+    "areYouSure": "Sind Sie sicher, dass Sie Ihr Geschenk ablehnen möchten?",
+    "decline": "Ablehnen",
+    "accept": "Akzeptieren",
+    "offerDeclined": "Speichergeschenk-Angebot abgelehnt",
+    "offerDeclinedDesc": "Wir wollten Sie darüber informieren, dass das von Ihnen gesendete Speichergeschenk über {size} an {name} abgelehnt wurde. Der Empfänger hat sich entschieden, den zusätzlichen Speicherplatz nicht anzunehmen.",
+    "offerAccept": "Ihr Speichergeschenk wurde akzeptiert!",
+    "offerAcceptDesc": "Gute Nachrichten! Das von Ihnen gesendete Speichergeschenk über {size} für {name} wurde akzeptiert. Der Empfänger nutzt nun den zusätzlichen Speicherplatz. Vielen Dank für Ihre Unterstützung!",
+    "tryAgain": "Erneut versuchen",
+    "ok": "OK"
   }
 }

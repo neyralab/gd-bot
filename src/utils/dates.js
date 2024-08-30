@@ -13,3 +13,5 @@ export const getWeekNumber = (startDate) => {
 
   return weekNumber + 1;
 };
+
+export const formatTime = (time) => String(time).padStart(2, '0');

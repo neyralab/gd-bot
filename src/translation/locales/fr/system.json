@@ -92,10 +92,12 @@
     "earnPoints": "Pour chaque tap, vous gagnez des points.",
     "lifetime": "3. Stockage à vie",
     "mineLifetime": "Mine jusqu'à 50 Go de stockage à vie.",
-    "convert": "Convertir"
+    "convert": "Convertir",
+    "convertLimit": "La taille de conversion maximale est de 50GB."
   },
   "message": {
     "error": "Quelque chose a mal tourné",
+    "serverError": "Erreur du serveur",
     "fileRestored": "Le fichier a été restauré avec succès",
     "failedLoad": "Échec du chargement des comptes",
     "fileDeleted": "Le fichier a été supprimé avec succès",
@@ -133,5 +135,25 @@
     "search": "Rechercher",
     "cancel": "Annuler",
     "interface": "Langue de l'interface"
+  },
+  "share": {
+    "share": "Partager",
+    "successfullySend": "Vous avez envoyé avec succès {size} à {name}",
+    "shareStorage": "Envoyer un cadeau à (G:Drive)",
+    "shareGift": "Cadeau Ghost Drive",
+    "storage": "Stockage",
+    "increaseStorage": "Votre capacité de stockage a été augmentée de {size}",
+    "increaseStorageDesc": "Nous sommes ravis de vous informer que votre espace de stockage a été amélioré. Vous disposez maintenant de {size} supplémentaires.",
+    "declineIncrease": "Offre d'extension de stockage refusée",
+    "declineIncreaseDesc": "Vous avez choisi de ne pas accepter l'augmentation de stockage de {size}. Votre capacité de stockage actuelle reste inchangée.",
+    "areYouSure": "Êtes-vous sûr de vouloir refuser votre cadeau ?",
+    "decline": "Refuser",
+    "accept": "Accepter",
+    "offerDeclined": "Offre de cadeau de stockage refusée",
+    "offerDeclinedDesc": "Nous voulions vous informer que le cadeau de stockage de {size} que vous avez envoyé à {name} a été refusé. Le destinataire a choisi de ne pas accepter le stockage supplémentaire pour le moment.",
+    "offerAccept": "Votre cadeau de stockage a été accepté !",
+    "offerAcceptDesc": "Bonne nouvelle ! Le cadeau de stockage de {size} que vous avez envoyé pour {name} a été accepté. Le destinataire profite maintenant de l'espace supplémentaire. Merci de les avoir aidés !",
+    "tryAgain": "Réessayer",
+    "ok": "OK"
   }
 }

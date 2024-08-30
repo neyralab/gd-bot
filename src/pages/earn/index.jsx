@@ -1,8 +1,15 @@
-import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  useMemo,
+  useCallback
+} from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
+import moment from 'moment';
 
-import { tasks as tasksFromFile } from './tasks';
+import { tasks as tasksFromFile, tasksText } from './tasks';
 import { isEnabledPartners } from '../../utils/featureFlags';
 import { handlePartners, selectPartners } from '../../store/reducers/taskSlice';
 import { checkAllEarnTasks, getAllPartners } from '../../effects/EarnEffect';
@@ -15,10 +22,11 @@ import Partners from './Partners';
 import Mission from './Mission';
 import EarnModal from './EarnModal/EarnModal';
 import Segmented from '../../components/segmented';
+import FortuneWheelModal from '../../components/FortuneWheelModal/FortuneWheelModal';
 
 import styles from './styles.module.css';
 
-const DEFAULT_SEGMENT_OPTION = 'task'
+const DEFAULT_SEGMENT_OPTION = 'task';
 
 export default function EarnPage() {
   const dispatch = useDispatch();
@@ -26,9 +34,23 @@ export default function EarnPage() {
   const { t } = useTranslation('game');
   const [tasks, setTasks] = useState([]);
   const [missions, setMissions] = useState([]);
+  const [earnedRecords, setEarnedRecords] = useState([]);
   const [activeSegment, setActiveSegment] = useState(DEFAULT_SEGMENT_OPTION);
   const [modalSelectedTask, setModalSelectedTask] = useState(null);
-  const modalRef = useRef(null);
+  const earnModalRef = useRef(null);
+  const fortuneWheelModalRef = useRef(null);
+
+  const showWheel = useMemo(() => {
+    const now = moment().unix();
+    const last24Hours = now - 24 * 60 * 60;
+    return earnedRecords.some(game => {
+      if (game.text !== "Game tapping") {
+        return false;
+      }
+      const gameEndsAt = parseInt(game.game.game_ends_at, 10);
+      return gameEndsAt >= last24Hours && gameEndsAt <= now;
+    });
+  }, [earnedRecords]);
 
   const getTasks = async () => {
     try {
@@ -70,26 +92,24 @@ export default function EarnPage() {
       const {
         data: { data: userTasks }
       } = await getBalanceEffect();
+      setEarnedRecords(userTasks);
       const realTasks = allMissions.map((task) =>
-        userTasks.find((userTask) => task.action === userTask?.point?.action)
-          ? { ...task, done: true }
-          : { ...task, done: false }
+        ({ ...task, text: tasksText[task.action], done: !!task.earn })
       );
       setMissions(realTasks.sort((a, b) => a.amount - b.amount));
     } catch (error) {
       console.error('Error fetching tasks:', error);
       setMissions([]);
     }
-  }
+  };
 
   useEffect(() => {
     if (!partnerTasks.length) {
-      getAllPartners()
-        .then((data) => {
-          dispatch(handlePartners(data))
-        })
+      getAllPartners().then((data) => {
+        dispatch(handlePartners(data));
+      });
     }
-  }, [partnerTasks])
+  }, [partnerTasks]);
 
   useEffect(() => {
     getMission();
@@ -103,24 +123,33 @@ export default function EarnPage() {
       {
         title: t('earn.task'),
         name: 'task',
-        onClick: () => { setActiveSegment('task') }
+        onClick: () => {
+          setActiveSegment('task');
+        }
       },
       {
         title: t('earn.partner'),
         name: 'partner',
-        onClick: () => { setActiveSegment('partner') }
+        onClick: () => {
+          setActiveSegment('partner');
+        }
       },
       {
         title: t('earn.mission'),
         name: 'mission',
-        onClick: () => { setActiveSegment('mission') }
+        onClick: () => {
+          setActiveSegment('mission');
+        }
       }
-    ].filter((tab) => !disabledTabs.includes(tab.name))
+    ].filter((tab) => !disabledTabs.includes(tab.name));
   }, [t]);
 
-  const handlePartnersUpdate = useCallback((data) => {
-    dispatch(handlePartners(data));
-  }, [dispatch])
+  const handlePartnersUpdate = useCallback(
+    (data) => {
+      dispatch(handlePartners(data));
+    },
+    [dispatch]
+  );
 
   const renderList = () => {
     switch (activeSegment) {
@@ -128,7 +157,7 @@ export default function EarnPage() {
         return (
           <Tasks
             tasks={tasks}
-            modalRef={modalRef}
+            earnModalRef={earnModalRef}
             getTasks={getTasks}
             setModalSelectedTask={setModalSelectedTask}
           />
@@ -152,32 +181,39 @@ export default function EarnPage() {
           tasks={tasks}
           getTasks={getTasks}
           setModalSelectedTask={setModalSelectedTask}
-        />
+        />;
     }
-  }
+  };
+
+  const openFortuneWheel = () => {
+    fortuneWheelModalRef.current.open();
+  };
 
   return (
     <div className={styles.container}>
-      {/* <Header label="Ghost Drive App" /> */}
+      <div className={styles['title-block']}>
+        <div className={styles['title-inner-block']}>
+          <span className={styles.spacer}></span>
+          <h1 className={styles.title}>{t('earn.earn')}</h1>
+          {showWheel ? (
+            <button onClick={openFortuneWheel}>
+              <img src="/assets/fortune-wheel.png" alt="Fortune Wheel" />
+            </button>
+          ) : (<span className={styles.spacer}></span>)}
+        </div>
 
-      {/* <div className={styles['title-block']}>
-        <img src="/assets/token.png" alt="Token" />
-        <h1>{t('earn.earn')}</h1>
-      </div> */}
+        <p className={styles.text}>{t('earn.getReward')}</p>
+      </div>
 
-      <h1 className={styles.title}>{t('earn.earn')}</h1>
-      <p className={styles.text}>{t('earn.getReward')}</p>
+      <Segmented options={segmentOption} active={activeSegment} />
 
-      <Segmented
-        options={segmentOption}
-        active={activeSegment}
-      />
-
-      { renderList() }
+      {renderList()}
 
       <Menu />
 
-      <EarnModal ref={modalRef} item={modalSelectedTask} />
+      <EarnModal ref={earnModalRef} item={modalSelectedTask} />
+
+      <FortuneWheelModal ref={fortuneWheelModalRef} />
     </div>
   );
 }

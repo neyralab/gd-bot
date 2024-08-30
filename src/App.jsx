@@ -13,9 +13,12 @@ import { setExperienceLevel } from './store/reducers/gameSlice';
 
 import { getUserEffect } from './effects/userEffects';
 import { authorizeUser } from './effects/authorizeUser';
+import { setPaymentTypesEffect } from './effects/paymentEffect';
 import { storageListEffect } from './effects/storageEffects';
 import { API_WEB_APP_URL } from './utils/api-urls';
 import { useLanguage } from './utils/useLanguage';
+import { isDevEnv } from './utils/isDevEnv';
+import { isPhone } from './utils/client';
 
 import SharedLayout from './components/sharedLayout';
 import { StartPage } from './pages/startPage';
@@ -28,20 +31,18 @@ import { LeaderboardLeague } from './pages/leaderboard/league';
 import { LeaderboardFriends } from './pages/leaderboard/friends';
 import { LanguagePage } from './pages/language';
 import { BoostPage } from './pages/boost';
-import { GamePage } from './pages/game';
 import { GamesPage } from './pages/games';
-import { Game3DPage } from './pages/game3d';
+import { GamePage } from './pages/game';
 import { IntroPage } from './pages/intro';
 import EarnPage from './pages/earn';
 import FriendsPage from './pages/friends';
 import NodesWelcomePage from './pages/nodes-welcome';
 import NodesPage from './pages/nodes';
 import NotAllow from './pages/notAllow';
-import { isEnabledMobileOnly } from './utils/featureFlags';
 
 import './App.css';
 
-const ALLOW_PREVIEW = !isEnabledMobileOnly || isDevEnv();
+const ALLOW_PREVIEW = isPhone() || isDevEnv();
 
 export const tg = window.Telegram.WebApp;
 const GA = 'G-VEPRY1XE4E';
@@ -84,6 +85,7 @@ function App() {
         dispatch(setCurrentWorkspace(data?.ws_id));
         dispatch(setWorkspacePlan(data?.workspace_plan));
       });
+      await setPaymentTypesEffect(dispatch);
       await storageListEffect(token).then((data) => {
         setTariffs(data);
       });
@@ -105,7 +107,7 @@ function App() {
   };
 
   if (!ALLOW_PREVIEW) {
-    return <NotAllow />;
+    return <NotAllow />
   }
 
   return (
@@ -146,8 +148,7 @@ function App() {
             element={<LeaderboardFriends />}
           />
           <Route path="/friends" exact element={<FriendsPage />} />
-          <Route path="/game" exact element={<GamePage />} />
-          <Route path="/game-3d" exact element={<Game3DPage />} />
+          <Route path="/game-3d" exact element={<GamePage />} />
           <Route
             path="/boost"
             exact

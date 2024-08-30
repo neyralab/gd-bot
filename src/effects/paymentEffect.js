@@ -5,6 +5,7 @@ import { tg } from '../App'
 import { API_PATH, API_TON_WALLET, API_NEYRA } from '../utils/api-urls';
 import { NumberEncoder } from '../utils/numberEncoder'
 import { createInvoice } from '../utils/createStarInvoice';
+import { handlePayment } from '../store/reducers/paymentSlice';
 import axios from 'axios';
 import { connectUserV8 } from './authorizeUser';
 
@@ -76,7 +77,8 @@ export const getTonWallet = async (dispatch, comment) => {
 export const makeInvoice = async ({ input, dispatch, callback, type, theme }) => {
   try {
     const encoder = new NumberEncoder();
-    const byteArray = encoder.encodeNumbers(input, [1, 8, 8]);
+    // const byteArray = encoder.encodeNumbers(input, [1,1,8,8]);
+    const byteArray = encoder.encodeNumbers(input, [1,8,8]);
     const base64String = encoder.encodeToBase64(byteArray);
 
     const invoiceInput = createInvoice({
@@ -120,6 +122,22 @@ export const sendStarInvoice = async (dispatch, invoice) => {
     )
 
     return link?.data?.data?.invoice_link || ''
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export const setPaymentTypesEffect = async (dispatch) => {
+  try {
+    const token = await dispatch(connectUserV8());
+    const { data } = await axios
+      .create({
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }).get(`${API_NEYRA}/gateway/billing/retrieve_types`);
+    
+    dispatch(handlePayment(data?.data || []));
   } catch (error) {
     console.log(error);
   }

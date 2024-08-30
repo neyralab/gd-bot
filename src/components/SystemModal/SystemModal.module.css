@@ -92,3 +92,7 @@
 .buttons button.button-type__error {
   color: #fa2424;
 }
+
+.buttons button.button-type__primary {
+  color: #FFFFFF;
+}

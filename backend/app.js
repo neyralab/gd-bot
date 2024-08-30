@@ -39,7 +39,8 @@ bot.start(async (ctx) => {
     last_name: user.last_name || '',
     photo_url: '',
     referral: refCode,
-    is_premium: !!user?.is_premium
+    is_premium: !!user?.is_premium,
+    chat_id: ctx.chat.id.toString()
   };
 
   // Cache userData by user.id

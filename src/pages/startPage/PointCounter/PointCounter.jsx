@@ -21,7 +21,8 @@ export default function PointCounter({ points, className, onClick, rank }) {
 
   return (
     <div
-      className={CN(styles['point-counter'], styles['to-appear'], className)}
+      data-animation="start-page-animation-1"
+      className={CN(styles['point-counter'], className)}
       onClick={onClick}
     >
       <span onClick={goToAirdrop}>

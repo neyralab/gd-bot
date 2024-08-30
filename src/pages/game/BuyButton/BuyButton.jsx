@@ -14,6 +14,7 @@ import {
 
 import { GDTapBooster } from '../../../effects/contracts/tact_GDTapBooster';
 import { getHexByBoc } from '../../../effects/contracts/helper';
+// import { selectPaymenttByKey } from '../../../store/reducers/paymentSlice';
 import { SlidingModal } from '../../../components/slidingModal';
 import PaymentMenu from '../../../components/paymentMenu/Menu';
 
@@ -68,6 +69,7 @@ export default function BuyButton() {
   const themes = useSelector(selectThemes);
   const themeAccess = useSelector(selectThemeAccess);
   const isPaymentModalOpen = useSelector(selectPaymentSelectModal);
+  // const gamePayment = useSelector(selectPaymenttByKey('tap_game'));
 
   const user = useSelector((state) => state?.user?.data);
   const contractAddress = useSelector(selectContractAddress);
@@ -227,6 +229,7 @@ export default function BuyButton() {
   };
 
   const handleStartStarsPayment = () => {
+    // const input = `${gamePayment.Type};${0};${theme.tierId};${user.id}`;
     const input = `${0};${theme.tierId};${user.id}`;
     makeInvoice({
       input,
@@ -234,7 +237,7 @@ export default function BuyButton() {
       callback: invoiceCallback,
       type: INVOICE_TYPE.game,
       theme
-    });
+    }); 
   }
 
   const handleStartPayment = (el) => {

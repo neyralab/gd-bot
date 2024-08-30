@@ -57,6 +57,8 @@ const getPreviewFileType = (file, entityContent) => {
       } else {
         entityFileType = '';
       }
+    } else if (file.mime && audioMediaTypes.includes(file.mime)) {
+      entityFileType = 'audio';
     }
   }
 
