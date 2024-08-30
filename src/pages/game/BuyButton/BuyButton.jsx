@@ -214,9 +214,11 @@ export default function BuyButton() {
         dispatch(setGameId(pendingGame?.uuid || pendingGame.id));
         dispatch(setGameInfo(pendingGame));
         afterBought();
+      } else {
+        console.warn(`error: The payment was not completed. ${result}`)
       }
     } catch (error) {
-      console.log('error ', error);
+      console.warn('error: ', error);
     }
   };
 
