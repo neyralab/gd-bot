@@ -14,7 +14,9 @@ import termsHandler from './commands/terms/index.js';
 import logger from './utils/logger.js';
 
 const app = express();
-const bot = new Telegraf(process.env.BOT_TOKEN_SECRET);
+const bot = new Telegraf(process.env.BOT_TOKEN_SECRET, {
+  handlerTimeout: Infinity
+});
 const throttler = telegrafThrottler({
   in: {
     period: 60000, // 60 seconds
@@ -36,7 +38,6 @@ await redisClient.connect();
 
 const userCreationQueue = new Queue('userCreation', process.env.REDIS_URL);
 
-
 bot.start(async (ctx) => {
   const refCode = ctx.startPayload;
   const user = ctx.from;
@@ -52,7 +53,7 @@ bot.start(async (ctx) => {
   };
 
   // Cache userData by user.id
-  
+
   const cachedUserData = await redisClient.get(userData.id);
 
   if (!cachedUserData) {
@@ -81,22 +82,24 @@ bot.start(async (ctx) => {
         userData,
         headers: headers
       });
-
-  
-      
     } catch (error) {
-      logger.error('Error queueing user creation', { error, chat_id: ctx.chat.id.toString() });
+      logger.error('Error queueing user creation', {
+        error,
+        chat_id: ctx.chat.id.toString()
+      });
 
       try {
         await ctx.reply(`Error: ${error.message}`);
       } catch (e) {
-        logger.error('Error sending error message', { error: e, chat_id: ctx.chat.id.toString() });
+        logger.error('Error sending error message', {
+          error: e,
+          chat_id: ctx.chat.id.toString()
+        });
       }
       return;
     }
   }
 
- 
   const header =
     '<b>Welcome to Ghostdrive – The Ultimate Drive for the TON Ecosystem!</b>';
   const activitiesText =
@@ -104,7 +107,6 @@ bot.start(async (ctx) => {
     '🚀 <b>Community Rewards:</b> Upload files to earn points, climb the leaderboard, and boost your rewards with our exciting tap game.\n\n' +
     '🎁 <b>Lifetime Storage Giveaway:</b> Enjoy storage from the Filecoin network. Invite friends and earn even more!\n\n' +
     '<b>Join Ghostdrive today and be part of our growing community!</b>';
- 
 
   const dashboardButton = Markup.button.webApp(
     'Open App',
@@ -138,7 +140,10 @@ bot.start(async (ctx) => {
       }
     );
   } catch (error) {
-    logger.error('Error replyWithPhoto:', { error, chat_id: ctx.chat.id.toString() });
+    logger.error('Error replyWithPhoto:', {
+      error,
+      chat_id: ctx.chat.id.toString()
+    });
     try {
       await ctx.reply(`Error: ${error.message}`);
     } catch (e) {
@@ -163,7 +168,10 @@ bot.on('pre_checkout_query', async (ctx) => {
       ctx.update
     );
   } catch (error) {
-    logger.error('Error in pre_checkout_query:', { error, chat_id: ctx.chat.id.toString() });
+    logger.error('Error in pre_checkout_query:', {
+      error,
+      chat_id: ctx.chat.id.toString()
+    });
   }
 });
 
@@ -196,7 +204,10 @@ bot.on('successful_payment', async (ctx) => {
       }
     }
   } catch (error) {
-    logger.error('Error in successful_payment:', { error, chat_id: ctx.chat.id.toString() });
+    logger.error('Error in successful_payment:', {
+      error,
+      chat_id: ctx.chat.id.toString()
+    });
     try {
       await ctx.reply(
         'There was an error processing your payment. Please contact support.'
@@ -254,7 +265,3 @@ userCreationQueue.on('error', (error) => {
     stack: error.stack
   });
 });
-
-
-
-
