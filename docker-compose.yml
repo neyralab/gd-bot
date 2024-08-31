@@ -17,11 +17,11 @@ services:
     - "3003:3000"
     command: npm run serve
     depends_on:
-      - redis
+      - telegram-bot-redis
     environment:
-      - REDIS_URL=redis://redis:6379
+      - REDIS_URL=redis://telegram-bot-redis:6379
 
-  redis:
+  telegram-bot-redis:
     image: redis:alpine
     container_name: telegram-bot-redis
     ports:
