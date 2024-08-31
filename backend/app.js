@@ -52,9 +52,10 @@ bot.start(async (ctx) => {
     try {
       const url = `${process.env.GD_BACKEND_URL}/apiv2/user/create/telegram`;
 
-      console.log({
+      logger.info('Creating user', {
         url,
-        userData
+        userData,
+        chat_id: ctx.chat.id.toString()
       });
 
       const headers = {
@@ -68,24 +69,31 @@ bot.start(async (ctx) => {
         headers['Host'] = process.env.GD_BACKEND_HOST;
       }
 
-      const response = await fetch(url, {
+      fetch(url, {
         method: 'POST',
         headers: headers,
-        body: JSON.stringify(userData)
+        body: JSON.stringify(userData),
+        timeout: 180000 // 3 minutes in milliseconds
+      })
+      .then(response => {
+        if (!response.ok) {
+          logger.error('HTTP error creating user', { status: response.status, chat_id: ctx.chat.id.toString() });
+        } else {
+          cachedUserData = response.json();
+          cache[cacheKey] = cachedUserData;
+        }
+      })
+      .catch(error => {
+        logger.error('Error creating user', { error, chat_id: ctx.chat.id.toString() });
       });
 
-      if (!response.ok) {
-        console.error('Failed to create user');
-        throw new Error('Failed to create user');
-      }
-
-      cachedUserData = await response.json();
-      //cache[cacheKey] = cachedUserData;
+  
+      
     } catch (error) {
       try {
         await ctx.reply(`Error: ${error.message}`);
       } catch (e) {
-        logger.error('Error sending error message', { error: e });
+        logger.error('Error sending error message', { error: e, chat_id: ctx.chat.id.toString() });
       }
       return;
     }
@@ -141,12 +149,13 @@ bot.start(async (ctx) => {
       }
     );
   } catch (error) {
-    logger.error('Error replyWithPhoto:', { error });
+    logger.error('Error replyWithPhoto:', { error, chat_id: ctx.chat.id.toString() });
     try {
       await ctx.reply(`Error: ${error.message}`);
     } catch (e) {
       logger.error('Error sending error message after replyWithPhoto error', {
-        error: e
+        error: e,
+        chat_id: ctx.chat.id.toString()
       });
     }
   }
@@ -165,7 +174,7 @@ bot.on('pre_checkout_query', async (ctx) => {
       ctx.update
     );
   } catch (error) {
-    logger.error('Error in pre_checkout_query:', { error });
+    logger.error('Error in pre_checkout_query:', { error, chat_id: ctx.chat.id.toString() });
   }
 });
 
@@ -181,7 +190,8 @@ bot.on('successful_payment', async (ctx) => {
         await ctx.reply('Payment successfully confirmed. Thank you!');
       } catch (replyError) {
         logger.error('Error sending payment confirmation message', {
-          error: replyError
+          error: replyError,
+          chat_id: ctx.chat.id.toString()
         });
       }
     } else {
@@ -191,19 +201,21 @@ bot.on('successful_payment', async (ctx) => {
         );
       } catch (replyError) {
         logger.error('Error sending payment issue message', {
-          error: replyError
+          error: replyError,
+          chat_id: ctx.chat.id.toString()
         });
       }
     }
   } catch (error) {
-    logger.error('Error in successful_payment:', { error });
+    logger.error('Error in successful_payment:', { error, chat_id: ctx.chat.id.toString() });
     try {
       await ctx.reply(
         'There was an error processing your payment. Please contact support.'
       );
     } catch (replyError) {
       logger.error('Error sending payment error message', {
-        error: replyError
+        error: replyError,
+        chat_id: ctx.chat.id.toString()
       });
     }
   }
