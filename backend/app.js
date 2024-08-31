@@ -17,6 +17,11 @@ const app = express();
 const bot = new Telegraf(process.env.BOT_TOKEN_SECRET, {
   handlerTimeout: Infinity
 });
+
+bot.catch(e => {
+  logger.error('bot.catch', e);
+});
+
 const throttler = telegrafThrottler({
   in: {
     period: 60000, // 60 seconds
