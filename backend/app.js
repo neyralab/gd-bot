@@ -246,7 +246,12 @@ userCreationQueue.process(async (job) => {
     return data;
   } catch (error) {
     logger.error('Error creating user', { error, userData });
-    throw error;
+    if (error?.response?.description?.includes('Too Many Requests')) {
+      await job.moveToDelayed(Date.now() + 60000);
+      return;
+    } else {
+      throw error;
+    }
   }
 });
 
