@@ -16,3 +16,13 @@ services:
     ports:
     - "3003:3000"
     command: npm run serve
+    depends_on:
+      - redis
+    environment:
+      - REDIS_URL=redis://redis:6379
+
+  redis:
+    image: redis:alpine
+    container_name: telegram-bot-redis
+    ports:
+      - "6379:6379"

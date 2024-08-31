@@ -5,6 +5,8 @@ import fs from 'fs';
 import fetch from 'node-fetch';
 import { telegrafThrottler } from 'telegraf-throttler';
 import axios from 'axios';
+import Queue from 'bull';
+import { createClient } from 'redis';
 
 import photoHandler from './handlers/photoHandler.js';
 import textHandler from './handlers/textHandler.js';
@@ -27,7 +29,13 @@ const throttler = telegrafThrottler({
 });
 bot.use(throttler);
 
-const cache = {};
+const redisClient = createClient({
+  url: process.env.REDIS_URL || 'redis://localhost:6379'
+});
+await redisClient.connect();
+
+const userCreationQueue = new Queue('userCreation', process.env.REDIS_URL);
+
 
 bot.start(async (ctx) => {
   const refCode = ctx.startPayload;
@@ -44,9 +52,8 @@ bot.start(async (ctx) => {
   };
 
   // Cache userData by user.id
-  const cacheKey = userData.id;
-  let cachedUserData = cache[cacheKey];
-  cachedUserData = null;
+  
+  const cachedUserData = await redisClient.get(userData.id);
 
   if (!cachedUserData) {
     try {
@@ -69,27 +76,17 @@ bot.start(async (ctx) => {
         headers['Host'] = process.env.GD_BACKEND_HOST;
       }
 
-      fetch(url, {
-        method: 'POST',
-        headers: headers,
-        body: JSON.stringify(userData),
-        timeout: 180000 // 3 minutes in milliseconds
-      })
-      .then(response => {
-        if (!response.ok) {
-          logger.error('HTTP error creating user', { status: response.status, chat_id: ctx.chat.id.toString() });
-        } else {
-          cachedUserData = response.json();
-          cache[cacheKey] = cachedUserData;
-        }
-      })
-      .catch(error => {
-        logger.error('Error creating user', { error, chat_id: ctx.chat.id.toString() });
+      await userCreationQueue.add({
+        url,
+        userData,
+        headers: headers
       });
 
   
       
     } catch (error) {
+      logger.error('Error queueing user creation', { error, chat_id: ctx.chat.id.toString() });
+
       try {
         await ctx.reply(`Error: ${error.message}`);
       } catch (e) {
@@ -99,8 +96,7 @@ bot.start(async (ctx) => {
     }
   }
 
-  const data = cachedUserData;
-  const referralLink = `https://t.me/${process.env.BOT_NAME}/ghostdrive?startapp=${data?.coupon?.code}`;
+ 
   const header =
     '<b>Welcome to Ghostdrive – The Ultimate Drive for the TON Ecosystem!</b>';
   const activitiesText =
@@ -108,14 +104,7 @@ bot.start(async (ctx) => {
     '🚀 <b>Community Rewards:</b> Upload files to earn points, climb the leaderboard, and boost your rewards with our exciting tap game.\n\n' +
     '🎁 <b>Lifetime Storage Giveaway:</b> Enjoy storage from the Filecoin network. Invite friends and earn even more!\n\n' +
     '<b>Join Ghostdrive today and be part of our growing community!</b>';
-  const buttonText = 'Open GhostDrive';
-  const buttonUrl = process.env.APP_FRONTEND_URL;
-  const button = Markup.button.webApp(buttonText, buttonUrl);
-  const shareButtonText = 'Share Link';
-  const shareButton = {
-    text: shareButtonText,
-    url: `https://t.me/share/url?url=${encodeURIComponent(referralLink)}`
-  };
+ 
 
   const dashboardButton = Markup.button.webApp(
     'Open App',
@@ -226,3 +215,46 @@ bot.launch();
 app.listen(process.env.PORT, () =>
   console.log(`My server is running on port ${process.env.PORT}`)
 );
+
+userCreationQueue.process(async (job) => {
+  const { url, userData, headers } = job.data;
+  try {
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: headers,
+      body: JSON.stringify(userData),
+      timeout: 180000 // 3 minutes in milliseconds
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error ${response.status}`);
+    }
+
+    const data = await response.json();
+    await redisClient.set(userData.id, JSON.stringify(data));
+    return data;
+  } catch (error) {
+    logger.error('Error creating user', { error, userData });
+    throw error;
+  }
+});
+
+userCreationQueue.on('failed', (job, err) => {
+  logger.error('Job failed', {
+    jobId: job.id,
+    userData: job.data.userData,
+    error: err.message,
+    stack: err.stack
+  });
+});
+
+userCreationQueue.on('error', (error) => {
+  logger.error('Queue error', {
+    error: error.message,
+    stack: error.stack
+  });
+});
+
+
+
+
