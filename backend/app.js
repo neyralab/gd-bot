@@ -144,14 +144,6 @@ bot.start(async (ctx) => {
       error,
       chat_id: ctx.chat.id.toString()
     });
-    try {
-      await ctx.reply(`Error: ${error.message}`);
-    } catch (e) {
-      logger.error('Error sending error message after replyWithPhoto error', {
-        error: e,
-        chat_id: ctx.chat.id.toString()
-      });
-    }
   }
 });
 
