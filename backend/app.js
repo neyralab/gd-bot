@@ -80,7 +80,7 @@ bot.start(async (ctx) => {
       await userCreationQueue.add({
         url,
         userData,
-        headers: headers
+        headers: headers,
       });
     } catch (error) {
       logger.error('Error queueing user creation', {
@@ -261,4 +261,18 @@ userCreationQueue.on('error', (error) => {
     error: error.message,
     stack: error.stack
   });
+});
+
+
+userCreationQueue.on('delayed', async (job) => {
+  try {
+    await job.retry();
+    logger.info('Delayed job retried', { jobId: job.id });
+  } catch (error) {
+    logger.error('Error retrying delayed job', {
+      jobId: job.id,
+      error: error.message,
+      stack: error.stack
+    });
+  }
 });
