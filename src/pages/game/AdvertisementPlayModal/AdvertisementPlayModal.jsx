@@ -41,36 +41,20 @@ export default function AdvertisementPlayModal() {
     }
   }, [advertisementModal]);
 
-  useEffect(() => {
-    const video = videoRef.current;
+  const handleLoadedMetadata = () => {
+    const duration = videoRef.current.duration;
+    const time = new Date();
+    time.setSeconds(time.getSeconds() + duration);
+    restart(time);
+    setVideoLoaded(true);
+  };
 
-    const handleLoadedMetadata = () => {
-      const duration = video.duration;
-      const time = new Date();
-      time.setSeconds(time.getSeconds() + duration);
-      restart(time);
-      setVideoLoaded(true);
-    };
-
-    const updateProgress = () => {
-      const currentTime = video.currentTime;
-      const duration = video.duration;
-      const progress = (currentTime / duration) * 100;
-      setProgress(progress);
-    };
-
-    if (video) {
-      video.addEventListener('loadedmetadata', handleLoadedMetadata);
-      video.addEventListener('timeupdate', updateProgress);
-    }
-
-    return () => {
-      if (video) {
-        video.removeEventListener('loadedmetadata', handleLoadedMetadata);
-        video.removeEventListener('timeupdate', updateProgress);
-      }
-    };
-  }, [advertisementModal]);
+  const updateProgress = () => {
+    const currentTime = videoRef.current.currentTime;
+    const duration = videoRef.current.duration;
+    const progress = (currentTime / duration) * 100;
+    setProgress(progress);
+  };
 
   const startWatching = async () => {
     const videoUrl = advertisementModal.videoUrl;
@@ -116,7 +100,13 @@ export default function AdvertisementPlayModal() {
   return (
     <div className={styles.container}>
       <div className={styles['video-wrapper']}>
-        <video ref={videoRef} className={styles.video} autoPlay />
+        <video
+          ref={videoRef}
+          className={styles.video}
+          autoPlay
+          onLoadedMetadata={handleLoadedMetadata}
+          onTimeUpdate={updateProgress}
+        />
         {videoLoaded && (
           <>
             <div

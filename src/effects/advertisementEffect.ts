@@ -6,7 +6,7 @@ interface AdvertisementVideoInfo {
   id: number;
   created_at: string;
   duration: number;
-  priority: 1;
+  priority: number;
   video: string;
   name: string;
   is_active: boolean;
