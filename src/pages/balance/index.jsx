@@ -2,17 +2,14 @@ import { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import classNames from 'classnames';
-import gsap from 'gsap';
 
 import { getToken } from '../../effects/set-token';
 import { storageConvertEffect } from '../../effects/storageEffects';
-
 import { setUser } from '../../store/reducers/userSlice';
 import { getUserEffect } from '../../effects/userEffects';
 import useButtonVibration from '../../hooks/useButtonVibration';
 import { getNumbers } from '../../utils/string';
-
+import { runInitAnimation } from './animations';
 import { Header } from '../../components/header';
 import { Button } from '../../components/button';
 import { InfoBox } from '../../components/info';
@@ -46,43 +43,7 @@ export const Balance = () => {
   const user = useSelector((state) => state?.user?.data);
 
   useEffect(() => {
-    /** Animation */
-    gsap.fromTo(
-      `[data-animation="balance-animation-2"]`,
-      {
-        opacity: 0,
-        y: -100,
-        scale: 0
-      },
-      {
-        opacity: 1,
-        x: 0,
-        y: 0,
-        scale: 1,
-        duration: 0.8,
-        ease: 'back.out(0.2)'
-      }
-    );
-
-    gsap.fromTo(
-      `[data-animation="balance-animation-1"]`,
-      {
-        opacity: 0,
-        x: window.innerWidth + 200,
-        y: -window.innerHeight + 500,
-        scale: 0
-      },
-      {
-        opacity: 1,
-        x: 0,
-        y: 0,
-        scale: 1,
-        stagger: 0.05,
-        duration: 0.5,
-        delay: 0.2,
-        ease: 'back.out(0.2)'
-      }
-    );
+    runInitAnimation();
   }, []);
 
   const showErrorMessage = () => {
@@ -146,12 +107,18 @@ export const Balance = () => {
       </div>
 
       <div className={styles.info}>
-        <span data-animation="balance-animation-1" className={styles['info-exchange']}>
+        <span
+          data-animation="balance-animation-1"
+          className={styles['info-exchange']}>
           {t('convert.equal')}
         </span>
-        <h2 data-animation="balance-animation-1" className={styles['info-title']}>
+
+        <h2
+          data-animation="balance-animation-1"
+          className={styles['info-title']}>
           {t('convert.mineSpace')}
         </h2>
+        
         {detail(t).map((item, index) => (
           <div key={`detail-${index}`} data-animation="balance-animation-1">
             <p className={styles['option-title']}>{item.title}</p>

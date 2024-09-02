@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import moment from 'moment';
-import gsap from 'gsap';
 
 import { Header } from '../../components/header';
 import { ReactComponent as CheckIcon } from '../../assets/check.svg';
 import SearchInput from './SearchInput';
+import { runInitAnimation } from './animations';
 
 import styles from './styles.module.scss';
 
@@ -96,60 +96,7 @@ export const LanguagePage = () => {
 
   useEffect(() => {
     if (!list) return;
-
-    /** Animation */
-    gsap.fromTo(
-      `[data-animation="language-animation-1"]`,
-      {
-        opacity: 0,
-        x: window.innerWidth + 200,
-        y: -window.innerHeight + 500,
-        scale: 0
-      },
-      {
-        opacity: 1,
-        x: 0,
-        y: 0,
-        scale: 1,
-        stagger: 0.05,
-        duration: 0.5,
-        delay: 0.15,
-        ease: 'back.out(0.2)'
-      }
-    );
-
-    gsap.fromTo(
-      `[data-animation="language-animation-2"]`,
-      {
-        opacity: 0,
-        x: 100,
-        scale: 0.5
-      },
-      {
-        opacity: 1,
-        x: 0,
-        scale: 1,
-        delay: 0.1,
-        duration: 0.5,
-        ease: 'back.out(0.2)'
-      }
-    );
-
-    gsap.fromTo(
-      `[data-animation="language-animation-3"]`,
-      {
-        opacity: 0,
-        x: 200,
-        scale: 0.5
-      },
-      {
-        opacity: 1,
-        x: 0,
-        scale: 1,
-        duration: 0.5,
-        ease: 'back.out(0.2)'
-      }
-    );
+    runInitAnimation();
   }, [list]);
 
   const changeLanguage = (option) => {

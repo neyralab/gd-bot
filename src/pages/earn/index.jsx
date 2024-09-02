@@ -8,7 +8,6 @@ import React, {
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
-import gsap from 'gsap';
 
 import { tasks as tasksFromFile, tasksText } from './tasks';
 import { isEnabledPartners } from '../../utils/featureFlags';
@@ -16,6 +15,7 @@ import { handlePartners, selectPartners } from '../../store/reducers/taskSlice';
 import { checkAllEarnTasks, getAllPartners } from '../../effects/EarnEffect';
 import { getAllTasks, getBalanceEffect } from '../../effects/balanceEffect';
 import { handleTasks } from '../../store/reducers/taskSlice';
+import { runInitAnimation } from './animations';
 
 import Menu from '../../components/Menu/Menu';
 import Tasks from './Tasks/index';
@@ -56,26 +56,7 @@ export default function EarnPage() {
   }, [earnedRecords]);
 
   useEffect(() => {
-    /** Animation */
-
-    gsap.fromTo(
-      `[data-animation="segmented-animation-1"]`,
-      {
-        opacity: 0,
-        x: 0,
-        y: -30,
-        scale: 0
-      },
-      {
-        opacity: 1,
-        x: 0,
-        y: 0,
-        scale: 1,
-        duration: 0.5,
-        delay: 0.2,
-        ease: 'back.out(0.2)'
-      }
-    );
+    runInitAnimation();
   }, []);
 
   const getTasks = async () => {

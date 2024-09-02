@@ -20,7 +20,8 @@
   color: #98989f;
 }
 
-.current_diamond, .cost_svg {
+.current_diamond,
+.cost_svg {
   width: 19px;
   height: 19px;
 }
@@ -204,4 +205,8 @@
   font-size: 20px;
   text-align: center;
   text-transform: capitalize;
+}
+
+.initial-state-for-animation {
+  opacity: 0;
 }

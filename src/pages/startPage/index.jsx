@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import CN from 'classnames';
-import gsap from 'gsap';
 
 import {
   selectAllWorkspaces,
@@ -32,6 +31,7 @@ import SystemModal from '../../components/SystemModal/SystemModal';
 import NavigatItem from './Navigator/NavigatItem';
 import Navigator from './Navigator/Navigator';
 import { parseSizeToBytes } from '../../utils/storage';
+import { runInitAnimation } from './animations';
 import style from './style.module.css';
 import navigatorStyle from './Navigator/Navigator.module.scss';
 
@@ -91,45 +91,7 @@ export const StartPage = ({ tariffs }) => {
 
   useEffect(() => {
     if (!allWorkspaces && !currentWorkspace) return;
-
-    /** Animation */
-    gsap.fromTo(
-      `[data-animation="start-page-animation-1"]`,
-      {
-        opacity: 0,
-        x: window.innerWidth + 200,
-        y: -window.innerHeight + 500,
-        scale: 0
-      },
-      {
-        opacity: 1,
-        x: 0,
-        y: 0,
-        scale: 1,
-        stagger: 0.05,
-        duration: 0.5,
-        delay: 0.2,
-        ease: 'back.out(0.2)'
-      }
-    );
-
-    gsap.fromTo(
-      `[data-animation="start-page-animation-2"]`,
-      {
-        opacity: 0,
-        y: -100,
-        scale: 0.5
-      },
-      {
-        opacity: 1,
-        y: 0,
-        scale: 1,
-        stagger: 0.2,
-        duration: 0.5,
-        delay: 0.1,
-        ease: 'back.out(0.2)'
-      }
-    );
+    runInitAnimation();
   }, [allWorkspaces, currentWorkspace]);
 
   const storage = useMemo(() => {
@@ -155,8 +117,6 @@ export const StartPage = ({ tariffs }) => {
       percent: { label: `${percent || 1}%`, value: percent }
     };
   }, [user]);
-
-  
 
   const openInNewTab = (url) => {
     window.open(url, '_blank', 'noreferrer');
@@ -272,7 +232,9 @@ export const StartPage = ({ tariffs }) => {
 
   return (
     <div ref={wrapperRef} className={`${style.container}`}>
-      <div data-animation="start-page-animation-2" className={CN(style.card, style.banner)}>
+      <div
+        data-animation="start-page-animation-2"
+        className={CN(style.card, style.banner)}>
         <img src={BannerSource} alt="banner" />
         <div className={style['banner-content']}>
           <div onClick={onOpenShareModal} className={style['banner-header']}>
