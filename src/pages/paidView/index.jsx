@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from 'react-router-dom';
 import { downloadFile } from 'gdgateway-client';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import CN from 'classnames';
 
 import { Header } from './components/header';
 import { Preview } from './components/preview';
 import { ReactComponent as StarIcon } from '../../assets/star.svg';
 
-import { getPaidShareFileEffect } from '../../effects/filesEffects';
-import { getDownloadOTT } from '../../effects/filesEffects';
+import { getPaidShareFileEffect, getDownloadOTT } from '../../effects/filesEffects';
 import { getFileCids } from '../../effects/file/getFileCid';
+import { makeInvoice } from '../../effects/paymentEffect';
 import { sendFileViewStatistic } from '../../effects/file/statisticEfect';
+import { selectPaymenttByKey } from '../../store/reducers/paymentSlice';
 import { INVOICE_TYPE } from '../../utils/createStarInvoice';
 
 import { removeExtension } from '../../utils/string';
@@ -26,9 +27,11 @@ const STEPS = {
 
 export const PaidView = () => {
   const dispatch = useDispatch();
-  const [file , setFile] = useState({});
+  const [file, setFile] = useState({});
   const [loading, setLoading] = useState(false);
   const [fileContent, setFileContent] = useState(null);
+  const user = useSelector((state) => state.user.data);
+  const ppvPayment = useSelector(selectPaymenttByKey('pay_per_view'));
   const [fullscreen, setFullscreen] = useState(false);
   const [step, setStep] = useState(STEPS.preview);
   const { id } = useParams();
@@ -36,18 +39,18 @@ export const PaidView = () => {
   useEffect(() => {
     if (id) {
       getPaidShareFileEffect(id)
-        .then(({data}) => {
+        .then(({ data }) => {
           const shareFile = { ...data };
           delete shareFile.file;
           setFile({ ...data.file, payShare: shareFile });
         })
-        .catch(() => {console.warn('cannot find file')})
+        .catch(() => { console.warn('cannot find file') })
     }
-  }, [id])
+  }, [id]);
 
   useEffect(() => {
-    if (file.slug) { getContent() }
-  }, [file])
+    if (file.slug) { getContent(); }
+  }, [file]);
 
   const getContent = async () => {
     try {
@@ -91,28 +94,35 @@ export const PaidView = () => {
     }
   };
 
-  const invoiceCallback = async (result) => {
+  const downloadContent = () => {
+    const link = document.createElement('a');
+    if (file.extension === 'svg') {
+      const blob = new Blob([svgString], { type: 'image/svg+xml' });
+      link.href = URL.createObjectURL(blob);
+    } else {
+      link.href = fileContent;
+    }
+
+    link.download = file.name;
+    link.dispatchEvent(
+      new MouseEvent('click', {
+        bubbles: true,
+        cancelable: true,
+        view: window
+      })
+    );
+
+    setTimeout(() => {
+      window.URL.revokeObjectURL(fileContent);
+      link.remove();
+    }, 100);
+  }
+
+  const invoicePreviewCallback = async (result) => {
     try {
       if (result === 'paid') {
-
         await sleep(500);
-        const body = {
-          priceView: state.view,
-          currency: 1,
-          priceDownload: state.download,
-          description: state.description,
-          file: file.id
-        }
-        const res = await createPaidShareFileEffect(file.id, body);
-        if (res.data) {
-          const shareObj = { ...res.data };
-          delete shareObj.file;
-          dispatch(updateFile({ ...file, share_file: shareObj }));
-          setTimeout(() => {
-            setIsProccess(false); 
-            onClose();
-          }, [1000])
-        }
+        setStep(STEPS.allowPreview);
       } else {
         console.warn(`error: The payment was not completed. ${result}`)
       }
@@ -121,27 +131,57 @@ export const PaidView = () => {
     }
   };
 
-  const onSubmit = async () => {
+  const invoiceDownloadCallback = async (result) => {
     try {
-      const shareId = isEditMode ? file.share_file.id : 0;
-      const input = `${ppvPayment.Type};0;${user.id};${file.id};${shareId}`;
+      if (result === 'paid') {
+        await sleep(500);
+        setStep(STEPS.download);
+        downloadContent();
+      } else {
+        console.warn(`error: The payment was not completed. ${result}`)
+      }
+    } catch (error) {
+      console.warn('error: ', error);
+    }
+  };
+
+  const showProcess = async () => {
+    try {
+      const input = `${ppvPayment.Type};0;${user.id};${file.id};${file.payShare.id}`;
       makeInvoice({
         input,
         dispatch,
-        callback: invoiceCallback,
+        callback: invoicePreviewCallback,
         type: INVOICE_TYPE.game,
-        theme: { multiplier: '', stars: 1 }
+        theme: { multiplier: '', stars: file.payShare.price_view }
       });
-      invoiceCallback('paid');
     } catch (error) {
-      setIsProccess(false); 
+      console.warn(error);
+    }
+  }
+
+  const downloadProcess = async () => {
+    try {
+      const input = `${ppvPayment.Type};0;${user.id};${file.id};${file.payShare.id}`;
+      makeInvoice({
+        input,
+        dispatch,
+        callback: invoiceDownloadCallback,
+        type: INVOICE_TYPE.game,
+        theme: { multiplier: '', stars: file.payShare.price_download }
+      });
+    } catch (error) {
       console.warn(error);
     }
   }
 
   const onShowFullContent = () => {
     if (step === STEPS.preview) {
-      setStep(STEPS.fullPreview);
+      showProcess();
+    } else if (step === STEPS.allowPreview) {
+      downloadProcess();
+    } else {
+      downloadContent();
     }
   }
 
@@ -185,12 +225,18 @@ export const PaidView = () => {
         onClick={onShowFullContent}
         className={styles.payButton}
       >
-        <p className={styles.payButton_text}>Pay per view</p>
+        <p className={styles.payButton_text}>
+          {step === STEPS.preview ? 'Pay per view' : 'Download to your G:Drive'}
+        </p>
         <p className={styles.payButton_price}>
-          <span>{file?.payShare?.price_view}</span>
+          {step !== STEPS.download && (
+            <span>
+              {step === STEPS.preview ? file?.payShare?.price_view : file?.payShare?.price_download}
+            </span>
+          )}
           <StarIcon width='20' height='20' viewBox="0 0 22  22" />
         </p>
       </button>
     </div>
-  )
+  );
 }

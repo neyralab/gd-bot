@@ -82,7 +82,6 @@ const PPVModal = () => {
         type: INVOICE_TYPE.game,
         theme: { multiplier: '', stars: 1 }
       });
-      invoiceCallback('paid');
     } catch (error) {
       setIsProccess(false); 
       console.warn(error);
