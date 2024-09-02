@@ -1,0 +1,10 @@
+.fullscreenBtn {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  background-color: #0E0E0E;
+  width: 32px;
+  height: 32px;
+  border-radius: 7px;
+  -webkit-tap-highlight-color: transparent;
+}

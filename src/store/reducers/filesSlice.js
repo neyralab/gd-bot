@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { toast } from 'react-toastify';
 
 import {
+  getPaidShareFilesEffect,
   getDeletedFilesEffect,
   getFavoritesEffect,
   getFilesByTypeEffect,
@@ -21,7 +22,7 @@ const filesSlice = createSlice({
     direction: 'asc',
     view: 'grid',
     currentFilter: null,
-    typesCount: null,
+    typesCount: {},
     uploadingFile: {
       file: null,
       progress: 0,
@@ -92,7 +93,7 @@ const filesSlice = createSlice({
       }
     },
     setFileTypesCount: (state, { payload }) => {
-      state.typesCount = payload;
+      state.typesCount = {...state.typesCount, ...payload};
     },
     updateTypesCount: (state) => {
       if (state?.typesCount) {
@@ -141,7 +142,7 @@ export const getFilesAction =
     dispatch(setLoading(true));
 
     try {
-      let files;
+      let files, data;
       switch (currentFilter) {
         case 'all':
           files = await getFilesEffect(filesPage);
@@ -151,6 +152,16 @@ export const getFilesAction =
           break;
         case 'delete':
           files = await getDeletedFilesEffect(filesPage);
+          break;
+        case 'payShare':
+          data = await getPaidShareFilesEffect(filesPage);
+          files = {
+            data: data.items.map((item) => {
+              const selectedFile = { ...item };
+              delete selectedFile.file;
+              return ({ ...item.file, share_file: selectedFile })
+            }),
+          }
           break;
         default:
           files = await getFilesByTypeEffect(currentFilter, filesPage);

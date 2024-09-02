@@ -200,6 +200,21 @@ export const getFilesEffect = async (page = 1, order = 'desc') => {
   return await axiosInstance.get(url).then((result) => result.data);
 };
 
+export const getPaidShareFilesEffect = async (page = 1) => {
+  const url = `${API_PATH}/share/file/list?page=${page}`;
+  return await axiosInstance.get(url).then((result) => result.data);
+};
+
+export const createPaidShareFileEffect = async (id, body) => {
+  const url = `${API_PATH}/share/file/${id}`;
+  return await axiosInstance.post(url, body).then((result) => result.data);
+};
+
+export const getPaidShareFileEffect = async (slug) => {
+  const url = `${API_PATH}/share/file/${slug}`;
+  return await axiosInstance.get(url).then((result) => result.data);
+};
+
 export const getFilesByTypeEffect = async (type, page = 1) => {
   return axiosInstance
     .get(

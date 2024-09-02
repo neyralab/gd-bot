@@ -17,6 +17,8 @@ import { handleFileMenu } from '../../../../store/reducers/modalSlice';
 
 import GhostLoader from '../../../../components/ghostLoader';
 import { FileItem } from '../../../../components/fileItem';
+import { PayShareFile } from '../../../../components/fileItem/payShare';
+
 import { ReactComponent as FileIcon } from '../../../../assets/file_draft.svg';
 
 import CN from 'classnames';
@@ -73,14 +75,24 @@ const FileList = ({ files, checkedFile, loading }) => {
         next={fetchMoreFiles}
         hasMore={hasMore}
         scrollableTarget="scrollableDiv">
-        {files.map((file) => (
+        {files.map((file) => {
+          if (file.share_file)
+            return (
+              <PayShareFile
+                file={file}
+                key={file?.id}
+                checkedFile={checkedFile}
+                callback={onFileSelect}
+              />
+            )
+          return (
           <FileItem
             file={file}
             key={file?.id}
             checkedFile={checkedFile}
             callback={onFileSelect}
           />
-        ))}
+        )})}
       </InfiniteScroll>
     </div>
   ) : (

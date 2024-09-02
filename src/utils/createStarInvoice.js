@@ -3,6 +3,7 @@ import { isDevEnv } from '../utils/isDevEnv';
 const INVOICE_TYPE = {
   boost: 'boost',
   game: 'game',
+  ppv: 'ppv'
 }
 
 const defPayload = ''
@@ -19,10 +20,6 @@ const createInvoice = ({ type, additionalData }) => {
           amount: isDevEnv() ? 1 : additionalData.price
         }
       ],
-      // photo_url: 'https://cdn.prod.website-files.com/64a2a26178ac203cccd4a006/64ce383c9d9dd1b5884efdc4_GhostDrive-Spaceship.webp',
-      // photo_size: 97440,
-      // photo_width: 300,
-      // photo_height: 250,
     }
   } else if (type === INVOICE_TYPE.game) {
     return {
@@ -35,10 +32,18 @@ const createInvoice = ({ type, additionalData }) => {
           amount: isDevEnv() ? 1 : additionalData.price
         }
       ],
-      // photo_url: 'https://cdn.prod.website-files.com/64a2a26178ac203cccd4a006/64ce383c9d9dd1b5884efdc4_GhostDrive-Spaceship.webp',
-      // photo_size: 97440,
-      // photo_width: 300,
-      // photo_height: 250,
+    }
+  } else if (type === INVOICE_TYPE.ppv) {
+    return {
+      title: 'Ghost Drive Pay per View',
+      description: 'Enables payment processing for the Pay-Per-View feature.',
+      payload: additionalData.payload || defPayload,
+      prices: [
+        {
+          label: `Ghost Drive Pay per View`,
+          amount: additionalData.price
+        }
+      ],
     }
   }
 }
