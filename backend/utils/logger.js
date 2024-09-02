@@ -8,6 +8,7 @@ const logger = new graylog2.graylog({
     }
   ],
   hostname: process.env.BOT_NAME,
+  source: process.env.BOT_NAME,
   facility: 'backend'
 });
 

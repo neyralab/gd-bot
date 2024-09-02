@@ -70,7 +70,12 @@
     "playAndWin": "Joue à {name} et gagne",
     "joinInstagram": "Rejoins notre Instagram",
     "joinGit": "Rejoins notre Github",
-    "joinNewsTg": "Rejoins notre chaîne d'information"
+    "joinNewsTg": "Rejoins notre chaîne d'information",
+    "freeSpin": "Tours gratuits",
+    "earnGPoints": "Gagnez des points GhostDrive",
+    "spinWheel": "Tourner",
+    "wheelNextSpin": "Le prochain tour commence dans",
+    "watchVideo": "Regarder la vidéo"
   },
   "airdrop": {
     "airdrop": "Airdrop",

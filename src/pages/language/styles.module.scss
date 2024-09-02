@@ -13,24 +13,33 @@
   font-size: 12px;
   font-weight: 400;
   line-height: 18px;
-  color: #FFFFFF99;
+  color: #ffffff99;
   text-transform: uppercase;
   margin-top: 20px;
   margin-bottom: 12px;
 }
 
 .list {
-  background-color: #0f0f0f;
-  border-radius: 10px;
-  padding: 4px 12px;
+  display: block;
 }
 
 .item {
   display: flex;
   justify-content: space-between;
-  padding: 8px;
-  border-bottom: 1px solid #1D1D1D;
+  border-bottom: 1px solid #1d1d1d;
+  background-color: #0f0f0f;
   cursor: pointer;
+  padding: 12px 20px;
+
+  &:first-child {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+  }
+
+  &:last-child {
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+  }
 }
 
 .item:last-child {

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { TelegramShareButton } from 'react-share';
 import { useTranslation } from 'react-i18next';
+import gsap from 'gsap';
 import Menu from '../../components/Menu/Menu';
 import Task from '../../components/Task/Task';
 import { tasks as tasksFromFile } from './tasks';
@@ -18,11 +19,11 @@ import gameJson from '../../translation/locales/en/game.json';
 const FRIEND_TASK = {
   id: 'invite_more',
   isDone: false,
-  title: "Invite 25 Premium friends",
+  title: 'Invite 25 Premium friends',
   points: '1M',
   imgUrl: '/assets/likeGold.png',
-  translatePath: 'friends.invitePremiumFriend',
-}
+  translatePath: 'friends.invitePremiumFriend'
+};
 
 export default function FriendsPage() {
   const link = useSelector((state) => state.user.link);
@@ -32,9 +33,8 @@ export default function FriendsPage() {
   const [tasks, setTasks] = useState([]);
   const [friends, setFriends] = useState([]);
   const [friendsAreLoading, setFriendsAreLoading] = useState(true);
-  const [animatedTaskIds, setAnimatedTaskIds] = useState(new Set());
-  const [animatedFriendIds, setAnimatedFriendIds] = useState(new Set());
   const [defaultPoints, setDefaultPoints] = useState('0');
+  const [showContent, setShowContent] = useState(false);
   const handleVibrationClick = useButtonVibration();
 
   useEffect(() => {
@@ -60,28 +60,95 @@ export default function FriendsPage() {
   }, [dispatch]);
 
   useEffect(() => {
-    const notAnimatedTasks = tasks.filter((el) => !animatedTaskIds.has(el.id));
-
-    notAnimatedTasks.forEach((task, index) => {
-      setTimeout(() => {
-        setAnimatedTaskIds((prevIds) => new Set(prevIds).add(task.id));
-      }, index * 100);
-    });
-  }, [tasks]);
+    if (friendsAreLoading || !tasks || !tasks.length) {
+      setShowContent(false);
+    } else {
+      setShowContent(true);
+    }
+  });
 
   useEffect(() => {
-    const notAnimatedFriends = friends.filter(
-      (el) => !animatedFriendIds.has(el.username)
+    /** Animation */
+
+    if (!showContent) return;
+
+    gsap.fromTo(
+      `[data-animation="task-animation-1"]`,
+      {
+        opacity: 0,
+        x: window.innerWidth + 200,
+        y: -window.innerHeight + 500,
+        scale: 0
+      },
+      {
+        opacity: 1,
+        x: 0,
+        y: 0,
+        scale: 1,
+        stagger: 0.05,
+        duration: 0.5,
+        ease: 'back.out(0.2)'
+      }
     );
 
-    notAnimatedFriends.forEach((friend, index) => {
-      setTimeout(() => {
-        setAnimatedFriendIds((prevIds) =>
-          new Set(prevIds).add(friend.username)
-        );
-      }, index * 100);
-    });
-  }, [friends]);
+    gsap.fromTo(
+      `[data-animation="friends-animation-2"]`,
+      {
+        opacity: 0,
+        x: window.innerWidth + 200,
+        y: -100,
+        scale: 0
+      },
+      {
+        opacity: 1,
+        x: 0,
+        y: 0,
+        scale: 1,
+        duration: 0.4,
+        delay: tasks.length * 0.05,
+        ease: 'power1.out'
+      }
+    );
+
+    gsap.fromTo(
+      `[data-animation="friends-animation-3"]`,
+      {
+        opacity: 0,
+        x: 100,
+        y: -30,
+        scale: 0
+      },
+      {
+        opacity: 1,
+        x: 0,
+        y: 0,
+        scale: 1,
+        duration: 0.5,
+        delay: tasks.length * 0.05 + 0.1,
+        ease: 'back.out(0.2)'
+      }
+    );
+
+    gsap.fromTo(
+      `[data-animation="person-animation-1"]`,
+      {
+        opacity: 0,
+        x: window.innerWidth + 200,
+        y: -window.innerHeight + 500,
+        scale: 0
+      },
+      {
+        opacity: 1,
+        x: 0,
+        y: 0,
+        scale: 1,
+        stagger: 0.05,
+        duration: 0.5,
+        delay: tasks.length * 0.05 + 0.13,
+        ease: 'back.out(0.2)'
+      }
+    );
+  }, [showContent]);
 
   return (
     <div className={styles.container}>
@@ -89,62 +156,67 @@ export default function FriendsPage() {
         <h1>{t('friends.inviteGetBonus')}</h1>
       </div>
 
-      <div className={styles['tasks-list']}>
-        {tasks.map((task) => {
-          if (animatedTaskIds.has(task.id)) {
-            return (
-              <Task
-                key={task.id}
-                isDone={task.isDone}
-                title={task.title}
-                points={task.points}
-                imgUrl={task.imgUrl}
-                translatePath={getKeyTranslate(gameJson, task.title)}
-              />
-            );
-          } else {
-            return null;
-          }
-        })}
-      </div>
+      {!showContent && (
+        <div className={styles['loader-container']}>
+          <LoaderIcon />
+        </div>
+      )}
 
-      <TelegramShareButton
-        className={styles['invite-button']}
-        url={link.copy}
-        title={t('friends.inviteFriend')}
-        onClick={handleVibrationClick()}>
-        <span>{t('friends.inviteFriend')}</span>
-      </TelegramShareButton>
-
-      <div className={styles['friends-container']}>
-        <h2>
-          {t('friends.yourFriends')} {friendsAreLoading ? '' : `(${friends.length || 0})`}
-        </h2>
-
-        {friendsAreLoading && (
-          <div className={styles['loader-container']}>
-            <LoaderIcon />
-          </div>
-        )}
-
-        {!friendsAreLoading && (
-          <div className={styles['friends-list']}>
-            {friends.map((friend) => {
-              if (animatedFriendIds.has(friend.username)) {
-                return (
-                  <Person
-                    key={friend.username}
-                    title={'@' + friend.username}
-                    points={defaultPoints}
-                  />
-                );
-              } else {
-                return null;
-              }
+      {showContent && (
+        <>
+          <div className={styles['tasks-list']}>
+            {tasks.map((task) => {
+              return (
+                <Task
+                  key={task.id}
+                  isDone={task.isDone}
+                  title={task.title}
+                  points={task.points}
+                  imgUrl={task.imgUrl}
+                  translatePath={getKeyTranslate(gameJson, task.title)}
+                  className={styles['initial-state-for-animation']}
+                />
+              );
             })}
           </div>
-        )}
-      </div>
+
+          <TelegramShareButton
+            className={styles['invite-button']}
+            url={link.copy}
+            title={t('friends.inviteFriend')}
+            onClick={handleVibrationClick()}>
+            <span
+              data-animation="friends-animation-2"
+              className={styles['initial-state-for-animation']}>
+              {t('friends.inviteFriend')}
+            </span>
+          </TelegramShareButton>
+
+          <div className={styles['friends-container']}>
+            <h2
+              data-animation="friends-animation-3"
+              className={styles['initial-state-for-animation']}>
+              {t('friends.yourFriends')}{' '}
+              {friendsAreLoading ? '' : `(${friends.length || 0})`}
+            </h2>
+
+            {!friendsAreLoading && (
+              <div className={styles['friends-list']}>
+                {friends.map((friend) => {
+                  return (
+                    <Person
+                      key={friend.username}
+                      title={'@' + friend.username}
+                      points={defaultPoints}
+                      className={styles['initial-state-for-animation']}
+                    />
+                  );
+                })}
+              </div>
+            )}
+          </div>
+        </>
+      )}
 
       <Menu />
     </div>

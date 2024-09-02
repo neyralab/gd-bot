@@ -71,7 +71,8 @@
     "point": "ポイント",
     "invitePremiumFriend": "25人のプレミアムフレンドを招待",
     "joinInstagramLong": "Instagramチャンネルに参加する",
-    "joinGitLong": "Githubチャンネルに参加する"
+    "joinGitLong": "Githubチャンネルに参加する",
+    "watchVideo": "動画を見る"
   },
   "wallet": {
     "disconnect": "本当に切断しますか？",
@@ -126,7 +127,9 @@
     "joinTGnews": "ニュースTGチャンネルに参加しました",
     "notJoinInstagram": "Instagramチャンネルに参加しませんでした",
     "notJoinGithub": "Githubチャンネルに参加しませんでした",
-    "notJoinTGnews": "ニュースTGチャンネルに参加しませんでした"
+    "notJoinTGnews": "ニュースTGチャンネルに参加しませんでした",
+    "watchedVideo": "ビデオを視聴しました",
+    "noWatchedVideo": "ビデオを視聴していません"
   },
   "language": {
     "search": "検索",
@@ -136,7 +139,8 @@
   "share": {
     "share": "共有する",
     "successfullySend": "{size}を{name}に正常に送信しました",
-    "shareStorage": "ストレージを共有する",
+    "shareStorage": "(G:Drive)にギフトを送る",
+    "shareGift": "Ghost Driveのギフト",
     "storage": "ストレージ",
     "increaseStorage": "ストレージ容量が{size}増加しました",
     "increaseStorageDesc": "ストレージスペースがアップグレードされたことをお知らせします。追加の{size}が利用可能です。",

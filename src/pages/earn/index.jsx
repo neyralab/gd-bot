@@ -8,6 +8,7 @@ import React, {
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
+import gsap from 'gsap';
 
 import { tasks as tasksFromFile, tasksText } from './tasks';
 import { isEnabledPartners } from '../../utils/featureFlags';
@@ -33,7 +34,9 @@ export default function EarnPage() {
   const { tasks: partnerTasks } = useSelector(selectPartners);
   const { t } = useTranslation('game');
   const [tasks, setTasks] = useState([]);
+  const [tasksAreLoading, setTasksAreLoading] = useState(true);
   const [missions, setMissions] = useState([]);
+  const [missionsAreLoading, setMissionsAreLoading] = useState(true);
   const [earnedRecords, setEarnedRecords] = useState([]);
   const [activeSegment, setActiveSegment] = useState(DEFAULT_SEGMENT_OPTION);
   const [modalSelectedTask, setModalSelectedTask] = useState(null);
@@ -43,8 +46,8 @@ export default function EarnPage() {
   const showWheel = useMemo(() => {
     const now = moment().unix();
     const last24Hours = now - 24 * 60 * 60;
-    return earnedRecords.some(game => {
-      if (game.text !== "Game tapping") {
+    return earnedRecords.some((game) => {
+      if (game.text !== 'Game tapping') {
         return false;
       }
       const gameEndsAt = parseInt(game.game.game_ends_at, 10);
@@ -52,10 +55,35 @@ export default function EarnPage() {
     });
   }, [earnedRecords]);
 
+  useEffect(() => {
+    /** Animation */
+
+    gsap.fromTo(
+      `[data-animation="segmented-animation-1"]`,
+      {
+        opacity: 0,
+        x: 0,
+        y: -30,
+        scale: 0
+      },
+      {
+        opacity: 1,
+        x: 0,
+        y: 0,
+        scale: 1,
+        duration: 0.5,
+        delay: 0.2,
+        ease: 'back.out(0.2)'
+      }
+    );
+  }, []);
+
   const getTasks = async () => {
+    setTasksAreLoading(true);
+
     try {
       const res = await checkAllEarnTasks();
-      /** In this code you will see both backand and frontend hardcoded tasks
+      /** In this code you will see both backend and frontend hardcoded tasks
        * Hardcoded have img, title, some other props that are needed in frontend.
        * So here those 2 arrays are combined.
        * It takes the hardcoded frontend array with its order,
@@ -76,8 +104,10 @@ export default function EarnPage() {
           };
         });
         setTasks(updatedTasks);
+        setTasksAreLoading(false);
       } else {
         setTasks([]);
+        setTasksAreLoading(false);
       }
     } catch (error) {
       console.error('Error fetching tasks:', error);
@@ -86,6 +116,8 @@ export default function EarnPage() {
   };
 
   const getMission = async () => {
+    setMissionsAreLoading(true);
+
     try {
       const allMissions = await getAllTasks();
       dispatch(handleTasks(allMissions));
@@ -93,13 +125,17 @@ export default function EarnPage() {
         data: { data: userTasks }
       } = await getBalanceEffect();
       setEarnedRecords(userTasks);
-      const realTasks = allMissions.map((task) =>
-        ({ ...task, text: tasksText[task.action], done: !!task.earn })
-      );
+      const realTasks = allMissions.map((task) => ({
+        ...task,
+        text: tasksText[task.action],
+        done: !!task.earn
+      }));
       setMissions(realTasks.sort((a, b) => a.amount - b.amount));
+      setMissionsAreLoading(false);
     } catch (error) {
       console.error('Error fetching tasks:', error);
       setMissions([]);
+      setMissionsAreLoading(false);
     }
   };
 
@@ -160,6 +196,7 @@ export default function EarnPage() {
             earnModalRef={earnModalRef}
             getTasks={getTasks}
             setModalSelectedTask={setModalSelectedTask}
+            isLoading={tasksAreLoading}
           />
         );
       case 'partner':
@@ -174,6 +211,7 @@ export default function EarnPage() {
           <Mission
             tasks={missions}
             setModalSelectedTask={setModalSelectedTask}
+            isLoading={missionsAreLoading}
           />
         );
       default:
@@ -181,6 +219,7 @@ export default function EarnPage() {
           tasks={tasks}
           getTasks={getTasks}
           setModalSelectedTask={setModalSelectedTask}
+          isLoading={tasksAreLoading}
         />;
     }
   };
@@ -199,7 +238,9 @@ export default function EarnPage() {
             <button onClick={openFortuneWheel}>
               <img src="/assets/fortune-wheel.png" alt="Fortune Wheel" />
             </button>
-          ) : (<span className={styles.spacer}></span>)}
+          ) : (
+            <span className={styles.spacer}></span>
+          )}
         </div>
 
         <p className={styles.text}>{t('earn.getReward')}</p>

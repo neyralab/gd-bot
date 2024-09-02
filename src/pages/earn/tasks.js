@@ -99,6 +99,15 @@ export const tasks = [
     imgUrl: '/assets/github.png',
     joinLink: 'https://github.com/neyralab'
   },
+  {
+    id: 'WATCH_VIDEO',
+    isDone: false,
+    title: 'Watch video',
+    translatePath: 'earn.watchVideo',
+    points: 0,
+    imgUrl: '/assets/youtube.png',
+    joinLink: 'https://youtu.be/EHDzXihUUbc'
+  },
 ];
 export const tasksText = {
   UPLOAD_FILE_FREE: 'Upload file',
@@ -123,5 +132,7 @@ export const tasksText = {
   INVITE_25_PREMIUM_FRIENDS: 'Invite 25 Premium friends',
   JOIN_INSTAGRAM: 'Join our Instagram channel',
   JOIN_GITHUB: 'Join our Github channel',
-  TAP_LEVEL_8: 'Extra bonus for reaching the 8 tapping level'
+  TAP_LEVEL_8: 'Extra bonus for reaching the 8 tapping level',
+  TAP_LEVEL_8: 'Extra bonus for reaching the 8 tapping level',
+  WATCH_VIDEO: 'Watch video'
 }

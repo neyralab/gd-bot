@@ -71,7 +71,8 @@
     "point": "Баллы",
     "invitePremiumFriend": "Пригласите 25 друзей с Premium",
     "joinInstagramLong": "Присоединяйтесь к нашему каналу в Instagram",
-    "joinGitLong": "Присоединяйтесь к нашему каналу на Github"
+    "joinGitLong": "Присоединяйтесь к нашему каналу на Github",
+    "watchVideo": "Смотреть видео"
   },
   "wallet": {
     "disconnect": "Вы уверены, что хотите отключить?",
@@ -126,7 +127,9 @@
     "joinTGnews": "Вы присоединились к нашему новостному каналу TG",
     "notJoinInstagram": "Вы не присоединились к нашему каналу в Instagram",
     "notJoinGithub": "Вы не присоединились к нашему каналу на Github",
-    "notJoinTGnews": "Вы не присоединились к нашему новостному каналу TG"
+    "notJoinTGnews": "Вы не присоединились к нашему новостному каналу TG",
+    "watchedVideo": "Вы посмотрели видео",
+    "noWatchedVideo": "Вы не посмотрели видео"
   },
   "language": {
     "search": "Поиск",
@@ -136,7 +139,8 @@
   "share": {
     "share": "Поделиться",
     "successfullySend": "Вы успешно отправили {size} пользователю {name}",
-    "shareStorage": "Поделиться хранилищем",
+    "shareStorage": "Отправить подарок (G:Drive)",
+    "shareGift": "Подарок Ghost Drive",
     "storage": "Хранилище",
     "increaseStorage": "Емкость вашего хранилища увеличена на {size}",
     "increaseStorageDesc": "Рады сообщить, что ваше пространство для хранения было обновлено. Теперь у вас есть дополнительные {size}.",

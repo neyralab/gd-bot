@@ -30,21 +30,32 @@
 
 .contentActive {
   margin-left: 10px;
-}
 
-.contentActive > .input {
-  width: calc(100% - 50px);
+  .input {
+    width: calc(100% - 50px);
+  }
+
+  .icon {
+    path {
+      fill: #ffffff;
+    }
+  }
 }
 
 .icon {
   height: 30px;
   width: 30px;
+  transition: 0.2s;
+
+  path {
+    fill: #9b9b9b;
+  }
 }
 
 .input {
   font-family: 'SF Pro Text';
-  font-size: 21px;
-  font-weight: 700;
+  font-size: 18px;
+  font-weight: 500;
   line-height: 25px;
   margin-left: 10px;
   background-color: transparent;
@@ -52,7 +63,9 @@
   color: white;
 }
 
-.input:hover, .input:focus, .input:focus-visible  {
+.input:hover,
+.input:focus,
+.input:focus-visible {
   border: none;
   outline: none;
 }

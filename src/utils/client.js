@@ -44,3 +44,7 @@ export function isPhone() {
   if (/iPhone|iPad|iPod/i.test(userAgent)) { return true }
   return false;
 }
+
+export function isWebPlatform(tgClient) {
+  return tgClient?.platform === 'weba';
+}

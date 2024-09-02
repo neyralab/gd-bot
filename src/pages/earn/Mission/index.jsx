@@ -1,24 +1,39 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import CN from 'classnames';
+import gsap from 'gsap';
 
 import { getKeyTranslate } from '../../../translation/utils';
 import translateEng from '../../../translation/locales/en/system.json';
+import ListLoader from '../ListLoader/ListLoader';
 
 import styles from './styles.module.css';
 
-export default function Mission({ tasks }) {
-  const [animatedTaskIds, setAnimatedTaskIds] = useState(new Set());
+export default function Mission({ tasks, isLoading }) {
   const { t } = useTranslation('system');
 
   useEffect(() => {
-    const notAnimatedTasks = tasks.filter((el) => !animatedTaskIds.has(el.id));
+    /** Animation */
+    if (!tasks || !tasks.length) return;
 
-    notAnimatedTasks.forEach((task, index) => {
-      setTimeout(() => {
-        setAnimatedTaskIds((prevIds) => new Set(prevIds).add(task.id));
-      }, index * 100);
-    });
+    gsap.fromTo(
+      `[data-animation="mission-animation-1"]`,
+      {
+        opacity: 0,
+        x: window.innerWidth + 200,
+        y: -window.innerHeight + 500,
+        scale: 0
+      },
+      {
+        opacity: 1,
+        x: 0,
+        y: 0,
+        scale: 1,
+        stagger: 0.05,
+        duration: 0.5,
+        ease: 'back.out(0.2)'
+      }
+    );
   }, [tasks]);
 
   const onDownloadClick = useCallback(() => {
@@ -31,32 +46,38 @@ export default function Mission({ tasks }) {
     window.open(url);
   }, []);
 
+  if (isLoading) {
+    return <ListLoader />;
+  }
+
   return (
     <div>
       <ul className={styles.list}>
         {tasks.map((task, index) => {
-          if (animatedTaskIds.has(task.id)) {
-            return (
-              <li
+          return (
+            <li
+              data-animation="mission-animation-1"
               onClick={
                 task?.action.toLowerCase()?.includes('download')
                   ? onDownloadClick
                   : undefined
               }
-              key={index}
+              key={task.id}
               className={CN(task?.done && styles.done, styles.item)}>
               <p className={styles.item_text}>
-                {t(getKeyTranslate(translateEng, task?.point?.text || task?.text || ''))}
+                {t(
+                  getKeyTranslate(
+                    translateEng,
+                    task?.point?.text || task?.text || ''
+                  )
+                )}
               </p>
               <p
                 className={
                   styles.point
                 }>{`+${task.amount} ${task.amount > 1 ? t('task.points') : t('task.point')}`}</p>
             </li>
-            )
-          } else {
-            return null;
-          }
+          );
         })}
       </ul>
     </div>

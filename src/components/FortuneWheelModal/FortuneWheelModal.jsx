@@ -22,7 +22,8 @@ import styles from './FortuneWheelModal.module.scss';
 const FortuneWheelModal = forwardRef((_, ref) => {
   const modalRef = useRef(null);
   const systemModalRef = useRef(null);
-  const { t } = useTranslation('system');
+  const ts = useTranslation('system');
+  const tg = useTranslation('game');
   const [isOpen, setIsOpen] = useState(false);
   const [isInitialized, setIsInitialized] = useState(false);
   const [available, setAvailable] = useState(true); // 'free', pendingGame, false
@@ -63,12 +64,12 @@ const FortuneWheelModal = forwardRef((_, ref) => {
       setIsInitialized(true);
     } catch (error) {
       systemModalRef.current.open({
-        title: t('message.error'),
-        text: error.response?.data?.errors || t('message.serverError'),
+        title: ts.t('message.error'),
+        text: error.response?.data?.errors || ts.t('message.serverError'),
         actions: [
           {
             type: 'default',
-            text: t('message.ok'),
+            text: ts.t('message.ok'),
             onClick: () => {
               systemModalRef.current.close();
             }
@@ -130,7 +131,7 @@ const FortuneWheelModal = forwardRef((_, ref) => {
               <div className={styles.container}>
                 <div className={styles.header}>
                   <h2>
-                    {isInitialized && available && 'Earn GhostDrive Points'}
+                    {isInitialized && available && tg.t('earn.earnGPoints')}
                   </h2>
 
                   <div
@@ -141,7 +142,9 @@ const FortuneWheelModal = forwardRef((_, ref) => {
                 </div>
 
                 {isInitialized && available && (
-                  <strong className={styles.description}>Free Spin</strong>
+                  <strong className={styles.description}>
+                    {tg.t('earn.freeSpin')}
+                  </strong>
                 )}
 
                 <div className={styles.content}>

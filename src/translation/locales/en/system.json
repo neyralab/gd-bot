@@ -71,7 +71,8 @@
     "point": "Point",
     "invitePremiumFriend": "Invite 25 Premium friends",
     "joinInstagramLong": "Join our Instagram channel",
-    "joinGitLong": "Join our Github channel"
+    "joinGitLong": "Join our Github channel",
+    "watchVideo": "Watch video"
   },
   "wallet": {
     "disconnect": "Are you sure you want to disconnect?",
@@ -126,7 +127,9 @@
     "joinTGnews": "You joined our News TG Channel",
     "notJoinInstagram": "You did not join our Instagram Channel",
     "notJoinGithub": "You did not join our Github Channel",
-    "notJoinTGnews": "You did not join our News TG Channel"
+    "notJoinTGnews": "You did not join our News TG Channel",
+    "watchedVideo": "You have watched the video",
+    "noWatchedVideo": "You have not watched the video"
   },
   "language": {
     "search": "Search",
@@ -136,7 +139,8 @@
   "share": {
     "share": "Share",
     "successfullySend": "You successfully send {size} to {name}",
-    "shareStorage": "Share Storage",
+    "shareStorage": "Send Gift (G:Drive)",
+    "shareGift": "Ghost Drive Gift",
     "storage": "Storage",
     "increaseStorage": "Your storage capacity has increased by {size}",
     "increaseStorageDesc": "We're excited to inform you that your storage space has been upgraded. You now have an additional {size}.",

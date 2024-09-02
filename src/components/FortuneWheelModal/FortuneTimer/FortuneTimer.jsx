@@ -1,10 +1,13 @@
 import React from 'react';
 import { useTimer } from 'react-timer-hook';
+import { useTranslation } from 'react-i18next';
 import { formatTime } from '../../../utils/dates';
 import { ReactComponent as StarIcon } from '../../../assets/star.svg';
 import styles from './FortuneTimer.module.scss';
 
 export default function FortuneTimer({ timestamp, onComplete }) {
+  const { t } = useTranslation('game');
+
   const { seconds, minutes, hours } = useTimer({
     expiryTimestamp: timestamp,
     onExpire: () => {
@@ -18,7 +21,7 @@ export default function FortuneTimer({ timestamp, onComplete }) {
 
   return (
     <div className={styles.container}>
-      <div className={styles.description}>The next spin starts in</div>
+      <div className={styles.description}>{t('earn.wheelNextSpin')}</div>
       <div className={styles.timer}>
         {formatTime(hours || 24)}:{formatTime(minutes || 0)}:
         {formatTime(seconds || 0)}

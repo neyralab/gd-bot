@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { TonConnectUIProvider } from '@tonconnect/ui-react';
@@ -13,6 +13,7 @@ import { setExperienceLevel } from './store/reducers/gameSlice';
 
 import { getUserEffect } from './effects/userEffects';
 import { authorizeUser } from './effects/authorizeUser';
+import { setPaymentTypesEffect } from './effects/paymentEffect';
 import { storageListEffect } from './effects/storageEffects';
 import { API_WEB_APP_URL } from './utils/api-urls';
 import { useLanguage } from './utils/useLanguage';
@@ -39,17 +40,19 @@ import NodesWelcomePage from './pages/nodes-welcome';
 import NodesPage from './pages/nodes';
 import NotAllow from './pages/notAllow';
 
-import './App.css';
+import { isEnabledMobileOnly } from './utils/featureFlags';
+import { isWebPlatform} from './utils/client';
 
-const ALLOW_PREVIEW = isPhone() || isDevEnv();
+import './App.css';
 
 export const tg = window.Telegram.WebApp;
 const GA = 'G-VEPRY1XE4E';
 
 function App() {
-  useLanguage();
-  const dispatch = useDispatch();
+  const ALLOW_PREVIEW = useMemo(() => (!!isEnabledMobileOnly || !isWebPlatform(tg)), [tg]);
   const [tariffs, setTariffs] = useState(null);
+  const dispatch = useDispatch();
+  useLanguage();
 
   const currentUser = {
     initData: tg.initData
@@ -84,6 +87,7 @@ function App() {
         dispatch(setCurrentWorkspace(data?.ws_id));
         dispatch(setWorkspacePlan(data?.workspace_plan));
       });
+      await setPaymentTypesEffect(dispatch);
       await storageListEffect(token).then((data) => {
         setTariffs(data);
       });

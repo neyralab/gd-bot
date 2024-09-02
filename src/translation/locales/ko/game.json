@@ -70,7 +70,12 @@
     "playAndWin": "{name}를 플레이하고 승리하세요",
     "joinInstagram": "우리 Instagram에 가입하세요",
     "joinGit": "우리 Github에 가입하세요",
-    "joinNewsTg": "우리 뉴스 채널에 가입하세요"
+    "joinNewsTg": "우리 뉴스 채널에 가입하세요",
+    "freeSpin": "무료 스핀",
+    "earnGPoints": "GhostDrive 포인트 획득",
+    "spinWheel": "회전",
+    "wheelNextSpin": "다음 스핀은 시작됩니다",
+    "watchVideo": "비디오 보기"
   },
   "airdrop": {
     "airdrop": "에어드롭",

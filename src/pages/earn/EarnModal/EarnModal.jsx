@@ -13,6 +13,7 @@ import {
   checkTgJoin,
   checkXJoin,
   checkGithubJoin,
+  checkWatchVideo,
   checkInstagramJoin,
   checkYoutubeJoin,
   trackSocial,
@@ -30,7 +31,8 @@ const socialDependence = {
   JOIN_TWITTER: 'TWITTER',
   JOIN_YOUTUBE: 'YOUTUBE',
   JOIN_INSTAGRAM: 'INSTAGRAM',
-  JOIN_GITHUB: 'GITHUB'
+  JOIN_GITHUB: 'GITHUB',
+  WATCH_VIDEO: 'WATCH'
 }
 
 const EarnModal = forwardRef(({ item, onTasksRequireCheck }, ref) => {
@@ -74,6 +76,9 @@ const EarnModal = forwardRef(({ item, onTasksRequireCheck }, ref) => {
       case 'JOIN_GITHUB':
         fn = checkGithubJoin;
         break;
+      case 'WATCH_VIDEO':
+        fn = checkWatchVideo;
+        break;
       }
 
     const res = fn ? await fn() : null;
@@ -101,6 +106,9 @@ const EarnModal = forwardRef(({ item, onTasksRequireCheck }, ref) => {
           break;
         case 'JOIN_GITHUB':
           text = t('message.joinGithub');
+          break;
+        case 'WATCH_VIDEO':
+          text = t('message.watchedVideo');
           break;
       }
 
@@ -138,6 +146,9 @@ const EarnModal = forwardRef(({ item, onTasksRequireCheck }, ref) => {
           break;
         case 'JOIN_GITHUB':
           text = t('message.notJoinGithub');
+          break;
+        case 'WATCH_VIDEO':
+          text = t('message.noWatchedVideo');
           break;
       }
 
@@ -211,7 +222,9 @@ const EarnModal = forwardRef(({ item, onTasksRequireCheck }, ref) => {
           target="_blank"
           className={classNames(styles.button, styles['join-button'])}
           onClick={handleVibrationClick(handleSocial)}>
-          {item.id === 'DOWNLOAD_APP' ? 'Download' : 'Join'}
+          {item.id === 'DOWNLOAD_APP' ? 'Download' : 
+            (item.id === 'WATCH_VIDEO' ? 'Watch' : 'Join' )
+          }
         </a>
       );
     } else {
@@ -229,6 +242,7 @@ const EarnModal = forwardRef(({ item, onTasksRequireCheck }, ref) => {
       case 'JOIN_TG_NEWS_CHANNEL':
       case 'JOIN_INSTAGRAM':
       case 'JOIN_GITHUB':
+      case 'WATCH_VIDEO':
         return (
           <button
             className={classNames(styles.button, styles['check-button'])}

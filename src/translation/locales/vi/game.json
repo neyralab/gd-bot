@@ -70,7 +70,12 @@
     "playAndWin": "Chơi {name} & Thắng",
     "joinInstagram": "Tham gia Instagram của chúng tôi",
     "joinGit": "Tham gia Github của chúng tôi",
-    "joinNewsTg": "Tham gia kênh tin tức của chúng tôi"
+    "joinNewsTg": "Tham gia kênh tin tức của chúng tôi",
+    "freeSpin": "Vòng quay miễn phí",
+    "earnGPoints": "Kiếm điểm GhostDrive",
+    "spinWheel": "Quay",
+    "wheelNextSpin": "Vòng tiếp theo bắt đầu sau",
+    "watchVideo": "Xem video"
   },
   "airdrop": {
     "airdrop": "Airdrop",

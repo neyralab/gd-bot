@@ -71,7 +71,8 @@
     "point": "积分",
     "invitePremiumFriend": "邀请25位高级好友",
     "joinInstagramLong": "加入我们的Instagram频道",
-    "joinGitLong": "加入我们的Github频道"
+    "joinGitLong": "加入我们的Github频道",
+    "watchVideo": "观看视频"
   },
   "wallet": {
     "disconnect": "您确定要断开连接吗？",
@@ -126,7 +127,9 @@
     "joinTGnews": "您已加入我们的新闻TG频道",
     "notJoinInstagram": "您未加入我们的Instagram频道",
     "notJoinGithub": "您未加入我们的Github频道",
-    "notJoinTGnews": "您未加入我们的新闻TG频道"
+    "notJoinTGnews": "您未加入我们的新闻TG频道",
+    "watchedVideo": "您已观看视频",
+    "noWatchedVideo": "您尚未观看视频"
   },
   "language": {
     "search": "搜索",
@@ -136,7 +139,8 @@
   "share": {
     "share": "分享",
     "successfullySend": "您已成功将 {size} 发送给 {name}",
-    "shareStorage": "分享存储空间",
+    "shareStorage": "发送礼物给 (G:Drive)",
+    "shareGift": "Ghost Drive 礼物",
     "storage": "存储空间",
     "increaseStorage": "您的存储容量已增加 {size}",
     "increaseStorageDesc": "我们很高兴地通知您，您的存储空间已升级。您现在拥有额外的 {size}。",

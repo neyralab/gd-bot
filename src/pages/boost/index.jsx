@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import CN from 'classnames';
 import {
@@ -9,6 +9,7 @@ import {
 import { toast } from 'react-toastify';
 import TonWeb from 'tonweb';
 import { useTranslation } from 'react-i18next';
+import gsap from 'gsap';
 
 import { StorageIcon } from './icon';
 import { Header } from '../../components/header';
@@ -18,7 +19,7 @@ import {
   selectPaymentSelectModal
 } from '../../store/reducers/modalSlice';
 import { DEFAULT_TARIFFS_NAMES } from '../upgradeStorage';
-import { getPaymentTypesEffect } from '../../effects/paymentEffect';
+// import { selectPaymenttByKey } from '../../store/reducers/paymentSlice';
 import { getTonWallet, makeInvoice } from '../../effects/paymentEffect';
 import { storageListEffect } from '../../effects/storageEffects';
 import { SlidingModal } from '../../components/slidingModal';
@@ -47,12 +48,56 @@ export const BoostPage = ({ tariffs, setTariffs }) => {
   const { t } = useTranslation('system');
   const ws = useSelector(selectCurrentWorkspace);
   const isPaymentModalOpen = useSelector(selectPaymentSelectModal);
+  // const storagePayment = useSelector(selectPaymenttByKey('storage'));
   const user = useSelector((state) => state.user.data);
   const wallet = useTonWallet();
   const [tonConnectUI] = useTonConnectUI();
   const { open } = useTonConnectModal();
   const dispatch = useDispatch();
   const handleVibrationClick = useButtonVibration();
+
+  useEffect(() => {
+    if (!tariffs) return;
+
+    /** Animation */
+    gsap.fromTo(
+      `[data-animation="boost-animation-1"]`,
+      {
+        opacity: 0,
+        x: window.innerWidth + 200,
+        y: -window.innerHeight + 500,
+        scale: 0
+      },
+      {
+        opacity: 1,
+        x: 0,
+        y: 0,
+        scale: 1,
+        stagger: 0.05,
+        duration: 0.5,
+        delay: 0.2,
+        ease: 'back.out(0.2)'
+      }
+    );
+
+    gsap.fromTo(
+      `[data-animation="boost-animation-2"]`,
+      {
+        opacity: 0,
+        x: 100,
+        scale: 0.5
+      },
+      {
+        opacity: 1,
+        x: 0,
+        scale: 1,
+        stagger: 0.2,
+        duration: 0.5,
+        delay: 0.1,
+        ease: 'back.out(0.2)'
+      }
+    );
+  }, [tariffs]);
 
   const spaceTotal = useMemo(() => {
     if (user?.space_actual) return user?.space_actual;
@@ -147,37 +192,33 @@ export const BoostPage = ({ tariffs, setTariffs }) => {
         await storageListEffect(token).then((data) => {
           setTariffs(data);
         });
+      } else {
+        console.warn(`error: The payment was not completed. ${result}`)
       }
     } catch (error) {
-      console.log('error');
+      console.warn('error: ', error);
     }
   };
 
-  const handleStartPayment = async (el) => {
-    try {
-      if (el.action === 'ton') {
-        payByTON(el);
-      } else {
-        const paymentTypes = await getPaymentTypesEffect(dispatch);
-        const paymentType = paymentTypes.find((el) => el.Key === 'storage');
-        const input = `${paymentType.Type};${el?.id};${user.id};${ws}`;
-        const theme = {
-          multiplier: el.multiplicator,
-          stars: el.stars
-        };
-        makeInvoice({
-          input,
-          dispatch,
-          callback: invoiceCallback,
-          type: INVOICE_TYPE.boost,
-          theme
-        });
-      }
-      onClosePaymentModal(); 
-    } catch (error) {
-      console.warn(error);
-      onClosePaymentModal(); 
+  const handleStartPayment = (el) => {
+    if (el.action === 'ton') {
+      payByTON(el);
+    } else {
+      // const input = `${storagePayment.Type};${el?.id};${user.id};${ws}`;
+      const input = `${el?.id};${user.id};${ws}`;
+      const theme = {
+        multiplier: el.multiplicator,
+        stars: el.stars
+      };
+      makeInvoice({
+        input,
+        dispatch,
+        callback: invoiceCallback,
+        type: INVOICE_TYPE.boost,
+        theme
+      });
     }
+    onClosePaymentModal();
   };
 
   const onClosePaymentModal = () => {
@@ -193,83 +234,79 @@ export const BoostPage = ({ tariffs, setTariffs }) => {
   return (
     <div className={styles.container}>
       <Header label={t('boost.upgradeStorage')} className={styles.backBtn} />
-      <div>
-        <p className={styles.header}>{t('boost.multiplier')}</p>
-        <div className={styles.current_item}>
-          <div className={styles.flex}>
-            <StorageIcon storage={currentPrice} />
-            <p className={styles.current_storage}>
-              <span className={styles.span}>
-                {DEFAULT_TARIFFS_NAMES[spaceTotal] || '1GB'}
-              </span>
-              {` ${t('boost.storage')}`}
+
+      {tariffs && (
+        <>
+          <div>
+            <p data-animation="boost-animation-2" className={styles.header}>
+              {t('boost.multiplier')}
             </p>
+
+            <div
+              data-animation="boost-animation-1"
+              className={styles.current_item}>
+              <div className={styles.flex}>
+                <StorageIcon storage={currentPrice} />
+                <p className={styles.current_storage}>
+                  <span className={styles.span}>
+                    {DEFAULT_TARIFFS_NAMES[spaceTotal] || '1GB'}
+                  </span>
+                  {` ${t('boost.storage')}`}
+                </p>
+              </div>
+              <div className={styles.cost}>
+                <p className={styles.cost_value}>
+                  {currentPrice?.stars || '0'}
+                </p>
+                <Star className={styles.current_diamond} viewBox="0 0 21 21" />
+              </div>
+            </div>
           </div>
-          <div className={styles.cost}>
-            <p className={styles.cost_value}>{currentPrice?.stars || '0'}</p>
-            <Star className={styles.current_diamond} viewBox="0 0 21 21" />
+
+          <div>
+            <p data-animation="boost-animation-2" className={styles.header}>
+              {t('boost.boostMultiplier')}
+            </p>
+
+            <ul className={styles.list}>
+              {tariffs?.map((el, index) => (
+                <li
+                  data-animation="boost-animation-1"
+                  key={index}
+                  onClick={handleVibrationClick()}>
+                  <button
+                    disabled={currentPrice?.storage === el?.storage}
+                    onClick={() => {
+                      handleSelect(el);
+                    }}
+                    className={CN(
+                      styles.item,
+                      activeMultiplier?.storage === el.storage &&
+                        styles.active_item
+                    )}>
+                    <div className={styles.flex}>
+                      <StorageIcon storage={el} />
+                      <div className={styles.item_storage}>
+                        <p className={styles.storage}>
+                          {transformSize(el?.storage)}
+                        </p>
+                        <p className={styles.item_text}>
+                          {t('boost.storageYear')}
+                        </p>
+                      </div>
+                    </div>
+                    <div className={styles.cost}>
+                      <p className={styles.cost_value}>{el?.stars}</p>
+                      <Star className={styles.cost_svg} viewBox="0 0 21 21" />
+                    </div>
+                  </button>
+                </li>
+              ))}
+            </ul>
           </div>
-        </div>
-      </div>
-      <div>
-        <p className={styles.header}>{t('boost.boostMultiplier')}</p>
-        <ul className={styles.list}>
-          {tariffs?.map((el, index) => (
-            <li key={index} onClick={handleVibrationClick()}>
-              <button
-                disabled={currentPrice?.storage === el?.storage}
-                onClick={() => {
-                  handleSelect(el);
-                }}
-                className={CN(
-                  styles.item,
-                  activeMultiplier?.storage === el.storage && styles.active_item
-                )}>
-                <div className={styles.flex}>
-                  <StorageIcon storage={el} />
-                  <div className={styles.item_storage}>
-                    <p className={styles.storage}>
-                      {transformSize(el?.storage)}
-                    </p>
-                    <p className={styles.item_text}>{t('boost.storageYear')}</p>
-                  </div>
-                </div>
-                <div className={styles.cost}>
-                  <p className={styles.cost_value}>{el?.stars}</p>
-                  <Star className={styles.cost_svg} viewBox="0 0 21 21" />
-                </div>
-              </button>
-            </li>
-          ))}
-        </ul>
-        {/*<div>*/}
-        {/*  <div className={styles.info_header}>*/}
-        {/*    <Info />*/}
-        {/*    <p className={styles.header}>How it works?</p>*/}
-        {/*  </div>*/}
-        {/*  <p className={styles.info_text}>*/}
-        {/*    We also offer a Points Booster package that includes additional*/}
-        {/*    storage space for one year. Enhance your earning potential and enjoy*/}
-        {/*    expanded storage capabilities:*/}
-        {/*  </p>*/}
-        {/*  <ul className={styles.info_list}>*/}
-        {/*    {infoData.map((el, index) => (*/}
-        {/*      <li key={index} className={styles.info_item}>*/}
-        {/*        {el}*/}
-        {/*      </li>*/}
-        {/*    ))}*/}
-        {/*  </ul>*/}
-        {/*</div>*/}
-      </div>
-      {/*<footer className={styles.footer}>*/}
-      {/*  <Button*/}
-      {/*    disabled={!activeMultiplier}*/}
-      {/*    label="Pay"*/}
-      {/*    onClick={payByTON}*/}
-      {/*    img={<PayIcon className={styles.pay_icon} />}*/}
-      {/*    className={CN(styles.pay_btn, !activeMultiplier && styles.disabled)}*/}
-      {/*  />*/}
-      {/*</footer>*/}
+        </>
+      )}
+
       <SlidingModal
         onClose={onClosePaymentModal}
         isOpen={isPaymentModalOpen}

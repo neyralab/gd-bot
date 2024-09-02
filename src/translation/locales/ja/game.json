@@ -70,7 +70,12 @@
     "playAndWin": "{name}をプレイして勝とう",
     "joinInstagram": "私たちのInstagramに参加する",
     "joinGit": "私たちのGithubに参加する",
-    "joinNewsTg": "私たちのニュースチャンネルに参加する"
+    "joinNewsTg": "私たちのニュースチャンネルに参加する",
+    "freeSpin": "フリースピン",
+    "earnGPoints": "GhostDriveポイントを獲得",
+    "spinWheel": "回転",
+    "wheelNextSpin": "次のスピンは",
+    "watchVideo": "動画を見る"
   },
   "airdrop": {
     "airdrop": "エアドロップ",

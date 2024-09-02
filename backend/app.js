@@ -5,6 +5,8 @@ import fs from 'fs';
 import fetch from 'node-fetch';
 import { telegrafThrottler } from 'telegraf-throttler';
 import axios from 'axios';
+import Queue from 'bull';
+import { createClient } from 'redis';
 
 import photoHandler from './handlers/photoHandler.js';
 import textHandler from './handlers/textHandler.js';
@@ -12,7 +14,14 @@ import termsHandler from './commands/terms/index.js';
 import logger from './utils/logger.js';
 
 const app = express();
-const bot = new Telegraf(process.env.BOT_TOKEN_SECRET);
+const bot = new Telegraf(process.env.BOT_TOKEN_SECRET, {
+  handlerTimeout: Infinity
+});
+
+bot.catch(e => {
+  logger.error('bot.catch', e);
+});
+
 const throttler = telegrafThrottler({
   in: {
     period: 60000, // 60 seconds
@@ -27,7 +36,12 @@ const throttler = telegrafThrottler({
 });
 bot.use(throttler);
 
-const cache = {};
+const redisClient = createClient({
+  url: process.env.REDIS_URL || 'redis://localhost:6379'
+});
+await redisClient.connect();
+
+const userCreationQueue = new Queue('userCreation', process.env.REDIS_URL);
 
 bot.start(async (ctx) => {
   const refCode = ctx.startPayload;
@@ -44,17 +58,17 @@ bot.start(async (ctx) => {
   };
 
   // Cache userData by user.id
-  const cacheKey = userData.id;
-  let cachedUserData = cache[cacheKey];
-  cachedUserData = null;
+
+  const cachedUserData = await redisClient.get(userData.id);
 
   if (!cachedUserData) {
     try {
       const url = `${process.env.GD_BACKEND_URL}/apiv2/user/create/telegram`;
 
-      console.log({
+      logger.info('Creating user', {
         url,
-        userData
+        userData,
+        chat_id: ctx.chat.id.toString()
       });
 
       const headers = {
@@ -68,31 +82,31 @@ bot.start(async (ctx) => {
         headers['Host'] = process.env.GD_BACKEND_HOST;
       }
 
-      const response = await fetch(url, {
-        method: 'POST',
+      await userCreationQueue.add({
+        url,
+        userData,
         headers: headers,
-        body: JSON.stringify(userData)
       });
 
-      if (!response.ok) {
-        console.error('Failed to create user');
-        throw new Error('Failed to create user');
-      }
-
-      cachedUserData = await response.json();
-      //cache[cacheKey] = cachedUserData;
     } catch (error) {
+
+      logger.error('Error queueing user creation', {
+        error,
+        chat_id: ctx.chat.id.toString()
+      });
+
       try {
         await ctx.reply(`Error: ${error.message}`);
       } catch (e) {
-        logger.error('Error sending error message', { error: e });
+        logger.error('Error sending error message', {
+          error: e,
+          chat_id: ctx.chat.id.toString()
+        });
       }
       return;
     }
   }
 
-  const data = cachedUserData;
-  const referralLink = `https://t.me/${process.env.BOT_NAME}/ghostdrive?startapp=${data?.coupon?.code}`;
   const header =
     '<b>Welcome to Ghostdrive – The Ultimate Drive for the TON Ecosystem!</b>';
   const activitiesText =
@@ -100,14 +114,7 @@ bot.start(async (ctx) => {
     '🚀 <b>Community Rewards:</b> Upload files to earn points, climb the leaderboard, and boost your rewards with our exciting tap game.\n\n' +
     '🎁 <b>Lifetime Storage Giveaway:</b> Enjoy storage from the Filecoin network. Invite friends and earn even more!\n\n' +
     '<b>Join Ghostdrive today and be part of our growing community!</b>';
-  const buttonText = 'Open GhostDrive';
-  const buttonUrl = process.env.APP_FRONTEND_URL;
-  const button = Markup.button.webApp(buttonText, buttonUrl);
-  const shareButtonText = 'Share Link';
-  const shareButton = {
-    text: shareButtonText,
-    url: `https://t.me/share/url?url=${encodeURIComponent(referralLink)}`
-  };
+
 
   const dashboardButton = Markup.button.webApp(
     'Open App',
@@ -141,14 +148,10 @@ bot.start(async (ctx) => {
       }
     );
   } catch (error) {
-    logger.error('Error replyWithPhoto:', { error });
-    try {
-      await ctx.reply(`Error: ${error.message}`);
-    } catch (e) {
-      logger.error('Error sending error message after replyWithPhoto error', {
-        error: e
-      });
-    }
+    logger.error('Error replyWithPhoto:', {
+      error,
+      chat_id: ctx.chat.id.toString()
+    });
   }
 });
 
@@ -165,7 +168,10 @@ bot.on('pre_checkout_query', async (ctx) => {
       ctx.update
     );
   } catch (error) {
-    logger.error('Error in pre_checkout_query:', { error });
+    logger.error('Error in pre_checkout_query:', {
+      error,
+      chat_id: ctx.chat.id.toString()
+    });
   }
 });
 
@@ -181,7 +187,8 @@ bot.on('successful_payment', async (ctx) => {
         await ctx.reply('Payment successfully confirmed. Thank you!');
       } catch (replyError) {
         logger.error('Error sending payment confirmation message', {
-          error: replyError
+          error: replyError,
+          chat_id: ctx.chat.id.toString()
         });
       }
     } else {
@@ -191,19 +198,24 @@ bot.on('successful_payment', async (ctx) => {
         );
       } catch (replyError) {
         logger.error('Error sending payment issue message', {
-          error: replyError
+          error: replyError,
+          chat_id: ctx.chat.id.toString()
         });
       }
     }
   } catch (error) {
-    logger.error('Error in successful_payment:', { error });
+    logger.error('Error in successful_payment:', {
+      error,
+      chat_id: ctx.chat.id.toString()
+    });
     try {
       await ctx.reply(
         'There was an error processing your payment. Please contact support.'
       );
     } catch (replyError) {
       logger.error('Error sending payment error message', {
-        error: replyError
+        error: replyError,
+        chat_id: ctx.chat.id.toString()
       });
     }
   }
@@ -214,3 +226,61 @@ bot.launch();
 app.listen(process.env.PORT, () =>
   console.log(`My server is running on port ${process.env.PORT}`)
 );
+
+userCreationQueue.process(async (job) => {
+  const { url, userData, headers } = job.data;
+  try {
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: headers,
+      body: JSON.stringify(userData),
+      timeout: 180000 // 3 minutes in milliseconds
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error ${response.status}`);
+    }
+
+    const data = await response.json();
+    await redisClient.set(userData.id, JSON.stringify(data));
+    return data;
+  } catch (error) {
+    logger.error('Error creating user', { error, userData });
+    if (error?.response?.description?.includes('Too Many Requests')) {
+      await job.moveToDelayed(Date.now() + 60000);
+      return;
+    } else {
+      throw error;
+    }
+  }
+});
+
+userCreationQueue.on('failed', (job, err) => {
+  logger.error('Job failed', {
+    jobId: job.id,
+    userData: job.data.userData,
+    error: err.message,
+    stack: err.stack
+  });
+});
+
+userCreationQueue.on('error', (error) => {
+  logger.error('Queue error', {
+    error: error.message,
+    stack: error.stack
+  });
+});
+
+
+userCreationQueue.on('delayed', async (job) => {
+  try {
+    await job.retry();
+    logger.info('Delayed job retried', { jobId: job.id });
+  } catch (error) {
+    logger.error('Error retrying delayed job', {
+      jobId: job.id,
+      error: error.message,
+      stack: error.stack
+    });
+  }
+});
