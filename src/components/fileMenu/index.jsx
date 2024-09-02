@@ -12,9 +12,10 @@ import {
 } from '../../store/reducers/modalSlice';
 import {
   selecSelectedFile,
-  setSelectedFile
+  setSelectedFile,
+  updateFile
 } from '../../store/reducers/filesSlice';
-import { updateShareEffect } from '../../effects/filesEffects';
+import { updateShareEffect, deletePaidShareEffect } from '../../effects/filesEffects';
 import { restoreFileEffect } from '../../effects/file/restoreFileEffect';
 import { generateSharingLink } from '../../utils/generateSharingLink';
 import { getPreviewFileType } from '../../utils/preview';
@@ -34,12 +35,10 @@ export const FileMenu = () => {
   const { t : tSystem } = useTranslation('system');
   const isOpen = useSelector(selectisFileMenuOpen);
   const handleVibrationClick = useButtonVibration();
-  const [ppvState, setPPVState] = useState(false);
   const file = useSelector(selecSelectedFile);
   const { t } = useTranslation('drive');
   const location = useLocation();
   const dispatch = useDispatch();
-
   const isPPVActivated = useMemo(() => !!file.share_file, [file]);
   const isFileHavePreview = useMemo(() => !!getPreviewFileType(file, '', true), [file])
   const url = useMemo(() => {
@@ -64,10 +63,6 @@ export const FileMenu = () => {
     dispatch(setSelectedFile({}));
   };
 
-  useEffect(() => {
-    setPPVState(isPPVActivated);
-  }, [isPPVActivated]);
-
   const onRestoreClick = async () => {
     const result = await restoreFileEffect(file.slug, dispatch);
     dispatch(handleFileMenu(false));
@@ -84,9 +79,19 @@ export const FileMenu = () => {
     }
   };
 
-  const activatePayShare = () => {
-    dispatch(handleFileMenu(false));
-    dispatch(handlePaperViewModal(true));
+  const activatePayShare = async () => {
+    try {
+      if (isPPVActivated) {
+        await deletePaidShareEffect(file.share_file.id);
+        dispatch(updateFile({ ...file, share_file: null }));
+        dispatch(setSelectedFile({ ...file, share_file: null }))
+      } else {
+        dispatch(handleFileMenu(false));
+        dispatch(handlePaperViewModal(true));
+      }
+    } catch (error) {
+      console.warn(error)
+    }
   }
 
   const onEditPPV = () => {
@@ -116,14 +121,13 @@ export const FileMenu = () => {
                 <div className={style.menu__item_switch}>
                   <span>Pay per view</span>
                   <ToggleSwitch
-                    checked={ppvState}
+                    checked={isPPVActivated}
                     onClick={activatePayShare}
-                    disabled={ppvState}
                   />
                 </div>
               )}
             </li>
-            {ppvState && (
+            {isPPVActivated && (
               <li onClick={onEditPPV} className={style.menu__item}>
                   <PenIcon />
                   <span className={style.menu__item__title}>Edit</span>

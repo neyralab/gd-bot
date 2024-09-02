@@ -210,6 +210,18 @@ export const createPaidShareFileEffect = async (id, body) => {
   return await axiosInstance.post(url, body).then((result) => result.data);
 };
 
+export const deletePaidShareEffect = async (id, body) => {
+  const url = `${API_PATH}/share/file/${id}`;
+  return await axiosInstance.delete(url, body)
+    .then((result) => {
+      if (result.data.message === "success") {
+        return result.data; 
+      } else {
+        throw Error('Something went wrong');
+      }
+    });
+};
+
 export const getPaidShareFileEffect = async (slug) => {
   const url = `${API_PATH}/share/file/${slug}`;
   return await axiosInstance.get(url).then((result) => result.data);

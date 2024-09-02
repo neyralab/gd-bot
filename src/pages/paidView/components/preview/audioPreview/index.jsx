@@ -6,7 +6,7 @@ import { ReactComponent as ForwardIcon } from '../../../../../components/filePre
 import { ReactComponent as RewindIcon } from '../../../../../components/filePreviewModal/components/AudioPreview/assets/rewind.svg';
 import { ReactComponent as PLayIcon } from '../../../../../components/filePreviewModal/components/AudioPreview/assets/play.svg';
 import { ReactComponent as PauseIcon } from '../../../../../components/filePreviewModal/components/AudioPreview/assets/pause.svg';
-import { removeExtension } from '../../../../../utils/string';
+import { removeExtension, formatDuration } from '../../../../../utils/string';
 import { createStreamEffect } from '../../../../../effects/filesEffects';
 
 import styles from './styles.module.css';
@@ -88,15 +88,6 @@ export const AudioPreview = ({ file, allowPreview }) => {
     setIsPlaying(false);
     setProgress(0);
   }, []);
-
-  const formatDuration = (duration) => {
-    if (duration)  {
-      const minutes = Math.floor(duration / 60);
-      const seconds = Math.floor(duration % 60);
-      return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-    }
-    return '00:00'
-  };
 
   return (
     <>

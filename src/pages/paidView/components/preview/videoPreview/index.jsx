@@ -5,7 +5,7 @@ import { ReactComponent as ForwardIcon } from '../../../../../components/filePre
 import { ReactComponent as RewindIcon } from '../../../../../components/filePreviewModal/previewContent/VideoPreview/assets/replay_10.svg';
 import { ReactComponent as PauseIcon } from '../../../../../components/filePreviewModal/previewContent/VideoPreview/assets/pause.svg';
 import { ReactComponent as PlayIcon } from '../../../../../components/filePreviewModal/previewContent/VideoPreview/assets/play.svg';
-import { removeExtension } from '../../../../../utils/string';
+import { removeExtension, formatDuration } from '../../../../../utils/string';
 
 import styles from './styles.module.css';
 
@@ -108,15 +108,6 @@ export const VideoPreview = ({ file, fileContent, allowPreview }) => {
       return { width: '100%', height: 'auto' };
     }
   }, [dimension.width, dimension.height]);
-
-  const formatDuration = (duration) => {
-    if (duration)  {
-      const minutes = Math.floor(duration / 60);
-      const seconds = Math.floor(duration % 60);
-      return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-    }
-    return '00:00'
-  };
 
   return (
     <>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import Modal from 'react-modal';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -21,22 +21,21 @@ const PPVModal = () => {
   const dispatch = useDispatch();
   const isOpen = useSelector(selectPaperViewModal);
   const [isProccess, setIsProccess] = useState(false);
-  const [isEditMode, setEditMode] = useState(false);
   const user = useSelector((state) => state.user.data);
   const [state, setState] = useState({ view: 1, download: 0, description: '' });
   const ppvPayment = useSelector(selectPaymenttByKey('pay_per_view'));
   const file = useSelector(selecSelectedFile);
+  const isPPVActivated = useMemo(() => !!file.share_file, [file]);
 
   useEffect(() => {
-    if (file.share_file) {
-      setEditMode(true);
+    if (isPPVActivated) {
       setState({
         view: file.share_file.price_view,
         download: file.share_file.price_download,
         description: file.share_file.description
       });
     }
-  }, [file]);
+  }, [isPPVActivated]);
 
   const onClose = () => {
     dispatch(handlePaperViewModal(false));
@@ -74,7 +73,7 @@ const PPVModal = () => {
   
   const onSubmit = async () => {
     try {
-      const shareId = isEditMode ? file.share_file.id : 0;
+      const shareId = isPPVActivated ? file.share_file.id : 0;
       const input = `${ppvPayment.Type};0;${user.id};${file.id};${shareId}`;
       makeInvoice({
         input,

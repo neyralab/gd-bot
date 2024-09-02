@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from 'react-router-dom';
 import { downloadFile } from 'gdgateway-client';
+import { useDispatch } from 'react-redux';
 import CN from 'classnames';
 
 import { Header } from './components/header';
@@ -11,6 +12,7 @@ import { getPaidShareFileEffect } from '../../effects/filesEffects';
 import { getDownloadOTT } from '../../effects/filesEffects';
 import { getFileCids } from '../../effects/file/getFileCid';
 import { sendFileViewStatistic } from '../../effects/file/statisticEfect';
+import { INVOICE_TYPE } from '../../utils/createStarInvoice';
 
 import { removeExtension } from '../../utils/string';
 
@@ -23,6 +25,7 @@ const STEPS = {
 }
 
 export const PaidView = () => {
+  const dispatch = useDispatch();
   const [file , setFile] = useState({});
   const [loading, setLoading] = useState(false);
   const [fileContent, setFileContent] = useState(null);
@@ -87,6 +90,54 @@ export const PaidView = () => {
       console.warn(error);
     }
   };
+
+  const invoiceCallback = async (result) => {
+    try {
+      if (result === 'paid') {
+
+        await sleep(500);
+        const body = {
+          priceView: state.view,
+          currency: 1,
+          priceDownload: state.download,
+          description: state.description,
+          file: file.id
+        }
+        const res = await createPaidShareFileEffect(file.id, body);
+        if (res.data) {
+          const shareObj = { ...res.data };
+          delete shareObj.file;
+          dispatch(updateFile({ ...file, share_file: shareObj }));
+          setTimeout(() => {
+            setIsProccess(false); 
+            onClose();
+          }, [1000])
+        }
+      } else {
+        console.warn(`error: The payment was not completed. ${result}`)
+      }
+    } catch (error) {
+      console.warn('error: ', error);
+    }
+  };
+
+  const onSubmit = async () => {
+    try {
+      const shareId = isEditMode ? file.share_file.id : 0;
+      const input = `${ppvPayment.Type};0;${user.id};${file.id};${shareId}`;
+      makeInvoice({
+        input,
+        dispatch,
+        callback: invoiceCallback,
+        type: INVOICE_TYPE.game,
+        theme: { multiplier: '', stars: 1 }
+      });
+      invoiceCallback('paid');
+    } catch (error) {
+      setIsProccess(false); 
+      console.warn(error);
+    }
+  }
 
   const onShowFullContent = () => {
     if (step === STEPS.preview) {

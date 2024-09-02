@@ -45,4 +45,13 @@ const getResponseError = (error, defMessage = 'Sorry, something went wrong! Plea
   return res || defMessage;
 }
 
-export { getWallet, fomatNumber, getNumbers, capitalize, getResponseError, removeExtension }
+const formatDuration = (duration = 0) => {
+  if (duration)  {
+    const minutes = Math.floor(duration / 60);
+    const seconds = Math.floor(duration % 60);
+    return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+  }
+  return '00:00'
+};
+
+export { getWallet, fomatNumber, getNumbers, capitalize, getResponseError, removeExtension, formatDuration }
