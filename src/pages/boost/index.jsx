@@ -19,7 +19,7 @@ import {
   selectPaymentSelectModal
 } from '../../store/reducers/modalSlice';
 import { DEFAULT_TARIFFS_NAMES } from '../upgradeStorage';
-// import { selectPaymenttByKey } from '../../store/reducers/paymentSlice';
+import { selectPaymenttByKey } from '../../store/reducers/paymentSlice';
 import { getTonWallet, makeInvoice } from '../../effects/paymentEffect';
 import { storageListEffect } from '../../effects/storageEffects';
 import { SlidingModal } from '../../components/slidingModal';
@@ -48,7 +48,7 @@ export const BoostPage = ({ tariffs, setTariffs }) => {
   const { t } = useTranslation('system');
   const ws = useSelector(selectCurrentWorkspace);
   const isPaymentModalOpen = useSelector(selectPaymentSelectModal);
-  // const storagePayment = useSelector(selectPaymenttByKey('storage'));
+  const storagePayment = useSelector(selectPaymenttByKey('storage'));
   const user = useSelector((state) => state.user.data);
   const wallet = useTonWallet();
   const [tonConnectUI] = useTonConnectUI();
@@ -204,8 +204,7 @@ export const BoostPage = ({ tariffs, setTariffs }) => {
     if (el.action === 'ton') {
       payByTON(el);
     } else {
-      // const input = `${storagePayment.Type};${el?.id};${user.id};${ws}`;
-      const input = `${el?.id};${user.id};${ws}`;
+      const input = `${storagePayment.Type};${el?.id};${user.id};${ws};0`;
       const theme = {
         multiplier: el.multiplicator,
         stars: el.stars
