@@ -1,9 +1,17 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { useTimer } from 'react-timer-hook';
 import { useDispatch, useSelector } from 'react-redux';
-import { refreshFreeGame } from '../../../store/reducers/gameSlice';
-import styles from './AdvertisementPlayModal.module.scss';
+import {
+  refreshFreeGame,
+  setAdvertisementModal,
+  setSystemModal
+} from '../../../store/reducers/gameSlice';
 import Loader2 from '../../../components/Loader2/Loader2';
+import {
+  endWatchingAdvertisementVideo,
+  startWatchingAdvertisementVideo
+} from '../../../effects/advertisementEffect';
+import styles from './AdvertisementPlayModal.module.scss';
 
 export default function AdvertisementPlayModal() {
   const dispatch = useDispatch();
@@ -26,7 +34,7 @@ export default function AdvertisementPlayModal() {
 
   useEffect(() => {
     if (advertisementModal) {
-      fetchVideo();
+      startWatching();
     } else {
       setIsProcessing(false);
       setVideoLoaded(false);
@@ -64,19 +72,43 @@ export default function AdvertisementPlayModal() {
     };
   }, [advertisementModal]);
 
-  const fetchVideo = async () => {
+  const startWatching = async () => {
     const videoUrl = advertisementModal.videoUrl;
-    if (videoRef.current) {
-      videoRef.current.src = videoUrl;
+
+    if (!videoRef.current) return;
+    videoRef.current.src = videoUrl;
+
+    try {
+      await startWatchingAdvertisementVideo(advertisementModal.videoId);
+    } catch (err) {
+      dispatch(
+        setSystemModal({
+          type: 'START_ADVERTASEMENT_WATCH_ERROR',
+          message: err?.response?.data?.errors || 'Unexpected Error'
+        })
+      );
+      dispatch(setAdvertisementModal(null));
     }
   };
 
   const sendWatchFinished = () => {
     setIsProcessing(true);
 
-    setTimeout(() => {
-      dispatch(refreshFreeGame());
-    }, 2000);
+    endWatchingAdvertisementVideo(advertisementModal.videoId)
+      .then(() => {
+        dispatch(refreshFreeGame());
+        setIsProcessing(false);
+        dispatch(setAdvertisementModal(null));
+      })
+      .catch((err) => {
+        dispatch(
+          setSystemModal({
+            type: 'END_ADVERTASEMENT_WATCH_ERROR',
+            message: err?.response?.data?.errors || 'Unexpected Error'
+          })
+        );
+        dispatch(setAdvertisementModal(null));
+      });
   };
 
   if (!advertisementModal) return;

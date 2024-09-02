@@ -24,6 +24,8 @@ export default function SystemModalWrapper() {
       case 'END_GAME_ERROR':
       case 'START_GAME_ERROR':
       case 'BEFORE_GAME_ERROR':
+      case 'START_ADVERTASEMENT_WATCH_ERROR':
+      case 'END_ADVERTASEMENT_WATCH_ERROR':
         title = t('message.error');
         description = systemModal.message;
         actions = [

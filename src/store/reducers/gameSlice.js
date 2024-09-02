@@ -14,6 +14,8 @@ import {
   startGame
 } from '../../effects/gameEffect';
 import { setUser } from './userSlice';
+import { getAdvertisementVideo } from '../../effects/advertisementEffect';
+import { API_PATH_ROOT } from '../../utils/api-urls';
 
 const gameSlice = createSlice({
   name: 'game',
@@ -262,19 +264,25 @@ const undateSubTheme = (dispatch, state, themes, level) => {
   return newThemes;
 };
 
+const getAdvertisementOffer = async (dispatch) => {
+  const videoInfo = await getAdvertisementVideo();
+
+  if (videoInfo && videoInfo.id && videoInfo.video) {
+    dispatch(
+      setAdvertisementOfferModal({
+        previewUrl: null,
+        videoUrl: `${API_PATH_ROOT}${videoInfo.video}`,
+        videoId: videoInfo.id
+      })
+    );
+  }
+};
+
 export const initGame = createAsyncThunk(
   'game/initGame',
   async (_, { dispatch, getState }) => {
     dispatch(setIsInitializing(true));
     dispatch(setIsInitialized(false));
-
-    // TODO: make request to server to get an advertisement and remove this request
-    dispatch(
-      setAdvertisementOfferModal({
-        previewUrl: '/assets/dummy/logo2.jpg',
-        videoUrl: '/assets/dummy/cat-video-vertical.mp4'
-      })
-    );
 
     try {
       const [levels, gameInfo, cAddress, games, pendingGames] =
@@ -306,6 +314,7 @@ export const initGame = createAsyncThunk(
       if (now <= gameInfo.game_ends_at) {
         const endTime = gameInfo.game_ends_at;
         lockTimerCountdown(dispatch, endTime);
+        getAdvertisementOffer(dispatch);
       }
 
       /** This function combines backend tiers and frontend themes */
@@ -427,10 +436,7 @@ export const finishRound = createAsyncThunk(
 
     if (state.game.theme.id === 'hawk') {
       dispatch(startNewFreeGameCountdown());
-      // TODO: make request to server to get an advertisement
-      dispatch(
-        setAdvertisementOfferModal({ previewUrl: '/assets/dummy/logo2.jpg' })
-      );
+      getAdvertisementOffer(dispatch);
     }
     console.log({ gameId });
 
