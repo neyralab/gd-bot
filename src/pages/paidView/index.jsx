@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { downloadFile } from 'gdgateway-client';
 import { useDispatch, useSelector } from 'react-redux';
 import CN from 'classnames';
 
-import { Header } from './components/header';
+import Header from '../../components/ppvModal/components/Header';
 import { Preview } from './components/preview';
 import { ReactComponent as StarIcon } from '../../assets/star.svg';
 
@@ -26,6 +26,7 @@ const STEPS = {
 }
 
 export const PaidView = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [file, setFile] = useState({});
   const [loading, setLoading] = useState(false);
@@ -189,9 +190,13 @@ export const PaidView = () => {
     setFullscreen(!fullscreen);
   }
 
+  const goBack = () => {
+    navigate(-1);
+  }
+
   return (
     <div className={styles.container}>
-      <Header />
+      <Header onClose={goBack} />
       <div className={styles.content}>
         {fullscreen && (
           <h3 className={CN(styles.title, styles.secondTitle)}>{removeExtension(file.name)}</h3>
