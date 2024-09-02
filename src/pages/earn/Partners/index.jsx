@@ -1,7 +1,6 @@
 import React, { useEffect, useCallback, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
-import gsap from 'gsap';
 
 import { checkTaskIsDone } from '../../../effects/EarnEffect';
 import useButtonVibration from '../../../hooks/useButtonVibration';
@@ -9,6 +8,7 @@ import { PARTNER_KEY } from './utils';
 import Task from '../TaskItem/Task';
 import ClaimPoints from '../../../components/ClaimPoints/ClaimPoints';
 import ListLoader from '../ListLoader/ListLoader';
+import { runInitAnimation } from './animations';
 
 import styles from './styles.module.css';
 
@@ -18,27 +18,8 @@ export default function Partners({ partners, setPartners, isLoading }) {
   const claimPointsModalRef = useRef(null);
 
   useEffect(() => {
-    /** Animation */
     if (!partners || !partners.length) return;
-
-    gsap.fromTo(
-      `[data-animation="task-animation-1"]`,
-      {
-        opacity: 0,
-        x: window.innerWidth + 200,
-        y: -window.innerHeight + 500,
-        scale: 0
-      },
-      {
-        opacity: 1,
-        x: 0,
-        y: 0,
-        scale: 1,
-        stagger: 0.05,
-        duration: 0.5,
-        ease: 'back.out(0.2)'
-      }
-    );
+    runInitAnimation();
   }, [partners]);
 
   const handleClick = (task) => {

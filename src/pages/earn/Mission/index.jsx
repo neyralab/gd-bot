@@ -1,7 +1,7 @@
 import React, { useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import CN from 'classnames';
-import gsap from 'gsap';
+import { runInitAnimation } from './animations';
 
 import { getKeyTranslate } from '../../../translation/utils';
 import translateEng from '../../../translation/locales/en/system.json';
@@ -13,27 +13,8 @@ export default function Mission({ tasks, isLoading }) {
   const { t } = useTranslation('system');
 
   useEffect(() => {
-    /** Animation */
     if (!tasks || !tasks.length) return;
-
-    gsap.fromTo(
-      `[data-animation="mission-animation-1"]`,
-      {
-        opacity: 0,
-        x: window.innerWidth + 200,
-        y: -window.innerHeight + 500,
-        scale: 0
-      },
-      {
-        opacity: 1,
-        x: 0,
-        y: 0,
-        scale: 1,
-        stagger: 0.05,
-        duration: 0.5,
-        ease: 'back.out(0.2)'
-      }
-    );
+    runInitAnimation();
   }, [tasks]);
 
   const onDownloadClick = useCallback(() => {

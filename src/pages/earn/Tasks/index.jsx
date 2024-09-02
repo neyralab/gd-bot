@@ -7,11 +7,10 @@ import {
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { TelegramShareButton } from 'react-share';
-import gsap from 'gsap';
 
 import { saveUserWallet } from '../../../effects/userEffects';
 import useButtonVibration from '../../../hooks/useButtonVibration';
-
+import { runInitAnimation } from './animations';
 import Task from '../../../components/Task/Task';
 import ListLoader from '../ListLoader/ListLoader';
 
@@ -33,27 +32,8 @@ export default function Tasks({
   const handleVibrationClick = useButtonVibration();
 
   useEffect(() => {
-    /** Animation */
     if (!tasks || !tasks.length) return;
-
-    gsap.fromTo(
-      `[data-animation="task-animation-1"]`,
-      {
-        opacity: 0,
-        x: window.innerWidth + 200,
-        y: -window.innerHeight + 500,
-        scale: 0
-      },
-      {
-        opacity: 1,
-        x: 0,
-        y: 0,
-        scale: 1,
-        stagger: 0.05,
-        duration: 0.5,
-        ease: 'back.out(0.2)'
-      }
-    );
+    runInitAnimation();
   }, [tasks]);
 
   useEffect(() => {

@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { DebounceInput } from 'react-debounce-input';
-import { gsap } from 'gsap';
 
 import {
   changeFileView,
@@ -32,12 +31,11 @@ import { transformSize } from '../../utils/transformSize';
 import { fromByteToGb } from '../../utils/storage';
 import { getResponseError } from '../../utils/string';
 import useButtonVibration from '../../hooks/useButtonVibration';
-
+import { runInitAnimation, runStorageAnimation } from './animations';
 import { FileFilterPanel } from '../../components/fileFilterPanel';
 import FileList from './components/FileList';
 import GhostLoader from '../../components/ghostLoader';
 import { Header } from '../../components/header';
-
 import { ReactComponent as GridIcon } from '../../assets/grid_view.svg';
 import { ReactComponent as ListIcon } from '../../assets/list_view.svg';
 import { ReactComponent as PlusIcon } from './assets/plus.svg';
@@ -175,62 +173,12 @@ export const FilesSystemPage = () => {
   };
 
   useEffect(() => {
-    /** Animation */
-    gsap.fromTo(
-      `.${style.buttonsWrapper}`,
-      {
-        opacity: 0,
-        scale: 0.5,
-        y: 50
-      },
-      {
-        delay: 0.7,
-        opacity: 1,
-        scale: 1,
-        y: 0,
-        duration: 0.5,
-        ease: 'back.out(0.5)'
-      }
-    );
-
-    gsap.fromTo(
-      `.${style.search}`,
-      {
-        opacity: 0,
-        scale: 0.5,
-        y: -50
-      },
-      {
-        opacity: 1,
-        scale: 1,
-        y: 0,
-        duration: 0.5,
-        ease: 'back.out(0.5)'
-      }
-    );
+    runInitAnimation();
   }, []);
 
   useEffect(() => {
-    /** Animation */
     if (user && human) {
-      gsap.fromTo(
-        `.${style.storage_block}`,
-        {
-          opacity: 0,
-          scale: 0.8,
-          y: -20,
-          x: 200
-        },
-        {
-          opacity: 1,
-          scale: 1,
-          y: 0,
-          x: 0,
-          duration: 0.3,
-          delay: 0.1,
-          ease: 'back.out(0.5)'
-        }
-      );
+      runStorageAnimation();
     }
   }, [user, human]);
 
@@ -248,7 +196,7 @@ export const FilesSystemPage = () => {
       <header className={style.filesHeader}></header>
 
       <section className={style.wrapper}>
-        <div className={style.search}>
+        <div data-animation="drive-grid-animation-1" className={style.search}>
           <DebounceInput
             minLength={1}
             debounceTimeout={500}
@@ -277,7 +225,9 @@ export const FilesSystemPage = () => {
         </div>
 
         {user && human && (
-          <div className={style.storage_block}>
+          <div
+            data-animation="drive-grid-animation-3"
+            className={style.storage_block}>
             <div className={style.storage_text_container}>
               <p
                 className={
@@ -324,7 +274,9 @@ export const FilesSystemPage = () => {
       </section>
 
       {!areFilesLoading && (
-        <div className={style.buttonsWrapper}>
+        <div
+          data-animation="drive-grid-animation-2"
+          className={style.buttonsWrapper}>
           <div className={style.uploadButton} onClick={handleVibrationClick()}>
             <input
               name="file"

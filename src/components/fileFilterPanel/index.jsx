@@ -3,7 +3,6 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { gsap } from 'gsap';
 
 import {
   selectFileTypesCount,
@@ -12,6 +11,7 @@ import {
 import { selectPartners } from '../../store/reducers/taskSlice';
 import { getFileTypesCountEffect } from '../../effects/storageEffects';
 import useButtonVibration from '../../hooks/useButtonVibration';
+import { runInitAnimation } from './animations';
 
 import icons from './assets';
 import style from './style.module.scss';
@@ -29,29 +29,8 @@ export const FileFilterPanel = () => {
     getFileTypesCountEffect()
       .then((data) => dispatch(setFileTypesCount(data)))
       .catch(() => toast.error(tSystem('message.failedLoad')));
-  }, []);
 
-  useEffect(() => {
-    /** Animation */
-    gsap.fromTo(
-      `[data-animation="files-grid-animation-1"]`,
-      {
-        opacity: 0,
-        x: window.innerWidth + 200,
-        y: -window.innerHeight + 500,
-        scale: 0
-      },
-      {
-        opacity: 1,
-        x: 0,
-        y: 0,
-        scale: 1,
-        stagger: 0.05,
-        duration: 0.5,
-        delay: 0,
-        ease: 'back.out(0.2)'
-      }
-    );
+    runInitAnimation();
   }, []);
 
   const getFiles = async (type) => {
