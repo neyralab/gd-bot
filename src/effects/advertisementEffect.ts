@@ -12,8 +12,8 @@ interface AdvertisementVideoInfo {
   is_active: boolean;
 }
 
-interface StartSpinResponse {
-  id: string;
+interface WatchAdvertisementResponse {
+  message: string;
 }
 
 export const getAdvertisementVideo = async () => {
@@ -26,7 +26,7 @@ export const getAdvertisementVideo = async () => {
 
 export const startWatchingAdvertisementVideo = async (videoId: string) => {
   const url = `${API_PATH}/start/watch`;
-  const { data } = await axiosInstance.post<Effect<StartSpinResponse>>(url, {
+  const { data } = await axiosInstance.post<Effect<WatchAdvertisementResponse>>(url, {
     video: videoId
   });
   return data;
@@ -34,7 +34,7 @@ export const startWatchingAdvertisementVideo = async (videoId: string) => {
 
 export const endWatchingAdvertisementVideo = async (videoId: string) => {
   const url = `${API_PATH}/end/watch`;
-  const { data } = await axiosInstance.post<Effect<StartSpinResponse>>(url, {
+  const { data } = await axiosInstance.post<Effect<WatchAdvertisementResponse>>(url, {
     video: videoId
   });
   return data;
