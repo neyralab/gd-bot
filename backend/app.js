@@ -138,7 +138,7 @@ bot.start(async (ctx) => {
   );
 
   if (refCode && refCode.startsWith('paylink')) {
-    const [_, slug, name] = refCode.split('&');
+    const [_, slug, name] = refCode.split('_');
     const url = `${process.env.APP_FRONTEND_URL}/paid-view/${slug}`;
     try {
       await ctx.reply(
