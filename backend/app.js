@@ -138,11 +138,11 @@ bot.start(async (ctx) => {
   );
 
   if (refCode && refCode.startsWith('paylink')) {
-    const [_, slug, name] = refCode.split('_');
+    const [_, slug] = refCode.split('_');
     const url = `${process.env.APP_FRONTEND_URL}/paid-view/${slug}`;
     try {
       await ctx.reply(
-        `${slug} You are using a special link. To open the file named ${name}, please click the button below. ${refCode}`,
+        `You are using a special link. To open the file, please click the button below.`,
         Markup.inlineKeyboard([
           Markup.button.webApp('Open', url)
         ])
