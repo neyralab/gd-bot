@@ -58,9 +58,7 @@ export const AudioPreview = ({ file, allowPreview }) => {
 
   useEffect(() => {
     createStreamEffect(file.slug)
-      .then((data) => {
-        setIpfsAudio(data?.url)
-      })
+      .then((data) => {setIpfsAudio(data)})
       .catch(() => {
         toast.error('Sorry, something went wrong. Please try again later');
       })
@@ -88,7 +86,7 @@ export const AudioPreview = ({ file, allowPreview }) => {
           <audio
             ref={audioRef}
             onEnded={onFinish}
-            src={ipfsAudio ? `https://${ipfsAudio}` : undefined}
+            src={ipfsAudio ? ipfsAudio  : undefined}
             onTimeUpdate={updateProgress}
           />
           <div
