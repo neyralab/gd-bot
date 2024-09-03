@@ -97,9 +97,17 @@ export const FilePreviewModal = () => {
       if (blob) {
         const realBlob = new Blob([blob]);
         const url = URL.createObjectURL(realBlob);
-        if (file.extension === 'svg') {
+        if (file.extension === 'svg' || file.extension === 'txt') {
           const text = await realBlob.text();
           setFileContent(text);
+          setLoading(false);
+          return;
+        } else if (
+          file.extension === 'pdf' ||
+          file.extension === 'xls' ||
+          file.extension === 'xlsx'
+        ) {
+          setFileContent(realBlob);
           setLoading(false);
           return;
         }
@@ -156,10 +164,7 @@ export const FilePreviewModal = () => {
             <GhostLoader />
           </div>
         ) : (
-          <div
-            className={style.wrapper}
-            ref={wrapper}
-          >
+          <div className={style.wrapper} ref={wrapper}>
             <button
               className={style.back}
               onClick={handleVibrationClick(onClose)}>
