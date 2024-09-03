@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams, useNavigate, useLocation } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { downloadFile } from 'gdgateway-client';
 import { useDispatch, useSelector } from 'react-redux';
 import CN from 'classnames';
@@ -14,6 +14,7 @@ import { makeInvoice } from '../../effects/paymentEffect';
 import { sendFileViewStatistic } from '../../effects/file/statisticEfect';
 import { selectPaymenttByKey } from '../../store/reducers/paymentSlice';
 import { INVOICE_TYPE } from '../../utils/createStarInvoice';
+import { getPreviewFileType } from '../../utils/preview';
 
 import { removeExtension } from '../../utils/string';
 
@@ -25,10 +26,11 @@ const STEPS = {
   download: 'download'
 }
 
+const ESCAPE_CONTENT_DOWNLOAD = ['audio', 'encrypt'];
+
 export const PaidView = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const location = useLocation();
   const [file, setFile] = useState({});
   const [loading, setLoading] = useState(false);
   const [fileContent, setFileContent] = useState(null);
@@ -37,8 +39,6 @@ export const PaidView = () => {
   const [fullscreen, setFullscreen] = useState(false);
   const [step, setStep] = useState(STEPS.preview);
   const { id } = useParams();
-
-  console.log('location => ', location)
 
   useEffect(() => {
     if (id) {
@@ -53,7 +53,15 @@ export const PaidView = () => {
   }, [id]);
 
   useEffect(() => {
-    if (file.slug) { getContent(); }
+    if (file?.slug) {
+      const canPreview = getPreviewFileType(file, '   ');
+      setLoading(true);
+      if (canPreview && !ESCAPE_CONTENT_DOWNLOAD.includes(canPreview)) {
+        getContent();
+      } else {
+        setLoading(false);
+      }
+    }
   }, [file]);
 
   const getContent = async () => {
