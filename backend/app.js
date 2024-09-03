@@ -148,12 +148,14 @@ bot.start(async (ctx) => {
   );
 
   if (refCode && refCode.startsWith('paylink')) {
-    const [_, slug, name] = refCode.split('&');
+    const [_, slug] = refCode.split('_');
     const url = `${process.env.APP_FRONTEND_URL}/paid-view/${slug}`;
     try {
       await ctx.reply(
-        `${slug} You are using a special link. To open the file named ${name}, please click the button below. ${refCode}`,
-        Markup.inlineKeyboard([Markup.button.webApp('Open', url)])
+        `You are using a special link. To open the file, please click the button below.`,
+        Markup.inlineKeyboard([
+          Markup.button.webApp('Open', url)
+        ])
       );
     } catch (error) {
       logger.error('Error handling deep link:', { error });
