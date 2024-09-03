@@ -278,6 +278,16 @@ const getAdvertisementOffer = async (dispatch) => {
   }
 };
 
+export const checkAdvertisementOffer = createAsyncThunk(
+  'game/checkAdvertisementOffer',
+  async (_, { dispatch, getState }) => {
+    const state = getState();
+    if (state.game.lockTimerTimestamp) {
+      getAdvertisementOffer(dispatch);
+    }
+  }
+);
+
 export const initGame = createAsyncThunk(
   'game/initGame',
   async (_, { dispatch, getState }) => {
@@ -686,8 +696,6 @@ export const gameCleanup = createAsyncThunk(
     dispatch(setRoundFinal({ roundPoins: null, isActive: false }));
     dispatch(setReachedNewLevel(false));
     dispatch(setStatus('waiting'));
-    dispatch(setAdvertisementOfferModal(null));
-    dispatch(setAdvertisementModal(null));
     dispatch(setGameModal(null));
     dispatch(setSystemModal(null));
   }
