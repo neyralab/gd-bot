@@ -5,7 +5,8 @@ import {
   initGame,
   selectIsInitialized,
   selectIsTransactionLoading,
-  gameCleanup
+  gameCleanup,
+  checkAdvertisementOffer
 } from '../../store/reducers/gameSlice';
 import { Header } from '../../components/header_v2';
 import BuyButton from './BuyButton/BuyButton';
@@ -41,6 +42,10 @@ export function GamePage() {
   useEffect(() => {
     if (!isInitialized && userIsInitialized) {
       dispatch(initGame());
+    }
+
+    if (isInitialized && userIsInitialized) {
+      dispatch(checkAdvertisementOffer());
     }
 
     return () => {

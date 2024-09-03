@@ -1,5 +1,4 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { useTimer } from 'react-timer-hook';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   refreshFreeGame,
@@ -20,48 +19,38 @@ export default function AdvertisementPlayModal() {
   );
   const videoRef = useRef(null);
   const [progress, setProgress] = useState(0);
-  const [videoLoaded, setVideoLoaded] = useState(false);
+  const [timeLeft, setTimeLeft] = useState(0);
   const [isProcessing, setIsProcessing] = useState(false);
 
-  const { seconds, minutes, restart } = useTimer({
-    expiryTimestamp: new Date(),
-    onExpire: () => {
-      if (videoLoaded) {
-        sendWatchFinished();
-      }
-    }
-  });
+  const videoType = advertisementModal
+    ? advertisementModal.videoUrl.endsWith('.mp4')
+      ? 'video/mp4'
+      : 'video/quicktime'
+    : null;
 
   useEffect(() => {
     if (advertisementModal) {
       startWatching();
     } else {
       setIsProcessing(false);
-      setVideoLoaded(false);
     }
   }, [advertisementModal]);
 
-  const handleLoadedMetadata = () => {
-    const duration = videoRef.current.duration;
-    const time = new Date();
-    time.setSeconds(time.getSeconds() + duration);
-    restart(time);
-    setVideoLoaded(true);
+  const onVideoPlay = () => {
+    const duration = videoRef.current?.duration || 0;
+    videoRef.current.play();
+    setTimeLeft(duration);
   };
 
   const updateProgress = () => {
-    const currentTime = videoRef.current.currentTime;
-    const duration = videoRef.current.duration;
+    const currentTime = videoRef.current?.currentTime || 0;
+    const duration = videoRef.current?.duration || 0;
     const progress = (currentTime / duration) * 100;
     setProgress(progress);
+    setTimeLeft(duration - currentTime);
   };
 
   const startWatching = async () => {
-    const videoUrl = advertisementModal.videoUrl;
-
-    if (!videoRef.current) return;
-    videoRef.current.src = videoUrl;
-
     try {
       await startWatchingAdvertisementVideo(advertisementModal.videoId);
     } catch (err) {
@@ -95,7 +84,7 @@ export default function AdvertisementPlayModal() {
       });
   };
 
-  if (!advertisementModal) return;
+  if (!advertisementModal) return null;
 
   return (
     <div className={styles.container}>
@@ -104,30 +93,38 @@ export default function AdvertisementPlayModal() {
           ref={videoRef}
           className={styles.video}
           autoPlay
-          onLoadedMetadata={handleLoadedMetadata}
+          onLoadedMetadata={onVideoPlay}
           onTimeUpdate={updateProgress}
-        />
-        {videoLoaded && (
-          <>
-            <div
-              className={
-                styles.timer
-              }>{`${minutes}:${seconds.toString().padStart(2, '0')}`}</div>
-            <div className={styles['progress-bar']}>
-              <div
-                className={styles.progress}
-                style={{ width: `${progress}%` }}></div>
-            </div>
-          </>
+          onEnded={sendWatchFinished}
+          controls={false}
+          playsInline={true}>
+          <source src={advertisementModal.videoUrl} type={videoType} />
+        </video>
+
+        {timeLeft ? (
+          <div className={styles.timer}>
+            {`${Math.floor(timeLeft / 60)}:${Math.floor(timeLeft % 60)
+              .toString()
+              .padStart(2, '0')}`}
+          </div>
+        ) : (
+          <></>
         )}
+
+        <div className={styles['progress-bar']}>
+          <div
+            className={styles.progress}
+            style={{ width: `${progress}%` }}></div>
+        </div>
       </div>
 
-      {!videoLoaded ||
-        (isProcessing && (
-          <div className={styles['loader-container']}>
-            <Loader2 />
-          </div>
-        ))}
+      {isProcessing && (
+        <div className={styles['loader-container']}>
+          <Loader2 />
+        </div>
+      )}
+
+      <div className={styles['no-interaction-overlay']}></div>
     </div>
   );
 }
