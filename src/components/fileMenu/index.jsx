@@ -39,7 +39,7 @@ export const FileMenu = () => {
   const { t } = useTranslation('drive');
   const location = useLocation();
   const dispatch = useDispatch();
-  const isPPVActivated = useMemo(() => !!file.share_file, [file]);
+  const isPPVActivated = useMemo(() => !!file?.share_file, [file?.share_file]);
   const isFileHavePreview = useMemo(() => !!getPreviewFileType(file, '', true), [file])
   const url = useMemo(() => {
     if (isPPVActivated) {

@@ -25,7 +25,7 @@ const PPVModal = () => {
   const [state, setState] = useState({ view: 1, download: 0, description: '' });
   const ppvPayment = useSelector(selectPaymenttByKey('pay_per_view'));
   const file = useSelector(selecSelectedFile);
-  const isPPVActivated = useMemo(() => !!file?.share_file, [file]);
+  const isPPVActivated = useMemo(() => !!file?.share_file, [file?.share_file]);
 
   useEffect(() => {
     if (isPPVActivated) {
