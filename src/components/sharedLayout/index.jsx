@@ -4,6 +4,7 @@ import { FileMenu } from '../fileMenu';
 import { DeleteFileModal } from '../deleteFileModal';
 import { FilePreviewModal } from '../filePreviewModal';
 import { ToastContainer } from 'react-toastify';
+import PPVModal from '../ppvModal/PPVModal';
 
 import { ReactComponent as CancelIcon } from '../../assets/cancel.svg';
 
@@ -21,6 +22,7 @@ const SharedLayout = ({ children }) => {
       <FileMenu />
       <DeleteFileModal />
       <FilePreviewModal />
+      <PPVModal />
       <ToastContainer closeButton={CloseNotificationButton} />
     </div>
   );

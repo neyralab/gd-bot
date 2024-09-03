@@ -7,4 +7,4 @@ export const API_NEYRA = `${import.meta.env.VITE_NEIRA_AI_API}`;
 export const API_NEYRA_CONNECT = `${import.meta.env.VITE_NEIRA_AI_API}/auth/identity/connect_userv8`;
 export const API_TON_WALLET = `${import.meta.env.VITE_NEIRA_AI_API}/gateway/billing/retrieve_crypto`;
 export const API_WEB_APP_URL = `${import.meta.env.VITE_APP_FRONTEND_URL}`;
-
+export const BOT_NAME = `${import.meta.env.VITE_BOT_NAME}`

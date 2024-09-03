@@ -17,8 +17,6 @@ import { setPaymentTypesEffect } from './effects/paymentEffect';
 import { storageListEffect } from './effects/storageEffects';
 import { API_WEB_APP_URL } from './utils/api-urls';
 import { useLanguage } from './utils/useLanguage';
-import { isDevEnv } from './utils/isDevEnv';
-import { isPhone } from './utils/client';
 
 import SharedLayout from './components/sharedLayout';
 import { StartPage } from './pages/startPage';
@@ -33,6 +31,7 @@ import { LanguagePage } from './pages/language';
 import { BoostPage } from './pages/boost';
 import { GamesPage } from './pages/games';
 import { GamePage } from './pages/game';
+import { PaidView } from './pages/paidView';
 import { IntroPage } from './pages/intro';
 import EarnPage from './pages/earn';
 import FriendsPage from './pages/friends';
@@ -130,6 +129,7 @@ function App() {
           <Route path="/file-upload" exact element={<FilesSystemPage />} />
           <Route path="/ghostdrive-upload" exact element={<FilesPage />} />
           <Route path="/files" exact element={<FilesPage />} />
+          <Route path="/paid-view/:id" exact element={<PaidView />} />
           <Route
             path="/upgrade"
             exact

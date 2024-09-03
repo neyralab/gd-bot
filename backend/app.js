@@ -136,22 +136,44 @@ bot.start(async (ctx) => {
     'Join The Community',
     `https://t.me/ghostdrive_web3`
   );
-  try {
-    await ctx.replyWithPhoto(
-      { source: fs.createReadStream('./assets/start.png') },
-      {
-        caption: `${header}\n\n${activitiesText}`,
-        parse_mode: 'HTML',
-        reply_markup: {
-          inline_keyboard: [[dashboardButton], [followNewsButton]]
-        }
+
+  if (refCode && refCode.startsWith('paylink')) {
+    const [_, slug, name] = refCode.split('&');
+    const url = `${process.env.APP_FRONTEND_URL}/paid-view/${slug}`;
+    try {
+      await ctx.reply(
+        `You are using a special link. To open the file named ${name}, please click the button below.`,
+        Markup.inlineKeyboard([
+          Markup.button.webApp('Open', url)
+        ])
+      );
+    } catch (error) {
+      logger.error('Error handling deep link:', { error });
+      try {
+        await ctx.reply(`Error: ${error.message}`);
+      } catch (e) {
+        logger.error('Error sending error message', { error: e });
       }
-    );
-  } catch (error) {
-    logger.error('Error replyWithPhoto:', {
-      error,
-      chat_id: ctx.chat.id.toString()
-    });
+    }
+    return;
+  } else {
+    try {
+      await ctx.replyWithPhoto(
+        { source: fs.createReadStream('./assets/start.png') },
+        {
+          caption: `${header}\n\n${activitiesText}`,
+          parse_mode: 'HTML',
+          reply_markup: {
+            inline_keyboard: [[dashboardButton], [followNewsButton]]
+          }
+        }
+      );
+    } catch (error) {
+      logger.error('Error replyWithPhoto:', {
+        error,
+        chat_id: ctx.chat.id.toString()
+      });
+    }
   }
 });
 

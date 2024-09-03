@@ -25,6 +25,16 @@ const fomatNumber = (num) => {
   return Number(num).toLocaleString('en-US');
 }
 
+const removeExtension = (filename = '') => {
+  const parts = filename.split('.');
+  
+  if (parts.length === 1 || (parts[0] === '' && parts.length === 2)) {
+      return filename;
+  }
+
+  return parts.slice(0, -1).join('.');
+}
+
 const getResponseError = (error, defMessage = 'Sorry, something went wrong! Please reload the page') => {
   let res = error?.response?.data?.errors ||
     error?.response?.data?.message;
@@ -35,4 +45,13 @@ const getResponseError = (error, defMessage = 'Sorry, something went wrong! Plea
   return res || defMessage;
 }
 
-export { getWallet, fomatNumber, getNumbers, capitalize, getResponseError }
+const formatDuration = (duration = 0) => {
+  if (duration)  {
+    const minutes = Math.floor(duration / 60);
+    const seconds = Math.floor(duration % 60);
+    return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+  }
+  return '00:00'
+};
+
+export { getWallet, fomatNumber, getNumbers, capitalize, getResponseError, removeExtension, formatDuration }

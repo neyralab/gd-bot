@@ -15,6 +15,22 @@
   -webkit-tap-highlight-color: transparent;
 }
 
+.shareMenuButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 8px;
+  right: 6px;
+  padding-bottom: 0;
+  border-radius: 5px;
+  background: #303030;
+  width: 24px;
+  height: 24px;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
 .fileMenuButton {
   position: absolute;
   top: 8px;
@@ -92,6 +108,28 @@
   line-height: 150%;
 }
 
+.squareInfo__statistic {
+  display: flex;
+  gap: 8px;
+}
+
+.squareInfo__statistic_item {
+  display: flex;
+  align-items: center;
+}
+
+.squareInfo__statistic_item > span {
+  font-family: 'SF Pro Text';
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 16px;
+  color: #7D7D7D;
+}
+
+.squareInfo__statistic_item > svg {
+  margin-right: 4px;
+}
+
 /* list view */
 
 .fileList {
@@ -132,6 +170,28 @@
   font-weight: 400;
   line-height: 150%;
   letter-spacing: 0.11px;
+}
+
+.info__statistic {
+  display: flex;
+  gap: 8px;
+}
+
+.info__statistic_item {
+  display: flex;
+  align-items: center;
+}
+
+.info__statistic_item > svg {
+  margin-right: 4px;
+}
+
+.info__statistic_item > span {
+  font-family: 'SF Pro Text';
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 16px;
+  color: #7D7D7D;
 }
 
 .fileListPreview {
