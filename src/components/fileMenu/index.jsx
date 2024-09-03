@@ -43,7 +43,7 @@ export const FileMenu = () => {
   const isFileHavePreview = useMemo(() => !!getPreviewFileType(file, '', true), [file])
   const url = useMemo(() => {
     if (isPPVActivated) {
-      return `https://t.me/${BOT_NAME}?start=paylink_${file.slug}_${file.name}`;
+      return `https://t.me/${BOT_NAME}?start=paylink_${file.slug}`;
     }
     return generateSharingLink(file.slug);
   }, [file, isPPVActivated]);
