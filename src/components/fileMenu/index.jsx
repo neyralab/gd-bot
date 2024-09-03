@@ -104,7 +104,7 @@ export const FileMenu = () => {
     <SlidingModal
       onClose={onClose}
       isOpen={isOpen}
-      snapPoints={isPPVActivated ? [155, 155, 50, 0] : [175, 90, 50, 0]}
+      snapPoints={isPPVActivated ? [184, 184, 50, 0] : [120, 110, 50, 0]}
     >
       <ul className={style.menu}>
         {!isDeletedPage && (
