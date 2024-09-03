@@ -14,6 +14,8 @@ import {
   startGame
 } from '../../effects/gameEffect';
 import { setUser } from './userSlice';
+import { getAdvertisementVideo } from '../../effects/advertisementEffect';
+import { API_PATH_ROOT } from '../../utils/api-urls';
 
 const gameSlice = createSlice({
   name: 'game',
@@ -91,7 +93,17 @@ const gameSlice = createSlice({
     /** To prevent accidental tap to start another game when just finished */
     recentlyFinishedLocker: false,
 
-    /** Fancy modal
+    /** Shows an offer to watch an advertisement
+     * When the free game is finished, this modal should appear
+     * and offer our user to watch an advertisement to play another game.
+     * If user accepts the offer, advertisement modal should be seen
+     * Parameters: null or {previewUrl: string, previewColor: string; videoUrl: string}
+     */
+    advertisementOfferModal: null,
+    advertisementModal: null,
+
+    /** Fancy modal with some information/notification.
+     * Right now is used to show 'We need some time to review the transaction'
      * Check GameModal component for parameters
      * Right now it accepts values: null, 'TIME_FOR_TRANSACTION'
      */
@@ -193,6 +205,12 @@ const gameSlice = createSlice({
     setRecentlyFinishedLocker: (state, { payload }) => {
       state.recentlyFinishedLocker = payload;
     },
+    setAdvertisementOfferModal: (state, { payload }) => {
+      state.advertisementOfferModal = payload;
+    },
+    setAdvertisementModal: (state, { payload }) => {
+      state.advertisementModal = payload;
+    },
     setGameModal: (state, { payload }) => {
       state.gameModal = payload;
     },
@@ -217,6 +235,7 @@ const lockTimerCountdown = (dispatch, endTime) => {
       dispatch(setLockIntervalId(null));
       dispatch(setStatus('waiting'));
       dispatch(setThemeAccess({ themeId: 'hawk', status: true }));
+      dispatch(setAdvertisementOfferModal(null));
     }
   }, 1000);
 
@@ -243,6 +262,20 @@ const undateSubTheme = (dispatch, state, themes, level) => {
   }
 
   return newThemes;
+};
+
+const getAdvertisementOffer = async (dispatch) => {
+  const videoInfo = await getAdvertisementVideo();
+
+  if (videoInfo && videoInfo.id && videoInfo.video) {
+    dispatch(
+      setAdvertisementOfferModal({
+        previewUrl: null,
+        videoUrl: `${API_PATH_ROOT}${videoInfo.video}`,
+        videoId: videoInfo.id
+      })
+    );
+  }
 };
 
 export const initGame = createAsyncThunk(
@@ -281,6 +314,7 @@ export const initGame = createAsyncThunk(
       if (now <= gameInfo.game_ends_at) {
         const endTime = gameInfo.game_ends_at;
         lockTimerCountdown(dispatch, endTime);
+        getAdvertisementOffer(dispatch);
       }
 
       /** This function combines backend tiers and frontend themes */
@@ -402,6 +436,7 @@ export const finishRound = createAsyncThunk(
 
     if (state.game.theme.id === 'hawk') {
       dispatch(startNewFreeGameCountdown());
+      getAdvertisementOffer(dispatch);
     }
     console.log({ gameId });
 
@@ -420,7 +455,9 @@ export const finishRound = createAsyncThunk(
       .then((data) => {
         dispatch(
           setRoundFinal({
-            roundPoints: state.game.balance.value,
+            roundPoints:
+              state.game.balance.value * state.game.theme.multiplier ||
+              undefined,
             isActive: true
           })
         );
@@ -472,6 +509,23 @@ export const startNewFreeGameCountdown = createAsyncThunk(
     const freezeTime = level?.recharge_mins * 60 * 1000;
     const endTime = Date.now() + freezeTime;
     lockTimerCountdown(dispatch, endTime);
+  }
+);
+
+export const refreshFreeGame = createAsyncThunk(
+  'game/refreshFreeGame',
+  async (_, { dispatch }) => {
+    dispatch(setLockIntervalId(null));
+    dispatch(setLockTimerTimestamp(null));
+    dispatch(setAdvertisementModal(null));
+    dispatch(setStatus('waiting'));
+    dispatch(setThemeAccess({ themeId: 'hawk', status: true }));
+    dispatch(
+      setRoundFinal({
+        roundPoints: 300,
+        isActive: true
+      })
+    );
   }
 );
 
@@ -632,6 +686,10 @@ export const gameCleanup = createAsyncThunk(
     dispatch(setRoundFinal({ roundPoins: null, isActive: false }));
     dispatch(setReachedNewLevel(false));
     dispatch(setStatus('waiting'));
+    dispatch(setAdvertisementOfferModal(null));
+    dispatch(setAdvertisementModal(null));
+    dispatch(setGameModal(null));
+    dispatch(setSystemModal(null));
   }
 );
 
@@ -664,6 +722,8 @@ export const {
   setRoundFinal,
   setMaxLevel,
   setRecentlyFinishedLocker,
+  setAdvertisementOfferModal,
+  setAdvertisementModal,
   setGameModal,
   setSystemModal,
   setGameInfo

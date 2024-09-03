@@ -12,13 +12,9 @@ const EndGameAddedPoints = () => {
   const dispatch = useDispatch();
 
   const isActive = useSelector((state) => state.game.roundFinal.isActive);
-  const c = useSelector((state) => state.game.roundFinal.roundPoints);
+  const counter = useSelector((state) => state.game.roundFinal.roundPoints);
   const lvl = useSelector(selectLevel);
   const user = useSelector((state) => state.user.data);
-
-  const counter = useMemo(() => {
-    return c * lvl?.multiplier || undefined;
-  }, [c, lvl?.multiplier]);
 
   const [show, setShow] = useState(false);
   const [showRank, setShowRank] = useState(false);

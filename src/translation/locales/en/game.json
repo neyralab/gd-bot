@@ -112,6 +112,9 @@
     "upload": "Upload 10 files",
     "uploadFile": "Upload file"
   },
+  "advertisement": {
+    "watchAndPlay": "Watch ad to get 300 points and play again"
+  },
   "message": {
     "someTimeForTransaction": "We need some time to review the transaction.",
     "checkYourPointsLater": "Please check your points in about 5 minutes to see the updated status."

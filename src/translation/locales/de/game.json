@@ -113,6 +113,9 @@
     "upload": "10 Dateien hochladen",
     "uploadFile": "Datei hochladen"
   },
+  "advertisement": {
+    "watchAndPlay": "Sehen Sie sich die Anzeige an, um 300 Punkte zu erhalten und erneut zu spielen"
+  },
   "message": {
     "someTimeForTransaction": "Wir benötigen etwas Zeit, um die Transaktion zu prüfen.",
     "checkYourPointsLater": "Bitte überprüfen Sie Ihre Punkte in etwa 5 Minuten, um den aktualisierten Status anzuzeigen."

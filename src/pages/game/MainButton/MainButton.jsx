@@ -11,6 +11,7 @@ import {
 } from '../../../store/reducers/gameSlice';
 import EndGameAddedPoints from '../EndGameAddedPoints/EndGameAddedPoints';
 import PointsGrowArea from '../PointsGrowArea/PointsGrowArea';
+import AdvertisementOfferModal from '../AdvertisementOfferModal/AdvertisementOfferModal';
 import Counter from '../Counter/Counter';
 import styles from './MainButton.module.scss';
 
@@ -114,6 +115,8 @@ const MainButton = ({ onPushAnimation }) => {
       <div className={styles['counter-container']}>
         <Counter />
       </div>
+
+      <AdvertisementOfferModal />
     </div>
   );
 };
