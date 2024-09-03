@@ -152,7 +152,7 @@ bot.start(async (ctx) => {
     const url = `${process.env.APP_FRONTEND_URL}/paid-view/${slug}`;
     try {
       await ctx.reply(
-        `${refCode} You are using a special link. To open the file, please click the button below.${slug}`,
+        `You are using a special link. To open the file, please click the button below.`,
         Markup.inlineKeyboard([
           Markup.button.webApp('Open', url)
         ])

@@ -19,6 +19,7 @@ import { updateShareEffect, deletePaidShareEffect } from '../../effects/filesEff
 import { restoreFileEffect } from '../../effects/file/restoreFileEffect';
 import { generateSharingLink } from '../../utils/generateSharingLink';
 import { getPreviewFileType } from '../../utils/preview';
+import { removeSlugHyphens } from '../../utils/string';
 import useButtonVibration from '../../hooks/useButtonVibration';
 import { BOT_NAME } from '../../utils/api-urls';
 
@@ -43,7 +44,7 @@ export const FileMenu = () => {
   const isFileHavePreview = useMemo(() => !!getPreviewFileType(file, '', true), [file])
   const url = useMemo(() => {
     if (isPPVActivated) {
-      return `https://t.me/${BOT_NAME}?start=paylink_${file.slug}`;
+      return `https://t.me/${BOT_NAME}?start=paylink_${removeSlugHyphens(file.slug)}`;
     }
     return generateSharingLink(file.slug);
   }, [file, isPPVActivated]);
