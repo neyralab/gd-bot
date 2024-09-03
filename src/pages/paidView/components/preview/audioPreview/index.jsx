@@ -57,24 +57,6 @@ export const AudioPreview = ({ file, allowPreview }) => {
   }, [audioRef, allowPreview]);
 
   useEffect(() => {
-    const updateProgress = () => {
-      const progressValue = (audioRef.current.currentTime / audioRef.current.duration) * 100;
-      setProgress(progressValue);
-
-      if (!allowPreview && audioRef.current.currentTime >= PAUSE_THRESHOLD_SECONDS) {
-        audioRef.current.pause();
-        setIsPlaying(false);
-      }
-    };
-
-    audioRef.current.addEventListener('timeupdate', updateProgress);
-
-    return () => {
-      audioRef?.current?.removeEventListener('timeupdate', updateProgress);
-    };
-  }, [allowPreview]);
-
-  useEffect(() => {
     createStreamEffect(file.slug)
       .then((data) => {
         setIpfsAudio(data?.url)
@@ -89,6 +71,16 @@ export const AudioPreview = ({ file, allowPreview }) => {
     setProgress(0);
   }, []);
 
+  const updateProgress = () => {
+    const progressValue = (audioRef.current.currentTime / audioRef.current.duration) * 100;
+    setProgress(progressValue);
+
+    if (!allowPreview && audioRef.current.currentTime >= PAUSE_THRESHOLD_SECONDS) {
+      audioRef.current.pause();
+      setIsPlaying(false);
+    }
+  };
+
   return (
     <>
       <div className={styles["player-container"]}>
@@ -97,6 +89,7 @@ export const AudioPreview = ({ file, allowPreview }) => {
             ref={audioRef}
             onEnded={onFinish}
             src={ipfsAudio ? `https://${ipfsAudio}` : undefined}
+            onTimeUpdate={updateProgress}
           />
           <div
             className={styles["controls"]}

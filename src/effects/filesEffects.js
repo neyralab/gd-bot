@@ -201,30 +201,46 @@ export const getFilesEffect = async (page = 1, order = 'desc') => {
 };
 
 export const getPaidShareFilesEffect = async (page = 1) => {
-  const url = `${API_PATH}/share/file/list?page=${page}`;
-  return await axiosInstance.get(url).then((result) => result.data);
+  try {
+    const data = await axiosInstance.get(`${API_PATH}/share/file/list?page=${page}`);
+    return data?.data;
+  } catch (error) {
+    throw Error(error);
+  }
 };
 
 export const createPaidShareFileEffect = async (id, body) => {
-  const url = `${API_PATH}/share/file/${id}`;
-  return await axiosInstance.post(url, body).then((result) => result.data);
+  try {
+    const data = await axiosInstance.post(`${API_PATH}/share/file/${id}`, body);
+    return data?.data;
+  } catch (error) {
+    throw Error(error);
+  }
 };
 
 export const deletePaidShareEffect = async (id, body) => {
-  const url = `${API_PATH}/share/file/${id}`;
-  return await axiosInstance.delete(url, body)
-    .then((result) => {
-      if (result.data.message === "success") {
-        return result.data; 
-      } else {
-        throw Error('Something went wrong');
-      }
-    });
+  try {
+    const url = `${API_PATH}/share/file/${id}`;
+    return await axiosInstance.delete(url, body)
+      .then((result) => {
+        if (result.data.message === "success") {
+          return result?.data; 
+        } else {
+          throw Error('Something went wrong');
+        }
+      });
+  } catch (error) {
+    throw Error(error);
+  }
 };
 
 export const getPaidShareFileEffect = async (slug) => {
-  const url = `${API_PATH}/share/file/${slug}`;
-  return await axiosInstance.get(url).then((result) => result.data);
+  try {
+    const data = await axiosInstance.get(`${API_PATH}/share/file/${slug}`);
+    return data?.data
+  } catch (error) {
+    throw Error(error);
+  }
 };
 
 export const getFilesByTypeEffect = async (type, page = 1) => {

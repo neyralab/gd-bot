@@ -41,6 +41,7 @@ export const PayShareFile = ({
   const isFileChecked = file.id === checkedFile.id;
   const isFolder = file?.type === 2;
   const location = useLocation();
+  const isGridView = useMemo(() => (view === 'grid'), [view])
   const isDeletedPage = useMemo(
     () =>
       location.pathname === '/file-upload' &&
@@ -70,44 +71,36 @@ export const PayShareFile = ({
     dispatch(handleFilePreviewModal(true));
   };
 
-  const FavButton = (
-    <button
-      className={cn(
-        style.shareMenuButton,
-        view === 'grid' ? style.favBtnGrid : style.favBtnList
-      )}>
-      <StarFullIcon />
-    </button>
-  );
-
-  const MenuButton = (
-    <button
-      className={cn(style.shareMenuButton, isFileChecked && style.selectedFile)}
-      onClick={handleVibrationClick(onMenuClick)}>
-      <DotsIcon />
-    </button>
-  );
-
   return (
     <li
-      className={view === 'grid' ? style.fileSquare : style.fileList}
+      className={isGridView ? style.fileSquare : style.fileList}
       id={file.id}
       onClick={onClickHandler}
     >
-      {FavButton}
-      {MenuButton}
-      <div className={view === 'grid' ? style.previewWrapper : style.fileListPreview}>
+      <button
+        className={cn(
+          style.shareMenuButton,
+          isGridView ? style.favBtnGrid : style.favBtnList
+        )}>
+        <StarFullIcon />
+      </button>
+      <button
+        className={cn(style.shareMenuButton, isFileChecked && style.selectedFile)}
+        onClick={handleVibrationClick(onMenuClick)}>
+        <DotsIcon />
+      </button>
+      <div className={isGridView ? style.previewWrapper : style.fileListPreview}>
         {preview ? (
           <img
             src={preview}
             alt={file.name}
             className={style.previewImage}
-            width={view === 'grid' ? undefined : 30}
-            height={view === 'grid' ? undefined : 40}
+            width={isGridView ? undefined : 30}
+            height={isGridView ? undefined : 40}
           />
         ) : isFolder ? (
           <CustomFolderIcon viewType={view} color={file?.color[0]?.hex} />
-        ) : view === 'grid' ? (
+        ) : isGridView ? (
           <CustomFileIcon
             extension={file.extension}
             color={file.color}
@@ -117,16 +110,16 @@ export const PayShareFile = ({
           <CustomFileSmallIcon type={file.extension} />
         )}
       </div>
-      <div className={view === 'grid' ? style.squareInfo : style.info}>
-        <p className={view === 'grid' ? style.squareInfo__name : style.info__name}>
+      <div className={isGridView ? style.squareInfo : style.info}>
+        <p className={isGridView ? style.squareInfo__name : style.info__name}>
           {isSearch ? file.title : file.name}
         </p>
-        <div className={view === 'grid' ? style.squareInfo__statistic : style.info__statistic}>
-          <p className={style[view === 'grid' ? 'squareInfo__statistic_item' : 'info__statistic_item']}>
+        <div className={isGridView ? style.squareInfo__statistic : style.info__statistic}>
+          <p className={style[isGridView ? 'squareInfo__statistic_item' : 'info__statistic_item']}>
             <StarIcon width='12' height='12' viewBox='0 0 21 20' />
             <span>{file.share_file.price_view}</span>
           </p>
-          <p className={style[view === 'grid' ? 'squareInfo__statistic_item' : 'info__statistic_item']}>
+          <p className={style[isGridView ? 'squareInfo__statistic_item' : 'info__statistic_item']}>
             <EyeIcon />
             <span>{file.entry_statistic.viewed}</span>
           </p>
