@@ -16,7 +16,7 @@ import { selectPaymenttByKey } from '../../store/reducers/paymentSlice';
 import { INVOICE_TYPE } from '../../utils/createStarInvoice';
 import { getPreviewFileType } from '../../utils/preview';
 
-import { removeExtension } from '../../utils/string';
+import { removeExtension, addSlugHyphens } from '../../utils/string';
 
 import styles from './styles.module.css';
 
@@ -42,7 +42,7 @@ export const PaidView = () => {
 
   useEffect(() => {
     if (id) {
-      getPaidShareFileEffect(id)
+      getPaidShareFileEffect(addSlugHyphens(id))
         .then(({ data }) => {
           const shareFile = { ...data };
           delete shareFile.file;
