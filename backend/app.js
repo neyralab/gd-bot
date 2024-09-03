@@ -12,13 +12,15 @@ import photoHandler from './handlers/photoHandler.js';
 import textHandler from './handlers/textHandler.js';
 import termsHandler from './commands/terms/index.js';
 import logger from './utils/logger.js';
+import parseStartParams from './utils/startParamsParser.js';
+import sendMobileAuthButton from './utils/sendMobileAuthButton.js';
 
 const app = express();
-const bot = new Telegraf(process.env.BOT_TOKEN_SECRET, {
+export const bot = new Telegraf(process.env.BOT_TOKEN_SECRET, {
   handlerTimeout: Infinity
 });
 
-bot.catch(e => {
+bot.catch((e) => {
   logger.error('bot.catch', e);
 });
 
@@ -44,8 +46,11 @@ await redisClient.connect();
 const userCreationQueue = new Queue('userCreation', process.env.REDIS_URL);
 
 bot.start(async (ctx) => {
-  const refCode = ctx.startPayload;
+  const startParams = parseStartParams(ctx.message.text);
+  const refCode = startParams?.ref;
+  const showMobileAuthButton = startParams?.show_mob_app_auth_button;
   const user = ctx.from;
+  const chat_id = ctx.chat.id.toString();
   const userData = {
     id: user.id.toString(),
     username: user.username,
@@ -54,12 +59,18 @@ bot.start(async (ctx) => {
     photo_url: '',
     referral: refCode,
     is_premium: !!user?.is_premium,
-    chat_id: ctx.chat.id.toString()
+    chat_id
   };
 
   // Cache userData by user.id
 
-  const cachedUserData = await redisClient.get(userData.id);
+  const cachedUserData = await redisClient.get(`user:${userData.id}`);
+
+  if (cachedUserData && showMobileAuthButton) {
+    const userData = JSON.parse(cachedUserData);
+    sendMobileAuthButton(chat_id, userData.jwt);
+    return;
+  }
 
   if (!cachedUserData) {
     try {
@@ -68,7 +79,7 @@ bot.start(async (ctx) => {
       logger.info('Creating user', {
         url,
         userData,
-        chat_id: ctx.chat.id.toString()
+        chat_id
       });
 
       const headers = {
@@ -86,10 +97,9 @@ bot.start(async (ctx) => {
         url,
         userData,
         headers: headers,
+        showMobileAuthButton
       });
-
     } catch (error) {
-
       logger.error('Error queueing user creation', {
         error,
         chat_id: ctx.chat.id.toString()
@@ -105,6 +115,7 @@ bot.start(async (ctx) => {
       }
       return;
     }
+    if (showMobileAuthButton) return;
   }
 
   const header =
@@ -114,7 +125,6 @@ bot.start(async (ctx) => {
     '🚀 <b>Community Rewards:</b> Upload files to earn points, climb the leaderboard, and boost your rewards with our exciting tap game.\n\n' +
     '🎁 <b>Lifetime Storage Giveaway:</b> Enjoy storage from the Filecoin network. Invite friends and earn even more!\n\n' +
     '<b>Join Ghostdrive today and be part of our growing community!</b>';
-
 
   const dashboardButton = Markup.button.webApp(
     'Open App',
@@ -143,9 +153,7 @@ bot.start(async (ctx) => {
     try {
       await ctx.reply(
         `${slug} You are using a special link. To open the file named ${name}, please click the button below. ${refCode}`,
-        Markup.inlineKeyboard([
-          Markup.button.webApp('Open', url)
-        ])
+        Markup.inlineKeyboard([Markup.button.webApp('Open', url)])
       );
     } catch (error) {
       logger.error('Error handling deep link:', { error });
@@ -250,7 +258,8 @@ app.listen(process.env.PORT, () =>
 );
 
 userCreationQueue.process(async (job) => {
-  const { url, userData, headers } = job.data;
+  const ttl = 60 * 60 * 24 * 30; // time-to-live for data when saving it to a Redis client
+  const { url, userData, headers, showMobileAuthButton } = job.data;
   try {
     const response = await fetch(url, {
       method: 'POST',
@@ -264,10 +273,21 @@ userCreationQueue.process(async (job) => {
     }
 
     const data = await response.json();
-    await redisClient.set(userData.id, JSON.stringify(data));
+    await redisClient.set(
+      `user:${userData.id}`,
+      JSON.stringify(data),
+      'EX',
+      ttl
+    );
+    if (showMobileAuthButton) {
+      sendMobileAuthButton(userData.chat_id, data.jwt);
+    }
     return data;
   } catch (error) {
-    logger.error('Error creating user', { error, userData });
+    logger.error('Error creating user', {
+      error,
+      userData
+    });
     if (error?.response?.description?.includes('Too Many Requests')) {
       await job.moveToDelayed(Date.now() + 60000);
       return;
@@ -292,7 +312,6 @@ userCreationQueue.on('error', (error) => {
     stack: error.stack
   });
 });
-
 
 userCreationQueue.on('delayed', async (job) => {
   try {
