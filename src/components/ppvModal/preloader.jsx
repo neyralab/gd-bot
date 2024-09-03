@@ -20,16 +20,18 @@ const Preloader = ({ onClose }) => (
           <span className={styles.progress_marker}>%</span>
         </div>
       </div>
-      <img
-        className={styles.loader_planet}
-        src={PlanetIcon}
-        alt="Planet"
-      />
-      <img
-        className={styles.loader_starship}
-        src={StarshipIcon}
-        alt="Starship"
-      />
+      <div className={styles.loader_content}>
+        <img
+          className={styles.loader_planet}
+          src={PlanetIcon}
+          alt="Planet"
+        />
+        <img
+          className={styles.loader_starship}
+          src={StarshipIcon}
+          alt="Starship"
+        />
+      </div>
       <NoiseIcon className={styles.loader_noise} />
     </div>      
   </>

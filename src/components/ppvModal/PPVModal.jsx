@@ -45,7 +45,7 @@ const PPVModal = () => {
     try {
       if (result === 'paid') {
         setIsProccess(true); 
-        await sleep(500);
+        await sleep(700);
         const body = {
           priceView: state.view,
           currency: 1,
@@ -79,7 +79,7 @@ const PPVModal = () => {
         input,
         dispatch,
         callback: invoiceCallback,
-        type: INVOICE_TYPE.game,
+        type: INVOICE_TYPE.ppv,
         theme: { multiplier: '', stars: 1 }
       });
     } catch (error) {
