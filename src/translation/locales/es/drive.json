@@ -18,6 +18,23 @@
     "linkToFile": "Toque este enlace para ver el archivo",
     "games": "Juegos"
   },
+  "ppv": {
+    "back": "Atrás",
+    "ppv": "Pagar por ver",
+    "edit": "Editar",
+    "download": "Precio de descarga (opcional)",
+    "description": "Descripción",
+    "policy": "Tú posees el 100% de los ingresos. Política legal",
+    "publish": "Publicar",
+    "wait": "Por favor espera...",
+    "processing": "procesamiento de archivos",
+    "about": "Acerca de",
+    "totalViews": "Vistas totales",
+    "starts": "Comienza",
+    "downloadToStorage": "Descargar a tu G:Drive",
+    "freeWatch": "Ver gratis",
+    "preview": "Vista previa"
+  },
   "month": {
     "jan": "Ene",
     "feb": "Feb",

@@ -1,4 +1,5 @@
 import React, { useCallback, useMemo, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import ReactPlayer from 'react-player';
 
 import { ReactComponent as ForwardIcon } from '../../../../../components/filePreviewModal/previewContent/VideoPreview/assets/forward_10.svg';
@@ -12,6 +13,7 @@ import styles from './styles.module.css';
 const PAUSE_THRESHOLD_SECONDS = 10;
 
 export const VideoPreview = ({ file, fileContent, allowPreview }) => {
+  const { t } = useTranslation('drive');
   const playerRef = useRef(null);
   const progressRef = useRef(null);
   
@@ -155,7 +157,7 @@ export const VideoPreview = ({ file, fileContent, allowPreview }) => {
         <h3 className={styles.title}>{removeExtension(file.name)}</h3>
         {!allowPreview && (
           <p className={styles.progress}>
-            <span>Free watch</span>
+            <span>{t('ppv.freeWatch')}</span>
             {`0:10 | ${formatDuration(playerRef.current?.getDuration())}`}
           </p>
         )}

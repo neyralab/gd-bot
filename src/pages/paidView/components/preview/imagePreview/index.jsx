@@ -37,24 +37,29 @@ export const ImagePreview = ({ file, fileContent, allowPreview, fullscreen, onFu
       const offsetX = (canvas.width - drawWidth) / 2;
       const offsetY = (canvas.height - drawHeight) / 2;
 
-      if (!allowPreview) {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      if (allowPreview) {
+        ctx.filter = 'none';
+      } else {
         ctx.filter = 'blur(15px)';
       }
 
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
       ctx.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
     };
   }, [fileContent, isSVG, allowPreview, fullscreen, canvasRef]);
 
   return (
-    <div className={CN(styles.preview, fullscreen && styles.fullPreview)}>
-      <canvas
-        ref={canvasRef}
-        className={styles.image}
-        style={{ width: '100%', height: '100%' }}
-      />
-      <FullscreenBtn onFullscreen={onFullscreen} />
-      <h3 className={styles.title}>{removeExtension(file.name)}</h3>
-    </div>
-  );
+    <>
+      <div className={CN(styles.preview, fullscreen && styles.fullPreview)}>
+        <canvas
+          ref={canvasRef}
+          className={styles.image}
+          style={{ width: '100%', height: '100%' }}
+        />
+        <FullscreenBtn onFullscreen={onFullscreen} />
+      </div>
+      {!fullscreen && <h3 className={styles.title}>{removeExtension(file.name)}</h3>}
+    </>
+  )
 };

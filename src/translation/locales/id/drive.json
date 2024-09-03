@@ -18,6 +18,23 @@
     "linkToFile": "Ketuk tautan ini untuk melihat file",
     "games": "Permainan"
   },
+  "ppv": {
+    "back": "Kembali",
+    "ppv": "Bayar per tayang",
+    "edit": "Edit",
+    "download": "Harga unduhan (opsional)",
+    "description": "Deskripsi",
+    "policy": "Anda memiliki 100% pendapatan. Kebijakan Hukum",
+    "publish": "Publikasikan",
+    "wait": "Harap tunggu...",
+    "processing": "pemrosesan file",
+    "about": "Tentang",
+    "totalViews": "Total tampilan",
+    "starts": "Mulai",
+    "downloadToStorage": "Unduh ke G:Drive Anda",
+    "freeWatch": "Tonton gratis",
+    "preview": "Pratinjau"
+  },
   "month": {
     "jan": "Januari",
     "feb": "Februari",

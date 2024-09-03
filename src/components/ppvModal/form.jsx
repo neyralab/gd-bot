@@ -1,4 +1,6 @@
-import React, { useMemo, useState } from 'react';
+import React, { useState, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
+import CN from 'classnames';
 
 import Header from './components/Header';
 import CountSelector from './components/CountSelector';
@@ -10,6 +12,8 @@ const MAX_STARS_VALUE = 9999;
 const MAX_LENGTH = 256;
 
 const Form = ({ onClose, onSubmitProcess, state, setState }) => {
+  const { t } = useTranslation('drive');
+  const [startValidation, setStartValidation] = useState(false);
   const isValid = useMemo(() => 
     (state.description && state.description.trim().length <= MAX_LENGTH)
   ,[state]);
@@ -23,16 +27,20 @@ const Form = ({ onClose, onSubmitProcess, state, setState }) => {
   }
 
   const onSubmit = () => {
-    onSubmitProcess(state);
+    if (isValid) {
+      onSubmitProcess(state);
+    } else {
+      setStartValidation(true);
+    }
   }
   
   return (
     <>
       <div className={styles.container}>
         <div className={styles.form} >
-          <Header onClose={onClose} />
+          <Header leftText={t('ppv.back')} onClose={onClose} />
           <CountSelector
-            title="Per per view"
+            title={t('ppv.ppv')}
             value={Number(state.view)}
             onChange={onChange}
             name="view"
@@ -40,33 +48,36 @@ const Form = ({ onClose, onSubmitProcess, state, setState }) => {
             max={MAX_STARS_VALUE}
           />
           <CountSelector
-            title="Download price (optinal)"
+            title={t('ppv.download')}
             value={Number(state.download)}
             onChange={onChange}
             name="download"
             min={0}
             max={MAX_STARS_VALUE}
           />
-          <div className={styles.areaContainer}>
-            <p className={styles.areaTitle}>Description</p>
+          <div className={CN(styles.areaContainer, startValidation && !isValid && styles.areaError)}>
+            <p className={styles.areaTitle}>{t('ppv.description')}</p>
             <textarea
               className={styles.area}
-              placeholder='Description'
+              placeholder={t('ppv.description')}
               onChange={onDescChange}
               value={state.description}
               rows="5"
             />
+            <span className={styles.areaWordCounter}>
+              {`${state.description.length}/${MAX_LENGTH}`}
+            </span>
           </div>
         </div>
       </div>
       <div className={styles.footer}>
-        <p className={styles.footerTitle}>You own 100% revenue. Legal Policy </p>
+        <p className={styles.footerTitle}>{t('ppv.policy')}</p>
         <button
-          disabled={!isValid}
+          disabled={startValidation && !isValid}
           className={styles.footerButton}
           onClick={onSubmit}
         >
-          Publish
+          {t('ppv.publish')}
           <span>1 <StarIcon viewBox='0 0 21 21' /></span>
         </button>
       </div>

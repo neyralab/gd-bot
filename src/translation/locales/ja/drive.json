@@ -18,6 +18,23 @@
     "linkToFile": "このリンクをクリックしてファイルを表示",
     "games": "ゲーム"
   },
+  "ppv": {
+    "back": "戻る",
+    "ppv": "ペイ・パー・ビュー",
+    "edit": "編集",
+    "download": "ダウンロード価格（オプション）",
+    "description": "説明",
+    "policy": "収益の100％を所有しています。 法的方針",
+    "publish": "公開",
+    "wait": "お待ちください...",
+    "processing": "ファイル処理中",
+    "about": "約",
+    "totalViews": "総視聴数",
+    "starts": "開始",
+    "downloadToStorage": "G:Drive にダウンロード",
+    "freeWatch": "無料で視聴",
+    "preview": "プレビュー"
+  },
   "month": {
     "jan": "1月",
     "feb": "2月",
