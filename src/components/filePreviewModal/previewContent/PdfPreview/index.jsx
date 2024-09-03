@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Document, Page, pdfjs } from 'react-pdf';
 
 import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
@@ -38,29 +38,20 @@ const PdfPreview = ({ fileContent }) => {
     }
   }, [fileContent, loading]);
 
-  useLayoutEffect(() => {
-    if (fileContent && pdfPageHeight) {
-      const elem = fileContentRef?.current;
-      const handleScroll = (event) => {
-        const scrollTop = event.srcElement.scrollTop;
+  const handleScroll = useCallback(
+    (event) => {
+      if (fileContent && pdfPageHeight) {
+        const scrollTop = event.target.scrollTop;
         const nextPage = Math.round(
           (scrollTop - PDF_PAGE_OFFSET + pdfPageHeight) / pdfPageHeight
         );
         if (nextPage !== pageNumber && nextPage <= totalPages) {
           setPageNumber(nextPage);
         }
-      };
-      if (elem) {
-        elem.addEventListener('scroll', handleScroll);
       }
-
-      return () => {
-        if (elem) {
-          elem.removeEventListener('scroll', handleScroll);
-        }
-      };
-    }
-  }, [pageNumber, totalPages, fileContent, pdfPageHeight]);
+    },
+    [fileContent, pdfPageHeight, pageNumber, totalPages]
+  );
 
   useEffect(() => {
     const updatePageWidth = () => {
@@ -76,7 +67,7 @@ const PdfPreview = ({ fileContent }) => {
   }, []);
 
   return (
-    <div ref={fileContentRef} className={s.wrapper}>
+    <div ref={fileContentRef} className={s.wrapper} onScroll={handleScroll}>
       <Document
         file={fileContent}
         onLoadSuccess={onDocumentLoadSuccess}
@@ -88,6 +79,7 @@ const PdfPreview = ({ fileContent }) => {
             key={`pdf-page-number-${item}`}
             width={pageWidth}
             renderTextLayer={false}
+            className={s.sheet}
           />
         ))}
       </Document>
