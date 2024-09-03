@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { downloadFile } from 'gdgateway-client';
 import { useDispatch, useSelector } from 'react-redux';
 import CN from 'classnames';
@@ -28,6 +28,7 @@ const STEPS = {
 export const PaidView = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const location = useLocation();
   const [file, setFile] = useState({});
   const [loading, setLoading] = useState(false);
   const [fileContent, setFileContent] = useState(null);
@@ -36,6 +37,8 @@ export const PaidView = () => {
   const [fullscreen, setFullscreen] = useState(false);
   const [step, setStep] = useState(STEPS.preview);
   const { id } = useParams();
+
+  console.log('location => ', location)
 
   useEffect(() => {
     if (id) {
@@ -122,7 +125,7 @@ export const PaidView = () => {
   const invoicePreviewCallback = async (result) => {
     try {
       if (result === 'paid') {
-        await sleep(500);
+        await sleep(700);
         setStep(STEPS.allowPreview);
       } else {
         console.warn(`error: The payment was not completed. ${result}`)
@@ -135,7 +138,7 @@ export const PaidView = () => {
   const invoiceDownloadCallback = async (result) => {
     try {
       if (result === 'paid') {
-        await sleep(500);
+        await sleep(700);
         setStep(STEPS.download);
         downloadContent();
       } else {
@@ -153,7 +156,7 @@ export const PaidView = () => {
         input,
         dispatch,
         callback: invoicePreviewCallback,
-        type: INVOICE_TYPE.game,
+        type: INVOICE_TYPE.ppv,
         theme: { multiplier: '', stars: file.payShare.price_view }
       });
     } catch (error) {
@@ -168,7 +171,7 @@ export const PaidView = () => {
         input,
         dispatch,
         callback: invoiceDownloadCallback,
-        type: INVOICE_TYPE.game,
+        type: INVOICE_TYPE.ppv,
         theme: { multiplier: '', stars: file.payShare.price_download }
       });
     } catch (error) {

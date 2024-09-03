@@ -112,7 +112,7 @@
 }
 
 .loader_planet {
-  position: absolute;
+  position: relative;
   object-fit: contain;
   width: calc(100% + 32px);
   left: -16px;
@@ -124,11 +124,12 @@
 .loader_starship {
   position: absolute;
   object-fit: contain;
-  width: calc(100% + 32px);
-  left: -16px;
-  right: -16px;
+  width: 60%;
   bottom: 0;
-  z-index: 2;
+  z-index: 4;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); 
 }
 
 .loader_noise {
@@ -150,6 +151,7 @@
   width: 100%;
   text-align: center;
   height: calc(100% - 500px);
+  z-index: 10;
 }
 
 .preloader_title {
@@ -186,6 +188,15 @@
   font-size: 30px;
   font-weight: 200;
   line-height: 30px;  
+}
+
+.loader_content {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  height: 60%;
+  width: 100%;
+  z-index: 1;
 }
 
 /*** loader  ***/
