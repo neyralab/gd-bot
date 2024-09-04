@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import ReactPlayer from 'react-player';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -16,7 +16,6 @@ import styles from './AdvertisementPlayModal.module.scss';
 
 export default function AdvertisementPlayModal() {
   const dispatch = useDispatch();
-  const playButtonRef = useRef(null);
   const advertisementModal = useSelector(
     (state) => state.game.advertisementModal
   );
@@ -130,7 +129,6 @@ export default function AdvertisementPlayModal() {
       Check for canPlay doesn't work. */}
       {!isPlaying && isReady && (
         <div
-          ref={playButtonRef}
           className={styles['play-button-overlay']}
           onClick={handlePlayButtonClick}>
           <button className={styles['play-button']}>
