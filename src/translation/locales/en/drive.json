@@ -18,6 +18,23 @@
     "linkToFile": "Tap this link to see the file",
     "games": "Games"
   },
+  "ppv": {
+    "back": "Back",
+    "ppv": "Pay per view",
+    "edit": "Edit",
+    "download": "Download price (optinal)",
+    "description": "Description",
+    "policy": "You own 100% revenue. Legal Policy",
+    "publish": "Publish",
+    "wait": "Please wait...",
+    "processing": "file processing",
+    "about": "About",
+    "totalViews": "Total views",
+    "starts": "Starts",
+    "downloadToStorage": "Download to your G:Drive",
+    "freeWatch": "Free watch",
+    "preview": "preview"
+  },
   "month": {
     "jan": "Jan",
     "feb": "Feb",

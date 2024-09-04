@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from 'react-router-dom';
 import { downloadFile } from 'gdgateway-client';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import CN from 'classnames';
 
@@ -33,6 +34,7 @@ export const PaidView = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [file, setFile] = useState({});
+  const { t } = useTranslation('drive');
   const [loading, setLoading] = useState(false);
   const [fileContent, setFileContent] = useState(null);
   const user = useSelector((state) => state.user.data);
@@ -49,7 +51,7 @@ export const PaidView = () => {
           delete shareFile.file;
           setFile({ ...data.file, payShare: shareFile });
         })
-        .catch(() => { console.warn('cannot find file') })
+        .catch(() => { console.warn('Cannot find file') })
     }
   }, [id]);
 
@@ -216,7 +218,7 @@ export const PaidView = () => {
 
   return (
     <div className={styles.container}>
-      <Header onClose={goBack} />
+      <Header leftText={t('ppv.back')} onClose={goBack} />
       <div className={styles.content}>
         {fullscreen && (
           <h3 className={CN(styles.title, styles.secondTitle)}>{removeExtension(file.name)}</h3>
@@ -230,17 +232,17 @@ export const PaidView = () => {
         />
         <div className={fullscreen && styles.hide_detail}>
           <div className={styles.description}>
-            <h4>About</h4>
+            <h4>{t('ppv.about')}</h4>
             <p>{file?.payShare?.description}</p>
           </div>
           <div className={styles.stats}>
             <div className={styles.statItem}>
-              <h5>Total views</h5>
+              <h5>{t('ppv.totalViews')}</h5>
               <p>{file?.entry_statistic?.viewed}</p>
             </div>
             <div className={styles.divider}></div>
             <div className={styles.statItem}>
-              <h5>Starts</h5>
+              <h5>{t('ppv.starts')}</h5>
               <p>{file?.entry_statistic?.downloaded}</p>
             </div>
           </div>
@@ -251,7 +253,7 @@ export const PaidView = () => {
         className={styles.payButton}
       >
         <p className={styles.payButton_text}>
-          {step === STEPS.preview ? 'Pay per view' : 'Download to your G:Drive'}
+          {step === STEPS.preview ? t('ppv.ppv') : t('ppv.downloadToStorage')}
         </p>
         <p className={styles.payButton_price}>
           {step !== STEPS.download && (

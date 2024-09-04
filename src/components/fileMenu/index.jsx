@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TelegramShareButton } from 'react-share';
 import { useDispatch, useSelector } from 'react-redux';
@@ -104,7 +104,7 @@ export const FileMenu = () => {
     <SlidingModal
       onClose={onClose}
       isOpen={isOpen}
-      snapPoints={isPPVActivated ? [155, 155, 50, 0] : [175, 90, 50, 0]}
+      snapPoints={isPPVActivated ? [184, 184, 50, 0] : [120, 110, 50, 0]}
     >
       <ul className={style.menu}>
         {!isDeletedPage && (
@@ -120,7 +120,7 @@ export const FileMenu = () => {
               </TelegramShareButton>
               { isFileHavePreview && (
                 <div className={style.menu__item_switch}>
-                  <span>Pay per view</span>
+                  <span>{t('ppv.ppv')}</span>
                   <ToggleSwitch
                     checked={isPPVActivated}
                     onClick={activatePayShare}
@@ -131,7 +131,7 @@ export const FileMenu = () => {
             {isPPVActivated && (
               <li onClick={onEditPPV} className={style.menu__item}>
                   <PenIcon />
-                  <span className={style.menu__item__title}>Edit</span>
+                  <span className={style.menu__item__title}>{t('ppv.edit')}</span>
               </li>
             )}
           </>
