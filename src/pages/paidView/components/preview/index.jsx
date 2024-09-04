@@ -1,8 +1,11 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useMemo } from "react";
 
 import { ImagePreview } from './imagePreview';
 import { AudioPreview } from './audioPreview';
 import { VideoPreview } from './videoPreview';
+import { PdfPreviewer } from './docPreview/pdfPreview';
+import { TxtPreviewer } from './docPreview/txtPreview';
+import { ExcelPreviewer } from './docPreview/exelPreview';
 
 import { getPreviewFileType } from '../../../../utils/preview';
 
@@ -31,6 +34,37 @@ export const Preview = ({ file, fileContent, allowPreview, fullscreen, onFullscr
             allowPreview={allowPreview}
           />
         );
+      case 'pdf':
+        return (
+          <PdfPreviewer
+            file={file}
+            fileContent={fileContent}
+            allowPreview={allowPreview}
+            fullscreen={fullscreen}
+            onFullscreen={onFullscreen}
+          />
+        );
+      case 'txt':
+        return (
+          <TxtPreviewer
+            file={file}
+            fileContent={fileContent}
+            allowPreview={allowPreview}
+            fullscreen={fullscreen}
+            onFullscreen={onFullscreen}
+          />
+        );
+      case 'xlsx':
+        return (
+          <ExcelPreviewer
+            file={file}
+            fileContent={fileContent}
+            allowPreview={allowPreview}
+            fullscreen={fullscreen}
+            onFullscreen={onFullscreen}
+          />
+        );
+
       default:
         return null;
     }

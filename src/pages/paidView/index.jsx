@@ -15,6 +15,7 @@ import { sendFileViewStatistic } from '../../effects/file/statisticEfect';
 import { selectPaymenttByKey } from '../../store/reducers/paymentSlice';
 import { INVOICE_TYPE } from '../../utils/createStarInvoice';
 import { getPreviewFileType } from '../../utils/preview';
+import { sleep } from '../../utils/sleep';
 
 import { removeExtension, addSlugHyphens } from '../../utils/string';
 
@@ -90,9 +91,17 @@ export const PaidView = () => {
       if (blob) {
         const realBlob = new Blob([blob]);
         const url = URL.createObjectURL(realBlob);
-        if (file.extension === 'svg') {
+        if (file.extension === 'svg' || file.extension === 'txt') {
           const text = await realBlob.text();
           setFileContent(text);
+          setLoading(false);
+          return;
+        } else if (
+          file.extension === 'pdf' ||
+          file.extension === 'xls' ||
+          file.extension === 'xlsx'
+        ) {
+          setFileContent(realBlob);
           setLoading(false);
           return;
         }
