@@ -28,38 +28,6 @@
   justify-content: flex-end;
 }
 
-.video {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 1;
-
-  &::-webkit-media-controls {
-    display: none !important;
-    opacity: 0 !important;
-    position: absolute !important;
-    top: -9999px !important;
-  }
-
-  &::-webkit-media-controls-panel {
-    display: none !important;
-    -webkit-appearance: none;
-  }
-
-  &::-webkit-media-controls-play-button {
-    display: none !important;
-    -webkit-appearance: none;
-  }
-
-  ::-webkit-media-controls-start-playback-button {
-    display: none !important;
-    -webkit-appearance: none;
-  }
-}
-
 .no-interaction-overlay {
   position: fixed;
   top: 0;
