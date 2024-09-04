@@ -18,6 +18,23 @@
     "linkToFile": "파일을 보려면 이 링크를 누르세요",
     "games": "게임"
   },
+  "ppv": {
+    "back": "뒤로",
+    "ppv": "페이퍼뷰",
+    "edit": "편집",
+    "download": "다운로드 가격 (선택 사항)",
+    "description": "설명",
+    "policy": "수익의 100%를 소유합니다. 법적 정책",
+    "publish": "게시",
+    "wait": "기다려 주세요...",
+    "processing": "파일 처리 중",
+    "about": "정보",
+    "totalViews": "총 조회수",
+    "starts": "시작",
+    "downloadToStorage": "G:Drive에 다운로드",
+    "freeWatch": "무료 시청",
+    "preview": "미리보기"
+  },
   "month": {
     "jan": "1월",
     "feb": "2월",

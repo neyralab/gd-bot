@@ -1,4 +1,5 @@
 import React, { useRef, useState, useEffect, useMemo, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import CN from 'classnames';
 
@@ -15,6 +16,7 @@ const PAUSE_THRESHOLD_SECONDS = 10;
 
 export const AudioPreview = ({ file, allowPreview }) => {
   const audioRef = useRef(null);
+  const { t } = useTranslation('drive');
   const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
   const [ipfsAudio, setIpfsAudio] = useState('');
@@ -154,7 +156,7 @@ export const AudioPreview = ({ file, allowPreview }) => {
         <h3 className={styles.title}>{removeExtension(file.name)}</h3>
         {!allowPreview && (
           <p className={styles.progress}>
-            <span>preview</span>
+            <span>{t('ppv.preview')}</span>
             {`0:10 | ${formatDuration(audioRef.current?.duration)}`}
           </p>
         )}

@@ -1,7 +1,10 @@
 import React from "react";
+import { useTranslation } from 'react-i18next';
 import styles from './styles.module.css';
 
 const Header = ({ onClose, onAction, leftText = 'Back', rightText }) => {
+  const { t } = useTranslation('drive');
+
   return (
     <header className={styles.header}>
       <button
@@ -11,7 +14,7 @@ const Header = ({ onClose, onAction, leftText = 'Back', rightText }) => {
       >
         {leftText}
       </button>
-      <h1 className={styles.title}>Pay per view</h1>
+      <h1 className={styles.title}>{t('ppv.ppv')}</h1>
       <button
         className={styles.button}
         onClick={onAction}

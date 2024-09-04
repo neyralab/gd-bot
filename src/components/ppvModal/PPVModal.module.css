@@ -19,6 +19,7 @@
 }
 
 .areaContainer {
+  position: relative;
   width: 100%;
   display: flex;
   background-color: #FFFFFF0D;
@@ -39,9 +40,9 @@
 
 .area {
   font-family: 'SF Pro Text';
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 400;
-  line-height: 21px;
+  line-height: 22px;
   letter-spacing: 0.01em;
   color: #FFFFFF;
   background-color: transparent;
@@ -49,8 +50,22 @@
   resize: none;
 }
 
+.areaWordCounter {
+  font-family: 'SF Pro Text';
+  text-align: center;
+  font-size: 14px;
+  font-weight: 300;
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+}
+
 .area:focus-visible {
   outline: none;
+}
+
+.areaError {
+  border: 1px solid #eb4c4c;
 }
 
 .footer {

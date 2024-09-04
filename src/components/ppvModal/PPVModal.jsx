@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { selectPaperViewModal, handlePaperViewModal } from '../../store/reducers/modalSlice';
 import { selectPaymenttByKey } from '../../store/reducers/paymentSlice';
-import { selecSelectedFile } from '../../store/reducers/filesSlice';
+import { selecSelectedFile, setSelectedFile } from '../../store/reducers/filesSlice';
 import { updateFile } from '../../store/reducers/filesSlice';
 import { makeInvoice } from '../../effects/paymentEffect';
 import { INVOICE_TYPE } from '../../utils/createStarInvoice';
@@ -17,16 +17,18 @@ import Preloader from './preloader';
 
 import styles from './PPVModal.module.css';
 
+const INITIAL_STATE = { view: 1, download: 0, description: '' };
+
 const PPVModal = () => {
   const dispatch = useDispatch();
   const isOpen = useSelector(selectPaperViewModal);
   const [isProccess, setIsProccess] = useState(false);
   const user = useSelector((state) => state.user.data);
-  const [state, setState] = useState({ view: 1, download: 0, description: '' });
+  const [state, setState] = useState(INITIAL_STATE);
   const ppvPayment = useSelector(selectPaymenttByKey('pay_per_view'));
   const file = useSelector(selecSelectedFile);
   const isPPVActivated = useMemo(() => !!file?.share_file, [file?.share_file]);
-
+  
   useEffect(() => {
     if (isPPVActivated) {
       setState({
@@ -39,6 +41,8 @@ const PPVModal = () => {
 
   const onClose = () => {
     dispatch(handlePaperViewModal(false));
+    dispatch(setSelectedFile({}));
+    setState(INITIAL_STATE);
   }
 
   const invoiceCallback = async (result) => {

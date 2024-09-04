@@ -20,7 +20,7 @@
 
 .menu__item_switch {
   display: flex;
-  width: 100%;
+  width: 120%;
   justify-content: end;
   align-items: center;
 }
