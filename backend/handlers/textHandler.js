@@ -1,4 +1,5 @@
 import callLLMProvider from '../utils/callLLMProvider.js';
+import errorTransformer from '../utils/errorTransformer.js';
 import generateImage from '../utils/generateImage.js';
 import logger from '../utils/logger.js';
 
@@ -24,7 +25,9 @@ async function textHandler(ctx) {
     try {
       thinkingMsg = await ctx.reply('⚡️ Thinking...');
     } catch (error) {
-      logger.error('Error sending thinking message', { error });
+      logger.error('Error sending thinking message', {
+        error: errorTransformer(error)
+      });
       return;
     }
 
@@ -68,12 +71,15 @@ async function textHandler(ctx) {
             'Got it!'
           );
         } catch (editError) {
-          logger.error('Error editing empty message', { editError });
+          logger.error('Error editing empty message', {
+            editError: errorTransformer(editError)
+          });
         }
         logger.error(`Outgoing chat message`, {
           userId,
           chatId,
-          response: 'Bad Request: response message is empty'
+          response: 'Bad Request: response message is empty',
+          error: errorTransformer(err)
         });
       } else {
         try {
@@ -84,7 +90,9 @@ async function textHandler(ctx) {
             textResponse.trim()
           );
         } catch (editError) {
-          logger.error('Error editing message', { editError });
+          logger.error('Error editing message', {
+            editError: errorTransformer(editError)
+          });
         }
       }
     }
@@ -95,7 +103,9 @@ async function textHandler(ctx) {
       try {
         genPlaceholder = await ctx.reply('📸 Generating image...');
       } catch (error) {
-        logger.error('Error sending image generation placeholder', { error });
+        logger.error('Error sending image generation placeholder', {
+          error: errorTransformer(error)
+        });
         return;
       }
 
@@ -117,7 +127,9 @@ async function textHandler(ctx) {
             try {
               await ctx.replyWithPhoto({ source: image });
             } catch (replyError) {
-              logger.error('Error sending generated image', { replyError });
+              logger.error('Error sending generated image', {
+                replyError: errorTransformer(replyError)
+              });
             }
             try {
               await ctx.telegram.editMessageText(
@@ -127,7 +139,9 @@ async function textHandler(ctx) {
                 '🚀 Image generated'
               );
             } catch (editError) {
-              logger.error('Error editing image generation message', { editError });
+              logger.error('Error editing image generation message', {
+                editError: errorTransformer(editError)
+              });
             }
           } else {
             try {
@@ -138,7 +152,9 @@ async function textHandler(ctx) {
                 'Error generating image'
               );
             } catch (editError) {
-              logger.error('Error editing image generation error message', { editError });
+              logger.error('Error editing image generation error message', {
+                editError: errorTransformer(editError)
+              });
             }
             logger.error(`Error in outgoing generated image`, {
               userId,
@@ -155,7 +171,9 @@ async function textHandler(ctx) {
               'Error generating image'
             );
           } catch (editError) {
-            logger.error('Error editing image generation error message', { editError });
+            logger.error('Error editing image generation error message', {
+              editError: errorTransformer(editError)
+            });
           }
           logger.error(`Error in outgoing generated image`, {
             userId,
@@ -172,7 +190,9 @@ async function textHandler(ctx) {
             'Error generating image'
           );
         } catch (editError) {
-          logger.error('Error editing image generation error message', { editError });
+          logger.error('Error editing image generation error message', {
+            editError: errorTransformer(editError)
+          });
         }
       }
     }
@@ -181,7 +201,9 @@ async function textHandler(ctx) {
     try {
       await ctx.reply('An error occurred while processing your message.');
     } catch (replyError) {
-      logger.error('Error sending error message', { replyError });
+      logger.error('Error sending error message', {
+        replyError: errorTransformer(replyError)
+      });
     }
   }
 }

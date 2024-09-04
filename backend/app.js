@@ -14,6 +14,7 @@ import termsHandler from './commands/terms/index.js';
 import logger from './utils/logger.js';
 import parseStartParams from './utils/startParamsParser.js';
 import sendMobileAuthButton from './utils/sendMobileAuthButton.js';
+import errorTransformer from './utils/errorTransformer.js';
 
 const app = express();
 export const bot = new Telegraf(process.env.BOT_TOKEN_SECRET, {
@@ -21,7 +22,7 @@ export const bot = new Telegraf(process.env.BOT_TOKEN_SECRET, {
 });
 
 bot.catch((e) => {
-  logger.error('bot.catch', e);
+  logger.error('bot.catch', errorTransformer(e));
 });
 
 const throttler = telegrafThrottler({
@@ -101,7 +102,7 @@ bot.start(async (ctx) => {
       });
     } catch (error) {
       logger.error('Error queueing user creation', {
-        error,
+        error: errorTransformer(error),
         chat_id: ctx.chat.id.toString()
       });
 
@@ -109,7 +110,7 @@ bot.start(async (ctx) => {
         await ctx.reply(`Error: ${error.message}`);
       } catch (e) {
         logger.error('Error sending error message', {
-          error: e,
+          error: errorTransformer(e),
           chat_id: ctx.chat.id.toString()
         });
       }
@@ -153,16 +154,18 @@ bot.start(async (ctx) => {
     try {
       await ctx.reply(
         `You are using a special link. To open the file, please click the button below.`,
-        Markup.inlineKeyboard([
-          Markup.button.webApp('Open', url)
-        ])
+        Markup.inlineKeyboard([Markup.button.webApp('Open', url)])
       );
     } catch (error) {
-      logger.error('Error handling deep link:', { error });
+      logger.error('Error handling deep link:', {
+        error: errorTransformer(error)
+      });
       try {
         await ctx.reply(`Error: ${error.message}`);
       } catch (e) {
-        logger.error('Error sending error message', { error: e });
+        logger.error('Error sending error message', {
+          error: errorTransformer(e)
+        });
       }
     }
     return;
@@ -180,7 +183,7 @@ bot.start(async (ctx) => {
       );
     } catch (error) {
       logger.error('Error replyWithPhoto:', {
-        error,
+        error: errorTransformer(error),
         chat_id: ctx.chat.id.toString()
       });
     }
@@ -201,7 +204,7 @@ bot.on('pre_checkout_query', async (ctx) => {
     );
   } catch (error) {
     logger.error('Error in pre_checkout_query:', {
-      error,
+      error: errorTransformer(error),
       chat_id: ctx.chat.id.toString()
     });
   }
@@ -219,7 +222,7 @@ bot.on('successful_payment', async (ctx) => {
         await ctx.reply('Payment successfully confirmed. Thank you!');
       } catch (replyError) {
         logger.error('Error sending payment confirmation message', {
-          error: replyError,
+          error: errorTransformer(replyError),
           chat_id: ctx.chat.id.toString()
         });
       }
@@ -230,14 +233,14 @@ bot.on('successful_payment', async (ctx) => {
         );
       } catch (replyError) {
         logger.error('Error sending payment issue message', {
-          error: replyError,
+          error: errorTransformer(replyError),
           chat_id: ctx.chat.id.toString()
         });
       }
     }
   } catch (error) {
     logger.error('Error in successful_payment:', {
-      error,
+      error: errorTransformer(error),
       chat_id: ctx.chat.id.toString()
     });
     try {
@@ -246,7 +249,7 @@ bot.on('successful_payment', async (ctx) => {
       );
     } catch (replyError) {
       logger.error('Error sending payment error message', {
-        error: replyError,
+        error: errorTransformer(replyError),
         chat_id: ctx.chat.id.toString()
       });
     }
@@ -287,7 +290,7 @@ userCreationQueue.process(async (job) => {
     return data;
   } catch (error) {
     logger.error('Error creating user', {
-      error,
+      error: errorTransformer(error),
       userData
     });
     if (error?.response?.description?.includes('Too Many Requests')) {
