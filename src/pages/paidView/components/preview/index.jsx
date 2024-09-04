@@ -17,10 +17,10 @@ export const Preview = ({ file, fileContent, allowPreview, fullscreen, onFullscr
       case 'img':
         return (
           <ImagePreview
-            allowPreview={allowPreview}
             file={file}
             fileContent={fileContent}
             fullscreen={fullscreen}
+            allowPreview={allowPreview}
             onFullscreen={onFullscreen}
           />
         );
