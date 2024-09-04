@@ -6,6 +6,7 @@ import { toast } from 'react-toastify';
 import { DebounceInput } from 'react-debounce-input';
 
 import {
+  afterFileUploadAction,
   changeFileView,
   changeTimeLeft,
   changeuploadingProgress,
@@ -107,7 +108,7 @@ export const FilesSystemPage = () => {
     try {
       setAreFilesLoading(true);
       dispatch(setUploadingFile(files[0]));
-      await uploadFileEffect({ files, dispatch });
+      await uploadFileEffect({ files, dispatch, afterFileUploadCallback: () => {dispatch(afterFileUploadAction(result.data))} });
     } catch (error) {
       toast.error(getResponseError(error), {
         theme: 'colored',
