@@ -33,7 +33,9 @@
     "starts": "Comienza",
     "downloadToStorage": "Descargar a tu G:Drive",
     "freeWatch": "Ver gratis",
-    "preview": "Vista previa"
+    "preview": "Vista previa",
+    "saveError": "Error al guardar el archivo en el almacenamiento. Inténtelo de nuevo o póngase en contacto con el soporte si el problema persiste.",
+    "saveSuccess": "El archivo se ha guardado correctamente en el almacenamiento."
   },
   "month": {
     "jan": "Ene",

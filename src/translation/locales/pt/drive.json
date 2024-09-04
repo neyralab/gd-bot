@@ -33,7 +33,9 @@
     "starts": "Inicia",
     "downloadToStorage": "Baixar para o seu G:Drive",
     "freeWatch": "Assistir gratuitamente",
-    "preview": "Pré-visualização"
+    "preview": "Pré-visualização",
+    "saveError": "Falha ao salvar o arquivo no armazenamento. Por favor, tente novamente ou entre em contato com o suporte se o problema persistir.",
+    "saveSuccess": "O arquivo foi salvo com sucesso no armazenamento."
   },
   "month": {
     "jan": "janeiro",

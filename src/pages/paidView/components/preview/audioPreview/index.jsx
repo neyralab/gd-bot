@@ -16,11 +16,12 @@ const PAUSE_THRESHOLD_SECONDS = 10;
 
 export const AudioPreview = ({ file, allowPreview }) => {
   const audioRef = useRef(null);
+  const containerRef = useRef(null);
   const { t } = useTranslation('drive');
   const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
   const [ipfsAudio, setIpfsAudio] = useState('');
-  const radius = useMemo(() => ((window.innerWidth - 40)/2), []);
+  const radius = useMemo(() => (containerRef?.current?.clientWidth/2), [containerRef.current]);
   const circumference = useMemo(() => (2 * Math.PI * radius), [radius]);
 
   const handlePlayPause = useCallback(() => {
@@ -84,7 +85,7 @@ export const AudioPreview = ({ file, allowPreview }) => {
   return (
     <>
       <div className={styles["player-container"]}>
-        <div className={styles["circle-audio-player"]}>
+        <div ref={containerRef} className={styles["circle-audio-player"]}>
           <audio
             ref={audioRef}
             onEnded={onFinish}
