@@ -1,7 +1,8 @@
 import { useEffect } from 'react';
+import CN from 'classnames';
 import s from './style.module.scss';
 
-const TxtPreview = ({ fileContent }) => {
+const TxtPreview = ({ fileContent, className }) => {
   useEffect(() => {
     const previewContainer = document.getElementById('preview-container');
     const lines = fileContent.split('\n').slice(0, 10);
@@ -10,7 +11,7 @@ const TxtPreview = ({ fileContent }) => {
   }, []);
 
   return (
-    <div className={s.container}>
+    <div className={CN(s.container, className)}>
       <div id="preview-container"></div>
     </div>
   );

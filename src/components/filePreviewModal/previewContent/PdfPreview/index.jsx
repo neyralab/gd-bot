@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Document, Page, pdfjs } from 'react-pdf';
+import CN from 'classnames';
 
 import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
 import 'react-pdf/dist/esm/Page/TextLayer.css';
@@ -12,7 +13,12 @@ pdfjs.GlobalWorkerOptions.workerSrc = new URL(
 
 const PDF_PAGE_OFFSET = 140;
 
-const PdfPreview = ({ fileContent }) => {
+const PdfPreview = ({
+  className,
+  pageClassName,
+  fileContent,
+  pageWidthProp
+}) => {
   const [pageNumber, setPageNumber] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [pageWidth, setPageWidth] = useState(null);
@@ -67,7 +73,11 @@ const PdfPreview = ({ fileContent }) => {
   }, []);
 
   return (
-    <div ref={fileContentRef} className={s.wrapper} onScroll={handleScroll}>
+    <div
+      ref={fileContentRef}
+      className={CN(s.wrapper, className)}
+      onScroll={handleScroll}
+    >
       <Document
         file={fileContent}
         onLoadSuccess={onDocumentLoadSuccess}
@@ -77,13 +87,13 @@ const PdfPreview = ({ fileContent }) => {
           <Page
             pageNumber={item + 1}
             key={`pdf-page-number-${item}`}
-            width={pageWidth}
+            width={pageWidthProp || pageWidth}
             renderTextLayer={false}
             className={s.sheet}
           />
         ))}
       </Document>
-      <div className={s.page}>
+      <div className={CN(s.page, pageClassName)}>
         Page {pageNumber} of {totalPages}
       </div>
     </div>
