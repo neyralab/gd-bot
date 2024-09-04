@@ -117,11 +117,11 @@ export const PayShareFile = ({
         <div className={isGridView ? style.squareInfo__statistic : style.info__statistic}>
           <p className={style[isGridView ? 'squareInfo__statistic_item' : 'info__statistic_item']}>
             <StarIcon width='12' height='12' viewBox='0 0 21 20' />
-            <span>{file.share_file.price_view}</span>
+            <span>{file?.share_file?.price_view || 0}</span>
           </p>
           <p className={style[isGridView ? 'squareInfo__statistic_item' : 'info__statistic_item']}>
             <EyeIcon />
-            <span>{file.entry_statistic.viewed}</span>
+            <span>{file?.entry_statistic?.viewed || 0}</span>
           </p>
         </div>
       </div>

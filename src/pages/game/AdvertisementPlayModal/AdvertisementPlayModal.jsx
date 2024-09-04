@@ -1,4 +1,5 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
+import ReactPlayer from 'react-player';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   refreshFreeGame,
@@ -17,16 +18,11 @@ export default function AdvertisementPlayModal() {
   const advertisementModal = useSelector(
     (state) => state.game.advertisementModal
   );
-  const videoRef = useRef(null);
   const [progress, setProgress] = useState(0);
   const [timeLeft, setTimeLeft] = useState(0);
   const [isProcessing, setIsProcessing] = useState(false);
-
-  const videoType = advertisementModal
-    ? advertisementModal.videoUrl.endsWith('.mp4')
-      ? 'video/mp4'
-      : 'video/quicktime'
-    : null;
+  const [isReady, setIsReady] = useState(false);
+  const [duration, setDuration] = useState(0);
 
   useEffect(() => {
     if (advertisementModal) {
@@ -36,18 +32,20 @@ export default function AdvertisementPlayModal() {
     }
   }, [advertisementModal]);
 
-  const onVideoPlay = () => {
-    const duration = videoRef.current?.duration || 0;
-    videoRef.current.play();
+  const onReady = () => {
+    setIsReady(true);
+  };
+
+  const onDuration = (duration) => {
+    setDuration(duration);
     setTimeLeft(duration);
   };
 
-  const updateProgress = () => {
-    const currentTime = videoRef.current?.currentTime || 0;
-    const duration = videoRef.current?.duration || 0;
-    const progress = (currentTime / duration) * 100;
+  const onProgress = (state) => {
+    const { playedSeconds } = state;
+    const progress = (playedSeconds / duration) * 100;
     setProgress(progress);
-    setTimeLeft(duration - currentTime);
+    setTimeLeft(duration - playedSeconds);
   };
 
   const startWatching = async () => {
@@ -89,19 +87,21 @@ export default function AdvertisementPlayModal() {
   return (
     <div className={styles.container}>
       <div className={styles['video-wrapper']}>
-        <video
-          ref={videoRef}
-          className={styles.video}
-          autoPlay
-          onLoadedMetadata={onVideoPlay}
-          onTimeUpdate={updateProgress}
-          onEnded={sendWatchFinished}
+        <ReactPlayer
+          url={advertisementModal.videoUrl}
+          playing={isReady}
           controls={false}
-          playsInline={true}>
-          <source src={advertisementModal.videoUrl} type={videoType} />
-        </video>
+          playsinline={true}
+          onReady={onReady}
+          onDuration={onDuration}
+          onProgress={onProgress}
+          onEnded={sendWatchFinished}
+          width="100%"
+          height="100%"
+          style={{ objectFit: 'contain' }}
+        />
 
-        {timeLeft ? (
+        {duration ? (
           <div className={styles.timer}>
             {`${Math.floor(timeLeft / 60)}:${Math.floor(timeLeft % 60)
               .toString()
@@ -118,7 +118,7 @@ export default function AdvertisementPlayModal() {
         </div>
       </div>
 
-      {isProcessing && (
+      {(isProcessing || !isReady) && (
         <div className={styles['loader-container']}>
           <Loader2 />
         </div>

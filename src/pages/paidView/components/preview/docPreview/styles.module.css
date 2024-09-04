@@ -1,8 +1,26 @@
-.preview {
-  position: relative;
+.previewerWrapper {
+  height: 300px;
   width: 100%;
-  height: 400px;
+}
+
+.previewerContent {
+  position: relative;
   overflow: hidden;
+  border-radius: 8px;
+  height: 258px;
+}
+
+.blurContent {
+  filter: blur(4px);
+  height: 258px;
+}
+
+.fullscreenBtn {
+  z-index: 1;
+}
+
+.fullPreview {
+  height: calc(100vh - 172px);
 }
 
 .title {
@@ -19,25 +37,10 @@
   text-overflow: ellipsis;
 }
 
-.content {
-  height: 358px;
-  border-radius: 12px;
+.page {
+  display: none;
 }
 
-.fullPreview {
+.fullPreview > .previewerContent {
   height: 100%;
-}
-
-.fullPreview > .content {
-  height: 100%;
-}
-
-.image {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-}
-
-.blurContent {
-  filter: blur(4px);
 }
