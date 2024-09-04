@@ -7,13 +7,7 @@ import { removeExtension } from '../../../../../utils/string';
 
 import styles from './styles.module.css';
 
-export const ExcelPreviewer = ({ fileContent, file, allowPreview, fullscreen, onFullscreen }) => {
-
-  const onClick = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    return false;
-  }
+export const DocPreview = ({ file, allowPreview, fullscreen, onFullscreen, children }) => {
 
   const onChangeFullScreen = () => {
     if (allowPreview)
@@ -21,16 +15,9 @@ export const ExcelPreviewer = ({ fileContent, file, allowPreview, fullscreen, on
   }
 
   return (
-    <div className={CN(styles.previewerWrapper, fullscreen && styles.fullPreview )}>
-      <div
-        className={CN(styles.previewerContent, !allowPreview && styles.blurContent )}
-        onScroll={onClick}
-      >
-        <ExcelPreview
-          file={file}
-          fileContent={fileContent}
-          className={styles.txtDocument}
-        />
+    <div className={CN(styles.previewerWrapper, fullscreen && styles.fullPreview)}>
+      <div className={CN(styles.previewerContent, !allowPreview && styles.blurContent)}>
+        { children }
         <FullscreenBtn
           className={styles.fullscreenBtn}
           onFullscreen={onChangeFullScreen}

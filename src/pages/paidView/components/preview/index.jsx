@@ -3,11 +3,13 @@ import React, { useMemo } from "react";
 import { ImagePreview } from './imagePreview';
 import { AudioPreview } from './audioPreview';
 import { VideoPreview } from './videoPreview';
-import { PdfPreviewer } from './docPreview/pdfPreview';
-import { TxtPreviewer } from './docPreview/txtPreview';
-import { ExcelPreviewer } from './docPreview/exelPreview';
-
+import PdfPreview from '../../../../components/filePreviewModal/previewContent/PdfPreview';
+import TxtPreview from '../../../../components/filePreviewModal/previewContent/TxtPreview';
+import ExcelPreview from '../../../../components/filePreviewModal/previewContent/ExcelPreview';
+import { DocPreview } from './docPreview';
 import { getPreviewFileType } from '../../../../utils/preview';
+
+import styles from './styles.module.css';
 
 export const Preview = ({ file, fileContent, allowPreview, fullscreen, onFullscreen }) => {
   const previewFileType = useMemo(() => getPreviewFileType(file, fileContent), [file, fileContent]);
@@ -36,33 +38,51 @@ export const Preview = ({ file, fileContent, allowPreview, fullscreen, onFullscr
         );
       case 'pdf':
         return (
-          <PdfPreviewer
+          <DocPreview
             file={file}
             fileContent={fileContent}
             allowPreview={allowPreview}
             fullscreen={fullscreen}
             onFullscreen={onFullscreen}
-          />
+          >
+            <PdfPreview
+              file={file}
+              fileContent={fileContent}
+              pageWidthProp={window.innerWidth - 32}
+            />
+          </DocPreview>
         );
       case 'txt':
         return (
-          <TxtPreviewer
+          <DocPreview
             file={file}
             fileContent={fileContent}
             allowPreview={allowPreview}
             fullscreen={fullscreen}
             onFullscreen={onFullscreen}
-          />
+          >
+            <TxtPreview
+              file={file}
+              fileContent={fileContent}
+              className={styles.txtDocument}
+            />
+          </DocPreview>
         );
       case 'xlsx':
         return (
-          <ExcelPreviewer
+          <DocPreview
             file={file}
             fileContent={fileContent}
             allowPreview={allowPreview}
             fullscreen={fullscreen}
             onFullscreen={onFullscreen}
-          />
+          >
+            <ExcelPreview
+              file={file}
+              fileContent={fileContent}
+              className={styles.txtDocument}
+            />
+          </DocPreview>
         );
 
       default:
