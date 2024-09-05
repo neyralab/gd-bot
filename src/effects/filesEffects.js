@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { updateFile } from '../store/reducers/filesSlice';
 import { API_PATH } from '../utils/api-urls';
 import axiosInstance from './axiosInstance';
@@ -303,13 +304,21 @@ export const createStreamEffect = async (slug) => {
   try {
     const {
       data: {
-        jwt_ott,
         user_tokens: { token: oneTimeToken },
         gateway
       }
     } = await getDownloadOTT([{ slug }]);
     const url = `${gateway.url}/stream/${slug}/${oneTimeToken}`;
     return url;
+  } catch (error) {
+    throw Error(error);
+  }
+};
+
+export const getFileStarStatistic = async (slug) => {
+  try {
+    const data = await axios.get(`${API_PATH}/share/file/stat/${slug}`);
+    return data.data;
   } catch (error) {
     throw Error(error);
   }
