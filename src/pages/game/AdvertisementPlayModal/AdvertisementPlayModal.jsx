@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import ReactPlayer from 'react-player';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -7,6 +7,7 @@ import {
   setSystemModal
 } from '../../../store/reducers/gameSlice';
 import Loader2 from '../../../components/Loader2/Loader2';
+import { ReactComponent as PlayIcon } from '../../../assets/play_media.svg';
 import {
   endWatchingAdvertisementVideo,
   startWatchingAdvertisementVideo
@@ -23,14 +24,7 @@ export default function AdvertisementPlayModal() {
   const [isProcessing, setIsProcessing] = useState(false);
   const [isReady, setIsReady] = useState(false);
   const [duration, setDuration] = useState(0);
-
-  useEffect(() => {
-    if (advertisementModal) {
-      startWatching();
-    } else {
-      setIsProcessing(false);
-    }
-  }, [advertisementModal]);
+  const [isPlaying, setIsPlaying] = useState(false);
 
   const onReady = () => {
     setIsReady(true);
@@ -82,6 +76,11 @@ export default function AdvertisementPlayModal() {
       });
   };
 
+  const handlePlayButtonClick = () => {
+    setIsPlaying(true);
+    startWatching();
+  };
+
   if (!advertisementModal) return null;
 
   return (
@@ -89,7 +88,7 @@ export default function AdvertisementPlayModal() {
       <div className={styles['video-wrapper']}>
         <ReactPlayer
           url={advertisementModal.videoUrl}
-          playing={isReady}
+          playing={isPlaying}
           controls={false}
           playsinline={true}
           onReady={onReady}
@@ -125,6 +124,18 @@ export default function AdvertisementPlayModal() {
       )}
 
       <div className={styles['no-interaction-overlay']}></div>
+
+      {/* Android browsers may not allow to play advertisement automatically.
+      Check for canPlay doesn't work. */}
+      {!isPlaying && isReady && (
+        <div
+          className={styles['play-button-overlay']}
+          onClick={handlePlayButtonClick}>
+          <button className={styles['play-button']}>
+            <PlayIcon />
+          </button>
+        </div>
+      )}
     </div>
   );
 }
