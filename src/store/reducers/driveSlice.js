@@ -13,6 +13,9 @@ import { uploadFileEffect } from '../../effects/uploadFileEffect_v2';
 import { getResponseError } from '../../utils/string';
 import { getFileTypesCountEffect } from '../../effects/storageEffects';
 import { getAllPartners } from '../../effects/EarnEffect';
+import { fromByteToGb, transformSize } from '../../utils/storage';
+import { getToken } from '../../effects/set-token';
+import { getUserEffect } from '../../effects/userEffects';
 
 const driveSlice = createSlice({
   name: 'drive',
@@ -37,7 +40,8 @@ const driveSlice = createSlice({
     fileTypesCount: {},
     fileTypesCountIsFetching: false,
     fileIsFavoriteUpdating: [], // slugs
-    fileMenuFile: null
+    fileMenuFile: null,
+    storageInfo: null
   },
   reducers: {
     setFilesQueryData: (state, { payload }) => {
@@ -101,6 +105,9 @@ const driveSlice = createSlice({
     },
     setFileMenuFile: (state, { payload }) => {
       state.fileMenuFile = payload;
+    },
+    setStorageInfo: (state, { payload }) => {
+      state.storageInfo = payload;
     }
   }
 });
@@ -109,6 +116,7 @@ export const initDrive = createAsyncThunk(
   'drive/initDrive',
   async (_, { dispatch }) => {
     dispatch(fetchTypesCount({ useLoader: true }));
+    dispatch(getUserStorageInfo());
   }
 );
 
@@ -212,8 +220,10 @@ export const uploadFile = createAsyncThunk(
 
       dispatch(fetchTypesCount({ useLoader: false }));
 
+      dispatch(getUserStorageInfo()); // Refresh storage info
+
       if (state.drive.filesQueryData.category) {
-        /** Refetch if we are in the files list */
+        /** Refresh files if we are in the files list */
         dispatch(assignFilesQueryData({ filesQueryData: { page: 1 } }));
         dispatch(getDriveFiles({ mode: 'replace', page: 1 }));
       }
@@ -342,6 +352,27 @@ export const toggleFileFavorite = createAsyncThunk(
   }
 );
 
+export const getUserStorageInfo = createAsyncThunk(
+  'drive/getUserStorageInfo',
+  async (_, { dispatch }) => {
+    const token = await getToken();
+    const user = await getUserEffect(token);
+
+    const { space_total, space_used, points } = user;
+    const percent = Math.round(
+      (Number(space_used) / space_total + Number.EPSILON) * 100
+    );
+    const storageInfo = {
+      points,
+      total: `${transformSize(String(space_total))}`,
+      used: `${fromByteToGb(space_used)}`,
+      percent: { label: `${percent || 1}%`, value: percent }
+    };
+
+    dispatch(setStorageInfo(storageInfo));
+  }
+);
+
 export const clearDriveState = createAsyncThunk(
   'drive/clearDriveState',
   async (_, { dispatch }) => {
@@ -366,6 +397,7 @@ export const {
   setFileTypesCount,
   setFileTypesCountIsFetching,
   setFileIsFavoriteUpdating,
-  setFileMenuFile
+  setFileMenuFile,
+  setStorageInfo
 } = driveSlice.actions;
 export default driveSlice.reducer;
