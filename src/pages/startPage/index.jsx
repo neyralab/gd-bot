@@ -232,7 +232,11 @@ export const StartPage = ({ tariffs }) => {
 
   return (
     <div ref={wrapperRef} className={`${style.container}`}>
-      <Banner data-animation="start-page-animation-2" />
+      <Banner
+        storageSize={transformSize(user.space_total)}
+        onOpenShareModal={onOpenShareModal}
+        data-animation="start-page-animation-2"
+      />
       <PointCounter
         points={user?.points}
         className={style[`point-counter`]}
