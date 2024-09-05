@@ -12,6 +12,8 @@ export const runItemsAnimation = (visibleStartIndex, visibleStopIndex, highestAn
   }
 
   if (newItems.length > 0) {
+    gsap.killTweensOf(newItems);
+
     gsap.fromTo(
       newItems,
       {

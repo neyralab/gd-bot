@@ -23,8 +23,10 @@ export default function DrivePage() {
   return (
     <div className={styles.container}>
       <div className={styles.content}>
-        <Header />
-        <Storage />
+        <div className={styles['top-statics']}>
+          <Header />
+          <Storage />
+        </div>
         <Content />
       </div>
       <Actions />

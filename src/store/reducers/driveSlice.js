@@ -6,7 +6,8 @@ import {
   getFavoritesEffect,
   getFilesByTypeEffect,
   getFilesEffect,
-  getPaidShareFilesEffect
+  getPaidShareFilesEffect,
+  updateFileFavoriteEffect_v2
 } from '../../effects/filesEffects';
 import { uploadFileEffect } from '../../effects/uploadFileEffect_v2';
 import { getResponseError } from '../../utils/string';
@@ -34,7 +35,9 @@ const driveSlice = createSlice({
       isUploaded: false
     },
     fileTypesCount: {},
-    fileTypesCountIsFetching: false
+    fileTypesCountIsFetching: false,
+    fileIsFavoriteUpdating: [], // slugs
+    fileMenu: null
   },
   reducers: {
     setFilesQueryData: (state, { payload }) => {
@@ -55,6 +58,14 @@ const driveSlice = createSlice({
     setFiles: (state, { payload }) => {
       state.files = payload;
     },
+    updateFileProperty: (state, { payload }) => {
+      const { id, property, value } = payload;
+      const fileIndex = state.files.findIndex((file) => file.id === id);
+      if (fileIndex !== -1) {
+        state.files[fileIndex][property] = value;
+      }
+    },
+
     addFiles: (state, { payload }) => {
       state.files = [...state.files, ...payload];
     },
@@ -78,7 +89,19 @@ const driveSlice = createSlice({
     },
     setFileTypesCount: (state, { payload }) => {
       state.fileTypesCount = payload;
-    }
+    },
+    setFileIsFavoriteUpdating: (state, { payload }) => {
+      if (payload.method === 'add') {
+        state.fileIsFavoriteUpdating.push(payload.slug);
+      } else if (payload.method === 'remove') {
+        state.fileIsFavoriteUpdating = state.fileIsFavoriteUpdating.filter(
+          (slug) => slug !== payload.slug
+        );
+      }
+    },
+    setFileMenu: (state, { payload }) => {
+      state.fileMenu = payload;
+    },
   }
 });
 
@@ -270,7 +293,7 @@ export const getDriveFiles = createAsyncThunk(
             delete selectedFile.file;
             return { ...item.file, share_file: selectedFile };
           });
-          totalFilesCount = files.length
+          totalFilesCount = files.length;
           break;
         }
         default: {
@@ -298,6 +321,22 @@ export const getDriveFiles = createAsyncThunk(
   }
 );
 
+export const toggleFileFavorite = createAsyncThunk(
+  'drive/toggleFileFavorite',
+  async ({ slug }, { dispatch }) => {
+    dispatch(setFileIsFavoriteUpdating({ slug, method: 'add' }));
+    const res = await updateFileFavoriteEffect_v2(slug);
+    dispatch(
+      updateFileProperty({
+        id: res.id,
+        property: 'user_favorites',
+        value: res?.user_favorites
+      })
+    );
+    dispatch(setFileIsFavoriteUpdating({ slug, method: 'remove' }));
+  }
+);
+
 export const clearDriveState = createAsyncThunk(
   'drive/clearDriveState',
   async (_, { dispatch }) => {
@@ -312,6 +351,7 @@ export const {
   setTotalPages,
   setItemsPerPage,
   setFiles,
+  updateFileProperty,
   addFiles,
   areFilesLoading,
   areFilesLazyLoading,
@@ -319,6 +359,8 @@ export const {
   setUploadFileProgress,
   setUploadFileIsUploaded,
   setFileTypesCount,
-  setFileTypesCountIsFetching
+  setFileTypesCountIsFetching,
+  setFileIsFavoriteUpdating,
+  setFileMenu
 } = driveSlice.actions;
 export default driveSlice.reducer;

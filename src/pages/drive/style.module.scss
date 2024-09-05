@@ -1,8 +1,11 @@
 .container {
   width: 100%;
-  padding: 12px 22px 0px 22px;
   overflow-x: hidden;
   overflow-y: auto;
+}
+
+.top-statics {
+  padding: 12px 22px 0px 22px;
 }
 
 .content {

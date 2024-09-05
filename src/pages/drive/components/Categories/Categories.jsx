@@ -90,6 +90,7 @@ export default function Categories() {
   return (
     <ul
       data-animation="drive-categories-animation-1"
+      data-animation-display="grid"
       className={styles.wrapper}>
       {options.map(({ name, value, icon: Icon, callback }) => (
         <li

@@ -1,0 +1,195 @@
+.fileSquare {
+  cursor: pointer;
+  position: relative;
+  height: 179px;
+  width: 100%;
+  min-width: 100px;
+  border-radius: 10px;
+  background: #1c1c1e;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 0 0 8px;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.open-action-trigger {
+  display: block;
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.selectedFile svg {
+  fill: #007de9;
+}
+
+.previewWrapper {
+  height: 121px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.previewImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.squareInfo {
+  width: 100%;
+  border-top: 0.5px solid rgba(84, 84, 88, 0.65);
+  padding: 12px 8px 0;
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.squareInfo__name {
+  color: #fff;
+  text-align: center;
+  font-family: 'Open Sans';
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 150%;
+  letter-spacing: 0.14px;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.squareInfo__date {
+  color: #7d7d7d;
+  font-family: 'Open Sans';
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 150%;
+}
+
+.squareInfo__statistic {
+  display: flex;
+  gap: 8px;
+}
+
+.squareInfo__statistic_item {
+  display: flex;
+  align-items: center;
+}
+
+.squareInfo__statistic_item > span {
+  font-family: 'SF Pro Text';
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 16px;
+  color: #7d7d7d;
+}
+
+.squareInfo__statistic_item > svg {
+  margin-right: 4px;
+}
+
+/* list view */
+
+.fileList {
+  cursor: pointer;
+  position: relative;
+  display: block;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0 100px 0 16px;
+  min-height: 60px;
+  border-radius: 8px;
+  background: #1c1c1e;
+
+  .open-action-trigger {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 16px;
+  }
+}
+
+.fileList div {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.info__name {
+  color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  font-family: 'Open Sans';
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 150%;
+  letter-spacing: 0.14px;
+}
+
+.info__date {
+  color: #7d7d7d;
+  font-family: 'Open Sans';
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 150%;
+  letter-spacing: 0.11px;
+}
+
+.info__statistic {
+  display: flex;
+  gap: 8px;
+}
+
+.info__statistic_item {
+  display: flex;
+  align-items: center;
+}
+
+.info__statistic_item > svg {
+  margin-right: 4px;
+}
+
+.info__statistic_item > span {
+  font-family: 'SF Pro Text';
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 16px;
+  color: #7d7d7d;
+}
+
+.fileListPreview {
+  max-width: 30px;
+  max-height: 40px;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.autocompleteWrapper {
+  position: absolute;
+  bottom: initial;
+  left: 0;
+  z-index: 100;
+
+  width: 100%;
+  max-height: 200px;
+  overflow-y: scroll;
+
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  background-color: #1c1c1e;
+  border-radius: 8px;
+}
