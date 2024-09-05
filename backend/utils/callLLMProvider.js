@@ -1,4 +1,6 @@
 import OpenAI from 'openai';
+import logger from './logger.js';
+import errorTransformer from './errorTransformer.js';
 
 const openrouterClient = new OpenAI({
   baseURL: 'https://openrouter.ai/api/v1',
@@ -55,6 +57,9 @@ async function callLLMProvider(input, type = 'text') {
     }
   } catch (error) {
     console.log(`Error calling LLM provider: ${error.message}`);
+    logger.error('Error calling LLM provider', {
+      error: errorTransformer(error)
+    });
     return 'An error occurred while processing your request. Please try again later.';
   }
 }

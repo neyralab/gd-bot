@@ -1,6 +1,7 @@
 import { Markup } from 'telegraf';
 import { bot } from '../app.js';
 import logger from './logger.js';
+import errorTransformer from './errorTransformer.js';
 
 export default function (chatId, token) {
   const button = Markup.button.url(
@@ -13,7 +14,7 @@ export default function (chatId, token) {
     bot.telegram.sendMessage(chatId, 'Authorize in Mobile app', keyboard);
   } catch (error) {
     logger.error('Error sending mobile authorize button:', {
-      error,
+      error: errorTransformer(error),
       chat_id: chatId
     });
   }
