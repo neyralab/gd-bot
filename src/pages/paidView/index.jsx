@@ -125,30 +125,25 @@ export const PaidView = () => {
   const downloadContent = async () => {
     try {
       setDownloadLoading(true);
-      let uploadFile;
-      if (file.extension === 'txt' || file.extension === 'svg') {
-        const blob = new Blob([fileContent], { type: file.mime });
-        uploadFile = new File([blob], file.name, { type: file.mime });
-      } else if (
-        file.extension === 'pdf' ||
-        file.extension === 'xls' ||
-        file.extension === 'xlsx'
-      ) {
-        uploadFile = new File([fileContent], file.name, { type: file.mime });
+  
+      let blob;
+      if (['txt', 'svg', 'pdf', 'xls', 'xlsx'].includes(file.extension)) {
+        blob = new Blob([fileContent], { type: file.mime });
       } else {
         const response = await fetch(fileContent);
-        const blob = await response.blob();
-        uploadFile = new File([blob], file.name, { type: file.mime });
+        blob = await response.blob();
       }
   
+      const uploadFile = new File([blob], file.name, { type: file.mime });
+  
       await uploadFileEffect({ files: [uploadFile], dispatch });
-      setDownloadLoading(false);
       toast.success(t('ppv.saveSuccess'));
     } catch (error) {
-      setDownloadLoading(false);
       toast.error(t('ppv.saveError'));
+    } finally {
+      setDownloadLoading(false);
     }
-  }
+  };
 
   const invoicePreviewCallback = async (result) => {
     try {
