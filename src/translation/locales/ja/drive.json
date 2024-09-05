@@ -33,7 +33,9 @@
     "starts": "開始",
     "downloadToStorage": "G:Drive にダウンロード",
     "freeWatch": "無料で視聴",
-    "preview": "プレビュー"
+    "preview": "プレビュー",
+    "saveError": "ファイルの保存に失敗しました。再試行するか、問題が解決しない場合はサポートに連絡してください。",
+    "saveSuccess": "ファイルは正常に保存されました。"
   },
   "month": {
     "jan": "1月",

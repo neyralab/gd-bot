@@ -3,15 +3,18 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { downloadFile } from 'gdgateway-client';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 import CN from 'classnames';
 
 import Header from '../../components/ppvModal/components/Header';
 import { Preview } from './components/preview';
 import { ReactComponent as StarIcon } from '../../assets/star.svg';
+import GhostLoader from '../../components/ghostLoader';
 
 import { getPaidShareFileEffect, getDownloadOTT } from '../../effects/filesEffects';
 import { getFileCids } from '../../effects/file/getFileCid';
 import { makeInvoice } from '../../effects/paymentEffect';
+import { uploadFileEffect } from '../../effects/uploadFileEffect';
 import { sendFileViewStatistic } from '../../effects/file/statisticEfect';
 import { selectPaymenttByKey } from '../../store/reducers/paymentSlice';
 import { INVOICE_TYPE } from '../../utils/createStarInvoice';
@@ -36,6 +39,8 @@ export const PaidView = () => {
   const [file, setFile] = useState({});
   const { t } = useTranslation('drive');
   const [loading, setLoading] = useState(false);
+  const [expandDescription, setExpandDescription] = useState(false);
+  const [downloadLoading, setDownloadLoading] = useState(false);
   const [fileContent, setFileContent] = useState(null);
   const user = useSelector((state) => state.user.data);
   const ppvPayment = useSelector(selectPaymenttByKey('pay_per_view'));
@@ -117,29 +122,28 @@ export const PaidView = () => {
     }
   };
 
-  const downloadContent = () => {
-    const link = document.createElement('a');
-    if (file.extension === 'svg') {
-      const blob = new Blob([svgString], { type: 'image/svg+xml' });
-      link.href = URL.createObjectURL(blob);
-    } else {
-      link.href = fileContent;
+  const downloadContent = async () => {
+    try {
+      setDownloadLoading(true);
+  
+      let blob;
+      if (['txt', 'svg', 'pdf', 'xls', 'xlsx'].includes(file.extension)) {
+        blob = new Blob([fileContent], { type: file.mime });
+      } else {
+        const response = await fetch(fileContent);
+        blob = await response.blob();
+      }
+  
+      const uploadFile = new File([blob], file.name, { type: file.mime });
+  
+      await uploadFileEffect({ files: [uploadFile], dispatch });
+      toast.success(t('ppv.saveSuccess'));
+    } catch (error) {
+      toast.error(t('ppv.saveError'));
+    } finally {
+      setDownloadLoading(false);
     }
-
-    link.download = file.name;
-    link.dispatchEvent(
-      new MouseEvent('click', {
-        bubbles: true,
-        cancelable: true,
-        view: window
-      })
-    );
-
-    setTimeout(() => {
-      window.URL.revokeObjectURL(fileContent);
-      link.remove();
-    }, 100);
-  }
+  };
 
   const invoicePreviewCallback = async (result) => {
     try {
@@ -201,7 +205,7 @@ export const PaidView = () => {
   const onShowFullContent = () => {
     if (step === STEPS.preview) {
       showProcess();
-    } else if (step === STEPS.allowPreview) {
+    } else if (step === STEPS.allowPreview && file.payShare.price_download) {
       downloadProcess();
     } else {
       downloadContent();
@@ -216,6 +220,10 @@ export const PaidView = () => {
     navigate(-1);
   }
 
+  const onExpandDescription = () => {
+    setExpandDescription(true);
+  }
+
   return (
     <div className={styles.container}>
       <Header leftText={t('ppv.back')} onClose={goBack} />
@@ -223,6 +231,11 @@ export const PaidView = () => {
         {fullscreen && (
           <h3 className={CN(styles.title, styles.secondTitle)}>{removeExtension(file.name)}</h3>
         )}
+        { loading ? (
+          <div className={styles.preloader}>
+            <GhostLoader />
+          </div>
+        ) : (
         <Preview
           allowPreview={step !== STEPS.preview}
           file={file}
@@ -230,8 +243,12 @@ export const PaidView = () => {
           fullscreen={fullscreen}
           onFullscreen={onFullscreen}
         />
+        )}
         <div className={fullscreen && styles.hide_detail}>
-          <div className={styles.description}>
+          <div
+            onClick={onExpandDescription}
+            className={CN(styles.description, expandDescription && styles.descriptionExpanded)}
+          >
             <h4>{t('ppv.about')}</h4>
             <p>{file?.payShare?.description}</p>
           </div>
@@ -250,17 +267,16 @@ export const PaidView = () => {
       </div>
       <button
         onClick={onShowFullContent}
-        className={styles.payButton}
+        className={CN(styles.payButton, step === STEPS.download && styles.payButtonDownload)}
+        disabled={loading || downloadLoading}
       >
         <p className={styles.payButton_text}>
           {step === STEPS.preview ? t('ppv.ppv') : t('ppv.downloadToStorage')}
         </p>
         <p className={styles.payButton_price}>
-          {step !== STEPS.download && (
-            <span>
-              {step === STEPS.preview ? file?.payShare?.price_view : file?.payShare?.price_download}
-            </span>
-          )}
+          <span>
+            {step === STEPS.preview ? file?.payShare?.price_view : file?.payShare?.price_download}
+          </span>
           <StarIcon width='20' height='20' viewBox="0 0 22  22" />
         </p>
       </button>

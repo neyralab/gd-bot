@@ -33,7 +33,9 @@
     "starts": "Mulai",
     "downloadToStorage": "Unduh ke G:Drive Anda",
     "freeWatch": "Tonton gratis",
-    "preview": "Pratinjau"
+    "preview": "Pratinjau",
+    "saveError": "Gagal menyimpan file ke penyimpanan. Silakan coba lagi atau hubungi dukungan jika masalah berlanjut.",
+    "saveSuccess": "File telah berhasil disimpan ke penyimpanan."
   },
   "month": {
     "jan": "Januari",

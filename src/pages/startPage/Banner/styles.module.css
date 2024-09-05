@@ -1,0 +1,68 @@
+.banner {
+  width: 100%;
+  height: 226px;
+  min-height: 226px;
+}
+
+.banner > div {
+  height: 100%;
+}
+
+.bannerItem {
+  width: 100%;
+  height: 197px;
+  min-height: 197px;
+  display: flex;
+  align-items: center;
+  margin: auto 0;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.image {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  object-fit: contain;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  align-items: inherit;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  padding-top: 30px;
+}
+
+.revers {
+  flex-direction: column-reverse;
+  justify-content: flex-end;
+}
+
+.title {
+  font-family: 'SF Pro Text';
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 26px;
+  text-transform: uppercase;
+  text-align: center;
+  margin: 0 8px;
+}
+
+.text {
+  font-family: 'SF Pro Text';
+  font-size: 9px;
+  font-weight: 300;
+  line-height: 13px;
+  text-align: center;
+  margin: 0 8px;
+}
+
+.banner > div > div {
+  margin-top: 14px;
+}

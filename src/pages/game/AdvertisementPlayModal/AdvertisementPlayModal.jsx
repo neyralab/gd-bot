@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import ReactPlayer from 'react-player';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -7,6 +7,7 @@ import {
   setSystemModal
 } from '../../../store/reducers/gameSlice';
 import Loader2 from '../../../components/Loader2/Loader2';
+import { ReactComponent as PlayIcon } from '../../../assets/play_media.svg';
 import {
   endWatchingAdvertisementVideo,
   startWatchingAdvertisementVideo
@@ -23,12 +24,20 @@ export default function AdvertisementPlayModal() {
   const [isProcessing, setIsProcessing] = useState(false);
   const [isReady, setIsReady] = useState(false);
   const [duration, setDuration] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [startWatchingIsLoading, setStartWatchingIsLoading] = useState(false);
 
   useEffect(() => {
-    if (advertisementModal) {
+    if (advertisementModal && advertisementModal.videoUrl) {
       startWatching();
     } else {
+      setProgress(0);
+      setTimeLeft(0);
       setIsProcessing(false);
+      setIsReady(false);
+      setDuration(0);
+      setIsPlaying(false);
+      setStartWatchingIsLoading(false);
     }
   }, [advertisementModal]);
 
@@ -49,8 +58,11 @@ export default function AdvertisementPlayModal() {
   };
 
   const startWatching = async () => {
+    setStartWatchingIsLoading(true);
+
     try {
       await startWatchingAdvertisementVideo(advertisementModal.videoId);
+      setStartWatchingIsLoading(false);
     } catch (err) {
       dispatch(
         setSystemModal({
@@ -82,6 +94,10 @@ export default function AdvertisementPlayModal() {
       });
   };
 
+  const handlePlayButtonClick = () => {
+    setIsPlaying(true);
+  };
+
   if (!advertisementModal) return null;
 
   return (
@@ -89,7 +105,7 @@ export default function AdvertisementPlayModal() {
       <div className={styles['video-wrapper']}>
         <ReactPlayer
           url={advertisementModal.videoUrl}
-          playing={isReady}
+          playing={isPlaying}
           controls={false}
           playsinline={true}
           onReady={onReady}
@@ -118,13 +134,25 @@ export default function AdvertisementPlayModal() {
         </div>
       </div>
 
-      {(isProcessing || !isReady) && (
+      {(isProcessing || !isReady || startWatchingIsLoading) && (
         <div className={styles['loader-container']}>
           <Loader2 />
         </div>
       )}
 
       <div className={styles['no-interaction-overlay']}></div>
+
+      {/* Android browsers may not allow to play advertisement automatically.
+      Check for canPlay doesn't work. */}
+      {!isPlaying && isReady && !startWatchingIsLoading && (
+        <div
+          className={styles['play-button-overlay']}
+          onClick={handlePlayButtonClick}>
+          <button className={styles['play-button']}>
+            <PlayIcon />
+          </button>
+        </div>
+      )}
     </div>
   );
 }

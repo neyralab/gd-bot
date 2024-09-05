@@ -33,7 +33,9 @@
     "starts": "开始",
     "downloadToStorage": "下载到您的G:Drive",
     "freeWatch": "免费观看",
-    "preview": "预览"
+    "preview": "预览",
+    "saveError": "无法将文件保存到存储中。请重试或联系支持人员，如果问题仍然存在。",
+    "saveSuccess": "文件已成功保存到存储中。"
   },
   "month": {
     "jan": "一月",

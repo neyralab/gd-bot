@@ -21,6 +21,18 @@
     "language": "言語",
     "back": "戻る"
   },
+  "banner": {
+    "upload": "ファイルをアップロードして保存",
+    "uploadText": "GhostDriveで素早く！",
+    "compression": "GhostDriveのデータ圧縮！",
+    "compressionText": "ストレージを最大限に活用",
+    "tokenization": "ファイルトークン化！",
+    "tokenizationText": "GhostDriveの紹介",
+    "computing": "GhostDriveのクライアントサイドコンピューティング！",
+    "computingText": "パフォーマンスを向上させる",
+    "geoPin": "GhostDriveのGeoPin！",
+    "geoPinText": "ファイルを整理する"
+  },
   "node": {
     "node": "ノード",
     "gdNodeShort": "GDノード",

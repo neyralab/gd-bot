@@ -18,4 +18,9 @@ const FILE_ACTIONS = {
   shared: 7,
 }
 
-export { NFT_ADDRESS, SOCIAL, FILE_ACTIONS };
+const MOBILE_APP_LINKS = {
+  iOS: 'https://apps.apple.com/ca/app/ghost-drive/id6475002179',
+  android: 'https://play.google.com/store/apps/details?id=com.wise.data.ghostdrive',
+}
+
+export { NFT_ADDRESS, SOCIAL, FILE_ACTIONS, MOBILE_APP_LINKS };

@@ -1,6 +1,7 @@
 import axios from 'axios';
 import FormData from 'form-data';
 import logger from './logger.js';
+import errorTransformer from './errorTransformer.js';
 
 const STABILITY_API_KEY = process.env.STABILITY_API_KEY;
 
@@ -29,7 +30,7 @@ async function generateImage(prompt) {
     }
   } catch (error) {
     logger.error(`Error in image generation`, {
-      error
+      error: errorTransformer(error)
     });
     return null;
   }

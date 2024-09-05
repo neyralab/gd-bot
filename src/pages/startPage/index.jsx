@@ -21,10 +21,8 @@ import { isDevEnv } from '../../utils/isDevEnv';
 
 import GhostLoader from '../../components/ghostLoader';
 import Nodes from './Nodes/index';
-import { ReactComponent as LogoIcon } from '../../assets/ghost.svg';
 import { ReactComponent as TapIcon } from './assets/tap.svg';
 import { DisconnectWalletModal } from '../../components/disconnectWalletModal';
-import BannerSource from '../../assets/node-banner.webp';
 import ShareStorage from './ShareStorage';
 import PointCounter from './PointCounter/PointCounter';
 import SystemModal from '../../components/SystemModal/SystemModal';
@@ -32,6 +30,8 @@ import NavigatItem from './Navigator/NavigatItem';
 import Navigator from './Navigator/Navigator';
 import { parseSizeToBytes } from '../../utils/storage';
 import { runInitAnimation } from './animations';
+import { Banner } from './Banner';
+
 import style from './style.module.css';
 import navigatorStyle from './Navigator/Navigator.module.scss';
 
@@ -232,23 +232,7 @@ export const StartPage = ({ tariffs }) => {
 
   return (
     <div ref={wrapperRef} className={`${style.container}`}>
-      <div
-        data-animation="start-page-animation-2"
-        className={CN(style.card, style.banner)}>
-        <img src={BannerSource} alt="banner" />
-        <div className={style['banner-content']}>
-          <div onClick={onOpenShareModal} className={style['banner-header']}>
-            <div className={style['banner-header_img']}>
-              <LogoIcon />
-              <span className={style['banner-header-share-btn']}>
-                {t('share.share')}
-              </span>
-            </div>
-            <h1>{transformSize(user.space_total)}</h1>
-          </div>
-        </div>
-      </div>
-
+      <Banner data-animation="start-page-animation-2" />
       <PointCounter
         points={user?.points}
         className={style[`point-counter`]}
