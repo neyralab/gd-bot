@@ -11,7 +11,11 @@ import { Preview } from './components/preview';
 import { ReactComponent as StarIcon } from '../../assets/star.svg';
 import GhostLoader from '../../components/ghostLoader';
 
-import { getPaidShareFileEffect, getDownloadOTT } from '../../effects/filesEffects';
+import {
+  getPaidShareFileEffect,
+  getDownloadOTT,
+  // getFileStarStatistic
+} from '../../effects/filesEffects';
 import { getFileCids } from '../../effects/file/getFileCid';
 import { makeInvoice } from '../../effects/paymentEffect';
 import { uploadFileEffect } from '../../effects/uploadFileEffect';
@@ -31,7 +35,7 @@ const STEPS = {
   download: 'download'
 }
 
-const ESCAPE_CONTENT_DOWNLOAD = ['audio', 'encrypt'];
+const ESCAPE_CONTENT_DOWNLOAD = ['encrypt'];
 
 export const PaidView = () => {
   const navigate = useNavigate();
@@ -39,31 +43,38 @@ export const PaidView = () => {
   const [file, setFile] = useState({});
   const { t } = useTranslation('drive');
   const [loading, setLoading] = useState(false);
+  // const [fileStatistics, setFileStatistics] = useState({});
   const [expandDescription, setExpandDescription] = useState(false);
   const [downloadLoading, setDownloadLoading] = useState(false);
   const [fileContent, setFileContent] = useState(null);
   const user = useSelector((state) => state.user.data);
   const ppvPayment = useSelector(selectPaymenttByKey('pay_per_view'));
   const [fullscreen, setFullscreen] = useState(false);
-  const [step, setStep] = useState(STEPS.preview);
+  const [step, setStep] = useState(STEPS.download);
   const { id } = useParams();
 
   useEffect(() => {
+    const init = async () => {
+      try {
+        const data = await getPaidShareFileEffect(addSlugHyphens(id));
+        // const fileStat = await getFileStarStatistic(data?.data?.file?.slug);
+        const shareFile = { ...data?.data };
+        delete shareFile.file;
+        setFile({ ...data?.data?.file, payShare: shareFile });
+      } catch (error) {
+        console.warn('Cannot find file')
+      }
+    }
     if (id) {
-      getPaidShareFileEffect(addSlugHyphens(id))
-        .then(({ data }) => {
-          const shareFile = { ...data };
-          delete shareFile.file;
-          setFile({ ...data.file, payShare: shareFile });
-        })
-        .catch(() => { console.warn('Cannot find file') })
+      init()
     }
   }, [id]);
 
   useEffect(() => {
     if (file?.slug) {
       const canPreview = getPreviewFileType(file, '   ');
-      setLoading(true);
+      if (canPreview !== 'audio')
+        setLoading(true);
       if (canPreview && !ESCAPE_CONTENT_DOWNLOAD.includes(canPreview)) {
         getContent();
       } else {
@@ -205,9 +216,9 @@ export const PaidView = () => {
   const onShowFullContent = () => {
     if (step === STEPS.preview) {
       showProcess();
-    } else if (step === STEPS.allowPreview && file.payShare.price_download) {
+    } else if (step === STEPS.allowPreview && file.payShare.price_download && fileContent) {
       downloadProcess();
-    } else {
+    } else if (fileContent) {
       downloadContent();
     }
   }

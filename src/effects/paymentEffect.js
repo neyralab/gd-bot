@@ -126,7 +126,6 @@ export const sendStarInvoice = async (dispatch, invoice) => {
   }
 }
 
-
 export const setPaymentTypesEffect = async (dispatch) => {
   try {
     const token = await dispatch(connectUserV8());
