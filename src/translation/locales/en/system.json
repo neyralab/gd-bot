@@ -21,6 +21,18 @@
     "language": "Language",
     "back": "Back"
   },
+  "banner": {
+    "upload": "Upload & Store your files",
+    "uploadText": "Quickly with GhostDrive!",
+    "compression": "GhostDrive's Data Compression!",
+    "compressionText": "Maximaze Your Storage with",
+    "tokenization": "File Tokenization!",
+    "tokenizationText": "Introducing ghostDrive's",
+    "computing": "GhostDrive's Client-Side Computing!",
+    "computingText": "Boost Your Performance with",
+    "geoPin": "GhostDrive's GeoPin!",
+    "geoPinText": "Get your files organized with"
+  },
   "node": {
     "node": "Node",
     "gdNodeShort": "GD Node",

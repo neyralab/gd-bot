@@ -21,6 +21,18 @@
     "language": "Язык",
     "back": "Назад"
   },
+  "banner": {
+    "upload": "Загрузите и храните свои файлы",
+    "uploadText": "Быстро с GhostDrive!",
+    "compression": "Сжатие данных от GhostDrive!",
+    "compressionText": "Максимизируйте своё хранилище с",
+    "tokenization": "Токенизация файлов!",
+    "tokenizationText": "Представляем GhostDrive",
+    "computing": "Клиентские вычисления GhostDrive!",
+    "computingText": "Увеличьте свою производительность с",
+    "geoPin": "GeoPin от GhostDrive!",
+    "geoPinText": "Организуйте свои файлы с"
+  },
   "node": {
     "node": "Нода",
     "gdNodeShort": "GD Нода",
