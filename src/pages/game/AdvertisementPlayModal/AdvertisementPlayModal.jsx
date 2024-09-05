@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ReactPlayer from 'react-player';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -25,6 +25,21 @@ export default function AdvertisementPlayModal() {
   const [isReady, setIsReady] = useState(false);
   const [duration, setDuration] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [startWatchingIsLoading, setStartWatchingIsLoading] = useState(false);
+
+  useEffect(() => {
+    if (advertisementModal && advertisementModal.videoUrl) {
+      startWatching();
+    } else {
+      setProgress(0);
+      setTimeLeft(0);
+      setIsProcessing(false);
+      setIsReady(false);
+      setDuration(0);
+      setIsPlaying(false);
+      setStartWatchingIsLoading(false);
+    }
+  }, [advertisementModal]);
 
   const onReady = () => {
     setIsReady(true);
@@ -43,8 +58,11 @@ export default function AdvertisementPlayModal() {
   };
 
   const startWatching = async () => {
+    setStartWatchingIsLoading(true);
+
     try {
       await startWatchingAdvertisementVideo(advertisementModal.videoId);
+      setStartWatchingIsLoading(false);
     } catch (err) {
       dispatch(
         setSystemModal({
@@ -78,7 +96,6 @@ export default function AdvertisementPlayModal() {
 
   const handlePlayButtonClick = () => {
     setIsPlaying(true);
-    startWatching();
   };
 
   if (!advertisementModal) return null;
@@ -117,7 +134,7 @@ export default function AdvertisementPlayModal() {
         </div>
       </div>
 
-      {(isProcessing || !isReady) && (
+      {(isProcessing || !isReady || startWatchingIsLoading) && (
         <div className={styles['loader-container']}>
           <Loader2 />
         </div>
@@ -127,7 +144,7 @@ export default function AdvertisementPlayModal() {
 
       {/* Android browsers may not allow to play advertisement automatically.
       Check for canPlay doesn't work. */}
-      {!isPlaying && isReady && (
+      {!isPlaying && isReady && !startWatchingIsLoading && (
         <div
           className={styles['play-button-overlay']}
           onClick={handlePlayButtonClick}>
