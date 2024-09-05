@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
 import {
-  setFileMenu,
+  setFileMenuFile,
   toggleFileFavorite
 } from '../../../../store/reducers/driveSlice';
 import PPVFileGridView from './file/PPVFileGridView';
@@ -68,7 +68,7 @@ export default function FileViewController({
 
   const onMenuClick = () => {
     vibrate();
-    dispatch(setFileMenu(file));
+    dispatch(setFileMenuFile(file));
   };
 
   const onFileOpenClick = () => {

@@ -1,15 +1,17 @@
 import React, { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { clearDriveState, initDrive } from '../../store/reducers/driveSlice';
 import Header from './components/Header/Header';
 import Storage from './components/Storage/Storage';
 import Content from './components/Content/Content';
 import Actions from './components/Actions/Actions';
+import { FileMenu } from './components/FileMenu/FileMenu';
 import { runInitAnimation } from './animations';
 import styles from './style.module.scss';
 
 export default function DrivePage() {
   const dispatch = useDispatch();
+  const fileMenuFile = useSelector((state) => state.drive.fileMenuFile);
 
   useEffect(() => {
     dispatch(initDrive());
@@ -30,6 +32,8 @@ export default function DrivePage() {
         <Content />
       </div>
       <Actions />
+
+      {fileMenuFile && <FileMenu />}
     </div>
   );
 }

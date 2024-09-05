@@ -37,7 +37,7 @@ const driveSlice = createSlice({
     fileTypesCount: {},
     fileTypesCountIsFetching: false,
     fileIsFavoriteUpdating: [], // slugs
-    fileMenu: null
+    fileMenuFile: null
   },
   reducers: {
     setFilesQueryData: (state, { payload }) => {
@@ -99,8 +99,8 @@ const driveSlice = createSlice({
         );
       }
     },
-    setFileMenu: (state, { payload }) => {
-      state.fileMenu = payload;
+    setFileMenuFile: (state, { payload }) => {
+      state.fileMenuFile = payload;
     }
   }
 });
@@ -366,6 +366,6 @@ export const {
   setFileTypesCount,
   setFileTypesCountIsFetching,
   setFileIsFavoriteUpdating,
-  setFileMenu
+  setFileMenuFile
 } = driveSlice.actions;
 export default driveSlice.reducer;
