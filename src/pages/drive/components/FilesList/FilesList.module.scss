@@ -65,6 +65,7 @@
 .list-container {
   height: calc(100vh - 156px);
   overflow-x: hidden !important;
+  padding-bottom: 90px;
 
   * > {
     overflow-x: hidden;
@@ -80,7 +81,7 @@
   justify-content: space-between;
   overflow-x: hidden !important;
   overflow-y: hidden !important;
-  padding: 0px 22px 50px 22px;
+  padding: 0px 22px 0px 22px;
 
   &.grid-list {
     flex-direction: row;
