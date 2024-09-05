@@ -33,7 +33,9 @@
     "starts": "Starts",
     "downloadToStorage": "Download to your G:Drive",
     "freeWatch": "Free watch",
-    "preview": "preview"
+    "preview": "preview",
+    "saveError": "Failed to save the file to storage. Please try again or contact support if the issue persists.",
+    "saveSuccess": "The file has been successfully saved to storage."
   },
   "month": {
     "jan": "Jan",

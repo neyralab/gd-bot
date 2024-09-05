@@ -33,7 +33,9 @@
     "starts": "Startet",
     "downloadToStorage": "Herunterladen auf Ihr G:Drive",
     "freeWatch": "Kostenlos ansehen",
-    "preview": "Vorschau"
+    "preview": "Vorschau",
+    "saveError": "Fehler beim Speichern der Datei im Speicher. Bitte versuchen Sie es erneut oder wenden Sie sich an den Support, wenn das Problem weiterhin besteht.",
+    "saveSuccess": "Die Datei wurde erfolgreich im Speicher gespeichert."
   },
   "month": {
     "jan": "Jan",

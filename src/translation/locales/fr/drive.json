@@ -33,7 +33,9 @@
     "starts": "Commence",
     "downloadToStorage": "Télécharger sur votre G:Drive",
     "freeWatch": "Regarder gratuitement",
-    "preview": "Aperçu"
+    "preview": "Aperçu",
+    "saveError": "Échec de l'enregistrement du fichier dans le stockage. Veuillez réessayer ou contacter le support si le problème persiste.",
+    "saveSuccess": "Le fichier a été enregistré avec succès dans le stockage."
   },
   "month": {
     "jan": "Janv",

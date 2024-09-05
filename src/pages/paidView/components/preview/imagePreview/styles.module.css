@@ -1,8 +1,6 @@
 .preview {
-  position: relative;
   width: 100%;
-  height: 400px;
-  overflow: hidden;
+  height: 300px;
 }
 
 .title {
@@ -20,7 +18,9 @@
 }
 
 .content {
-  height: 358px;
+  position: relative;
+  height: 258px;
+  width: 100%;
   border-radius: 12px;
 }
 
