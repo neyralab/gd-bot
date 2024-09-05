@@ -2,24 +2,6 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useSwipeable } from 'react-swipeable';
 import styles from './CardsSlider.module.css';
 
-/** Items is an array, that has id and html. The root tag of the html should have key 
- * Items example:
- * [
-        {
-            id: 1,
-            html: (
-            <li key="1" className={classNames(styles.card, styles['slider-card'])}>
-                <h2>20% Revenue Share on TON Blockchain</h2>
-                <p>
-                Join TON Blockchain and earn a 20% revenue share. Participate now to
-                maximize your earnings.
-                </p>
-            </li>
-            )
-        },
-    ]
- */
-
 export default function CardsSlider({ items, timeout }) {
   const [activeIndex, setActiveIndex] = useState(0);
   const sliderCardsRef = useRef(null);
@@ -81,10 +63,12 @@ export default function CardsSlider({ items, timeout }) {
 
     setActiveIndex((prevIndex) => {
       let newIndex;
+      const totalItems = items.length;
+
       if (direction === 'left') {
-        newIndex = prevIndex === 0 ? 2 : prevIndex - 1;
+        newIndex = prevIndex === 0 ? totalItems - 1 : prevIndex - 1;
       } else {
-        newIndex = prevIndex === 2 ? 0 : prevIndex + 1;
+        newIndex = prevIndex === totalItems - 1 ? 0 : prevIndex + 1;
       }
 
       const sliderCards = sliderCardsRef.current;
