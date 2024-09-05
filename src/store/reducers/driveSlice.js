@@ -101,7 +101,7 @@ const driveSlice = createSlice({
     },
     setFileMenu: (state, { payload }) => {
       state.fileMenu = payload;
-    },
+    }
   }
 });
 
@@ -192,7 +192,8 @@ export const assignFilesQueryData = createAsyncThunk(
 
 export const uploadFile = createAsyncThunk(
   'drive/uploadFile',
-  async ({ files, onUploadCallback }, { dispatch }) => {
+  async ({ files, onUploadCallback }, { dispatch, getState }) => {
+    const state = getState();
     dispatch(setUploadFileIsUploading(true));
 
     try {
@@ -211,7 +212,11 @@ export const uploadFile = createAsyncThunk(
 
       dispatch(fetchTypesCount({ useLoader: false }));
 
-      // TODO: REFETCH FILES IF NEEDED
+      if (state.drive.filesQueryData.category) {
+        /** Refetch if we are in the files list */
+        dispatch(assignFilesQueryData({ filesQueryData: { page: 1 } }));
+        dispatch(getDriveFiles({ mode: 'replace', page: 1 }));
+      }
     } catch (error) {
       toast.error(getResponseError(error), {
         theme: 'colored',
