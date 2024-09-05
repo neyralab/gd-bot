@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 import classNames from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
 import { ReactComponent as PlusIcon } from '../../../../../assets/plus.svg';
-import { ReactComponent as Loader } from '../../../../../assets/loader-tube.svg';
+import UploadLoader from './UploadLoader';
 import { uploadFile } from '../../../../../store/reducers/driveSlice';
 import { vibrate } from '../../../../../utils/vibration';
 import styles from './UploadAction.module.scss';
@@ -32,7 +32,7 @@ export default function UploadAction() {
           styles['loader-container'],
           isUploading && styles.uploading
         )}>
-        <Loader />
+        <UploadLoader />
       </div>
 
       <input
