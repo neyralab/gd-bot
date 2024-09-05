@@ -21,6 +21,18 @@
     "language": "Ngôn ngữ",
     "back": "Quay lại"
   },
+  "banner": {
+    "upload": "Tải lên và lưu trữ tệp của bạn",
+    "uploadText": "Nhanh chóng với GhostDrive!",
+    "compression": "Nén dữ liệu của GhostDrive!",
+    "compressionText": "Tối đa hóa dung lượng lưu trữ của bạn với",
+    "tokenization": "Mã hóa tệp!",
+    "tokenizationText": "Giới thiệu GhostDrive",
+    "computing": "Tính toán phía máy khách của GhostDrive!",
+    "computingText": "Tăng hiệu suất của bạn với",
+    "geoPin": "GeoPin của GhostDrive!",
+    "geoPinText": "Sắp xếp tệp của bạn với"
+  },
   "node": {
     "node": "Nút",
     "gdNodeShort": "Nút GD",

@@ -21,6 +21,18 @@
     "language": "语言",
     "back": "返回"
   },
+  "banner": {
+    "upload": "上传并存储您的文件",
+    "uploadText": "快速使用GhostDrive！",
+    "compression": "GhostDrive的数据压缩！",
+    "compressionText": "最大化您的存储空间",
+    "tokenization": "文件令牌化！",
+    "tokenizationText": "介绍GhostDrive",
+    "computing": "GhostDrive的客户端计算！",
+    "computingText": "提高您的性能",
+    "geoPin": "GhostDrive的GeoPin！",
+    "geoPinText": "使用GeoPin整理您的文件"
+  },
   "node": {
     "node": "节点",
     "gdNodeShort": "GD节点",
