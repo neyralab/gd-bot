@@ -3,7 +3,7 @@ import gsap from 'gsap';
 export const runItemsAnimation = (visibleStartIndex, visibleStopIndex, highestAnimatedIndex) => {
   const newItems = [];
   for (let i = visibleStartIndex; i <= visibleStopIndex; i++) {
-    if (i > highestAnimatedIndex.current && i < history.length) {
+    if (i > highestAnimatedIndex.current) {
       highestAnimatedIndex.current = i;
       newItems.push(
         `[data-animation="drive-file-animation-1"][data-index="${i}"]`
