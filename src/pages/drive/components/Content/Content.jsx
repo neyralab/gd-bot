@@ -2,13 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import Categories from '../Categories/Categories';
 import FilesList from '../FilesList/FilesList';
-import styles from './Content.module.scss';
 import {
   hideCategoriesAnimation,
   hideFilesListAnimation,
   showCategoriesAnimation,
   showFilesListAnimation
 } from './animations';
+import styles from './Content.module.scss';
 
 export default function Content() {
   const queryData = useSelector((state) => state.drive.filesQueryData);

@@ -2,11 +2,10 @@ import React from 'react';
 import MenuButton from '../buttons/MenuButton';
 import StarButton from '../buttons/StarButton';
 import CustomFolderIcon from '../../../../../components/customFileIcon/CustomFolderIcon';
-import CustomFileIcon from '../../../../../components/customFileIcon';
 import { ReactComponent as StarIcon } from '../../../../../assets/star.svg';
 import { ReactComponent as EyeIcon } from '../../../../../assets/eye.svg';
-import styles from './file.module.scss';
 import CustomFileSmallIcon from '../../../../../components/customFileIcon/CustomFileSmallIcon';
+import styles from './file.module.scss';
 
 export default function PPVFileListView({
   file,

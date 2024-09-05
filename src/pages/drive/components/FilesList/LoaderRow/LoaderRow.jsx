@@ -1,6 +1,6 @@
 import React from 'react';
-import styles from './LoaderRow.module.scss';
 import Loader2 from '../../../../../components/Loader2/Loader2';
+import styles from './LoaderRow.module.scss';
 
 export default function LoaderRow({ style }) {
   return (
