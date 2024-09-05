@@ -214,7 +214,7 @@ export const FilesPage = ({}) => {
           </div>
           <button
             className={style.uploadBtn}
-            onClick={() => navigate('/file-upload')}>
+            onClick={() => navigate('/drive')}>
             Upload
           </button>
         </>

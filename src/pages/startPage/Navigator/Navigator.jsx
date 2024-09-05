@@ -52,7 +52,7 @@ export default function Navigator({
             {human.percent.label}
           </span>
         ),
-        onClick: () => navigate('/file-upload')
+        onClick: () => navigate('/drive')
       },
       {
         id: 2,
