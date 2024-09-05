@@ -308,6 +308,13 @@ export const uploadFile = createAsyncThunk(
 //   }
 // );
 
+export const clearDriveState = createAsyncThunk(
+  'drive/clearDriveState',
+  async (_, { dispatch }) => {
+    dispatch(setFilesQueryData({ search: null, category: null, page: null }));
+  }
+);
+
 export const {
   setFilesQueryData,
   setViewType,

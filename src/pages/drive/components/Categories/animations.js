@@ -2,7 +2,7 @@ import { gsap } from 'gsap';
 
 export const runInitAnimation = () => {
   gsap.fromTo(
-    `[data-animation="categories-animation-1"]`,
+    `[data-animation="drive-categories-animation-2"]`,
     {
       opacity: 0,
       x: window.innerWidth + 200,

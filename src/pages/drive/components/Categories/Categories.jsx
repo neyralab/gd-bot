@@ -1,28 +1,30 @@
 import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import useButtonVibration from '../../../../hooks/useButtonVibration';
-import { runInitAnimation } from './animations';
+import { assignFilesQueryData } from '../../../../store/reducers/driveSlice';
+import { ReactComponent as ImpulseLoader } from '../../../../assets/loader-impulse.svg';
+import { vibrate } from '../../../../utils/vibration';
 import icons from './assets';
+import { runInitAnimation } from './animations';
 import styles from './Categories.module.scss';
-import Loader2 from '../../../../components/Loader2/Loader2';
 
 export default function Categories() {
+  const dispatch = useDispatch();
   const types = useSelector((state) => state.drive.fileTypesCount);
   const typesAreFetching = useSelector(
     (state) => state.drive.fileTypesCountIsFetching
   );
   const { t } = useTranslation('drive');
   const navigate = useNavigate();
-  const handleVibrationClick = useButtonVibration();
 
   useEffect(() => {
     runInitAnimation();
   }, []);
 
   const getFiles = async (type) => {
-    navigate(`?type=${type}`);
+    vibrate();
+    dispatch(assignFilesQueryData({ filesQueryData: { category: type } }));
   };
 
   const options = [
@@ -79,24 +81,27 @@ export default function Categories() {
       value: types?.games,
       icon: icons.game,
       callback: () => {
+        vibrate();
         navigate('/games');
       }
     }
   ];
 
   return (
-    <ul className={styles.wrapper}>
+    <ul
+      data-animation="drive-categories-animation-1"
+      className={styles.wrapper}>
       {options.map(({ name, value, icon: Icon, callback }) => (
         <li
           key={name}
-          data-animation="categories-animation-1"
+          data-animation="drive-categories-animation-2"
           className={styles.item}
-          onClick={handleVibrationClick(callback)}>
+          onClick={callback}>
           <div>
             <div className={styles.count}>
               {typesAreFetching && (
                 <div className={styles['loader-container']}>
-                  <Loader2 />
+                  <ImpulseLoader />
                 </div>
               )}
               {!typesAreFetching && value}

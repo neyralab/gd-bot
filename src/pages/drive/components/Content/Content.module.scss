@@ -1,3 +1,13 @@
 .container {
-    overflow: visible;
+  overflow: visible;
+  position: relative;
+  width: 100%;
+
+  > * {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    opacity: 0;
+  }
 }

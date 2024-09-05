@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { ReactComponent as PlusIcon } from '../../../../../assets/plus.svg';
 import { ReactComponent as Loader } from '../../../../../assets/loader-tube.svg';
 import { uploadFile } from '../../../../../store/reducers/driveSlice';
+import { vibrate } from '../../../../../utils/vibration';
 import styles from './UploadAction.module.scss';
 
 export default function UploadAction() {
@@ -45,6 +46,7 @@ export default function UploadAction() {
       />
       <label
         htmlFor="file"
+        onClick={vibrate}
         className={classNames(styles.button, isUploading && styles.uploading)}>
         <PlusIcon />
       </label>

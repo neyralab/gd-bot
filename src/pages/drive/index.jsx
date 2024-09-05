@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { initDrive } from '../../store/reducers/driveSlice';
+import { clearDriveState, initDrive } from '../../store/reducers/driveSlice';
 import Header from './components/Header/Header';
 import Storage from './components/Storage/Storage';
 import Content from './components/Content/Content';
@@ -14,6 +14,10 @@ export default function DrivePage() {
   useEffect(() => {
     dispatch(initDrive());
     runInitAnimation();
+
+    return () => {
+      dispatch(clearDriveState());
+    };
   }, []);
 
   return (

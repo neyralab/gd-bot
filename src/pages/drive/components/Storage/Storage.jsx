@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import CountUp from 'react-countup';
 import { transformSize } from '../../../../utils/transformSize';
 import { fromByteToGb } from '../../../../utils/storage';
-import Loader2 from '../../../../components/Loader2/Loader2';
+import { ReactComponent as ImpulseLoader } from '../../../../assets/loader-impulse.svg';
 import styles from './Storage.module.scss';
 
 export default function Storage() {
@@ -49,7 +49,7 @@ export default function Storage() {
 
             {!storageInfo && (
               <div className={styles['loader-container']}>
-                <Loader2 />
+                <ImpulseLoader />
               </div>
             )}
           </div>
