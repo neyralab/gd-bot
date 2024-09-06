@@ -17,14 +17,14 @@ export default function PPVFileGridView({
   onFileOpenClick
 }) {
   return (
-    <li className={styles.fileSquare} id={file.id}>
+    <li className={styles['container--grid']} id={file.id}>
       <div className={styles['open-action-trigger']} onClick={onFileOpenClick}>
-        <div className={styles.previewWrapper}>
+        <div className={styles['preview-wrapper--grid']}>
           {preview ? (
             <img
               src={preview}
               alt={file.name}
-              className={styles.previewImage}
+              className={styles['preview-image']}
             />
           ) : isFolder ? (
             <CustomFolderIcon viewType={view} color={file?.color[0]?.hex} />
@@ -36,16 +36,19 @@ export default function PPVFileGridView({
             />
           )}
         </div>
-        <div className={styles.squareInfo}>
-          <p className={styles.squareInfo__name}>
+
+        <div className={styles['info--grid']}>
+          <p className={styles['info-name--grid']}>
             {isSearchFile ? file.title : file.name}
           </p>
-          <div className={styles.squareInfo__statistic}>
-            <p className={styles['squareInfo__statistic_item']}>
+
+          <div className={styles['info-statistics--grid']}>
+            <p className={styles['info-statistics-item--grid']}>
               <StarIcon width="12" height="12" viewBox="0 0 21 20" />
               <span>{file?.share_file?.price_view || 0}</span>
             </p>
-            <p className={styles['squareInfo__statistic_item']}>
+            
+            <p className={styles['info-statistics-item--grid']}>
               <EyeIcon />
               <span>{file?.entry_statistic?.viewed || 0}</span>
             </p>

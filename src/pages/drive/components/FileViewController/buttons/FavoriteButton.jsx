@@ -22,8 +22,10 @@ export default function FavoriteButton({
   return (
     <button
       className={classNames(
-        styles.fileMenuButton,
-        viewType === 'grid' ? styles.favBtnGrid : styles.favBtnList
+        styles['favorite-menu-btn'],
+        viewType === 'grid'
+          ? styles['favorite-btn--grid']
+          : styles['favorite-btn--list']
       )}
       onClick={onFavoriteClick}>
       {isUpdating && <Loader2 />}

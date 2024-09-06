@@ -13,22 +13,21 @@ export default function SimpleFileListView({
   isFavorite,
   isSearchFile,
   formattedDate,
-
   onFavoriteClick,
   onMenuClick,
   onFileOpenClick
 }) {
   return (
-    <li className={styles.fileList}>
+    <li className={styles['container--list']}>
       <div className={styles['open-action-trigger']} onClick={onFileOpenClick}>
-        <div className={styles.fileListPreview}>
+        <div className={styles['preview-wrapper--list']}>
           {preview ? (
             <img
               src={preview}
               alt="file"
               width={30}
               height={40}
-              className={styles.previewImage}
+              className={styles['preview-image']}
             />
           ) : isFolder ? (
             <CustomFolderIcon viewType={view} color={file?.color[0]?.hex} />
@@ -37,11 +36,12 @@ export default function SimpleFileListView({
           )}
         </div>
 
-        <div className={styles.info}>
-          <h3 className={styles.info__name}>
+        <div className={styles['info--list']}>
+          <h3 className={styles[['info-name--list']]}>
             {isSearchFile ? file.title : file.name}
           </h3>
-          <p className={styles.info__date}>
+
+          <p className={styles['info-date--list']}>
             {isSearchFile ? file.updated : formattedDate}
           </p>
         </div>

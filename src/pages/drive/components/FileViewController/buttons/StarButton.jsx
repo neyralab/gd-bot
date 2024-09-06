@@ -7,8 +7,10 @@ export default function StarButton({ viewType }) {
   return (
     <button
       className={classNames(
-        styles.shareMenuButton,
-        viewType === 'grid' ? styles.favBtnGrid : styles.favBtnList
+        styles['star-menu-btn'],
+        viewType === 'grid'
+          ? styles['star-btn--grid']
+          : styles['star-btn--list']
       )}>
       <StarFullIcon />
     </button>

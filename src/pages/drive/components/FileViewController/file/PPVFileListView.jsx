@@ -17,14 +17,14 @@ export default function PPVFileListView({
   onFileOpenClick
 }) {
   return (
-    <li className={styles.fileList} id={file.id}>
+    <li className={styles['container--list']} id={file.id}>
       <div className={styles['open-action-trigger']} onClick={onFileOpenClick}>
-        <div className={styles.fileListPreview}>
+        <div className={styles['preview-wrapper--list']}>
           {preview ? (
             <img
               src={preview}
               alt={file.name}
-              className={styles.previewImage}
+              className={styles['preview-image']}
               width={30}
               height={40}
             />
@@ -34,16 +34,19 @@ export default function PPVFileListView({
             <CustomFileSmallIcon type={file.extension} />
           )}
         </div>
-        <div className={styles.info}>
-          <p className={styles.info__name}>
+
+        <div className={styles['info--list']}>
+          <p className={styles['info-name--list']}>
             {isSearchFile ? file.title : file.name}
           </p>
-          <div className={styles.info__statistic}>
-            <p className={styles['info__statistic_item']}>
+
+          <div className={styles['info-statistics--list']}>
+            <p className={styles['info-statistics-item--list']}>
               <StarIcon width="12" height="12" viewBox="0 0 21 20" />
               <span>{file?.share_file?.price_view || 0}</span>
             </p>
-            <p className={styles['info__statistic_item']}>
+
+            <p className={styles['info-statistics-item--list']}>
               <EyeIcon />
               <span>{file?.entry_statistic?.viewed || 0}</span>
             </p>

@@ -13,20 +13,19 @@ export default function SimpleFileGridView({
   isFavorite,
   isSearchFile,
   formattedDate,
-
   onFavoriteClick,
   onMenuClick,
   onFileOpenClick
 }) {
   return (
-    <li className={styles.fileSquare} id={file.id}>
+    <li className={styles['container--grid']} id={file.id}>
       <div className={styles['open-action-trigger']} onClick={onFileOpenClick}>
-        <div className={styles.previewWrapper}>
+        <div className={styles['preview-wrapper--grid']}>
           {preview ? (
             <img
               src={preview}
               alt={file.name}
-              className={styles.previewImage}
+              className={styles['preview-image']}
             />
           ) : isFolder ? (
             <CustomFolderIcon viewType={viewType} color={file?.color[0]?.hex} />
@@ -39,11 +38,12 @@ export default function SimpleFileGridView({
           )}
         </div>
 
-        <div className={styles.squareInfo}>
-          <p className={styles.squareInfo__name}>
+        <div className={styles['info--grid']}>
+          <p className={styles['info-name--grid']}>
             {isSearchFile ? file.title : file.name}
           </p>
-          <p className={styles.squareInfo__date}>
+
+          <p className={styles['info-date--grid']}>
             {isSearchFile ? file.updated : formattedDate}
           </p>
         </div>
