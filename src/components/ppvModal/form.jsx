@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import CN from 'classnames';
 
@@ -6,7 +6,8 @@ import Header from './components/Header';
 import CountSelector from './components/CountSelector';
 import { ReactComponent as StarIcon } from '../../assets/star.svg';
 
-import styles from './PPVModal.module.css';
+import { runInitAnimation } from './animations';
+import styles from './PPVModal.module.scss';
 
 const MAX_STARS_VALUE = 9999;
 const MAX_LENGTH = 256;
@@ -14,17 +15,22 @@ const MAX_LENGTH = 256;
 const Form = ({ onClose, onSubmitProcess, state, setState }) => {
   const { t } = useTranslation('drive');
   const [startValidation, setStartValidation] = useState(false);
-  const isValid = useMemo(() => 
-    (state.description && state.description.trim().length <= MAX_LENGTH)
-  ,[state]);
+  const isValid = useMemo(
+    () => state.description && state.description.trim().length <= MAX_LENGTH,
+    [state]
+  );
+
+  useEffect(() => {
+    runInitAnimation();
+  }, []);
 
   const onChange = (data) => {
     setState((prev) => ({ ...prev, ...data }));
-  }
+  };
 
   const onDescChange = ({ target: { value } }) => {
     setState((prev) => ({ ...prev, description: value }));
-  }
+  };
 
   const onSubmit = () => {
     if (isValid) {
@@ -32,13 +38,14 @@ const Form = ({ onClose, onSubmitProcess, state, setState }) => {
     } else {
       setStartValidation(true);
     }
-  }
-  
+  };
+
   return (
     <>
       <div className={styles.container}>
-        <div className={styles.form} >
+        <div className={styles.form}>
           <Header leftText={t('ppv.back')} onClose={onClose} />
+
           <CountSelector
             title={t('ppv.ppv')}
             value={Number(state.view)}
@@ -47,6 +54,7 @@ const Form = ({ onClose, onSubmitProcess, state, setState }) => {
             min={1}
             max={MAX_STARS_VALUE}
           />
+
           <CountSelector
             title={t('ppv.download')}
             value={Number(state.download)}
@@ -55,7 +63,13 @@ const Form = ({ onClose, onSubmitProcess, state, setState }) => {
             min={0}
             max={MAX_STARS_VALUE}
           />
-          <div className={CN(styles.areaContainer, startValidation && !isValid && styles.areaError)}>
+
+          <div
+            data-animation="ppv-textarea-animation-1"
+            className={CN(
+              styles.areaContainer,
+              startValidation && !isValid && styles.areaError
+            )}>
             <p className={styles.areaTitle}>{t('ppv.description')}</p>
             <textarea
               className={styles.area}
@@ -70,19 +84,27 @@ const Form = ({ onClose, onSubmitProcess, state, setState }) => {
           </div>
         </div>
       </div>
+
       <div className={styles.footer}>
-        <p className={styles.footerTitle}>{t('ppv.policy')}</p>
+        <p
+          data-animation="ppv-footer-animation-1"
+          className={styles.footerTitle}>
+          {t('ppv.policy')}
+        </p>
+
         <button
+          data-animation="ppv-footer-animation-2"
           disabled={startValidation && !isValid}
           className={styles.footerButton}
-          onClick={onSubmit}
-        >
+          onClick={onSubmit}>
           {t('ppv.publish')}
-          <span>1 <StarIcon viewBox='0 0 21 21' /></span>
+          <span>
+            1 <StarIcon viewBox="0 0 21 21" />
+          </span>
         </button>
       </div>
     </>
   );
-}
+};
 
 export default Form;
