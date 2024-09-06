@@ -68,18 +68,18 @@ export const getStorageNotificationsEffect = async () => {
     .catch((e) => {throw e});
 };
 
-export const acceptStorageGiftEffect = async (id) => {
+export const acceptStorageGiftEffect = async (token) => {
   return axiosInstance
-    .post(`${API_PATH}/storage/${id}/accept `)
+    .post(`${API_PATH}/share/storage/accept`, {token})
     .then((response) => {
       return response.data;
     })
     .catch((e) => {throw e});
 };
 
-export const rejectStorageGiftEffect = async (id) => {
+export const rejectStorageGiftEffect = async (token) => {
   return axiosInstance
-    .post(`${API_PATH}/storage/${id}/reject `)
+    .post(`${API_PATH}/share/storage/reject`, {token})
     .then((response) => {
       return response.data;
     })
@@ -93,4 +93,24 @@ export const readNotificationEffect = async (id) => {
       return response;
     })
     .catch((e) => {throw e});
+};
+
+export const createGiftTokenEffect = async (storage) => {
+  try {
+    const data = await axiosInstance
+      .post(`${API_PATH}/share/storage/create`, { storage });
+    return data.data
+  } catch (error) {
+    throw Error(error);
+  }
+};
+
+export const checkGiftTokenEffect = async (token) => {
+  try {
+    const data = await axiosInstance
+      .post(`${API_PATH}/share/storage/token`, { token });
+    return data.data 
+  } catch (error) {
+    throw Error(error);
+  }
 };
