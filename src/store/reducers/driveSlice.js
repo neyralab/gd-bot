@@ -377,6 +377,9 @@ export const clearDriveState = createAsyncThunk(
   'drive/clearDriveState',
   async (_, { dispatch }) => {
     dispatch(setFilesQueryData({ search: null, category: null, page: 1 }));
+    dispatch(setFiles([]))
+    dispatch(setFileMenuFile(null))
+    dispatch(setFileIsFavoriteUpdating([]))
   }
 );
 
