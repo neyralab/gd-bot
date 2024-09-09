@@ -3,119 +3,133 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useSwipeable } from 'react-swipeable';
 import { gsap } from 'gsap';
 import {
+  assignFilesQueryData,
+  getDriveFiles,
   setMediaSliderCurrentFile,
-  setMediaSliderOpen
+  setMediaSliderNextFile
 } from '../../../../../store/reducers/driveSlice';
+import Slide from '../Slide/Slide';
 import styles from './SlidesController.module.scss';
 
-const Slide = React.memo(({ file, isLoading, id }) => {
-  useEffect(() => {
-    console.log('rerender', id);
-  }, [id]);
-
-  return (
-    <div className={styles.slide}>
-      {!isLoading && <p>{file?.name || 'none'}</p>}
-      {isLoading && <div className={styles.loader}>Loading...</div>}
-    </div>
-  );
-});
+/**----------------------------
+ * How this shit works
+ * ----------------------------
+ * ----------------------------
+ * ----------------------------
+ * We ALWAYS have 3 slides and NO MORE.
+ * These slides take information from mediaSlider store data.
+ * The top one and the bottom one can be null.
+ * If the top one is null -> you are not able to slide to top.
+ * If the bottom one is null -> system will check and try lazy loading -> block sliding or show loader (then update current and next slides).
+ * If we have the next/prev slide, the animation will move the slider to the next/prev and then it SWAP the slides and move them at the center.
+ * The current slide is always index 1, UNLESS it is not lazy loading loader slide.
+ * The information about next and previous files is taken from files data,
+ * THE SAME that FilesList uses. They are combined for the good.
+ * React.memo on Slide component and keys ARE CRUSIAL. If you remove them, you will always reload the same component every time you swipe, causing rerender and refetching
+ * */
 
 export default function SlidesController() {
   const dispatch = useDispatch();
   const mediaSlider = useSelector((state) => state.drive.mediaSlider);
+  const files = useSelector((state) => state.drive.files);
+  const totalPages = useSelector((state) => state.drive.totalPages);
+  const queryData = useSelector((state) => state.drive.filesQueryData);
   const [slides, setSlides] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [blockBottomSliding, setBlockBottomSliding] = useState(false);
   const slidesRef = useRef(null);
 
   useEffect(() => {
-    // Initialize slides with current, previous, and next files
     setSlides([
       {
         key: mediaSlider.previousFile?.id || 'top-null',
-        file: mediaSlider.previousFile,
-        isLoading: false
+        file: mediaSlider.previousFile
       },
       {
         key: mediaSlider.currentFile?.id || 'middle-null',
-        file: mediaSlider.currentFile,
-        isLoading: false
+        file: mediaSlider.currentFile
       },
       {
         key: mediaSlider.nextFile?.id || 'bottom-null',
-        file: mediaSlider.nextFile,
-        isLoading: false
+        file: mediaSlider.nextFile
       }
     ]);
   }, [mediaSlider.currentFile, mediaSlider.previousFile, mediaSlider.nextFile]);
 
-  const fetchNextFile = async () => {
-    setLoading(true);
-    try {
-      // Simulate an API request
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-      // Simulate a failed request
-      throw new Error('Failed to fetch next file');
-    } catch (error) {
-      console.error(error);
-      dispatch(setMediaSliderOpen(false));
-      dispatch(setMediaSliderCurrentFile(null));
-    } finally {
-      setLoading(false);
+  useEffect(() => {
+    if (files.length && mediaSlider.currentFile && !mediaSlider.nextFile) {
+      const currentFileIndex = files.findIndex(
+        (el) => el.id === mediaSlider.currentFile.id
+      );
+      if (currentFileIndex > -1 && currentFileIndex + 1 < files.length) {
+        dispatch(setMediaSliderNextFile(files[currentFileIndex + 1]));
+        if (blockBottomSliding) {
+          setBlockBottomSliding(false);
+          dispatch(setMediaSliderCurrentFile(files[currentFileIndex + 1]));
+        }
+      }
     }
-  };
+  }, [files]);
+
+  useEffect(() => {
+    gsap.set(slidesRef.current, { y: '-100vh' });
+  }, [slides]);
 
   const handlers = useSwipeable({
     onSwipedUp: () => {
-      if (mediaSlider.nextFile) {
-        animateSlides('up');
-      } else {
-        fetchNextFile();
-      }
+      animateSlidesDown();
     },
     onSwipedDown: () => {
-      if (mediaSlider.previousFile) {
-        animateSlides('down');
-      }
+      animateSlidesUp();
     },
     preventDefaultTouchmoveEvent: true,
     trackMouse: true
   });
 
-  const animateSlides = (direction) => {
-    const container = slidesRef.current;
-
-    if (direction === 'up') {
-      gsap.to(container, {
-        y: '-100vh',
+  const animateSlidesDown = () => {
+    if (mediaSlider.nextFile) {
+      gsap.to(slidesRef.current, {
+        y: '-200vh',
         duration: 0.2,
         onComplete: () => {
           dispatch(setMediaSliderCurrentFile(mediaSlider.nextFile));
-          gsap.set(container, { y: '0%' });
-        }
-      });
-    } else if (direction === 'down') {
-      gsap.to(container, {
-        y: '100vh',
-        duration: 0.2,
-        onComplete: () => {
-          dispatch(setMediaSliderCurrentFile(mediaSlider.previousFile));
-          gsap.set(container, { y: '0%' });
         }
       });
     }
+
+    if (
+      !mediaSlider.nextFile &&
+      !blockBottomSliding &&
+      queryData.page < totalPages
+    ) {
+      setBlockBottomSliding(true);
+      gsap.to(slidesRef.current, {
+        y: '-200vh',
+        duration: 0.2
+      });
+
+      let newPage = queryData.page + 1;
+      dispatch(getDriveFiles({ mode: 'lazy-add', page: newPage }));
+      dispatch(assignFilesQueryData({ filesQueryData: { page: newPage } }));
+    }
+  };
+
+  const animateSlidesUp = () => {
+    if (!mediaSlider.previousFile) return;
+
+    gsap.to(slidesRef.current, {
+      y: '0vh',
+      duration: 0.2,
+      onComplete: () => {
+        dispatch(setMediaSliderCurrentFile(mediaSlider.previousFile));
+      }
+    });
   };
 
   return (
     <div className={styles.container} {...handlers}>
       <div className={styles['slide-list']} ref={slidesRef}>
         {slides.map((el) => (
-          <Slide
-            key={el.key}
-            file={el.file}
-            isLoading={el.isLoading}
-            id={el.key}
-          />
+          <Slide key={el.key} file={el.file} id={el.key} />
         ))}
       </div>
     </div>

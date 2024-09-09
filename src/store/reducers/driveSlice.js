@@ -120,9 +120,12 @@ const driveSlice = createSlice({
     },
     setMediaSliderCurrentFile: (state, { payload }) => {
       let currentFile = payload;
-      const currentFileIndex = state.files.findIndex(
-        (el) => el.id === currentFile.id
-      );
+      let currentFileIndex = -1;
+      if (currentFile) {
+        currentFileIndex = state.files.findIndex(
+          (el) => el.id === currentFile.id
+        );
+      }
       if (currentFileIndex >= 0) {
         currentFile = state.files[currentFileIndex];
       }
@@ -140,6 +143,9 @@ const driveSlice = createSlice({
       state.mediaSlider.previousFile = previousFile;
       state.mediaSlider.currentFile = currentFile;
       state.mediaSlider.nextFile = nextFile;
+    },
+    setMediaSliderNextFile: (state, { payload }) => {
+      state.mediaSlider.nextFile = payload;
     }
   }
 });
@@ -437,6 +443,7 @@ export const {
   setFileMenuFile,
   setStorageInfo,
   setMediaSliderOpen,
-  setMediaSliderCurrentFile
+  setMediaSliderCurrentFile,
+  setMediaSliderNextFile
 } = driveSlice.actions;
 export default driveSlice.reducer;
