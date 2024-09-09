@@ -8,26 +8,33 @@ import Game from './GameItem';
 import { handlePartners, selectPartners } from '../../store/reducers/taskSlice';
 
 import styles from './styles.module.css';
-import { runInitAnimation } from './animations';
+import { runInitAnimation, runListAnimation } from './animations';
 
 export const GamesPage = () => {
   const dispatch = useDispatch();
   const { games } = useSelector(selectPartners);
-  const [list, setList] = useState(games);
+  const [list, setList] = useState([]);
   const [search, setSearch] = useState('');
 
   useEffect(() => {
-    if (!games?.length) {
-      getAllPartners().then((data) => dispatch(handlePartners(data)));
-    } else {
-      setList(games);
-    }
+    getAllPartners().then((data) => {
+      dispatch(handlePartners(data));
+    });
 
     runInitAnimation();
+  }, []);
+
+  useEffect(() => {
+    setList(games);
   }, [games]);
 
-  const handleChange = useCallback((value) => {
+  useEffect(() => {
+    runListAnimation();
+  }, [list]);
+
+  const handleChange = (value) => {
     setSearch(value);
+
     if (value) {
       const filteredList = games.filter((item) =>
         item.name.toLowerCase().includes(value.toLowerCase())
@@ -36,7 +43,7 @@ export const GamesPage = () => {
     } else {
       setList(games);
     }
-  }, []);
+  };
 
   return (
     <div className={styles.container}>

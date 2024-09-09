@@ -38,8 +38,12 @@
   line-height: 17px;
   text-align: center;
   padding: 8px 18px;
-  background: #FFFFFF1A;
+  background: #ffffff1a;
   border-radius: 27px;
   color: #fff;
   margin-left: 12px;
+}
+
+.initial-state-for-animation {
+  opacity: 0;
 }
