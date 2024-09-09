@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate, useLocation } from 'react-router-dom';
 import CN from 'classnames';
 import { toast } from 'react-toastify';
 import { useDispatch } from 'react-redux';
@@ -7,10 +8,12 @@ import { useTranslation } from 'react-i18next';
 import { ReactComponent as CloseIcon } from '../../../../assets/close.svg';
 import { Button } from '../../../../components/button';
 import { getResponseError } from '../../../../utils/string';
+import { transformSize } from '../../../../utils/transformSize';
 
 import {
   acceptStorageGiftEffect,
-  rejectStorageGiftEffect
+  rejectStorageGiftEffect,
+  checkGiftTokenEffect,
 } from '../../../../effects/storageEffects';
 import { getToken } from '../../../../effects/set-token';
 import { setUser } from '../../../../store/reducers/userSlice';
@@ -18,27 +21,55 @@ import { getUserEffect } from '../../../../effects/userEffects';
 
 import styles from '../ShareForm/styles.module.scss';
 
-const Gift = ({ onCloseGift, giftData, systemModalRef }) => {
-  const { t } = useTranslation('system');
+const Gift = ({ onClose, systemModalRef, giftToken }) => {
+  const location = useLocation();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [loading, setLoading] = useState(false);  const item = giftData.length ? giftData[0] : { text: '' }
-  const sender = item?.text?.split(' ')[0] || '';
-  const size = item?.text?.split(' ')[4] || '';
+  const { t } = useTranslation('system');
+  const [initialData, setInitialData] = useState({ name: 'roma', size: 0 });
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const init = async () => {
+      try {
+        const data = await checkGiftTokenEffect(giftToken);
+        setInitialData({ name: data?.user?.username || '', size: data?.bytes || 0 });
+      } catch (error) {
+        clearSearchParams();
+      }
+    }
+    if (giftToken) {
+      init()
+    }
+  }, [giftToken]);
+
+  const clearSearchParams = () => {
+    const params = new URLSearchParams(location.search);
+
+    if (params.has('storageGift')) {
+      params.delete('storageGift');
+
+      navigate({
+        pathname: location.pathname,
+        search: params.toString(),
+      }, { replace: true });
+    }
+  }
 
   const onAccept = async () => {
     try {
       setLoading(true);
-      const data = await acceptStorageGiftEffect(item.id);
+      const data = await acceptStorageGiftEffect(giftToken);
       if (data.message === "success") {
         const token = await getToken();
         const updatedUser = await getUserEffect(token);
         dispatch(setUser(updatedUser));
         systemModalRef.current.open({
-          title: t('share.increaseStorage').replace('{size}', size),
-          text: t('share.increaseStorageDesc').replace('{size}', size),
+          title: t('share.increaseStorage').replace('{size}', initialData.size),
+          text: t('share.increaseStorageDesc').replace('{size}', initialData.size),
          });
         setLoading(false);
-        onCloseGift();
+        onClose();
       } else {
         setLoading(false);
       }
@@ -54,14 +85,14 @@ const Gift = ({ onCloseGift, giftData, systemModalRef }) => {
   const onReject = async () => {
     try {
       setLoading(true);
-      const data = await rejectStorageGiftEffect(item.id);
+      const data = await rejectStorageGiftEffect(giftToken);
       if (data.message === "success") {
         systemModalRef.current.open({
           title: t('share.declineIncrease'),
-          text: t('share.declineIncreaseDesc').replace('{size}', size),
+          text: t('share.declineIncreaseDesc').replace('{size}', initialData.size),
          });
         setLoading(false);
-        onCloseGift();
+        onClose();
       } else {
         setLoading(false);
       }
@@ -112,11 +143,11 @@ const Gift = ({ onCloseGift, giftData, systemModalRef }) => {
       <div className={styles['gift']}>
         <div className={styles['gift-header']}>
           <span className={styles['gift-header-badget']}>
-            {`@${sender}`}
+            {`@${giftToken ? initialData.name : sender}`}
           </span>
         </div>
         <div className={styles['gift-preview']}>
-          <h1>{`+${size}`}</h1>
+          <h1>{`+${giftToken ? transformSize(initialData.size) : size}`}</h1>
           <img src="/assets/gift.webp" alt="Gift" />
         </div>
       </div>

@@ -62,6 +62,7 @@ bot.start(async (ctx) => {
     is_premium: !!user?.is_premium,
     chat_id
   };
+  let userRefCode = '';
 
   // Cache userData by user.id
 
@@ -71,6 +72,11 @@ bot.start(async (ctx) => {
     const userData = JSON.parse(cachedUserData);
     sendMobileAuthButton(chat_id, userData.jwt);
     return;
+  }
+
+  if (cachedUserData) {
+    const refcode = JSON.parse(cachedUserData)?.user?.referral?.code;
+    userRefCode = refcode;
   }
 
   if (!cachedUserData) {
@@ -94,12 +100,14 @@ bot.start(async (ctx) => {
         headers['Host'] = process.env.GD_BACKEND_HOST;
       }
 
-      await userCreationQueue.add({
+      const job = await userCreationQueue.add({
         url,
         userData,
         headers: headers,
         showMobileAuthButton
       });
+      const result = await job.finished();
+      userRefCode = result?.user?.referral?.code;
     } catch (error) {
       logger.error('Error queueing user creation', {
         error: errorTransformer(error),
@@ -148,12 +156,39 @@ bot.start(async (ctx) => {
     `https://t.me/ghostdrive_web3`
   );
 
+  const referralLink = `https://t.me/${process.env.BOT_NAME}/ghostdrive?startapp=${userRefCode}`;
+  const shareButton = {
+    text: 'Share Link',
+    url: `https://t.me/share/url?url=${encodeURIComponent(referralLink)}`
+  };
+
   if (refCode && refCode.startsWith('paylink')) {
     const [_, slug] = refCode.split('_');
     const url = `${process.env.APP_FRONTEND_URL}/paid-view/${slug}`;
     try {
       await ctx.reply(
         `You are using a special link. To open the file, please click the button below.`,
+        Markup.inlineKeyboard([Markup.button.webApp('Open', url)])
+      );
+    } catch (error) {
+      logger.error('Error handling deep link:', {
+        error: errorTransformer(error)
+      });
+      try {
+        await ctx.reply(`Error: ${error.message}`);
+      } catch (e) {
+        logger.error('Error sending error message', {
+          error: errorTransformer(e)
+        });
+      }
+    }
+    return;
+  } else if (refCode && refCode.startsWith('storageGift')) {
+    const [_, token] = refCode.split('_');
+    const url = `${process.env.APP_FRONTEND_URL}/start?storageGift=${token}`;
+    try {
+      await ctx.reply(
+        `You are using a special link. To claim your storage reward, please click the button below.`,
         Markup.inlineKeyboard([Markup.button.webApp('Open', url)])
       );
     } catch (error) {
@@ -177,7 +212,11 @@ bot.start(async (ctx) => {
           caption: `${header}\n\n${activitiesText}`,
           parse_mode: 'HTML',
           reply_markup: {
-            inline_keyboard: [[dashboardButton], [followNewsButton]]
+            inline_keyboard: [
+              [dashboardButton],
+              [followNewsButton],
+              [shareButton]
+            ]
           }
         }
       );

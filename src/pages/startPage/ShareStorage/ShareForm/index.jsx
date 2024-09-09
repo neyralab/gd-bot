@@ -1,99 +1,55 @@
 import React, { useEffect, useState, useRef, useMemo } from "react";
 import { useSelector, useDispatch } from 'react-redux';
+import { TelegramShareButton } from 'react-share';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import CN from 'classnames';
 
-import { AutosizeInput } from '../../../../components/autosizeInput';
 import { ReactComponent as CloseIcon } from '../../../../assets/close.svg';
-import Slider from '../../../../components/slider';
-import { Button } from '../../../../components/button';
 
-import { storageSendEffect } from '../../../../effects/storageEffects';
-import { getToken } from '../../../../effects/set-token';
-import { setUser } from '../../../../store/reducers/userSlice';
-import { getUserEffect } from '../../../../effects/userEffects';
-import { getResponseError } from '../../../../utils/string';
-
-import { fromByteToMb, fromMbToBytes, transformSize } from '../../../../utils/storage';
+import { createGiftTokenEffect } from '../../../../effects/storageEffects';
+import { BOT_NAME } from '../../../../utils/api-urls';
 
 import styles from './styles.module.scss';
 
+const optionList = [
+  {
+    label: '250MB',
+    value: 262144000,
+  },
+  {
+    label: '500MB',
+    value: 524288000,
+  },
+  {
+    label: '1GB',
+    value: 1073741824,
+  },
+]
 const oneGBinBytes = 1073741824;
-const minUsernameLength = 3;
 
-const ShareStorage = ({ onClose, handleFullScreeView }) => {
-  const dispatch = useDispatch();
-  const inputRef = useRef(null);
+const ShareStorage = ({ onClose }) => {
   const { t } = useTranslation('system');
-  const [loading, setLoading] = useState(false);
-  const [inputValue, setIputValue] = useState(0);
-  const [availableSize, setAvailableSize] = useState({ bytes: 0, mb: 0 });
-  const [userName, setUserName] = useState('');
+  const [selectedSize, setSelectedSize] = useState(0);
+  const [token, setToken] = useState('');
   const user = useSelector((state) => state?.user?.data);
-  const isDisabled = useMemo(() => (
-    userName.length <= minUsernameLength || !inputValue || loading
-  ), [inputValue, userName, loading]);
 
-  useEffect(() => {
+  const allowSpace = useMemo(() => {
     const usedSpace = user.space_used;
     const availableSpace = user.space_available;
-    const allowSpace = usedSpace > oneGBinBytes ? availableSpace : user.space_total - oneGBinBytes;
-    setAvailableSize({
-      bytes: allowSpace,
-      mb: Math.floor(fromByteToMb(allowSpace)),
-    });
+    return usedSpace > oneGBinBytes ? availableSpace : user.space_total - oneGBinBytes;
   }, [user]);
+  const url = useMemo(() =>
+    (`https://t.me/${BOT_NAME}?start=storageGift_${token}`),
+  [token]);
 
-
-  const onUserNameChange = ({ target: { value } }) => {
-    if (value && !value.includes('@')) {
-      setUserName(`@${value}`);
-    } else if (value === '@') {
-      setUserName('');
-    } else {
-      setUserName(value);
-    }
-  }
-
-  const onChangeSize = (size) => {
-    const value = Number(size);
-    if (size <= availableSize.mb) {
-      setIputValue(value);
-    }
-  }
-
-  const onFocusInput = () => {
-    inputRef.current.focus();
-  }
-
-  const onSendStorage = async () => {
+  const handleCreateShare = async (size) => {
     try {
-      if (!isDisabled) {
-        setLoading(true);
-        const data = await storageSendEffect({
-          storage: fromMbToBytes(inputValue),
-          username: userName.replace('@', '')
-        });
-        if (data.message === "success") {
-          toast.success(t('share.successfullySend').replace('{size}', transformSize(fromMbToBytes(inputValue))).replace('{name}', userName), {
-            theme: 'colored',
-            position: 'top-center'
-          });
-          const token = await getToken();
-          const updatedUser = await getUserEffect(token);
-          dispatch(setUser(updatedUser));
-          setLoading(false);
-          onClose()
-        }
-      } 
+      setSelectedSize(size);
+      const token = await createGiftTokenEffect(size);
+      setToken(token.token);
     } catch (error) {
-      setLoading(false);
       console.warn(error);
-      toast.error(getResponseError(error), {
-        theme: 'colored',
-        position: 'top-center'
-      });
     }
   }
 
@@ -109,47 +65,28 @@ const ShareStorage = ({ onClose, handleFullScreeView }) => {
         </button>
       </div>
       <div className={styles['form']}>
-        <div
-          onClick={onFocusInput}
-          className={styles['input-container']}
-        >
-          <div className={styles['input-field']}>
-            <AutosizeInput
-              ref={inputRef}
-              type="number"
-              value={inputValue}
-              className={styles['input']}
-              onChange={onChangeSize}
-              onFocus={() => {handleFullScreeView(true)}}
-              onBlur={() => {handleFullScreeView(false)}}
-            />
-            <span className={styles['input-size-prefix']}>MB</span>
-            <span className={styles['input-size']}>{`/${fromByteToMb(user.space_available)}MB`}</span>
-          </div>
-          <span className={styles['input-text']}>{t('share.storage')}</span>
-        </div>
-        <Slider
-          maxValue={availableSize.mb}
-          value={inputValue}
-          className={styles['slider']}
-          onChange={onChangeSize}
-        />
-        <input
-          value={userName}
-          className={styles["username-input"]}
-          placeholder="@Username"
-          onChange={onUserNameChange}
-          onFocus={() => {handleFullScreeView(true)}}
-          onBlur={() => {handleFullScreeView(false)}}
-        />
+        {optionList.map(({ label, value }) => (
+          <button
+            key={value}
+            className={CN(
+              styles['form-action'],
+              selectedSize === value && styles['form-action-active']
+            )}
+            disabled={allowSpace < value}
+            onClick={() => {handleCreateShare(value)}}
+          >
+            {label}
+          </button>
+        ))}
       </div>
       <div className={styles['footer']}>
-        <Button
-          disable={isDisabled}
-          className={CN(styles['footer-action'], isDisabled && styles['footer-action-disabled'])}
-          label={t('share.share')}
-          onClick={onSendStorage}
-        />
+        <TelegramShareButton
+          url={url}
+          className={styles['footer-action']}
+          disabled={!selectedSize}
+        >
+          {t('share.share')}
+        </TelegramShareButton>
       </div>
     </div>
   )
