@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { DebounceInput } from 'react-debounce-input';
 
@@ -13,13 +13,13 @@ export const SearchInput = ({ value, setValue }) => {
   const { t } = useTranslation('drive');
   const handleVibrationClick = useButtonVibration();
 
-  const handleInputChange = useCallback(({ target: { value } }) => {
+  const handleInputChange = ({ target: { value } }) => {
     setValue(value);
-  }, []);
+  };
 
-  const onClear = useCallback(() => {
+  const onClear = () => {
     setValue('');
-  }, []);
+  };
 
   return (
     <div data-animation="games-search-animation-1" className={style.search}>
