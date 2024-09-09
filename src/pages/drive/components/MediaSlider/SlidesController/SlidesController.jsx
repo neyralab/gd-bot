@@ -34,8 +34,10 @@ export default function SlidesController() {
   const files = useSelector((state) => state.drive.files);
   const totalPages = useSelector((state) => state.drive.totalPages);
   const queryData = useSelector((state) => state.drive.filesQueryData);
+  const areFilesLazyLoading = useSelector(
+    (state) => state.drive.areFilesLazyLoading
+  );
   const [slides, setSlides] = useState([]);
-  const [blockBottomSliding, setBlockBottomSliding] = useState(false);
   const slidesRef = useRef(null);
 
   useEffect(() => {
@@ -61,11 +63,7 @@ export default function SlidesController() {
         (el) => el.id === mediaSlider.currentFile.id
       );
       if (currentFileIndex > -1 && currentFileIndex + 1 < files.length) {
-        dispatch(setMediaSliderNextFile(files[currentFileIndex + 1]));
-        if (blockBottomSliding) {
-          setBlockBottomSliding(false);
-          dispatch(setMediaSliderCurrentFile(files[currentFileIndex + 1]));
-        }
+        dispatch(setMediaSliderCurrentFile(files[currentFileIndex + 1]));
       }
     }
   }, [files]);
@@ -96,33 +94,49 @@ export default function SlidesController() {
       });
     }
 
-    if (
-      !mediaSlider.nextFile &&
-      !blockBottomSliding &&
-      queryData.page < totalPages
-    ) {
-      setBlockBottomSliding(true);
+    if (!mediaSlider.nextFile) {
       gsap.to(slidesRef.current, {
-        y: '-200vh',
-        duration: 0.2
+        y: '-120vh',
+        duration: 0.1,
+        onComplete: () => {
+          gsap.to(slidesRef.current, {
+            y: '-100vh',
+            duration: 0.1
+          });
+        }
       });
 
-      let newPage = queryData.page + 1;
-      dispatch(getDriveFiles({ mode: 'lazy-add', page: newPage }));
-      dispatch(assignFilesQueryData({ filesQueryData: { page: newPage } }));
+      if (queryData.page < totalPages && !areFilesLazyLoading) {
+        let newPage = queryData.page + 1;
+        dispatch(getDriveFiles({ mode: 'lazy-add', page: newPage }));
+        dispatch(assignFilesQueryData({ filesQueryData: { page: newPage } }));
+      }
     }
   };
 
   const animateSlidesUp = () => {
-    if (!mediaSlider.previousFile) return;
+    if (mediaSlider.previousFile) {
+      gsap.to(slidesRef.current, {
+        y: '0vh',
+        duration: 0.2,
+        onComplete: () => {
+          dispatch(setMediaSliderCurrentFile(mediaSlider.previousFile));
+        }
+      });
+    }
 
-    gsap.to(slidesRef.current, {
-      y: '0vh',
-      duration: 0.2,
-      onComplete: () => {
-        dispatch(setMediaSliderCurrentFile(mediaSlider.previousFile));
-      }
-    });
+    if (!mediaSlider.previousFile) {
+      gsap.to(slidesRef.current, {
+        y: '-80vh',
+        duration: 0.1,
+        onComplete: () => {
+          gsap.to(slidesRef.current, {
+            y: '-100vh',
+            duration: 0.1
+          });
+        }
+      });
+    }
   };
 
   return (

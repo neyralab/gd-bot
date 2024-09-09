@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import styles from './Slide.module.scss'
+import styles from './Slide.module.scss';
 
 const Slide = React.memo(({ file, id }) => {
   const areFilesLazyLoading = useSelector(
@@ -11,7 +11,7 @@ const Slide = React.memo(({ file, id }) => {
     console.log('rerender', id);
   }, [file]);
 
-  if (id === 'bottom-null' || areFilesLazyLoading) {
+  if (id === 'bottom-null' && areFilesLazyLoading) {
     return (
       <div className={styles.slide}>
         <div className={styles.loader}>
@@ -19,6 +19,10 @@ const Slide = React.memo(({ file, id }) => {
         </div>
       </div>
     );
+  }
+
+  if (id === 'bottom-null' && !areFilesLazyLoading) {
+    return <div className={styles.slide}></div>;
   }
 
   return (
