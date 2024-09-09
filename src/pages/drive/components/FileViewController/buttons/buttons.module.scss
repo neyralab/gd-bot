@@ -1,0 +1,47 @@
+.file-menu-btn,
+.favorite-menu-btn {
+  position: absolute;
+  top: 8px;
+  right: 6px;
+  padding: 2px;
+  padding-bottom: 0;
+  border-radius: 5px;
+  background: #303030;
+  width: 24px;
+  height: 24px;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+
+  svg {
+    fill: #ffffff;
+    width: 20px;
+    height: 20px;
+  }
+}
+
+.share-menu-btn,
+.star-menu-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 8px;
+  right: 6px;
+  padding-bottom: 0;
+  border-radius: 5px;
+  background: #303030;
+  width: 24px;
+  height: 24px;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.favorite-btn--grid,
+.star-btn--grid {
+  left: 6px;
+}
+
+.favorite-btn--list,
+.star-btn--list {
+  right: 38px;
+}

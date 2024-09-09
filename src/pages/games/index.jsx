@@ -1,13 +1,14 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { Header } from "../../components/header";
+import { Header } from '../../components/header';
 import { getAllPartners } from '../../effects/EarnEffect';
-import { SearchInput } from "./SearchInput";
+import { SearchInput } from './SearchInput';
 import Game from './GameItem';
 import { handlePartners, selectPartners } from '../../store/reducers/taskSlice';
 
 import styles from './styles.module.css';
+import { runInitAnimation } from './animations';
 
 export const GamesPage = () => {
   const dispatch = useDispatch();
@@ -17,31 +18,30 @@ export const GamesPage = () => {
 
   useEffect(() => {
     if (!games?.length) {
-      getAllPartners()
-        .then((data) => dispatch(handlePartners(data)))
+      getAllPartners().then((data) => dispatch(handlePartners(data)));
     } else {
-      setList(games)
+      setList(games);
     }
-  }, [games])
 
-  const handleChange =  useCallback((value) => {
+    runInitAnimation();
+  }, [games]);
+
+  const handleChange = useCallback((value) => {
     setSearch(value);
     if (value) {
-      const filteredList = games.
-        filter((item) => (item.name.toLowerCase().includes(value.toLowerCase())));
+      const filteredList = games.filter((item) =>
+        item.name.toLowerCase().includes(value.toLowerCase())
+      );
       setList(filteredList);
     } else {
       setList(games);
     }
-  }, [])
+  }, []);
 
   return (
     <div className={styles.container}>
       <Header />
-      <SearchInput
-        value={search}
-        setValue={handleChange}
-      />
+      <SearchInput value={search} setValue={handleChange} />
       <ul className={styles.gameList}>
         {list.map((item) => (
           <Game
@@ -53,5 +53,5 @@ export const GamesPage = () => {
         ))}
       </ul>
     </div>
-  )
-}
+  );
+};

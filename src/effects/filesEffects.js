@@ -186,6 +186,17 @@ export const updateFileFavoriteEffect = async (slug, dispatch) => {
   }
 };
 
+export const updateFileFavoriteEffect_v2 = async (slug) => {
+  const url = `${API_PATH}/files/favorite/toggle/${slug}`;
+  try {
+    const { data } = await axiosInstance.post(url);
+    const file = data?.data;
+    return file;
+  } catch (e) {
+    console.warn(e);
+  }
+};
+
 export const createFolderEffect = async (name) =>
   axiosInstance
     .post(`${API_PATH}/folders/folder`, { name, parent: null })
