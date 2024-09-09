@@ -1,0 +1,34 @@
+.container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.slide-list {
+  position: absolute;
+  width: 100%;
+  height: 300vh;
+  top: 0;
+  left: 0;
+  transform: translateY(-100vh);
+}
+
+.slide {
+  position: absolute;
+  width: 100%;
+  height: 100vh;
+  background: black;
+}
+
+.slide:nth-child(1) {
+  top: 0;
+}
+
+.slide:nth-child(2) {
+  top: 100vh;
+}
+
+.slide:nth-child(3) {
+  top: 200vh;
+}

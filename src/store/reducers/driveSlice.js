@@ -41,7 +41,13 @@ const driveSlice = createSlice({
     fileTypesCountIsFetching: false,
     fileIsFavoriteUpdating: [], // slugs
     fileMenuFile: null,
-    storageInfo: null
+    storageInfo: null,
+    mediaSlider: {
+      isOpen: false,
+      previousFile: null,
+      currentFile: null,
+      nextFile: null
+    }
   },
   reducers: {
     setFilesQueryData: (state, { payload }) => {
@@ -108,6 +114,32 @@ const driveSlice = createSlice({
     },
     setStorageInfo: (state, { payload }) => {
       state.storageInfo = payload;
+    },
+    setMediaSliderOpen: (state, { payload }) => {
+      state.mediaSlider.isOpen = payload;
+    },
+    setMediaSliderCurrentFile: (state, { payload }) => {
+      let currentFile = payload;
+      const currentFileIndex = state.files.findIndex(
+        (el) => el.id === currentFile.id
+      );
+      if (currentFileIndex >= 0) {
+        currentFile = state.files[currentFileIndex];
+      }
+
+      let previousFile = null;
+      if (currentFileIndex > 0) {
+        previousFile = state.files[currentFileIndex - 1];
+      }
+
+      let nextFile = null;
+      if (currentFileIndex < state.files.length - 1) {
+        nextFile = state.files[currentFileIndex + 1];
+      }
+
+      state.mediaSlider.previousFile = previousFile;
+      state.mediaSlider.currentFile = currentFile;
+      state.mediaSlider.nextFile = nextFile;
     }
   }
 });
@@ -377,9 +409,11 @@ export const clearDriveState = createAsyncThunk(
   'drive/clearDriveState',
   async (_, { dispatch }) => {
     dispatch(setFilesQueryData({ search: null, category: null, page: 1 }));
-    dispatch(setFiles([]))
-    dispatch(setFileMenuFile(null))
-    dispatch(setFileIsFavoriteUpdating([]))
+    dispatch(setFiles([]));
+    dispatch(setFileMenuFile(null));
+    dispatch(setFileIsFavoriteUpdating([]));
+    dispatch(setMediaSliderOpen(false));
+    dispatch(setMediaSliderCurrentFile(null));
   }
 );
 
@@ -401,6 +435,8 @@ export const {
   setFileTypesCountIsFetching,
   setFileIsFavoriteUpdating,
   setFileMenuFile,
-  setStorageInfo
+  setStorageInfo,
+  setMediaSliderOpen,
+  setMediaSliderCurrentFile
 } = driveSlice.actions;
 export default driveSlice.reducer;
