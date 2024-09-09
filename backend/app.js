@@ -148,6 +148,14 @@ bot.start(async (ctx) => {
     `https://t.me/ghostdrive_web3`
   );
 
+  const userRefCode = JSON.parse(await redisClient.get(`user:${userData.id}`))
+    ?.user?.referral?.code;
+  const referralLink = `https://t.me/${process.env.BOT_NAME}/ghostdrive?startapp=${userRefCode}`;
+  const shareButton = {
+    text: 'Share Link',
+    url: `https://t.me/share/url?url=${encodeURIComponent(referralLink)}`
+  };
+
   if (refCode && refCode.startsWith('paylink')) {
     const [_, slug] = refCode.split('_');
     const url = `${process.env.APP_FRONTEND_URL}/paid-view/${slug}`;
@@ -198,7 +206,11 @@ bot.start(async (ctx) => {
           caption: `${header}\n\n${activitiesText}`,
           parse_mode: 'HTML',
           reply_markup: {
-            inline_keyboard: [[dashboardButton], [followNewsButton]]
+            inline_keyboard: [
+              [dashboardButton],
+              [followNewsButton],
+              [shareButton]
+            ]
           }
         }
       );
