@@ -62,6 +62,7 @@ bot.start(async (ctx) => {
     is_premium: !!user?.is_premium,
     chat_id
   };
+  let userRefCode = '';
 
   // Cache userData by user.id
 
@@ -71,6 +72,11 @@ bot.start(async (ctx) => {
     const userData = JSON.parse(cachedUserData);
     sendMobileAuthButton(chat_id, userData.jwt);
     return;
+  }
+
+  if (cachedUserData) {
+    const refcode = JSON.parse(cachedUserData)?.user?.referral?.code;
+    userRefCode = refcode;
   }
 
   if (!cachedUserData) {
@@ -94,12 +100,14 @@ bot.start(async (ctx) => {
         headers['Host'] = process.env.GD_BACKEND_HOST;
       }
 
-      await userCreationQueue.add({
+      const job = await userCreationQueue.add({
         url,
         userData,
         headers: headers,
         showMobileAuthButton
       });
+      const result = await job.finished();
+      userRefCode = result?.user?.referral?.code;
     } catch (error) {
       logger.error('Error queueing user creation', {
         error: errorTransformer(error),
@@ -148,8 +156,6 @@ bot.start(async (ctx) => {
     `https://t.me/ghostdrive_web3`
   );
 
-  const userRefCode = JSON.parse(await redisClient.get(`user:${userData.id}`))
-    ?.user?.referral?.code;
   const referralLink = `https://t.me/${process.env.BOT_NAME}/ghostdrive?startapp=${userRefCode}`;
   const shareButton = {
     text: 'Share Link',
