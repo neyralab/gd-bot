@@ -77,7 +77,7 @@ export default function Tasks({
         break;
 
       case 'UPLOAD_10_FILES':
-        navigate('/file-upload');
+        navigate('/drive');
         break;
 
       default:
