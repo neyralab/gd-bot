@@ -1,5 +1,5 @@
 import { useRef, useMemo, useState, useEffect, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import CN from 'classnames';
@@ -41,6 +41,7 @@ const initialNotificationState = {
 };
 
 export const StartPage = ({ tariffs }) => {
+  const location = useLocation();
   const systemModalRef = useRef(null);
   const wrapperRef = useRef(null);
   const { t } = useTranslation('system');
@@ -53,6 +54,10 @@ export const StartPage = ({ tariffs }) => {
   const user = useSelector((state) => state?.user?.data);
   const navigate = useNavigate();
   const isDev = isDevEnv();
+  const giftToken = useMemo(() => {
+    const params = new URLSearchParams(location.search);
+    return params.get('storageGift');
+  }, [location]);
 
   const getTasks = useCallback(async () => {
     try {
@@ -242,14 +247,12 @@ export const StartPage = ({ tariffs }) => {
         className={style[`point-counter`]}
         rank={user?.rank}
       />
-
       <Navigator
         storage={storage}
         human={human}
         openDisconnectModal={setDisconnectWalletModal}
         tasks={tasks}
       />
-
       <ul className={CN(navigatorStyle['navigator'])}>
         <NavigatItem
           name={t('dashboard.mining')}
@@ -263,9 +266,7 @@ export const StartPage = ({ tariffs }) => {
           onClick={() => navigate('/game-3d')}
         />
       </ul>
-
       {isDev && <Nodes wallet={user?.wallet} />}
-
       <footer className={style.footer}>
         <p className={style['footer-text']}>
           <span
@@ -277,24 +278,20 @@ export const StartPage = ({ tariffs }) => {
           . {t('dashboard.howEarn')}{' '}
         </p>
       </footer>
-
       {disconnectWalletModal && (
         <DisconnectWalletModal
           isOpen={disconnectWalletModal}
           onClose={() => setDisconnectWalletModal(false)}
         />
       )}
-
-      {(showShareModal || !!notifications.recipient.length) && (
+      {(showShareModal || giftToken) && (
         <ShareStorage
-          giftData={notifications.recipient}
-          isOpen={showShareModal || !!notifications.recipient.length}
+          giftToken={giftToken}
+          isOpen={showShareModal || giftToken}
           onClose={onCloseShareModal}
-          onCloseGift={onCloseGift}
           systemModalRef={systemModalRef}
         />
       )}
-
       <SystemModal handleClose={handleCloseNotification} ref={systemModalRef} />
     </div>
   );

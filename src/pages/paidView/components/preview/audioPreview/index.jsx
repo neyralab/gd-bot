@@ -21,7 +21,8 @@ export const AudioPreview = ({ file, allowPreview }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
   const [ipfsAudio, setIpfsAudio] = useState('');
-  const radius = useMemo(() => (containerRef?.current?.clientWidth/2), [containerRef.current]);
+  const [radius, setRadius] = useState(0);
+
   const circumference = useMemo(() => (2 * Math.PI * radius), [radius]);
 
   const handlePlayPause = useCallback(() => {
@@ -82,6 +83,20 @@ export const AudioPreview = ({ file, allowPreview }) => {
     }
   };
 
+  useEffect(() => {
+    const updateRadius = () => {
+      if (containerRef.current) {
+        const newRadius = containerRef.current.clientWidth / 2;
+        setRadius(newRadius);
+      }
+    };
+
+    updateRadius();
+
+    window.addEventListener('resize', updateRadius);
+    return () => window.removeEventListener('resize', updateRadius);
+  }, [containerRef]);
+
   return (
     <>
       <div className={styles["player-container"]}>
@@ -127,19 +142,19 @@ export const AudioPreview = ({ file, allowPreview }) => {
               </defs>
               <circle
                 className={styles["progress-background"]}
-                cx={radius}
-                cy={radius}
-                r={radius}
+                cx={radius || undefined}
+                cy={radius || undefined}
+                r={radius || undefined}
                 strokeWidth="4"
               />
               <circle
                 className={styles["progress"]}
-                cx={radius}
-                cy={radius}
-                r={radius}
+                cx={radius || undefined}
+                cy={radius || undefined}
+                r={radius || undefined}
                 strokeWidth="4"
-                strokeDasharray={circumference}
-                strokeDashoffset={circumference - (progress / 100) * circumference}
+                strokeDasharray={circumference || undefined}
+                strokeDashoffset={circumference ? (circumference - (progress / 100) * circumference) : undefined}
               />
             </svg>
             <div

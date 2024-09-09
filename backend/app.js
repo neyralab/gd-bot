@@ -169,6 +169,27 @@ bot.start(async (ctx) => {
       }
     }
     return;
+  } else if (refCode && refCode.startsWith('storageGift')) {
+    const [_, token] = refCode.split('_');
+    const url = `${process.env.APP_FRONTEND_URL}/start?storageGift=${token}`;
+    try {
+      await ctx.reply(
+        `You are using a special link. To claim your storage reward, please click the button below.`,
+        Markup.inlineKeyboard([Markup.button.webApp('Open', url)])
+      );
+    } catch (error) {
+      logger.error('Error handling deep link:', {
+        error: errorTransformer(error)
+      });
+      try {
+        await ctx.reply(`Error: ${error.message}`);
+      } catch (e) {
+        logger.error('Error sending error message', {
+          error: errorTransformer(e)
+        });
+      }
+    }
+    return;
   } else {
     try {
       await ctx.replyWithPhoto(
