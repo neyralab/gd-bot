@@ -21,7 +21,7 @@ const GamesItem = ({ title, joinLink, logo }) => {
   }
 
   return (
-    <div className={styles.container}>
+    <div data-animation="game-item-animation-1" className={styles.container}>
       <div className={styles.info}>
         <img
           className={styles.icon}
