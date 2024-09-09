@@ -2,19 +2,20 @@
   position: fixed;
   width: 100%;
   max-width: 320px;
-  height: 56px;
+  height: 60px;
   left: 50%;
   bottom: 12px;
   transform: translateX(-50%);
-  backdrop-filter: blur(2px);
+  backdrop-filter: blur(3px);
   border-radius: 10px;
   text-align: center;
   white-space: nowrap;
-  overflow-y: auto;
+  overflow-y: hidden;
   -ms-overflow-style: none;
   scrollbar-width: none;
   z-index: 10;
 }
+
 .container::-webkit-scrollbar {
   display: none;
 }
@@ -31,7 +32,7 @@
 
 .bg {
   position: relative;
-  bottom: -16px;
+  bottom: -20px;
   left: 0;
   right: 0;
 }
@@ -39,26 +40,26 @@
 .bg-line1 {
   position: absolute;
   left: 18%;
-  bottom: 5px;
+  bottom: 4px;
 }
 
 .bg-line2 {
   position: absolute;
   left: 40%;
-  bottom: 5px;
+  bottom: 4px;
 }
 
 .bg-line3 {
   position: absolute;
   left: 60%;
-  bottom: 5px;
+  bottom: 4px;
   transform: scaleX(-1);
 }
 
 .bg-line4 {
   position: absolute;
   left: 77%;
-  bottom: 5px;
+  bottom: 4px;
   transform: scaleX(-1);
 }
 
@@ -74,6 +75,7 @@
   justify-content: center;
   align-items: center;
   padding-bottom: 2px;
+  transition: background-color 0.9s ease, transform 0.9s ease;
 }
 
 .icon {
@@ -83,20 +85,24 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  transition: transform 0.7s ease, fill 0.7s ease;
 }
 
 .icon > svg > path {
-  stroke: url(#paint0_linear_9111_5063);
-  stroke-width: 0.7; 
+  stroke-width: 0.7;
+  transition: fill 0.9s ease;
+}
+
+.item.active {
+  transform: scale(1.01);
+}
+
+.item.active .icon {
+  transform: scale(1.1);
 }
 
 .item.active > .icon > svg > path {
-  fill: url(#paint0_linear_9111_5063);
-}
-
-.gradient {
-  position: absolute;
-  opacity: 0;
+  fill: #e2e0e0;
 }
 
 .text {
@@ -108,4 +114,10 @@
   color: white;
   margin-top: 2px;
   text-transform: uppercase;
+  transition: color 0.8s ease;
+}
+
+.gradient {
+  position: absolute;
+  opacity: 0;
 }
