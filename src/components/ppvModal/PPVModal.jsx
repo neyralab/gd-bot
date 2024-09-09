@@ -54,7 +54,8 @@ const PPVModal = () => {
   const invoiceCallback = async (result) => {
     try {
       if (result === 'paid') {
-        setIsProccess(true);
+        const shareId = isPPVActivated ? file.share_file.id : file.id;
+        setIsProccess(true); 
         await sleep(700);
         const body = {
           priceView: state.view,
@@ -62,8 +63,8 @@ const PPVModal = () => {
           priceDownload: state.download,
           description: state.description,
           file: file.id
-        };
-        const res = await createPaidShareFileEffect(file.id, body);
+        }
+        const res = await createPaidShareFileEffect(shareId, body);
         if (res.data) {
           const shareObj = { ...res.data };
           delete shareObj.file;
