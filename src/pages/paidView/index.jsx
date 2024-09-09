@@ -50,7 +50,7 @@ export const PaidView = () => {
   const user = useSelector((state) => state.user.data);
   const ppvPayment = useSelector(selectPaymenttByKey('pay_per_view'));
   const [fullscreen, setFullscreen] = useState(false);
-  const [step, setStep] = useState(STEPS.download);
+  const [step, setStep] = useState(STEPS.preview);
   const { id } = useParams();
 
   useEffect(() => {
