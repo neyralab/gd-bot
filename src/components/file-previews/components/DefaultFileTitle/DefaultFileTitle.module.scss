@@ -1,0 +1,34 @@
+.info {
+  position: absolute;
+  bottom: 32px;
+  left: 0;
+  color: #fff;
+  font-family: 'SF Pro Text';
+  z-index: 1;
+  width: 100%;
+  padding-left: 16px;
+  padding-right: 48px;
+
+  h3 {
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 150%;
+    letter-spacing: 0.09px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block;
+    width: 100%;
+  }
+
+  span {
+    padding: 2px 8px;
+    border-radius: 17px;
+    border: 0.4px solid rgba(255, 255, 255, 0.6);
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(2px);
+    font-size: 12px;
+    font-weight: 300;
+    line-height: 100%;
+  }
+}

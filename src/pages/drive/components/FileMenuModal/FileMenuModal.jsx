@@ -7,7 +7,7 @@ import { toast } from 'react-toastify';
 
 import { handlePaperViewModal } from '../../../../store/reducers/modalSlice';
 import {
-  setFileMenuFile,
+  setFileMenuModal,
   updateFileProperty
 } from '../../../../store/reducers/driveSlice';
 import {
@@ -25,14 +25,14 @@ import { ReactComponent as ShareArrowIcon } from '../../../../assets/arrow_share
 import { ReactComponent as RestoreIcon } from '../../../../assets/restore.svg';
 import { ReactComponent as PenIcon } from '../../../../assets/pen.svg';
 
-import style from './FileMenu.module.scss';
+import style from './FileMenuModal.module.scss';
 import { SlidingModal } from '../../../../components/slidingModal';
 import ToggleSwitch from '../../../../components/toggleSwitch';
 
-export const FileMenu = () => {
+export const FileMenuModal = () => {
   const { t: tSystem } = useTranslation('system');
   const handleVibrationClick = useButtonVibration();
-  const file = useSelector((state) => state.drive.fileMenuFile);
+  const file = useSelector((state) => state.drive.fileMenuModal);
   const { t } = useTranslation('drive');
   const location = useLocation();
   const dispatch = useDispatch();
@@ -52,19 +52,19 @@ export const FileMenu = () => {
     new URLSearchParams(location.search).get('type') === 'delete';
 
   const onClose = () => {
-    dispatch(setFileMenuFile(null));
+    dispatch(setFileMenuModal(null));
   };
 
   const onShareClick = async (e) => {
     e.stopPropagation();
 
     await updateShareEffect(file.slug);
-    dispatch(setFileMenuFile(null));
+    dispatch(setFileMenuModal(null));
   };
 
   const onRestoreClick = async () => {
     const result = await restoreFileEffect(file.slug, dispatch);
-    dispatch(setFileMenuFile(null));
+    dispatch(setFileMenuModal(null));
     if (result === 'success') {
       toast.success(tSystem('message.fileRestored'), {
         position: 'bottom-center',
@@ -89,10 +89,10 @@ export const FileMenu = () => {
             value: null
           })
         );
-        dispatch(setFileMenuFile({ ...file, share_file: null }));
+        dispatch(setFileMenuModal({ ...file, share_file: null }));
       } else {
         dispatch(handlePaperViewModal(true));
-        dispatch(setFileMenuFile(null));
+        dispatch(setFileMenuModal(null));
       }
       
     } catch (error) {
@@ -101,7 +101,7 @@ export const FileMenu = () => {
   };
 
   const onEditPPV = () => {
-    dispatch(setFileMenuFile(null));
+    dispatch(setFileMenuModal(null));
     dispatch(handlePaperViewModal(true));
   };
 

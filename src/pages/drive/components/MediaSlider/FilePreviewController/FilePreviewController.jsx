@@ -5,15 +5,16 @@ import { getPreviewFileType } from '../../../../../utils/preview';
 import { sendFileViewStatistic } from '../../../../../effects/file/statisticEfect';
 import { getFileCids } from '../../../../../effects/file/getFileCid';
 import { getDownloadOTT } from '../../../../../effects/filesEffects';
-import AudioPreview from '../../../../../components/filePreviewModal/components/AudioPreview';
-import ImagePreview from '../../../../../components/filePreviewModal/previewContent/imagePreview';
-import VideoPreview from '../../../../../components/filePreviewModal/previewContent/VideoPreview';
-import PdfPreview from '../../../../../components/filePreviewModal/previewContent/PdfPreview';
-import ExcelPreview from '../../../../../components/filePreviewModal/previewContent/ExcelPreview';
-import TxtPreview from '../../../../../components/filePreviewModal/previewContent/TxtPreview';
-import DefaultPreview from '../../../../../components/filePreviewModal/previewContent/defaultPreview';
-import Loader2 from '../../../../../components/Loader2/Loader2';
 import { useMediaSliderCache } from '../MediaSliderCache';
+import GhostLoader from '../../../../../components/ghostLoader';
+import DefaultPreview from '../../../../../components/file-previews/DefaultPreview/DefaultPreview';
+import ImagePreview from '../../../../../components/file-previews/ImagePreview/ImagePreview';
+// import AudioPreview from '../../../../../components/filePreviewModal/components/AudioPreview';
+// import VideoPreview from '../../../../../components/filePreviewModal/previewContent/VideoPreview';
+// import PdfPreview from '../../../../../components/filePreviewModal/previewContent/PdfPreview';
+// import ExcelPreview from '../../../../../components/filePreviewModal/previewContent/ExcelPreview';
+// import TxtPreview from '../../../../../components/filePreviewModal/previewContent/TxtPreview';
+import styles from './FilePreviewController.module.scss';
 
 const ESCAPE_CONTENT_DOWNLOAD = ['audio', 'encrypt'];
 
@@ -44,11 +45,11 @@ const FilePreviewController = ({ file }) => {
 
     const canPreview = getPreviewFileType(file, '   ');
     if (canPreview && !ESCAPE_CONTENT_DOWNLOAD.includes(canPreview)) {
-      const hasCache = getCache(file.id);
+      const cache = getCache(file.id);
 
-      if (hasCache) {
-        setFileContent(hasCache);
-        setPreviewFileType(getPreviewFileType(file, hasCache));
+      if (cache) {
+        setFileContent(cache);
+        setPreviewFileType(getPreviewFileType(file, cache));
         setLoading(false);
       }
     }
@@ -119,21 +120,27 @@ const FilePreviewController = ({ file }) => {
     }
   };
 
-  if (loading) return <Loader2 />;
+  if (loading) {
+    return (
+      <div className={styles['default-loader']}>
+        <GhostLoader />
+      </div>
+    );
+  }
 
   switch (previewFileType) {
     case 'img':
       return <ImagePreview file={file} fileContent={fileContent} />;
-    case 'audio':
-      return <AudioPreview wrapper={wrapper} file={file} />;
-    case 'video':
-      return <VideoPreview file={file} fileContent={fileContent} />;
-    case 'pdf':
-      return <PdfPreview file={file} fileContent={fileContent} />;
-    case 'xlsx':
-      return <ExcelPreview file={file} fileContent={fileContent} />;
-    case 'txt':
-      return <TxtPreview fileContent={fileContent} />;
+    // case 'audio':
+    //   return <AudioPreview wrapper={wrapper} file={file} />;
+    // case 'video':
+    //   return <VideoPreview file={file} fileContent={fileContent} />;
+    // case 'pdf':
+    //   return <PdfPreview file={file} fileContent={fileContent} />;
+    // case 'xlsx':
+    //   return <ExcelPreview file={file} fileContent={fileContent} />;
+    // case 'txt':
+    //   return <TxtPreview fileContent={fileContent} />;
     default:
       return <DefaultPreview file={file} />;
   }

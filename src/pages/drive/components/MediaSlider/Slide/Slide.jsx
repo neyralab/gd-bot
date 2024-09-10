@@ -2,6 +2,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import styles from './Slide.module.scss';
 import FilePreviewController from '../FilePreviewController/FilePreviewController';
+import Loader2 from '../../../../../components/Loader2/Loader2';
 
 const Slide = React.memo(({ file, id }) => {
   const areFilesLazyLoading = useSelector(
@@ -12,23 +13,28 @@ const Slide = React.memo(({ file, id }) => {
     return <div className={styles.slide}></div>;
   }
 
+  if (id === 'bottom-null' && !areFilesLazyLoading) {
+    return <div className={styles.slide}></div>;
+  }
+
   if (id === 'bottom-null' && areFilesLazyLoading) {
     return (
       <div className={styles.slide}>
-        <div className={styles.loader}>
-          <h1>Loading...</h1>
+        <div className={styles['slide-content']}>
+          <div className={styles.loader}>
+            <Loader2 />
+            <span>Loading...</span>
+          </div>
         </div>
       </div>
     );
   }
 
-  if (id === 'bottom-null' && !areFilesLazyLoading) {
-    return <div className={styles.slide}></div>;
-  }
-
   return (
     <div className={styles.slide}>
-      <FilePreviewController file={file} />
+      <div className={styles['slide-content']}>
+        <FilePreviewController file={file} />
+      </div>
     </div>
   );
 });

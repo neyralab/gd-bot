@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
 import {
-  setFileMenuFile,
+  setFileMenuModal,
   setMediaSliderCurrentFile,
   setMediaSliderOpen,
   toggleFileFavorite
@@ -68,7 +68,7 @@ export default function FileViewController({
 
   const onMenuClick = () => {
     vibrate();
-    dispatch(setFileMenuFile(file));
+    dispatch(setFileMenuModal(file));
   };
 
   const onFileOpenClick = () => {

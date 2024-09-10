@@ -40,7 +40,7 @@ const driveSlice = createSlice({
     fileTypesCount: {},
     fileTypesCountIsFetching: false,
     fileIsFavoriteUpdating: [], // slugs
-    fileMenuFile: null,
+    fileMenuModal: null,
     storageInfo: null,
     mediaSlider: {
       isOpen: false,
@@ -48,7 +48,8 @@ const driveSlice = createSlice({
       currentFile: null,
       nextFile: null
     },
-    mediaSliderFileContentTurn: null
+    mediaSliderFileContentTurn: null,
+    fileInfoModal: null
   },
   reducers: {
     setFilesQueryData: (state, { payload }) => {
@@ -110,8 +111,8 @@ const driveSlice = createSlice({
         );
       }
     },
-    setFileMenuFile: (state, { payload }) => {
-      state.fileMenuFile = payload;
+    setFileMenuModal: (state, { payload }) => {
+      state.fileMenuModal = payload;
     },
     setStorageInfo: (state, { payload }) => {
       state.storageInfo = payload;
@@ -147,6 +148,9 @@ const driveSlice = createSlice({
     },
     setMediaSliderFileUploadTurn: (state, { payload }) => {
       state.mediaSliderFileContentTurn = payload;
+    },
+    setFileInfoModal: (state, { payload }) => {
+      state.fileInfoModal = payload;
     }
   }
 });
@@ -419,7 +423,7 @@ export const clearDriveState = createAsyncThunk(
   async (_, { dispatch }) => {
     dispatch(setFilesQueryData({ search: null, category: null, page: 1 }));
     dispatch(setFiles([]));
-    dispatch(setFileMenuFile(null));
+    dispatch(setFileMenuModal(null));
     dispatch(setFileIsFavoriteUpdating([]));
     dispatch(setMediaSliderOpen(false));
     dispatch(setMediaSliderCurrentFile(null));
@@ -443,10 +447,11 @@ export const {
   setFileTypesCount,
   setFileTypesCountIsFetching,
   setFileIsFavoriteUpdating,
-  setFileMenuFile,
+  setFileMenuModal,
   setStorageInfo,
   setMediaSliderOpen,
   setMediaSliderCurrentFile,
-  setMediaSliderFileUploadTurn
+  setMediaSliderFileUploadTurn,
+  setFileInfoModal
 } = driveSlice.actions;
 export default driveSlice.reducer;
