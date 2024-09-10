@@ -14,11 +14,14 @@ export const GamesPage = () => {
   const dispatch = useDispatch();
   const { games } = useSelector(selectPartners);
   const [list, setList] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const [search, setSearch] = useState('');
 
   useEffect(() => {
+    setIsLoading(true);
     getAllPartners().then((data) => {
       dispatch(handlePartners(data));
+      setIsLoading(false)
     });
 
     runInitAnimation();
@@ -29,7 +32,9 @@ export const GamesPage = () => {
   }, [games]);
 
   useEffect(() => {
-    runListAnimation();
+    if (list.length && !isLoading) {
+      runListAnimation();
+    }
   }, [list]);
 
   const handleChange = (value) => {
