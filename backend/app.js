@@ -18,7 +18,7 @@ const bot = new Telegraf(process.env.BOT_TOKEN_SECRET, {
   handlerTimeout: Infinity
 });
 
-bot.catch(e => {
+bot.catch((e) => {
   logger.error('bot.catch', e);
 });
 
@@ -56,10 +56,16 @@ bot.start(async (ctx) => {
     is_premium: !!user?.is_premium,
     chat_id: ctx.chat.id.toString()
   };
+  let userRefCode = '';
 
   // Cache userData by user.id
 
   const cachedUserData = await redisClient.get(userData.id);
+
+  if (cachedUserData) {
+    const refcode = JSON.parse(cachedUserData)?.user?.referral?.code;
+    userRefCode = refcode;
+  }
 
   if (!cachedUserData) {
     try {
@@ -82,11 +88,13 @@ bot.start(async (ctx) => {
         headers['Host'] = process.env.GD_BACKEND_HOST;
       }
 
-      await userCreationQueue.add({
+      const job = await userCreationQueue.add({
         url,
         userData,
-        headers: headers,
+        headers: headers
       });
+      const result = await job.finished();
+      userRefCode = result?.user?.referral?.code;
     } catch (error) {
       logger.error('Error queueing user creation', {
         error,
@@ -133,6 +141,11 @@ bot.start(async (ctx) => {
     'Join The Community',
     `https://t.me/ghostdrive_web3`
   );
+  const referralLink = `https://t.me/${process.env.BOT_NAME}/ghostdrive?startapp=${userRefCode}`;
+  const shareButton = {
+    text: 'Share Link',
+    url: `https://t.me/share/url?url=${encodeURIComponent(referralLink)}`
+  };
   try {
     await ctx.replyWithPhoto(
       { source: fs.createReadStream('./assets/start.png') },
@@ -140,7 +153,11 @@ bot.start(async (ctx) => {
         caption: `${header}\n\n${activitiesText}`,
         parse_mode: 'HTML',
         reply_markup: {
-          inline_keyboard: [[dashboardButton], [followNewsButton]]
+          inline_keyboard: [
+            [dashboardButton],
+            [followNewsButton],
+            [shareButton]
+          ]
         }
       }
     );
@@ -267,7 +284,6 @@ userCreationQueue.on('error', (error) => {
     stack: error.stack
   });
 });
-
 
 userCreationQueue.on('delayed', async (job) => {
   try {
