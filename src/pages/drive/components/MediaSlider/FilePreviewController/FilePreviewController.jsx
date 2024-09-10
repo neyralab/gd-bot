@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { downloadFile } from 'gdgateway-client';
+import { useSelector } from 'react-redux';
 import { getPreviewFileType } from '../../../../../utils/preview';
 import { sendFileViewStatistic } from '../../../../../effects/file/statisticEfect';
 import { getFileCids } from '../../../../../effects/file/getFileCid';
@@ -18,34 +19,43 @@ const ESCAPE_CONTENT_DOWNLOAD = ['audio', 'encrypt'];
 
 const FilePreviewController = ({ file }) => {
   const { getCache, setCacheItem } = useMediaSliderCache();
-  const [loading, setLoading] = useState(false);
+  const mediaSliderFileContentTurn = useSelector(
+    (state) => state.drive.mediaSliderFileContentTurn
+  );
+  const [loading, setLoading] = useState(true);
   const [fileContent, setFileContent] = useState(null);
   const [previewFileType, setPreviewFileType] = useState(null);
 
   useEffect(() => {
-    if (file?.slug) {
-      setFileContent(null);
-      setPreviewFileType(null);
-      setLoading(true);
+    getContent();
+  }, [file.slug]);
 
-      const canPreview = getPreviewFileType(file, '   ');
-      if (canPreview && !ESCAPE_CONTENT_DOWNLOAD.includes(canPreview)) {
-        getContent();
-      } else {
+  useEffect(() => {
+    /** Upload content only if it's the files turn */
+    if (mediaSliderFileContentTurn === file.id && !fileContent) {
+      fetchContent();
+    }
+  }, [mediaSliderFileContentTurn]);
+
+  const getContent = () => {
+    setLoading(true);
+    setFileContent(null);
+    setPreviewFileType(null);
+
+    const canPreview = getPreviewFileType(file, '   ');
+    if (canPreview && !ESCAPE_CONTENT_DOWNLOAD.includes(canPreview)) {
+      const hasCache = getCache(file.id);
+
+      if (hasCache) {
+        setFileContent(hasCache);
+        setPreviewFileType(getPreviewFileType(file, hasCache));
         setLoading(false);
       }
     }
-  }, [file?.slug]);
+  };
 
-  const getContent = async () => {
-    const hasCache = getCache(file.id);
-
-    if (hasCache) {
-      setFileContent(hasCache);
-      setPreviewFileType(getPreviewFileType(file, hasCache));
-      setLoading(false);
-      return;
-    }
+  const fetchContent = async () => {
+    setLoading(true);
 
     try {
       const [_, cidData, downloadOTTResponse] = await Promise.all([

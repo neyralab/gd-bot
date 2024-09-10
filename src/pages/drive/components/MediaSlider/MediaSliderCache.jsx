@@ -31,7 +31,7 @@ export const MediaSliderCacheProvider = ({ children }) => {
 
   return (
     <MediaSliderCacheContext.Provider
-      value={{ getCache, setCacheItem, clearCache }}>
+      value={{ cache, getCache, setCacheItem, clearCache }}>
       {children}
     </MediaSliderCacheContext.Provider>
   );

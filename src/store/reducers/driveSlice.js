@@ -47,7 +47,8 @@ const driveSlice = createSlice({
       previousFile: null,
       currentFile: null,
       nextFile: null
-    }
+    },
+    mediaSliderFileContentTurn: null
   },
   reducers: {
     setFilesQueryData: (state, { payload }) => {
@@ -143,6 +144,9 @@ const driveSlice = createSlice({
       state.mediaSlider.previousFile = previousFile;
       state.mediaSlider.currentFile = currentFile;
       state.mediaSlider.nextFile = nextFile;
+    },
+    setMediaSliderFileUploadTurn: (state, { payload }) => {
+      state.mediaSliderFileContentTurn = payload;
     }
   }
 });
@@ -442,6 +446,7 @@ export const {
   setFileMenuFile,
   setStorageInfo,
   setMediaSliderOpen,
-  setMediaSliderCurrentFile
+  setMediaSliderCurrentFile,
+  setMediaSliderFileUploadTurn
 } = driveSlice.actions;
 export default driveSlice.reducer;

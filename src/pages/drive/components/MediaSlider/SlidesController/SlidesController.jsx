@@ -5,14 +5,15 @@ import { gsap } from 'gsap';
 import {
   assignFilesQueryData,
   getDriveFiles,
-  setMediaSliderCurrentFile
+  setMediaSliderCurrentFile,
+  setMediaSliderFileUploadTurn
 } from '../../../../../store/reducers/driveSlice';
+import { useMediaSliderCache } from '../MediaSliderCache';
 import Slide from '../Slide/Slide';
 import styles from './SlidesController.module.scss';
-import { useMediaSliderCache } from '../MediaSliderCache';
 
 /**----------------------------
- * How this shit works
+ * How this thing works
  * ----------------------------
  * ----------------------------
  * ----------------------------
@@ -22,7 +23,7 @@ import { useMediaSliderCache } from '../MediaSliderCache';
  * If the top one is null -> you are not able to slide to top.
  * If the bottom one is null -> system will check and try lazy loading -> block sliding or show loader (then update current and next slides).
  * If we have the next/prev slide, the animation will move the slider to the next/prev and then it SWAP the slides and move them at the center.
- * The current slide is always index 1, UNLESS it is not lazy loading loader slide.
+ * The current slide is always index 1.
  * The information about next and previous files is taken from files data,
  * THE SAME that FilesList uses. They are combined for the good.
  * React.memo on Slide component and keys ARE CRUSIAL. If you remove them, you will always reload the same component every time you swipe, causing rerender and refetching
@@ -37,18 +38,20 @@ export default function SlidesController() {
   const areFilesLazyLoading = useSelector(
     (state) => state.drive.areFilesLazyLoading
   );
-  const { clearCache } = useMediaSliderCache();
+  const { cache, getCache, clearCache } = useMediaSliderCache();
   const [slides, setSlides] = useState([]);
+  const [isSliding, setIsSliding] = useState(false);
   const slidesRef = useRef(null);
 
   useEffect(() => {
-    /** Yeah, it's better to be in the parent component (MediaSlider),
-     * But you can't normally set a provider and consumer in the same component
-     */
     return () => {
       clearCache();
     };
   }, []);
+
+  useEffect(() => {
+    updateFileContentUploadOrder();
+  }, [cache, mediaSlider.currentFile]);
 
   useEffect(() => {
     setSlides([
@@ -82,6 +85,41 @@ export default function SlidesController() {
     gsap.set(slidesRef.current, { y: '-100vh' });
   }, [slides]);
 
+  const updateFileContentUploadOrder = () => {
+    /** This function creates an order to get files content.
+     * The first one should always be a current file,
+     * then a next file,
+     * then a previous file.
+     * If the current file was changed,
+     * previous order starts from the beginning
+     */
+    if (mediaSlider.currentFile) {
+      const isLoaded = getCache(mediaSlider.currentFile.id);
+      if (!isLoaded) {
+        dispatch(setMediaSliderFileUploadTurn(mediaSlider.currentFile.id));
+        return;
+      }
+    }
+
+    if (mediaSlider.nextFile) {
+      const isLoaded = getCache(mediaSlider.nextFile.id);
+      if (!isLoaded) {
+        dispatch(setMediaSliderFileUploadTurn(mediaSlider.nextFile.id));
+        return;
+      }
+    }
+
+    if (mediaSlider.previousFile) {
+      const isLoaded = getCache(mediaSlider.previousFile.id);
+      if (!isLoaded) {
+        dispatch(setMediaSliderFileUploadTurn(mediaSlider.previousFile.id));
+        return;
+      }
+    }
+
+    dispatch(setMediaSliderFileUploadTurn(null));
+  };
+
   const handlers = useSwipeable({
     onSwipedUp: () => {
       animateSlidesDown();
@@ -94,12 +132,16 @@ export default function SlidesController() {
   });
 
   const animateSlidesDown = () => {
+    if (isSliding) return;
+    setIsSliding(true);
+
     if (mediaSlider.nextFile) {
       gsap.to(slidesRef.current, {
         y: '-200vh',
         duration: 0.2,
         onComplete: () => {
           dispatch(setMediaSliderCurrentFile(mediaSlider.nextFile));
+          setIsSliding(false);
         }
       });
     }
@@ -111,7 +153,10 @@ export default function SlidesController() {
         onComplete: () => {
           gsap.to(slidesRef.current, {
             y: '-100vh',
-            duration: 0.1
+            duration: 0.1,
+            onComplete: () => {
+              setIsSliding(false);
+            }
           });
         }
       });
@@ -125,12 +170,16 @@ export default function SlidesController() {
   };
 
   const animateSlidesUp = () => {
+    if (isSliding) return;
+    setIsSliding(true);
+
     if (mediaSlider.previousFile) {
       gsap.to(slidesRef.current, {
         y: '0vh',
         duration: 0.2,
         onComplete: () => {
           dispatch(setMediaSliderCurrentFile(mediaSlider.previousFile));
+          setIsSliding(false);
         }
       });
     }
@@ -142,7 +191,10 @@ export default function SlidesController() {
         onComplete: () => {
           gsap.to(slidesRef.current, {
             y: '-100vh',
-            duration: 0.1
+            duration: 0.1,
+            onComplete: () => {
+              setIsSliding(false);
+            }
           });
         }
       });
