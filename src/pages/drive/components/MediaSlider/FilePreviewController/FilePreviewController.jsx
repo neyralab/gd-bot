@@ -29,7 +29,6 @@ const FilePreviewController = ({ file }) => {
       setLoading(true);
 
       const canPreview = getPreviewFileType(file, '   ');
-
       if (canPreview && !ESCAPE_CONTENT_DOWNLOAD.includes(canPreview)) {
         getContent();
       } else {

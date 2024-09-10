@@ -304,7 +304,9 @@ export const getDriveFiles = createAsyncThunk(
     if (search) {
       await autoCompleteSearchEffect(search).then((data) => {
         if (data?.length > 0) {
-          files = data.map((el) => ({ ...el, isSearch: true }));
+          files = data.map((el) => {
+            return { ...el.file };
+          });
         }
       });
     }

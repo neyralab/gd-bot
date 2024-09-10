@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useSelector } from 'react-redux';
 import styles from './Slide.module.scss';
 import FilePreviewController from '../FilePreviewController/FilePreviewController';
@@ -7,10 +7,6 @@ const Slide = React.memo(({ file, id }) => {
   const areFilesLazyLoading = useSelector(
     (state) => state.drive.areFilesLazyLoading
   );
-
-  useEffect(() => {
-    console.log('rerender', id);
-  }, [file]);
 
   if (id === 'top-null') {
     return <div className={styles.slide}></div>;
