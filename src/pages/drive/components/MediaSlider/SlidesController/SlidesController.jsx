@@ -38,16 +38,10 @@ export default function SlidesController() {
   const areFilesLazyLoading = useSelector(
     (state) => state.drive.areFilesLazyLoading
   );
-  const { cache, getCache, clearCache } = useMediaSliderCache();
+  const { cache, getCache } = useMediaSliderCache();
   const [slides, setSlides] = useState([]);
   const [isSliding, setIsSliding] = useState(false);
   const slidesRef = useRef(null);
-
-  useEffect(() => {
-    return () => {
-      clearCache();
-    };
-  }, []);
 
   useEffect(() => {
     updateFileContentUploadOrder();
