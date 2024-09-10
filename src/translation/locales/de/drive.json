@@ -35,7 +35,8 @@
     "freeWatch": "Kostenlos ansehen",
     "preview": "Vorschau",
     "saveError": "Fehler beim Speichern der Datei im Speicher. Bitte versuchen Sie es erneut oder wenden Sie sich an den Support, wenn das Problem weiterhin besteht.",
-    "saveSuccess": "Die Datei wurde erfolgreich im Speicher gespeichert."
+    "saveSuccess": "Die Datei wurde erfolgreich im Speicher gespeichert.",
+    "fileAbsent": "Datei ist nicht vorhanden"
   },
   "month": {
     "jan": "Jan",

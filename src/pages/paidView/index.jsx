@@ -62,7 +62,7 @@ export const PaidView = () => {
         delete shareFile.file;
         setFile({ ...data?.data?.file, payShare: shareFile });
       } catch (error) {
-        console.warn('Cannot find file')
+        toast.error(t('ppv.fileAbsent'), { position: 'top-center'  })
       }
     }
     if (id) {

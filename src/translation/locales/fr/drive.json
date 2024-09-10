@@ -35,7 +35,8 @@
     "freeWatch": "Regarder gratuitement",
     "preview": "Aperçu",
     "saveError": "Échec de l'enregistrement du fichier dans le stockage. Veuillez réessayer ou contacter le support si le problème persiste.",
-    "saveSuccess": "Le fichier a été enregistré avec succès dans le stockage."
+    "saveSuccess": "Le fichier a été enregistré avec succès dans le stockage.",
+    "fileAbsent": "Le fichier est absent"
   },
   "month": {
     "jan": "Janv",

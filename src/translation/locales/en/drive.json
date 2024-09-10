@@ -35,7 +35,8 @@
     "freeWatch": "Free watch",
     "preview": "preview",
     "saveError": "Failed to save the file to storage. Please try again or contact support if the issue persists.",
-    "saveSuccess": "The file has been successfully saved to storage."
+    "saveSuccess": "The file has been successfully saved to storage.",
+    "fileAbsent": "File is absent"
   },
   "month": {
     "jan": "Jan",
