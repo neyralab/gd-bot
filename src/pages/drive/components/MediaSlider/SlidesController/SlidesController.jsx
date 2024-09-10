@@ -5,11 +5,11 @@ import { gsap } from 'gsap';
 import {
   assignFilesQueryData,
   getDriveFiles,
-  setMediaSliderCurrentFile,
-  setMediaSliderNextFile
+  setMediaSliderCurrentFile
 } from '../../../../../store/reducers/driveSlice';
 import Slide from '../Slide/Slide';
 import styles from './SlidesController.module.scss';
+import { useMediaSliderCache } from '../MediaSliderCache';
 
 /**----------------------------
  * How this shit works
@@ -37,8 +37,18 @@ export default function SlidesController() {
   const areFilesLazyLoading = useSelector(
     (state) => state.drive.areFilesLazyLoading
   );
+  const { clearCache } = useMediaSliderCache();
   const [slides, setSlides] = useState([]);
   const slidesRef = useRef(null);
+
+  useEffect(() => {
+    /** Yeah, it's better to be in the parent component (MediaSlider),
+     * But you can't normally set a provider and consumer in the same component
+     */
+    return () => {
+      clearCache();
+    };
+  }, []);
 
   useEffect(() => {
     setSlides([

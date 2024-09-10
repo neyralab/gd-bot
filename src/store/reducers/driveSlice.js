@@ -143,9 +143,6 @@ const driveSlice = createSlice({
       state.mediaSlider.previousFile = previousFile;
       state.mediaSlider.currentFile = currentFile;
       state.mediaSlider.nextFile = nextFile;
-    },
-    setMediaSliderNextFile: (state, { payload }) => {
-      state.mediaSlider.nextFile = payload;
     }
   }
 });
@@ -443,7 +440,6 @@ export const {
   setFileMenuFile,
   setStorageInfo,
   setMediaSliderOpen,
-  setMediaSliderCurrentFile,
-  setMediaSliderNextFile
+  setMediaSliderCurrentFile
 } = driveSlice.actions;
 export default driveSlice.reducer;

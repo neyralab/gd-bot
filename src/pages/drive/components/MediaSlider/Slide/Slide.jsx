@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import styles from './Slide.module.scss';
+import FilePreviewController from '../FilePreviewController/FilePreviewController';
 
 const Slide = React.memo(({ file, id }) => {
   const areFilesLazyLoading = useSelector(
@@ -10,6 +11,10 @@ const Slide = React.memo(({ file, id }) => {
   useEffect(() => {
     console.log('rerender', id);
   }, [file]);
+
+  if (id === 'top-null') {
+    return <div className={styles.slide}></div>;
+  }
 
   if (id === 'bottom-null' && areFilesLazyLoading) {
     return (
@@ -27,7 +32,7 @@ const Slide = React.memo(({ file, id }) => {
 
   return (
     <div className={styles.slide}>
-      <p>{file?.name || 'none'}</p>
+      <FilePreviewController file={file} />
     </div>
   );
 });

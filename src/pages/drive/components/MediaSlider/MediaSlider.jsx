@@ -7,6 +7,7 @@ import {
 } from '../../../../store/reducers/driveSlice';
 import { vibrate } from '../../../../utils/vibration';
 import SlidesController from './SlidesController/SlidesController';
+import { MediaSliderCacheProvider } from './MediaSliderCache';
 import styles from './MediaSlider.module.scss';
 
 Modal.setAppElement('#root');
@@ -28,15 +29,17 @@ export default function MediaSlider() {
       onRequestClose={onClose}
       overlayClassName={styles.overlay}
       className={styles.modal}>
-      <div className={styles.wrapper}>
-        {isOpen && <SlidesController />}
+      <MediaSliderCacheProvider>
+        <div className={styles.wrapper}>
+          {isOpen && <SlidesController />}
 
-        <div className={styles.header}>
-          <button className={styles.back} onClick={onClose}>
-            {t('dashboard.back')}
-          </button>
+          <div className={styles.header}>
+            <button className={styles.back} onClick={onClose}>
+              {t('dashboard.back')}
+            </button>
+          </div>
         </div>
-      </div>
+      </MediaSliderCacheProvider>
     </Modal>
   );
 }
