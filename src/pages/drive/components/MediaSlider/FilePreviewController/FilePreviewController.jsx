@@ -6,7 +6,7 @@ import { sendFileViewStatistic } from '../../../../../effects/file/statisticEfec
 import { getFileCids } from '../../../../../effects/file/getFileCid';
 import { getDownloadOTT } from '../../../../../effects/filesEffects';
 import { useMediaSliderCache } from '../MediaSliderCache';
-import GhostLoader from '../../../../../components/ghostLoader';
+import LoadingPreview from '../../../../../components/file-previews/LoadingPreview/LoadingPreview';
 import DefaultPreview from '../../../../../components/file-previews/DefaultPreview/DefaultPreview';
 import ImagePreview from '../../../../../components/file-previews/ImagePreview/ImagePreview';
 // import AudioPreview from '../../../../../components/filePreviewModal/components/AudioPreview';
@@ -14,7 +14,6 @@ import ImagePreview from '../../../../../components/file-previews/ImagePreview/I
 // import PdfPreview from '../../../../../components/filePreviewModal/previewContent/PdfPreview';
 // import ExcelPreview from '../../../../../components/filePreviewModal/previewContent/ExcelPreview';
 // import TxtPreview from '../../../../../components/filePreviewModal/previewContent/TxtPreview';
-import styles from './FilePreviewController.module.scss';
 
 const ESCAPE_CONTENT_DOWNLOAD = ['audio', 'encrypt'];
 
@@ -121,11 +120,7 @@ const FilePreviewController = ({ file }) => {
   };
 
   if (loading) {
-    return (
-      <div className={styles['default-loader']}>
-        <GhostLoader />
-      </div>
-    );
+    return <LoadingPreview file={file} />;
   }
 
   switch (previewFileType) {
