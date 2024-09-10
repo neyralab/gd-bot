@@ -151,7 +151,7 @@
   "share": {
     "share": "Chia sẻ",
     "successfullySend": "Bạn đã gửi thành công {size} cho {name}",
-    "shareStorage": "Gửi quà cho (G:Drive)",
+    "shareStorage": "Lưu trữ quà tặng",
     "shareGift": "Quà tặng Ghost Drive",
     "storage": "Dung lượng lưu trữ",
     "increaseStorage": "Dung lượng lưu trữ của bạn đã tăng thêm {size}",

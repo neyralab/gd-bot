@@ -28,13 +28,17 @@ const Gift = ({ onClose, systemModalRef, giftToken }) => {
   const { t } = useTranslation('system');
   const [initialData, setInitialData] = useState({ name: 'roma', size: 0 });
   const [loading, setLoading] = useState(false);
+  const [mainLoading, setMainLoading] = useState(false);
 
   useEffect(() => {
     const init = async () => {
       try {
+        setMainLoading(true);
         const data = await checkGiftTokenEffect(giftToken);
+        setMainLoading(false);
         setInitialData({ name: data?.user?.username || '', size: data?.bytes || 0 });
       } catch (error) {
+        setMainLoading(false);
         clearSearchParams();
       }
     }
@@ -127,6 +131,10 @@ const Gift = ({ onClose, systemModalRef, giftToken }) => {
         },
       ]
     });
+  }
+
+  if (mainLoading) {
+    return null
   }
 
   return (
