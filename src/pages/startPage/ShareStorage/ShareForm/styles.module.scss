@@ -24,10 +24,18 @@
 .form {
   display: flex;
   justify-content: space-between;
+  gap: 15px;
 }
 
 .form-action {
-  width: 110px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'SF Pro Text';
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 27px;
+  width: calc(100%/3 - 10px);
   height: 60px;
   border-radius: 8px;
   background-color: #151517;

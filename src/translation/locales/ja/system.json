@@ -151,7 +151,7 @@
   "share": {
     "share": "共有する",
     "successfullySend": "{size}を{name}に正常に送信しました",
-    "shareStorage": "(G:Drive)にギフトを送る",
+    "shareStorage": "ギフトストレージ",
     "shareGift": "Ghost Driveのギフト",
     "storage": "ストレージ",
     "increaseStorage": "ストレージ容量が{size}増加しました",
