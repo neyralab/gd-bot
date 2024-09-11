@@ -36,7 +36,15 @@
     "preview": "Xem trước",
     "saveError": "Không thể lưu tệp vào bộ nhớ. Vui lòng thử lại hoặc liên hệ với bộ phận hỗ trợ nếu sự cố vẫn tiếp diễn.",
     "saveSuccess": "Tệp đã được lưu thành công vào bộ nhớ.",
-    "fileAbsent": "Tệp không có"
+    "fileAbsent": "Tệp không có",
+    "successReport": "Báo cáo của bạn đã được gửi thành công. Cảm ơn bạn đã giúp chúng tôi duy trì một cộng đồng an toàn và tôn trọng.",
+    "failReport": "Không thể gửi báo cáo của bạn. Vui lòng thử lại sau hoặc kiểm tra kết nối internet của bạn.",
+    "copyright": "Vi phạm bản quyền",
+    "spam": "Thư rác",
+    "violence": "Bạo lực hoặc nội dung nguy hiểm",
+    "other": "Khác",
+    "enterReport": "Nhập báo cáo của bạn..",
+    "report": "Báo cáo"
   },
   "month": {
     "jan": "Tháng 1",

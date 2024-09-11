@@ -36,7 +36,15 @@
     "preview": "预览",
     "saveError": "无法将文件保存到存储中。请重试或联系支持人员，如果问题仍然存在。",
     "saveSuccess": "文件已成功保存到存储中。",
-    "fileAbsent": "文件不存在"
+    "fileAbsent": "文件不存在",
+    "successReport": "您的报告已成功提交。感谢您帮助我们维护一个安全和尊重的社区。",
+    "failReport": "无法提交您的报告。请稍后再试或检查您的互联网连接。",
+    "copyright": "侵犯版权",
+    "spam": "垃圾邮件",
+    "violence": "暴力或危险内容",
+    "other": "其他",
+    "enterReport": "输入您的报告..",
+    "report": "举报"
   },
   "month": {
     "jan": "一月",

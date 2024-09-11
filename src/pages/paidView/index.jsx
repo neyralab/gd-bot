@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useParams, useNavigate } from 'react-router-dom';
 import { downloadFile } from 'gdgateway-client';
 import { useTranslation } from 'react-i18next';
@@ -28,6 +28,7 @@ import { sleep } from '../../utils/sleep';
 import { removeExtension, addSlugHyphens } from '../../utils/string';
 
 import styles from './styles.module.css';
+import { ReportForm } from "./components/reportForm";
 
 const STEPS = {
   preview: 'preview',
@@ -45,6 +46,7 @@ export const PaidView = () => {
   const [loading, setLoading] = useState(false);
   // const [fileStatistics, setFileStatistics] = useState({});
   const [expandDescription, setExpandDescription] = useState(false);
+  const [showReportView, setShowReportView] = useState(false);
   const [downloadLoading, setDownloadLoading] = useState(false);
   const [fileContent, setFileContent] = useState(null);
   const user = useSelector((state) => state.user.data);
@@ -52,6 +54,7 @@ export const PaidView = () => {
   const [fullscreen, setFullscreen] = useState(false);
   const [step, setStep] = useState(STEPS.preview);
   const { id } = useParams();
+  const allowPreview = useMemo(() => (step !== STEPS.Preview ), [step]);
 
   useEffect(() => {
     const init = async () => {
@@ -235,9 +238,26 @@ export const PaidView = () => {
     setExpandDescription(true);
   }
 
+  const toggleReportView = () => {
+    if (step !== STEPS.Preview) {
+      setShowReportView(!showReportView);
+    }
+  }
+
+  if (showReportView) {
+    return (
+      <ReportForm slug={file.slug} onClose={toggleReportView} />
+    )
+  }
+
   return (
     <div className={styles.container}>
-      <Header leftText={t('ppv.back')} onClose={goBack} />
+      <Header
+        leftText={t('ppv.back')}
+        rightText={allowPreview && t('ppv.report')}
+        onAction={toggleReportView}
+        onClose={goBack}
+      />
       <div className={styles.content}>
         {fullscreen && (
           <h3 className={CN(styles.title, styles.secondTitle)}>{removeExtension(file.name)}</h3>
@@ -248,7 +268,7 @@ export const PaidView = () => {
           </div>
         ) : (
         <Preview
-          allowPreview={step !== STEPS.preview}
+          allowPreview={allowPreview}
           file={file}
           fileContent={fileContent}
           fullscreen={fullscreen}
