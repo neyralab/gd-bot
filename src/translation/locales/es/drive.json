@@ -36,7 +36,15 @@
     "preview": "Vista previa",
     "saveError": "Error al guardar el archivo en el almacenamiento. Inténtelo de nuevo o póngase en contacto con el soporte si el problema persiste.",
     "saveSuccess": "El archivo se ha guardado correctamente en el almacenamiento.",
-    "fileAbsent": "El archivo está ausente"
+    "fileAbsent": "El archivo está ausente",
+    "successReport": "Tu informe ha sido enviado con éxito. Gracias por ayudarnos a mantener una comunidad segura y respetuosa.",
+    "failReport": "No se pudo enviar tu informe. Por favor, inténtalo de nuevo más tarde o verifica tu conexión a internet.",
+    "copyright": "Infracción de derechos de autor",
+    "spam": "Correo no deseado (Spam)",
+    "violence": "Violencia o contenido peligroso",
+    "other": "Otro",
+    "enterReport": "Introduce tu informe..",
+    "report": "Informar"
   },
   "month": {
     "jan": "Ene",

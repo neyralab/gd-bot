@@ -334,3 +334,13 @@ export const getFileStarStatistic = async (slug) => {
     throw Error(error);
   }
 };
+
+export const createFileReportEffect = async (slug, body) => {
+  try {
+    const data = await axiosInstance.post(`${API_PATH}/suspicious-report/${slug}`, body);
+    debugger
+    return data.data;
+  } catch (error) {
+    throw Error(error);
+  }
+};

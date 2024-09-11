@@ -36,7 +36,15 @@
     "preview": "preview",
     "saveError": "Failed to save the file to storage. Please try again or contact support if the issue persists.",
     "saveSuccess": "The file has been successfully saved to storage.",
-    "fileAbsent": "File is absent"
+    "fileAbsent": "File is absent",
+    "successReport": "Your report has been successfully submitted. Thank you for helping us maintain a safe and respectful community.",
+    "failReport": "Your report could not be submitted. Please try again later or check your internet connection.",
+    "copyright": "Copyright infringement",
+    "spam": "Spam",
+    "violence": "Violence or dangerous content",
+    "other": "Other",
+    "enterReport": "Enter your report..",
+    "report": "Report"
   },
   "month": {
     "jan": "Jan",

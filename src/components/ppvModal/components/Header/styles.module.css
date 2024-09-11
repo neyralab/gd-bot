@@ -15,6 +15,11 @@
   color: #ffffff70;
 }
 
+.right {
+  right: 0;
+  left: initial;
+}
+
 .title {
   font-family: 'Open Sans';
   font-size: 18px;

@@ -1,8 +1,9 @@
 import React from "react";
+import CN from 'classnames';
 import { useTranslation } from 'react-i18next';
 import styles from './styles.module.css';
 
-const Header = ({ onClose, onAction, leftText = 'Back', rightText }) => {
+const Header = ({ onClose, onAction, title, leftText = 'Back', rightText }) => {
   const { t } = useTranslation('drive');
 
   return (
@@ -14,9 +15,9 @@ const Header = ({ onClose, onAction, leftText = 'Back', rightText }) => {
       >
         {leftText}
       </button>
-      <h1 className={styles.title}>{t('ppv.ppv')}</h1>
+      <h1 className={styles.title}>{title ||t('ppv.ppv')}</h1>
       <button
-        className={styles.button}
+        className={CN(styles.button, styles.right)}
         onClick={onAction}
         aria-label={rightText}
       >
