@@ -39,15 +39,14 @@ export default function AdvertisementOfferModal() {
         setIsClickable(true);
       }, 1000);
     } else {
-      setIsClosing(true);
-      setTimeout(() => {
-        setIsOpen(false);
-        setImage(null);
-        setIsClosing(false);
-        setIsClickable(false);
-      }, 600);
     }
-  }, [advertisementOfferModal, theme.id, nextTheme, status]);
+  }, [advertisementOfferModal, theme.id, nextTheme.isSwitching, status]);
+
+  useEffect(() => {
+    if (nextTheme.isSwitching && advertisementOfferModal && isOpen) {
+      closeModal();
+    }
+  }, [nextTheme.isSwitching, advertisementOfferModal]);
 
   const clickHandler = (e) => {
     if (!isClickable) return;
@@ -59,7 +58,19 @@ export default function AdvertisementOfferModal() {
         videoId: advertisementOfferModal.videoId
       })
     );
+    closeModal();
     dispatch(setAdvertisementOfferModal(null));
+  };
+
+  const closeModal = () => {
+    setIsClosing(true);
+    setTimeout(() => {
+      setIsOpen(false);
+      setImage(null);
+      setIsClosing(false);
+      setIsClickable(false);
+    }, 600);
+
   };
 
   if (!isOpen) return;
