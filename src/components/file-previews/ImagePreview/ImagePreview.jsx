@@ -1,11 +1,16 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import DefaultFileActions from '../components/DefaultFileActions/DefaultFileActions';
 import DefaultFileTitle from '../components/DefaultFileTitle/DefaultFileTitle';
 import styles from './ImagePreview.module.scss';
 
 const ImagePreview = ({ file, fileContent }) => {
+  const [url, setUrl] = useState(URL.createObjectURL(fileContent));
   const isSvg = file.extension === 'svg';
   const svgRef = useRef(null);
+
+  useEffect(() => {
+    setUrl(URL.createObjectURL(fileContent));
+  }, [fileContent]);
 
   useEffect(() => {
     if (isSvg && typeof fileContent === 'string') {
@@ -22,13 +27,7 @@ const ImagePreview = ({ file, fileContent }) => {
       {isSvg ? (
         <div ref={svgRef}></div>
       ) : (
-        fileContent instanceof Blob && (
-          <img
-            className={styles.image}
-            alt={file.name}
-            src={URL.createObjectURL(fileContent)}
-          />
-        )
+        <img className={styles.image} alt={file.name} src={url} />
       )}
 
       <DefaultFileTitle file={file} />

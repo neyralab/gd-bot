@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { downloadFile } from 'gdgateway-client';
 import { useSelector } from 'react-redux';
 import { getPreviewFileType } from '../../../../../utils/preview';
@@ -11,6 +11,7 @@ import DefaultPreview from '../../../../../components/file-previews/DefaultPrevi
 import ImagePreview from '../../../../../components/file-previews/ImagePreview/ImagePreview';
 import TxtPreview from '../../../../../components/file-previews/TxtPreview/TxtPreview';
 import PdfPreview from '../../../../../components/file-previews/PdfPreview/PdfPreview';
+import VideoPreview from '../../../../../components/file-previews/VideoPreview/VideoPreview';
 // import AudioPreview from '../../../../../components/filePreviewModal/components/AudioPreview';
 // import VideoPreview from '../../../../../components/filePreviewModal/previewContent/VideoPreview';
 // import ExcelPreview from '../../../../../components/filePreviewModal/previewContent/ExcelPreview';
@@ -22,9 +23,13 @@ const FilePreviewController = ({ file }) => {
   const mediaSliderFileContentTurn = useSelector(
     (state) => state.drive.mediaSliderFileContentTurn
   );
+  const mediaSliderCurrentFile = useSelector(
+    (state) => state.drive.mediaSlider.currentFile
+  );
   const [loading, setLoading] = useState(true);
   const [fileContent, setFileContent] = useState(null);
   const [previewFileType, setPreviewFileType] = useState(null);
+  const playablePreview = useRef(null);
 
   useEffect(() => {
     getContent();
@@ -36,6 +41,19 @@ const FilePreviewController = ({ file }) => {
       fetchContent();
     }
   }, [mediaSliderFileContentTurn]);
+
+  useEffect(() => {
+    if (
+      fileContent &&
+      !loading &&
+      mediaSliderCurrentFile &&
+      mediaSliderCurrentFile.id === file.id
+    ) {
+      playablePreview?.current?.runPreview();
+    } else {
+      playablePreview?.current?.stopPreview();
+    }
+  }, [fileContent, file.id, loading, mediaSliderCurrentFile]);
 
   const getContent = () => {
     setLoading(true);
@@ -130,11 +148,17 @@ const FilePreviewController = ({ file }) => {
       return <TxtPreview file={file} fileContent={fileContent} />;
     case 'pdf':
       return <PdfPreview file={file} fileContent={fileContent} />;
+    case 'video':
+      return (
+        <VideoPreview
+          ref={playablePreview}
+          file={file}
+          fileContent={fileContent}
+        />
+      );
+
     // case 'audio':
     //   return <AudioPreview wrapper={wrapper} file={file} />;
-    // case 'video':
-    //   return <VideoPreview file={file} fileContent={fileContent} />;
-
     // case 'xlsx':
     //   return <ExcelPreview file={file} fileContent={fileContent} />;
 
