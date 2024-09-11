@@ -38,15 +38,18 @@ export default function AdvertisementOfferModal() {
       setTimeout(() => {
         setIsClickable(true);
       }, 1000);
-    } else {
     }
-  }, [advertisementOfferModal, theme.id, nextTheme.isSwitching, status]);
 
-  useEffect(() => {
-    if (nextTheme.isSwitching && advertisementOfferModal && isOpen) {
+    if (
+      isOpen &&
+      (theme.id !== 'hawk' ||
+        !advertisementOfferModal ||
+        nextTheme.isSwitching ||
+        status === 'playing')
+    ) {
       closeModal();
     }
-  }, [nextTheme.isSwitching, advertisementOfferModal]);
+  }, [advertisementOfferModal, theme.id, nextTheme.isSwitching, status]);
 
   const clickHandler = (e) => {
     if (!isClickable) return;
@@ -70,7 +73,6 @@ export default function AdvertisementOfferModal() {
       setIsClosing(false);
       setIsClickable(false);
     }, 600);
-
   };
 
   if (!isOpen) return;
