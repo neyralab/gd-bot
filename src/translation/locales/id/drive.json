@@ -35,7 +35,8 @@
     "freeWatch": "Tonton gratis",
     "preview": "Pratinjau",
     "saveError": "Gagal menyimpan file ke penyimpanan. Silakan coba lagi atau hubungi dukungan jika masalah berlanjut.",
-    "saveSuccess": "File telah berhasil disimpan ke penyimpanan."
+    "saveSuccess": "File telah berhasil disimpan ke penyimpanan.",
+    "fileAbsent": "File tidak ada"
   },
   "month": {
     "jan": "Januari",

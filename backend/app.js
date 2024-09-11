@@ -1,6 +1,6 @@
 import './config.js';
 import express from 'express';
-import { Telegraf, Markup } from 'telegraf';
+import { Markup, Telegraf } from 'telegraf';
 import fs from 'fs';
 import fetch from 'node-fetch';
 import { telegrafThrottler } from 'telegraf-throttler';
@@ -12,6 +12,7 @@ import photoHandler from './handlers/photoHandler.js';
 import textHandler from './handlers/textHandler.js';
 import termsHandler from './commands/terms/index.js';
 import logger from './utils/logger.js';
+import { generateRef } from './utils/generateRef.js';
 import parseStartParams from './utils/startParamsParser.js';
 import sendMobileAuthButton from './utils/sendMobileAuthButton.js';
 import errorTransformer from './utils/errorTransformer.js';
@@ -75,8 +76,7 @@ bot.start(async (ctx) => {
   }
 
   if (cachedUserData) {
-    const refcode = JSON.parse(cachedUserData)?.user?.referral?.code;
-    userRefCode = refcode;
+    userRefCode = JSON.parse(cachedUserData)?.user?.referral?.code;
   }
 
   if (!cachedUserData) {
@@ -100,14 +100,16 @@ bot.start(async (ctx) => {
         headers['Host'] = process.env.GD_BACKEND_HOST;
       }
 
-      const job = await userCreationQueue.add({
+      const code = generateRef(userData.chat_id);
+      userRefCode = code;
+      userData.code = code;
+
+      await userCreationQueue.add({
         url,
         userData,
         headers: headers,
         showMobileAuthButton
       });
-      const result = await job.finished();
-      userRefCode = result?.user?.referral?.code;
     } catch (error) {
       logger.error('Error queueing user creation', {
         error: errorTransformer(error),

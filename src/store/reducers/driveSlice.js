@@ -49,7 +49,8 @@ const driveSlice = createSlice({
       nextFile: null
     },
     mediaSliderFileContentTurn: null,
-    fileInfoModal: null
+    fileInfoModal: null,
+    ppvFile: null
   },
   reducers: {
     setFilesQueryData: (state, { payload }) => {
@@ -151,6 +152,9 @@ const driveSlice = createSlice({
     },
     setFileInfoModal: (state, { payload }) => {
       state.fileInfoModal = payload;
+    },
+    setPPVFile: (state, { payload }) => {
+      state.ppvFile = payload;
     }
   }
 });
@@ -439,6 +443,7 @@ export const {
   setFiles,
   updateFileProperty,
   addFiles,
+  setPPVFile,
   areFilesLoading,
   areFilesLazyLoading,
   setUploadFileIsUploading,

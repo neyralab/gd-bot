@@ -15,6 +15,7 @@ import {
   setSelectedFile,
   updateFile
 } from '../../store/reducers/filesSlice';
+import { setPPVFile } from '../../store/reducers/driveSlice';
 import { updateShareEffect, deletePaidShareEffect } from '../../effects/filesEffects';
 import { restoreFileEffect } from '../../effects/file/restoreFileEffect';
 import { generateSharingLink } from '../../utils/generateSharingLink';
@@ -54,14 +55,14 @@ export const FileMenu = () => {
 
   const onClose = () => {
     dispatch(handleFileMenu(false));
-    dispatch(setSelectedFile({}));
+    dispatch(setPPVFile({}));
   };
 
   const onShareClick = async (e) => {
     e.stopPropagation();
     dispatch(handleFileMenu(false));
     await updateShareEffect(file.slug);
-    dispatch(setSelectedFile({}));
+    dispatch(setPPVFile({}));
   };
 
   const onRestoreClick = async () => {

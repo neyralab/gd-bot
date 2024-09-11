@@ -35,7 +35,8 @@
     "freeWatch": "Xem miễn phí",
     "preview": "Xem trước",
     "saveError": "Không thể lưu tệp vào bộ nhớ. Vui lòng thử lại hoặc liên hệ với bộ phận hỗ trợ nếu sự cố vẫn tiếp diễn.",
-    "saveSuccess": "Tệp đã được lưu thành công vào bộ nhớ."
+    "saveSuccess": "Tệp đã được lưu thành công vào bộ nhớ.",
+    "fileAbsent": "Tệp không có"
   },
   "month": {
     "jan": "Tháng 1",
