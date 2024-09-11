@@ -8,21 +8,27 @@ const ImagePreview = ({ file, fileContent }) => {
   const svgRef = useRef(null);
 
   useEffect(() => {
-    if (isSvg) {
+    if (isSvg && typeof fileContent === 'string') {
       const parser = new DOMParser();
       const svgDocument = parser.parseFromString(fileContent, 'image/svg+xml');
       const svgElement = svgDocument.documentElement;
       svgRef.current.innerHTML = '';
       svgRef.current.appendChild(svgElement);
     }
-  }, [fileContent]);
+  }, [fileContent, isSvg]);
 
   return (
     <div className={styles.container}>
       {isSvg ? (
         <div ref={svgRef}></div>
       ) : (
-        <img className={styles.image} alt={file.name} src={fileContent} />
+        fileContent instanceof Blob && (
+          <img
+            className={styles.image}
+            alt={file.name}
+            src={URL.createObjectURL(fileContent)}
+          />
+        )
       )}
 
       <DefaultFileTitle file={file} />

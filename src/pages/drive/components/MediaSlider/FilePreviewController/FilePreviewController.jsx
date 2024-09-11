@@ -9,11 +9,11 @@ import { useMediaSliderCache } from '../MediaSliderCache';
 import LoadingPreview from '../../../../../components/file-previews/LoadingPreview/LoadingPreview';
 import DefaultPreview from '../../../../../components/file-previews/DefaultPreview/DefaultPreview';
 import ImagePreview from '../../../../../components/file-previews/ImagePreview/ImagePreview';
+import TxtPreview from '../../../../../components/file-previews/TxtPreview/TxtPreview';
 // import AudioPreview from '../../../../../components/filePreviewModal/components/AudioPreview';
 // import VideoPreview from '../../../../../components/filePreviewModal/previewContent/VideoPreview';
 // import PdfPreview from '../../../../../components/filePreviewModal/previewContent/PdfPreview';
 // import ExcelPreview from '../../../../../components/filePreviewModal/previewContent/ExcelPreview';
-// import TxtPreview from '../../../../../components/filePreviewModal/previewContent/TxtPreview';
 
 const ESCAPE_CONTENT_DOWNLOAD = ['audio', 'encrypt'];
 
@@ -86,12 +86,11 @@ const FilePreviewController = ({ file }) => {
 
       if (blob) {
         const realBlob = new Blob([blob]);
-        const url = URL.createObjectURL(realBlob);
-        setCacheItem(file.id, url);
+        setCacheItem(file.id, realBlob);
 
         if (file.extension === 'svg' || file.extension === 'txt') {
           const text = await realBlob.text();
-          setFileContent(text);
+          setFileContent(realBlob);
           setPreviewFileType(getPreviewFileType(file, text));
           setLoading(false);
           return;
@@ -106,8 +105,9 @@ const FilePreviewController = ({ file }) => {
           return;
         }
 
-        setFileContent(url);
-        setPreviewFileType(getPreviewFileType(file, url));
+        const url = URL.createObjectURL(realBlob);
+        setFileContent(realBlob);
+        setPreviewFileType(getPreviewFileType(file, realBlob));
         setLoading(false);
         return;
       }
@@ -126,6 +126,8 @@ const FilePreviewController = ({ file }) => {
   switch (previewFileType) {
     case 'img':
       return <ImagePreview file={file} fileContent={fileContent} />;
+    case 'txt':
+      return <TxtPreview file={file} fileContent={fileContent} />;
     // case 'audio':
     //   return <AudioPreview wrapper={wrapper} file={file} />;
     // case 'video':
@@ -134,8 +136,7 @@ const FilePreviewController = ({ file }) => {
     //   return <PdfPreview file={file} fileContent={fileContent} />;
     // case 'xlsx':
     //   return <ExcelPreview file={file} fileContent={fileContent} />;
-    // case 'txt':
-    //   return <TxtPreview fileContent={fileContent} />;
+
     default:
       return <DefaultPreview file={file} />;
   }

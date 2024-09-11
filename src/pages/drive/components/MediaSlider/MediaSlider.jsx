@@ -5,8 +5,8 @@ import {
   setMediaSliderCurrentFile,
   setMediaSliderOpen
 } from '../../../../store/reducers/driveSlice';
-import { vibrate } from '../../../../utils/vibration';
 import SlidesController from './SlidesController/SlidesController';
+import { vibrate } from '../../../../utils/vibration';
 import styles from './MediaSlider.module.scss';
 
 Modal.setAppElement('#root');
