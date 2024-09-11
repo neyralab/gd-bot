@@ -129,16 +129,19 @@ bot.start(async (ctx) => {
     if (showMobileAuthButton) return;
   }
 
-  const header =
-    '<b>Welcome to Ghostdrive – The Ultimate Drive for the TON Ecosystem!</b>';
+  const header = '<b>YES! Tap for Your Bytes & Beyond with us! 🚀</b>';
+
   const activitiesText =
-    'Experience a new way to store and transform your raw data into smart data.\n\n' +
-    '🚀 <b>Community Rewards:</b> Upload files to earn points, climb the leaderboard, and boost your rewards with our exciting tap game.\n\n' +
-    '🎁 <b>Lifetime Storage Giveaway:</b> Enjoy storage from the Filecoin network. Invite friends and earn even more!\n\n' +
-    '<b>Join Ghostdrive today and be part of our growing community!</b>';
+    'Think you’ve got fast fingers? It’s time to show them off! With GhostDrive’s Tap Game, every tap brings you closer to incredible rewards.\n\n' +
+    '<b>🔥 Earn as You Play:</b> Accumulate points and unlock storage, rewards, and more. \n' +
+    '<b>🎯 Climb the Leaderboard:</b> Out-tap the competition and claim your spot at the top! \n' +
+    '<b>🎁 Tap, Refer, Win:</b> Get bonus points & rewards when you invite friends!\n\n' +
+    'This isn’t just a game, it’s your chance to win BIG & boost your digital storage. \n' +
+    '<b>Get ready for the future with GhostDrive! 📲💡</b> \n\n' +
+    'Don’t forget to follow us on socials for exclusive updates, events, and more!';
 
   const dashboardButton = Markup.button.webApp(
-    'Open App',
+    '🎮 Play & Earn',
     `${process.env.APP_FRONTEND_URL}/start`
   );
   const playButton = Markup.button.webApp(
@@ -146,21 +149,29 @@ bot.start(async (ctx) => {
     `${process.env.APP_FRONTEND_URL}/game-3d`
   );
   const followXButton = Markup.button.url(
-    'Follow X',
-    `https://twitter.com/ghostdrive_web3`
+    '🐦 X',
+    `https://x.com/GhostDrive_Web3`
   );
-  const supportButton = Markup.button.url(
-    'Support',
+  const youtubeButton = Markup.button.url(
+    '🔴 Youtube',
+    `https://www.youtube.com/@ghostdrive-web3`
+  );
+  const websiteButton = Markup.button.url(
+    '🛸 Website',
+    `https://ghostdrive.com`
+  );
+  const chatButton = Markup.button.url(
+    '💬 Chat',
     `https://t.me/ghostdrive_web3_chat`
   );
   const followNewsButton = Markup.button.url(
-    'Join The Community',
+    '🎙 GhostDrive News',
     `https://t.me/ghostdrive_web3`
   );
 
   const referralLink = `https://t.me/${process.env.BOT_NAME}/ghostdrive?startapp=${userRefCode}`;
   const shareButton = {
-    text: 'Share Link',
+    text: '👥 Invite Friends',
     url: `https://t.me/share/url?url=${encodeURIComponent(referralLink)}`
   };
 
@@ -208,8 +219,11 @@ bot.start(async (ctx) => {
     return;
   } else {
     try {
-      await ctx.replyWithPhoto(
-        { source: fs.createReadStream('./assets/start.png') },
+      await ctx.replyWithAnimation(
+        {
+          source: fs.createReadStream('./assets/start.mp4'),
+          filename: 'start.mp4'
+        },
         {
           caption: `${header}\n\n${activitiesText}`,
           parse_mode: 'HTML',
@@ -217,6 +231,8 @@ bot.start(async (ctx) => {
             inline_keyboard: [
               [dashboardButton],
               [followNewsButton],
+              [chatButton, followXButton],
+              [youtubeButton, websiteButton],
               [shareButton]
             ]
           }
