@@ -3,6 +3,7 @@ import react from '@vitejs/plugin-react';
 import svgr from '@svgr/rollup';
 import { nodePolyfills } from 'vite-plugin-node-polyfills';
 
+const version = Date.now();
 // https://vitejs.dev/config/
 export default defineConfig({
   preview: {
@@ -27,5 +28,14 @@ export default defineConfig({
       protocolImports: true
     })
   ],
-  define: { 'process.env': process.env }
+  define: { 'process.env': process.env },
+  build: {
+    rollupOptions: {
+      output: {
+        entryFileNames: `[name].js?v=${version}`,
+        chunkFileNames: `[name].js?v=${version}`,
+        assetFileNames: `[name].[ext]?v=${version}`
+      }
+    }
+  }
 });
