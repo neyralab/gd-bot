@@ -10,9 +10,9 @@ import LoadingPreview from '../../../../../components/file-previews/LoadingPrevi
 import DefaultPreview from '../../../../../components/file-previews/DefaultPreview/DefaultPreview';
 import ImagePreview from '../../../../../components/file-previews/ImagePreview/ImagePreview';
 import TxtPreview from '../../../../../components/file-previews/TxtPreview/TxtPreview';
+import PdfPreview from '../../../../../components/file-previews/PdfPreview/PdfPreview';
 // import AudioPreview from '../../../../../components/filePreviewModal/components/AudioPreview';
 // import VideoPreview from '../../../../../components/filePreviewModal/previewContent/VideoPreview';
-// import PdfPreview from '../../../../../components/filePreviewModal/previewContent/PdfPreview';
 // import ExcelPreview from '../../../../../components/filePreviewModal/previewContent/ExcelPreview';
 
 const ESCAPE_CONTENT_DOWNLOAD = ['audio', 'encrypt'];
@@ -128,12 +128,13 @@ const FilePreviewController = ({ file }) => {
       return <ImagePreview file={file} fileContent={fileContent} />;
     case 'txt':
       return <TxtPreview file={file} fileContent={fileContent} />;
+    case 'pdf':
+      return <PdfPreview file={file} fileContent={fileContent} />;
     // case 'audio':
     //   return <AudioPreview wrapper={wrapper} file={file} />;
     // case 'video':
     //   return <VideoPreview file={file} fileContent={fileContent} />;
-    // case 'pdf':
-    //   return <PdfPreview file={file} fileContent={fileContent} />;
+
     // case 'xlsx':
     //   return <ExcelPreview file={file} fileContent={fileContent} />;
 
