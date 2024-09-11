@@ -1,6 +1,6 @@
 import './config.js';
 import express from 'express';
-import { Telegraf, Markup } from 'telegraf';
+import { Markup, Telegraf } from 'telegraf';
 import fs from 'fs';
 import fetch from 'node-fetch';
 import { telegrafThrottler } from 'telegraf-throttler';
@@ -12,6 +12,7 @@ import photoHandler from './handlers/photoHandler.js';
 import textHandler from './handlers/textHandler.js';
 import termsHandler from './commands/terms/index.js';
 import logger from './utils/logger.js';
+import { generateRef } from './utils/generateRef.js';
 
 const app = express();
 const bot = new Telegraf(process.env.BOT_TOKEN_SECRET, {
@@ -56,15 +57,14 @@ bot.start(async (ctx) => {
     is_premium: !!user?.is_premium,
     chat_id: ctx.chat.id.toString()
   };
-  // let userRefCode = '';
+  let userRefCode = '';
 
   // Cache userData by user.id
 
   const cachedUserData = await redisClient.get(userData.id);
 
   if (cachedUserData) {
-    // const refcode = JSON.parse(cachedUserData)?.user?.referral?.code;
-    // userRefCode = refcode;
+    userRefCode = JSON.parse(cachedUserData)?.user?.referral?.code;
   }
 
   if (!cachedUserData) {
@@ -88,7 +88,11 @@ bot.start(async (ctx) => {
         headers['Host'] = process.env.GD_BACKEND_HOST;
       }
 
-      const job = await userCreationQueue.add({
+      const code = generateRef(userData.chat_id);
+      userRefCode = code;
+      userData.code = code;
+
+      await userCreationQueue.add({
         url,
         userData,
         headers: headers
@@ -141,11 +145,11 @@ bot.start(async (ctx) => {
     'Join The Community',
     `https://t.me/ghostdrive_web3`
   );
-  // const referralLink = `https://t.me/${process.env.BOT_NAME}/ghostdrive?startapp=${userRefCode}`;
-  // const shareButton = {
-  //   text: 'Share Link',
-  //   url: `https://t.me/share/url?url=${encodeURIComponent(referralLink)}`
-  // };
+  const referralLink = `https://t.me/${process.env.BOT_NAME}/ghostdrive?startapp=${userRefCode}`;
+  const shareButton = {
+    text: 'Share Link',
+    url: `https://t.me/share/url?url=${encodeURIComponent(referralLink)}`
+  };
   try {
     await ctx.replyWithPhoto(
       { source: fs.createReadStream('./assets/start.png') },
@@ -155,8 +159,8 @@ bot.start(async (ctx) => {
         reply_markup: {
           inline_keyboard: [
             [dashboardButton],
-            [followNewsButton]
-            // [shareButton]
+            [followNewsButton],
+            [shareButton]
           ]
         }
       }
