@@ -7,6 +7,7 @@ import { toast } from 'react-toastify';
 
 import { handlePaperViewModal } from '../../../../store/reducers/modalSlice';
 import {
+  setPPVFile,
   setFileMenuFile,
   updateFileProperty
 } from '../../../../store/reducers/driveSlice';
@@ -92,6 +93,7 @@ export const FileMenu = () => {
         dispatch(setFileMenuFile({ ...file, share_file: null }));
       } else {
         dispatch(handlePaperViewModal(true));
+        dispatch(setPPVFile(file));
         dispatch(setFileMenuFile(null));
       }
       
@@ -103,6 +105,7 @@ export const FileMenu = () => {
   const onEditPPV = () => {
     dispatch(setFileMenuFile(null));
     dispatch(handlePaperViewModal(true));
+    dispatch(setPPVFile(file));
   };
 
   return (

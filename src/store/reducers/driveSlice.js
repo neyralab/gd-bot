@@ -41,7 +41,8 @@ const driveSlice = createSlice({
     fileTypesCountIsFetching: false,
     fileIsFavoriteUpdating: [], // slugs
     fileMenuFile: null,
-    storageInfo: null
+    storageInfo: null,
+    ppvFile: null,
   },
   reducers: {
     setFilesQueryData: (state, { payload }) => {
@@ -108,6 +109,9 @@ const driveSlice = createSlice({
     },
     setStorageInfo: (state, { payload }) => {
       state.storageInfo = payload;
+    },
+    setPPVFile: (state, { payload }) => {
+      state.ppvFile = payload;
     }
   }
 });
@@ -392,6 +396,7 @@ export const {
   setFiles,
   updateFileProperty,
   addFiles,
+  setPPVFile,
   areFilesLoading,
   areFilesLazyLoading,
   setUploadFileIsUploading,

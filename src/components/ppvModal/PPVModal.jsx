@@ -8,9 +8,9 @@ import {
 } from '../../store/reducers/modalSlice';
 import { selectPaymenttByKey } from '../../store/reducers/paymentSlice';
 import {
-  selecSelectedFile,
   setSelectedFile
 } from '../../store/reducers/filesSlice';
+import { setPPVFile } from '../../store/reducers/driveSlice';
 import { updateFile } from '../../store/reducers/filesSlice';
 import { makeInvoice } from '../../effects/paymentEffect';
 import { INVOICE_TYPE } from '../../utils/createStarInvoice';
@@ -32,7 +32,7 @@ const PPVModal = () => {
   const user = useSelector((state) => state.user.data);
   const [state, setState] = useState(INITIAL_STATE);
   const ppvPayment = useSelector(selectPaymenttByKey('pay_per_view'));
-  const file = useSelector(selecSelectedFile);
+  const file = useSelector((store) => store.drive.ppvFile);
   const isPPVActivated = useMemo(() => !!file?.share_file, [file?.share_file]);
 
   useEffect(() => {
@@ -47,7 +47,7 @@ const PPVModal = () => {
 
   const onClose = () => {
     dispatch(handlePaperViewModal(false));
-    dispatch(setSelectedFile({}));
+    dispatch(setPPVFile({}));
     setState(INITIAL_STATE);
   };
 
@@ -86,6 +86,7 @@ const PPVModal = () => {
     try {
       const shareId = isPPVActivated ? file.share_file.id : 0;
       const input = `${ppvPayment.Type};0;${user.id};${file.id};${shareId}`;
+    
       makeInvoice({
         input,
         dispatch,
