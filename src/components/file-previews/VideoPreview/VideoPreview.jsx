@@ -9,6 +9,8 @@ import React, {
 import ReactPlayer from 'react-player';
 import Controls from './Controls/Controls';
 import ProgressBar from './ProgressBar/ProgressBar';
+import DefaultFileTitle from '../components/DefaultFileTitle/DefaultFileTitle';
+import DefaultFileActions from '../components/DefaultFileActions/DefaultFileActions';
 import styles from './VideoPreview.module.scss';
 
 const VideoPreview = forwardRef(({ fileContent, file }, ref) => {
@@ -32,12 +34,14 @@ const VideoPreview = forwardRef(({ fileContent, file }, ref) => {
     runPreview: () => {
       setPlaying(true);
       setShowControls(false);
-      setPlayed(0)
-      playerRef.current.seekTo(0);
+      setPlayed(0);
+      playerRef?.current?.seekTo(0);
     },
     stopPreview: () => {
       setPlaying(false);
-      setShowControls(true);
+      setShowControls(false);
+      setPlayed(0);
+      playerRef?.current?.seekTo(0);
     }
   }));
 
@@ -133,6 +137,9 @@ const VideoPreview = forwardRef(({ fileContent, file }, ref) => {
         handleSeekChange={handleSeekChange}
         handleSeekMouseUp={handleSeekMouseUp}
       />
+
+      <DefaultFileTitle file={file} />
+      <DefaultFileActions file={file} />
     </div>
   );
 });
