@@ -9,6 +9,7 @@ import { handlePartners, selectPartners } from '../../store/reducers/taskSlice';
 
 import styles from './styles.module.css';
 import { runInitAnimation, runListAnimation } from './animations';
+import GhostLoader from '../../components/ghostLoader';
 
 export const GamesPage = () => {
   const dispatch = useDispatch();
@@ -19,10 +20,15 @@ export const GamesPage = () => {
 
   useEffect(() => {
     setIsLoading(true);
-    getAllPartners().then((data) => {
-      dispatch(handlePartners(data));
-      setIsLoading(false)
-    });
+    getAllPartners()
+      .then((data) => {
+        dispatch(handlePartners(data));
+        setIsLoading(false);
+      })
+      .catch((e) => {
+        setIsLoading(false);
+        console.error(e);
+      });
 
     runInitAnimation();
   }, []);
@@ -54,16 +60,24 @@ export const GamesPage = () => {
     <div className={styles.container}>
       <Header />
       <SearchInput value={search} setValue={handleChange} />
-      <ul className={styles.gameList}>
-        {list.map((item) => (
-          <Game
-            key={item.id}
-            title={item.description}
-            joinLink={item.url}
-            logo={item.logo}
-          />
-        ))}
-      </ul>
+      {isLoading && (
+        <div className={styles.loader}>
+          <GhostLoader />
+        </div>
+      )}
+
+      {!isLoading && (
+        <ul className={styles.gameList}>
+          {list.map((item) => (
+            <Game
+              key={item.id}
+              title={item.description}
+              joinLink={item.url}
+              logo={item.logo}
+            />
+          ))}
+        </ul>
+      )}
     </div>
   );
 };
