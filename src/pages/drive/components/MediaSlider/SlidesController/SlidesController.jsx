@@ -62,7 +62,11 @@ export default function SlidesController() {
         file: mediaSlider.nextFile
       }
     ]);
-  }, [mediaSlider.currentFile, mediaSlider.previousFile, mediaSlider.nextFile]);
+  }, [
+    mediaSlider.currentFile,
+    mediaSlider.previousFile,
+    mediaSlider.nextFile
+  ]);
 
   useEffect(() => {
     if (files.length && mediaSlider.currentFile && !mediaSlider.nextFile) {

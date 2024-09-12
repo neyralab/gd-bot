@@ -77,6 +77,32 @@ const driveSlice = createSlice({
       if (fileIndex !== -1) {
         state.files[fileIndex][property] = value;
       }
+
+      if (
+        state.mediaSlider.currentFile &&
+        state.mediaSlider.currentFile.id === id
+      ) {
+        state.mediaSlider.currentFile[property] = value;
+      }
+
+      if (state.mediaSlider.nextFile && state.mediaSlider.nextFile.id === id) {
+        state.mediaSlider.nextFile[property] = value;
+      }
+
+      if (
+        state.mediaSlider.previousFile &&
+        state.mediaSlider.previousFile.id === id
+      ) {
+        state.mediaSlider.previousFile[property] = value;
+      }
+
+      if (state.fileMenuModal && state.fileMenuModal.id === id) {
+        state.fileMenuModal[property] = value;
+      }
+
+      if (state.fileInfoModal && state.fileInfoModal.id === id) {
+        state.fileInfoModal[property] = value;
+      }
     },
 
     addFiles: (state, { payload }) => {

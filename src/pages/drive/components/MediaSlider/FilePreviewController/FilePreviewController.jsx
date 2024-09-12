@@ -57,7 +57,7 @@ const FilePreviewController = ({ file }) => {
     } else {
       playablePreview?.current?.stopPreview();
     }
-  }, [fileContent, file.id, loading, mediaSliderCurrentFile]);
+  }, [fileContent, file.id, loading, mediaSliderCurrentFile.id]);
 
   const getContent = () => {
     /** Pay attention, that this function DOES NOT fetch content of the file

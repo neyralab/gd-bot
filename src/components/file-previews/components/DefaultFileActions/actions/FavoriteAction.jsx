@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import classNames from 'classnames';
 import { ReactComponent as FavIcon } from '../../../../../assets/like.svg';
 import { vibrate } from '../../../../../utils/vibration';
@@ -14,6 +14,10 @@ export default function FavoriteAction({ file, onFavoriteClick }) {
     onFavoriteClick?.(file);
     setIsActive(!isActive);
   };
+
+  useEffect(() => {
+    setIsActive(file?.user_favorites?.length > 0);
+  }, [file]);
 
   return (
     <div
