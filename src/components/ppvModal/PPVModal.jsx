@@ -7,11 +7,7 @@ import {
   handlePaperViewModal
 } from '../../store/reducers/modalSlice';
 import { selectPaymenttByKey } from '../../store/reducers/paymentSlice';
-import {
-  setSelectedFile
-} from '../../store/reducers/filesSlice';
-import { setPPVFile } from '../../store/reducers/driveSlice';
-import { updateFile } from '../../store/reducers/filesSlice';
+import { setPPVFile, updateFileProperty } from '../../store/reducers/driveSlice';
 import { makeInvoice } from '../../effects/paymentEffect';
 import { INVOICE_TYPE } from '../../utils/createStarInvoice';
 import { sleep } from '../../utils/sleep';
@@ -68,7 +64,12 @@ const PPVModal = () => {
         if (res.data) {
           const shareObj = { ...res.data };
           delete shareObj.file;
-          dispatch(updateFile({ ...file, share_file: shareObj }));
+
+          dispatch(updateFileProperty({
+            id: file.id,
+            property: 'share_file',
+            value: shareObj
+          }));
           setTimeout(() => {
             setIsProccess(false);
             onClose();

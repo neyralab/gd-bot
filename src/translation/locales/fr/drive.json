@@ -36,7 +36,15 @@
     "preview": "Aperçu",
     "saveError": "Échec de l'enregistrement du fichier dans le stockage. Veuillez réessayer ou contacter le support si le problème persiste.",
     "saveSuccess": "Le fichier a été enregistré avec succès dans le stockage.",
-    "fileAbsent": "Le fichier est absent"
+    "fileAbsent": "Le fichier est absent",
+    "successReport": "Votre rapport a été soumis avec succès. Merci de nous aider à maintenir une communauté sûre et respectueuse.",
+    "failReport": "Votre rapport n'a pas pu être soumis. Veuillez réessayer plus tard ou vérifier votre connexion Internet.",
+    "copyright": "Violation de droits d'auteur",
+    "spam": "Spam",
+    "violence": "Violence ou contenu dangereux",
+    "other": "Autre",
+    "enterReport": "Entrez votre rapport..",
+    "report": "Signaler"
   },
   "month": {
     "jan": "Janv",

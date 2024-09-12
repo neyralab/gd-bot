@@ -36,7 +36,15 @@
     "preview": "Pré-visualização",
     "saveError": "Falha ao salvar o arquivo no armazenamento. Por favor, tente novamente ou entre em contato com o suporte se o problema persistir.",
     "saveSuccess": "O arquivo foi salvo com sucesso no armazenamento.",
-    "fileAbsent": "O arquivo está ausente"
+    "fileAbsent": "O arquivo está ausente",
+    "successReport": "Seu relatório foi enviado com sucesso. Obrigado por nos ajudar a manter uma comunidade segura e respeitosa.",
+    "failReport": "Não foi possível enviar seu relatório. Tente novamente mais tarde ou verifique sua conexão com a internet.",
+    "copyright": "Violação de direitos autorais",
+    "spam": "Spam",
+    "violence": "Violência ou conteúdo perigoso",
+    "other": "Outro",
+    "enterReport": "Digite seu relatório..",
+    "report": "Relatório"
   },
   "month": {
     "jan": "janeiro",

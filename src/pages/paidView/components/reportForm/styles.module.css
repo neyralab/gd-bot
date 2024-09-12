@@ -1,0 +1,145 @@
+.container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 16px;
+}
+
+.content {
+  display: flex;
+  margin-top: 16px;
+  flex-direction: column;
+  height: 100%;
+}
+
+.form {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  color: #fff;
+  padding: 0;
+  margin: 30px 0 0 0;
+  height: 100%;
+}
+
+.radioGroup {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-bottom: 20px;
+  gap: 14px;
+}
+
+.radioOption input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+}
+
+.radioOption {
+  display: inline-block;
+  position: relative;
+  padding-left: 35px;
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  font-family: 'SF Pro Text';
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 21px;
+  letter-spacing: 0.01em;
+}
+
+.radioOption input[type="radio"]:checked + .customRadio {
+  border: 2px solid #007bff;
+}
+
+.radioOption input[type="radio"]:checked + .customRadio:before {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 20px;
+  height: 20px;
+  background-color: transparent;
+  border-radius: 50%;
+}
+
+.radioOption input[type="radio"]:checked + .customRadio::after {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 10px;
+  height: 10px;
+  background-color: #0A7AFF;
+  border-radius: 50%;
+}
+
+.customRadio {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 20px;
+  width: 20px;
+  border: 2px solid #333;
+  border-radius: 50%;
+  transition: border-color 0.2s ease;
+}
+
+.radioOption:hover input[type="radio"] + .customRadio {
+  border-color: #007bff;
+}
+
+.areaContainer {
+  margin-top: 8px;
+}
+
+.areaLabel {
+  font-family: 'SF Pro Text';
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 21px;
+  letter-spacing: 0.01em;
+  color: #ffffff70;
+  margin-bottom: 4px;
+}
+
+.textArea {
+  width: 100%;
+  height: 100px;
+  margin-bottom: 20px;
+  padding: 10px;
+  border-radius: 5px;
+  border: 0.5px solid #FFFFFF4D;
+  background-color: #1B1B1B;
+  color: #fff;
+}
+
+.submitButton {
+  height: 48px;
+  min-height: 48px;
+  font-family: 'SF Pro Text';
+  font-size: 21px;
+  font-weight: 600;
+  line-height: 31.5px;
+  background-color: #FFFFFF;
+  border: none;
+  border-radius: 8px;
+  width: 100%;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 4px 16px 7px 16px;
+}
+

@@ -22,6 +22,7 @@ import GoldPlayModal from './GoldPlayModal/GoldPlayModal';
 import GameModal from './GameModal/GameModal';
 import SystemModalWrapper from './SystemModalWrapper/SystemModalWrapper';
 import MainButton from './MainButton/MainButton';
+import AdvertisementOfferModal from './AdvertisementOfferModal/AdvertisementOfferModal';
 import AdvertisementPlayModal from './AdvertisementPlayModal/AdvertisementPlayModal';
 import styles from './styles.module.css';
 
@@ -113,6 +114,8 @@ export function GamePage() {
       <GoldPlayModal />
 
       <GameModal />
+
+      <AdvertisementOfferModal />
 
       <AdvertisementPlayModal />
 

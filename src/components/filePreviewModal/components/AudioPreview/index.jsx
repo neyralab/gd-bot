@@ -21,7 +21,7 @@ const CircleAudioPlayer = ({ file, wrapper }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
   const [ipfsAudio, setIpfsAudio] = useState('');
-  const radius = useMemo(() => (window.innerWidth - 40) / 2, []); // Радіус прогрес-бару
+  const [radius, setRadius] = useState(0);
   const circumference = useMemo(() => 2 * Math.PI * radius, [radius]); // Довжина окружності
 
   const handlePlayPause = useCallback(() => {
@@ -84,10 +84,23 @@ const CircleAudioPlayer = ({ file, wrapper }) => {
     }
   }, [wrapper]);
 
+  useEffect(() => {
+    const updateRadius = () => {
+      const newRadius = (window.innerWidth - 40) / 2;
+      setRadius(newRadius);
+    };
+
+    updateRadius();
+
+    window.addEventListener('resize', updateRadius);
+    return () => window.removeEventListener('resize', updateRadius);
+  }, []);
+
   const onFinish = useCallback(() => {
     setIsPlaying(false);
     setProgress(0);
   }, []);
+
   return (
     <div className={styles['player-container']}>
       <div className={styles['circle-audio-player']}>
