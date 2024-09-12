@@ -62,6 +62,11 @@ const FilePreviewController = ({ file }) => {
   }, [fileContent, file.id, loading, mediaSliderCurrentFile]);
 
   const getContent = () => {
+    /** Pay attention, that this function DOES NOT fetch content of the file
+     * It tries to get it from cache
+     * Fetching content happens when it's the turn to get the content for a particular file.
+     * This logic is needed for slider to work better.
+     */
     setLoading(true);
     setFileContent(null);
     setPreviewFileType(null);
@@ -132,7 +137,6 @@ const FilePreviewController = ({ file }) => {
           return;
         }
 
-        const url = URL.createObjectURL(realBlob);
         setFileContent(realBlob);
         setPreviewFileType(getPreviewFileType(file, realBlob));
         setLoading(false);

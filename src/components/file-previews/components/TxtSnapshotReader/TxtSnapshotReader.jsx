@@ -1,0 +1,35 @@
+import React, { useEffect, useState } from 'react';
+import styles from './TxtSnapshotReader.module.scss';
+
+export default function TxtSnapshotReader({ fileContent }) {
+  const [textContent, setTextContent] = useState('');
+
+  useEffect(() => {
+    console.log('rerender')
+    const readBlobContent = async () => {
+      try {
+        const response = await fetch(fileContent);
+        const blob = await response.blob();
+        const reader = new FileReader();
+
+        reader.onload = () => {
+          setTextContent(reader.result);
+        };
+
+        reader.readAsText(blob);
+      } catch (error) {
+        console.error('Error fetching blob content:', error);
+      }
+    };
+
+    if (fileContent) {
+      readBlobContent();
+    }
+  }, [fileContent]);
+
+  return (
+    <div className={styles.container}>
+      <pre>{textContent}</pre>
+    </div>
+  );
+}

@@ -1,0 +1,33 @@
+.player-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  background-color: black;
+}
+
+.player-background {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background-image: url(/assets/audio-preview.png);
+  background-size: cover;
+  background-position: center center;
+  opacity: 0.5;
+}
+
+.circle-audio-player {
+  width: 100%;
+  position: relative;
+  border-radius: 50%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: white;
+  -webkit-tap-highlight-color: transparent;
+}

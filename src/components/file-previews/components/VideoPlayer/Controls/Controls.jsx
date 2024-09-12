@@ -1,8 +1,8 @@
 import React from 'react';
-import { ReactComponent as ForwardIcon } from '../../../../assets/forward_10.svg';
-import { ReactComponent as RewindIcon } from '../../../../assets/replay_10.svg';
-import { ReactComponent as PauseIcon } from '../../../../assets/pause.svg';
-import { ReactComponent as PlayIcon } from '../../../../assets/play-player.svg';
+import { ReactComponent as ForwardIcon } from '../../../../../assets/forward_10.svg';
+import { ReactComponent as RewindIcon } from '../../../../../assets/replay_10.svg';
+import { ReactComponent as PauseIcon } from '../../../../../assets/pause.svg';
+import { ReactComponent as PlayIcon } from '../../../../../assets/play-player.svg';
 import styles from './Controls.module.scss';
 
 const Controls = ({
