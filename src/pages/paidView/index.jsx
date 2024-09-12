@@ -54,13 +54,18 @@ export const PaidView = () => {
   const [fullscreen, setFullscreen] = useState(false);
   const [step, setStep] = useState(STEPS.preview);
   const { id } = useParams();
-  const allowPreview = useMemo(() => (step !== STEPS.Preview ), [step]);
+  const allowPreview = useMemo(() => (step !== STEPS.preview ), [step]);
 
   useEffect(() => {
     const init = async () => {
       try {
         const data = await getPaidShareFileEffect(addSlugHyphens(id));
         // const fileStat = await getFileStarStatistic(data?.data?.file?.slug);
+
+        if (!data.data) {
+          toast.error(t('ppv.fileAbsent'), { position: 'top-center'  })
+          return;
+        }
         const shareFile = { ...data?.data };
         delete shareFile.file;
         setFile({ ...data?.data?.file, payShare: shareFile });
