@@ -126,11 +126,16 @@ export const uploadFileEffect = async ({
             }
           );
         } else {
-          toast.error(getResponseError(e), {
-            theme: 'colored',
-            position: 'bottom-center',
-            autoClose: 5000
-          });
+          // Temporary handler for logging undefined result errors specifically for the new gateway
+          if (e?.message?.includes('Cannot read properties of undefined')) {
+            console.error(e);
+          } else {
+            toast.error(getResponseError(e), {
+              theme: 'colored',
+              position: 'bottom-center',
+              autoClose: 5000
+            });
+          }
         }
       }
     };
