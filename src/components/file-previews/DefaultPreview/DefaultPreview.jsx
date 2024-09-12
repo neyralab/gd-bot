@@ -4,7 +4,13 @@ import DefaultFileActions from '../components/DefaultFileActions/DefaultFileActi
 import DefaultFileTitle from '../components/DefaultFileTitle/DefaultFileTitle';
 import styles from './DefaultPreview.module.scss';
 
-const DefaultPreview = ({ file, text = '' }) => {
+const DefaultPreview = ({
+  mode = 'default',
+  file,
+  text = '',
+  onFavoriteClick,
+  onInfoClick
+}) => {
   const color = useMemo(() => {
     return file.color?.length > 0
       ? file.color[file.color.length - 1].hex
@@ -22,8 +28,16 @@ const DefaultPreview = ({ file, text = '' }) => {
         <div>{text || 'Preview is unavailable'}</div>
       </div>
 
-      <DefaultFileTitle file={file} />
-      <DefaultFileActions file={file} />
+      {mode === 'default' && (
+        <>
+          <DefaultFileTitle file={file} />
+          <DefaultFileActions
+            file={file}
+            onFavoriteClick={onFavoriteClick}
+            onInfoClick={onInfoClick}
+          />
+        </>
+      )}
     </>
   );
 };

@@ -11,136 +11,140 @@ import Controls from './Controls/Controls';
 import ProgressBar from './ProgressBar/ProgressBar';
 import styles from './VideoPlayer.module.scss';
 
-const VideoPlayer = forwardRef(({ fileContent }, ref) => {
-  const playerRef = useRef(null);
-  const [playing, setPlaying] = useState(false);
-  const [showControls, setShowControls] = useState(true);
-  const [seeking, setSeeking] = useState(false);
-  const [played, setPlayed] = useState(0);
-  const [url, setUrl] = useState(null);
+const VideoPlayer = forwardRef(
+  ({ fileContent, fileContentType = 'blob' }, ref) => {
+    const playerRef = useRef(null);
+    const [playing, setPlaying] = useState(false);
+    const [showControls, setShowControls] = useState(true);
+    const [seeking, setSeeking] = useState(false);
+    const [played, setPlayed] = useState(0);
+    const [url, setUrl] = useState(null);
 
-  useEffect(() => {
-    const blobUrl = URL.createObjectURL(fileContent);
-    setUrl(blobUrl);
+    useEffect(() => {
+      if (fileContentType === 'blob') {
+        const blobUrl = URL.createObjectURL(fileContent);
+        setUrl(blobUrl);
+      }
 
-    return () => {
-      URL.revokeObjectURL(blobUrl);
+      if (fileContentType === 'url') {
+        setUrl(fileContent);
+      }
+    }, [fileContent]);
+
+    useImperativeHandle(ref, () => ({
+      runPreview: () => {
+        setPlaying(true);
+        setShowControls(false);
+        setPlayed(0);
+        if (playerRef.current) {
+          playerRef.current.seekTo(0);
+        }
+      },
+      stopPreview: () => {
+        setPlaying(false);
+        setShowControls(false);
+        setPlayed(0);
+        if (playerRef.current) {
+          playerRef.current.seekTo(0);
+        }
+      }
+    }));
+
+    const handleFastForward = () => {
+      const player = playerRef.current;
+      if (player) {
+        player.seekTo(player.getCurrentTime() + 10);
+      }
     };
-  }, [fileContent]);
 
-  useImperativeHandle(ref, () => ({
-    runPreview: () => {
-      setPlaying(true);
-      setShowControls(false);
-      setPlayed(0);
-      if (playerRef.current) {
-        playerRef.current.seekTo(0);
+    const handleRewind = () => {
+      const player = playerRef.current;
+      if (player) {
+        player.seekTo(player.getCurrentTime() - 10);
       }
-    },
-    stopPreview: () => {
-      setPlaying(false);
-      setShowControls(false);
-      setPlayed(0);
-      if (playerRef.current) {
-        playerRef.current.seekTo(0);
+    };
+
+    const handlePlayPause = () => {
+      setPlaying(!playing);
+      if (!playing) {
+        setShowControls(false);
       }
-    }
-  }));
+    };
 
-  const handleFastForward = () => {
-    const player = playerRef.current;
-    if (player) {
-      player.seekTo(player.getCurrentTime() + 10);
-    }
-  };
+    const handleProgress = (state) => {
+      if (!seeking) {
+        setPlayed(state.played);
+      }
+    };
 
-  const handleRewind = () => {
-    const player = playerRef.current;
-    if (player) {
-      player.seekTo(player.getCurrentTime() - 10);
-    }
-  };
-
-  const handlePlayPause = () => {
-    setPlaying(!playing);
-    if (!playing) {
-      setShowControls(false);
-    }
-  };
-
-  const handleProgress = (state) => {
-    if (!seeking) {
-      setPlayed(state.played);
-    }
-  };
-
-  const handleEnded = () => {
-    setPlaying(false);
-    setShowControls(true);
-  };
-
-  const toggleControlsVisibility = () => {
-    if (playing) {
+    const handleEnded = () => {
       setPlaying(false);
-    }
+      setShowControls(true);
+    };
 
-    setShowControls(!showControls);
-  };
+    const toggleControlsVisibility = () => {
+      if (playing) {
+        setPlaying(false);
+      }
 
-  const handleSeek = useCallback((e) => {
-    const bounds = progressRef.current.getBoundingClientRect();
-    const seekPosition = (e.clientX - bounds.left) / bounds.width;
-    playerRef.current.seekTo(seekPosition);
-  }, []);
+      setShowControls(!showControls);
+    };
 
-  const handleSeekMouseDown = () => setSeeking(true);
+    const handleSeek = useCallback((e) => {
+      const bounds = progressRef.current.getBoundingClientRect();
+      const seekPosition = (e.clientX - bounds.left) / bounds.width;
+      playerRef.current.seekTo(seekPosition);
+    }, []);
 
-  const handleSeekChange = (e) => {
-    const value = parseFloat(e.target.value);
-    setPlayed(value);
-    playerRef.current.seekTo(value, 'fraction');
-  };
+    const handleSeekMouseDown = () => setSeeking(true);
 
-  const handleSeekMouseUp = () => setSeeking(false);
+    const handleSeekChange = (e) => {
+      const value = parseFloat(e.target.value);
+      setPlayed(value);
+      playerRef.current.seekTo(value, 'fraction');
+    };
 
-  return (
-    <div className={styles.container}>
-      {url && (
-        <div
-          className={styles['video-wrapper']}
-          onClick={toggleControlsVisibility}>
-          <ReactPlayer
-            ref={playerRef}
-            url={url}
+    const handleSeekMouseUp = () => setSeeking(false);
+
+    return (
+      <div className={styles.container}>
+        {url && (
+          <div
+            className={styles['video-wrapper']}
+            onClick={toggleControlsVisibility}>
+            <ReactPlayer
+              ref={playerRef}
+              url={url}
+              playing={playing}
+              controls={false}
+              className={styles.player}
+              width={'100%'}
+              height={'100%'}
+              onProgress={handleProgress}
+              onEnded={handleEnded}
+            />
+          </div>
+        )}
+
+        {showControls && (
+          <Controls
             playing={playing}
-            controls={false}
-            className={styles.player}
-            width={'100%'}
-            height={'100%'}
-            onProgress={handleProgress}
-            onEnded={handleEnded}
+            handlePlayPause={handlePlayPause}
+            handleFastForward={handleFastForward}
+            handleRewind={handleRewind}
           />
-        </div>
-      )}
+        )}
 
-      {showControls && (
-        <Controls
-          playing={playing}
-          handlePlayPause={handlePlayPause}
-          handleFastForward={handleFastForward}
-          handleRewind={handleRewind}
+        <ProgressBar
+          played={played}
+          handleSeek={handleSeek}
+          handleSeekMouseDown={handleSeekMouseDown}
+          handleSeekChange={handleSeekChange}
+          handleSeekMouseUp={handleSeekMouseUp}
         />
-      )}
-
-      <ProgressBar
-        played={played}
-        handleSeek={handleSeek}
-        handleSeekMouseDown={handleSeekMouseDown}
-        handleSeekChange={handleSeekChange}
-        handleSeekMouseUp={handleSeekMouseUp}
-      />
-    </div>
-  );
-});
+      </div>
+    );
+  }
+);
 
 export default VideoPlayer;

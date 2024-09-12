@@ -1,18 +1,14 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
 import { ReactComponent as InfoIcon } from '../../../../../assets/info2.svg';
-import { setFileInfoModal } from '../../../../../store/reducers/driveSlice';
 import { vibrate } from '../../../../../utils/vibration';
 import { animateButton } from '../animations';
 import styles from '../DefaultFileActions.module.scss';
 
-export default function InfoAction({ file }) {
-  const dispatch = useDispatch();
-
+export default function InfoAction({ file, onInfoClick }) {
   const clickHandler = (e) => {
     vibrate();
     animateButton(e.currentTarget);
-    dispatch(setFileInfoModal(file));
+    onInfoClick?.(file);
   };
 
   return (

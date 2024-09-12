@@ -1,13 +1,18 @@
 import { useEffect, useRef, useState } from 'react';
 import styles from './ImageReader.module.scss';
 
-export default function ImageReader({ fileContent }) {
-  const [url, setUrl] = useState(URL.createObjectURL(fileContent));
+export default function ImageReader({ fileContent, fileContentType = 'blob' }) {
+  const [url, setUrl] = useState();
   const isSvg = file.extension === 'svg';
   const svgRef = useRef(null);
 
   useEffect(() => {
-    setUrl(URL.createObjectURL(fileContent));
+    if (fileContentType === 'blob') {
+      setUrl(URL.createObjectURL(fileContent));
+    }
+    if (fileContentType === 'url') {
+      setUrl(fileContent);
+    }
   }, [fileContent]);
 
   useEffect(() => {

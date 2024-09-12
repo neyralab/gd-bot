@@ -5,7 +5,13 @@ import DefaultFileActions from '../components/DefaultFileActions/DefaultFileActi
 import PdfSnapshotReader from '../components/PdfSnapshotReader/PdfSnapshotReader';
 import styles from './PdfPreview.module.scss';
 
-const PdfPreview = ({ file, fileContent }) => {
+const PdfPreview = ({
+  mode = 'default',
+  file,
+  fileContent,
+  onFavoriteClick,
+  onInfoClick
+}) => {
   const [pageNumber, setPageNumber] = useState(1);
   const [numPages, setNumPages] = useState(null);
 
@@ -36,8 +42,16 @@ const PdfPreview = ({ file, fileContent }) => {
         pageNumber={pageNumber}
       />
 
-      <DefaultFileTitle file={file} />
-      <DefaultFileActions file={file} />
+      {mode === 'default' && (
+        <>
+          <DefaultFileTitle file={file} />
+          <DefaultFileActions
+            file={file}
+            onFavoriteClick={onFavoriteClick}
+            onInfoClick={onInfoClick}
+          />
+        </>
+      )}
     </div>
   );
 };

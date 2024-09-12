@@ -4,30 +4,54 @@ import DefaultFileActions from '../components/DefaultFileActions/DefaultFileActi
 import VideoPlayer from '../components/VideoPlayer/VideoPlayer';
 import styles from './VideoPreview.module.scss';
 
-const VideoPreview = forwardRef(({ fileContent, file }, ref) => {
-  const playerRef = useRef(null);
-
-  useImperativeHandle(ref, () => ({
-    runPreview: () => {
-      if (playerRef.current) {
-        playerRef.current.runPreview();
-      }
+const VideoPreview = forwardRef(
+  (
+    {
+      mode = 'default',
+      fileContentType = 'blob',
+      fileContent,
+      file,
+      onFavoriteClick,
+      onInfoClick
     },
-    stopPreview: () => {
-      if (playerRef.current) {
-        playerRef.current.stopPreview();
+    ref
+  ) => {
+    const playerRef = useRef(null);
+
+    useImperativeHandle(ref, () => ({
+      runPreview: () => {
+        if (playerRef.current) {
+          playerRef.current.runPreview();
+        }
+      },
+      stopPreview: () => {
+        if (playerRef.current) {
+          playerRef.current.stopPreview();
+        }
       }
-    }
-  }));
+    }));
 
-  return (
-    <div className={styles.container}>
-      <VideoPlayer ref={playerRef} fileContent={fileContent} />
+    return (
+      <div className={styles.container}>
+        <VideoPlayer
+          fileContentType={fileContentType}
+          ref={playerRef}
+          fileContent={fileContent}
+        />
 
-      <DefaultFileTitle file={file} />
-      <DefaultFileActions file={file} />
-    </div>
-  );
-});
+        {mode === 'default' && (
+          <>
+            <DefaultFileTitle file={file} />
+            <DefaultFileActions
+              file={file}
+              onFavoriteClick={onFavoriteClick}
+              onInfoClick={onInfoClick}
+            />
+          </>
+        )}
+      </div>
+    );
+  }
+);
 
 export default VideoPreview;

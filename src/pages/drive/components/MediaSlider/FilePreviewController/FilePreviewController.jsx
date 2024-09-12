@@ -1,23 +1,21 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { downloadFile } from 'gdgateway-client';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getPreviewFileType } from '../../../../../utils/preview';
 import { sendFileViewStatistic } from '../../../../../effects/file/statisticEfect';
 import { getFileCids } from '../../../../../effects/file/getFileCid';
 import { getDownloadOTT } from '../../../../../effects/filesEffects';
 import { useMediaSliderCache } from '../MediaSliderCache';
-import LoadingPreview from '../../../../../components/file-previews/LoadingPreview/LoadingPreview';
-import DefaultPreview from '../../../../../components/file-previews/DefaultPreview/DefaultPreview';
-import ImagePreview from '../../../../../components/file-previews/ImagePreview/ImagePreview';
-import TxtPreview from '../../../../../components/file-previews/TxtPreview/TxtPreview';
-import PdfPreview from '../../../../../components/file-previews/PdfPreview/PdfPreview';
-import VideoPreview from '../../../../../components/file-previews/VideoPreview/VideoPreview';
-import ExcelPreview from '../../../../../components/file-previews/ExcelPreview/ExcelPreview';
-import AudioPreview from '../../../../../components/file-previews/AudioPreview/AudioPreview';
+import PreviewSwitcher from '../../../../../components/file-previews/PreviewSwitcher/PreviewSwitcher';
+import {
+  setFileInfoModal,
+  toggleFileFavorite
+} from '../../../../../store/reducers/driveSlice';
 
 const ESCAPE_CONTENT_DOWNLOAD = ['audio', 'encrypt'];
 
 const FilePreviewController = ({ file }) => {
+  const dispatch = useDispatch();
   const { getCache, setCacheItem } = useMediaSliderCache();
   const mediaSliderFileContentTurn = useSelector(
     (state) => state.drive.mediaSliderFileContentTurn
@@ -150,38 +148,25 @@ const FilePreviewController = ({ file }) => {
     }
   };
 
-  if (loading) {
-    return <LoadingPreview file={file} />;
-  }
+  const onFavoriteClick = (file) => {
+    dispatch(toggleFileFavorite({ slug: file.slug }));
+  };
 
-  switch (previewFileType) {
-    case 'img':
-      return <ImagePreview file={file} fileContent={fileContent} />;
+  const onInfoClick = (file) => {
+    dispatch(setFileInfoModal(file));
+  };
 
-    case 'video':
-      return (
-        <VideoPreview
-          ref={playablePreview}
-          file={file}
-          fileContent={fileContent}
-        />
-      );
-
-    case 'audio':
-      return <AudioPreview ref={playablePreview} file={file} />;
-
-    case 'txt':
-      return <TxtPreview file={file} fileContent={fileContent} />;
-
-    case 'pdf':
-      return <PdfPreview file={file} fileContent={fileContent} />;
-
-    case 'xlsx':
-      return <ExcelPreview file={file} fileContent={fileContent} />;
-
-    default:
-      return <DefaultPreview file={file} />;
-  }
+  return (
+    <PreviewSwitcher
+      ref={playablePreview}
+      loading={loading}
+      previewFileType={previewFileType}
+      file={file}
+      fileContent={fileContent}
+      onFavoriteClick={onFavoriteClick}
+      onInfoClick={onInfoClick}
+    />
+  );
 };
 
 export default FilePreviewController;
