@@ -1,0 +1,35 @@
+.controls {
+  position: absolute;
+  top: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 10px;
+  border-radius: 50%;
+  background-image: url(/assets/audio-preview.png);
+  background-size: cover;
+  z-index: 1;
+}
+
+.circle-audio-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  background: #00000066;
+  border: 1px solid;
+  border-image-source: linear-gradient(
+    180deg,
+    rgba(0, 201, 229, 0.44717) 0%,
+    rgba(30, 253, 253, 0.0001) 103.74%
+  );
+  cursor: pointer;
+  border-radius: 50%;
+}
+
+.circle-audio-play-button {
+  width: 80px;
+  height: 80px;
+}

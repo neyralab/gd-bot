@@ -13,8 +13,7 @@ import TxtPreview from '../../../../../components/file-previews/TxtPreview/TxtPr
 import PdfPreview from '../../../../../components/file-previews/PdfPreview/PdfPreview';
 import VideoPreview from '../../../../../components/file-previews/VideoPreview/VideoPreview';
 import ExcelPreview from '../../../../../components/file-previews/ExcelPreview/ExcelPreview';
-// import AudioPreview from '../../../../../components/filePreviewModal/components/AudioPreview';
-// import VideoPreview from '../../../../../components/filePreviewModal/previewContent/VideoPreview';
+import AudioPreview from '../../../../../components/file-previews/AudioPreview/AudioPreview';
 
 const ESCAPE_CONTENT_DOWNLOAD = ['audio', 'encrypt'];
 
@@ -36,15 +35,22 @@ const FilePreviewController = ({ file }) => {
   }, [file.slug]);
 
   useEffect(() => {
-    /** Upload content only if it's the files turn */
-    if (mediaSliderFileContentTurn === file.id && !fileContent) {
+    /** Upload content only if it's the files turn
+     * AND the content should/can be downloaded (streams should not)
+     */
+    if (
+      mediaSliderFileContentTurn === file.id &&
+      !fileContent &&
+      previewFileType &&
+      !ESCAPE_CONTENT_DOWNLOAD.includes(previewFileType)
+    ) {
       fetchContent();
     }
-  }, [mediaSliderFileContentTurn]);
+  }, [mediaSliderFileContentTurn, previewFileType]);
 
   useEffect(() => {
     if (
-      fileContent &&
+      previewFileType &&
       !loading &&
       mediaSliderCurrentFile &&
       mediaSliderCurrentFile.id === file.id
@@ -60,8 +66,9 @@ const FilePreviewController = ({ file }) => {
     setFileContent(null);
     setPreviewFileType(null);
 
-    const canPreview = getPreviewFileType(file, '   ');
-    if (canPreview && !ESCAPE_CONTENT_DOWNLOAD.includes(canPreview)) {
+    const fileType = getPreviewFileType(file, false, true);
+    setPreviewFileType(fileType);
+    if (fileType && !ESCAPE_CONTENT_DOWNLOAD.includes(fileType)) {
       const cache = getCache(file.id);
 
       if (cache) {
@@ -69,6 +76,8 @@ const FilePreviewController = ({ file }) => {
         setPreviewFileType(getPreviewFileType(file, cache));
         setLoading(false);
       }
+    } else {
+      setLoading(false);
     }
   };
 
@@ -144,10 +153,7 @@ const FilePreviewController = ({ file }) => {
   switch (previewFileType) {
     case 'img':
       return <ImagePreview file={file} fileContent={fileContent} />;
-    case 'txt':
-      return <TxtPreview file={file} fileContent={fileContent} />;
-    case 'pdf':
-      return <PdfPreview file={file} fileContent={fileContent} />;
+
     case 'video':
       return (
         <VideoPreview
@@ -156,13 +162,18 @@ const FilePreviewController = ({ file }) => {
           fileContent={fileContent}
         />
       );
+
+    case 'audio':
+      return <AudioPreview ref={playablePreview} file={file} />;
+
+    case 'txt':
+      return <TxtPreview file={file} fileContent={fileContent} />;
+
+    case 'pdf':
+      return <PdfPreview file={file} fileContent={fileContent} />;
+
     case 'xlsx':
       return <ExcelPreview file={file} fileContent={fileContent} />;
-
-    // case 'audio':
-    //   return <AudioPreview wrapper={wrapper} file={file} />;
-    // case 'xlsx':
-    //   return <ExcelPreview file={file} fileContent={fileContent} />;
 
     default:
       return <DefaultPreview file={file} />;
