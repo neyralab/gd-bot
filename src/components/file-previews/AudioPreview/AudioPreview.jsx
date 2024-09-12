@@ -5,7 +5,17 @@ import AudioPlayer from '../components/AudioPlayer/AudioPlayer';
 import styles from './AudioPreview.module.scss';
 
 const AudioPreview = forwardRef(
-  ({ mode = 'default', file, onFavoriteClick, onInfoClick }, ref) => {
+  (
+    {
+      mode = 'default',
+      file,
+      fileContent,
+      fileContentType,
+      onFavoriteClick,
+      onInfoClick
+    },
+    ref
+  ) => {
     const audioRef = useRef(null);
 
     useImperativeHandle(ref, () => ({
@@ -26,8 +36,8 @@ const AudioPreview = forwardRef(
         <AudioPlayer
           ref={audioRef}
           file={file}
-          fileContent={{ slug: file.slug }}
-          fileContentType={'stream'}
+          fileContent={fileContent}
+          fileContentType={fileContentType}
         />
 
         {mode === 'default' && (
