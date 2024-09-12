@@ -217,6 +217,7 @@ export const uploadFile = createAsyncThunk(
 
       await uploadFileEffect({
         files,
+        dispatch,
         afterFileUploadCallback,
         onUploadProgress: (progress) =>
           dispatch(setUploadFileProgress(progress)) // onUploadProgress is not supported yet
