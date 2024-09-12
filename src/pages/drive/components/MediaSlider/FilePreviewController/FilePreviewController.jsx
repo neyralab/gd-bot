@@ -12,9 +12,9 @@ import ImagePreview from '../../../../../components/file-previews/ImagePreview/I
 import TxtPreview from '../../../../../components/file-previews/TxtPreview/TxtPreview';
 import PdfPreview from '../../../../../components/file-previews/PdfPreview/PdfPreview';
 import VideoPreview from '../../../../../components/file-previews/VideoPreview/VideoPreview';
+import ExcelPreview from '../../../../../components/file-previews/ExcelPreview/ExcelPreview';
 // import AudioPreview from '../../../../../components/filePreviewModal/components/AudioPreview';
 // import VideoPreview from '../../../../../components/filePreviewModal/previewContent/VideoPreview';
-// import ExcelPreview from '../../../../../components/filePreviewModal/previewContent/ExcelPreview';
 
 const ESCAPE_CONTENT_DOWNLOAD = ['audio', 'encrypt'];
 
@@ -156,6 +156,8 @@ const FilePreviewController = ({ file }) => {
           fileContent={fileContent}
         />
       );
+    case 'xlsx':
+      return <ExcelPreview file={file} fileContent={fileContent} />;
 
     // case 'audio':
     //   return <AudioPreview wrapper={wrapper} file={file} />;

@@ -116,7 +116,7 @@ const PdfPreview = ({ file, fileContent }) => {
         </Document>
       </div>
 
-      <div className={styles['non-action-overlay']}></div>
+      <div className={styles['no-action-overlay']}></div>
 
       <DefaultFileTitle file={file} />
       <DefaultFileActions file={file} />
