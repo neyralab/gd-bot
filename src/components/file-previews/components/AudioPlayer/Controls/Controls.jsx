@@ -2,12 +2,14 @@ import React from 'react';
 import classNames from 'classnames';
 import { ReactComponent as ForwardIcon } from '../../../../../assets/forward.svg';
 import { ReactComponent as RewindIcon } from '../../../../../assets/rewind.svg';
-import { ReactComponent as PLayIcon } from '../../../../../assets/play-player.svg';
+import { ReactComponent as PlayIcon } from '../../../../../assets/play-player.svg';
 import { ReactComponent as PauseIcon } from '../../../../../assets/pause.svg';
+import Loader2 from '../../../../Loader2/Loader2';
 import styles from './Controls.module.scss';
 
 export default function Controls({
   isPlaying,
+  isLoading,
   radius,
   handlePlayPause,
   handleRewind,
@@ -24,14 +26,27 @@ export default function Controls({
         <RewindIcon />
       </button>
 
-      <button
-        className={classNames(
-          styles['circle-audio-button'],
-          styles['circle-audio-play-button']
-        )}
-        onClick={handlePlayPause}>
-        {isPlaying ? <PauseIcon /> : <PLayIcon />}
-      </button>
+      {isLoading && (
+        <button
+          className={classNames(
+            styles['circle-audio-button'],
+            styles['circle-audio-loader-button']
+          )}
+          onClick={handlePlayPause}>
+          <Loader2 />
+        </button>
+      )}
+
+      {!isLoading && (
+        <button
+          className={classNames(
+            styles['circle-audio-button'],
+            styles['circle-audio-play-button']
+          )}
+          onClick={handlePlayPause}>
+          {isPlaying ? <PauseIcon /> : <PlayIcon />}
+        </button>
+      )}
 
       <button className={styles['circle-audio-button']} onClick={handleForward}>
         <ForwardIcon />

@@ -5,7 +5,6 @@ export default function TxtSnapshotReader({ fileContent }) {
   const [textContent, setTextContent] = useState('');
 
   useEffect(() => {
-    console.log('rerender')
     const readBlobContent = async () => {
       try {
         const response = await fetch(fileContent);

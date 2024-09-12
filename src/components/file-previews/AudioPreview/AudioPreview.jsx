@@ -23,7 +23,12 @@ const AudioPreview = forwardRef(
 
     return (
       <div className={styles.container}>
-        <AudioPlayer ref={audioRef} file={file} />
+        <AudioPlayer
+          ref={audioRef}
+          file={file}
+          fileContent={{ slug: file.slug }}
+          fileContentType={'stream'}
+        />
 
         {mode === 'default' && (
           <>
