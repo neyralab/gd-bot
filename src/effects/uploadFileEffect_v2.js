@@ -12,7 +12,12 @@ import { imagesWithoutPreview } from '../config/image-file-extensions';
 import { videoWithoutThumbnail } from '../config/video-file-extensions';
 import { getResponseError } from '../utils/string';
 
-export const uploadFileEffect = async ({ files, dispatch, afterFileUploadCallback, onUploadProgress }) => {
+export const uploadFileEffect = async ({
+  files,
+  dispatch,
+  afterFileUploadCallback,
+  onUploadProgress
+}) => {
   let progresses = {};
 
   for (let i = 0; i < files.length; i++) {
@@ -31,7 +36,7 @@ export const uploadFileEffect = async ({ files, dispatch, afterFileUploadCallbac
           {
             filesize: file.size,
             filename: file.name,
-            isPublic: true,
+            isPublic: true
           }
         ]);
         const oneTimeToken = user_token[0].token;
@@ -41,7 +46,7 @@ export const uploadFileEffect = async ({ files, dispatch, afterFileUploadCallbac
 
         const callback = ({ type, params }) => {
           if (handlers.includes(type)) {
-            callbackstype;
+            callbacks[type]({ ...params, dispatch });
           } else {
             console.error(`Handler "${type}" isn't provided`);
           }
@@ -65,7 +70,7 @@ export const uploadFileEffect = async ({ files, dispatch, afterFileUploadCallbac
           progress: progresses[file?.folderData?.uploadId],
           totalSize: file?.folderSize,
           startedAt: file?.startedAt,
-          jwtOneTimeToken,
+          jwtOneTimeToken
         });
 
         const uploadedFile = result?.data?.data;
@@ -74,7 +79,7 @@ export const uploadFileEffect = async ({ files, dispatch, afterFileUploadCallbac
             uploadedFile?.mime.startsWith('image') &&
             !imagesWithoutPreview.includes(`.${uploadedFile?.extension}`)
           ) {
-            thumbnail = await getThumbnailImage({
+            const thumbnail = await getThumbnailImage({
               file,
               quality: 3,
               oneTimeToken,
@@ -86,7 +91,7 @@ export const uploadFileEffect = async ({ files, dispatch, afterFileUploadCallbac
             uploadedFile?.mime.startsWith('video') &&
             !videoWithoutThumbnail.includes(uploadedFile?.extension)
           ) {
-            thumbnail = await getThumbnailVideo({
+            const thumbnail = await getThumbnailVideo({
               file,
               quality: 3,
               oneTimeToken,
@@ -121,13 +126,11 @@ export const uploadFileEffect = async ({ files, dispatch, afterFileUploadCallbac
             }
           );
         } else {
-          toast.error(getResponseError(e),
-            {
-              theme: 'colored',
-              position: 'bottom-center',
-              autoClose: 5000
-            }
-          );
+          toast.error(getResponseError(e), {
+            theme: 'colored',
+            position: 'bottom-center',
+            autoClose: 5000
+          });
         }
       }
     };
