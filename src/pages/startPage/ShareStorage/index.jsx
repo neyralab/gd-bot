@@ -8,7 +8,7 @@ import styles from './styles.module.css';
 
 const snapPoints = {
   gift: [420, 420, 50, 0],
-  form: [280, 280, 0, 0]
+  form: [294, 294, 0, 0]
 }
 
 const ShareStorage = ({ isOpen, onClose, systemModalRef, giftToken }) => {
