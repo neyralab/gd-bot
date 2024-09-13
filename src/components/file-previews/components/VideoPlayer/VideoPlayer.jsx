@@ -7,8 +7,11 @@ import React, {
   forwardRef
 } from 'react';
 import ReactPlayer from 'react-player';
+import { toast } from 'react-toastify';
+import { createStreamEffect } from '../../../../effects/filesEffects';
 import Controls from './Controls/Controls';
 import ProgressBar from './ProgressBar/ProgressBar';
+import Loader2 from '../../../Loader2/Loader2';
 import styles from './VideoPlayer.module.scss';
 
 const VideoPlayer = forwardRef(
@@ -19,6 +22,7 @@ const VideoPlayer = forwardRef(
     const [seeking, setSeeking] = useState(false);
     const [played, setPlayed] = useState(0);
     const [url, setUrl] = useState(null);
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
       if (fileContentType === 'blob') {
@@ -29,7 +33,20 @@ const VideoPlayer = forwardRef(
       if (fileContentType === 'url') {
         setUrl(fileContent);
       }
-    }, [fileContent]);
+
+      if (fileContentType === 'stream' && !isLoading) {
+        setIsLoading(true);
+        createStreamEffect(fileContent.slug)
+          .then((data) => {
+            setUrl(data);
+            setIsLoading(false);
+          })
+          .catch(() => {
+            setIsLoading(false);
+            toast.error('Sorry, something went wrong. Please try again later');
+          });
+      }
+    }, [fileContent, fileContentType]);
 
     useImperativeHandle(ref, () => ({
       runPreview: () => {
@@ -108,7 +125,7 @@ const VideoPlayer = forwardRef(
 
     return (
       <div className={styles.container}>
-        {url && (
+        {url && !isLoading && (
           <div
             className={styles['video-wrapper']}
             onClick={toggleControlsVisibility}>
@@ -122,7 +139,15 @@ const VideoPlayer = forwardRef(
               height={'100%'}
               onProgress={handleProgress}
               onEnded={handleEnded}
+              key={url}
+              forceload={'true'}
             />
+          </div>
+        )}
+
+        {isLoading && (
+          <div className={styles['loading-container']}>
+            <Loader2 />
           </div>
         )}
 

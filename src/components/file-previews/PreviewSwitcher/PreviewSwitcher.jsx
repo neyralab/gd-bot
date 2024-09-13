@@ -60,8 +60,8 @@ const PreviewSwitcher = forwardRef(
             mode={mode}
             ref={playerRef}
             file={file}
-            fileContent={fileContent}
-            fileContentType="blob"
+            fileContent={{ slug: file.slug }}
+            fileContentType="stream"
             onFavoriteClick={onFavoriteClick}
             onInfoClick={onInfoClick}
           />

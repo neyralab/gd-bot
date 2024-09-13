@@ -12,7 +12,7 @@ import {
   toggleFileFavorite
 } from '../../../../../store/reducers/driveSlice';
 
-const ESCAPE_CONTENT_DOWNLOAD = ['audio', 'encrypt'];
+const ESCAPE_CONTENT_DOWNLOAD = ['audio', 'encrypt', 'video'];
 
 const FilePreviewController = ({ file, onExpand }) => {
   const dispatch = useDispatch();
