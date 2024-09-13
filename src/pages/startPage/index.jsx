@@ -238,7 +238,7 @@ export const StartPage = ({ tariffs }) => {
   return (
     <div ref={wrapperRef} className={`${style.container}`}>
       <Banner
-        storageSize={transformSize(user.space_total)}
+        storageSize={user.space_total}
         onOpenShareModal={onOpenShareModal}
         data-animation="start-page-animation-2"
       />
