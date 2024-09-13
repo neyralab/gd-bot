@@ -1,6 +1,9 @@
+import { useState } from 'react';
 import DefaultFileTitle from '../components/DefaultFileTitle/DefaultFileTitle';
 import DefaultFileActions from '../components/DefaultFileActions/DefaultFileActions';
-import ExcelSnapshotReader from '../components/ExcelSnapshotReader/ExcelSnapshotReader';
+import ExcelReader from '../components/ExcelReader/ExceReader';
+import ExpandFileButton from '../components/ExpandFileButton/ExpandFileButton';
+import ExpandedFileHeader from '../components/ExpandedFileHeader/ExpandedFileHeader';
 import styles from './ExcelPreview.module.scss';
 
 const ExcelPreview = ({
@@ -8,13 +11,32 @@ const ExcelPreview = ({
   file,
   fileContent,
   onFavoriteClick,
-  onInfoClick
+  onInfoClick,
+  onExpand
 }) => {
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  const onExpandClick = () => {
+    setIsExpanded(true);
+    onExpand?.(true);
+  };
+
+  const onExpandedFileClose = () => {
+    setIsExpanded(false);
+    onExpand?.(false);
+  };
+
   return (
     <div className={styles.container}>
-      <ExcelSnapshotReader fileContent={fileContent} />
+      <ExcelReader
+        mode={isExpanded ? 'default' : 'simplified'}
+        fileContent={fileContent}
+      />
 
-      {mode === 'default' && (
+      {!isExpanded && <ExpandFileButton onExpandClick={onExpandClick} />}
+      {isExpanded && <ExpandedFileHeader onClose={onExpandedFileClose} />}
+
+      {mode === 'default' && !isExpanded && (
         <>
           <DefaultFileTitle file={file} />
           <DefaultFileActions

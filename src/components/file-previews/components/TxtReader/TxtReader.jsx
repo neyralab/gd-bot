@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
+import classNames from 'classnames';
 import styles from './TxtReader.module.scss';
 
-export default function TxtReader({ fileContent }) {
+export default function TxtReader({ mode = 'default', fileContent }) {
   const [textContent, setTextContent] = useState('');
 
   useEffect(() => {
@@ -27,7 +28,11 @@ export default function TxtReader({ fileContent }) {
   }, [fileContent]);
 
   return (
-    <div className={styles.container}>
+    <div
+      className={classNames(
+        styles.container,
+        mode === 'simplified' && styles.simplified
+      )}>
       <pre>{textContent}</pre>
     </div>
   );

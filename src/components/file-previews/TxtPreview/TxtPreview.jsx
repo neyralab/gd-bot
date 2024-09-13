@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import DefaultFileTitle from '../components/DefaultFileTitle/DefaultFileTitle';
 import DefaultFileActions from '../components/DefaultFileActions/DefaultFileActions';
-import TxtSnapshotReader from '../components/TxtSnapshotReader/TxtSnapshotReader';
 import TxtReader from '../components/TxtReader/TxtReader';
 import ExpandFileButton from '../components/ExpandFileButton/ExpandFileButton';
 import ExpandedFileHeader from '../components/ExpandedFileHeader/ExpandedFileHeader';
@@ -29,8 +28,10 @@ const TxtPreview = ({
 
   return (
     <div className={styles.container}>
-      {!isExpanded && <TxtSnapshotReader fileContent={fileContent} />}
-      {isExpanded && <TxtReader fileContent={fileContent} />}
+      <TxtReader
+        mode={isExpanded ? 'default' : 'simplified'}
+        fileContent={fileContent}
+      />
 
       {!isExpanded && <ExpandFileButton onExpandClick={onExpandClick} />}
       {isExpanded && <ExpandedFileHeader onClose={onExpandedFileClose} />}

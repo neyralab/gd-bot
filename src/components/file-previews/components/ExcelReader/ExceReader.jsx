@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
 import { read, utils } from 'xlsx';
-import styles from './ExcelSnapshotReader.module.scss';
+import classNames from 'classnames';
+import styles from './ExcelReader.module.scss';
 
-export default function ExcelSnapshotReader({ fileContent }) {
+export default function ExcelReader({ mode = 'default', fileContent }) {
   const [htmlString, setHtmlString] = useState('');
 
   useEffect(() => {
@@ -25,11 +26,17 @@ export default function ExcelSnapshotReader({ fileContent }) {
 
   return (
     <div className={styles.container}>
-      <div className={styles['excel-viewer']}>
+      <div
+        className={classNames(
+          styles['excel-viewer'],
+          mode === 'simplified' && styles.simplified
+        )}>
         <div dangerouslySetInnerHTML={{ __html: htmlString }} />
       </div>
 
-      <div className={styles['no-action-overlay']}></div>
+      {mode === 'simplified' && (
+        <div className={styles['no-action-overlay']}></div>
+      )}
     </div>
   );
 }
