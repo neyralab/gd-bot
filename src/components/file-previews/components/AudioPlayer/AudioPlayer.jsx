@@ -22,7 +22,7 @@ const AudioPlayer = forwardRef(
     const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
-      if (fileContentType === 'stream') {
+      if (fileContentType === 'stream' && !isLoading) {
         setIsLoading(true);
         createStreamEffect(fileContent.slug)
           .then((data) => {
@@ -34,7 +34,7 @@ const AudioPlayer = forwardRef(
             toast.error('Sorry, something went wrong. Please try again later');
           });
       }
-    }, [fileContentType, fileContent]);
+    }, [fileContentType, fileContent.slug]);
 
     useEffect(() => {
       const updateRadius = () => {
