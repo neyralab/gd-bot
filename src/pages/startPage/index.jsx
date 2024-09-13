@@ -46,7 +46,7 @@ export const StartPage = ({ tariffs }) => {
   const wrapperRef = useRef(null);
   const { t } = useTranslation('system');
   const [tasks, setTasks] = useState([]);
-  const [showShareModal, setShowShareModal] = useState(true);
+  const [showShareModal, setShowShareModal] = useState(false);
   const [notifications, setNotifications] = useState(initialNotificationState);
   const [disconnectWalletModal, setDisconnectWalletModal] = useState(false);
   const allWorkspaces = useSelector(selectAllWorkspaces);
