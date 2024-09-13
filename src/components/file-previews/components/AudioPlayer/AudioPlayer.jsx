@@ -13,7 +13,7 @@ import ProgressBar from './ProgressBar/ProgressBar';
 import styles from './AudioPlayer.module.scss';
 
 const AudioPlayer = forwardRef(
-  ({ file, fileContentType = 'stream', fileContent }, ref) => {
+  ({ fileContentType = 'stream', fileContent }, ref) => {
     const audioRef = useRef(null);
     const [isPlaying, setIsPlaying] = useState(false);
     const [progress, setProgress] = useState(0);
@@ -34,7 +34,7 @@ const AudioPlayer = forwardRef(
             toast.error('Sorry, something went wrong. Please try again later');
           });
       }
-    }, [file.id]);
+    }, [fileContentType, fileContent]);
 
     useEffect(() => {
       const updateRadius = () => {
