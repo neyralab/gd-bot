@@ -14,7 +14,7 @@ import {
 
 const ESCAPE_CONTENT_DOWNLOAD = ['audio', 'encrypt'];
 
-const FilePreviewController = ({ file }) => {
+const FilePreviewController = ({ file, onExpand }) => {
   const dispatch = useDispatch();
   const { getCache, setCacheItem } = useMediaSliderCache();
   const mediaSliderFileContentTurn = useSelector(
@@ -165,6 +165,7 @@ const FilePreviewController = ({ file }) => {
       fileContent={fileContent}
       onFavoriteClick={onFavoriteClick}
       onInfoClick={onInfoClick}
+      onExpand={onExpand}
     />
   );
 };

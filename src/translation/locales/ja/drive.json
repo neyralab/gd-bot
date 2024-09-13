@@ -46,6 +46,9 @@
     "enterReport": "報告内容を入力してください..",
     "report": "報告"
   },
+  "files": {
+    "expandFile": "リーダーで開く"
+  },
   "month": {
     "jan": "1月",
     "feb": "2月",

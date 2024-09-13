@@ -17,7 +17,8 @@ const PreviewSwitcher = forwardRef(
       file,
       fileContent,
       onFavoriteClick,
-      onInfoClick
+      onInfoClick,
+      onExpand
     },
     ref
   ) => {
@@ -47,7 +48,7 @@ const PreviewSwitcher = forwardRef(
             mode={mode}
             file={file}
             fileContent={fileContent}
-            fileContentType='blob'
+            fileContentType="blob"
             onFavoriteClick={onFavoriteClick}
             onInfoClick={onInfoClick}
           />
@@ -60,7 +61,7 @@ const PreviewSwitcher = forwardRef(
             ref={playerRef}
             file={file}
             fileContent={fileContent}
-            fileContentType='blob'
+            fileContentType="blob"
             onFavoriteClick={onFavoriteClick}
             onInfoClick={onInfoClick}
           />
@@ -73,7 +74,7 @@ const PreviewSwitcher = forwardRef(
             ref={playerRef}
             file={file}
             fileContent={{ slug: file.slug }}
-            fileContentType='stream'
+            fileContentType="stream"
             onFavoriteClick={onFavoriteClick}
             onInfoClick={onInfoClick}
           />
@@ -85,9 +86,10 @@ const PreviewSwitcher = forwardRef(
             mode={mode}
             file={file}
             fileContent={fileContent}
-            fileContentType='blob'
+            fileContentType="blob"
             onFavoriteClick={onFavoriteClick}
             onInfoClick={onInfoClick}
+            onExpand={onExpand}
           />
         );
 
@@ -97,7 +99,7 @@ const PreviewSwitcher = forwardRef(
             mode={mode}
             file={file}
             fileContent={fileContent}
-            fileContentType='blob'
+            fileContentType="blob"
             onFavoriteClick={onFavoriteClick}
             onInfoClick={onInfoClick}
           />
@@ -109,9 +111,10 @@ const PreviewSwitcher = forwardRef(
             mode={mode}
             file={file}
             fileContent={fileContent}
-            fileContentType='blob'
+            fileContentType="blob"
             onFavoriteClick={onFavoriteClick}
             onInfoClick={onInfoClick}
+            onExpand={onExpand}
           />
         );
 

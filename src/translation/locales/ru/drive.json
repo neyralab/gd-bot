@@ -46,6 +46,9 @@
     "enterReport": "Введите ваш отчет..",
     "report": "Отчет"
   },
+  "files": {
+    "expandFile": "Раскрыть файл"
+  },
   "month": {
     "jan": "Янв",
     "feb": "Фев",

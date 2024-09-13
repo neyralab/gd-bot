@@ -46,6 +46,9 @@
     "enterReport": "Digite seu relatório..",
     "report": "Relatório"
   },
+  "files": {
+    "expandFile": "Abrir no Leitor"
+  },
   "month": {
     "jan": "janeiro",
     "feb": "fevereiro",

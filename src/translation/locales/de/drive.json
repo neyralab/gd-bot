@@ -46,6 +46,9 @@
     "enterReport": "Geben Sie Ihren Bericht ein..",
     "report": "Bericht"
   },
+  "files": {
+    "expandFile": "Im Reader öffnen"
+  },
   "month": {
     "jan": "Jan",
     "feb": "Feb",

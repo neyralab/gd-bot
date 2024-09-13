@@ -46,6 +46,9 @@
     "enterReport": "Nhập báo cáo của bạn..",
     "report": "Báo cáo"
   },
+  "files": {
+    "expandFile": "Tải xuống hình ảnh"
+  },
   "month": {
     "jan": "Tháng 1",
     "feb": "Tháng 2",

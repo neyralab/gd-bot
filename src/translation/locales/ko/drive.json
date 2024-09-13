@@ -46,6 +46,9 @@
     "enterReport": "신고 내용을 입력하십시오..",
     "report": "신고"
   },
+  "files": {
+    "expandFile": "리더에서 열기"
+  },
   "month": {
     "jan": "1월",
     "feb": "2월",

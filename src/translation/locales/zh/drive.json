@@ -46,6 +46,9 @@
     "enterReport": "输入您的报告..",
     "report": "举报"
   },
+  "files": {
+    "expandFile": "删除照片"
+  },
   "month": {
     "jan": "一月",
     "feb": "二月",

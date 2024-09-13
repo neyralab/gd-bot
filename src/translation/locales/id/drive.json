@@ -46,6 +46,9 @@
     "enterReport": "Masukkan laporan Anda..",
     "report": "Laporkan"
   },
+  "files": {
+    "expandFile": "Buka di Pembaca"
+  },
   "month": {
     "jan": "Januari",
     "feb": "Februari",

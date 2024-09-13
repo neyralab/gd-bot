@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import styles from './TxtSnapshotReader.module.scss';
+import styles from './TxtReader.module.scss';
 
-/** TxtSnapshotReader is minified non-scrollable version of TxtReader */
-export default function TxtSnapshotReader({ fileContent }) {
+export default function TxtReader({ fileContent }) {
   const [textContent, setTextContent] = useState('');
 
   useEffect(() => {

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useSwipeable } from 'react-swipeable';
 import { gsap } from 'gsap';
@@ -29,7 +29,7 @@ import styles from './SlidesController.module.scss';
  * React.memo on Slide component and keys ARE CRUSIAL. If you remove them, you will always reload the same component every time you swipe, causing rerender and refetching
  * */
 
-export default function SlidesController() {
+export default function SlidesController({ onExpand }) {
   const dispatch = useDispatch();
   const mediaSlider = useSelector((state) => state.drive.mediaSlider);
   const files = useSelector((state) => state.drive.files);
@@ -41,6 +41,7 @@ export default function SlidesController() {
   const { cache, getCache } = useMediaSliderCache();
   const [slides, setSlides] = useState([]);
   const [isSliding, setIsSliding] = useState(false);
+  const [canSlide, setCanSlide] = useState(true);
   const slidesRef = useRef(null);
 
   useEffect(() => {
@@ -62,11 +63,7 @@ export default function SlidesController() {
         file: mediaSlider.nextFile
       }
     ]);
-  }, [
-    mediaSlider.currentFile,
-    mediaSlider.previousFile,
-    mediaSlider.nextFile
-  ]);
+  }, [mediaSlider.currentFile, mediaSlider.previousFile, mediaSlider.nextFile]);
 
   useEffect(() => {
     if (files.length && mediaSlider.currentFile && !mediaSlider.nextFile) {
@@ -130,7 +127,7 @@ export default function SlidesController() {
   });
 
   const animateSlidesDown = () => {
-    if (isSliding) return;
+    if (isSliding || !canSlide) return;
     setIsSliding(true);
 
     if (mediaSlider.nextFile) {
@@ -168,7 +165,7 @@ export default function SlidesController() {
   };
 
   const animateSlidesUp = () => {
-    if (isSliding) return;
+    if (isSliding || !canSlide) return;
     setIsSliding(true);
 
     if (mediaSlider.previousFile) {
@@ -199,11 +196,16 @@ export default function SlidesController() {
     }
   };
 
+  const onExpandHandler = useCallback((status) => {
+    setCanSlide(!status);
+    onExpand?.(status);
+  }, []);
+
   return (
     <div className={styles.container} {...handlers}>
       <div className={styles['slide-list']} ref={slidesRef}>
         {slides.map((el) => (
-          <Slide key={el.key} file={el.file} id={el.key} />
+          <Slide key={el.key} file={el.file} id={el.key} onExpand={onExpandHandler} />
         ))}
       </div>
     </div>
