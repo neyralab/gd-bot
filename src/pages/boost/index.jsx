@@ -33,7 +33,7 @@ import { runInitAnimation } from './animations';
 
 import styles from './styles.module.css';
 
-const available_tariffs = {
+export const available_tariffs = {
   '1GB': 1073741824,
   '100GB': 107374182400,
   '1TB': 1099511627776,

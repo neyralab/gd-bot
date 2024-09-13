@@ -46,7 +46,7 @@ export const StartPage = ({ tariffs }) => {
   const wrapperRef = useRef(null);
   const { t } = useTranslation('system');
   const [tasks, setTasks] = useState([]);
-  const [showShareModal, setShowShareModal] = useState(false);
+  const [showShareModal, setShowShareModal] = useState(true);
   const [notifications, setNotifications] = useState(initialNotificationState);
   const [disconnectWalletModal, setDisconnectWalletModal] = useState(false);
   const allWorkspaces = useSelector(selectAllWorkspaces);
@@ -238,7 +238,7 @@ export const StartPage = ({ tariffs }) => {
   return (
     <div ref={wrapperRef} className={`${style.container}`}>
       <Banner
-        storageSize={transformSize(user.space_total)}
+        storageSize={user.space_total}
         onOpenShareModal={onOpenShareModal}
         data-animation="start-page-animation-2"
       />
