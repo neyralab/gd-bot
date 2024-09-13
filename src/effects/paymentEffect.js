@@ -83,7 +83,7 @@ export const makeInvoice = async ({ input, dispatch, callback, type, theme }) =>
     const invoiceInput = createInvoice({
       type: type,
       additionalData: {
-        mult: theme.multiplier,
+        mult: theme?.multiplier,
         price: theme.stars,
         payload: base64String,
       }
