@@ -7,19 +7,49 @@ import React, {
   forwardRef
 } from 'react';
 import { toast } from 'react-toastify';
-import { createStreamEffect } from '../../../../effects/filesEffects';
+import {
+  createStreamEffect,
+  getFilePreviewEffect
+} from '../../../../effects/filesEffects';
 import Controls from './Controls/Controls';
 import ProgressBar from './ProgressBar/ProgressBar';
 import styles from './AudioPlayer.module.scss';
 
 const AudioPlayer = forwardRef(
-  ({ fileContentType = 'stream', fileContent, filePreviewImage }, ref) => {
+  (
+    {
+      fileContentType = 'stream',
+      fileContent,
+      usePreviewImage = true
+    },
+    ref
+  ) => {
     const audioRef = useRef(null);
     const [isPlaying, setIsPlaying] = useState(false);
     const [progress, setProgress] = useState(0);
     const [ipfsAudio, setIpfsAudio] = useState('');
     const [radius, setRadius] = useState(0);
     const [isLoading, setIsLoading] = useState(false);
+    const [filePreviewImage, setFilePreviewImage] = useState(null);
+
+    useEffect(() => {
+      if (usePreviewImage) {
+        fetchPreview();
+      }
+    }, []);
+
+    const fetchPreview = async () => {
+      try {
+        const preview = await getFilePreviewEffect(
+          file.slug,
+          null,
+          file.extension
+        );
+        setFilePreviewImage(preview);
+      } catch (e) {
+        setFilePreviewImage(null);
+      }
+    };
 
     useEffect(() => {
       if (fileContentType === 'stream' && !isLoading) {
