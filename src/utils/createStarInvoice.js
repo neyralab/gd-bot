@@ -3,7 +3,8 @@ import { isDevEnv } from '../utils/isDevEnv';
 const INVOICE_TYPE = {
   boost: 'boost',
   game: 'game',
-  ppv: 'ppv'
+  ppv: 'ppv',
+  spin: 'spin'
 }
 
 const defPayload = ''
@@ -41,6 +42,18 @@ const createInvoice = ({ type, additionalData }) => {
       prices: [
         {
           label: `Ghost Drive Pay per View`,
+          amount: additionalData.price
+        }
+      ],
+    }
+  } else if (type === INVOICE_TYPE.ppv) {
+    return {
+      title: 'Ghost Drive Spin Game',
+      description: 'Enables payment processing for the Spin feature.',
+      payload: additionalData.payload || defPayload,
+      prices: [
+        {
+          label: `Ghost Drive Spin Game`,
           amount: additionalData.price
         }
       ],

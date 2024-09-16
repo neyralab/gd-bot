@@ -7,7 +7,7 @@ import ShareForm from './ShareForm';
 import styles from './styles.module.css';
 
 const snapPoints = {
-  gift: [420, 420, 50, 0],
+  gift: [470, 470, 50, 0],
   form: [294, 294, 0, 0]
 }
 
