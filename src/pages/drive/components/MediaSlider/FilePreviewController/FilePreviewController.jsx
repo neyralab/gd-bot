@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { downloadFile } from 'gdgateway-client';
 import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 import { getPreviewFileType } from '../../../../../utils/preview';
 import { sendFileViewStatistic } from '../../../../../effects/file/statisticEfect';
 import { getFileCids } from '../../../../../effects/file/getFileCid';
@@ -9,33 +10,32 @@ import {
   getDownloadOTT,
   getFilePreviewEffect
 } from '../../../../../effects/filesEffects';
-// import { useMediaSliderCache } from '../MediaSliderCache';
+import { useMediaSliderCache } from '../MediaSliderCache';
 import PreviewSwitcher from '../../../../../components/file-previews/PreviewSwitcher/PreviewSwitcher';
 import {
   setFileInfoModal,
   toggleFileFavorite
 } from '../../../../../store/reducers/driveSlice';
-import { toast } from 'react-toastify';
 
 const USE_STREAM_URL = ['audio', 'video'];
 const USE_PREVIEW_IMG = ['audio'];
 
 const FilePreviewController = ({ file, onExpand }) => {
   const dispatch = useDispatch();
-  // const { getCache, setCacheItem } = useMediaSliderCache();
+  const { getCache, setCacheItem } = useMediaSliderCache();
   const mediaSliderCurrentFile = useSelector(
     (state) => state.drive.mediaSlider.currentFile
   );
   const [loading, setLoading] = useState(true);
   const [fileContent, setFileContent] = useState(null);
   const [filePreviewImage, setFilePreviewImage] = useState(false);
-  const [filePrevieImageIsLoading, setFilePreviewImageIsLoading] =
-    useState(false);
   const [previewFileType, setPreviewFileType] = useState(null);
   const playablePreview = useRef(null);
 
   useEffect(() => {
-    getContent();
+    if (file.slug) {
+      getContent();
+    }
   }, [file.slug]);
 
   useEffect(() => {
@@ -61,26 +61,28 @@ const FilePreviewController = ({ file, onExpand }) => {
 
     if (!fileContent && fileType) {
       if (USE_STREAM_URL.includes(fileType)) {
-        fetchStreamContent();
+        fetchStreamContent(fileType);
       } else {
-        fetchBlobContent();
-      }
-
-      if (USE_PREVIEW_IMG.includes(fileType)) {
-        fetchPreviewImage();
+        fetchBlobContent(fileType);
       }
     }
   };
 
-  const fetchBlobContent = async () => {
+  const fetchBlobContent = async (fileType) => {
     setLoading(true);
 
+    const promises = [
+      sendFileViewStatistic(file.slug),
+      getFileCids({ slug: file.slug }),
+      getDownloadOTT([{ slug: file.slug }])
+    ];
+    if (USE_PREVIEW_IMG.includes(fileType)) {
+      promises.push(getFilePreviewEffect(file.slug, null, file.extension));
+    }
+
     try {
-      const [_, cidData, downloadOTTResponse] = await Promise.all([
-        sendFileViewStatistic(file.slug),
-        getFileCids({ slug: file.slug }),
-        getDownloadOTT([{ slug: file.slug }])
-      ]);
+      const [_, cidData, downloadOTTResponse, preview] =
+        await Promise.all(promises);
 
       const {
         data: {
@@ -104,8 +106,8 @@ const FilePreviewController = ({ file, onExpand }) => {
 
       if (blob) {
         const realBlob = new Blob([blob]);
-
         setFileContent(realBlob);
+        setFilePreviewImage(preview || null);
         setPreviewFileType(getPreviewFileType(file, realBlob));
         setLoading(false);
         return;
@@ -113,40 +115,32 @@ const FilePreviewController = ({ file, onExpand }) => {
     } catch (error) {
       setLoading(false);
       setFileContent(null);
+      setFilePreviewImage(null);
       setPreviewFileType(null);
-      toast.error('Sorry, something went wrong. Please try again later 1');
+      toast.error('Sorry, something went wrong. Please try again later');
     }
   };
 
-  const fetchStreamContent = () => {
+  const fetchStreamContent = async (fileType) => {
     setLoading(true);
 
-    createStreamEffect(file.slug)
-      .then((data) => {
-        setFileContent(data);
-        setLoading(false);
-      })
-      .catch(() => {
-        setLoading(false);
-        setFileContent(null);
-        setPreviewFileType(null);
-        toast.error('Sorry, something went wrong. Please try again later 2');
-      });
-  };
+    const promises = [createStreamEffect(file.slug)];
+    if (USE_PREVIEW_IMG.includes(fileType)) {
+      promises.push(getFilePreviewEffect(file.slug, null, file.extension));
+    }
 
-  const fetchPreviewImage = () => {
-    setFilePreviewImageIsLoading(true);
-
-    getFilePreviewEffect(file.slug, null, file.extension)
-      .then((preview) => {
-        setFilePreviewImage(preview);
-        setFilePreviewImageIsLoading(false);
-      })
-      .catch((e) => {
-        console.log(e);
-        setFilePreviewImage(null);
-        etFilePreviewImageIsLoading(false);
-      });
+    try {
+      const [streamData, preview] = await Promise.all(promises);
+      setFileContent(streamData);
+      setFilePreviewImage(preview || null);
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      setFileContent(null);
+      setFilePreviewImage(null);
+      setPreviewFileType(null);
+      toast.error('Sorry, something went wrong. Please try again later');
+    }
   };
 
   const onFavoriteClick = (file) => {
@@ -160,7 +154,7 @@ const FilePreviewController = ({ file, onExpand }) => {
   return (
     <PreviewSwitcher
       ref={playablePreview}
-      loading={loading || filePrevieImageIsLoading}
+      loading={loading}
       previewFileType={previewFileType}
       file={file}
       fileContent={fileContent}
