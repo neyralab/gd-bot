@@ -187,12 +187,8 @@ export const StartPage = ({ tariffs }) => {
             text: t('share.tryAgain'),
             onClick: async () => {
               try {
-                await storageSendEffect({
-                  storage: parseSizeToBytes(size),
-                  username: name.replace('@', '')
-                });
-                await readNotification(item.id);
                 systemModalRef.current.close();
+                onOpenShareModal();
               } catch (error) {
                 systemModalRef.current.close();
               }
