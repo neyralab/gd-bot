@@ -4,22 +4,24 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getPreviewFileType } from '../../../../../utils/preview';
 import { sendFileViewStatistic } from '../../../../../effects/file/statisticEfect';
 import { getFileCids } from '../../../../../effects/file/getFileCid';
-import { getDownloadOTT } from '../../../../../effects/filesEffects';
-import { useMediaSliderCache } from '../MediaSliderCache';
+import {
+  createStreamEffect,
+  getDownloadOTT
+} from '../../../../../effects/filesEffects';
+// import { useMediaSliderCache } from '../MediaSliderCache';
 import PreviewSwitcher from '../../../../../components/file-previews/PreviewSwitcher/PreviewSwitcher';
 import {
   setFileInfoModal,
   toggleFileFavorite
 } from '../../../../../store/reducers/driveSlice';
+import { toast } from 'react-toastify';
 
-const ESCAPE_CONTENT_DOWNLOAD = ['audio', 'encrypt', 'video'];
+const USE_STREAM_URL = ['audio', 'video'];
+const USE_PREVIEW_IMG = ['audio'];
 
 const FilePreviewController = ({ file, onExpand }) => {
   const dispatch = useDispatch();
-  const { getCache, setCacheItem } = useMediaSliderCache();
-  const mediaSliderFileContentTurn = useSelector(
-    (state) => state.drive.mediaSliderFileContentTurn
-  );
+  // const { getCache, setCacheItem } = useMediaSliderCache();
   const mediaSliderCurrentFile = useSelector(
     (state) => state.drive.mediaSlider.currentFile
   );
@@ -31,20 +33,6 @@ const FilePreviewController = ({ file, onExpand }) => {
   useEffect(() => {
     getContent();
   }, [file.slug]);
-
-  useEffect(() => {
-    /** Upload content only if it's the files turn
-     * AND the content should/can be downloaded (streams should not)
-     */
-    if (
-      mediaSliderFileContentTurn === file.id &&
-      !fileContent &&
-      previewFileType &&
-      !ESCAPE_CONTENT_DOWNLOAD.includes(previewFileType)
-    ) {
-      fetchContent();
-    }
-  }, [mediaSliderFileContentTurn, previewFileType]);
 
   useEffect(() => {
     if (
@@ -60,31 +48,23 @@ const FilePreviewController = ({ file, onExpand }) => {
   }, [fileContent, file.id, loading, mediaSliderCurrentFile.id]);
 
   const getContent = () => {
-    /** Pay attention, that this function DOES NOT fetch content of the file
-     * It tries to get it from cache
-     * Fetching content happens when it's the turn to get the content for a particular file.
-     * This logic is needed for slider to work better.
-     */
     setLoading(true);
     setFileContent(null);
     setPreviewFileType(null);
 
     const fileType = getPreviewFileType(file, false, true);
     setPreviewFileType(fileType);
-    if (fileType && !ESCAPE_CONTENT_DOWNLOAD.includes(fileType)) {
-      const cache = getCache(file.id);
 
-      if (cache) {
-        setFileContent(cache);
-        setPreviewFileType(getPreviewFileType(file, cache));
-        setLoading(false);
+    if (!fileContent && fileType) {
+      if (USE_STREAM_URL.includes(fileType)) {
+        fetchStreamContent();
+      } else {
+        fetchBlobContent();
       }
-    } else {
-      setLoading(false);
     }
   };
 
-  const fetchContent = async () => {
+  const fetchBlobContent = async () => {
     setLoading(true);
 
     try {
@@ -116,7 +96,6 @@ const FilePreviewController = ({ file, onExpand }) => {
 
       if (blob) {
         const realBlob = new Blob([blob]);
-        setCacheItem(file.id, realBlob);
 
         setFileContent(realBlob);
         setPreviewFileType(getPreviewFileType(file, realBlob));
@@ -127,8 +106,24 @@ const FilePreviewController = ({ file, onExpand }) => {
       setLoading(false);
       setFileContent(null);
       setPreviewFileType(null);
-      console.warn(error);
+      toast.error('Sorry, something went wrong. Please try again later 1');
     }
+  };
+
+  const fetchStreamContent = () => {
+    setLoading(true);
+
+    createStreamEffect(file.slug)
+      .then((data) => {
+        setFileContent(data);
+        setLoading(false);
+      })
+      .catch(() => {
+        setLoading(false);
+        setFileContent(null);
+        setPreviewFileType(null);
+        toast.error('Sorry, something went wrong. Please try again later 2');
+      });
   };
 
   const onFavoriteClick = (file) => {

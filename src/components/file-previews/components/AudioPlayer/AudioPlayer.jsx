@@ -6,31 +6,28 @@ import React, {
   useState,
   forwardRef
 } from 'react';
-import { toast } from 'react-toastify';
-import {
-  createStreamEffect,
-  getFilePreviewEffect
-} from '../../../../effects/filesEffects';
+import { getFilePreviewEffect } from '../../../../effects/filesEffects';
 import Controls from './Controls/Controls';
 import ProgressBar from './ProgressBar/ProgressBar';
 import styles from './AudioPlayer.module.scss';
 
 const AudioPlayer = forwardRef(
-  (
-    {
-      fileContentType = 'stream',
-      fileContent,
-      usePreviewImage = true
-    },
-    ref
-  ) => {
+  ({ fileContentType, fileContent, usePreviewImage = true }, ref) => {
     const audioRef = useRef(null);
     const [isPlaying, setIsPlaying] = useState(false);
     const [progress, setProgress] = useState(0);
-    const [ipfsAudio, setIpfsAudio] = useState('');
     const [radius, setRadius] = useState(0);
-    const [isLoading, setIsLoading] = useState(false);
     const [filePreviewImage, setFilePreviewImage] = useState(null);
+    const [url, setUrl] = useState();
+
+    useEffect(() => {
+      if (fileContentType === 'blob') {
+        setUrl(URL.createObjectURL(fileContent));
+      }
+      if (fileContentType === 'url') {
+        setUrl(fileContent);
+      }
+    }, [fileContent]);
 
     useEffect(() => {
       if (usePreviewImage) {
@@ -50,21 +47,6 @@ const AudioPlayer = forwardRef(
         setFilePreviewImage(null);
       }
     };
-
-    useEffect(() => {
-      if (fileContentType === 'stream' && !isLoading) {
-        setIsLoading(true);
-        createStreamEffect(fileContent.slug)
-          .then((data) => {
-            setIpfsAudio(data);
-            setIsLoading(false);
-          })
-          .catch(() => {
-            setIsLoading(false);
-            toast.error('Sorry, something went wrong. Please try again later');
-          });
-      }
-    }, [fileContentType, fileContent.slug]);
 
     useEffect(() => {
       const updateRadius = () => {
@@ -158,11 +140,7 @@ const AudioPlayer = forwardRef(
           }}></div>
 
         <div className={styles['circle-audio-player']}>
-          <audio
-            ref={audioRef}
-            onEnded={onFinish}
-            src={ipfsAudio ? ipfsAudio : undefined}
-          />
+          <audio ref={audioRef} onEnded={onFinish} src={url} />
 
           <ProgressBar
             progress={progress}
@@ -173,7 +151,6 @@ const AudioPlayer = forwardRef(
           <Controls
             radius={radius}
             isPlaying={isPlaying}
-            isLoading={isLoading}
             filePreviewImage={filePreviewImage}
             handlePlayPause={handlePlayPause}
             handleRewind={handleRewind}
