@@ -45,9 +45,9 @@ export function GamePage() {
       dispatch(initGame());
     }
 
-    if (isInitialized && userIsInitialized) {
-      dispatch(checkAdvertisementOffer());
-    }
+    // if (isInitialized && userIsInitialized) {
+    //   dispatch(checkAdvertisementOffer());
+    // }
 
     return () => {
       dispatch(gameCleanup());
