@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import classNames from 'classnames';
 import { toast } from 'react-toastify';
 import { useDispatch, useSelector } from 'react-redux';
@@ -50,7 +50,7 @@ import {
 import { useOnConnect } from '../../../utils/useOnConnect';
 import {
   isAnyPaymentEnabled,
-  isAllPaymentEnabled,
+  isTonPaymentEnabled,
   isStarsPaymentEnabled,
 } from '../../../utils/paymentChecker';
 import { sleep } from '../../../utils/sleep';
@@ -75,6 +75,8 @@ export default function BuyButton() {
   const contractAddress = useSelector(selectContractAddress);
   // const isDev = isDevEnv();
   const [isDisabled, setIsDisabled] = useState(false);
+  const isStarPaymentAllow = useMemo(() => isStarsPaymentEnabled && theme.stars, [isStarsPaymentEnabled, theme]);
+  const isTonPaymentAllow = useMemo(() => isTonPaymentEnabled && theme.ton_price, [isTonPaymentEnabled, theme]);
 
   const clickHandler = async () => {
     if (isDisabled) return;
@@ -251,16 +253,16 @@ export default function BuyButton() {
   };
 
   const hanldePyamentBtnClick = () => {
-    if (isAllPaymentEnabled) {
+    if (isStarPaymentAllow && isTonPaymentAllow) {
       handleSelect();
-    } else if (isStarsPaymentEnabled) {
+    } else if (isStarPaymentAllow) {
       handleStartStarsPayment();
     } else {
       clickHandler();
     }
   }
 
-  if (status !== 'playing' && !themeAccess[theme.id] && theme.id === 'ghost' && isAnyPaymentEnabled) {
+  if (status !== 'playing' && !themeAccess[theme.id] &&  theme?.id !== 'hawk' && isAnyPaymentEnabled) {
     return (
       <div className={styles['actions-flex']}>
         <button
@@ -268,13 +270,13 @@ export default function BuyButton() {
           className={classNames(styles.button, styles[theme.id])}
           onClick={hanldePyamentBtnClick}
         >
-          {isStarsPaymentEnabled ? (
+          {isStarPaymentAllow ? (
             <StarIcon className={styles['star-icon']} viewBox="0 0 21 21" />
             ) : (
             <TonIcon className={styles['star-icon']} viewBox="0 0 24 24" />
           )}
           <span className={styles.cost}>
-            {isStarsPaymentEnabled ? theme.stars : theme.cost || 'FREE'}
+            {isStarPaymentAllow ? theme.stars : theme.cost || 'FREE'}
           </span>
           <span
             className={styles.multiplier}
