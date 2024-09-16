@@ -324,7 +324,7 @@ export const initGame = createAsyncThunk(
       if (now <= gameInfo.game_ends_at) {
         const endTime = gameInfo.game_ends_at;
         lockTimerCountdown(dispatch, endTime);
-        getAdvertisementOffer(dispatch);
+        // getAdvertisementOffer(dispatch);
       }
 
       /** This function combines backend tiers and frontend themes */
@@ -446,7 +446,7 @@ export const finishRound = createAsyncThunk(
 
     if (state.game.theme.id === 'hawk') {
       dispatch(startNewFreeGameCountdown());
-      getAdvertisementOffer(dispatch);
+      // getAdvertisementOffer(dispatch);
     }
     console.log({ gameId });
 
