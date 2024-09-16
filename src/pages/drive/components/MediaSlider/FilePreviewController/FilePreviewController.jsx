@@ -26,7 +26,7 @@ const FilePreviewController = ({ file, onExpand }) => {
   const mediaSliderCurrentFile = useSelector(
     (state) => state.drive.mediaSlider.currentFile
   );
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [fileContent, setFileContent] = useState(null);
   const [filePreviewImage, setFilePreviewImage] = useState(false);
   const [previewFileType, setPreviewFileType] = useState(null);
@@ -52,7 +52,6 @@ const FilePreviewController = ({ file, onExpand }) => {
   }, [fileContent, file.id, loading, mediaSliderCurrentFile.id]);
 
   const getContent = async () => {
-    setLoading(true);
     setFileContent(null);
     setPreviewFileType(null);
 
