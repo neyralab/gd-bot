@@ -118,23 +118,6 @@ const FilePreviewController = ({ file, onExpand }) => {
         const realBlob = new Blob([blob]);
         setCacheItem(file.id, realBlob);
 
-        if (file.extension === 'svg' || file.extension === 'txt') {
-          const text = await realBlob.text();
-          setFileContent(realBlob);
-          setPreviewFileType(getPreviewFileType(file, text));
-          setLoading(false);
-          return;
-        } else if (
-          file.extension === 'pdf' ||
-          file.extension === 'xls' ||
-          file.extension === 'xlsx'
-        ) {
-          setFileContent(realBlob);
-          setPreviewFileType(getPreviewFileType(file, realBlob));
-          setLoading(false);
-          return;
-        }
-
         setFileContent(realBlob);
         setPreviewFileType(getPreviewFileType(file, realBlob));
         setLoading(false);

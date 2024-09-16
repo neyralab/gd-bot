@@ -11,46 +11,62 @@ export default function Controls({
   isPlaying,
   isLoading,
   radius,
+  filePreviewImage,
   handlePlayPause,
   handleRewind,
   handleForward
 }) {
   return (
     <div
-      className={styles['controls']}
+      className={styles.container}
       style={{
         width: `${radius * 2 - 40}px`,
         height: `${radius * 2 - 40}px`
       }}>
-      <button className={styles['circle-audio-button']} onClick={handleRewind}>
-        <RewindIcon />
-      </button>
+      <div
+        className={styles.background}
+        style={{
+          backgroundImage: filePreviewImage
+            ? `url(${filePreviewImage})`
+            : 'url(/assets/audio-preview-2.png)',
+          backgroundSize: filePreviewImage ? '100%' : '75%'
+        }}></div>
 
-      {isLoading && (
+      <div className={styles.controls}>
         <button
-          className={classNames(
-            styles['circle-audio-button'],
-            styles['circle-audio-loader-button']
-          )}
-          onClick={handlePlayPause}>
-          <Loader2 />
+          className={styles['circle-audio-button']}
+          onClick={handleRewind}>
+          <RewindIcon />
         </button>
-      )}
 
-      {!isLoading && (
+        {isLoading && (
+          <button
+            className={classNames(
+              styles['circle-audio-button'],
+              styles['circle-audio-loader-button']
+            )}
+            onClick={handlePlayPause}>
+            <Loader2 />
+          </button>
+        )}
+
+        {!isLoading && (
+          <button
+            className={classNames(
+              styles['circle-audio-button'],
+              styles['circle-audio-play-button']
+            )}
+            onClick={handlePlayPause}>
+            {isPlaying ? <PauseIcon /> : <PlayIcon />}
+          </button>
+        )}
+
         <button
-          className={classNames(
-            styles['circle-audio-button'],
-            styles['circle-audio-play-button']
-          )}
-          onClick={handlePlayPause}>
-          {isPlaying ? <PauseIcon /> : <PlayIcon />}
+          className={styles['circle-audio-button']}
+          onClick={handleForward}>
+          <ForwardIcon />
         </button>
-      )}
-
-      <button className={styles['circle-audio-button']} onClick={handleForward}>
-        <ForwardIcon />
-      </button>
+      </div>
     </div>
   );
 }

@@ -13,7 +13,7 @@ import ProgressBar from './ProgressBar/ProgressBar';
 import styles from './AudioPlayer.module.scss';
 
 const AudioPlayer = forwardRef(
-  ({ fileContentType = 'stream', fileContent }, ref) => {
+  ({ fileContentType = 'stream', fileContent, filePreviewImage }, ref) => {
     const audioRef = useRef(null);
     const [isPlaying, setIsPlaying] = useState(false);
     const [progress, setProgress] = useState(0);
@@ -119,7 +119,13 @@ const AudioPlayer = forwardRef(
 
     return (
       <div className={styles['player-container']}>
-        <div className={styles['player-background']}></div>
+        <div
+          className={styles['player-background']}
+          style={{
+            backgroundImage: filePreviewImage
+              ? `url(${filePreviewImage})`
+              : null
+          }}></div>
 
         <div className={styles['circle-audio-player']}>
           <audio
@@ -128,19 +134,20 @@ const AudioPlayer = forwardRef(
             src={ipfsAudio ? ipfsAudio : undefined}
           />
 
-          <Controls
-            radius={radius}
-            isPlaying={isPlaying}
-            isLoading={isLoading}
-            handlePlayPause={handlePlayPause}
-            handleRewind={handleRewind}
-            handleForward={handleForward}
-          />
-
           <ProgressBar
             progress={progress}
             radius={radius}
             handleProgressClick={handleProgressClick}
+          />
+
+          <Controls
+            radius={radius}
+            isPlaying={isPlaying}
+            isLoading={isLoading}
+            filePreviewImage={filePreviewImage}
+            handlePlayPause={handlePlayPause}
+            handleRewind={handleRewind}
+            handleForward={handleForward}
           />
         </div>
       </div>
