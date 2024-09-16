@@ -16,6 +16,7 @@ const PreviewSwitcher = forwardRef(
       previewFileType,
       file,
       fileContent,
+      filePreviewImage,
       onFavoriteClick,
       onInfoClick,
       onExpand
@@ -75,6 +76,7 @@ const PreviewSwitcher = forwardRef(
             file={file}
             fileContent={fileContent}
             fileContentType="url"
+            filePreviewImage={filePreviewImage}
             onFavoriteClick={onFavoriteClick}
             onInfoClick={onInfoClick}
           />

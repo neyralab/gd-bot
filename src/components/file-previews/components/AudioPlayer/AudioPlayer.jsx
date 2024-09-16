@@ -6,18 +6,16 @@ import React, {
   useState,
   forwardRef
 } from 'react';
-import { getFilePreviewEffect } from '../../../../effects/filesEffects';
 import Controls from './Controls/Controls';
 import ProgressBar from './ProgressBar/ProgressBar';
 import styles from './AudioPlayer.module.scss';
 
 const AudioPlayer = forwardRef(
-  ({ fileContentType, fileContent, usePreviewImage = true }, ref) => {
+  ({ fileContentType, fileContent, filePreviewImage }, ref) => {
     const audioRef = useRef(null);
     const [isPlaying, setIsPlaying] = useState(false);
     const [progress, setProgress] = useState(0);
     const [radius, setRadius] = useState(0);
-    const [filePreviewImage, setFilePreviewImage] = useState(null);
     const [url, setUrl] = useState();
 
     useEffect(() => {
@@ -28,25 +26,6 @@ const AudioPlayer = forwardRef(
         setUrl(fileContent);
       }
     }, [fileContent]);
-
-    useEffect(() => {
-      if (usePreviewImage) {
-        fetchPreview();
-      }
-    }, []);
-
-    const fetchPreview = async () => {
-      try {
-        const preview = await getFilePreviewEffect(
-          file.slug,
-          null,
-          file.extension
-        );
-        setFilePreviewImage(preview);
-      } catch (e) {
-        setFilePreviewImage(null);
-      }
-    };
 
     useEffect(() => {
       const updateRadius = () => {

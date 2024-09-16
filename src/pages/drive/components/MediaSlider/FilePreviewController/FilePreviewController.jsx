@@ -6,7 +6,8 @@ import { sendFileViewStatistic } from '../../../../../effects/file/statisticEfec
 import { getFileCids } from '../../../../../effects/file/getFileCid';
 import {
   createStreamEffect,
-  getDownloadOTT
+  getDownloadOTT,
+  getFilePreviewEffect
 } from '../../../../../effects/filesEffects';
 // import { useMediaSliderCache } from '../MediaSliderCache';
 import PreviewSwitcher from '../../../../../components/file-previews/PreviewSwitcher/PreviewSwitcher';
@@ -27,6 +28,9 @@ const FilePreviewController = ({ file, onExpand }) => {
   );
   const [loading, setLoading] = useState(true);
   const [fileContent, setFileContent] = useState(null);
+  const [filePreviewImage, setFilePreviewImage] = useState(false);
+  const [filePrevieImageIsLoading, setFilePreviewImageIsLoading] =
+    useState(false);
   const [previewFileType, setPreviewFileType] = useState(null);
   const playablePreview = useRef(null);
 
@@ -47,7 +51,7 @@ const FilePreviewController = ({ file, onExpand }) => {
     }
   }, [fileContent, file.id, loading, mediaSliderCurrentFile.id]);
 
-  const getContent = () => {
+  const getContent = async () => {
     setLoading(true);
     setFileContent(null);
     setPreviewFileType(null);
@@ -60,6 +64,10 @@ const FilePreviewController = ({ file, onExpand }) => {
         fetchStreamContent();
       } else {
         fetchBlobContent();
+      }
+
+      if (USE_PREVIEW_IMG.includes(fileType)) {
+        fetchPreviewImage();
       }
     }
   };
@@ -126,6 +134,21 @@ const FilePreviewController = ({ file, onExpand }) => {
       });
   };
 
+  const fetchPreviewImage = () => {
+    setFilePreviewImageIsLoading(true);
+
+    getFilePreviewEffect(file.slug, null, file.extension)
+      .then((preview) => {
+        setFilePreviewImage(preview);
+        setFilePreviewImageIsLoading(false);
+      })
+      .catch((e) => {
+        console.log(e);
+        setFilePreviewImage(null);
+        etFilePreviewImageIsLoading(false);
+      });
+  };
+
   const onFavoriteClick = (file) => {
     dispatch(toggleFileFavorite({ slug: file.slug }));
   };
@@ -137,10 +160,11 @@ const FilePreviewController = ({ file, onExpand }) => {
   return (
     <PreviewSwitcher
       ref={playablePreview}
-      loading={loading}
+      loading={loading || filePrevieImageIsLoading}
       previewFileType={previewFileType}
       file={file}
       fileContent={fileContent}
+      filePreviewImage={filePreviewImage}
       onFavoriteClick={onFavoriteClick}
       onInfoClick={onInfoClick}
       onExpand={onExpand}
