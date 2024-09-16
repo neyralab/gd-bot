@@ -10,14 +10,14 @@ export const MediaSliderCacheProvider = ({ children }) => {
   const getCache = useCallback(
     (id) => {
       const cachedItem = cache.find((item) => item.id === id);
-      return cachedItem ? cachedItem.content : null;
+      return cachedItem ? cachedItem : null;
     },
     [cache]
   );
 
-  const setCacheItem = useCallback((id, content) => {
+  const setCacheItem = useCallback((id, content, preview) => {
     setCache((prevCache) => {
-      const newCache = [...prevCache, { id, content }];
+      const newCache = [...prevCache, { id, content, preview }];
       if (newCache.length > MAX_CACHED_FILES) {
         newCache.shift();
       }

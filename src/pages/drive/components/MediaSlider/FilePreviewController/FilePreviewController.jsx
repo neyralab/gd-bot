@@ -68,7 +68,20 @@ const FilePreviewController = ({ file, onExpand }) => {
     }
   };
 
+  const checkFileCache = () => {
+    const cache = getCache(file.id);
+    if (cache) {
+      setFileContent(cache.content);
+      setFilePreviewImage(cache.preview);
+      setLoading(false);
+    }
+    return cache;
+  };
+
   const fetchBlobContent = async (fileType) => {
+    const cache = checkFileCache();
+    if (cache) return;
+
     setLoading(true);
 
     const promises = [
@@ -106,6 +119,7 @@ const FilePreviewController = ({ file, onExpand }) => {
 
       if (blob) {
         const realBlob = new Blob([blob]);
+        setCacheItem(file.id, realBlob, preview);
         setFileContent(realBlob);
         setFilePreviewImage(preview || null);
         setPreviewFileType(getPreviewFileType(file, realBlob));
@@ -122,6 +136,9 @@ const FilePreviewController = ({ file, onExpand }) => {
   };
 
   const fetchStreamContent = async (fileType) => {
+    const cache = checkFileCache();
+    if (cache) return;
+
     setLoading(true);
 
     const promises = [createStreamEffect(file.slug)];
@@ -131,6 +148,7 @@ const FilePreviewController = ({ file, onExpand }) => {
 
     try {
       const [streamData, preview] = await Promise.all(promises);
+      setCacheItem(file.id, streamData, preview);
       setFileContent(streamData);
       setFilePreviewImage(preview || null);
       setLoading(false);

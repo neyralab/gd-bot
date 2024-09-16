@@ -6,9 +6,7 @@ import {
   assignFilesQueryData,
   getDriveFiles,
   setMediaSliderCurrentFile,
-  setMediaSliderFileUploadTurn
 } from '../../../../../store/reducers/driveSlice';
-import { useMediaSliderCache } from '../MediaSliderCache';
 import Slide from '../Slide/Slide';
 import styles from './SlidesController.module.scss';
 
@@ -38,15 +36,10 @@ export default function SlidesController({ onExpand }) {
   const areFilesLazyLoading = useSelector(
     (state) => state.drive.areFilesLazyLoading
   );
-  const { cache, getCache } = useMediaSliderCache();
   const [slides, setSlides] = useState([]);
   const [isSliding, setIsSliding] = useState(false);
   const [canSlide, setCanSlide] = useState(true);
   const slidesRef = useRef(null);
-
-  useEffect(() => {
-    updateFileContentUploadOrder();
-  }, [cache, mediaSlider.currentFile]);
 
   useEffect(() => {
     setSlides([
@@ -78,42 +71,7 @@ export default function SlidesController({ onExpand }) {
 
   useEffect(() => {
     gsap.set(slidesRef.current, { y: '-100vh' });
-  }, [slides]);
-
-  const updateFileContentUploadOrder = () => {
-    /** This function creates an order to get files content.
-     * The first one should always be a current file,
-     * then a next file,
-     * then a previous file.
-     * If the current file was changed,
-     * previous order starts from the beginning
-     */
-    if (mediaSlider.currentFile) {
-      const isLoaded = getCache(mediaSlider.currentFile.id);
-      if (!isLoaded) {
-        dispatch(setMediaSliderFileUploadTurn(mediaSlider.currentFile.id));
-        return;
-      }
-    }
-
-    if (mediaSlider.nextFile) {
-      const isLoaded = getCache(mediaSlider.nextFile.id);
-      if (!isLoaded) {
-        dispatch(setMediaSliderFileUploadTurn(mediaSlider.nextFile.id));
-        return;
-      }
-    }
-
-    if (mediaSlider.previousFile) {
-      const isLoaded = getCache(mediaSlider.previousFile.id);
-      if (!isLoaded) {
-        dispatch(setMediaSliderFileUploadTurn(mediaSlider.previousFile.id));
-        return;
-      }
-    }
-
-    dispatch(setMediaSliderFileUploadTurn(null));
-  };
+  }, [slides])
 
   const handlers = useSwipeable({
     onSwipedUp: () => {

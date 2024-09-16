@@ -48,7 +48,6 @@ const driveSlice = createSlice({
       currentFile: null,
       nextFile: null
     },
-    mediaSliderFileContentTurn: null,
     fileInfoModal: null,
     ppvFile: null
   },
@@ -172,9 +171,6 @@ const driveSlice = createSlice({
       state.mediaSlider.previousFile = previousFile;
       state.mediaSlider.currentFile = currentFile;
       state.mediaSlider.nextFile = nextFile;
-    },
-    setMediaSliderFileUploadTurn: (state, { payload }) => {
-      state.mediaSliderFileContentTurn = payload;
     },
     setFileInfoModal: (state, { payload }) => {
       state.fileInfoModal = payload;
@@ -483,7 +479,6 @@ export const {
   setStorageInfo,
   setMediaSliderOpen,
   setMediaSliderCurrentFile,
-  setMediaSliderFileUploadTurn,
   setFileInfoModal
 } = driveSlice.actions;
 export default driveSlice.reducer;
