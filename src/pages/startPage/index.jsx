@@ -133,11 +133,8 @@ export const StartPage = ({ tariffs }) => {
 
   const onCloseShareModal = () => {
     setShowShareModal(false);
-  };
-
-  const onCloseGift = () => {
-    setNotifications(initialNotificationState);
-    setShowShareModal(false);
+    const path = window.location.pathname;
+    navigate(path, { replace: true });
   };
 
   const readNotification = async (id) => {
