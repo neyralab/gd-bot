@@ -48,89 +48,130 @@ await redisClient.connect();
 const userCreationQueue = new Queue('userCreation', process.env.REDIS_URL);
 
 bot.start(async (ctx) => {
-  const startParams = parseStartParams(ctx.message.text);
-  const refCode = startParams?.ref;
-  const showMobileAuthButton = startParams?.show_mob_app_auth_button;
-  const user = ctx.from;
-  const chat_id = ctx.chat.id.toString();
-  const userData = {
-    id: user.id.toString(),
-    username: user.username,
-    first_name: user.first_name,
-    last_name: user.last_name || '',
-    photo_url: '',
-    referral: refCode,
-    is_premium: !!user?.is_premium,
-    chat_id
-  };
-  let userRefCode = '';
+  try {
+    const startParams = parseStartParams(ctx.message.text);
+    const refCode = startParams?.ref;
+    const showMobileAuthButton = startParams?.show_mob_app_auth_button;
+    const chat_id = ctx.chat.id.toString();
+    const user = ctx.from;
 
-  // Cache userData by user.id
+    const userData = {
+      id: user.id.toString(),
+      username: user.username,
+      first_name: user.first_name,
+      last_name: user.last_name || '',
+      photo_url: '',
+      referral: refCode,
+      is_premium: !!user?.is_premium,
+      chat_id,
+    };
 
-  const cachedUserData = await redisClient.get(`user:${userData.id}`);
+    const cachedUserData = await redisClient.get(`user:${userData.id}`);
+    let userRefCode = '';
 
-  if (cachedUserData && showMobileAuthButton) {
-    const userData = JSON.parse(cachedUserData);
-    sendMobileAuthButton(chat_id, userData.jwt);
-    return;
-  }
+    if (cachedUserData) {
+      const cachedData = JSON.parse(cachedUserData);
+      userRefCode = cachedData?.user?.referral?.code;
 
-  if (cachedUserData) {
-    userRefCode = JSON.parse(cachedUserData)?.user?.referral?.code;
-  }
-
-  if (!cachedUserData) {
-    try {
-      const url = `${process.env.GD_BACKEND_URL}/apiv2/user/create/telegram`;
-
-      logger.info('Creating user', {
-        url,
-        userData,
-        chat_id
-      });
-
-      const headers = {
-        'Content-Type': 'application/json',
-        'client-id': process.env.GD_CLIENT_ID,
-        'client-secret': process.env.GD_CLIENT_SECRET
-      };
-
-      // Check if GD_BACKEND_URL is a protocol + IP address
-      if (process.env.GD_BACKEND_HOST) {
-        headers['Host'] = process.env.GD_BACKEND_HOST;
+      if (showMobileAuthButton) {
+        sendMobileAuthButton(chat_id, cachedData.jwt);
+        return;
       }
-
-      const code = generateRef(userData.chat_id);
-      userRefCode = code;
-      userData.code = code;
-
-      await userCreationQueue.add({
-        url,
-        userData,
-        headers: headers,
-        showMobileAuthButton
-      });
-    } catch (error) {
-      logger.error('Error queueing user creation', {
-        error: errorTransformer(error),
-        chat_id: ctx.chat.id.toString()
-      });
-
-      try {
-        await ctx.reply(`Error: ${error.message}`);
-      } catch (e) {
-        logger.error('Error sending error message', {
-          error: errorTransformer(e),
-          chat_id: ctx.chat.id.toString()
-        });
-      }
-      return;
+    } else {
+      userRefCode = await createUser(userData, showMobileAuthButton);
+      if (showMobileAuthButton) return;
     }
-    if (showMobileAuthButton) return;
+
+    if (refCode?.startsWith('paylink')) {
+      await handlePaylink(ctx, refCode);
+    } else if (refCode?.startsWith('storageGift')) {
+      await handleStorageGift(ctx, refCode);
+    } else {
+      await sendWelcomeMessage(ctx, userRefCode);
+    }
+  } catch (error) {
+    logger.error('Error in start handler', {
+      error: errorTransformer(error),
+      chat_id: ctx.chat.id.toString(),
+    });
+    await sendErrorMessage(ctx, error);
   }
+});
 
+// Helper Functions
+
+async function createUser(userData, showMobileAuthButton) {
+  try {
+    const url = `${process.env.GD_BACKEND_URL}/apiv2/user/create/telegram`;
+    const headers = {
+      'Content-Type': 'application/json',
+      'client-id': process.env.GD_CLIENT_ID,
+      'client-secret': process.env.GD_CLIENT_SECRET,
+    };
+
+    if (process.env.GD_BACKEND_HOST) {
+      headers['Host'] = process.env.GD_BACKEND_HOST;
+    }
+
+    const code = generateRef(userData.chat_id);
+    userData.code = code;
+
+    logger.info('Creating user', { url, userData, chat_id: userData.chat_id });
+
+    await userCreationQueue.add({
+      url,
+      userData,
+      headers,
+      showMobileAuthButton,
+    });
+
+    return code;
+  } catch (error) {
+    logger.error('Error queueing user creation', {
+      error: errorTransformer(error),
+      chat_id: userData.chat_id,
+    });
+    await sendErrorMessage({ chat: { id: userData.chat_id } }, error);
+    throw error;
+  }
+}
+
+async function handlePaylink(ctx, refCode) {
+  const [_, slug] = refCode.split('_');
+  const url = `${process.env.APP_FRONTEND_URL}/paid-view/${slug}`;
+
+  try {
+    await ctx.reply(
+      'You are using a special link. To open the file, please click the button below.',
+      Markup.inlineKeyboard([Markup.button.webApp('Open', url)])
+    );
+  } catch (error) {
+    logger.error('Error handling paylink:', {
+      error: errorTransformer(error),
+    });
+    await sendErrorMessage(ctx, error);
+  }
+}
+
+async function handleStorageGift(ctx, refCode) {
+  const [_, token] = refCode.split('_');
+  const url = `${process.env.APP_FRONTEND_URL}/start?storageGift=${token}`;
+
+  try {
+    await ctx.reply(
+      'You are using a special link. To claim your storage reward, please click the button below.',
+      Markup.inlineKeyboard([Markup.button.webApp('Open', url)])
+    );
+  } catch (error) {
+    logger.error('Error handling storageGift:', {
+      error: errorTransformer(error),
+    });
+    await sendErrorMessage(ctx, error);
+  }
+}
+
+async function sendWelcomeMessage(ctx, userRefCode) {
   const header = '<b>YES! Tap for Your Bytes & Beyond with us! 🚀</b>';
-
   const activitiesText =
     'Think you’ve got fast fingers? It’s time to show them off! With GhostDrive’s Tap Game, every tap brings you closer to incredible rewards.\n\n' +
     '<b>🔥 Earn as You Play:</b> Accumulate points and unlock storage, rewards, and more. \n' +
@@ -144,108 +185,67 @@ bot.start(async (ctx) => {
     '🎮 Play & Earn',
     `${process.env.APP_FRONTEND_URL}/start`
   );
-  const playButton = Markup.button.webApp(
-    'Tap to Earn',
-    `${process.env.APP_FRONTEND_URL}/game-3d`
-  );
-  const followXButton = Markup.button.url(
-    '🐦 X',
-    `https://x.com/GhostDrive_Web3`
-  );
-  const youtubeButton = Markup.button.url(
-    '🔴 Youtube',
-    `https://www.youtube.com/@ghostdrive-web3`
-  );
-  const websiteButton = Markup.button.url(
-    '🛸 Website',
-    `https://ghostdrive.com`
+  const followNewsButton = Markup.button.url(
+    '🎙 GhostDrive News',
+    'https://t.me/ghostdrive_web3'
   );
   const chatButton = Markup.button.url(
     '💬 Chat',
-    `https://t.me/ghostdrive_web3_chat`
+    'https://t.me/ghostdrive_web3_chat'
   );
-  const followNewsButton = Markup.button.url(
-    '🎙 GhostDrive News',
-    `https://t.me/ghostdrive_web3`
+  const followXButton = Markup.button.url(
+    '🐦 X',
+    'https://x.com/GhostDrive_Web3'
   );
-
+  const youtubeButton = Markup.button.url(
+    '🔴 Youtube',
+    'https://www.youtube.com/@ghostdrive-web3'
+  );
+  const websiteButton = Markup.button.url('🛸 Website', 'https://ghostdrive.com');
   const referralLink = `https://t.me/${process.env.BOT_NAME}/ghostdrive?startapp=${userRefCode}`;
   const shareButton = {
     text: '👥 Invite Friends',
-    url: `https://t.me/share/url?url=${encodeURIComponent(referralLink)}`
+    url: `https://t.me/share/url?url=${encodeURIComponent(referralLink)}`,
   };
 
-  if (refCode && refCode.startsWith('paylink')) {
-    const [_, slug] = refCode.split('_');
-    const url = `${process.env.APP_FRONTEND_URL}/paid-view/${slug}`;
-    try {
-      await ctx.reply(
-        `You are using a special link. To open the file, please click the button below.`,
-        Markup.inlineKeyboard([Markup.button.webApp('Open', url)])
-      );
-    } catch (error) {
-      logger.error('Error handling deep link:', {
-        error: errorTransformer(error)
-      });
-      try {
-        await ctx.reply(`Error: ${error.message}`);
-      } catch (e) {
-        logger.error('Error sending error message', {
-          error: errorTransformer(e)
-        });
-      }
-    }
-    return;
-  } else if (refCode && refCode.startsWith('storageGift')) {
-    const [_, token] = refCode.split('_');
-    const url = `${process.env.APP_FRONTEND_URL}/start?storageGift=${token}`;
-    try {
-      await ctx.reply(
-        `You are using a special link. To claim your storage reward, please click the button below.`,
-        Markup.inlineKeyboard([Markup.button.webApp('Open', url)])
-      );
-    } catch (error) {
-      logger.error('Error handling deep link:', {
-        error: errorTransformer(error)
-      });
-      try {
-        await ctx.reply(`Error: ${error.message}`);
-      } catch (e) {
-        logger.error('Error sending error message', {
-          error: errorTransformer(e)
-        });
-      }
-    }
-    return;
-  } else {
-    try {
-      await ctx.replyWithAnimation(
-        {
-          source: fs.createReadStream('./assets/start.mp4'),
-          filename: 'start.mp4'
+  try {
+    await ctx.replyWithAnimation(
+      {
+        source: fs.createReadStream('./assets/start.mp4'),
+        filename: 'start.mp4',
+      },
+      {
+        caption: `${header}\n\n${activitiesText}`,
+        parse_mode: 'HTML',
+        reply_markup: {
+          inline_keyboard: [
+            [dashboardButton],
+            [followNewsButton],
+            [chatButton, followXButton],
+            [youtubeButton, websiteButton],
+            [shareButton],
+          ],
         },
-        {
-          caption: `${header}\n\n${activitiesText}`,
-          parse_mode: 'HTML',
-          reply_markup: {
-            inline_keyboard: [
-              [dashboardButton],
-              [followNewsButton],
-              [chatButton, followXButton],
-              [youtubeButton, websiteButton],
-              [shareButton]
-            ]
-          }
-        }
-      );
-    } catch (error) {
-      logger.error('Error replyWithPhoto:', {
-        error: errorTransformer(error),
-        chat_id: ctx.chat.id.toString()
-      });
-    }
+      }
+    );
+  } catch (error) {
+    logger.error('Error sending welcome message:', {
+      error: errorTransformer(error),
+      chat_id: ctx.chat.id.toString(),
+    });
   }
-});
+}
+
+async function sendErrorMessage(ctx, error) {
+  try {
+    await ctx.reply(`Error: ${error.message}`);
+  } catch (e) {
+    logger.error('Error sending error message', {
+      error: errorTransformer(e),
+      chat_id: ctx.chat.id.toString(),
+    });
+  }
+}
 
 bot.command('terms', termsHandler);
 
