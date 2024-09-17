@@ -31,8 +31,8 @@ export default function Menu() {
       <svg className={styles.gradient}>
         <defs>
           <linearGradient id="paint0_linear_9111_5063" x1="15.2157" y1="6.3092e-09" x2="15.4493" y2="41.9167" gradientUnits="userSpaceOnUse">
-            <stop stop-color="#00E0FF"/>
-            <stop offset="1" stop-color="#0A4672"/>
+            <stop stopColor="#00E0FF"/>
+            <stop offset="1" stopColor="#0A4672"/>
           </linearGradient>
         </defs>
       </svg>

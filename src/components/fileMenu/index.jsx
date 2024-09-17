@@ -42,7 +42,7 @@ export const FileMenu = () => {
   const location = useLocation();
   const dispatch = useDispatch();
   const isPPVActivated = useMemo(() => !!file?.share_file, [file?.share_file]);
-  const isFileHavePreview = useMemo(() => !!getPreviewFileType(file, '', true), [file])
+  const isFileHavePreview = useMemo(() => !!getPreviewFileType(file, '', true), [file]);
   const url = useMemo(() => {
     if (isPPVActivated) {
       return `https://t.me/${BOT_NAME}?start=paylink_${removeSlugHyphens(file.slug)}`;
