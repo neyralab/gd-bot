@@ -51,7 +51,7 @@ bot.on('pre_checkout_query', async (ctx) => {
   try {
     const body = ctx.update;
     logger.info('Start pre_checkout_query', {
-      chat_id: ctx.chat.id.toString(),
+      ctx: ctx,
       body: body
     });
     const response = await axios.post(
@@ -61,7 +61,7 @@ bot.on('pre_checkout_query', async (ctx) => {
   } catch (error) {
     logger.error('Error in pre_checkout_query:', {
       error: errorTransformer(error),
-      chat_id: ctx.chat.id.toString()
+      ctx: ctx
     });
   }
 });
@@ -70,7 +70,7 @@ bot.on('successful_payment', async (ctx) => {
   try {
     const body = { message: ctx.message };
     logger.info('Start successful_payment', {
-      chat_id: ctx.chat.id.toString(),
+      chat_id: ctx?.chat?.id.toString(),
       body: body
     });
     const paymentInfo = ctx.message.successful_payment;
@@ -82,7 +82,7 @@ bot.on('successful_payment', async (ctx) => {
       } catch (replyError) {
         logger.error('Error sending payment confirmation message', {
           error: errorTransformer(replyError),
-          chat_id: ctx.chat.id.toString()
+          chat_id: ctx?.chat?.id.toString()
         });
       }
     } else {
@@ -93,14 +93,14 @@ bot.on('successful_payment', async (ctx) => {
       } catch (replyError) {
         logger.error('Error sending payment issue message', {
           error: errorTransformer(replyError),
-          chat_id: ctx.chat.id.toString()
+          chat_id: ctx?.chat?.id.toString()
         });
       }
     }
   } catch (error) {
     logger.error('Error in successful_payment:', {
       error: errorTransformer(error),
-      chat_id: ctx.chat.id.toString()
+      chat_id: ctx?.chat?.id.toString()
     });
     try {
       await ctx.reply(
@@ -109,7 +109,7 @@ bot.on('successful_payment', async (ctx) => {
     } catch (replyError) {
       logger.error('Error sending payment error message', {
         error: errorTransformer(replyError),
-        chat_id: ctx.chat.id.toString()
+        chat_id: ctx?.chat?.id.toString()
       });
     }
   }
