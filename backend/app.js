@@ -51,7 +51,7 @@ bot.on('pre_checkout_query', async (ctx) => {
   try {
     const body = ctx.update;
     logger.info('Start pre_checkout_query', {
-      ctx: ctx,
+      ctx: Object.keys(ctx),
       body: body
     });
     const response = await axios.post(
@@ -61,7 +61,7 @@ bot.on('pre_checkout_query', async (ctx) => {
   } catch (error) {
     logger.error('Error in pre_checkout_query:', {
       error: errorTransformer(error),
-      ctx: ctx
+      ctx: Object.keys(ctx)
     });
   }
 });
