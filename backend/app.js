@@ -49,13 +49,14 @@ const userCreationQueue = new Queue('userCreation', process.env.REDIS_URL);
 
 bot.on('pre_checkout_query', async (ctx) => {
   try {
-    logger.error('Start pre_checkout_query', {
-      error: errorTransformer(error),
-      chat_id: ctx.chat.id.toString()
+    const body = ctx.update;
+    logger.info('Start pre_checkout_query', {
+      chat_id: ctx.chat.id.toString(),
+      body: body
     });
     const response = await axios.post(
       `${process.env.TG_BILLING_ENDPOINT}`,
-      ctx.update
+        body
     );
   } catch (error) {
     logger.error('Error in pre_checkout_query:', {
@@ -67,14 +68,13 @@ bot.on('pre_checkout_query', async (ctx) => {
 
 bot.on('successful_payment', async (ctx) => {
   try {
-    logger.error('Start successful_payment', {
-      error: errorTransformer(error),
-      chat_id: ctx.chat.id.toString()
+    const body = { message: ctx.message };
+    logger.info('Start successful_payment', {
+      chat_id: ctx.chat.id.toString(),
+      body: body
     });
     const paymentInfo = ctx.message.successful_payment;
-    const response = await axios.post(`${process.env.TG_BILLING_ENDPOINT}`, {
-      message: ctx.message
-    });
+    const response = await axios.post(`${process.env.TG_BILLING_ENDPOINT}`, body);
 
     if (response.status < 400) {
       try {
