@@ -23,7 +23,6 @@ import { getPreviewFileType } from '../../utils/preview';
 import { removeSlugHyphens } from '../../utils/string';
 import useButtonVibration from '../../hooks/useButtonVibration';
 import { BOT_NAME } from '../../utils/api-urls';
-import { isDevEnv } from '../../../utils/isDevEnv';
 
 import { SlidingModal } from '../slidingModal';
 
@@ -42,9 +41,8 @@ export const FileMenu = () => {
   const { t } = useTranslation('drive');
   const location = useLocation();
   const dispatch = useDispatch();
-  const isDev = useMemo(() => isDevEnv(), []);
   const isPPVActivated = useMemo(() => !!file?.share_file, [file?.share_file]);
-  const isFileHavePreview = useMemo(() => (!!getPreviewFileType(file, '', true) && isDev), [file]);
+  const isFileHavePreview = useMemo(() => !!getPreviewFileType(file, '', true), [file]);
   const url = useMemo(() => {
     if (isPPVActivated) {
       return `https://t.me/${BOT_NAME}?start=paylink_${removeSlugHyphens(file.slug)}`;
