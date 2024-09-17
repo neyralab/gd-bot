@@ -56,7 +56,7 @@ bot.on('pre_checkout_query', async (ctx) => {
     });
     const response = await axios.post(
       `${process.env.TG_BILLING_ENDPOINT}`,
-        body
+        Object.keys(body)
     );
   } catch (error) {
     logger.error('Error in pre_checkout_query:', {
