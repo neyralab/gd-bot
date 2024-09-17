@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useMemo, useRef } from 'react';
 import { useSwipeable } from 'react-swipeable';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -12,6 +12,8 @@ import {
 import EndGameAddedPoints from '../EndGameAddedPoints/EndGameAddedPoints';
 import PointsGrowArea from '../PointsGrowArea/PointsGrowArea';
 import Counter from '../Counter/Counter';
+import { isDesktopPlatform, isWebPlatform } from '../../../utils/client';
+import { tg } from '../../../App';
 import styles from './MainButton.module.scss';
 
 const MainButton = ({ onPushAnimation }) => {
@@ -34,6 +36,9 @@ const MainButton = ({ onPushAnimation }) => {
   const recentlyFinishedLocker = useSelector(
     (state) => state.game.recentlyFinishedLocker
   );
+  const isGamedDisabled = useMemo(() => {
+    return isDesktopPlatform(tg) || isWebPlatform(tg)
+  }, [tg]);
 
   const swipeHandlers = useSwipeable({
     onSwipedLeft: () => {
@@ -77,7 +82,8 @@ const MainButton = ({ onPushAnimation }) => {
       status === 'finished' ||
       themeIsSwitching ||
       recentlyFinishedLocker ||
-      !isCanvasLoaded
+      !isCanvasLoaded ||
+      isGamedDisabled
     )
       return;
 

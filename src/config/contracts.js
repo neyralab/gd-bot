@@ -23,4 +23,9 @@ const MOBILE_APP_LINKS = {
   android: 'https://play.google.com/store/apps/details?id=com.wise.data.ghostdrive',
 }
 
-export { NFT_ADDRESS, SOCIAL, FILE_ACTIONS, MOBILE_APP_LINKS };
+const TG_PLATFORMS = {
+  web: ['weba', 'web'],
+  desktop: ['tdesktop'],
+}
+
+export { NFT_ADDRESS, SOCIAL, FILE_ACTIONS, MOBILE_APP_LINKS, TG_PLATFORMS };

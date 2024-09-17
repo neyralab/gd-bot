@@ -54,12 +54,14 @@ export default function FortuneTimer({ timestamp, onComplete }) {
       <div className={styles.timer}>
         {formatTime(hours || 24)}:{formatTime(minutes || 0)}:
         {formatTime(seconds || 0)}
-      </div>
-      <div className={styles.actions}>
-        <button onClick={onBuy}>
-          <span>1 Spin</span> <b>400</b> <StarIcon />
-        </button>
-      </div>
+      </div> 
+      {isDev && (
+        <div className={styles.actions}>
+          <button onClick={onBuy}>
+            <span>1 Spin</span> <b>400</b> <StarIcon />
+          </button>
+        </div>
+      )}
     </div>
   );
 }
