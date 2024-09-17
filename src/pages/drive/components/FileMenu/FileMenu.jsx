@@ -21,6 +21,7 @@ import { getPreviewFileType } from '../../../../utils/preview';
 import { removeSlugHyphens } from '../../../../utils/string';
 import useButtonVibration from '../../../../hooks/useButtonVibration';
 import { BOT_NAME } from '../../../../utils/api-urls';
+import { isDevEnv } from '../../../../utils/isDevEnv';
 
 import { ReactComponent as ShareArrowIcon } from '../../../../assets/arrow_share.svg';
 import { ReactComponent as RestoreIcon } from '../../../../assets/restore.svg';
@@ -37,10 +38,11 @@ export const FileMenu = () => {
   const { t } = useTranslation('drive');
   const location = useLocation();
   const dispatch = useDispatch();
+  const isDev = useMemo(() => isDevEnv(), []);
   const isPPVActivated = useMemo(() => !!file?.share_file, [file?.share_file]);
   const fileHasPreview = useMemo(
-    () => !!getPreviewFileType(file, '', true),
-    [file]
+    () => (!!getPreviewFileType(file, '', true) && isDev),
+    [file, isDev]
   );
   const url = useMemo(() => {
     if (isPPVActivated) {
