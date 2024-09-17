@@ -63,8 +63,7 @@ bot.on('pre_checkout_query', async (ctx) => {
 
   } catch (error) {
     logger.error('Error in pre_checkout_query:', {
-      error: errorTransformer(error),
-      ctx: Object.keys(ctx)
+      error: errorTransformer(error)
     });
   }
 });
