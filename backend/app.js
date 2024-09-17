@@ -116,42 +116,6 @@ bot.on('successful_payment', async (ctx) => {
 });
 
 
-bot.start(async (ctx) => {
-  const user = ctx.from;
-  const chat_id = ctx.chat.id.toString();
-  const startParams = parseStartParams(ctx.message.text);
-  const { ref: refCode, show_mob_app_auth_button: showMobileAuthButton } = startParams || {};
-
-  const userData = buildUserData(user, chat_id, refCode);
-  let userRefCode = '';
-
-  try {
-    const cachedUserData = await redisClient.get(`user:${userData.id}`);
-
-    if (cachedUserData) {
-      const parsedUserData = JSON.parse(cachedUserData);
-      if (showMobileAuthButton) {
-        sendMobileAuthButton(chat_id, parsedUserData.jwt);
-        return;
-      }
-      userRefCode = parsedUserData?.user?.referral?.code || '';
-    } else {
-      userRefCode = await createUser(userData, showMobileAuthButton);
-      if (showMobileAuthButton) return;
-    }
-
-    if (refCode?.startsWith('paylink')) {
-      await handlePaylink(refCode, ctx);
-    } else if (refCode?.startsWith('storageGift')) {
-      await handleStorageGift(refCode, ctx);
-    } else {
-      await sendWelcomeMessage(ctx, userRefCode);
-    }
-  } catch (error) {
-    await handleError(error, ctx);
-  }
-});
-
 function buildUserData(user, chat_id, refCode) {
   return {
     id: user.id.toString(),
