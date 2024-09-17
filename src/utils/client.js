@@ -48,7 +48,7 @@ export function isPhone() {
 }
 
 export function isWebPlatform(tgClient) {
-  return  TG_PLATFORMS.web.includes(tgClient?.platform);
+  return TG_PLATFORMS.web.includes(tgClient?.platform);
 }
 
 export function isDesktopPlatform(tgClient) {

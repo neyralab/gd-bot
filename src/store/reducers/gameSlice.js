@@ -16,6 +16,8 @@ import {
 import { setUser } from './userSlice';
 import { getAdvertisementVideo } from '../../effects/advertisementEffect';
 import { API_PATH_ROOT } from '../../utils/api-urls';
+import { isDesktopPlatform, isWebPlatform } from '../../utils/client';
+import { tg } from '../../App';
 
 const gameSlice = createSlice({
   name: 'game',
@@ -113,7 +115,9 @@ const gameSlice = createSlice({
      * Check SystemModalWrapper component and it's child SystemModal for parameters
      * Right now it accepts values: null, 'REACHED_MAX_TAPS'
      */
-    systemModal: null
+    systemModal: null,
+
+    isGameDisabled: false,
   },
   reducers: {
     setPendingGames: (state, { payload }) => {
@@ -219,6 +223,9 @@ const gameSlice = createSlice({
     },
     setGameInfo: (state, { payload }) => {
       state.gameInfo = payload;
+    },
+    setIsGameDisabled: (state, { payload }) => {
+      state.isGameDisabled = payload;
     }
   }
 });
@@ -325,6 +332,10 @@ export const initGame = createAsyncThunk(
         const endTime = gameInfo.game_ends_at;
         lockTimerCountdown(dispatch, endTime);
         // getAdvertisementOffer(dispatch);
+      }
+
+      if (isDesktopPlatform(tg) || isWebPlatform(tg)) {
+        dispatch(setIsGameDisabled(true));
       }
 
       /** This function combines backend tiers and frontend themes */
@@ -734,7 +745,8 @@ export const {
   setAdvertisementModal,
   setGameModal,
   setSystemModal,
-  setGameInfo
+  setGameInfo,
+  setIsGameDisabled
 } = gameSlice.actions;
 export default gameSlice.reducer;
 
@@ -759,6 +771,7 @@ export const selectReachNewLevel = (state) => state.game.reachedNewLevel;
 export const selectNextTheme = (state) => state.game.nextTheme;
 export const selectLevels = (state) => state.game.levels;
 export const selectPendingGames = (state) => state.game.pendingGames;
+export const selectIsGameDisabled = (state) => state.game.isGameDisabled;
 export const selectLevel = (state) => {
   const userLevel = selectExperienceLevel(state);
   const levels = selectLevels(state);

@@ -1,12 +1,13 @@
 import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
+import CN from 'classnames';
 import {
   initGame,
   selectIsInitialized,
   selectIsTransactionLoading,
+  selectIsGameDisabled,
   gameCleanup,
-  checkAdvertisementOffer
 } from '../../store/reducers/gameSlice';
 import { Header } from '../../components/header_v2';
 import BuyButton from './BuyButton/BuyButton';
@@ -39,6 +40,7 @@ export function GamePage() {
   const isInitialized = useSelector(selectIsInitialized);
   const userIsInitialized = useSelector((state) => !!state.user.data);
   const isTransactionLoading = useSelector(selectIsTransactionLoading);
+  const isGamedDisabled = useSelector(selectIsGameDisabled);
 
   useEffect(() => {
     if (!isInitialized && userIsInitialized) {
@@ -78,7 +80,7 @@ export function GamePage() {
 
       <div className={styles.content}>
         <div className={styles['canvas-container']}>
-          <div className={styles.canvas}>
+          <div className={CN(styles.canvas, isGamedDisabled && styles['canvas-disabled'])}>
             <GameCanvas ref={canvasRef} />
           </div>
         </div>

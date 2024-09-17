@@ -1,4 +1,4 @@
-import React, { useMemo, useRef } from 'react';
+import React, { useRef } from 'react';
 import { useSwipeable } from 'react-swipeable';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -7,13 +7,12 @@ import {
   startRound,
   selectThemeAccess,
   proceedTap,
-  switchTheme
+  switchTheme,
+  selectIsGameDisabled
 } from '../../../store/reducers/gameSlice';
 import EndGameAddedPoints from '../EndGameAddedPoints/EndGameAddedPoints';
 import PointsGrowArea from '../PointsGrowArea/PointsGrowArea';
 import Counter from '../Counter/Counter';
-import { isDesktopPlatform, isWebPlatform } from '../../../utils/client';
-import { tg } from '../../../App';
 import styles from './MainButton.module.scss';
 
 const MainButton = ({ onPushAnimation }) => {
@@ -23,6 +22,7 @@ const MainButton = ({ onPushAnimation }) => {
   const isCanvasLoaded = useSelector((state) => state.game.isCanvasLoaded);
   const theme = useSelector(selectTheme);
   const themeAccess = useSelector(selectThemeAccess);
+  const isGamedDisabled = useSelector(selectIsGameDisabled);
   const themeIsSwitching = useSelector(
     (state) => state.game.nextTheme.isSwitching
   );
@@ -36,9 +36,6 @@ const MainButton = ({ onPushAnimation }) => {
   const recentlyFinishedLocker = useSelector(
     (state) => state.game.recentlyFinishedLocker
   );
-  const isGamedDisabled = useMemo(() => {
-    return isDesktopPlatform(tg) || isWebPlatform(tg)
-  }, [tg]);
 
   const swipeHandlers = useSwipeable({
     onSwipedLeft: () => {
