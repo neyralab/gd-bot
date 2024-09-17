@@ -62,7 +62,21 @@ bot.on('pre_checkout_query', async (ctx) => {
       }
     );
 
-    logger.info('pre_checkout_query transferred to Neyra');
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      logger.error('Error in pre_checkout_query response:', {
+        status: response.status,
+        statusText: response.statusText,
+        errorData
+      });
+      throw new Error(`HTTP error! status: ${response.status}`);
+    } else {
+      logger.info('pre_checkout_query transferred to Neyra successfully', {
+        status: response.status
+      });
+    }
+
+
 
   } catch (error) {
     logger.error('Error in pre_checkout_query:', {
