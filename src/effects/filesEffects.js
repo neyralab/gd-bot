@@ -58,13 +58,19 @@ export const getFilePreviewEffect = async (
         headers: {
           'one-time-token': oneTimeToken,
           'X-Download-OTT-JWT': jwt_ott
-        }
+        },
+        responseType: 'blob'
       })
       .get(url, {
         cancelToken
       })
-      .then((response) => {
-        return response.data;
+      .then(async (response) => {
+        const text = await response.data.text();
+        if (text.startsWith('data:image')) {
+          return text;
+        } else {
+          return URL.createObjectURL(response.data);
+        }
       })
       .catch((err) => {
         console.log({ downloadErr: err });
@@ -236,11 +242,11 @@ export const deletePaidShareEffect = async (id, body) => {
     return await axiosInstance.delete(url, body)
       .then((result) => {
         if (result.data.message === "success") {
-          return result?.data; 
-        } else {
-          throw Error('Something went wrong');
-        }
-      });
+        return result?.data;
+      } else {
+        throw Error('Something went wrong');
+      }
+    });
   } catch (error) {
     throw Error(error);
   }
