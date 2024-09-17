@@ -20,6 +20,7 @@ import PaymentMenu from '../../../components/paymentMenu/Menu';
 
 import {
   selectContractAddress,
+  selectIsGameDisabled,
   selectStatus,
   selectTheme,
   selectThemeAccess,
@@ -54,8 +55,6 @@ import {
   isStarsPaymentEnabled,
 } from '../../../utils/paymentChecker';
 import { sleep } from '../../../utils/sleep';
-import { isWebPlatform, isDesktopPlatform } from '../../../utils/client';
-import { tg } from '../../../App';
 import styles from './BuyButton.module.css';
 
 export default function BuyButton() {
@@ -71,6 +70,7 @@ export default function BuyButton() {
   const themes = useSelector(selectThemes);
   const themeAccess = useSelector(selectThemeAccess);
   const isPaymentModalOpen = useSelector(selectPaymentSelectModal);
+  const isGameDisabled = useSelector(selectIsGameDisabled);
   const gamePayment = useSelector(selectPaymenttByKey('tap_game'));
 
   const user = useSelector((state) => state?.user?.data);
@@ -268,7 +268,7 @@ export default function BuyButton() {
         <button
           type="button"
           className={classNames(styles.button, styles[theme.id])}
-          disabled={isWebPlatform(tg) || isDesktopPlatform(tg)}
+          disabled={isGameDisabled}
           onClick={hanldePyamentBtnClick}
         >
           {isStarsPaymentEnabled ? (
