@@ -4,7 +4,6 @@ import { Markup, Telegraf } from 'telegraf';
 import fs from 'fs';
 import fetch from 'node-fetch';
 import { telegrafThrottler } from 'telegraf-throttler';
-import axios from 'axios';
 import Queue from 'bull';
 import { createClient } from 'redis';
 
@@ -54,9 +53,13 @@ bot.on('pre_checkout_query', async (ctx) => {
       // ctx: Object.keys(ctx),
       body: body
     });
-    const response = await axios.post(
+    const response = await fetch(
       `${process.env.TG_BILLING_ENDPOINT}`,
-        body
+      {
+        method: 'POST',
+        body: JSON.stringify(body),
+        headers: { 'Content-Type': 'application/json' }
+      }
     );
 
     logger.info('pre_checkout_query transferred to Neyra');
@@ -76,9 +79,13 @@ bot.on('successful_payment', async (ctx) => {
       body: body
     });
     const paymentInfo = ctx.message.successful_payment;
-    const response = await axios.post(`${process.env.TG_BILLING_ENDPOINT}`, body);
+    const response = await fetch(`${process.env.TG_BILLING_ENDPOINT}`, {
+      method: 'POST',
+      body: JSON.stringify(body),
+      headers: { 'Content-Type': 'application/json' }
+    });
 
-    if (response.status < 400) {
+    if (response.ok) {
       try {
         await ctx.reply('Payment successfully confirmed. Thank you!');
       } catch (replyError) {
@@ -228,16 +235,16 @@ async function handleStorageGift(refCode, ctx) {
 async function sendWelcomeMessage(ctx, userRefCode) {
   const header = '<b>YES! Tap for Your Bytes & Beyond with us! 🚀</b>';
   const activitiesText = `
-Think you’ve got fast fingers? It’s time to show them off! With GhostDrive’s Tap Game, every tap brings you closer to incredible rewards.
+Think you've got fast fingers? It's time to show them off! With GhostDrive's Tap Game, every tap brings you closer to incredible rewards.
 
 <b>🔥 Earn as You Play:</b> Accumulate points and unlock storage, rewards, and more.
 <b>🎯 Climb the Leaderboard:</b> Out-tap the competition and claim your spot at the top!
 <b>🎁 Tap, Refer, Win:</b> Get bonus points & rewards when you invite friends!
 
-This isn’t just a game, it’s your chance to win BIG & boost your digital storage.
+This isn't just a game, it's your chance to win BIG & boost your digital storage.
 <b>Get ready for the future with GhostDrive! 📲💡</b>
 
-Don’t forget to follow us on socials for exclusive updates, events, and more!
+Don't forget to follow us on socials for exclusive updates, events, and more!
 `;
 
   const buttons = buildButtons(userRefCode);
