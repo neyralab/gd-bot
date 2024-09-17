@@ -3,6 +3,7 @@ import { useSwipeable } from 'react-swipeable';
 import DefaultFileTitle from '../components/DefaultFileTitle/DefaultFileTitle';
 import DefaultFileActions from '../components/DefaultFileActions/DefaultFileActions';
 import PdfSnapshotReader from '../components/PdfSnapshotReader/PdfSnapshotReader';
+import SliderDots from '../components/SliderDots/SliderDots';
 import styles from './PdfPreview.module.scss';
 
 const PdfPreview = ({
@@ -12,18 +13,18 @@ const PdfPreview = ({
   onFavoriteClick,
   onInfoClick
 }) => {
-  const [pageNumber, setPageNumber] = useState(1);
-  const [numPages, setNumPages] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(null);
 
   const onDocumentLoadSuccess = ({ numPages }) => {
-    setNumPages(numPages);
+    setTotalPages(numPages);
   };
 
   const handleSwipe = (deltaX) => {
-    if (deltaX > 0 && pageNumber > 1) {
-      setPageNumber(pageNumber - 1);
-    } else if (deltaX < 0 && pageNumber < numPages) {
-      setPageNumber(pageNumber + 1);
+    if (deltaX > 0 && currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    } else if (deltaX < 0 && currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
     }
   };
 
@@ -39,7 +40,7 @@ const PdfPreview = ({
       <PdfSnapshotReader
         fileContent={fileContent}
         onDocumentLoadSuccess={onDocumentLoadSuccess}
-        pageNumber={pageNumber}
+        pageNumber={currentPage}
       />
 
       {mode === 'default' && (
@@ -52,6 +53,8 @@ const PdfPreview = ({
           />
         </>
       )}
+
+      <SliderDots totalPages={totalPages} currentPage={currentPage} />
     </div>
   );
 };

@@ -1,15 +1,5 @@
 .page {
-  position: fixed;
-  bottom: 15px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 9999;
-  color: #fff;
-  font-family: 'SF Pro Text';
-  font-size: 14px;
-  font-weight: 500;
-  line-height: 150%;
-  letter-spacing: 0.09px;
+  background-color: transparent !important;
 }
 
 .pdf-container {

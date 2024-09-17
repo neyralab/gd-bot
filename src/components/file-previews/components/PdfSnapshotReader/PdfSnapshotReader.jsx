@@ -2,6 +2,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import { Document, Page, pdfjs } from 'react-pdf';
 import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
 import 'react-pdf/dist/esm/Page/TextLayer.css';
+import Loader2 from '../../../Loader2/Loader2';
 import styles from './PdfSnapshotReader.module.scss';
 
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
@@ -85,13 +86,16 @@ export default function PdfSnapshotReader({
           renderMode="canvas"
           inputRef={pdfRef}
           onLoadSuccess={onDocumentLoadSuccess}
-          onItemClick={clickHandler}>
+          onItemClick={clickHandler}
+          loading={<Loader2 />}>
           <Page
             pageNumber={pageNumber}
             renderTextLayer={false}
             width={dimensions.width}
             height={dimensions.height}
+            className={styles.page}
             onLoadSuccess={onPageLoadSuccess}
+            loading={<Loader2 />}
           />
         </Document>
       </div>
