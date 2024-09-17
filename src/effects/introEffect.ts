@@ -19,6 +19,5 @@ export const checkIntro = async () => {
 export const sendIntroIsSeen = async () => {
   const url = `${API_PATH}/intro`;
   const { data } = await axiosInstance.post<Effect<SendIntroResponse>>(url);
-  console.log(data);
   return data;
 };
