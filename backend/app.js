@@ -51,13 +51,16 @@ bot.on('pre_checkout_query', async (ctx) => {
   try {
     const body = ctx.update;
     logger.info('Start pre_checkout_query', {
-      ctx: Object.keys(ctx),
+      // ctx: Object.keys(ctx),
       body: body
     });
     const response = await axios.post(
       `${process.env.TG_BILLING_ENDPOINT}`,
-        Object.keys(body)
+        body
     );
+
+    logger.info('pre_checkout_query transferred to Neyra');
+
   } catch (error) {
     logger.error('Error in pre_checkout_query:', {
       error: errorTransformer(error),
