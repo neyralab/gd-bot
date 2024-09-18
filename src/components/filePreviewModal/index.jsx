@@ -33,7 +33,6 @@ import { ReactComponent as InfoIcon } from './assets/info.svg';
 import { ReactComponent as SendIcon } from './assets/send.svg';
 
 import style from './styles.module.scss';
-import { vibrate } from '../../utils/vibration';
 
 Modal.setAppElement('#root');
 
@@ -168,9 +167,7 @@ export const FilePreviewModal = () => {
           </div>
         ) : (
           <div className={style.wrapper} ref={wrapper}>
-            <button
-              className={style.back}
-              onClick={onClose}>
+            <button className={style.back} onClick={onClose}>
               Back
             </button>{' '}
             <PreviewContent
