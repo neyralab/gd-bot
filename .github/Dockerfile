@@ -4,7 +4,7 @@ WORKDIR /app
 COPY ./ /app
 
 RUN apk update \
- && apk add git openssh-client 
+ && apk add git openssh-client supervisor 
 
 RUN yarn install
 
