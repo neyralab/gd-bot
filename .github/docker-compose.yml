@@ -6,20 +6,33 @@ services:
       context: ./src
       dockerfile: Dockerfile
     ports:
-    - "3002:3000"
+      - "3002:3000"
+    command: /usr/bin/supervisord -c /etc/supervisor/supervisord-front.conf
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
+        max-file: "3"
     
   back:
     container_name: telegram-bot-back
     build:
       context: ./src/backend
       dockerfile: Dockerfile
-    ports:
-    - "3003:3000"
-    restart: always
-    depends_on:
-      - redis
     environment:
       - REDIS_URL=redis://redis:6379
+    ports:
+      - "3003:3000"
+    command: /usr/bin/supervisord -c /etc/supervisor/supervisord-back.conf
+    restart: unless-stopped
+    depends_on:
+      - redis
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
+        max-file: "3"
 
   redis:
     container_name: telegram-bot-redis
