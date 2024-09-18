@@ -242,11 +242,11 @@ export const deletePaidShareEffect = async (id, body) => {
     return await axiosInstance.delete(url, body)
       .then((result) => {
         if (result.data.message === "success") {
-        return result?.data;
-      } else {
-        throw Error('Something went wrong');
-      }
-    });
+          return result?.data;
+        } else {
+          throw Error('Something went wrong');
+        }
+      });
   } catch (error) {
     throw Error(error);
   }
