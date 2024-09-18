@@ -4,7 +4,6 @@ import { Header } from '../../components/header';
 import styles from './styles.module.css';
 import { NavLink } from 'react-router-dom';
 import useTypingEffect from '../../utils/useTypingEffect';
-import { vibrate } from '../../utils/vibration';
 
 export default function NodesWelcomePage() {
   const { t } = useTranslation('system');
@@ -32,8 +31,7 @@ export default function NodesWelcomePage() {
 
       <NavLink
         className={styles.button}
-        to={'/nodes'}
-        onClick={vibrate}>
+        to={'/nodes'}>
         {t('node.dashboard')}
       </NavLink>
     </div>

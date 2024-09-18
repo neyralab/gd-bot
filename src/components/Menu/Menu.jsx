@@ -2,8 +2,6 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { NavLink, useLocation } from 'react-router-dom';
 
-import { vibrate } from '../../utils/vibration';
-
 import { ReactComponent as FlyIcon } from '../../assets/menu/fly.svg';
 import { ReactComponent as TopIcon } from '../../assets/menu/top.svg';
 import { ReactComponent as FriendsIcon } from '../../assets/menu/friends.svg';
@@ -40,8 +38,7 @@ export default function Menu() {
           className={({ isActive }) =>
             classNames(styles.item, isActive && styles.active)
           }
-          to={'/game-3d'}
-          onClick={vibrate}>
+          to={'/game-3d'}>
           <div className={classNames(styles.icon)}>
             <FlyIcon />
           </div>
@@ -55,8 +52,7 @@ export default function Menu() {
               location.pathname.startsWith('/leadboard/') && styles.active
             )
           }
-          to={'/leadboard/league'}
-          onClick={vibrate}>
+          to={'/leadboard/league'}>
           <div className={styles.icon}>
             <TopIcon />
           </div>
@@ -69,8 +65,7 @@ export default function Menu() {
           className={({ isActive }) =>
             classNames(styles.item, isActive && styles.active)
           }
-          to={'/friends'}
-          onClick={vibrate}>
+          to={'/friends'}>
           <div className={styles.icon}>
             <FriendsIcon />
           </div>
@@ -83,8 +78,7 @@ export default function Menu() {
           className={({ isActive }) =>
             classNames(styles.item, isActive && styles.active)
           }
-          to={'/earn'}
-          onClick={vibrate}>
+          to={'/earn'}>
           <div className={styles.icon}>
             <EarnIcon />
           </div>
@@ -95,8 +89,7 @@ export default function Menu() {
           className={({ isActive }) =>
             classNames(styles.item, isActive && styles.active)
           }
-          to={'/point-tracker'}
-          onClick={vibrate}>
+          to={'/point-tracker'}>
           <div className={styles.icon}>
             <AirdropIcon />
           </div>
