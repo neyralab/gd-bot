@@ -8,7 +8,7 @@ import { toast } from 'react-toastify';
 import {
   handleFileMenu,
   handlePaperViewModal,
-  selectisFileMenuOpen
+  selectisFileMenuOpen,
 } from '../../store/reducers/modalSlice';
 import {
   selecSelectedFile,
@@ -16,16 +16,13 @@ import {
   updateFile
 } from '../../store/reducers/filesSlice';
 import { setPPVFile } from '../../store/reducers/driveSlice';
-import {
-  updateShareEffect,
-  deletePaidShareEffect
-} from '../../effects/filesEffects';
+import { updateShareEffect, deletePaidShareEffect } from '../../effects/filesEffects';
 import { restoreFileEffect } from '../../effects/file/restoreFileEffect';
 import { generateSharingLink } from '../../utils/generateSharingLink';
 import { getPreviewFileType } from '../../utils/preview';
 import { removeSlugHyphens } from '../../utils/string';
-// import useButtonVibration from '../../hooks/useButtonVibration';
 import { BOT_NAME } from '../../utils/api-urls';
+import { vibrate } from '../../utils/vibration';
 
 import { SlidingModal } from '../slidingModal';
 
@@ -35,50 +32,42 @@ import { ReactComponent as PenIcon } from '../../assets/pen.svg';
 import ToggleSwitch from '../toggleSwitch';
 
 import style from './style.module.css';
-import { vibrate } from '../../utils/vibration';
 
 export const FileMenu = () => {
-  const { t: tSystem } = useTranslation('system');
+  const { t : tSystem } = useTranslation('system');
   const isOpen = useSelector(selectisFileMenuOpen);
-  // const handleVibrationClick = useButtonVibration();
   const file = useSelector(selecSelectedFile);
   const { t } = useTranslation('drive');
   const location = useLocation();
   const dispatch = useDispatch();
   const isPPVActivated = useMemo(() => !!file?.share_file, [file?.share_file]);
-  const isFileHavePreview = useMemo(
-    () => !!getPreviewFileType(file, '', true),
-    [file]
-  );
+  const isFileHavePreview = useMemo(() => !!getPreviewFileType(file, '', true), [file]);
   const url = useMemo(() => {
     if (isPPVActivated) {
       return `https://t.me/${BOT_NAME}?start=paylink_${removeSlugHyphens(file.slug)}`;
     }
     return generateSharingLink(file.slug);
   }, [file, isPPVActivated]);
-
-  const handleVibrationClick = (cb) => {
-    vibrate();
-    return cb?.();
-  };
-
   const isDeletedPage =
     location.pathname === '/file-upload' &&
     new URLSearchParams(location.search).get('type') === 'delete';
 
   const onClose = () => {
+    vibrate();
     dispatch(handleFileMenu(false));
     dispatch(setPPVFile({}));
   };
 
   const onShareClick = async (e) => {
-    e?.stopPropagation();
+    e.stopPropagation();
+    vibrate();
     dispatch(handleFileMenu(false));
     await updateShareEffect(file.slug);
     dispatch(setPPVFile({}));
   };
 
   const onRestoreClick = async () => {
+    vibrate();
     const result = await restoreFileEffect(file.slug, dispatch);
     dispatch(handleFileMenu(false));
     if (result === 'success') {
@@ -96,48 +85,45 @@ export const FileMenu = () => {
 
   const activatePayShare = async () => {
     try {
+      vibrate();
       if (isPPVActivated) {
         await deletePaidShareEffect(file.share_file.id);
         dispatch(updateFile({ ...file, share_file: null }));
-        dispatch(setSelectedFile({ ...file, share_file: null }));
+        dispatch(setSelectedFile({ ...file, share_file: null }))
       } else {
         dispatch(handleFileMenu(false));
         dispatch(handlePaperViewModal(true));
       }
     } catch (error) {
-      console.warn(error);
+      console.warn(error)
     }
-  };
+  }
 
   const onEditPPV = () => {
+    vibrate();
     dispatch(handleFileMenu(false));
     dispatch(handlePaperViewModal(true));
-  };
+  }
 
   return (
     <SlidingModal
       onClose={onClose}
       isOpen={isOpen}
-      snapPoints={isPPVActivated ? [184, 184, 50, 0] : [120, 110, 50, 0]}>
+      snapPoints={isPPVActivated ? [184, 184, 50, 0] : [120, 110, 50, 0]}
+    >
       <ul className={style.menu}>
         {!isDeletedPage && (
           <>
             <li className={style.menu__item}>
               <TelegramShareButton
                 url={url}
-                title={
-                  isPPVActivated
-                    ? ''
-                    : `${'dashbord.linkToFile'} "${file.name}"`
-                }
-                onClick={handleVibrationClick(onShareClick)}
+                title={isPPVActivated ? '' : `${'dashbord.linkToFile'} "${file.name}"`}
+                onClick={onShareClick}
                 className={style.shareOption}>
                 <ShareArrowIcon />
-                <span className={style.menu__item__title}>
-                  {t('dashbord.share')}
-                </span>
+                <span className={style.menu__item__title}>{t('dashbord.share')}</span>
               </TelegramShareButton>
-              {isFileHavePreview && (
+              { isFileHavePreview && (
                 <div className={style.menu__item_switch}>
                   <span>{t('ppv.ppv')}</span>
                   <ToggleSwitch
@@ -149,8 +135,8 @@ export const FileMenu = () => {
             </li>
             {isPPVActivated && (
               <li onClick={onEditPPV} className={style.menu__item}>
-                <PenIcon />
-                <span className={style.menu__item__title}>{t('ppv.edit')}</span>
+                  <PenIcon />
+                  <span className={style.menu__item__title}>{t('ppv.edit')}</span>
               </li>
             )}
           </>
@@ -158,14 +144,14 @@ export const FileMenu = () => {
         {isDeletedPage && (
           <li
             className={style.menu__item}
-            onClick={handleVibrationClick(onRestoreClick)}>
+            onClick={onRestoreClick}>
             <RestoreIcon />
             <span className={style.menu__item__title}>Restore</span>
           </li>
         )}
         {/* <li
           className={style.menu__item}
-          onClick={handleVibrationClick(onDeleteClick)}>
+          onClick={onDeleteClick}>
           <DeleteIcon />
           <span className={cn(style.menu__item__title, style.deleteTitle)}>
             {isDeletedPage ? 'Delete permanently' : 'Delete'}

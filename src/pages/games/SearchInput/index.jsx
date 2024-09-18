@@ -5,19 +5,19 @@ import { DebounceInput } from 'react-debounce-input';
 import { ReactComponent as SearchIcon } from '../../../assets/search_input.svg';
 import { ReactComponent as CloseIcon } from '../../filesSystemPage/assets/close.svg';
 
-import useButtonVibration from '../../../hooks/useButtonVibration';
+import { vibrate } from '../../../utils/vibration';
 
 import style from './styles.module.css';
 
 export const SearchInput = ({ value, setValue }) => {
   const { t } = useTranslation('drive');
-  const handleVibrationClick = useButtonVibration();
 
   const handleInputChange = ({ target: { value } }) => {
     setValue(value);
   };
 
   const onClear = () => {
+    vibrate();
     setValue('');
   };
 
@@ -40,7 +40,7 @@ export const SearchInput = ({ value, setValue }) => {
       </label>
       <div
         className={style.search__logo}
-        onClick={handleVibrationClick(onClear)}>
+        onClick={onClear}>
         <CloseIcon />
       </div>
     </div>

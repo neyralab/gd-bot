@@ -42,7 +42,7 @@ const driveSlice = createSlice({
     fileIsFavoriteUpdating: [], // slugs
     fileMenuFile: null,
     storageInfo: null,
-    ppvFile: null,
+    ppvFile: null
   },
   reducers: {
     setFilesQueryData: (state, { payload }) => {
@@ -382,9 +382,9 @@ export const clearDriveState = createAsyncThunk(
   'drive/clearDriveState',
   async (_, { dispatch }) => {
     dispatch(setFilesQueryData({ search: null, category: null, page: 1 }));
-    dispatch(setFiles([]))
-    dispatch(setFileMenuFile(null))
-    dispatch(setFileIsFavoriteUpdating([]))
+    dispatch(setFiles([]));
+    dispatch(setFileMenuFile(null));
+    dispatch(setFileIsFavoriteUpdating([]));
   }
 );
 

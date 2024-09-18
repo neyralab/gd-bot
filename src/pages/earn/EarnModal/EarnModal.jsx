@@ -18,7 +18,7 @@ import {
   checkYoutubeJoin,
   trackSocial,
 } from '../../../effects/EarnEffect';
-import useButtonVibration from '../../../hooks/useButtonVibration';
+import { vibrate } from '../../../utils/vibration';
 
 import { ReactComponent as CloseIcon } from '../../../assets/close.svg';
 import SystemModal from '../../../components/SystemModal/SystemModal';
@@ -40,7 +40,6 @@ const EarnModal = forwardRef(({ item, onTasksRequireCheck }, ref) => {
   const modalRef = useRef(null);
   const systemModalRef = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
-  const handleVibrationClick = useButtonVibration();
 
   useImperativeHandle(ref, () => ({
     open: open
@@ -51,12 +50,13 @@ const EarnModal = forwardRef(({ item, onTasksRequireCheck }, ref) => {
   };
 
   const close = () => {
+    vibrate();
     setIsOpen(false);
   };
 
   const checkSocials = async (id) => {
     let fn;
-
+    vibrate();
     switch (id) {
       case 'JOIN_TG_CHANNEL':
         fn = checkTgChatJoin;
@@ -200,6 +200,7 @@ const EarnModal = forwardRef(({ item, onTasksRequireCheck }, ref) => {
 
   const handleSocial = async () => {
     try {
+      vibrate();
       if (
         item.id !== 'DOWNLOAD_APP' &&
         item.id !== 'JOIN_TG_CHANNEL' &&
@@ -221,7 +222,7 @@ const EarnModal = forwardRef(({ item, onTasksRequireCheck }, ref) => {
           href={item.joinLink}
           target="_blank"
           className={classNames(styles.button, styles['join-button'])}
-          onClick={handleVibrationClick(handleSocial)}>
+          onClick={handleSocial}>
           {item.id === 'DOWNLOAD_APP' ? 'Download' : 
             (item.id === 'WATCH_VIDEO' ? 'Watch' : 'Join' )
           }
@@ -246,7 +247,7 @@ const EarnModal = forwardRef(({ item, onTasksRequireCheck }, ref) => {
         return (
           <button
             className={classNames(styles.button, styles['check-button'])}
-            onClick={handleVibrationClick(() => checkSocials(item.id))}>
+            onClick={() => checkSocials(item.id)}>
             Check
           </button>
         );
@@ -276,7 +277,7 @@ const EarnModal = forwardRef(({ item, onTasksRequireCheck }, ref) => {
                   </div>
                   <div
                     className={styles.close}
-                    onClick={handleVibrationClick(close)}>
+                    onClick={close}>
                     <CloseIcon />
                   </div>
                 </div>

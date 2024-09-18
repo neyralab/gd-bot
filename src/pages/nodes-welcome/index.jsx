@@ -4,11 +4,10 @@ import { Header } from '../../components/header';
 import styles from './styles.module.css';
 import { NavLink } from 'react-router-dom';
 import useTypingEffect from '../../utils/useTypingEffect';
-import useButtonVibration from '../../hooks/useButtonVibration';
+import { vibrate } from '../../utils/vibration';
 
 export default function NodesWelcomePage() {
   const { t } = useTranslation('system');
-  const handleVibrationClick = useButtonVibration();
 
   const typingDescription = useTypingEffect(
     t('node.nodeDesc'),
@@ -34,7 +33,7 @@ export default function NodesWelcomePage() {
       <NavLink
         className={styles.button}
         to={'/nodes'}
-        onClick={handleVibrationClick()}>
+        onClick={vibrate}>
         {t('node.dashboard')}
       </NavLink>
     </div>

@@ -19,6 +19,7 @@ import { restoreFileEffect } from '../../../../effects/file/restoreFileEffect';
 import { generateSharingLink } from '../../../../utils/generateSharingLink';
 import { getPreviewFileType } from '../../../../utils/preview';
 import { removeSlugHyphens } from '../../../../utils/string';
+import { vibrate } from '../../../../utils/vibration';
 import { BOT_NAME } from '../../../../utils/api-urls';
 import { isDevEnv } from '../../../../utils/isDevEnv';
 
@@ -29,7 +30,6 @@ import { ReactComponent as PenIcon } from '../../../../assets/pen.svg';
 import style from './FileMenu.module.scss';
 import { SlidingModal } from '../../../../components/slidingModal';
 import ToggleSwitch from '../../../../components/toggleSwitch';
-import { vibrate } from '../../../../utils/vibration';
 
 export const FileMenu = () => {
   const { t: tSystem } = useTranslation('system');
@@ -40,7 +40,7 @@ export const FileMenu = () => {
   const isDev = useMemo(() => isDevEnv(), []);
   const isPPVActivated = useMemo(() => !!file?.share_file, [file?.share_file]);
   const fileHasPreview = useMemo(
-    () => !!getPreviewFileType(file, '', true) && isDev,
+    () => (!!getPreviewFileType(file, '', true) && isDev),
     [file, isDev]
   );
   const url = useMemo(() => {
@@ -58,9 +58,8 @@ export const FileMenu = () => {
   };
 
   const onShareClick = async (e) => {
-    e?.stopPropagation();
+    e.stopPropagation();
     vibrate();
-
     await updateShareEffect(file.slug);
     dispatch(setFileMenuFile(null));
   };
@@ -99,6 +98,7 @@ export const FileMenu = () => {
         dispatch(setPPVFile(file));
         dispatch(setFileMenuFile(null));
       }
+      
     } catch (error) {
       console.warn(error);
     }
@@ -152,14 +152,16 @@ export const FileMenu = () => {
           </>
         )}
         {isDeletedPage && (
-          <li className={style.menu__item} onClick={onRestoreClick}>
+          <li
+            className={style.menu__item}
+            onClick={onRestoreClick}>
             <RestoreIcon />
             <span className={style.menu__item__title}>Restore</span>
           </li>
         )}
         {/* <li
           className={style.menu__item}
-          onClick={handleVibrationClick(onDeleteClick)}>
+          onClick={onDeleteClick)>
           <DeleteIcon />
           <span className={cn(style.menu__item__title, style.deleteTitle)}>
             {isDeletedPage ? 'Delete permanently' : 'Delete'}
