@@ -33,6 +33,7 @@ import { ReactComponent as InfoIcon } from './assets/info.svg';
 import { ReactComponent as SendIcon } from './assets/send.svg';
 
 import style from './styles.module.scss';
+import { vibrate } from '../../utils/vibration';
 
 Modal.setAppElement('#root');
 
@@ -122,6 +123,7 @@ export const FilePreviewModal = () => {
   };
 
   const toggleFavorite = () => {
+    vibrate();
     updateFileFavoriteEffect(file.slug, dispatch);
   };
 
@@ -135,6 +137,7 @@ export const FilePreviewModal = () => {
       id: 2,
       icon: <InfoIcon />,
       action: () => {
+        vibrate();
         setInfoPopupOpen(true);
       }
     },
@@ -185,7 +188,7 @@ export const FilePreviewModal = () => {
             </div>
             <div className={style.actions}>
               {actions.map(({ id, icon, action }) => (
-                <div key={id} onClick={handleVibrationClick(action)}>
+                <div key={id} onClick={action}>
                   {icon}
                 </div>
               ))}
