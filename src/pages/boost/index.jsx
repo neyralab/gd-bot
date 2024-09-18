@@ -27,6 +27,7 @@ import { transformSize } from '../../utils/transformSize';
 import { ReactComponent as Star } from '../../assets/star.svg';
 import useButtonVibration from '../../hooks/useButtonVibration';
 import { INVOICE_TYPE } from '../../utils/createStarInvoice';
+import { isDevEnv } from '../../utils/isDevEnv';
 import { sleep } from '../../utils/sleep';
 import { getToken } from '../../effects/set-token';
 import { runInitAnimation } from './animations';
@@ -49,6 +50,7 @@ export const BoostPage = ({ tariffs, setTariffs }) => {
   const storagePayment = useSelector(selectPaymenttByKey('storage'));
   const user = useSelector((state) => state.user.data);
   const wallet = useTonWallet();
+  const isDev = isDevEnv();
   const [tonConnectUI] = useTonConnectUI();
   const { open } = useTonConnectModal();
   const dispatch = useDispatch();
@@ -164,7 +166,10 @@ export const BoostPage = ({ tariffs, setTariffs }) => {
     if (el.action === 'ton') {
       payByTON(el);
     } else {
-      const input = `${storagePayment.Type};${el?.id};${user.id};${ws};0`;
+      const input = isDev ?
+        `${storagePayment.Type};${el?.id};${user.id};${ws}` :
+        `${el?.id};${user.id};${ws}`;
+
       const theme = {
         multiplier: el.multiplicator,
         stars: el.stars
