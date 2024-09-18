@@ -8,7 +8,7 @@ import { ReactComponent as PlayIcon } from '../../assets/intro/play.svg';
 import { ReactComponent as AirdropIcon } from '../../assets/intro/airdrop.svg';
 
 import s from './styles.module.css';
-import useButtonVibration from '../../hooks/useButtonVibration';
+import { vibrate } from '../../utils/vibration';
 
 const info = [
   {
@@ -41,7 +41,6 @@ export const IntroPage = () => {
   const [paused, setPaused] = useState(false);
   const [realPaused, setRealPaused] = useState(false);
   const navigate = useNavigate();
-  const handleVibrationClick = useButtonVibration();
 
   useEffect(() => {
     const isLoadedBefore = localStorage.getItem(DEFAULT_NAME);
@@ -84,6 +83,7 @@ export const IntroPage = () => {
   }, [list]);
 
   const onStart = () => {
+    vibrate();
     localStorage.setItem(DEFAULT_NAME, true.toString());
     navigate('/start');
   };
@@ -154,7 +154,7 @@ export const IntroPage = () => {
               visibility: isInfoShown ? 'visible' : 'hidden',
               width: isInfoShown ? '100%' : 0 /* Expand to full width */
             }}
-            onClick={handleVibrationClick(onStart)}
+            onClick={onStart}
             className={s.start_button}>
             Start now
           </button>

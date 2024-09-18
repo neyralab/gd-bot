@@ -12,7 +12,7 @@ import { getFriends } from '../../effects/friendsEffect';
 import { ReactComponent as LoaderIcon } from '../../assets/loader.svg';
 import { getAllTasks } from '../../effects/balanceEffect';
 import { handleTasks } from '../../store/reducers/taskSlice';
-import useButtonVibration from '../../hooks/useButtonVibration';
+import { vibrate } from '../../utils/vibration';
 import { getKeyTranslate } from '../../translation/utils/index';
 import gameJson from '../../translation/locales/en/game.json';
 import { runInitAnimation } from './animations';
@@ -36,7 +36,6 @@ export default function FriendsPage() {
   const [friendsAreLoading, setFriendsAreLoading] = useState(true);
   const [defaultPoints, setDefaultPoints] = useState('0');
   const [showContent, setShowContent] = useState(false);
-  const handleVibrationClick = useButtonVibration();
 
   useEffect(() => {
     getAllTasks().then((res) => {
@@ -107,7 +106,7 @@ export default function FriendsPage() {
             className={styles['invite-button']}
             url={link.copy}
             title={t('friends.inviteFriend')}
-            onClick={handleVibrationClick()}>
+            onClick={vibrate}>
             <span
               data-animation="friends-animation-2"
               className={styles['initial-state-for-animation']}>
