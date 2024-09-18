@@ -1,13 +1,13 @@
 import s from './styles.module.css';
-import { useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
+// import { useNavigate } from 'react-router-dom';
+// import { useEffect } from 'react';
 
 export const FallbackComponent = () => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
-  useEffect(() => {
-    navigate('/start');
-  }, [navigate]);
+  // useEffect(() => {
+  //   navigate('/start');
+  // }, [navigate]);
 
   return <div className={s.container}></div>;
 };
