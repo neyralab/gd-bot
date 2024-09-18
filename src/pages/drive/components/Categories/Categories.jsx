@@ -40,12 +40,12 @@ export default function Categories() {
       icon: icons.fav,
       callback: () => getFiles('fav')
     },
-    {
-      name: 'Star Space',
-      value: types?.ppv,
-      icon: icons.star,
-      callback: () => getFiles('payShare')
-    },
+    // {
+    //   name: 'Star Space',
+    //   value: types?.ppv,
+    //   icon: icons.star,
+    //   callback: () => getFiles('payShare')
+    // },
     {
       name: t('dashbord.pictures'),
       value: types?.images,
