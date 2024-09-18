@@ -46,7 +46,7 @@ const createInvoice = ({ type, additionalData }) => {
         }
       ],
     }
-  } else if (type === INVOICE_TYPE.ppv) {
+  } else if (type === INVOICE_TYPE.spin) {
     return {
       title: 'Ghost Drive Spin Game',
       description: 'Enables payment processing for the Spin feature.',
