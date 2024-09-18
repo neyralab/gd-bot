@@ -59,7 +59,7 @@ const EarnModal = forwardRef(({ item, onTasksRequireCheck }, ref) => {
     vibrate();
     switch (id) {
       case 'JOIN_TG_CHANNEL':
-        fn = checkTgChatJoin;
+        fn = checkTgJoin;
         break;
       case 'JOIN_YOUTUBE':
         fn = checkYoutubeJoin;
@@ -68,7 +68,7 @@ const EarnModal = forwardRef(({ item, onTasksRequireCheck }, ref) => {
         fn = checkXJoin;
         break;
       case 'JOIN_TG_NEWS_CHANNEL':
-        fn = checkTgJoin;
+        fn = checkTgChatJoin;
         break;
       case 'JOIN_INSTAGRAM':
         fn = checkInstagramJoin;
