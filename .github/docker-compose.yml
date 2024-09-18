@@ -7,7 +7,7 @@ services:
       dockerfile: Dockerfile
     ports:
       - "3002:3000"
-    command: /usr/bin/supervisord -c /etc/supervisor/supervisord-front.conf
+    command: /usr/bin/supervisord -c /etc/supervisor/supervisord.conf
     restart: unless-stopped
     logging:
       driver: "json-file"
@@ -24,7 +24,7 @@ services:
       - REDIS_URL=redis://redis:6379
     ports:
       - "3003:3000"
-    command: /usr/bin/supervisord -c /etc/supervisor/supervisord-back.conf
+    command: /usr/bin/supervisord -c /etc/supervisor/supervisord.conf
     restart: unless-stopped
     depends_on:
       - redis

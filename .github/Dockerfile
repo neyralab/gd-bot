@@ -8,5 +8,4 @@ RUN apk update \
 
 RUN yarn install
 
-COPY .github/supervisord-front.conf /etc/supervisor/supervisord-front.conf
-COPY .github/supervisord-back.conf /etc/supervisor/supervisord-back.conf
+COPY supervisord.conf /etc/supervisor/supervisord.conf
