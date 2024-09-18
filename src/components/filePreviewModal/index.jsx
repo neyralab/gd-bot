@@ -22,7 +22,6 @@ import { getFileCids } from '../../effects/file/getFileCid';
 import { sendFileViewStatistic } from '../../effects/file/statisticEfect';
 import { getPreviewFileType } from '../../utils/preview';
 import { generateSharingLink } from '../../utils/generateSharingLink';
-import useButtonVibration from '../../hooks/useButtonVibration';
 
 import GhostLoader from '../ghostLoader';
 import PreviewContent from './previewContent';
@@ -41,7 +40,6 @@ const ESCAPE_CONTENT_DOWNLOAD = ['audio', 'encrypt'];
 export const FilePreviewModal = () => {
   const { t } = useTranslation('drive');
   const wrapper = useRef(null);
-  const handleVibrationClick = useButtonVibration();
   const isOpen = useSelector(selectIsFilePreviewOpen);
   const file = useSelector(selecSelectedFile);
   const [loading, setLoading] = useState(false);
@@ -167,7 +165,7 @@ export const FilePreviewModal = () => {
           <div className={style.wrapper} ref={wrapper}>
             <button
               className={style.back}
-              onClick={handleVibrationClick(onClose)}>
+              onClick={onClose}>
               Back
             </button>{' '}
             <PreviewContent
@@ -185,7 +183,7 @@ export const FilePreviewModal = () => {
             </div>
             <div className={style.actions}>
               {actions.map(({ id, icon, action }) => (
-                <div key={id} onClick={handleVibrationClick(action)}>
+                <div key={id} onClick={action}>
                   {icon}
                 </div>
               ))}

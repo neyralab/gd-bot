@@ -17,7 +17,6 @@ import imageFileExtensions, {
 
 import CustomFolderIcon from '../../components/customFileIcon/CustomFolderIcon';
 import CustomFileSmallIcon from '../../components/customFileIcon/CustomFileSmallIcon';
-import useButtonVibration from '../../hooks/useButtonVibration';
 import CustomFileIcon from '../../components/customFileIcon';
 import { ReactComponent as DotsIcon } from '../../assets/dots.svg';
 import { ReactComponent as StarFullIcon } from '../../assets/starFull.svg';
@@ -33,7 +32,6 @@ export const PayShareFile = ({
   fileView,
   isSearch = false
 }) => {
-  const handleVibrationClick = useButtonVibration();
   const currentView = useSelector(selectFileView);
   const dispatch = useDispatch();
   const view = fileView || currentView;
@@ -86,7 +84,7 @@ export const PayShareFile = ({
       </button>
       <button
         className={cn(style.shareMenuButton, isFileChecked && style.selectedFile)}
-        onClick={handleVibrationClick(onMenuClick)}>
+        onClick={onMenuClick}>
         <DotsIcon />
       </button>
       <div className={isGridView ? style.previewWrapper : style.fileListPreview}>

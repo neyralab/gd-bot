@@ -30,7 +30,6 @@ import { handlePartners, selectPartners } from '../../store/reducers/taskSlice';
 import { transformSize } from '../../utils/transformSize';
 import { fromByteToGb } from '../../utils/storage';
 import { getResponseError } from '../../utils/string';
-import useButtonVibration from '../../hooks/useButtonVibration';
 import { runInitAnimation, runStorageAnimation } from './animations';
 import { FileFilterPanel } from '../../components/fileFilterPanel';
 import FileList from './components/FileList';
@@ -60,7 +59,6 @@ export const FilesSystemPage = () => {
   const view = useSelector(selectFileView);
   const [areFilesLoading, setAreFilesLoading] = useState(false);
   const [searchValue, setSearchValue] = useState('');
-  const handleVibrationClick = useButtonVibration();
   const checkedFile = useSelector(selecSelectedFile);
   const types = useSelector(selectFileTypesCount);
   const user = useSelector((state) => state?.user?.data);
@@ -218,7 +216,7 @@ export const FilesSystemPage = () => {
           ) : (
             <div
               className={style.search__logo}
-              onClick={handleVibrationClick(onBackButtonClick)}>
+              onClick={onBackButtonClick}>
               <BackIcon />
             </div>
           )}
@@ -252,7 +250,7 @@ export const FilesSystemPage = () => {
               <p className={style.listHeader__title}>GHOSTDRIVE</p>
               <button
                 className={style.listHeader__viewBtn}
-                onClick={handleVibrationClick(onFileViewChange)}>
+                onClick={onFileViewChange}>
                 {view === 'grid' ? <ListIcon /> : <GridIcon />}
               </button>
             </div>
@@ -277,7 +275,7 @@ export const FilesSystemPage = () => {
         <div
           data-animation="drive-grid-animation-2"
           className={style.buttonsWrapper}>
-          <div className={style.uploadButton} onClick={handleVibrationClick()}>
+          <div className={style.uploadButton}>
             <input
               name="file"
               id="file"

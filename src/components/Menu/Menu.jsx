@@ -2,7 +2,6 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { NavLink, useLocation } from 'react-router-dom';
 
-import useButtonVibration from '../../hooks/useButtonVibration';
 
 import { ReactComponent as FlyIcon } from '../../assets/menu/fly.svg';
 import { ReactComponent as TopIcon } from '../../assets/menu/top.svg';
@@ -19,7 +18,6 @@ import styles from './Menu.module.css';
 export default function Menu() {
   const location = useLocation();
   const { t } = useTranslation('game');
-  const handleVibrationClick = useButtonVibration();
 
   return (
     <div className={styles.container}>
@@ -42,7 +40,7 @@ export default function Menu() {
             classNames(styles.item, isActive && styles.active)
           }
           to={'/game-3d'}
-          onClick={handleVibrationClick()}>
+        >
           <div className={classNames(styles.icon)}>
             <FlyIcon />
           </div>
@@ -57,7 +55,7 @@ export default function Menu() {
             )
           }
           to={'/leadboard/league'}
-          onClick={handleVibrationClick()}>
+        >
           <div className={styles.icon}>
             <TopIcon />
           </div>
@@ -71,7 +69,7 @@ export default function Menu() {
             classNames(styles.item, isActive && styles.active)
           }
           to={'/friends'}
-          onClick={handleVibrationClick()}>
+        >
           <div className={styles.icon}>
             <FriendsIcon />
           </div>
@@ -85,7 +83,7 @@ export default function Menu() {
             classNames(styles.item, isActive && styles.active)
           }
           to={'/earn'}
-          onClick={handleVibrationClick()}>
+        >
           <div className={styles.icon}>
             <EarnIcon />
           </div>
@@ -97,7 +95,7 @@ export default function Menu() {
             classNames(styles.item, isActive && styles.active)
           }
           to={'/point-tracker'}
-          onClick={handleVibrationClick()}>
+        >
           <div className={styles.icon}>
             <AirdropIcon />
           </div>

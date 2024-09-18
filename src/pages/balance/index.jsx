@@ -7,7 +7,6 @@ import { getToken } from '../../effects/set-token';
 import { storageConvertEffect } from '../../effects/storageEffects';
 import { setUser } from '../../store/reducers/userSlice';
 import { getUserEffect } from '../../effects/userEffects';
-import useButtonVibration from '../../hooks/useButtonVibration';
 import { getNumbers } from '../../utils/string';
 import { runInitAnimation } from './animations';
 import { Header } from '../../components/header';
@@ -39,7 +38,6 @@ export const Balance = () => {
   const { t } = useTranslation('system');
   const [loading, setLoading] = useState(false);
   const [pointCount, setPointCount] = useState(0);
-  const handleVibrationClick = useButtonVibration();
   const user = useSelector((state) => state?.user?.data);
 
   useEffect(() => {
@@ -101,7 +99,7 @@ export const Balance = () => {
         <Button
           label={t('convert.convert')}
           disabled={loading}
-          onClick={handleVibrationClick(currentConvert)}
+          onClick={currentConvert}
           className={styles.white_btn}
         />
       </div>

@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Sheet } from 'react-modal-sheet';
 import { useDispatch, useSelector } from 'react-redux';
-import useButtonVibration from '../../../hooks/useButtonVibration';
 import { ReactComponent as CloseIcon } from '../../../assets/close.svg';
 import {
   confirmGoldPlay,
@@ -17,7 +16,6 @@ export default function GoldPlayModal() {
   const status = useSelector(selectStatus);
   const modalRef = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
-  const handleVibrationClick = useButtonVibration();
 
   useEffect(() => {
     if (reachedNewLevel && status !== 'playing') {
@@ -49,7 +47,7 @@ export default function GoldPlayModal() {
               <div className={styles.header}>
                 <div
                   className={styles.close}
-                  onClick={handleVibrationClick(close)}>
+                  onClick={close}>
                   <CloseIcon />
                 </div>
               </div>

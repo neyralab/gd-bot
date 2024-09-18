@@ -12,7 +12,6 @@ import {
   getPendingSpins
 } from '../../effects/fortuneWheelEffect';
 import { ReactComponent as CloseIcon } from '../../assets/close.svg';
-import useButtonVibration from '../../hooks/useButtonVibration';
 import FortuneWheel from './FortuneWheel/FortuneWheel';
 import FortuneTimer from './FortuneTimer/FortuneTimer';
 import Loader2 from '../Loader2/Loader2';
@@ -30,7 +29,6 @@ const FortuneWheelModal = forwardRef((_, ref) => {
   const [freeSpinTimestamp, setFreeSpinTimestamp] = useState(null);
   const [lastPlayedFreeSpin, setLastPlayedFreeSpin] = useState(null);
   const [pendingSpins, setPendingSpins] = useState([]);
-  const handleVibrationClick = useButtonVibration();
 
   useEffect(() => {
     if (isOpen) {
@@ -136,7 +134,7 @@ const FortuneWheelModal = forwardRef((_, ref) => {
 
                   <div
                     className={styles.close}
-                    onClick={handleVibrationClick(close)}>
+                    onClick={close}>
                     <CloseIcon />
                   </div>
                 </div>

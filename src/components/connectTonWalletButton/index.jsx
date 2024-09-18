@@ -7,7 +7,6 @@ import {
   useTonWallet
 } from '@tonconnect/ui-react';
 import { saveUserWallet } from '../../effects/userEffects';
-import useButtonVibration from '../../hooks/useButtonVibration';
 
 import { ReactComponent as PlusIcon } from '../../assets/plusIcon.svg';
 import style from './style.module.scss';
@@ -17,7 +16,6 @@ export const ConnectTonWalletButton = ({ openDisconnectModal }) => {
   const address = useTonAddress(true);
   const { open } = useTonConnectModal();
   const wallet = useTonWallet();
-  const handleVibrationClick = useButtonVibration();
   // const [tonConnectUI] = useTonConnectUI();
   // const [tonProof, setTonProof] = useState();
   //
@@ -72,11 +70,11 @@ export const ConnectTonWalletButton = ({ openDisconnectModal }) => {
   return (
     <div className={style.wrapper}>
       {address.length ? (
-        <p className={style.address} onClick={handleVibrationClick(disconnect)}>
+        <p className={style.address} onClick={disconnect}>
           {address.slice(0, 3) + '...' + address.slice(-6)}
         </p>
       ) : (
-        <button className={style.connect} onClick={handleVibrationClick(open)}>
+        <button className={style.connect} onClick={open}>
           <PlusIcon />
           <h2 className={style.header__title_new}>Wallet</h2>
         </button>

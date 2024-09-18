@@ -25,7 +25,6 @@ import { SlidingModal } from '../../components/slidingModal';
 import PaymentMenu from '../../components/paymentMenu/Menu';
 import { transformSize } from '../../utils/transformSize';
 import { ReactComponent as Star } from '../../assets/star.svg';
-import useButtonVibration from '../../hooks/useButtonVibration';
 import { INVOICE_TYPE } from '../../utils/createStarInvoice';
 import { sleep } from '../../utils/sleep';
 import { getToken } from '../../effects/set-token';
@@ -52,7 +51,6 @@ export const BoostPage = ({ tariffs, setTariffs }) => {
   const [tonConnectUI] = useTonConnectUI();
   const { open } = useTonConnectModal();
   const dispatch = useDispatch();
-  const handleVibrationClick = useButtonVibration();
 
   useEffect(() => {
     if (!tariffs) return;
@@ -246,7 +244,7 @@ export const BoostPage = ({ tariffs, setTariffs }) => {
                   data-animation="boost-animation-1"
                   className={styles['initial-state-for-animation']}
                   key={index}
-                  onClick={handleVibrationClick()}>
+                >
                   <button
                     disabled={currentPrice?.storage === el?.storage}
                     onClick={() => {

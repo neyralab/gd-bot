@@ -6,8 +6,6 @@ import React, {
 } from 'react';
 import Modal from 'react-modal';
 
-import useButtonVibration from '../../hooks/useButtonVibration';
-
 import styles from './SystemModal.module.css';
 
 const SystemModal = forwardRef(({ handleClose }, ref) => {
@@ -15,7 +13,6 @@ const SystemModal = forwardRef(({ handleClose }, ref) => {
   const [title, setTitle] = useState('');
   const [text, setText] = useState('');
   const [actions, setActions] = useState([]);
-  const handleVibrationClick = useButtonVibration();
 
   /**  PARAMS:
    * title: string
@@ -50,7 +47,7 @@ const SystemModal = forwardRef(({ handleClose }, ref) => {
         <button
           key={el.text}
           className={styles['button-type__' + el.type]}
-          onClick={handleVibrationClick(el.onClick)}>
+          onClick={el.onClick}>
           {el.text}
         </button>
       );
