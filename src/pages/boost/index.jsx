@@ -167,7 +167,7 @@ export const BoostPage = ({ tariffs, setTariffs }) => {
       payByTON(el);
     } else {
       const input = isDev ?
-        `${storagePayment.Type};${el?.id};${user.id};${ws}` :
+        `${storagePayment.Type};${el?.id};${user.id};${ws}`:
         `${el?.id};${user.id};${ws}`;
 
       const theme = {
@@ -179,7 +179,8 @@ export const BoostPage = ({ tariffs, setTariffs }) => {
         dispatch,
         callback: invoiceCallback,
         type: INVOICE_TYPE.boost,
-        theme
+        theme,
+        isDev,
       });
     }
     onClosePaymentModal();

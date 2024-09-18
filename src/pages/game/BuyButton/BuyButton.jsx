@@ -243,7 +243,8 @@ export default function BuyButton() {
       dispatch,
       callback: invoiceCallback,
       type: INVOICE_TYPE.game,
-      theme
+      theme,
+      isDev
     }); 
   }
 
