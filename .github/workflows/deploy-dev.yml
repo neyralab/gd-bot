@@ -46,7 +46,6 @@ jobs:
           git reset --hard origin/${{ env.GIT_BRANCH }}
 
           cp .github/docker-compose.yml ../docker-compose.yml
-          cp .github/Dockerfile Dockerfile
 
           echo "# Building .env"
           jq -sr '.[0] * .[1] | to_entries[] | .key + "=\"" + (.value | gsub("[\\n]"; "")) + "\""' <(echo '${{ toJson(vars) }}'|jq -r .) <(echo '${{ toJson(secrets) }}'|jq -r .) | sed -e "s/\"/'/g" | grep -v -e 'SERVER_SSH_KEY' -e 'SLACK_TOKEN' -e 'MERCURE_SECRET:' > .env
