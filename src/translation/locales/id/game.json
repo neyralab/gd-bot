@@ -11,8 +11,8 @@
   },
   "process": {
     "level": "Tingkat",
-    "players": "Pemain",
-    "frens": "Frens",
+    "players": "Top100",
+    "frens": "Teman",
     "earn": "Menghasilkan",
     "airdrop": "Airdrop"
   },
@@ -111,6 +111,9 @@
     "topBonus": "100 Bonus Teratas",
     "upload": "Unggah 10 file",
     "uploadFile": "Unggah data"
+  },
+  "advertisement": {
+    "watchAndPlay": "Tonton iklan untuk mendapatkan 300 poin dan bermain lagi"
   },
   "message": {
     "someTimeForTransaction": "Kami perlu waktu untuk meninjau transaksi tersebut.",

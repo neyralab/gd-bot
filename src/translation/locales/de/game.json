@@ -12,7 +12,7 @@
   },
   "process": {
     "level": "Level",
-    "players": "Spieler",
+    "players": "Top100",
     "frens": "Freunde",
     "earn": "Verdienen",
     "airdrop": "Airdrop"
@@ -112,6 +112,9 @@
     "topBonus": "Top 100 Bonus",
     "upload": "10 Dateien hochladen",
     "uploadFile": "Datei hochladen"
+  },
+  "advertisement": {
+    "watchAndPlay": "Sehen Sie sich die Anzeige an, um 300 Punkte zu erhalten und erneut zu spielen"
   },
   "message": {
     "someTimeForTransaction": "Wir benötigen etwas Zeit, um die Transaktion zu prüfen.",

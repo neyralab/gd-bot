@@ -8,23 +8,7 @@
   justify-content: space-between;
   width: 100%;
   position: relative;
-  animation: AppearAnim 0.5s ease-out forwards;
-  transform: translateX(100%) scale(0.2);
-  opacity: 0;
   transition: border-color 0.2s;
-}
-
-@keyframes AppearAnim {
-  0% {
-    transform: translateX(100%) scale(0.2);
-    max-height: 0px;
-    opacity: 0;
-  }
-  100% {
-    transform: translateX(0%) scale(1);
-    max-height: 100px;
-    opacity: 1;
-  }
 }
 
 .container.done {

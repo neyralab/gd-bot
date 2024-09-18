@@ -14,12 +14,13 @@ import {
 
 import { GDTapBooster } from '../../../effects/contracts/tact_GDTapBooster';
 import { getHexByBoc } from '../../../effects/contracts/helper';
-// import { selectPaymenttByKey } from '../../../store/reducers/paymentSlice';
+import { selectPaymenttByKey } from '../../../store/reducers/paymentSlice';
 import { SlidingModal } from '../../../components/slidingModal';
 import PaymentMenu from '../../../components/paymentMenu/Menu';
 
 import {
   selectContractAddress,
+  selectIsGameDisabled,
   selectStatus,
   selectTheme,
   selectThemeAccess,
@@ -69,7 +70,8 @@ export default function BuyButton() {
   const themes = useSelector(selectThemes);
   const themeAccess = useSelector(selectThemeAccess);
   const isPaymentModalOpen = useSelector(selectPaymentSelectModal);
-  // const gamePayment = useSelector(selectPaymenttByKey('tap_game'));
+  const isGameDisabled = useSelector(selectIsGameDisabled);
+  const gamePayment = useSelector(selectPaymenttByKey('tap_game'));
 
   const user = useSelector((state) => state?.user?.data);
   const contractAddress = useSelector(selectContractAddress);
@@ -231,8 +233,7 @@ export default function BuyButton() {
   };
 
   const handleStartStarsPayment = () => {
-    // const input = `${gamePayment.Type};${0};${theme.tierId};${user.id}`;
-    const input = `${0};${theme.tierId};${user.id}`;
+    const input = `${gamePayment.Type};${0};${theme.tierId};${user.id};0`;
     makeInvoice({
       input,
       dispatch,
@@ -267,6 +268,7 @@ export default function BuyButton() {
         <button
           type="button"
           className={classNames(styles.button, styles[theme.id])}
+          disabled={isGameDisabled}
           onClick={hanldePyamentBtnClick}
         >
           {isStarsPaymentEnabled ? (

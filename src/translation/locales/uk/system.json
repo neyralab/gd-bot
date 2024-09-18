@@ -21,6 +21,18 @@
     "language": "Мова",
     "back": "Назад"
   },
+  "banner": {
+    "upload": "Завантажуйте та зберігайте свої файли",
+    "uploadText": "Швидко з GhostDrive!",
+    "compression": "Стиснення даних від GhostDrive!",
+    "compressionText": "Максимізуйте своє сховище з",
+    "tokenization": "Токенізація файлів!",
+    "tokenizationText": "Представляємо GhostDrive",
+    "computing": "Клієнтські обчислення GhostDrive!",
+    "computingText": "Покращте свою продуктивність з",
+    "geoPin": "GeoPin від GhostDrive!",
+    "geoPinText": "Організуйте свої файли з"
+  },
   "node": {
     "node": "Нода",
     "gdNodeShort": "GD Нода",
@@ -139,7 +151,7 @@
   "share": {
     "share": "Поділитися",
     "successfullySend": "Ви успішно надіслали {size} користувачу {name}",
-    "shareStorage": "Надіслати подарунок (G:Drive)",
+    "shareStorage": "Подарункове сховище",
     "shareGift": "Подарунок Ghost Drive",
     "storage": "Сховище",
     "increaseStorage": "Ємність вашого сховища збільшена на {size}",

@@ -1,11 +1,13 @@
 import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
+import CN from 'classnames';
 import {
   initGame,
   selectIsInitialized,
   selectIsTransactionLoading,
-  gameCleanup
+  selectIsGameDisabled,
+  gameCleanup,
 } from '../../store/reducers/gameSlice';
 import { Header } from '../../components/header_v2';
 import BuyButton from './BuyButton/BuyButton';
@@ -21,6 +23,8 @@ import GoldPlayModal from './GoldPlayModal/GoldPlayModal';
 import GameModal from './GameModal/GameModal';
 import SystemModalWrapper from './SystemModalWrapper/SystemModalWrapper';
 import MainButton from './MainButton/MainButton';
+// import AdvertisementOfferModal from './AdvertisementOfferModal/AdvertisementOfferModal';
+// import AdvertisementPlayModal from './AdvertisementPlayModal/AdvertisementPlayModal';
 import styles from './styles.module.css';
 
 /** Please, do not add extra selectors or state
@@ -36,11 +40,16 @@ export function GamePage() {
   const isInitialized = useSelector(selectIsInitialized);
   const userIsInitialized = useSelector((state) => !!state.user.data);
   const isTransactionLoading = useSelector(selectIsTransactionLoading);
+  const isGamedDisabled = useSelector(selectIsGameDisabled);
 
   useEffect(() => {
     if (!isInitialized && userIsInitialized) {
       dispatch(initGame());
     }
+
+    // if (isInitialized && userIsInitialized) {
+    //   dispatch(checkAdvertisementOffer());
+    // }
 
     return () => {
       dispatch(gameCleanup());
@@ -71,7 +80,7 @@ export function GamePage() {
 
       <div className={styles.content}>
         <div className={styles['canvas-container']}>
-          <div className={styles.canvas}>
+          <div className={CN(styles.canvas, isGamedDisabled && styles['canvas-disabled'])}>
             <GameCanvas ref={canvasRef} />
           </div>
         </div>
@@ -107,6 +116,10 @@ export function GamePage() {
       <GoldPlayModal />
 
       <GameModal />
+
+      {/* <AdvertisementOfferModal /> */}
+
+      {/* <AdvertisementPlayModal /> */}
 
       <SystemModalWrapper />
     </div>

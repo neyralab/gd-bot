@@ -11,8 +11,8 @@
   },
   "process": {
     "level": "等级",
-    "players": "玩家",
-    "frens": "弗伦斯",
+    "players": "Top100",
+    "frens": "朋友",
     "earn": "赚取",
     "airdrop": "空投"
   },
@@ -111,6 +111,9 @@
     "upload": "上传10个文件",
     "uploadFile": "上传文件",
     "wheelNextSpin": "下一轮开始于"
+  },
+  "advertisement": {
+    "watchAndPlay": "观看广告可获得 300 分并再次玩"
   },
   "message": {
     "someTimeForTransaction": "我们需要一些时间来审核该交易。",

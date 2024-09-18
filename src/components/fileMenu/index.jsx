@@ -6,60 +6,63 @@ import { useLocation } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 import {
-  handleDeleteFileModal,
   handleFileMenu,
-  selectisFileMenuOpen
+  handlePaperViewModal,
+  selectisFileMenuOpen,
 } from '../../store/reducers/modalSlice';
 import {
   selecSelectedFile,
-  setSelectedFile
+  setSelectedFile,
+  updateFile
 } from '../../store/reducers/filesSlice';
-import { updateShareEffect } from '../../effects/filesEffects';
+import { setPPVFile } from '../../store/reducers/driveSlice';
+import { updateShareEffect, deletePaidShareEffect } from '../../effects/filesEffects';
 import { restoreFileEffect } from '../../effects/file/restoreFileEffect';
 import { generateSharingLink } from '../../utils/generateSharingLink';
+import { getPreviewFileType } from '../../utils/preview';
+import { removeSlugHyphens } from '../../utils/string';
+import useButtonVibration from '../../hooks/useButtonVibration';
+import { BOT_NAME } from '../../utils/api-urls';
 
 import { SlidingModal } from '../slidingModal';
 
 import { ReactComponent as ShareArrowIcon } from '../../assets/arrow_share.svg';
-import { ReactComponent as DeleteIcon } from '../../assets/trash.svg';
 import { ReactComponent as RestoreIcon } from '../../assets/restore.svg';
+import { ReactComponent as PenIcon } from '../../assets/pen.svg';
+import ToggleSwitch from '../toggleSwitch';
 
-import cn from 'classnames';
 import style from './style.module.css';
-import useButtonVibration from '../../hooks/useButtonVibration';
 
 export const FileMenu = () => {
-  const dispatch = useDispatch();
-  const { t } = useTranslation('drive');
   const { t : tSystem } = useTranslation('system');
   const isOpen = useSelector(selectisFileMenuOpen);
-  const file = useSelector(selecSelectedFile);
-  const location = useLocation();
   const handleVibrationClick = useButtonVibration();
-
+  const file = useSelector(selecSelectedFile);
+  const { t } = useTranslation('drive');
+  const location = useLocation();
+  const dispatch = useDispatch();
+  const isPPVActivated = useMemo(() => !!file?.share_file, [file?.share_file]);
+  const isFileHavePreview = useMemo(() => !!getPreviewFileType(file, '', true), [file]);
   const url = useMemo(() => {
+    if (isPPVActivated) {
+      return `https://t.me/${BOT_NAME}?start=paylink_${removeSlugHyphens(file.slug)}`;
+    }
     return generateSharingLink(file.slug);
-  }, [file]);
-
+  }, [file, isPPVActivated]);
   const isDeletedPage =
     location.pathname === '/file-upload' &&
     new URLSearchParams(location.search).get('type') === 'delete';
 
   const onClose = () => {
     dispatch(handleFileMenu(false));
-    dispatch(setSelectedFile({}));
+    dispatch(setPPVFile({}));
   };
 
   const onShareClick = async (e) => {
     e.stopPropagation();
     dispatch(handleFileMenu(false));
     await updateShareEffect(file.slug);
-    dispatch(setSelectedFile({}));
-  };
-
-  const onDeleteClick = () => {
-    dispatch(handleDeleteFileModal(true));
-    dispatch(handleFileMenu(false));
+    dispatch(setPPVFile({}));
   };
 
   const onRestoreClick = async () => {
@@ -78,20 +81,61 @@ export const FileMenu = () => {
     }
   };
 
+  const activatePayShare = async () => {
+    try {
+      if (isPPVActivated) {
+        await deletePaidShareEffect(file.share_file.id);
+        dispatch(updateFile({ ...file, share_file: null }));
+        dispatch(setSelectedFile({ ...file, share_file: null }))
+      } else {
+        dispatch(handleFileMenu(false));
+        dispatch(handlePaperViewModal(true));
+      }
+    } catch (error) {
+      console.warn(error)
+    }
+  }
+
+  const onEditPPV = () => {
+    dispatch(handleFileMenu(false));
+    dispatch(handlePaperViewModal(true));
+  }
+
   return (
-    <SlidingModal onClose={onClose} isOpen={isOpen}>
+    <SlidingModal
+      onClose={onClose}
+      isOpen={isOpen}
+      snapPoints={isPPVActivated ? [184, 184, 50, 0] : [120, 110, 50, 0]}
+    >
       <ul className={style.menu}>
         {!isDeletedPage && (
-          <li className={style.menu__item}>
-            <TelegramShareButton
-              url={url}
-              title={`${'dashbord.linkToFile'} "${file.name}"`}
-              onClick={handleVibrationClick(onShareClick)}
-              className={style.shareOption}>
-              <ShareArrowIcon />
-              <span className={style.menu__item__title}>{t('dashbord.share')}</span>
-            </TelegramShareButton>
-          </li>
+          <>
+            <li className={style.menu__item}>
+              <TelegramShareButton
+                url={url}
+                title={isPPVActivated ? '' : `${'dashbord.linkToFile'} "${file.name}"`}
+                onClick={handleVibrationClick(onShareClick)}
+                className={style.shareOption}>
+                <ShareArrowIcon />
+                <span className={style.menu__item__title}>{t('dashbord.share')}</span>
+              </TelegramShareButton>
+              { isFileHavePreview && (
+                <div className={style.menu__item_switch}>
+                  <span>{t('ppv.ppv')}</span>
+                  <ToggleSwitch
+                    checked={isPPVActivated}
+                    onClick={activatePayShare}
+                  />
+                </div>
+              )}
+            </li>
+            {isPPVActivated && (
+              <li onClick={onEditPPV} className={style.menu__item}>
+                  <PenIcon />
+                  <span className={style.menu__item__title}>{t('ppv.edit')}</span>
+              </li>
+            )}
+          </>
         )}
         {isDeletedPage && (
           <li

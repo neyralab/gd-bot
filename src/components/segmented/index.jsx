@@ -6,7 +6,7 @@ import styles from './styles.module.css';
 const Segmented = ({ options, active }) => {
 
   return (
-    <div className={styles.container}>
+    <div data-animation="segmented-animation-1" className={styles.container}>
       { options.map(({ name, title, onClick }) => (
         <button
           className={CN(

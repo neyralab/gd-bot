@@ -17,14 +17,12 @@ import { setPaymentTypesEffect } from './effects/paymentEffect';
 import { storageListEffect } from './effects/storageEffects';
 import { API_WEB_APP_URL } from './utils/api-urls';
 import { useLanguage } from './utils/useLanguage';
-import { isDevEnv } from './utils/isDevEnv';
-import { isPhone } from './utils/client';
 
 import SharedLayout from './components/sharedLayout';
 import { StartPage } from './pages/startPage';
-import { FilesSystemPage } from './pages/filesSystemPage';
+// import { FilesSystemPage } from './pages/filesSystemPage';
 import { UpgradeStoragePage } from './pages/upgradeStorage';
-import { FilesPage } from './pages/filesPage';
+// import { FilesPage } from './pages/filesPage';
 import { Balance } from './pages/balance';
 import { Referral } from './pages/referral';
 import { LeaderboardLeague } from './pages/leaderboard/league';
@@ -33,15 +31,17 @@ import { LanguagePage } from './pages/language';
 import { BoostPage } from './pages/boost';
 import { GamesPage } from './pages/games';
 import { GamePage } from './pages/game';
+import { PaidView } from './pages/paidView';
 import { IntroPage } from './pages/intro';
 import EarnPage from './pages/earn';
 import FriendsPage from './pages/friends';
 import NodesWelcomePage from './pages/nodes-welcome';
 import NodesPage from './pages/nodes';
 import NotAllow from './pages/notAllow';
+import DrivePage from './pages/drive';
 
 import { isEnabledMobileOnly } from './utils/featureFlags';
-import { isWebPlatform} from './utils/client';
+import { isWebPlatform } from './utils/client';
 
 import './App.css';
 
@@ -49,7 +49,10 @@ export const tg = window.Telegram.WebApp;
 const GA = 'G-VEPRY1XE4E';
 
 function App() {
-  const ALLOW_PREVIEW = useMemo(() => (!!isEnabledMobileOnly || !isWebPlatform(tg)), [tg]);
+  const ALLOW_PREVIEW = useMemo(
+    () => !!isEnabledMobileOnly || !isWebPlatform(tg),
+    [tg]
+  );
   const [tariffs, setTariffs] = useState(null);
   const dispatch = useDispatch();
   useLanguage();
@@ -109,7 +112,7 @@ function App() {
   };
 
   if (!ALLOW_PREVIEW) {
-    return <NotAllow />
+    return <NotAllow />;
   }
 
   return (
@@ -127,9 +130,11 @@ function App() {
             exact
             element={<StartPage onClose={onClose} tariffs={tariffs} />}
           />
-          <Route path="/file-upload" exact element={<FilesSystemPage />} />
-          <Route path="/ghostdrive-upload" exact element={<FilesPage />} />
-          <Route path="/files" exact element={<FilesPage />} />
+          <Route path="/drive" exact element={<DrivePage />} />
+          {/* <Route path="/file-upload" exact element={<FilesSystemPage />} /> */}
+          {/* <Route path="/ghostdrive-upload" exact element={<FilesPage />} /> */}
+          {/* <Route path="/files" exact element={<FilesPage />} /> */}
+          <Route path="/paid-view/:id" exact element={<PaidView />} />
           <Route
             path="/upgrade"
             exact
@@ -166,3 +171,4 @@ function App() {
 }
 
 export default App;
+  

@@ -1,35 +1,31 @@
-import React, { useState } from "react";
+import React from "react";
 
 import { SlidingModal } from '../../../components/slidingModal';
-
 import GiftPreview from './Gift';
 import ShareForm from './ShareForm';
-import { isPhone } from "../../../utils/client";
+
+import styles from './styles.module.css';
 
 const snapPoints = {
-  gift: [420, 420, 50, 0],
-  form: [400, 360, 50, 0]
+  gift: [470, 470, 50, 0],
+  form: [294, 294, 0, 0]
 }
 
-const ShareStorage = ({ isOpen, onClose, giftData, onCloseGift, systemModalRef }) => {
-  const [fullScreen, setFullScreen] = useState(false)
-
-  const handleFullScreeView = (state) => {
-    if (isPhone()) {
-      setFullScreen(state);
-    }
-  } 
-
+const ShareStorage = ({ isOpen, onClose, systemModalRef, giftToken }) => {
   return (
     <SlidingModal
-      onClose={!!giftData.length ? onCloseGift: onClose }
+      onClose={onClose }
       isOpen={isOpen}
-      snapPoints={ fullScreen ? undefined : (!!giftData.length? snapPoints.gift : snapPoints.form)}
-      detent={fullScreen && "full-height"}
+      snapPoints={!!giftToken ? snapPoints.gift : snapPoints.form}
+      backgroundClass={styles.modal}
     >
-    {!!giftData.length ? (
-      <GiftPreview systemModalRef={systemModalRef} giftData={giftData} onCloseGift={onCloseGift} />
-      ) : (<ShareForm handleFullScreeView={handleFullScreeView} onClose={onClose} />
+    {giftToken ? (
+      <GiftPreview
+        systemModalRef={systemModalRef}
+        onClose={onClose}
+        giftToken={giftToken}
+      />
+      ) : (<ShareForm onClose={onClose} />
     )}
     </SlidingModal>
   )

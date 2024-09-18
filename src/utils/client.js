@@ -1,3 +1,5 @@
+import { TG_PLATFORMS } from '../config/contracts';
+
 export function isSafari() {
   let userAgentString = navigator.userAgent.toLowerCase();
   let chromeAgent = userAgentString.indexOf('Chrome') > -1;
@@ -46,5 +48,9 @@ export function isPhone() {
 }
 
 export function isWebPlatform(tgClient) {
-  return tgClient?.platform === 'weba';
+  return TG_PLATFORMS.web.includes(tgClient?.platform);
+}
+
+export function isDesktopPlatform(tgClient) {
+  return TG_PLATFORMS.desktop.includes(tgClient?.platform);
 }

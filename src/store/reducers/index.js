@@ -6,6 +6,7 @@ import modalSlice from './modalSlice';
 import gameSlice from './gameSlice';
 import taskSlice from './taskSlice';
 import paymentSlice from './paymentSlice';
+import driveSlice from './driveSlice';
 
 const rootReducer = combineReducers({
   user: userSlice,
@@ -15,6 +16,7 @@ const rootReducer = combineReducers({
   game: gameSlice,
   task: taskSlice,
   payment: paymentSlice,
+  drive: driveSlice
 });
 
 export default rootReducer;

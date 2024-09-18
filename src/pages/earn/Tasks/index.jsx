@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import {
   useTonAddress,
   useTonConnectUI,
@@ -10,13 +10,19 @@ import { TelegramShareButton } from 'react-share';
 
 import { saveUserWallet } from '../../../effects/userEffects';
 import useButtonVibration from '../../../hooks/useButtonVibration';
-
+import { runInitAnimation } from './animations';
 import Task from '../../../components/Task/Task';
+import ListLoader from '../ListLoader/ListLoader';
 
 import styles from './styles.module.css';
 
-export default function Tasks({ tasks, getTasks, setModalSelectedTask, earnModalRef }) {
-  const [animatedTaskIds, setAnimatedTaskIds] = useState(new Set());
+export default function Tasks({
+  tasks,
+  getTasks,
+  setModalSelectedTask,
+  earnModalRef,
+  isLoading
+}) {
   const [tonConnectUI] = useTonConnectUI();
   const address = useTonAddress(true);
   const wallet = useTonWallet();
@@ -26,13 +32,8 @@ export default function Tasks({ tasks, getTasks, setModalSelectedTask, earnModal
   const handleVibrationClick = useButtonVibration();
 
   useEffect(() => {
-    const notAnimatedTasks = tasks.filter((el) => !animatedTaskIds.has(el.id));
-
-    notAnimatedTasks.forEach((task, index) => {
-      setTimeout(() => {
-        setAnimatedTaskIds((prevIds) => new Set(prevIds).add(task.id));
-      }, index * 100);
-    });
+    if (!tasks || !tasks.length) return;
+    runInitAnimation();
   }, [tasks]);
 
   useEffect(() => {
@@ -49,7 +50,7 @@ export default function Tasks({ tasks, getTasks, setModalSelectedTask, earnModal
       })();
     }
   }, [address, user, user?.wallet, wallet]);
- 
+
   const handleClick = (task) => {
     switch (task.id) {
       case 'JOIN_YOUTUBE':
@@ -76,7 +77,7 @@ export default function Tasks({ tasks, getTasks, setModalSelectedTask, earnModal
         break;
 
       case 'UPLOAD_10_FILES':
-        navigate('/file-upload');
+        navigate('/drive');
         break;
 
       default:
@@ -85,39 +86,41 @@ export default function Tasks({ tasks, getTasks, setModalSelectedTask, earnModal
     }
   };
 
+  if (isLoading) {
+    return <ListLoader />;
+  }
+
   return (
     <div className={styles['tasks-list']}>
       {tasks.map((task) => {
-        if (animatedTaskIds.has(task.id)) {
-          return task.id === 'INVITE_5_FRIENDS' ? (
-            <TelegramShareButton
-              url={link.copy}
-              key={task.id}
-              title={'Share this link with friends'}
-              onClick={handleVibrationClick()}>
-              <Task
-                onClick={() => handleClick(task)}
-                isDone={task.isDone}
-                points={task.points}
-                imgUrl={task.imgUrl}
-                translatePath={task.translatePath}
-                onTasksRequireCheck={getTasks}
-              />
-            </TelegramShareButton>
-          ) : (
+        return task.id === 'INVITE_5_FRIENDS' ? (
+          <TelegramShareButton
+            url={link.copy}
+            key={task.id}
+            title={'Share this link with friends'}
+            onClick={handleVibrationClick()}>
             <Task
-              key={task.id}
-              onClick={handleVibrationClick(() => handleClick(task))}
+              onClick={() => handleClick(task)}
               isDone={task.isDone}
               points={task.points}
               imgUrl={task.imgUrl}
               translatePath={task.translatePath}
               onTasksRequireCheck={getTasks}
+              className={styles['initial-state-for-animation']}
             />
-          );
-        } else {
-          return null;
-        }
+          </TelegramShareButton>
+        ) : (
+          <Task
+            key={task.id}
+            onClick={handleVibrationClick(() => handleClick(task))}
+            isDone={task.isDone}
+            points={task.points}
+            imgUrl={task.imgUrl}
+            translatePath={task.translatePath}
+            onTasksRequireCheck={getTasks}
+            className={styles['initial-state-for-animation']}
+          />
+        );
       })}
     </div>
   );

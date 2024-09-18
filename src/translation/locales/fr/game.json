@@ -11,7 +11,7 @@
   },
   "process": {
     "level": "Niveau",
-    "players": "Joueurs",
+    "players": "Top100",
     "frens": "Amis",
     "earn": "Gagner",
     "airdrop": "Airdrop"
@@ -111,6 +111,9 @@
     "topBonus": "Bonus Top 100",
     "upload": "Télécharger 10 fichiers",
     "uploadFile": "Télécharger un fichier"
+  },
+  "advertisement": {
+    "watchAndPlay": "Regardez la publicité pour obtenir 300 points et rejouer"
   },
   "message": {
     "someTimeForTransaction": "Nous avons besoin de temps pour examiner la transaction.",

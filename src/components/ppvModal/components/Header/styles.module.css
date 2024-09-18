@@ -1,0 +1,29 @@
+.header {
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+
+.button {
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-family: 'Open Sans';
+  font-size: 17px;
+  font-weight: 400;
+  line-height: 25px;
+  color: #ffffff70;
+}
+
+.right {
+  right: 0;
+  left: initial;
+}
+
+.title {
+  font-family: 'Open Sans';
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 27px;
+  text-align: center;
+}

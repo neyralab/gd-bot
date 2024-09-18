@@ -1,4 +1,5 @@
 import callLLMProvider from '../utils/callLLMProvider.js';
+import errorTransformer from '../utils/errorTransformer.js';
 import logger from '../utils/logger.js';
 
 async function photoHandler(ctx) {
@@ -33,7 +34,7 @@ async function photoHandler(ctx) {
     logger.error(`Error analyze`, {
       userId,
       chatId,
-      error
+      error: errorTransformer(error)
     });
     await ctx.reply(
       'An error occurred while processing the image. Please try again later!'

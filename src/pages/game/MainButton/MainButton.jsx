@@ -7,7 +7,8 @@ import {
   startRound,
   selectThemeAccess,
   proceedTap,
-  switchTheme
+  switchTheme,
+  selectIsGameDisabled
 } from '../../../store/reducers/gameSlice';
 import EndGameAddedPoints from '../EndGameAddedPoints/EndGameAddedPoints';
 import PointsGrowArea from '../PointsGrowArea/PointsGrowArea';
@@ -21,6 +22,7 @@ const MainButton = ({ onPushAnimation }) => {
   const isCanvasLoaded = useSelector((state) => state.game.isCanvasLoaded);
   const theme = useSelector(selectTheme);
   const themeAccess = useSelector(selectThemeAccess);
+  const isGamedDisabled = useSelector(selectIsGameDisabled);
   const themeIsSwitching = useSelector(
     (state) => state.game.nextTheme.isSwitching
   );
@@ -77,7 +79,8 @@ const MainButton = ({ onPushAnimation }) => {
       status === 'finished' ||
       themeIsSwitching ||
       recentlyFinishedLocker ||
-      !isCanvasLoaded
+      !isCanvasLoaded ||
+      isGamedDisabled
     )
       return;
 

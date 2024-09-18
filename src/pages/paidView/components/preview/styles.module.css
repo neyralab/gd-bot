@@ -1,0 +1,7 @@
+.txtDocument {
+  height: 100%;
+}
+
+.txtDocument > div {
+  height: 100%;
+}

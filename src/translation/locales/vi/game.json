@@ -11,7 +11,7 @@
   },
   "process": {
     "level": "Cấp độ",
-    "players": "Game thủ",
+    "players": "Top100",
     "frens": "Bạn bè",
     "earn": "Kiếm",
     "airdrop": "Airdrop"
@@ -111,6 +111,9 @@
     "topBonus": "Tiền thưởng top 100",
     "upload": "Tải lên 10 tệp",
     "uploadFile": "Tải lên tệp"
+  },
+  "advertisement": {
+    "watchAndPlay": "Xem quảng cáo để nhận 300 điểm và chơi lại"
   },
   "message": {
     "someTimeForTransaction": "Chúng tôi cần thời gian để xem xét giao dịch.",

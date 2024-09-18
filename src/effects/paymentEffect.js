@@ -77,14 +77,13 @@ export const getTonWallet = async (dispatch, comment) => {
 export const makeInvoice = async ({ input, dispatch, callback, type, theme }) => {
   try {
     const encoder = new NumberEncoder();
-    // const byteArray = encoder.encodeNumbers(input, [1,1,8,8]);
-    const byteArray = encoder.encodeNumbers(input, [1,8,8]);
+    const byteArray = encoder.encodeNumbers(input, [1,1,8,8,8]);
     const base64String = encoder.encodeToBase64(byteArray);
 
     const invoiceInput = createInvoice({
       type: type,
       additionalData: {
-        mult: theme.multiplier,
+        mult: theme?.multiplier,
         price: theme.stars,
         payload: base64String,
       }

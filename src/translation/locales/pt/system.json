@@ -21,6 +21,18 @@
     "language": "Idioma",
     "back": "Voltar"
   },
+  "banner": {
+    "upload": "Envie e armazene seus arquivos",
+    "uploadText": "Rapidamente com o GhostDrive!",
+    "compression": "Compressão de dados do GhostDrive!",
+    "compressionText": "Maximize seu armazenamento com",
+    "tokenization": "Tokenização de arquivos!",
+    "tokenizationText": "Apresentando o GhostDrive",
+    "computing": "Computação do lado do cliente do GhostDrive!",
+    "computingText": "Aumente seu desempenho com",
+    "geoPin": "GeoPin do GhostDrive!",
+    "geoPinText": "Organize seus arquivos com"
+  },
   "node": {
     "node": "Nó",
     "gdNodeShort": "Nó GD",
@@ -139,7 +151,7 @@
   "share": {
     "share": "Compartilhar",
     "successfullySend": "Você enviou com sucesso {size} para {name}",
-    "shareStorage": "Enviar presente para (G:Drive)",
+    "shareStorage": "Armazenamento de Presente",
     "shareGift": "Presente Ghost Drive",
     "storage": "Armazenamento",
     "increaseStorage": "Sua capacidade de armazenamento aumentou em {size}",

@@ -3,10 +3,15 @@ import { updateFile } from '../store/reducers/filesSlice';
 import { API_PATH } from '../utils/api-urls';
 import axiosInstance from './axiosInstance';
 import { saveBlob, downloadFile } from 'gdgateway-client';
+import { FILE_ACTIONS } from '../config/contracts';
 
 export const getDownloadOTT = (body) => {
   const url = `${API_PATH}/download/generate/token`;
-  return axiosInstance.post(url, body);
+  return axiosInstance.post(url, body, {
+    headers: {
+      'X-Action': FILE_ACTIONS.downloaded
+    }
+  });
 };
 
 export const getFilePreviewEffect = async (
@@ -181,6 +186,17 @@ export const updateFileFavoriteEffect = async (slug, dispatch) => {
   }
 };
 
+export const updateFileFavoriteEffect_v2 = async (slug) => {
+  const url = `${API_PATH}/files/favorite/toggle/${slug}`;
+  try {
+    const { data } = await axiosInstance.post(url);
+    const file = data?.data;
+    return file;
+  } catch (e) {
+    console.warn(e);
+  }
+};
+
 export const createFolderEffect = async (name) =>
   axiosInstance
     .post(`${API_PATH}/folders/folder`, { name, parent: null })
@@ -194,6 +210,49 @@ export const createFolderEffect = async (name) =>
 export const getFilesEffect = async (page = 1, order = 'desc') => {
   const url = `${API_PATH}/files?page=${page}&order_by=createdAt&order=${order}`;
   return await axiosInstance.get(url).then((result) => result.data);
+};
+
+export const getPaidShareFilesEffect = async (page = 1) => {
+  try {
+    const data = await axiosInstance.get(`${API_PATH}/share/file/list?page=${page}`);
+    return data?.data;
+  } catch (error) {
+    throw Error(error);
+  }
+};
+
+export const createPaidShareFileEffect = async (id, body) => {
+  try {
+    const data = await axiosInstance.post(`${API_PATH}/share/file/${id}`, body);
+    return data?.data;
+  } catch (error) {
+    throw Error(error);
+  }
+};
+
+export const deletePaidShareEffect = async (id, body) => {
+  try {
+    const url = `${API_PATH}/share/file/${id}`;
+    return await axiosInstance.delete(url, body)
+      .then((result) => {
+        if (result.data.message === "success") {
+          return result?.data; 
+        } else {
+          throw Error('Something went wrong');
+        }
+      });
+  } catch (error) {
+    throw Error(error);
+  }
+};
+
+export const getPaidShareFileEffect = async (slug) => {
+  try {
+    const data = await axiosInstance.get(`${API_PATH}/share/file/${slug}`);
+    return data?.data
+  } catch (error) {
+    throw Error(error);
+  }
 };
 
 export const getFilesByTypeEffect = async (type, page = 1) => {
@@ -256,20 +315,30 @@ export const createStreamEffect = async (slug) => {
   try {
     const {
       data: {
-        jwt_ott,
         user_tokens: { token: oneTimeToken },
         gateway
       }
     } = await getDownloadOTT([{ slug }]);
-    const url = `${gateway.url}/prepare/stream/${slug}`;
-    const data = await axios.create({
-        headers: oneTimeToken && {
-          'one-time-token': oneTimeToken,
-          'X-Download-OTT-JWT': jwt_ott,
-        },
-      })
-      .get(url);
+    const url = `${gateway.url}/stream/${slug}/${oneTimeToken}`;
+    return url;
+  } catch (error) {
+    throw Error(error);
+  }
+};
 
+export const getFileStarStatistic = async (slug) => {
+  try {
+    const data = await axios.get(`${API_PATH}/share/file/stat/${slug}`);
+    return data.data;
+  } catch (error) {
+    throw Error(error);
+  }
+};
+
+export const createFileReportEffect = async (slug, body) => {
+  try {
+    const data = await axiosInstance.post(`${API_PATH}/suspicious-report/${slug}`, body);
+    debugger
     return data.data;
   } catch (error) {
     throw Error(error);

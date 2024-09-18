@@ -21,6 +21,18 @@
     "language": "언어",
     "back": "뒤로"
   },
+  "banner": {
+    "upload": "파일 업로드 및 저장",
+    "uploadText": "GhostDrive로 빠르게!",
+    "compression": "GhostDrive의 데이터 압축!",
+    "compressionText": "스토리지를 극대화하세요",
+    "tokenization": "파일 토큰화!",
+    "tokenizationText": "GhostDrive 소개",
+    "computing": "GhostDrive 클라이언트 측 컴퓨팅!",
+    "computingText": "성능을 향상시키세요",
+    "geoPin": "GhostDrive의 GeoPin!",
+    "geoPinText": "파일을 정리하세요"
+  },
   "node": {
     "node": "노드",
     "gdNodeShort": "GD 노드",
@@ -139,7 +151,7 @@
   "share": {
     "share": "공유",
     "successfullySend": "{size}을(를) {name}에게 성공적으로 보냈습니다",
-    "shareStorage": "{name}에게 선물 보내기",
+    "shareStorage": "선물 저장소",
     "shareGift": "Ghost Drive 선물",
     "storage": "스토리지",
     "increaseStorage": "스토리지 용량이 {size}만큼 증가했습니다",

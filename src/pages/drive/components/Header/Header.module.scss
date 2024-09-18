@@ -1,0 +1,17 @@
+.header {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.btn {
+  background-color: transparent;
+  border: none;
+  color: #3d88f6;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  flex: 1;
+  text-align: left;
+}

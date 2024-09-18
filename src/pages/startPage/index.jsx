@@ -1,9 +1,8 @@
 import { useRef, useMemo, useState, useEffect, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import CN from 'classnames';
-import gsap from 'gsap';
 
 import {
   selectAllWorkspaces,
@@ -22,16 +21,17 @@ import { isDevEnv } from '../../utils/isDevEnv';
 
 import GhostLoader from '../../components/ghostLoader';
 import Nodes from './Nodes/index';
-import { ReactComponent as LogoIcon } from '../../assets/ghost.svg';
 import { ReactComponent as TapIcon } from './assets/tap.svg';
 import { DisconnectWalletModal } from '../../components/disconnectWalletModal';
-import BannerSource from '../../assets/node-banner.webp';
 import ShareStorage from './ShareStorage';
 import PointCounter from './PointCounter/PointCounter';
 import SystemModal from '../../components/SystemModal/SystemModal';
 import NavigatItem from './Navigator/NavigatItem';
 import Navigator from './Navigator/Navigator';
 import { parseSizeToBytes } from '../../utils/storage';
+import { runInitAnimation } from './animations';
+import { Banner } from './Banner';
+
 import style from './style.module.css';
 import navigatorStyle from './Navigator/Navigator.module.scss';
 
@@ -41,6 +41,7 @@ const initialNotificationState = {
 };
 
 export const StartPage = ({ tariffs }) => {
+  const location = useLocation();
   const systemModalRef = useRef(null);
   const wrapperRef = useRef(null);
   const { t } = useTranslation('system');
@@ -53,6 +54,10 @@ export const StartPage = ({ tariffs }) => {
   const user = useSelector((state) => state?.user?.data);
   const navigate = useNavigate();
   const isDev = isDevEnv();
+  const giftToken = useMemo(() => {
+    const params = new URLSearchParams(location.search);
+    return params.get('storageGift');
+  }, [location]);
 
   const getTasks = useCallback(async () => {
     try {
@@ -91,45 +96,7 @@ export const StartPage = ({ tariffs }) => {
 
   useEffect(() => {
     if (!allWorkspaces && !currentWorkspace) return;
-
-    /** Animation */
-    gsap.fromTo(
-      `[data-animation="start-page-animation-1"]`,
-      {
-        opacity: 0,
-        x: window.innerWidth + 200,
-        y: -window.innerHeight + 500,
-        scale: 0
-      },
-      {
-        opacity: 1,
-        x: 0,
-        y: 0,
-        scale: 1,
-        stagger: 0.05,
-        duration: 0.5,
-        delay: 0.2,
-        ease: 'back.out(0.2)'
-      }
-    );
-
-    gsap.fromTo(
-      `[data-animation="start-page-animation-2"]`,
-      {
-        opacity: 0,
-        y: -100,
-        scale: 0.5
-      },
-      {
-        opacity: 1,
-        y: 0,
-        scale: 1,
-        stagger: 0.2,
-        duration: 0.5,
-        delay: 0.1,
-        ease: 'back.out(0.2)'
-      }
-    );
+    runInitAnimation();
   }, [allWorkspaces, currentWorkspace]);
 
   const storage = useMemo(() => {
@@ -156,8 +123,6 @@ export const StartPage = ({ tariffs }) => {
     };
   }, [user]);
 
-  
-
   const openInNewTab = (url) => {
     window.open(url, '_blank', 'noreferrer');
   };
@@ -168,11 +133,8 @@ export const StartPage = ({ tariffs }) => {
 
   const onCloseShareModal = () => {
     setShowShareModal(false);
-  };
-
-  const onCloseGift = () => {
-    setNotifications(initialNotificationState);
-    setShowShareModal(false);
+    const path = window.location.pathname;
+    navigate(path, { replace: true });
   };
 
   const readNotification = async (id) => {
@@ -225,12 +187,8 @@ export const StartPage = ({ tariffs }) => {
             text: t('share.tryAgain'),
             onClick: async () => {
               try {
-                await storageSendEffect({
-                  storage: parseSizeToBytes(size),
-                  username: name.replace('@', '')
-                });
-                await readNotification(item.id);
                 systemModalRef.current.close();
+                onOpenShareModal();
               } catch (error) {
                 systemModalRef.current.close();
               }
@@ -272,34 +230,22 @@ export const StartPage = ({ tariffs }) => {
 
   return (
     <div ref={wrapperRef} className={`${style.container}`}>
-      <div data-animation="start-page-animation-2" className={CN(style.card, style.banner)}>
-        <img src={BannerSource} alt="banner" />
-        <div className={style['banner-content']}>
-          <div onClick={onOpenShareModal} className={style['banner-header']}>
-            <div className={style['banner-header_img']}>
-              <LogoIcon />
-              <span className={style['banner-header-share-btn']}>
-                {t('share.share')}
-              </span>
-            </div>
-            <h1>{transformSize(user.space_total)}</h1>
-          </div>
-        </div>
-      </div>
-
+      <Banner
+        storageSize={user.space_total}
+        onOpenShareModal={onOpenShareModal}
+        data-animation="start-page-animation-2"
+      />
       <PointCounter
         points={user?.points}
         className={style[`point-counter`]}
         rank={user?.rank}
       />
-
       <Navigator
         storage={storage}
         human={human}
         openDisconnectModal={setDisconnectWalletModal}
         tasks={tasks}
       />
-
       <ul className={CN(navigatorStyle['navigator'])}>
         <NavigatItem
           name={t('dashboard.mining')}
@@ -313,9 +259,7 @@ export const StartPage = ({ tariffs }) => {
           onClick={() => navigate('/game-3d')}
         />
       </ul>
-
       {isDev && <Nodes wallet={user?.wallet} />}
-
       <footer className={style.footer}>
         <p className={style['footer-text']}>
           <span
@@ -327,24 +271,20 @@ export const StartPage = ({ tariffs }) => {
           . {t('dashboard.howEarn')}{' '}
         </p>
       </footer>
-
       {disconnectWalletModal && (
         <DisconnectWalletModal
           isOpen={disconnectWalletModal}
           onClose={() => setDisconnectWalletModal(false)}
         />
       )}
-
-      {(showShareModal || !!notifications.recipient.length) && (
+      {(showShareModal || giftToken) && (
         <ShareStorage
-          giftData={notifications.recipient}
-          isOpen={showShareModal || !!notifications.recipient.length}
+          giftToken={giftToken}
+          isOpen={showShareModal || giftToken}
           onClose={onCloseShareModal}
-          onCloseGift={onCloseGift}
           systemModalRef={systemModalRef}
         />
       )}
-
       <SystemModal handleClose={handleCloseNotification} ref={systemModalRef} />
     </div>
   );

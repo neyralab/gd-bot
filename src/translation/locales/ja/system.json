@@ -21,6 +21,18 @@
     "language": "言語",
     "back": "戻る"
   },
+  "banner": {
+    "upload": "ファイルをアップロードして保存",
+    "uploadText": "GhostDriveで素早く！",
+    "compression": "GhostDriveのデータ圧縮！",
+    "compressionText": "ストレージを最大限に活用",
+    "tokenization": "ファイルトークン化！",
+    "tokenizationText": "GhostDriveの紹介",
+    "computing": "GhostDriveのクライアントサイドコンピューティング！",
+    "computingText": "パフォーマンスを向上させる",
+    "geoPin": "GhostDriveのGeoPin！",
+    "geoPinText": "ファイルを整理する"
+  },
   "node": {
     "node": "ノード",
     "gdNodeShort": "GDノード",
@@ -139,7 +151,7 @@
   "share": {
     "share": "共有する",
     "successfullySend": "{size}を{name}に正常に送信しました",
-    "shareStorage": "(G:Drive)にギフトを送る",
+    "shareStorage": "ギフトストレージ",
     "shareGift": "Ghost Driveのギフト",
     "storage": "ストレージ",
     "increaseStorage": "ストレージ容量が{size}増加しました",

@@ -96,35 +96,27 @@ const formatPartnerResponce = (data) => {
   const gameNames = new Set();
   const taskNames = new Set();
 
-  for (const key in data) {
-    if (data.hasOwnProperty(key)) {
-      const innerObject = data[key];
-
-      for (const innerKey in innerObject) {
-        if (innerObject.hasOwnProperty(innerKey)) {
-          const item = innerObject[innerKey];
-
-          if (item.name.endsWith("TG bot") && !gameNames.has(item.name)) {
-            result.games.push({ ...item, translate: "earn.joinTGtempl" });
-            gameNames.add(item.name);
-          }
-
-          if (!taskNames.has(item.name)) {
-            const type = getPartnerTaskType(item.name);
-            result.tasks.push({
-              ...item,
-              type: type,
-              description: type === PARTNER_TASK_TYPES.bot 
-                ? item.description : item.description.replace('Join', 'Follow ')
-            });
-            taskNames.add(item.name);
-          }
-        }
-      }
+  data.forEach(item => {
+    if (item.name.endsWith("TG bot") && !gameNames.has(item.name)) {
+      result.games.push({ ...item, translate: "earn.joinTGtempl" });
+      gameNames.add(item.name);
     }
-  }
+
+    if (!taskNames.has(item.name)) {
+      const type = getPartnerTaskType(item.name);
+      result.tasks.push({
+        ...item,
+        type: type,
+        description: type === PARTNER_TASK_TYPES.bot 
+          ? item.description 
+          : item.description.replace('Join', 'Follow ')
+      });
+      taskNames.add(item.name);
+    }
+  });
+
   return result;
-}
+};
 
 export {
   PARTNER_KEY,

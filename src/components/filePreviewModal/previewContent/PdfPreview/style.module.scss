@@ -1,0 +1,25 @@
+.wrapper {
+  position: relative;
+  width: auto;
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.sheet {
+  border-bottom: 3px solid rgba(199, 182, 182, 0.5);
+}
+
+.page {
+  position: fixed;
+  bottom: 15px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+  color: #fff;
+  font-family: 'SF Pro Text';
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 150%;
+  letter-spacing: 0.09px;
+}

@@ -9,7 +9,6 @@ import {
 import { toast } from 'react-toastify';
 import TonWeb from 'tonweb';
 import { useTranslation } from 'react-i18next';
-import gsap from 'gsap';
 
 import { StorageIcon } from './icon';
 import { Header } from '../../components/header';
@@ -19,23 +18,22 @@ import {
   selectPaymentSelectModal
 } from '../../store/reducers/modalSlice';
 import { DEFAULT_TARIFFS_NAMES } from '../upgradeStorage';
-// import { selectPaymenttByKey } from '../../store/reducers/paymentSlice';
+import { selectPaymenttByKey } from '../../store/reducers/paymentSlice';
 import { getTonWallet, makeInvoice } from '../../effects/paymentEffect';
 import { storageListEffect } from '../../effects/storageEffects';
 import { SlidingModal } from '../../components/slidingModal';
 import PaymentMenu from '../../components/paymentMenu/Menu';
 import { transformSize } from '../../utils/transformSize';
-
 import { ReactComponent as Star } from '../../assets/star.svg';
-
 import useButtonVibration from '../../hooks/useButtonVibration';
 import { INVOICE_TYPE } from '../../utils/createStarInvoice';
 import { sleep } from '../../utils/sleep';
+import { getToken } from '../../effects/set-token';
+import { runInitAnimation } from './animations';
 
 import styles from './styles.module.css';
-import { getToken } from '../../effects/set-token';
 
-const available_tariffs = {
+export const available_tariffs = {
   '1GB': 1073741824,
   '100GB': 107374182400,
   '1TB': 1099511627776,
@@ -48,7 +46,7 @@ export const BoostPage = ({ tariffs, setTariffs }) => {
   const { t } = useTranslation('system');
   const ws = useSelector(selectCurrentWorkspace);
   const isPaymentModalOpen = useSelector(selectPaymentSelectModal);
-  // const storagePayment = useSelector(selectPaymenttByKey('storage'));
+  const storagePayment = useSelector(selectPaymenttByKey('storage'));
   const user = useSelector((state) => state.user.data);
   const wallet = useTonWallet();
   const [tonConnectUI] = useTonConnectUI();
@@ -58,45 +56,7 @@ export const BoostPage = ({ tariffs, setTariffs }) => {
 
   useEffect(() => {
     if (!tariffs) return;
-
-    /** Animation */
-    gsap.fromTo(
-      `[data-animation="boost-animation-1"]`,
-      {
-        opacity: 0,
-        x: window.innerWidth + 200,
-        y: -window.innerHeight + 500,
-        scale: 0
-      },
-      {
-        opacity: 1,
-        x: 0,
-        y: 0,
-        scale: 1,
-        stagger: 0.05,
-        duration: 0.5,
-        delay: 0.2,
-        ease: 'back.out(0.2)'
-      }
-    );
-
-    gsap.fromTo(
-      `[data-animation="boost-animation-2"]`,
-      {
-        opacity: 0,
-        x: 100,
-        scale: 0.5
-      },
-      {
-        opacity: 1,
-        x: 0,
-        scale: 1,
-        stagger: 0.2,
-        duration: 0.5,
-        delay: 0.1,
-        ease: 'back.out(0.2)'
-      }
-    );
+    runInitAnimation();
   }, [tariffs]);
 
   const spaceTotal = useMemo(() => {
@@ -193,7 +153,7 @@ export const BoostPage = ({ tariffs, setTariffs }) => {
           setTariffs(data);
         });
       } else {
-        console.warn(`error: The payment was not completed. ${result}`)
+        console.warn(`error: The payment was not completed. ${result}`);
       }
     } catch (error) {
       console.warn('error: ', error);
@@ -204,8 +164,7 @@ export const BoostPage = ({ tariffs, setTariffs }) => {
     if (el.action === 'ton') {
       payByTON(el);
     } else {
-      // const input = `${storagePayment.Type};${el?.id};${user.id};${ws}`;
-      const input = `${el?.id};${user.id};${ws}`;
+      const input = `${storagePayment.Type};${el?.id};${user.id};${ws};0`;
       const theme = {
         multiplier: el.multiplicator,
         stars: el.stars
@@ -238,13 +197,21 @@ export const BoostPage = ({ tariffs, setTariffs }) => {
       {tariffs && (
         <>
           <div>
-            <p data-animation="boost-animation-2" className={styles.header}>
+            <p
+              data-animation="boost-animation-2"
+              className={CN(
+                styles.header,
+                styles['initial-state-for-animation']
+              )}>
               {t('boost.multiplier')}
             </p>
 
             <div
               data-animation="boost-animation-1"
-              className={styles.current_item}>
+              className={CN(
+                styles.current_item,
+                styles['initial-state-for-animation']
+              )}>
               <div className={styles.flex}>
                 <StorageIcon storage={currentPrice} />
                 <p className={styles.current_storage}>
@@ -264,7 +231,12 @@ export const BoostPage = ({ tariffs, setTariffs }) => {
           </div>
 
           <div>
-            <p data-animation="boost-animation-2" className={styles.header}>
+            <p
+              data-animation="boost-animation-2"
+              className={CN(
+                styles.header,
+                styles['initial-state-for-animation']
+              )}>
               {t('boost.boostMultiplier')}
             </p>
 
@@ -272,6 +244,7 @@ export const BoostPage = ({ tariffs, setTariffs }) => {
               {tariffs?.map((el, index) => (
                 <li
                   data-animation="boost-animation-1"
+                  className={styles['initial-state-for-animation']}
                   key={index}
                   onClick={handleVibrationClick()}>
                   <button

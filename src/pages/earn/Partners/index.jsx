@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useEffect, useCallback, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 
@@ -7,25 +7,19 @@ import useButtonVibration from '../../../hooks/useButtonVibration';
 import { PARTNER_KEY } from './utils';
 import Task from '../TaskItem/Task';
 import ClaimPoints from '../../../components/ClaimPoints/ClaimPoints';
+import ListLoader from '../ListLoader/ListLoader';
+import { runInitAnimation } from './animations';
 
 import styles from './styles.module.css';
 
-export default function Partners({ partners, setPartners }) {
-  const [animatedTaskIds, setAnimatedTaskIds] = useState(new Set());
+export default function Partners({ partners, setPartners, isLoading }) {
   const handleVibrationClick = useButtonVibration();
   const { t } = useTranslation('system');
   const claimPointsModalRef = useRef(null);
 
   useEffect(() => {
-    const notAnimatedTasks = partners.filter(
-      (el) => !animatedTaskIds.has(el.id)
-    );
-
-    notAnimatedTasks.forEach((task, index) => {
-      setTimeout(() => {
-        setAnimatedTaskIds((prevIds) => new Set(prevIds).add(task.id));
-      }, index * 100);
-    });
+    if (!partners || !partners.length) return;
+    runInitAnimation();
   }, [partners]);
 
   const handleClick = (task) => {
@@ -54,7 +48,7 @@ export default function Partners({ partners, setPartners }) {
           theme: 'colored',
           position: 'bottom-center',
           autoClose: 5000,
-          style: {backgroundColor: "#f4b20b"}
+          style: { backgroundColor: '#f4b20b' }
         });
       }
     } catch (error) {
@@ -62,27 +56,27 @@ export default function Partners({ partners, setPartners }) {
         theme: 'colored',
         position: 'bottom-center',
         autoClose: 5000,
-        style: {backgroundColor: "#f4b20b"}
+        style: { backgroundColor: '#f4b20b' }
       });
     }
   }, []);
+
+  if (isLoading) {
+    return <ListLoader />;
+  }
 
   return (
     <>
       <div className={styles['tasks-list']}>
         {partners.map((task) => {
-          if (animatedTaskIds.has(task.id)) {
-            return (
-              <Task
-                key={task.id}
-                doVerify={doVerify}
-                onClick={handleVibrationClick(() => handleClick(task))}
-                {...task}
-              />
-            );
-          } else {
-            return null;
-          }
+          return (
+            <Task
+              key={task.id}
+              doVerify={doVerify}
+              onClick={handleVibrationClick(() => handleClick(task))}
+              {...task}
+            />
+          );
         })}
       </div>
       <ClaimPoints ref={claimPointsModalRef} />

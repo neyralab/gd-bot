@@ -1,0 +1,11 @@
+.container {
+  & div {
+    max-width: calc(100vw - 10px);
+    height: calc(90vh - 50px);
+    margin: 0 auto;
+    color: black;
+    background-color: #fff;
+    overflow: scroll;
+    padding: 15px;
+  }
+}

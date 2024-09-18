@@ -1,5 +1,6 @@
-import React, { useCallback } from "react";
+import React, { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
+import classNames from 'classnames';
 
 import { API_PATH_ROOT } from '../../../utils/api-urls';
 import gameJson from '../../../translation/locales/en/game.json';
@@ -10,18 +11,26 @@ import styles from './styles.module.css';
 const GamesItem = ({ title, joinLink, logo }) => {
   const { t } = useTranslation('game');
   const partnerName = getPartnerName(title);
-  const translatedText = t(getPartnerTranslate(title, t, gameJson)).replace('{name}', partnerName);
+  const translatedText = t(getPartnerTranslate(title, t, gameJson)).replace(
+    '{name}',
+    partnerName
+  );
 
   const goToGame = useCallback(() => {
-    window.open(joinLink, '_blank')
-  }, [])
+    window.open(joinLink, '_blank');
+  }, []);
 
   const setUpDefaultLogo = (e) => {
     e.target.src = GameIcon;
-  }
+  };
 
   return (
-    <div className={styles.container}>
+    <div
+      data-animation="game-item-animation-1"
+      className={classNames(
+        styles.container,
+        styles['initial-state-for-animation']
+      )}>
       <div className={styles.info}>
         <img
           className={styles.icon}
@@ -35,7 +44,7 @@ const GamesItem = ({ title, joinLink, logo }) => {
         Play
       </button>
     </div>
-  )
-}
+  );
+};
 
-export default GamesItem
+export default GamesItem;

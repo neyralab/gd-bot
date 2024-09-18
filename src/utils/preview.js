@@ -16,7 +16,7 @@ import {
   pdfMediaTypes
 } from '../config/docs-file-extensions';
 
-const getPreviewFileType = (file, entityContent) => {
+const getPreviewFileType = (file, entityContent, withoutContent) => {
   let entityFileType = '';
 
   if (file?.is_clientside_encrypted) entityFileType = 'encrypt';
@@ -24,7 +24,7 @@ const getPreviewFileType = (file, entityContent) => {
     if (videoMediaExtentionPreview.includes(file.extension) && !entityContent) {
       entityFileType = 'video';
     }
-    if (file.mime && entityContent) {
+    if (file.mime && (entityContent || withoutContent)) {
       if (videoMediaExtentionPreview.includes(file.extension)) {
         entityFileType = 'video';
         if (videoWithoutPreview.includes(file.extension)) {

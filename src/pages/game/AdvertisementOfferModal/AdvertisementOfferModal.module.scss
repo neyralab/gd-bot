@@ -1,0 +1,90 @@
+.container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  z-index: 10;
+
+  transform: translate(-50%, -50%) scale(0);
+  opacity: 0;
+  animation: ContainerAppear 0.5s ease-out forwards;
+
+  &.is-closing {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+    animation: ContainerDisappear 0.5s ease-out forwards;
+  }
+}
+
+@keyframes ContainerAppear {
+  0% {
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes ContainerDisappear {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0;
+  }
+}
+
+.hexagon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 230px;
+  height: 260px;
+  animation: ScaleUpDown 3s infinite;
+}
+
+@keyframes ScaleUpDown {
+  0%,
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.03);
+  }
+}
+
+.content {
+  position: relative;
+  top: 0px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  span {
+    font-weight: 200;
+    text-transform: uppercase;
+    font-size: 14px;
+    display: block;
+    width: 160px;
+  }
+}
+
+.icon {
+  width: 48px;
+  height: 48px;
+  color: white;
+  display: block;
+  display: flex;
+
+  svg {
+    width: 48px;
+    height: 48px;
+  }
+}

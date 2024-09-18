@@ -21,6 +21,18 @@
     "language": "Bahasa",
     "back": "Kembali"
   },
+  "banner": {
+    "upload": "Unggah & Simpan file Anda",
+    "uploadText": "Dengan cepat menggunakan GhostDrive!",
+    "compression": "Kompresi Data GhostDrive!",
+    "compressionText": "Maksimalkan Penyimpanan Anda dengan",
+    "tokenization": "Tokenisasi File!",
+    "tokenizationText": "Memperkenalkan GhostDrive",
+    "computing": "Komputasi Sisi Klien GhostDrive!",
+    "computingText": "Tingkatkan Performa Anda dengan",
+    "geoPin": "GeoPin GhostDrive!",
+    "geoPinText": "Atur file Anda dengan"
+  },
   "node": {
     "node": "Node",
     "gdNodeShort": "GD Node",
@@ -139,7 +151,7 @@
   "share": {
     "share": "Bagikan",
     "successfullySend": "Anda berhasil mengirim {size} ke {name}",
-    "shareStorage": "Kirim Hadiah ke (G:Drive)",
+    "shareStorage": "Penyimpanan Hadiah",
     "shareGift": "Hadiah Ghost Drive",
     "storage": "Penyimpanan",
     "increaseStorage": "Kapasitas penyimpanan Anda telah meningkat sebesar {size}",

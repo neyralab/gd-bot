@@ -1,4 +1,10 @@
-import React, { useRef, useState, useEffect, useMemo, useCallback } from 'react';
+import React, {
+  useRef,
+  useState,
+  useEffect,
+  useMemo,
+  useCallback
+} from 'react';
 import { toast } from 'react-toastify';
 import CN from 'classnames';
 
@@ -15,8 +21,8 @@ const CircleAudioPlayer = ({ file, wrapper }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
   const [ipfsAudio, setIpfsAudio] = useState('');
-  const radius = useMemo(() => ((window.innerWidth - 40)/2), []) ; // Радіус прогрес-бару
-  const circumference = useMemo(() => (2 * Math.PI * radius), [radius]); // Довжина окружності
+  const [radius, setRadius] = useState(0);
+  const circumference = useMemo(() => 2 * Math.PI * radius, [radius]); // Довжина окружності
 
   const handlePlayPause = useCallback(() => {
     if (isPlaying) {
@@ -35,19 +41,23 @@ const CircleAudioPlayer = ({ file, wrapper }) => {
     audioRef.current.currentTime += 10;
   }, [audioRef]);
 
-  const handleProgressClick = useCallback((event) => {
-    const boundingRect = event.currentTarget.getBoundingClientRect();
-    const x = event.clientX - boundingRect.left - boundingRect.width / 2;
-    const y = event.clientY - boundingRect.top - boundingRect.height / 2;
-    const angle = Math.atan2(y, x) * (180 / Math.PI) + 90;
-    const adjustedAngle = angle < 0 ? angle + 360 : angle;
-    const newTime = (adjustedAngle / 360) * audioRef.current.duration;
-    audioRef.current.currentTime = newTime;
-  }, [audioRef]);
+  const handleProgressClick = useCallback(
+    (event) => {
+      const boundingRect = event.currentTarget.getBoundingClientRect();
+      const x = event.clientX - boundingRect.left - boundingRect.width / 2;
+      const y = event.clientY - boundingRect.top - boundingRect.height / 2;
+      const angle = Math.atan2(y, x) * (180 / Math.PI) + 90;
+      const adjustedAngle = angle < 0 ? angle + 360 : angle;
+      const newTime = (adjustedAngle / 360) * audioRef.current.duration;
+      audioRef.current.currentTime = newTime;
+    },
+    [audioRef]
+  );
 
   useEffect(() => {
     const updateProgress = () => {
-      const progressValue = (audioRef.current.currentTime / audioRef.current.duration) * 100;
+      const progressValue =
+        (audioRef.current.currentTime / audioRef.current.duration) * 100;
       setProgress(progressValue);
     };
 
@@ -61,18 +71,30 @@ const CircleAudioPlayer = ({ file, wrapper }) => {
   useEffect(() => {
     createStreamEffect(file.slug)
       .then((data) => {
-        setIpfsAudio(data?.url)
+        setIpfsAudio(data);
       })
       .catch(() => {
         toast.error('Sorry, something went wrong. Please try again later');
-      })
-  }, [])
+      });
+  }, []);
 
   useEffect(() => {
     if (wrapper.current) {
       wrapper.current.className = styles['player-ackground'];
     }
-  }, [wrapper])
+  }, [wrapper]);
+
+  useEffect(() => {
+    const updateRadius = () => {
+      const newRadius = (window.innerWidth - 40) / 2;
+      setRadius(newRadius);
+    };
+
+    updateRadius();
+
+    window.addEventListener('resize', updateRadius);
+    return () => window.removeEventListener('resize', updateRadius);
+  }, []);
 
   const onFinish = useCallback(() => {
     setIsPlaying(false);
@@ -80,70 +102,83 @@ const CircleAudioPlayer = ({ file, wrapper }) => {
   }, []);
 
   return (
-    <div className={styles["player-container"]}>
-      <div className={styles["circle-audio-player"]}>
+    <div className={styles['player-container']}>
+      <div className={styles['circle-audio-player']}>
         <audio
           ref={audioRef}
           onEnded={onFinish}
-          src={ipfsAudio ? `https://${ipfsAudio}` : undefined}
+          src={ipfsAudio ? ipfsAudio : undefined}
         />
         <div
-          className={styles["controls"]}
-          style={{ width: `${radius*2 - 40}px`, height: `${radius*2 - 40}px` }}
-        >
-          <button className={styles["circle-audio-button"]} onClick={handleRewind}>
+          className={styles['controls']}
+          style={{
+            width: `${radius * 2 - 40}px`,
+            height: `${radius * 2 - 40}px`
+          }}>
+          <button
+            className={styles['circle-audio-button']}
+            onClick={handleRewind}>
             <RewindIcon />
           </button>
           <button
-            className={CN(styles["circle-audio-button"], styles["circle-audio-play-button"])}
-            onClick={handlePlayPause}
-          >
+            className={CN(
+              styles['circle-audio-button'],
+              styles['circle-audio-play-button']
+            )}
+            onClick={handlePlayPause}>
             {isPlaying ? <PauseIcon /> : <PLayIcon />}
           </button>
-          <button className={styles["circle-audio-button"]} onClick={handleForward}>
+          <button
+            className={styles['circle-audio-button']}
+            onClick={handleForward}>
             <ForwardIcon />
           </button>
         </div>
         <div
-          style={{ height: `${radius*2}px` }}
-          className={styles["progress-container"]}
-          onClick={handleProgressClick}
-        >
+          style={{ height: `${radius * 2}px` }}
+          className={styles['progress-container']}
+          onClick={handleProgressClick}>
           <svg
-            className={styles["circle-audio-svg"]}
-            width={`${radius*2}px`}
-            height={`${radius*2}px`}
-          >
+            className={styles['circle-audio-svg']}
+            width={`${radius * 2}px`}
+            height={`${radius * 2}px`}>
             <defs>
               <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" style={{ stopColor: '#00F2FE', stopOpacity: 0.3 }} />
-                <stop offset="100%" style={{ stopColor: '#00F2FE', stopOpacity: 1 }} />
+                <stop
+                  offset="0%"
+                  style={{ stopColor: '#00F2FE', stopOpacity: 0.3 }}
+                />
+                <stop
+                  offset="100%"
+                  style={{ stopColor: '#00F2FE', stopOpacity: 1 }}
+                />
               </linearGradient>
             </defs>
             <circle
-              className={styles["progress-background"]}
+              className={styles['progress-background']}
               cx={radius}
               cy={radius}
               r={radius}
               strokeWidth="4"
             />
             <circle
-              className={styles["progress"]}
+              className={styles['progress']}
               cx={radius}
               cy={radius}
               r={radius}
               strokeWidth="4"
               strokeDasharray={circumference}
-              strokeDashoffset={circumference - (progress / 100) * circumference}
+              strokeDashoffset={
+                circumference - (progress / 100) * circumference
+              }
             />
           </svg>
           <div
-            className={styles["indicator"]}
+            className={styles['indicator']}
             style={{
-              transform: `rotate(${(progress / 100) * 360}deg) translate(0, -${(radius)}px)`,
-            }}
-          >
-            <div className={styles["indicator-dot"]}></div>
+              transform: `rotate(${(progress / 100) * 360}deg) translate(0, -${radius}px)`
+            }}>
+            <div className={styles['indicator-dot']}></div>
           </div>
         </div>
       </div>
