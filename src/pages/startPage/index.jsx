@@ -12,7 +12,6 @@ import { getAllTasks } from '../../effects/balanceEffect';
 import {
   getStorageNotificationsEffect,
   readNotificationEffect,
-  storageSendEffect
 } from '../../effects/storageEffects';
 import { DEFAULT_TARIFFS_NAMES } from '../upgradeStorage';
 import { fromByteToGb } from '../../utils/storage';
@@ -28,9 +27,9 @@ import PointCounter from './PointCounter/PointCounter';
 import SystemModal from '../../components/SystemModal/SystemModal';
 import NavigatItem from './Navigator/NavigatItem';
 import Navigator from './Navigator/Navigator';
-import { parseSizeToBytes } from '../../utils/storage';
+import { ReactComponent as LogoIcon } from '../../assets/ghost.svg';
+import BannerSource from '../../assets/node-banner.webp';
 import { runInitAnimation } from './animations';
-import { Banner } from './Banner';
 
 import style from './style.module.css';
 import navigatorStyle from './Navigator/Navigator.module.scss';
@@ -230,11 +229,24 @@ export const StartPage = ({ tariffs }) => {
 
   return (
     <div ref={wrapperRef} className={`${style.container}`}>
-      <Banner
-        storageSize={user.space_total}
-        onOpenShareModal={onOpenShareModal}
+
+      <div
         data-animation="start-page-animation-2"
-      />
+        className={CN(style.card, style.banner)}>
+        <img src={BannerSource} alt="banner" />
+        <div className={style['banner-content']}>
+          <div onClick={onOpenShareModal} className={style['banner-header']}>
+            <div className={style['banner-header_img']}>
+              <LogoIcon />
+              <span className={style['banner-header-share-btn']}>
+                {t('share.share')}
+              </span>
+            </div>
+            <h1>{transformSize(user.space_total)}</h1>
+          </div>
+        </div>
+      </div>
+
       <PointCounter
         points={user?.points}
         className={style[`point-counter`]}
