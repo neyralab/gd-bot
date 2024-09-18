@@ -41,7 +41,7 @@ export const FileMenu = () => {
   const isDev = useMemo(() => isDevEnv(), []);
   const isPPVActivated = useMemo(() => !!file?.share_file, [file?.share_file]);
   const fileHasPreview = useMemo(
-    () => (!!getPreviewFileType(file, '', true) && isDev),
+    () => !!getPreviewFileType(file, '', true) && isDev,
     [file, isDev]
   );
   const url = useMemo(() => {
@@ -59,7 +59,7 @@ export const FileMenu = () => {
   };
 
   const onShareClick = async (e) => {
-    e.stopPropagation();
+    e?.stopPropagation();
 
     await updateShareEffect(file.slug);
     dispatch(setFileMenuFile(null));
@@ -98,7 +98,6 @@ export const FileMenu = () => {
         dispatch(setPPVFile(file));
         dispatch(setFileMenuFile(null));
       }
-      
     } catch (error) {
       console.warn(error);
     }

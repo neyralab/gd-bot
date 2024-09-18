@@ -72,7 +72,7 @@ export const FileMenu = () => {
   };
 
   const onShareClick = async (e) => {
-    e.stopPropagation();
+    e?.stopPropagation();
     dispatch(handleFileMenu(false));
     await updateShareEffect(file.slug);
     dispatch(setPPVFile({}));
