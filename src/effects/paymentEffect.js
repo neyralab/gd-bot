@@ -8,6 +8,7 @@ import { createInvoice } from '../utils/createStarInvoice';
 import { handlePayment } from '../store/reducers/paymentSlice';
 import axios from 'axios';
 import { connectUserV8 } from './authorizeUser';
+import { isDevEnv } from '../utils/isDevEnv';
 
 let stripePromise;
 
@@ -76,8 +77,10 @@ export const getTonWallet = async (dispatch, comment) => {
 
 export const makeInvoice = async ({ input, dispatch, callback, type, theme }) => {
   try {
+    const schema = isDevEnv() ? [1,1,8,8,8] : [1,8,8];
+    debugger
     const encoder = new NumberEncoder();
-    const byteArray = encoder.encodeNumbers(input, [1,1,8,8,8]);
+    const byteArray = encoder.encodeNumbers(input, schema);
     const base64String = encoder.encodeToBase64(byteArray);
 
     const invoiceInput = createInvoice({
