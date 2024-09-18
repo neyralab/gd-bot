@@ -78,7 +78,6 @@ export const getTonWallet = async (dispatch, comment) => {
 export const makeInvoice = async ({ input, dispatch, callback, type, theme }) => {
   try {
     const schema = isDevEnv() ? [1,1,8,8,8] : [1,8,8];
-    debugger
     const encoder = new NumberEncoder();
     const byteArray = encoder.encodeNumbers(input, schema);
     const base64String = encoder.encodeToBase64(byteArray);
