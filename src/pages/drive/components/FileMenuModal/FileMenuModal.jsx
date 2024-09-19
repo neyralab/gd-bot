@@ -33,7 +33,7 @@ import ToggleSwitch from '../../../../components/toggleSwitch';
 
 export const FileMenuModal = () => {
   const { t: tSystem } = useTranslation('system');
-  const file = useSelector((state) => state.drive.fileMenuFile);
+  const file = useSelector((state) => state.drive.fileMenuModal);
   const { t } = useTranslation('drive');
   const location = useLocation();
   const dispatch = useDispatch();
