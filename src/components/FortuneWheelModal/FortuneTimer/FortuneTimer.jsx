@@ -14,7 +14,7 @@ export default function FortuneTimer({ timestamp, onComplete }) {
   const { t } = useTranslation('game');
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.data);
-  const spinType = useSelector(selectPaymenttByKey('tap_game'));
+  const spinType = useSelector(selectPaymenttByKey('spin_game'));
   const isDev = useMemo(() => isDevEnv(), []);
 
   const { seconds, minutes, hours } = useTimer({
