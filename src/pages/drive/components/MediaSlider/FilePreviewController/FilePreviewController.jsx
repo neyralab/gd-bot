@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { downloadFile } from 'gdgateway-client';
 import { useDispatch, useSelector } from 'react-redux';
-import { toast } from 'react-toastify';
 import { getPreviewFileType } from '../../../../../utils/preview';
 import { sendFileViewStatistic } from '../../../../../effects/file/statisticEfect';
 import { getFileCids } from '../../../../../effects/file/getFileCid';
