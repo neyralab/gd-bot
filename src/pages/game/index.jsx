@@ -23,8 +23,8 @@ import GoldPlayModal from './GoldPlayModal/GoldPlayModal';
 import GameModal from './GameModal/GameModal';
 import SystemModalWrapper from './SystemModalWrapper/SystemModalWrapper';
 import MainButton from './MainButton/MainButton';
-// import AdvertisementOfferModal from './AdvertisementOfferModal/AdvertisementOfferModal';
-// import AdvertisementPlayModal from './AdvertisementPlayModal/AdvertisementPlayModal';
+import AdvertisementOfferModal from './AdvertisementOfferModal/AdvertisementOfferModal';
+import AdvertisementPlayModal from './AdvertisementPlayModal/AdvertisementPlayModal';
 import styles from './styles.module.css';
 
 /** Please, do not add extra selectors or state
@@ -47,9 +47,9 @@ export function GamePage() {
       dispatch(initGame());
     }
 
-    // if (isInitialized && userIsInitialized) {
-    //   dispatch(checkAdvertisementOffer());
-    // }
+    if (isInitialized && userIsInitialized) {
+      dispatch(checkAdvertisementOffer());
+    }
 
     return () => {
       dispatch(gameCleanup());
@@ -117,9 +117,9 @@ export function GamePage() {
 
       <GameModal />
 
-      {/* <AdvertisementOfferModal /> */}
+      <AdvertisementOfferModal />
 
-      {/* <AdvertisementPlayModal /> */}
+      <AdvertisementPlayModal />
 
       <SystemModalWrapper />
     </div>
