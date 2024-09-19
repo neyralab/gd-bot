@@ -8,7 +8,13 @@ export default function ExcelReader({ mode = 'default', fileContent }) {
 
   useEffect(() => {
     if (fileContent) {
-      readExcelContent(fileContent, setHtmlString);
+      readExcelContent(fileContent)
+        .then((result) => {
+          setHtmlString(result);
+        })
+        .catch(() => {
+          setHtmlString('');
+        });
     }
   }, [fileContent]);
 

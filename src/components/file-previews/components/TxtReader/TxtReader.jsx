@@ -8,7 +8,13 @@ export default function TxtReader({ mode = 'default', fileContent }) {
 
   useEffect(() => {
     if (fileContent) {
-      readBlobContent(fileContent, setTextContent);
+      readBlobContent(fileContent)
+        .then((result) => {
+          setTextContent(result);
+        })
+        .catch(() => {
+          setTextContent('');
+        });
     }
   }, [fileContent]);
 
