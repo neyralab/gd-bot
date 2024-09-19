@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import DefaultFileTitle from '../components/DefaultFileTitle/DefaultFileTitle';
-import DefaultFileActions from '../components/DefaultFileActions/DefaultFileActions';
+import DefaultModeFileUI from '../components/DefaultModeFileUI/DefaultModeFileUI';
 import TxtReader from '../components/TxtReader/TxtReader';
 import ExpandFileButton from '../components/ExpandFileButton/ExpandFileButton';
 import ExpandedFileHeader from '../components/ExpandedFileHeader/ExpandedFileHeader';
@@ -33,18 +32,18 @@ const TxtPreview = ({
         fileContent={fileContent}
       />
 
-      {!isExpanded && <ExpandFileButton onExpandClick={onExpandClick} />}
-      {isExpanded && <ExpandedFileHeader onClose={onExpandedFileClose} />}
+      {isExpanded ? (
+        <ExpandedFileHeader onClose={onExpandedFileClose} />
+      ) : (
+        <ExpandFileButton onExpandClick={onExpandClick} />
+      )}
 
       {mode === 'default' && !isExpanded && (
-        <>
-          <DefaultFileTitle file={file} />
-          <DefaultFileActions
-            file={file}
-            onFavoriteClick={onFavoriteClick}
-            onInfoClick={onInfoClick}
-          />
-        </>
+        <DefaultModeFileUI
+          file={file}
+          onFavoriteClick={onFavoriteClick}
+          onInfoClick={onInfoClick}
+        />
       )}
     </div>
   );

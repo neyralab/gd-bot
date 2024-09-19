@@ -1,6 +1,5 @@
 import React, { useImperativeHandle, useRef, forwardRef } from 'react';
-import DefaultFileTitle from '../components/DefaultFileTitle/DefaultFileTitle';
-import DefaultFileActions from '../components/DefaultFileActions/DefaultFileActions';
+import DefaultModeFileUI from '../components/DefaultModeFileUI/DefaultModeFileUI';
 import VideoPlayer from '../components/VideoPlayer/VideoPlayer';
 import styles from './VideoPreview.module.scss';
 
@@ -40,14 +39,11 @@ const VideoPreview = forwardRef(
         />
 
         {mode === 'default' && (
-          <>
-            <DefaultFileTitle file={file} />
-            <DefaultFileActions
-              file={file}
-              onFavoriteClick={onFavoriteClick}
-              onInfoClick={onInfoClick}
-            />
-          </>
+          <DefaultModeFileUI
+            file={file}
+            onFavoriteClick={onFavoriteClick}
+            onInfoClick={onInfoClick}
+          />
         )}
       </div>
     );

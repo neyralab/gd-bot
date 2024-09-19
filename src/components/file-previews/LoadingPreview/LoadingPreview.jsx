@@ -1,7 +1,6 @@
 import React from 'react';
 import DefaultLoader from '../components/DefaultLoader/DefaultLoader';
-import DefaultFileTitle from '../components/DefaultFileTitle/DefaultFileTitle';
-import DefaultFileActions from '../components/DefaultFileActions/DefaultFileActions';
+import DefaultModeFileUI from '../components/DefaultModeFileUI/DefaultModeFileUI';
 
 export default function LoadingPreview({
   mode = 'default',
@@ -14,14 +13,11 @@ export default function LoadingPreview({
       <DefaultLoader />
 
       {mode === 'default' && (
-        <>
-          <DefaultFileTitle file={file} />
-          <DefaultFileActions
-            file={file}
-            onFavoriteClick={onFavoriteClick}
-            onInfoClick={onInfoClick}
-          />
-        </>
+        <DefaultModeFileUI
+          file={file}
+          onFavoriteClick={onFavoriteClick}
+          onInfoClick={onInfoClick}
+        />
       )}
     </>
   );

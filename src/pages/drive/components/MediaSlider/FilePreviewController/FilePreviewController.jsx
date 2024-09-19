@@ -92,10 +92,12 @@ const FilePreviewController = ({ file, onExpand }) => {
       promises.push(getFilePreviewEffect(file.slug, null, file.extension));
     }
 
-    try {
-      const [_, cidData, downloadOTTResponse, preview] =
-        await Promise.all(promises);
+    const [_, cidData, downloadOTTResponse, preview] =
+      await Promise.allSettled(promises);
 
+    let blob;
+
+    if (cidData?.value && downloadOTTResponse?.value) {
       const {
         data: {
           jwt_ott,
@@ -103,9 +105,9 @@ const FilePreviewController = ({ file, onExpand }) => {
           gateway,
           upload_chunk_size
         }
-      } = downloadOTTResponse;
+      } = downloadOTTResponse.value;
 
-      const blob = await downloadFile({
+      blob = await downloadFile({
         file,
         oneTimeToken,
         endpoint: gateway.url,
@@ -115,23 +117,14 @@ const FilePreviewController = ({ file, onExpand }) => {
         cidData,
         jwtOneTimeToken: jwt_ott
       });
-
-      if (blob) {
-        const realBlob = new Blob([blob]);
-        setCacheItem(file.id, realBlob, preview);
-        setFileContent(realBlob);
-        setFilePreviewImage(preview || null);
-        setPreviewFileType(getPreviewFileType(file, realBlob));
-        setLoading(false);
-        return;
-      }
-    } catch (error) {
-      setLoading(false);
-      setFileContent(null);
-      setFilePreviewImage(null);
-      setPreviewFileType(null);
-      toast.error('Sorry, something went wrong. Please try again later');
     }
+
+    const realBlob = blob ? new Blob([blob]) : null;
+    setCacheItem(file.id, realBlob, preview?.value || null);
+    setFileContent(realBlob);
+    setFilePreviewImage(preview?.value || null);
+    setPreviewFileType(realBlob ? getPreviewFileType(file, realBlob) : null);
+    setLoading(false);
   };
 
   const fetchStreamContent = async (fileType) => {
@@ -145,18 +138,13 @@ const FilePreviewController = ({ file, onExpand }) => {
       promises.push(getFilePreviewEffect(file.slug, null, file.extension));
     }
 
-    try {
-      const [streamData, preview] = await Promise.all(promises);
-      setCacheItem(file.id, streamData, preview);
-      setFileContent(streamData);
-      setFilePreviewImage(preview || null);
-      setLoading(false);
-    } catch (error) {
-      setLoading(false);
-      setFileContent(null);
-      setFilePreviewImage(null);
+    const [streamData, preview] = await Promise.allSettled(promises);
+    setCacheItem(file.id, streamData?.value || null, preview?.value || null);
+    setFileContent(streamData?.value || null);
+    setFilePreviewImage(preview?.value || null);
+    setLoading(false);
+    if (!streamData || !streamData.value) {
       setPreviewFileType(null);
-      toast.error('Sorry, something went wrong. Please try again later');
     }
   };
 

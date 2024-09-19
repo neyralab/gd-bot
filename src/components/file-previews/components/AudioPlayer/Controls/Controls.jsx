@@ -39,7 +39,7 @@ export default function Controls({
           <RewindIcon />
         </button>
 
-        {isLoading && (
+        {isLoading ? (
           <button
             className={classNames(
               styles['circle-audio-button'],
@@ -48,9 +48,7 @@ export default function Controls({
             onClick={handlePlayPause}>
             <Loader2 />
           </button>
-        )}
-
-        {!isLoading && (
+        ) : (
           <button
             className={classNames(
               styles['circle-audio-button'],

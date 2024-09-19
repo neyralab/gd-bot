@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useSwipeable } from 'react-swipeable';
-import DefaultFileTitle from '../components/DefaultFileTitle/DefaultFileTitle';
-import DefaultFileActions from '../components/DefaultFileActions/DefaultFileActions';
+import DefaultModeFileUI from '../components/DefaultModeFileUI/DefaultModeFileUI';
 import PdfSnapshotReader from '../components/PdfSnapshotReader/PdfSnapshotReader';
 import SliderDots from '../components/SliderDots/SliderDots';
 import styles from './PdfPreview.module.scss';
@@ -44,14 +43,11 @@ const PdfPreview = ({
       />
 
       {mode === 'default' && (
-        <>
-          <DefaultFileTitle file={file} />
-          <DefaultFileActions
-            file={file}
-            onFavoriteClick={onFavoriteClick}
-            onInfoClick={onInfoClick}
-          />
-        </>
+        <DefaultModeFileUI
+          file={file}
+          onFavoriteClick={onFavoriteClick}
+          onInfoClick={onInfoClick}
+        />
       )}
 
       <SliderDots totalPages={totalPages} currentPage={currentPage} />

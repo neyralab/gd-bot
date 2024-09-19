@@ -1,5 +1,4 @@
-import DefaultFileActions from '../components/DefaultFileActions/DefaultFileActions';
-import DefaultFileTitle from '../components/DefaultFileTitle/DefaultFileTitle';
+import DefaultModeFileUI from '../components/DefaultModeFileUI/DefaultModeFileUI';
 import ImageReader from '../components/ImageReader/ImageReader';
 import styles from './ImagePreview.module.scss';
 
@@ -19,14 +18,11 @@ const ImagePreview = ({
       />
 
       {mode === 'default' && (
-        <>
-          <DefaultFileTitle file={file} />
-          <DefaultFileActions
-            file={file}
-            onFavoriteClick={onFavoriteClick}
-            onInfoClick={onInfoClick}
-          />
-        </>
+        <DefaultModeFileUI
+          file={file}
+          onFavoriteClick={onFavoriteClick}
+          onInfoClick={onInfoClick}
+        />
       )}
     </div>
   );

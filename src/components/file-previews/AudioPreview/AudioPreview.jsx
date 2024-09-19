@@ -1,7 +1,6 @@
 import React, { useImperativeHandle, useRef, forwardRef } from 'react';
-import DefaultFileTitle from '../components/DefaultFileTitle/DefaultFileTitle';
-import DefaultFileActions from '../components/DefaultFileActions/DefaultFileActions';
 import AudioPlayer from '../components/AudioPlayer/AudioPlayer';
+import DefaultModeFileUI from '../components/DefaultModeFileUI/DefaultModeFileUI';
 import styles from './AudioPreview.module.scss';
 
 const AudioPreview = forwardRef(
@@ -43,14 +42,11 @@ const AudioPreview = forwardRef(
         />
 
         {mode === 'default' && (
-          <>
-            <DefaultFileTitle file={file} />
-            <DefaultFileActions
-              file={file}
-              onFavoriteClick={onFavoriteClick}
-              onInfoClick={onInfoClick}
-            />
-          </>
+          <DefaultModeFileUI
+            file={file}
+            onFavoriteClick={onFavoriteClick}
+            onInfoClick={onInfoClick}
+          />
         )}
       </div>
     );

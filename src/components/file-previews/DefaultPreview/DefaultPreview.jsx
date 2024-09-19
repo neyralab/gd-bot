@@ -1,7 +1,6 @@
 import { useMemo } from 'react';
 import CustomFileIcon from '../../customFileIcon';
-import DefaultFileActions from '../components/DefaultFileActions/DefaultFileActions';
-import DefaultFileTitle from '../components/DefaultFileTitle/DefaultFileTitle';
+import DefaultModeFileUI from '../components/DefaultModeFileUI/DefaultModeFileUI';
 import styles from './DefaultPreview.module.scss';
 
 const DefaultPreview = ({
@@ -29,14 +28,11 @@ const DefaultPreview = ({
       </div>
 
       {mode === 'default' && (
-        <>
-          <DefaultFileTitle file={file} />
-          <DefaultFileActions
-            file={file}
-            onFavoriteClick={onFavoriteClick}
-            onInfoClick={onInfoClick}
-          />
-        </>
+        <DefaultModeFileUI
+          file={file}
+          onFavoriteClick={onFavoriteClick}
+          onInfoClick={onInfoClick}
+        />
       )}
     </>
   );
