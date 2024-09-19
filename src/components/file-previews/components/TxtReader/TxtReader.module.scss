@@ -1,0 +1,21 @@
+.container {
+  width: 100%;
+  height: 100%;
+  margin: 0 auto;
+  color: black;
+  background-color: #fff;
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding: 15px;
+
+  &.simplified {
+    overflow-x: hidden;
+    overflow-y: hidden;
+  }
+
+  pre {
+    width: 100%;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+}
