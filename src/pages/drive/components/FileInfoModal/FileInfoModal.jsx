@@ -13,7 +13,7 @@ export default function FileInfoModal() {
   const formattedDate = moment
     .unix(file.created_at)
     .format('MMM D, YYYY, HH:mm');
-  const hashLink = `https://filfox.info/en/block/${file?.ipfs_hash}`;
+  const hashLink = `https://filfox.info/en/block/${file?.cid}`;
 
   const copyHash = () => {
     navigator.clipboard.writeText(hashLink);
@@ -40,9 +40,9 @@ export default function FileInfoModal() {
             <li className={styles.item}>
               Size: <span>{transformSize(file.size)}</span>
             </li>
-            {file?.ipfs_hash && (
+            {file?.cid && (
               <li className={styles.item}>
-                Hash: <span>{file?.ipfs_hash}</span>
+                Hash: <span>{file?.cid}</span>
                 <CopyButton onClick={copyHash} />
               </li>
             )}
