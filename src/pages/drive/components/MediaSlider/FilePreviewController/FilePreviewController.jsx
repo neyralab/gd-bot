@@ -25,7 +25,7 @@ const FilePreviewController = ({ file, onExpand }) => {
   const mediaSliderCurrentFile = useSelector(
     (state) => state.drive.mediaSlider.currentFile
   );
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true); // leave it loading initially, so there is no extra render flips
   const [fileContent, setFileContent] = useState(null);
   const [filePreviewImage, setFilePreviewImage] = useState(false);
   const [previewFileType, setPreviewFileType] = useState(null);
@@ -53,6 +53,7 @@ const FilePreviewController = ({ file, onExpand }) => {
   const getContent = async () => {
     setFileContent(null);
     setPreviewFileType(null);
+    setLoading(true);
 
     const fileType = getPreviewFileType(file, false, true);
     setPreviewFileType(fileType);
@@ -79,8 +80,6 @@ const FilePreviewController = ({ file, onExpand }) => {
   const fetchBlobContent = async (fileType) => {
     const cache = checkFileCache();
     if (cache) return;
-
-    setLoading(true);
 
     const promises = [
       sendFileViewStatistic(file.slug),
@@ -129,8 +128,6 @@ const FilePreviewController = ({ file, onExpand }) => {
   const fetchStreamContent = async (fileType) => {
     const cache = checkFileCache();
     if (cache) return;
-
-    setLoading(true);
 
     const promises = [createStreamEffect(file.slug)];
     if (USE_PREVIEW_IMG.includes(fileType)) {
