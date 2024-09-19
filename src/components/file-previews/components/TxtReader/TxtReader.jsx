@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import classNames from 'classnames';
-import { readBlobContent } from '../../../../utils/blob';
+import { readBlobContent } from '../../../../utils/readers';
 import styles from './TxtReader.module.scss';
 
 export default function TxtReader({ mode = 'default', fileContent }) {

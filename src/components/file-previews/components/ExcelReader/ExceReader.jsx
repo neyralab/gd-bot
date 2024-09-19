@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { read, utils } from 'xlsx';
 import classNames from 'classnames';
+import { readExcelContent } from '../../../../utils/readers';
 import styles from './ExcelReader.module.scss';
 
 export default function ExcelReader({ mode = 'default', fileContent }) {
@@ -8,19 +8,7 @@ export default function ExcelReader({ mode = 'default', fileContent }) {
 
   useEffect(() => {
     if (fileContent) {
-      const reader = new FileReader();
-
-      reader.onload = (e) => {
-        const data = new Uint8Array(e.target.result);
-        const workbook = read(data, { type: 'array' });
-        const sheetName = workbook.SheetNames[0];
-        const worksheet = workbook.Sheets[sheetName];
-        const htmlString = utils.sheet_to_html(worksheet);
-
-        setHtmlString(htmlString);
-      };
-
-      reader.readAsArrayBuffer(fileContent);
+      readExcelContent(fileContent, setHtmlString);
     }
   }, [fileContent]);
 
