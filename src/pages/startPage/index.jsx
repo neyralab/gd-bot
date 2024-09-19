@@ -11,7 +11,7 @@ import {
 import { getAllTasks } from '../../effects/balanceEffect';
 import {
   getStorageNotificationsEffect,
-  readNotificationEffect,
+  readNotificationEffect
 } from '../../effects/storageEffects';
 import { DEFAULT_TARIFFS_NAMES } from '../upgradeStorage';
 import { fromByteToGb } from '../../utils/storage';
@@ -20,6 +20,7 @@ import { isDevEnv } from '../../utils/isDevEnv';
 
 import GhostLoader from '../../components/ghostLoader';
 import Nodes from './Nodes/index';
+import { Banner } from './Banner';
 import { ReactComponent as TapIcon } from './assets/tap.svg';
 import { DisconnectWalletModal } from '../../components/disconnectWalletModal';
 import ShareStorage from './ShareStorage';
@@ -229,23 +230,30 @@ export const StartPage = ({ tariffs }) => {
 
   return (
     <div ref={wrapperRef} className={`${style.container}`}>
-
-      <div
-        data-animation="start-page-animation-2"
-        className={CN(style.card, style.banner)}>
-        <img src={BannerSource} alt="banner" />
-        <div className={style['banner-content']}>
-          <div onClick={onOpenShareModal} className={style['banner-header']}>
-            <div className={style['banner-header_img']}>
-              <LogoIcon />
-              <span className={style['banner-header-share-btn']}>
-                {t('share.share')}
-              </span>
+      {isDev ? (
+        <Banner
+          storageSize={user.space_total}
+          onOpenShareModal={onOpenShareModal}
+          data-animation="start-page-animation-2"
+        />
+      ) : (
+        <div
+          data-animation="start-page-animation-2"
+          className={CN(style.card, style.banner)}>
+          <img src={BannerSource} alt="banner" />
+          <div className={style['banner-content']}>
+            <div onClick={onOpenShareModal} className={style['banner-header']}>
+              <div className={style['banner-header_img']}>
+                <LogoIcon />
+                <span className={style['banner-header-share-btn']}>
+                  {t('share.share')}
+                </span>
+              </div>
+              <h1>{transformSize(user.space_total)}</h1>
             </div>
-            <h1>{transformSize(user.space_total)}</h1>
           </div>
         </div>
-      </div>
+      )}
 
       <PointCounter
         points={user?.points}

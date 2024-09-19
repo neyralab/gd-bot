@@ -61,6 +61,8 @@ export default function CardsSlider({ items, timeout }) {
     e?.preventDefault?.();
     e?.stopPropagation?.();
 
+    if (items.length === 1) return;
+
     setActiveIndex((prevIndex) => {
       let newIndex;
       const totalItems = items.length;

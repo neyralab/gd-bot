@@ -3,8 +3,6 @@ import { NavLink } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router-dom';
 
-import { vibrate } from '../../../../utils/vibration';
-
 import classNames from 'classnames';
 import styles from './Header.module.css';
 import { useSelector } from 'react-redux';
@@ -22,14 +20,12 @@ export default function Header() {
       <div className={styles.navigation}>
         <NavLink
           className={({ isActive }) => classNames(isActive && styles.active)}
-          to={'/leadboard/league'}
-          onClick={vibrate}>
+          to={'/leadboard/league'}>
           {t('leadboard.league')}
         </NavLink>
         <NavLink
           className={({ isActive }) => classNames(isActive && styles.active)}
-          to={'/leadboard/friends'}
-          onClick={vibrate}>
+          to={'/leadboard/friends'}>
           {t('leadboard.friends')}
         </NavLink>
       </div>

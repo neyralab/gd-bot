@@ -136,6 +136,7 @@ export const FilePreviewModal = () => {
       id: 2,
       icon: <InfoIcon />,
       action: () => {
+        vibrate();
         setInfoPopupOpen(true);
       }
     },
@@ -166,9 +167,7 @@ export const FilePreviewModal = () => {
           </div>
         ) : (
           <div className={style.wrapper} ref={wrapper}>
-            <button
-              className={style.back}
-              onClick={onClose}>
+            <button className={style.back} onClick={onClose}>
               Back
             </button>{' '}
             <PreviewContent
