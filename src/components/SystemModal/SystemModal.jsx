@@ -54,7 +54,7 @@ const SystemModal = forwardRef(({ handleClose }, ref) => {
         <button
           key={el.text}
           className={styles['button-type__' + el.type]}
-          onClick={handleClick(el.onClick)}>
+          onClick={() => {handleClick(el.onClick)}}>
           {el.text}
         </button>
       );
