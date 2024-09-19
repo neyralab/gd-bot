@@ -1,6 +1,6 @@
 import React, { useEffect, createContext, useContext, useState, ReactNode } from 'react';
 import { OKXTonConnect, OkxConnectError, OKX_CONNECT_ERROR_CODES } from 'okxconnect';
-import { API_WEB_APP_URL } from '../../utils/api-urls';
+import { API_WEB_APP_URL, BOT_NAME } from '../../utils/api-urls';
 
 interface WalletContextType {
   wallet: OKXTonConnect | null;
@@ -51,7 +51,7 @@ export const WalletProvider: React.FC<WalletProviderProps> = ({ children }) => {
 
   const connectWallet = async () => {
     try {
-      await wallet?.connect?.({ redirect: '', openUniversalLink: true });
+      await wallet?.connect?.({ redirect: `https://t.me/${BOT_NAME}`, openUniversalLink: true });
     } catch (error: any) {
       if (error instanceof OkxConnectError) {
         if (error.code === OKX_CONNECT_ERROR_CODES.USER_REJECTS_ERROR) {
