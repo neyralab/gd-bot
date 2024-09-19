@@ -4,7 +4,6 @@ import { useTranslation } from 'react-i18next';
 import CN from 'classnames';
 
 import NavigatItem from './NavigatItem';
-import { WalletConnect } from '../WalletConnect';
 import { ReactComponent as WalletIcon } from '../assets/wallet.svg';
 import { ReactComponent as DriveIcon } from '../assets/drive.svg';
 import { ReactComponent as BoostIcon } from '../assets/boost.svg';
@@ -14,6 +13,7 @@ import {
   isEnabledConverter,
   isEnabledMultilanguage
 } from '../../../utils/featureFlags';
+import { useWallet } from '../../../store/context/WalletProvider';
 import { isDevEnv } from '../../../utils/isDevEnv';
 import { LANGUAGE_LIST } from '../../language';
 import { capitalize } from '../../../utils/string';
@@ -25,6 +25,7 @@ export default function Navigator({
   tasks,
   openDisconnectModal
 }) {
+  const { isConnected, connectWallet } = useWallet();
   const { t, i18n } = useTranslation('system');
   const navigate = useNavigate();
   const isDev = isDevEnv();
@@ -38,7 +39,7 @@ export default function Navigator({
   }, []);
 
   const handleWalletClick = useCallback(() => {
-    ref.current.handleClick();
+    ref.current?.handleClick();
   }, []);
 
   const NAVIGATION = useMemo(() => {
@@ -58,9 +59,7 @@ export default function Navigator({
         id: 2,
         name: t('dashboard.wallet'),
         icon: <WalletIcon />,
-        html: (
-          <WalletConnect openDisconnectModal={openDisconnectModal} ref={ref} />
-        ),
+        html: (isConnected ? 'connected' : <span onClick={connectWallet}>Connect</span>),
         onClick: handleWalletClick
       },
       {

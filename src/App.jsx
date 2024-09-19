@@ -16,6 +16,7 @@ import { authorizeUser } from './effects/authorizeUser';
 import { setPaymentTypesEffect } from './effects/paymentEffect';
 import { storageListEffect } from './effects/storageEffects';
 import { API_WEB_APP_URL } from './utils/api-urls';
+import { WalletProvider } from './store/context/WalletProvider'
 import { useLanguage } from './utils/useLanguage';
 
 import SharedLayout from './components/sharedLayout';
@@ -122,50 +123,52 @@ function App() {
         twaReturnUrl: API_WEB_APP_URL
       }}
       network="main">
-      <SharedLayout>
-        <Routes>
-          <Route path="/" exact element={<IntroPage />} />
-          <Route
-            path="/start"
-            exact
-            element={<StartPage onClose={onClose} tariffs={tariffs} />}
-          />
-          <Route path="/drive" exact element={<DrivePage />} />
-          {/* <Route path="/file-upload" exact element={<FilesSystemPage />} /> */}
-          {/* <Route path="/ghostdrive-upload" exact element={<FilesPage />} /> */}
-          {/* <Route path="/files" exact element={<FilesPage />} /> */}
-          <Route path="/paid-view/:id" exact element={<PaidView />} />
-          <Route
-            path="/upgrade"
-            exact
-            element={<UpgradeStoragePage tariffs={tariffs} />}
-          />
-          <Route path="/balance" exact element={<Balance />} />
-          <Route path="/point-tracker" exact element={<Referral />} />
-          <Route path="/games" exact element={<GamesPage />} />
-          <Route path="/language" exact element={<LanguagePage />} />
-          <Route
-            path="/leadboard/league"
-            exact
-            element={<LeaderboardLeague />}
-          />
-          <Route
-            path="/leadboard/friends"
-            exact
-            element={<LeaderboardFriends />}
-          />
-          <Route path="/friends" exact element={<FriendsPage />} />
-          <Route path="/game-3d" exact element={<GamePage />} />
-          <Route
-            path="/boost"
-            exact
-            element={<BoostPage tariffs={tariffs} />}
-          />
-          <Route path="/earn" exact element={<EarnPage />} />
-          <Route path="/nodes-welcome" exact element={<NodesWelcomePage />} />
-          <Route path="/nodes" exact element={<NodesPage />} />
-        </Routes>
-      </SharedLayout>
+      <WalletProvider>
+        <SharedLayout>
+          <Routes>
+            <Route path="/" exact element={<IntroPage />} />
+            <Route
+              path="/start"
+              exact
+              element={<StartPage onClose={onClose} tariffs={tariffs} />}
+            />
+            <Route path="/drive" exact element={<DrivePage />} />
+            {/* <Route path="/file-upload" exact element={<FilesSystemPage />} /> */}
+            {/* <Route path="/ghostdrive-upload" exact element={<FilesPage />} /> */}
+            {/* <Route path="/files" exact element={<FilesPage />} /> */}
+            <Route path="/paid-view/:id" exact element={<PaidView />} />
+            <Route
+              path="/upgrade"
+              exact
+              element={<UpgradeStoragePage tariffs={tariffs} />}
+            />
+            <Route path="/balance" exact element={<Balance />} />
+            <Route path="/point-tracker" exact element={<Referral />} />
+            <Route path="/games" exact element={<GamesPage />} />
+            <Route path="/language" exact element={<LanguagePage />} />
+            <Route
+              path="/leadboard/league"
+              exact
+              element={<LeaderboardLeague />}
+            />
+            <Route
+              path="/leadboard/friends"
+              exact
+              element={<LeaderboardFriends />}
+            />
+            <Route path="/friends" exact element={<FriendsPage />} />
+            <Route path="/game-3d" exact element={<GamePage />} />
+            <Route
+              path="/boost"
+              exact
+              element={<BoostPage tariffs={tariffs} />}
+            />
+            <Route path="/earn" exact element={<EarnPage />} />
+            <Route path="/nodes-welcome" exact element={<NodesWelcomePage />} />
+            <Route path="/nodes" exact element={<NodesPage />} />
+          </Routes>
+        </SharedLayout>
+      </WalletProvider>
     </TonConnectUIProvider>
   );
 }

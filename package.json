@@ -35,6 +35,7 @@
     "mobile-detect": "^1.4.5",
     "moment": "^2.30.1",
     "pdfjs-dist": "^4.4.168",
+    "okxconnect": "^1.1.1",
     "ramda": "^0.30.0",
     "react": "^18.2.0",
     "react-app-rewired": "^2.2.1",
