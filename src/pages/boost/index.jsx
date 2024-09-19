@@ -25,8 +25,9 @@ import { SlidingModal } from '../../components/slidingModal';
 import PaymentMenu from '../../components/paymentMenu/Menu';
 import { transformSize } from '../../utils/transformSize';
 import { ReactComponent as Star } from '../../assets/star.svg';
-import useButtonVibration from '../../hooks/useButtonVibration';
+import { vibrate } from '../../utils/vibration';
 import { INVOICE_TYPE } from '../../utils/createStarInvoice';
+import { isDevEnv } from '../../utils/isDevEnv';
 import { sleep } from '../../utils/sleep';
 import { getToken } from '../../effects/set-token';
 import { runInitAnimation } from './animations';
@@ -49,10 +50,10 @@ export const BoostPage = ({ tariffs, setTariffs }) => {
   const storagePayment = useSelector(selectPaymenttByKey('storage'));
   const user = useSelector((state) => state.user.data);
   const wallet = useTonWallet();
+  const isDev = isDevEnv();
   const [tonConnectUI] = useTonConnectUI();
   const { open } = useTonConnectModal();
   const dispatch = useDispatch();
-  const handleVibrationClick = useButtonVibration();
 
   useEffect(() => {
     if (!tariffs) return;
@@ -164,7 +165,10 @@ export const BoostPage = ({ tariffs, setTariffs }) => {
     if (el.action === 'ton') {
       payByTON(el);
     } else {
-      const input = `${storagePayment.Type};${el?.id};${user.id};${ws};0`;
+      const input = isDev ?
+        `${storagePayment.Type};${el?.id};${user.id};${ws}`:
+        `${el?.id};${user.id};${ws}`;
+
       const theme = {
         multiplier: el.multiplicator,
         stars: el.stars
@@ -174,7 +178,8 @@ export const BoostPage = ({ tariffs, setTariffs }) => {
         dispatch,
         callback: invoiceCallback,
         type: INVOICE_TYPE.boost,
-        theme
+        theme,
+        isDev,
       });
     }
     onClosePaymentModal();
@@ -246,7 +251,7 @@ export const BoostPage = ({ tariffs, setTariffs }) => {
                   data-animation="boost-animation-1"
                   className={styles['initial-state-for-animation']}
                   key={index}
-                  onClick={handleVibrationClick()}>
+                  onClick={vibrate}>
                   <button
                     disabled={currentPrice?.storage === el?.storage}
                     onClick={() => {

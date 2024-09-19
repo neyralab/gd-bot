@@ -385,5 +385,46 @@ export const themes = [
     shipRoughness: 0.43,
 
     glareImg: 'glare-color-ghost.png'
-  }
+  },
+
+  {
+    id: 'premium',
+    name: 'Premium',
+    multiplier: 100,
+    cost: 1,
+    data: '0.10MB',
+    colors: {
+      buttonText: '#FFD56B',
+      experienceBar: {
+        active: {
+          background1: '#FEF74F',
+          background2: '#FEC600',
+          boxShadow: '#FEF74F'
+        },
+        empty: {
+          background1: [254, 247, 79],
+          background2: [254, 229, 0],
+          boxShadow: '#FEF74F'
+        }
+      },
+
+      shipBase: '#FED97B',
+      wing: '#FED97B',
+      wingAccent: '#FED97B',
+      emission: '#FFECAE',
+      fog: '#AE9ED5',
+      wave: '#FFDA23',
+      directionalLight: '#F3FFF7',
+      accentEmission: '#40832B',
+      shipTrailEmission: '#FFD23E'
+    },
+
+    ambientLightIntensity: 20,
+    directionalLight1Intensity: 2.2,
+    directionalLight2Intensity: 1.1,
+    shipMetalness: 0.98,
+    shipRoughness: 0.6,
+
+    glareImg: 'glare-color-gold.png'
+  },
 ];

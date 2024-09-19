@@ -1,19 +1,19 @@
-import React, { useMemo, useRef } from 'react';
+import React, { useRef, useMemo } from 'react';
 import { useSwipeable } from 'react-swipeable';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   selectStatus,
   selectTheme,
+  selectThemes,
   startRound,
   selectThemeAccess,
   proceedTap,
-  switchTheme
+  switchTheme,
+  selectIsGameDisabled
 } from '../../../store/reducers/gameSlice';
 import EndGameAddedPoints from '../EndGameAddedPoints/EndGameAddedPoints';
 import PointsGrowArea from '../PointsGrowArea/PointsGrowArea';
 import Counter from '../Counter/Counter';
-import { isDesktopPlatform, isWebPlatform } from '../../../utils/client';
-import { tg } from '../../../App';
 import styles from './MainButton.module.scss';
 
 const MainButton = ({ onPushAnimation }) => {
@@ -22,7 +22,9 @@ const MainButton = ({ onPushAnimation }) => {
   const dispatch = useDispatch();
   const isCanvasLoaded = useSelector((state) => state.game.isCanvasLoaded);
   const theme = useSelector(selectTheme);
+  const themes = useSelector(selectThemes);
   const themeAccess = useSelector(selectThemeAccess);
+  const isGamedDisabled = useSelector(selectIsGameDisabled);
   const themeIsSwitching = useSelector(
     (state) => state.game.nextTheme.isSwitching
   );
@@ -36,24 +38,26 @@ const MainButton = ({ onPushAnimation }) => {
   const recentlyFinishedLocker = useSelector(
     (state) => state.game.recentlyFinishedLocker
   );
-  const isGamedDisabled = useMemo(() => {
-    return isDesktopPlatform(tg) || isWebPlatform(tg)
-  }, [tg]);
+  const themeIndex = useMemo(() => themes.findIndex((el) => el.id === theme.id), [theme, themes]);
 
   const swipeHandlers = useSwipeable({
     onSwipedLeft: () => {
-      if (!isCanvasLoaded || theme.id === 'ghost') return;
-
+      if (!isCanvasLoaded || theme.id === themes[themes.length - 1].id) return;
+      const isNextGodTheme = themes[themeIndex + 1].id === 'gold';
       dispatch(
-        switchTheme({ themeId: 'ghost', direction: 'next', timeout: 2500 })
+        switchTheme({
+          themeId: themes[themeIndex + (isNextGodTheme ? 2 : 1)].id,
+          direction: 'next',
+          timeout: 2500
+        })
       );
     },
     onSwipedRight: () => {
       if (!isCanvasLoaded || theme.id === 'hawk') return;
-
+      const isNextGodTheme = themes[themeIndex - 1].id === 'gold';
       dispatch(
         switchTheme({
-          themeId: 'hawk',
+          themeId: themes[themeIndex - (isNextGodTheme ? 2 : 1)].id,
           direction: 'prev',
           timeout: 2500
         })
@@ -75,7 +79,8 @@ const MainButton = ({ onPushAnimation }) => {
 
   const handleEvent = async (event) => {
     if (
-      (!counterIsFinished && theme.id === 'ghost') ||
+      (!counterIsFinished && theme.id !== 'hawk') ||
+      (!counterIsFinished && theme.id !== 'gold') ||
       (lockTimerTimestamp !== null && theme.id === 'hawk') ||
       !theme ||
       !themeAccess[theme.id] ||

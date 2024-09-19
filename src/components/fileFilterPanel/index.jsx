@@ -10,7 +10,7 @@ import {
 } from '../../store/reducers/filesSlice';
 import { selectPartners } from '../../store/reducers/taskSlice';
 import { getFileTypesCountEffect } from '../../effects/storageEffects';
-import useButtonVibration from '../../hooks/useButtonVibration';
+import { vibrate } from '../../utils/vibration';
 import { runInitAnimation } from './animations';
 
 import icons from './assets';
@@ -23,7 +23,6 @@ export const FileFilterPanel = () => {
   const { t: tSystem } = useTranslation('system');
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const handleVibrationClick = useButtonVibration();
 
   useEffect(() => {
     getFileTypesCountEffect()
@@ -96,6 +95,11 @@ export const FileFilterPanel = () => {
     }
   ];
 
+  const handleRedirect = (callback) => {
+    vibrate();
+    callback()
+  }
+
   return (
     <ul className={style.wrapper}>
       {options.map(({ name, value, icon: Icon, callback }) => (
@@ -103,7 +107,7 @@ export const FileFilterPanel = () => {
           key={name}
           data-animation="files-grid-animation-1"
           className={style.item}
-          onClick={handleVibrationClick(callback)}>
+          onClick={() => {handleRedirect(callback)}}>
           <div>
             <p className={style.count}>{value}</p>
             <span className={style.name}>{name}</span>

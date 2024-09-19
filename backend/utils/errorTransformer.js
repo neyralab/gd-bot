@@ -1,6 +1,7 @@
 import isError from 'lodash.iserror';
 
 const errorTransformer = (error) => {
+  const seen = new WeakSet();
   const result =
     isError(error) || error instanceof Error
       ? {
@@ -14,7 +15,15 @@ const errorTransformer = (error) => {
 
   if (error?.isAxiosError) {
     result.isAxiosError = true;
-    result.config = error.config;
+    result.config = JSON.parse(JSON.stringify(error.config, (key, value) => {
+      if (typeof value === "object" && value !== null) {
+        if (seen.has(value)) {
+          return;
+        }
+        seen.add(value);
+      }
+      return value;
+    }));
     result.response = {
       data: error.response?.data,
       status: error.response?.status,

@@ -15,7 +15,6 @@ services:
       dockerfile: Dockerfile
     ports:
     - "3003:3000"
-    command: npm start
     restart: always
     depends_on:
       - redis

@@ -2,13 +2,14 @@ import Wave from 'react-wavify';
 import { useNavigate } from 'react-router-dom';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
+import { checkIntro, sendIntroIsSeen } from '../../effects/introEffect';
 import { ReactComponent as LogoIcon } from '../../assets/intro/logo.svg';
 import { ReactComponent as UploadIcon } from '../../assets/intro/upload.svg';
 import { ReactComponent as PlayIcon } from '../../assets/intro/play.svg';
 import { ReactComponent as AirdropIcon } from '../../assets/intro/airdrop.svg';
 
 import s from './styles.module.css';
-import useButtonVibration from '../../hooks/useButtonVibration';
+import { vibrate } from '../../utils/vibration';
 
 const info = [
   {
@@ -40,13 +41,33 @@ export const IntroPage = () => {
   const [isInfoShown, setIsInfoShown] = useState(false);
   const [paused, setPaused] = useState(false);
   const [realPaused, setRealPaused] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
-  const handleVibrationClick = useButtonVibration();
 
   useEffect(() => {
+    setIsLoading(true);
+
     const isLoadedBefore = localStorage.getItem(DEFAULT_NAME);
     if (isLoadedBefore) {
       navigate('/start');
+      setIsLoading(false);
+    } else {
+      /**  Extra check because when we update the app,
+       * localstorage may be refreshed
+       * or user may clear it directly */
+      checkIntro()
+        .then((res) => {
+          // true if watched
+          // false if never seen
+          if (res) {
+            localStorage.setItem(DEFAULT_NAME, true.toString());
+            navigate('/start');
+          }
+          setIsLoading(false);
+        })
+        .catch(() => {
+          setIsLoading(false);
+        });
     }
   }, [navigate]);
 
@@ -84,9 +105,19 @@ export const IntroPage = () => {
   }, [list]);
 
   const onStart = () => {
+    vibrate();
     localStorage.setItem(DEFAULT_NAME, true.toString());
+    sendIntroIsSeen();
     navigate('/start');
   };
+
+  if (isLoading) {
+    return (
+      <div className={s.background}>
+        <div className={s.max}></div>
+      </div>
+    );
+  }
 
   return (
     <div className={s.background}>
@@ -154,7 +185,7 @@ export const IntroPage = () => {
               visibility: isInfoShown ? 'visible' : 'hidden',
               width: isInfoShown ? '100%' : 0 /* Expand to full width */
             }}
-            onClick={handleVibrationClick(onStart)}
+            onClick={onStart}
             className={s.start_button}>
             Start now
           </button>

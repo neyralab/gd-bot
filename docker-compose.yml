@@ -15,7 +15,6 @@ services:
     container_name: telegram-bot-back
     ports:
     - "3003:3000"
-    command: npm run serve
     depends_on:
       - telegram-bot-redis
     environment:
