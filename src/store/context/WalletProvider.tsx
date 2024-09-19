@@ -29,6 +29,8 @@ export const WalletProvider: React.FC<WalletProviderProps> = ({ children }) => {
   const [isConnected, setIsConnected] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
+  console.log(wallet);
+
   useEffect(() => {
     try {
       const walletInstance = new OKXTonConnect({
