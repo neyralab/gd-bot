@@ -17,7 +17,7 @@ import {
   deleteFileEffect,
   permanentlyDeleteFileEffect
 } from '../../effects/file/deleteFileEffect';
-import useButtonVibration from '../../hooks/useButtonVibration';
+import { vibrate } from '../../utils/vibration';
 
 import style from './style.module.css';
 
@@ -27,12 +27,12 @@ export const DeleteFileModal = () => {
   const file = useSelector(selecSelectedFile);
   const isOpen = useSelector(selectisDeleteFileModalOpen);
   const location = useLocation();
-  const handleVibrationClick = useButtonVibration();
   const isDeletedPage =
     location.pathname === '/file-upload' &&
     new URLSearchParams(location.search).get('type') === 'delete';
 
   const onClose = () => {
+    vibrate();
     dispatch(handleDeleteFileModal(false));
     dispatch(handleFileMenu(false));
     dispatch(setSelectedFile({}));
@@ -40,6 +40,7 @@ export const DeleteFileModal = () => {
 
   const onAccept = async () => {
     let result;
+    vibrate();
     if (isDeletedPage) {
       result = await permanentlyDeleteFileEffect(file, dispatch);
     } else {
@@ -73,12 +74,12 @@ export const DeleteFileModal = () => {
           : 'Are you sure you want to delete?'}
       </p>
       <div className={style.buttons}>
-        <button className={style.noBtn} onClick={handleVibrationClick(onClose)}>
+        <button className={style.noBtn} onClick={onClose}>
           No
         </button>
         <button
           className={style.yesBtn}
-          onClick={handleVibrationClick(onAccept)}>
+          onClick={onAccept}>
           Yes
         </button>
       </div>

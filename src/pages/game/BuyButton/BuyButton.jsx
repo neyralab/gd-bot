@@ -54,6 +54,7 @@ import {
   isAllPaymentEnabled,
   isStarsPaymentEnabled,
 } from '../../../utils/paymentChecker';
+import { isDevEnv } from '../../../utils/isDevEnv';
 import { sleep } from '../../../utils/sleep';
 import styles from './BuyButton.module.css';
 
@@ -75,7 +76,7 @@ export default function BuyButton() {
 
   const user = useSelector((state) => state?.user?.data);
   const contractAddress = useSelector(selectContractAddress);
-  // const isDev = isDevEnv();
+  const isDev = isDevEnv();
   const [isDisabled, setIsDisabled] = useState(false);
 
   const clickHandler = async () => {
@@ -233,13 +234,17 @@ export default function BuyButton() {
   };
 
   const handleStartStarsPayment = () => {
-    const input = `${gamePayment.Type};${0};${theme.tierId};${user.id};0`;
+    const input = isDev ?
+      `${gamePayment.Type};${0};${0};${theme.tierId};${user.id}` :
+      `${0};${theme.tierId};${user.id}`;
+
     makeInvoice({
       input,
       dispatch,
       callback: invoiceCallback,
       type: INVOICE_TYPE.game,
-      theme
+      theme,
+      isDev
     }); 
   }
 

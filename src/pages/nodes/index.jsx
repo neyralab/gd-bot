@@ -26,9 +26,9 @@ import CardsSlider from '../../components/CardsSlider/CardsSlider';
 import sliderItems from './SliderItem/sliderItems';
 import SliderItem from './SliderItem/SliderItem';
 import styles from './styles.module.css';
-import useButtonVibration from '../../hooks/useButtonVibration';
 import { getWallet } from '../../utils/string';
 import { NFT_ADDRESS } from '../../config/contracts';
+import { vibrate } from '../../utils/vibration';
 
 const allNodes = 10000;
 
@@ -41,7 +41,6 @@ export default function NodesPage() {
   const [connected, setConnected] = useState(false);
   const contract = useContract(NFT_ADDRESS, NftCollection);
   const user = useSelector((state) => state.user.data);
-  const handleVibrationClick = useButtonVibration();
   const [tonconnectUI] = useTonConnectUI();
   const { t } = useTranslation('system');
 
@@ -107,6 +106,7 @@ export default function NodesPage() {
   const onBuyNode = useCallback(async () => {
     try {
       console.log('connected', { connected });
+      vibrate();
       if (!contract) {
         return;
       }
@@ -196,7 +196,7 @@ export default function NodesPage() {
             <div className={styles['buy-container__flex-right']}>
               <button
                 type={'button'}
-                onClick={handleVibrationClick(onBuyNode)}
+                onClick={onBuyNode}
                 className={styles['buy-button']}
               >
                 {t('node.buy')}
