@@ -51,10 +51,9 @@ const FilePreviewController = ({ file, onExpand }) => {
   }, [fileContent, file.id, loading, mediaSliderCurrentFile.id]);
 
   const getContent = async () => {
-    setFileContent(null);
-    setPreviewFileType(null);
     setLoading(true);
-
+    setFileContent(null);
+    
     const fileType = getPreviewFileType(file, false, true);
     setPreviewFileType(fileType);
 
