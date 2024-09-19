@@ -8,6 +8,7 @@ import {
   selectIsTransactionLoading,
   selectIsGameDisabled,
   gameCleanup,
+  checkAdvertisementOffer,
 } from '../../store/reducers/gameSlice';
 import { Header } from '../../components/header_v2';
 import BuyButton from './BuyButton/BuyButton';
