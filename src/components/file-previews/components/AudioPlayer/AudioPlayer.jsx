@@ -60,7 +60,7 @@ const AudioPlayer = forwardRef(
         setProgress(0);
         if (audioRef.current) {
           audioRef.current.currentTime = 0;
-          audioRef.current.play().catch((error) => handleError(error));
+          audioRef.current.play().catch(handleError);
         }
       },
       stopPreview: () => {
@@ -77,7 +77,7 @@ const AudioPlayer = forwardRef(
       if (isPlaying) {
         audioRef.current.pause();
       } else {
-        audioRef.current.play().catch((error) => handleError(error));
+        audioRef.current.play().catch(handleError);
       }
       setIsPlaying(!isPlaying);
     }, [isPlaying, audioRef]);
