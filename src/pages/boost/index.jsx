@@ -172,7 +172,7 @@ export const BoostPage = ({ tariffs, setTariffs }) => {
       payByTON(el);
     } else {
       const input = isDev ?
-        `${storagePayment.Type};${el?.id};${user.id};${ws}`:
+        `${storagePayment.Type};0;${el?.id};${user.id};${ws}`:
         `${el?.id};${user.id};${ws}`;
 
       const theme = {

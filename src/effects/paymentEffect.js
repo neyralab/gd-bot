@@ -8,7 +8,6 @@ import { createInvoice } from '../utils/createStarInvoice';
 import { handlePayment } from '../store/reducers/paymentSlice';
 import axios from 'axios';
 import { connectUserV8 } from './authorizeUser';
-import { isDevEnv } from '../utils/isDevEnv';
 
 let stripePromise;
 
