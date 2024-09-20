@@ -41,6 +41,7 @@ const FilePreviewController = ({ file, onExpand }) => {
     if (
       previewFileType &&
       !loading &&
+      fileContent &&
       mediaSliderCurrentFile &&
       mediaSliderCurrentFile.id === file.id
     ) {
