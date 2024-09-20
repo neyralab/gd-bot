@@ -31,6 +31,7 @@ import Navigator from './Navigator/Navigator';
 import { ReactComponent as LogoIcon } from '../../assets/ghost.svg';
 import BannerSource from '../../assets/node-banner.webp';
 import { runInitAnimation } from './animations';
+import { tg } from '../../App'; 
 
 import style from './style.module.css';
 import navigatorStyle from './Navigator/Navigator.module.scss';
@@ -123,8 +124,12 @@ export const StartPage = ({ tariffs }) => {
     };
   }, [user]);
 
-  const openInNewTab = (url) => {
-    window.open(url, '_blank', 'noreferrer');
+  const openInNewTab = (url, isNativeLink = true) => {
+    if (isNativeLink) {
+      tg?.openLink(url, { try_instant_view: true });
+    } else {
+      window.open(url, '_blank', 'noreferrer');
+    }
   };
 
   const onOpenShareModal = () => {
@@ -282,13 +287,11 @@ export const StartPage = ({ tariffs }) => {
       {isDev && <Nodes wallet={user?.wallet} />}
       <footer className={style.footer}>
         <p className={style['footer-text']}>
-          <span
-            onClick={() => {
-              openInNewTab('https://play.ghostdrive.com');
-            }}>
-            GhostDrive.com
+          <span onClick={() => {openInNewTab('https://docs.ghostdrive.com/legal/terms-of-service')}}>
+            Terms of use
           </span>
-          . {t('dashboard.howEarn')}{' '}
+          <span onClick={() => {openInNewTab('https://play.ghostdrive.com')}}>{' | Help | '}</span>
+          <span onClick={() => {openInNewTab('https://t.me/ghostdrive_web3_chat', false)}}>Support.</span>
         </p>
       </footer>
       {disconnectWalletModal && (
