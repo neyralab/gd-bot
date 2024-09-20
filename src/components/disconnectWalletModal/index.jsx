@@ -33,13 +33,13 @@ export const DisconnectWalletModal = ({ isOpen, onClose }) => {
   return (
     <Modal
       isOpen={isOpen}
-      onRequestClose={handleOnClose}
+      onRequestClose={onClose}
       shouldCloseOnOverlayClick={true}
       overlayClassName={style.overlay}
       className={style.modal}>
       <p className={style.text}>{t('wallet.disconnect')}</p>
       <div className={style.buttons}>
-        <button className={style.noBtn} onClick={handleOnClose}>
+        <button className={style.noBtn} onClick={onClose}>
           {t('wallet.no')}
         </button>
         <button
