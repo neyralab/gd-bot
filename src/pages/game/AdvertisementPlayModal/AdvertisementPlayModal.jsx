@@ -31,15 +31,19 @@ export default function AdvertisementPlayModal() {
     if (advertisementModal && advertisementModal.videoUrl) {
       startWatching();
     } else {
-      setProgress(0);
-      setTimeLeft(0);
-      setIsProcessing(false);
-      setIsReady(false);
-      setDuration(0);
-      setIsPlaying(false);
-      setStartWatchingIsLoading(false);
+      resetState();
     }
   }, [advertisementModal]);
+
+  const resetState = () => {
+    setProgress(0);
+    setTimeLeft(0);
+    setIsProcessing(false);
+    setIsReady(false);
+    setDuration(0);
+    setIsPlaying(false);
+    setStartWatchingIsLoading(false);
+  };
 
   const onReady = () => {
     setIsReady(true);
@@ -94,17 +98,31 @@ export default function AdvertisementPlayModal() {
       });
   };
 
-  const handlePlayButtonClick = () => {
+  const handlePlay = () => {
     setIsPlaying(true);
   };
 
+  const handlePause = () => {
+    setIsPlaying(false);
+  };
+
+  const handleError = (error) => {
+    console.error('Error playing video:', error);
+    setIsPlaying(false);
+    setIsReady(false);
+  };
+
   if (!advertisementModal) return null;
+
+  /** these url params are only valid for youtube videos.
+   * If we decide to play videos hosted by other services - remove these params */
+  const videoUrl = `${advertisementModal.videoUrl}?controls=0&modestbranding=1&rel=0&showinfo=0&disablekb=1`;
 
   return (
     <div className={styles.container}>
       <div className={styles['video-wrapper']}>
         <ReactPlayer
-          url={advertisementModal.videoUrl}
+          url={videoUrl}
           playing={isPlaying}
           controls={false}
           playsinline={true}
@@ -112,6 +130,9 @@ export default function AdvertisementPlayModal() {
           onDuration={onDuration}
           onProgress={onProgress}
           onEnded={sendWatchFinished}
+          onPlay={handlePlay}
+          onPause={handlePause}
+          onError={handleError}
           width="100%"
           height="100%"
           style={{ objectFit: 'contain' }}
@@ -141,19 +162,23 @@ export default function AdvertisementPlayModal() {
         </div>
       )}
 
-      <div className={styles['no-interaction-overlay']}></div>
+      {isPlaying && <div className={styles['no-interaction-overlay']}></div>}
 
       {/* Android browsers may not allow to play advertisement automatically.
       Check for canPlay doesn't work. */}
-      {!isPlaying && isReady && !startWatchingIsLoading && (
+      {/* UNCOMMENT THIS IF
+      we decided to show advertisement hosted somewhere else but not youtube
+      The custom play button won't work with Youtube's iframe on Android devices.
+      That's why it's hidden for now */}
+      {/* {!isPlaying && isReady && !startWatchingIsLoading && (
         <div
           className={styles['play-button-overlay']}
-          onClick={handlePlayButtonClick}>
+          onClick={handlePlay}>
           <button className={styles['play-button']}>
             <PlayIcon />
           </button>
         </div>
-      )}
+      )} */}
     </div>
   );
 }
