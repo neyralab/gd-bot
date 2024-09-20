@@ -15,7 +15,6 @@ import {
 } from '../../effects/gameEffect';
 import { setUser } from './userSlice';
 import { getAdvertisementVideo } from '../../effects/advertisementEffect';
-import { API_PATH_ROOT } from '../../utils/api-urls';
 import { isDesktopPlatform, isWebPlatform } from '../../utils/client';
 import { tg } from '../../App';
 
@@ -279,7 +278,7 @@ const getAdvertisementOffer = async (dispatch) => {
     dispatch(
       setAdvertisementOfferModal({
         previewUrl: null,
-        videoUrl: `${API_PATH_ROOT}${videoInfo.video}`,
+        videoUrl: `${videoInfo.video}?controls=0&modestbranding=1&rel=0&showinfo=0`, // this url params are only valid for youtube videos. If we decide to play videos hosted by other services - remove those
         videoId: videoInfo.id
       })
     );
