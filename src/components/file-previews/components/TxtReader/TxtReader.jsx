@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import classNames from 'classnames';
-import { readBlobContent } from '../../../../utils/readers';
+
 import styles from './TxtReader.module.scss';
 
 export default function TxtReader({ mode = 'default', fileContent }) {
@@ -8,13 +8,14 @@ export default function TxtReader({ mode = 'default', fileContent }) {
 
   useEffect(() => {
     if (fileContent) {
-      readBlobContent(fileContent)
-        .then((result) => {
-          setTextContent(result);
-        })
-        .catch(() => {
-          setTextContent('');
-        });
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setTextContent(e.target.result);
+      };
+      reader.onerror = () => {
+        setTextContent('Error reading file');
+      };
+      reader.readAsText(fileContent);
     }
   }, [fileContent]);
 
