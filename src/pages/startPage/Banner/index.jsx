@@ -1,80 +1,45 @@
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo, useState } from 'react';
+import { toast } from 'react-toastify';
 import { useTranslation } from 'react-i18next';
 
 import styles from './styles.module.css';
 
 import CardsSlider from '../../../components/CardsSlider/CardsSlider';
 import { BannerItem } from './BannerItem';
-import InitialRef from '../assets/initial-banner.png';
-import ComputingRef from '../assets/computing-banner.png';
-import GeoPinRef from '../assets/geo-pin-banner.png';
-import StorageRef from '../assets/storage-banner.png';
-import TokenizationRef from '../assets/tokenization-banner.png';
-import UploadRef from '../assets/upload-banner.png';
 
 import { isiOS } from '../../../utils/client';
 import { MOBILE_APP_LINKS } from '../../../config/contracts';
+import { getBannersEffect } from '../../../effects/bannerEffect';
+import { API_PATH_ROOT } from '../../../utils/api-urls';
+import Loader2 from '../../../components/Loader2/Loader2';
 
-const createBanners = ({ t, onClick, storageSize, onOpenShareModal }) => [
-  {
-    id: 0,
-    initialBaner: true,
-    storageSize,
-    onOpenShareModal,
-    bg: InitialRef,
-  },
-  {
-    id: 1,
-    title: t('banner.upload'),
-    text: t('banner.uploadText'),
-    bg: UploadRef,
-    onClick,
-  },
-  {
-    id: 2,
-    title: t('banner.compression'),
-    text: t('banner.compressionText'),
-    bg: StorageRef,
-    onClick,
-  },
-  {
-    id: 3,
-    title: t('banner.tokenization'),
-    text: t('banner.tokenizationText'),
-    bg: TokenizationRef,
-    onClick,
-  },
-  {
-    id: 4,
-    title: t('banner.computing'),
-    text: t('banner.computingText'),
-    bg: ComputingRef,
-    onClick,
-  },
-  {
-    id: 5,
-    title: t('banner.geoPin'),
-    text: t('banner.geoPinText'),
-    bg: GeoPinRef,
-    onClick,
-  },
-].map((banner) => ({
-  ...banner,
-  title: banner.title || '',
-  text: banner.text || '',
-  initialBaner: banner.initialBaner || false,
-  storageSize: banner.storageSize || '',
-  onOpenShareModal: banner.onOpenShareModal || (() => {}),
-  onClick: banner.onClick || (() => {}),
-  revers: banner.revers || false,
-}));
+const createBanners = ({ onClick, banners }) =>
+  banners.map((banner) => ({
+    ...banner,
+    bg: API_PATH_ROOT + banner.image,
+    onClick: () => {
+      onClick(banner.link);
+    }
+  }));
 
 const Banner = ({ storageSize, onOpenShareModal, ...res }) => {
+  const [banners, setBanners] = useState([]);
   const { t } = useTranslation('system');
 
-  const doRedirectToApp = () => {
+  useEffect(() => {
+    getBannersEffect()
+      .then((data) => setBanners(data))
+      .catch(() => {
+        toast.error(t('message.errorAndRetry'), {
+          position: 'bottom-center'
+        });
+      });
+  }, []);
+
+  const doRedirectToApp = (url) => {
+    const mobileUrl = isiOS ? MOBILE_APP_LINKS.iOS : MOBILE_APP_LINKS.android;
     const link = document.createElement('a');
-    link.href = isiOS ? MOBILE_APP_LINKS.iOS : MOBILE_APP_LINKS.android;
+    link.href = url ? url : mobileUrl;
     link.target = '_blank';
     document.body.appendChild(link);
     link.click();
@@ -82,15 +47,22 @@ const Banner = ({ storageSize, onOpenShareModal, ...res }) => {
   };
 
   const slides = useMemo(() => {
-    return createBanners({ t, onClick: doRedirectToApp, storageSize, onOpenShareModal }).map((el) => ({
+    return createBanners({
+      onClick: doRedirectToApp,
+      banners
+    }).map((el) => ({
       id: el.id,
       html: <BannerItem key={el.id} {...el} />
     }));
-  }, [t, storageSize, onOpenShareModal]);
+  }, [banners]);
 
   return (
     <div className={styles.banner} {...res}>
-      <CardsSlider items={slides} timeout={10000} />
+      {banners.length > 0 ? (
+        <CardsSlider items={slides} timeout={10000} />
+      ) : (
+        <Loader2 />
+      )}
     </div>
   );
 };

@@ -73,7 +73,9 @@ export const uploadFileEffect = async ({
           jwtOneTimeToken
         });
 
-        const uploadedFile = result?.data?.data;
+        const uploadedFile = result?.gdGateway
+          ? result?.fileInfo
+          : result?.data?.data;
         try {
           if (
             uploadedFile?.mime.startsWith('image') &&
@@ -126,16 +128,11 @@ export const uploadFileEffect = async ({
             }
           );
         } else {
-          // Temporary handler for logging undefined result errors specifically for the new gateway
-          if (e?.message?.includes('Cannot read properties of undefined')) {
-            console.error(e);
-          } else {
-            toast.error(getResponseError(e), {
-              theme: 'colored',
-              position: 'bottom-center',
-              autoClose: 5000
-            });
-          }
+          toast.error(getResponseError(e), {
+            theme: 'colored',
+            position: 'bottom-center',
+            autoClose: 5000
+          });
         }
       }
     };

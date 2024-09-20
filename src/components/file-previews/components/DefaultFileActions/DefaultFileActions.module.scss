@@ -1,0 +1,30 @@
+.container {
+  color: white;
+  position: absolute;
+  bottom: 32px;
+  right: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 24px;
+  z-index: 1;
+}
+
+.action {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  svg {
+    width: 32px;
+    height: 32px;
+    filter: drop-shadow(0 0 2px rgba(60, 60, 60, 0.5));
+  }
+
+  &.active {
+    color: #24adfa;
+  }
+}

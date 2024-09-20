@@ -40,9 +40,16 @@ const driveSlice = createSlice({
     fileTypesCount: {},
     fileTypesCountIsFetching: false,
     fileIsFavoriteUpdating: [], // slugs
-    fileMenuFile: null,
+    fileMenuModal: null,
     storageInfo: null,
-    ppvFile: null,
+    mediaSlider: {
+      isOpen: false,
+      previousFile: null,
+      currentFile: null,
+      nextFile: null
+    },
+    fileInfoModal: null,
+    ppvFile: null
   },
   reducers: {
     setFilesQueryData: (state, { payload }) => {
@@ -68,6 +75,32 @@ const driveSlice = createSlice({
       const fileIndex = state.files.findIndex((file) => file.id === id);
       if (fileIndex !== -1) {
         state.files[fileIndex][property] = value;
+      }
+
+      if (
+        state.mediaSlider.currentFile &&
+        state.mediaSlider.currentFile.id === id
+      ) {
+        state.mediaSlider.currentFile[property] = value;
+      }
+
+      if (state.mediaSlider.nextFile && state.mediaSlider.nextFile.id === id) {
+        state.mediaSlider.nextFile[property] = value;
+      }
+
+      if (
+        state.mediaSlider.previousFile &&
+        state.mediaSlider.previousFile.id === id
+      ) {
+        state.mediaSlider.previousFile[property] = value;
+      }
+
+      if (state.fileMenuModal && state.fileMenuModal.id === id) {
+        state.fileMenuModal[property] = value;
+      }
+
+      if (state.fileInfoModal && state.fileInfoModal.id === id) {
+        state.fileInfoModal[property] = value;
       }
     },
 
@@ -104,11 +137,43 @@ const driveSlice = createSlice({
         );
       }
     },
-    setFileMenuFile: (state, { payload }) => {
-      state.fileMenuFile = payload;
+    setFileMenuModal: (state, { payload }) => {
+      state.fileMenuModal = payload;
     },
     setStorageInfo: (state, { payload }) => {
       state.storageInfo = payload;
+    },
+    setMediaSliderOpen: (state, { payload }) => {
+      state.mediaSlider.isOpen = payload;
+    },
+    setMediaSliderCurrentFile: (state, { payload }) => {
+      let currentFile = payload;
+      let currentFileIndex = -1;
+      if (currentFile) {
+        currentFileIndex = state.files.findIndex(
+          (el) => el.id === currentFile.id
+        );
+      }
+      if (currentFileIndex >= 0) {
+        currentFile = state.files[currentFileIndex];
+      }
+
+      let previousFile = null;
+      if (currentFileIndex > 0) {
+        previousFile = state.files[currentFileIndex - 1];
+      }
+
+      let nextFile = null;
+      if (currentFileIndex < state.files.length - 1) {
+        nextFile = state.files[currentFileIndex + 1];
+      }
+
+      state.mediaSlider.previousFile = previousFile;
+      state.mediaSlider.currentFile = currentFile;
+      state.mediaSlider.nextFile = nextFile;
+    },
+    setFileInfoModal: (state, { payload }) => {
+      state.fileInfoModal = payload;
     },
     setPPVFile: (state, { payload }) => {
       state.ppvFile = payload;
@@ -274,7 +339,9 @@ export const getDriveFiles = createAsyncThunk(
     if (search) {
       await autoCompleteSearchEffect(search).then((data) => {
         if (data?.length > 0) {
-          files = data.map((el) => ({ ...el, isSearch: true }));
+          files = data.map((el) => {
+            return { ...el.file };
+          });
         }
       });
     }
@@ -382,9 +449,11 @@ export const clearDriveState = createAsyncThunk(
   'drive/clearDriveState',
   async (_, { dispatch }) => {
     dispatch(setFilesQueryData({ search: null, category: null, page: 1 }));
-    dispatch(setFiles([]))
-    dispatch(setFileMenuFile(null))
-    dispatch(setFileIsFavoriteUpdating([]))
+    dispatch(setFiles([]));
+    dispatch(setFileMenuModal(null));
+    dispatch(setFileIsFavoriteUpdating([]));
+    dispatch(setMediaSliderOpen(false));
+    dispatch(setMediaSliderCurrentFile(null));
   }
 );
 
@@ -406,7 +475,10 @@ export const {
   setFileTypesCount,
   setFileTypesCountIsFetching,
   setFileIsFavoriteUpdating,
-  setFileMenuFile,
-  setStorageInfo
+  setFileMenuModal,
+  setStorageInfo,
+  setMediaSliderOpen,
+  setMediaSliderCurrentFile,
+  setFileInfoModal
 } = driveSlice.actions;
 export default driveSlice.reducer;

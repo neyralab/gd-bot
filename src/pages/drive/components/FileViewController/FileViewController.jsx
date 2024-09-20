@@ -2,7 +2,9 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
 import {
-  setFileMenuFile,
+  setFileMenuModal,
+  setMediaSliderCurrentFile,
+  setMediaSliderOpen,
   toggleFileFavorite
 } from '../../../../store/reducers/driveSlice';
 import PPVFileGridView from './file/PPVFileGridView';
@@ -10,8 +12,6 @@ import SimpleFileGridView from './file/SimpleFileGridView';
 import PPVFileListView from './file/PPVFileListView';
 import SimpleFileListView from './file/SimpleFileListView';
 import { vibrate } from '../../../../utils/vibration';
-import { setSelectedFile } from '../../../../store/reducers/filesSlice';
-import { handleFilePreviewModal } from '../../../../store/reducers/modalSlice';
 import imageFileExtensions, {
   imageMediaTypesPreview,
   imagesWithoutPreview
@@ -68,13 +68,13 @@ export default function FileViewController({
 
   const onMenuClick = () => {
     vibrate();
-    dispatch(setFileMenuFile(file));
+    dispatch(setFileMenuModal(file));
   };
 
   const onFileOpenClick = () => {
     vibrate();
-    dispatch(setSelectedFile(file));
-    dispatch(handleFilePreviewModal(true));
+    dispatch(setMediaSliderCurrentFile(file));
+    dispatch(setMediaSliderOpen(true));
   };
 
   return (

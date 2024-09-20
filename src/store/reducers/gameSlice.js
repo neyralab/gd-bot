@@ -46,7 +46,8 @@ const gameSlice = createSlice({
     themeAccess: {
       hawk: true, // tier id 1
       gold: false, // tier id 3
-      ghost: false // tier id 4
+      ghost: false, // tier id 4
+      premium: false, // tier id 5
     },
 
     balance: {
@@ -331,7 +332,7 @@ export const initGame = createAsyncThunk(
       if (now <= gameInfo.game_ends_at) {
         const endTime = gameInfo.game_ends_at;
         lockTimerCountdown(dispatch, endTime);
-        // getAdvertisementOffer(dispatch);
+        getAdvertisementOffer(dispatch);
       }
 
       if (isDesktopPlatform(tg) || isWebPlatform(tg)) {
@@ -339,32 +340,38 @@ export const initGame = createAsyncThunk(
       }
 
       /** This function combines backend tiers and frontend themes */
-      let newThemes = defaultThemes.map((theme) => {
-        const findLevel = levels.find((el) => el.id === level);
-        const { tierIdBN, tierId, ...findGame } = games.find(
-          (game) => game.multiplier === theme.multiplier
-        );
-        let newTheme = findGame
-          ? {
-              ...findGame,
-              ...theme,
-              tierId: findGame.id,
-              multiplier:
-                theme.id === 'hawk' ? findLevel.multiplier : findGame.multiplier
-            }
-          : theme;
-        return newTheme;
-      });
+      let newThemes = defaultThemes
+        .filter((theme) => games.some((game) => game.multiplier === theme.multiplier))
+        .map((theme) => {
+          const findLevel = levels.find((el) => el.id === level);
+          const { tierIdBN, tierId, ...findGame } = games.find(
+            (game) => game.multiplier === theme.multiplier
+          );
+          let newTheme = findGame
+            ? {
+                ...findGame,
+                ...theme,
+                tierId: findGame.id,
+                multiplier:
+                  theme.id === 'hawk' ? findLevel.multiplier : findGame.multiplier
+              }
+            : theme;
+          return newTheme;
+        });
 
       /** This function combines frontend color schemes and images for hawk theme.
        * Hawk theme can have different colors depends on level */
       newThemes = undateSubTheme(dispatch, state, newThemes, level);
 
       if (pendingGames.length > 0) {
-        dispatch(setThemeAccess({ themeId: 'ghost', status: true }));
         const pendingGame = pendingGames[0];
+        const pendingTheme = newThemes.find((el) => el.tierId === pendingGame.tier_id)
+        dispatch(setThemeAccess({
+          themeId: pendingTheme.id,
+          status: true
+        }));
         dispatch(
-          setTheme(newThemes.find((el) => el.tierId === pendingGame.tier_id))
+          setTheme(pendingTheme)
         );
         dispatch(setGameId(pendingGame.uuid || pendingGame.id));
         dispatch(setGameInfo(pendingGame));
@@ -457,14 +464,18 @@ export const finishRound = createAsyncThunk(
 
     if (state.game.theme.id === 'hawk') {
       dispatch(startNewFreeGameCountdown());
-      // getAdvertisementOffer(dispatch);
+      getAdvertisementOffer(dispatch);
     }
     console.log({ gameId });
 
     const taps = state.game.balance.value;
     dispatch(setBalance({ value: 0, label: state.game.balance.label }));
 
-    if (state.game.theme.id === 'ghost' && state.game.gameInfo.txid) {
+    if (
+      state.game.theme.id !== 'hawk' &&
+      state.game.theme.id !== 'gold' &&
+      state.game.gameInfo.txid
+    ) {
       /** This modal should be seen only if the game was paid
        * AND it was bought with TON.
        * If txid is not null, that means the game was bought with TON
