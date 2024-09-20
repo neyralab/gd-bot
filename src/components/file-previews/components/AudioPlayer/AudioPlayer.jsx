@@ -61,8 +61,7 @@ const AudioPlayer = forwardRef(
         if (audioRef.current) {
           audioRef.current.currentTime = 0;
           audioRef.current.play().catch((error) => {
-            console.error('Error playing audio:', error);
-            setIsPlaying(false);
+            handleError(error);
           });
         }
       },
@@ -81,8 +80,7 @@ const AudioPlayer = forwardRef(
         audioRef.current.pause();
       } else {
         audioRef.current.play().catch((error) => {
-          console.error('Error playing audio:', error);
-          setIsPlaying(false);
+          handleError(error);
         });
       }
       setIsPlaying(!isPlaying);
