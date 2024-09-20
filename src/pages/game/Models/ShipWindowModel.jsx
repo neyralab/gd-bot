@@ -32,14 +32,12 @@ export default function ShipWindowModel() {
               material.color.set(theme.colors.shipBase);
               material.metalness = theme.shipMetalness;
               material.roughness = theme.shipRoughness;
-
               break;
 
             case 'BaseEmission2':
               material.color.set(theme.colors.emission);
               material.emissive = new Color(theme.colors.emission);
               material.needsUpdate = true;
-
               break;
           }
         });
