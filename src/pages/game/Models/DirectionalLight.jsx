@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { useSelector } from 'react-redux';
-import * as THREE from 'three';
+import { Color, MathUtils } from 'three';
 import {
   selectTheme,
   selectNextTheme
@@ -47,20 +47,20 @@ const DirectionalLight = () => {
         const intensityT = Math.min((elapsed - delay) / intensityDuration, 1);
 
         // Color transition for both lights
-        const startColor = new THREE.Color(localTheme.colors.directionalLight);
-        const endColor = new THREE.Color(
+        const startColor = new Color(localTheme.colors.directionalLight);
+        const endColor = new Color(
           localNextTheme.theme.colors.directionalLight
         );
-        const r = THREE.MathUtils.lerp(startColor.r, endColor.r, colorT);
-        const g = THREE.MathUtils.lerp(startColor.g, endColor.g, colorT);
-        const b = THREE.MathUtils.lerp(startColor.b, endColor.b, colorT);
+        const r = MathUtils.lerp(startColor.r, endColor.r, colorT);
+        const g = MathUtils.lerp(startColor.g, endColor.g, colorT);
+        const b = MathUtils.lerp(startColor.b, endColor.b, colorT);
         light1Ref.current.color.setRGB(r, g, b);
         light2Ref.current.color.setRGB(r, g, b);
 
         // Intensity transition for light 1
         const startIntensity1 = localTheme.directionalLight1Intensity;
         const endIntensity1 = localNextTheme.theme.directionalLight1Intensity;
-        const intensity1 = THREE.MathUtils.lerp(
+        const intensity1 = MathUtils.lerp(
           startIntensity1,
           endIntensity1,
           intensityT
@@ -70,7 +70,7 @@ const DirectionalLight = () => {
         // Intensity transition for light 2
         const startIntensity2 = localTheme.directionalLight2Intensity;
         const endIntensity2 = localNextTheme.theme.directionalLight2Intensity;
-        const intensity2 = THREE.MathUtils.lerp(
+        const intensity2 = MathUtils.lerp(
           startIntensity2,
           endIntensity2,
           intensityT
