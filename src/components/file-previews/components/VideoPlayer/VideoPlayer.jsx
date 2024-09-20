@@ -9,7 +9,6 @@ import React, {
 import ReactPlayer from 'react-player';
 import Controls from './Controls/Controls';
 import ProgressBar from './ProgressBar/ProgressBar';
-// import Loader2 from '../../../Loader2/Loader2';
 import styles from './VideoPlayer.module.scss';
 
 const VideoPlayer = forwardRef(
@@ -107,6 +106,20 @@ const VideoPlayer = forwardRef(
 
     const handleSeekMouseUp = () => setSeeking(false);
 
+    const handlePlay = () => {
+      setPlaying(true);
+    };
+
+    const handlePause = () => {
+      setPlaying(false);
+    };
+
+    const handleError = (error) => {
+      console.error('Error playing video:', error);
+      setPlaying(false);
+      setShowControls(true);
+    };
+
     return (
       <div className={styles.container}>
         {url && (
@@ -124,18 +137,15 @@ const VideoPlayer = forwardRef(
               height={'100%'}
               onProgress={handleProgress}
               onEnded={handleEnded}
+              onPlay={handlePlay}
+              onPause={handlePause}
+              onError={handleError}
               key={url}
               forceload={'true'}
             />
             <div className={styles['no-interaction-overlay']}></div>
           </div>
         )}
-
-        {/* {isLoading && (
-          <div className={styles['loading-container']}>
-            <Loader2 />
-          </div>
-        )} */}
 
         {showControls && (
           <Controls

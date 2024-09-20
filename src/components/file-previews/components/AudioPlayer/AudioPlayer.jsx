@@ -60,7 +60,10 @@ const AudioPlayer = forwardRef(
         setProgress(0);
         if (audioRef.current) {
           audioRef.current.currentTime = 0;
-          audioRef.current.play();
+          audioRef.current.play().catch((error) => {
+            console.error('Error playing audio:', error);
+            setIsPlaying(false);
+          });
         }
       },
       stopPreview: () => {
@@ -77,7 +80,10 @@ const AudioPlayer = forwardRef(
       if (isPlaying) {
         audioRef.current.pause();
       } else {
-        audioRef.current.play();
+        audioRef.current.play().catch((error) => {
+          console.error('Error playing audio:', error);
+          setIsPlaying(false);
+        });
       }
       setIsPlaying(!isPlaying);
     }, [isPlaying, audioRef]);
@@ -108,6 +114,11 @@ const AudioPlayer = forwardRef(
       setProgress(0);
     }, []);
 
+    const handleError = (error) => {
+      console.error('Error playing audio:', error);
+      setIsPlaying(false);
+    };
+
     return (
       <div className={styles['player-container']}>
         <div
@@ -119,7 +130,12 @@ const AudioPlayer = forwardRef(
           }}></div>
 
         <div className={styles['circle-audio-player']}>
-          <audio ref={audioRef} onEnded={onFinish} src={url} />
+          <audio
+            ref={audioRef}
+            onEnded={onFinish}
+            onError={handleError}
+            src={url}
+          />
 
           <ProgressBar
             progress={progress}
