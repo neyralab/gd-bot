@@ -438,7 +438,7 @@ export const getUserStorageInfo = createAsyncThunk(
       points,
       total: `${transformSize(String(space_total))}`,
       used: `${fromByteToGb(space_used)}`,
-      percent: { label: `${percent || 1}%`, value: percent }
+      percent: { label: `${percent}%`, value: percent }
     };
 
     dispatch(setStorageInfo(storageInfo));

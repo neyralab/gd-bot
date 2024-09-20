@@ -119,7 +119,7 @@ export const StartPage = ({ tariffs }) => {
     return {
       total: `${transformSize(String(space_total))}`,
       used: `${fromByteToGb(space_used)}`,
-      percent: { label: `${percent || 1}%`, value: percent }
+      percent: { label: `${percent}%`, value: percent }
     };
   }, [user]);
 
