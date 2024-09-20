@@ -39,7 +39,14 @@ const PreviewSwitcher = forwardRef(
     }));
 
     if (loading) {
-      return <LoadingPreview mode={mode} file={file} />;
+      return (
+        <LoadingPreview
+          mode={mode}
+          file={file}
+          onFavoriteClick={onFavoriteClick}
+          onInfoClick={onInfoClick}
+        />
+      );
     }
 
     switch (previewFileType) {
