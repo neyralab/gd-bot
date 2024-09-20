@@ -46,6 +46,9 @@
     "enterReport": "Enter your report..",
     "report": "Report"
   },
+  "files": {
+    "expandFile": "View file"
+  },
   "month": {
     "jan": "Jan",
     "feb": "Feb",

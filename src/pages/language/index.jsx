@@ -1,12 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import moment from 'moment';
-
 import { Header } from '../../components/header';
 import { ReactComponent as CheckIcon } from '../../assets/check.svg';
 import SearchInput from './SearchInput';
-import { runInitAnimation } from './animations';
-
+import { runInitAnimation, runListAnimation } from './animations';
+import { debounce } from '../../utils/debounce';
 import styles from './styles.module.scss';
 
 export const LANGUAGE_LIST = [
@@ -95,8 +94,12 @@ export const LanguagePage = () => {
   }, [i18n.language]);
 
   useEffect(() => {
-    if (!list) return;
     runInitAnimation();
+  }, []);
+
+  useEffect(() => {
+    if (!list) return;
+    runListAnimation();
   }, [list]);
 
   const changeLanguage = (option) => {
@@ -106,21 +109,28 @@ export const LanguagePage = () => {
     setLang(option);
   };
 
+  const handleSearchChange = useCallback(
+    debounce((value) => {
+      const valueToCheck = value.trim().toLowerCase();
+      if (value) {
+        const filteredList = LANGUAGE_LIST.filter(
+          (item) =>
+            item.title.toLowerCase().includes(valueToCheck) ||
+            item.translate.toLowerCase().includes(valueToCheck) ||
+            item.shortName.toLowerCase().includes(valueToCheck) ||
+            item.abbreviation.toLowerCase().includes(valueToCheck)
+        );
+        setList(filteredList);
+      } else {
+        setList(LANGUAGE_LIST);
+      }
+    }, 300),
+    []
+  );
+
   const onChange = ({ target: { value } }) => {
-    if (value) {
-      setSearchValue(value);
-      const filteredList = LANGUAGE_LIST.filter(
-        (item) =>
-          item.title.includes(value) ||
-          item.translate.includes(value) ||
-          item.shortName.includes(value) ||
-          item.abbreviation.includes(value)
-      );
-      setList(filteredList);
-    } else {
-      setSearchValue('');
-      setList(LANGUAGE_LIST);
-    }
+    handleSearchChange(value);
+    setSearchValue(value);
   };
 
   const onReset = () => {

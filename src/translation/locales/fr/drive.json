@@ -46,6 +46,9 @@
     "enterReport": "Entrez votre rapport..",
     "report": "Signaler"
   },
+  "files": {
+    "expandFile": "Voir le fichier"
+  },
   "month": {
     "jan": "Janv",
     "feb": "Févr",

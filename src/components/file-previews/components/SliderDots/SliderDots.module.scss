@@ -1,0 +1,28 @@
+.dots-container {
+  position: absolute;
+  bottom: 16px;
+  z-index: 1;
+  width: 300px; /* Width of the visible area for dots */
+  overflow: hidden;
+}
+
+.dots-inner-container {
+  position: relative;
+  display: flex;
+  transition: transform 0.3s ease;
+}
+
+.dot {
+  flex-shrink: 0;
+  width: 8px;
+  height: 8px;
+  margin: 0 3px;
+  border: 2px solid white;
+  border-radius: 50%;
+  background-color: transparent;
+  transition: transform 1s ease;
+
+  &.active {
+    background-color: white;
+  }
+}

@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import classNames from 'classnames';
 import {
   selectNextTheme,
+  selectThemes,
   selectStatus,
   selectTheme,
   switchTheme
@@ -14,33 +15,34 @@ export default function ThemeSwitcherControllers({ themeChangeTimeout }) {
 
   const canvasIsLoaded = useSelector((state) => state.game.isCanvasLoaded);
   const status = useSelector(selectStatus);
+  const themes = useSelector(selectThemes);
   const theme = useSelector(selectTheme);
   const nextTheme = useSelector(selectNextTheme);
   const counterIsFinished = useSelector(
     (state) => state.game.counter.isFinished
   );
+  const themeIndex = useMemo(() => themes.findIndex((el) => el.id === theme.id), [theme, themes]);
 
   const clickHandler = (e, direction) => {
     e?.preventDefault?.();
     e?.stopPropagation?.();
+    let themeId;
 
-    if (!nextTheme.theme) {
-      let themeId = 'hawk';
-
-      if (direction === 'next') {
-        themeId = 'ghost';
-      } else {
-        themeId = 'hawk';
-      }
-
-      dispatch(
-        switchTheme({
-          themeId,
-          direction,
-          timeout: themeChangeTimeout
-        })
-      );
+    if (direction === 'next') {
+      const isNextGodTheme = themes[themeIndex + 1].id === 'gold';
+      themeId = themes[themeIndex + (isNextGodTheme ? 2 : 1)].id;
+    } else {
+      const isNextGodTheme = themes[themeIndex - 1].id === 'gold';
+      themeId = themes[themeIndex - (isNextGodTheme ? 2 : 1)].id;
     }
+
+    dispatch(
+      switchTheme({
+        themeId,
+        direction,
+        timeout: themeChangeTimeout
+      })
+    );
   };
 
   if (status !== 'playing' && counterIsFinished && canvasIsLoaded) {
@@ -50,13 +52,13 @@ export default function ThemeSwitcherControllers({ themeChangeTimeout }) {
           styles.arrows,
           nextTheme.isSwitching && styles['is-switching']
         )}>
-        {theme.id === 'ghost' && (
+        {themeIndex !== 0 && (
           <div className={styles.prev} onClick={(e) => clickHandler(e, 'prev')}>
             {'<'}
           </div>
         )}
 
-        {theme.id === 'hawk' && (
+        {(themeIndex !== themes.length - 1) && (
           <div className={styles.next} onClick={(e) => clickHandler(e, 'next')}>
             {'>'}
           </div>
