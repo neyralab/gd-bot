@@ -71,21 +71,6 @@ export const IntroPage = () => {
     }
   }, [navigate]);
 
-  useEffect(() => {
-    if (infoRef.current) {
-      infoRef.current?.addEventListener('transitionend', () =>
-        setIsInfoShown(true)
-      );
-    }
-
-    // Cleanup event listener on component unmount
-    return () => {
-      if (infoRef.current) {
-        infoRef.current?.removeEventListener('transitionend');
-      }
-    };
-  }, []);
-
   const onLogoShown = useCallback(() => {
     setPaused(true);
     setTimeout(() => {
@@ -100,6 +85,9 @@ export const IntroPage = () => {
               prevIndex === index ? { ...prevItem, opacity: 1 } : prevItem
             )
           );
+          if (index === list.length - 1) {
+            setTimeout(() => setIsInfoShown(true), 1000); // Wait an additional second after the last item to show button
+          }
         }, index * 1000) // Stagger the animation by 100ms for each item
     );
   }, [list]);
