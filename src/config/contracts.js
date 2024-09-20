@@ -25,7 +25,7 @@ const MOBILE_APP_LINKS = {
 
 const TG_PLATFORMS = {
   web: ['weba', 'web'],
-  desktop: ['tdesktop'],
+  desktop: ['tdesktop', 'macos'],
 }
 
 export { NFT_ADDRESS, SOCIAL, FILE_ACTIONS, MOBILE_APP_LINKS, TG_PLATFORMS };
