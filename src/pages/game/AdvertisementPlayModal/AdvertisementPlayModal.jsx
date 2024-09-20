@@ -115,6 +115,7 @@ export default function AdvertisementPlayModal() {
           width="100%"
           height="100%"
           style={{ objectFit: 'contain' }}
+          config={{ youtube: { playerVars: { disablekb: 1 } } }}
         />
 
         {duration ? (
