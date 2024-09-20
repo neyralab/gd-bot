@@ -201,7 +201,7 @@ export const BoostPage = ({ tariffs, setTariffs }) => {
       const body = isStarsPaymentEnabled
         ? { action: 'star', path: 'stars' }
         : { action: 'ton', path: 'ton_price' }
-      handleStartPayment({ el, ...body })
+      handleStartPayment({ ...el, ...body })
     } else if (isAllPaymentEnabled) {
       setSelectedPayment(el);
       dispatch(handlePaymentSelectModal(true));

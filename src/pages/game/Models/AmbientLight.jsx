@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { useSelector } from 'react-redux';
-import * as THREE from 'three';
+import { MathUtils } from 'three';
 import {
   selectTheme,
   selectNextTheme
@@ -46,7 +46,7 @@ export default function AmbientLight() {
         // Intensity transition
         const startIntensity = localTheme.ambientLightIntensity;
         const endIntensity = localNextTheme.theme.ambientLightIntensity;
-        const intensity = THREE.MathUtils.lerp(startIntensity, endIntensity, t);
+        const intensity = MathUtils.lerp(startIntensity, endIntensity, t);
         lightRef.current.intensity = intensity;
 
         if (t >= 1 && !transitionComplete) {

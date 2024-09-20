@@ -2,7 +2,7 @@ import React, { useRef, forwardRef, useImperativeHandle } from 'react';
 import { useFrame, useLoader } from '@react-three/fiber';
 import { TextureLoader } from 'three/src/loaders/TextureLoader';
 import { useSelector } from 'react-redux';
-import * as THREE from 'three';
+import { BackSide } from 'three';
 import { selectTheme } from '../../../store/reducers/gameSlice';
 
 const ShipTrailModel = forwardRef((_, ref) => {
@@ -90,7 +90,7 @@ const ShipTrailModel = forwardRef((_, ref) => {
           opacity={0.1}
           emissiveIntensity={20}
           alphaMap={alphaMap1}
-          side={THREE.BackSide}
+          side={BackSide}
         />
       </mesh>
 
@@ -105,7 +105,7 @@ const ShipTrailModel = forwardRef((_, ref) => {
           emissiveIntensity={2}
           alphaMap={alphaMap2}
           depthTest={false}
-          side={THREE.BackSide}
+          side={BackSide}
         />
       </mesh>
     </group>

@@ -6,7 +6,12 @@ import React, {
   useState
 } from 'react';
 import { useFrame, useLoader } from '@react-three/fiber';
-import * as THREE from 'three';
+import {
+  RepeatWrapping,
+  MirroredRepeatWrapping,
+  BackSide,
+  FrontSide
+} from 'three';
 import { TextureLoader } from 'three/src/loaders/TextureLoader';
 import { useSelector } from 'react-redux';
 import {
@@ -62,12 +67,11 @@ const BackgroundModel = forwardRef((_, ref) => {
   const maxSpeed = 0.02;
 
   useEffect(() => {
-    starsColorMap.wrapS = THREE.RepeatWrapping;
-    starsColorMap.wrapT = THREE.MirroredRepeatWrapping;
+    starsColorMap.wrapS = RepeatWrapping;
+    starsColorMap.wrapT = MirroredRepeatWrapping;
     starsColorMap.repeat.set(6, 6);
     starsColorMap.rotation = Math.PI / 2;
     starsColorMap.center.set(0.5, 0.5);
-    starsColorMap.encoding = THREE.LinearEncoding;
     starsColorMap.needsUpdate = true;
   }, [starsColorMap]);
 
@@ -174,7 +178,7 @@ const BackgroundModel = forwardRef((_, ref) => {
       <group ref={starsRef}>
         <mesh rotation={[Math.PI / 1.9, 0, Math.PI / 2]}>
           <sphereGeometry args={[20, 16, 16]} />
-          <meshBasicMaterial map={starsColorMap} side={THREE.BackSide} />
+          <meshBasicMaterial map={starsColorMap} side={BackSide} />
         </mesh>
       </group>
 
@@ -186,7 +190,7 @@ const BackgroundModel = forwardRef((_, ref) => {
             map={glareColorMap}
             alphaMap={glareAlphaMap}
             transparent={true}
-            side={THREE.FrontSide}
+            side={FrontSide}
           />
         </mesh>
         <mesh position={[-3, -10, -2.1]} rotation={[0, 0, Math.PI * 3]}>
@@ -195,7 +199,7 @@ const BackgroundModel = forwardRef((_, ref) => {
             map={glareColorMap}
             alphaMap={glareAlphaMap}
             transparent={true}
-            side={THREE.FrontSide}
+            side={FrontSide}
           />
         </mesh>
       </group>
@@ -208,7 +212,7 @@ const BackgroundModel = forwardRef((_, ref) => {
             map={planetColorMap}
             alphaMap={planetAlphaMap}
             transparent={true}
-            side={THREE.FrontSide}
+            side={FrontSide}
           />
         </mesh>
       </group>
@@ -224,7 +228,7 @@ const BackgroundModel = forwardRef((_, ref) => {
             map={asteroidColorMap}
             alphaMap={asteroidAlphaMap}
             transparent={true}
-            side={THREE.FrontSide}
+            side={FrontSide}
           />
         </mesh>
       </group>
