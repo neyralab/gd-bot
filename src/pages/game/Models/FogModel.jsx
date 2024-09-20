@@ -1,7 +1,7 @@
 import { useFrame } from '@react-three/fiber';
 import React, { useRef, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import * as THREE from 'three';
+import { Color, MathUtils } from 'three';
 import {
   selectNextTheme,
   selectTheme
@@ -62,15 +62,15 @@ export default function FogModel() {
 
       if (colorElapsed > delay) {
         const t = Math.min((colorElapsed - delay) / colorDuration, 1);
-        const startColor = new THREE.Color(localTheme.colors.fog);
-        const endColor = new THREE.Color(localNextTheme.theme.colors.fog);
-        const r = THREE.MathUtils.lerp(startColor.r, endColor.r, t);
-        const g = THREE.MathUtils.lerp(startColor.g, endColor.g, t);
-        const b = THREE.MathUtils.lerp(startColor.b, endColor.b, t);
+        const startColor = new Color(localTheme.colors.fog);
+        const endColor = new Color(localNextTheme.theme.colors.fog);
+        const r = MathUtils.lerp(startColor.r, endColor.r, t);
+        const g = MathUtils.lerp(startColor.g, endColor.g, t);
+        const b = MathUtils.lerp(startColor.b, endColor.b, t);
         fogRef.current.color.setRGB(r, g, b);
 
         if (t >= 1 && !transitionComplete) {
-          setTransitionComplete(true); 
+          setTransitionComplete(true);
         }
       }
     }

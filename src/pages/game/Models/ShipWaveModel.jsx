@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 import gsap from 'gsap';
-import * as THREE from 'three';
+import { AdditiveBlending } from 'three';
 import { useSelector } from 'react-redux';
 import { selectTheme } from '../../../store/reducers/gameSlice';
 
@@ -48,7 +48,7 @@ const ShipWaveModel = ({ id, onComplete }) => {
         emissiveIntensity={5}
         transparent
         opacity={0.15}
-        blending={THREE.AdditiveBlending}
+        blending={AdditiveBlending}
         depthWrite={false}
         depthTest={true}
       />
