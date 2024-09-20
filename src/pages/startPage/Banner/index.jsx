@@ -7,8 +7,7 @@ import styles from './styles.module.css';
 import CardsSlider from '../../../components/CardsSlider/CardsSlider';
 import { BannerItem } from './BannerItem';
 
-import { isiOS } from '../../../utils/client';
-import { MOBILE_APP_LINKS } from '../../../config/contracts';
+import { isAppStoreUrl, isiOS, isPlayStoreUrl } from '../../../utils/client';
 import { getBannersEffect } from '../../../effects/bannerEffect';
 import { API_PATH_ROOT } from '../../../utils/api-urls';
 import Loader2 from '../../../components/Loader2/Loader2';
@@ -18,7 +17,7 @@ const createBanners = ({ onClick, banners }) =>
     ...banner,
     bg: API_PATH_ROOT + banner.image,
     onClick: () => {
-      onClick(banner.link);
+      onClick(banner.link, banner.link_second);
     }
   }));
 
@@ -36,14 +35,30 @@ const Banner = ({ storageSize, onOpenShareModal, ...res }) => {
       });
   }, []);
 
-  const doRedirectToApp = (url) => {
-    const mobileUrl = isiOS ? MOBILE_APP_LINKS.iOS : MOBILE_APP_LINKS.android;
+  const handleClick = (url) => {
     const link = document.createElement('a');
-    link.href = url ? url : mobileUrl;
+    link.href = url;
     link.target = '_blank';
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+    return;
+  };
+
+  const getUrlForDevice = (firstUrl, secondUrl) => {
+    if (isAppStoreUrl(firstUrl)) return isiOS() ? firstUrl : secondUrl;
+    if (isPlayStoreUrl(firstUrl)) return isiOS() ? secondUrl : firstUrl;
+    return firstUrl;
+  };
+
+  const doRedirectToApp = (firstUrl, secondUrl) => {
+    if (!secondUrl) {
+      handleClick(firstUrl);
+      return;
+    }
+
+    const urlToUse = getUrlForDevice(firstUrl, secondUrl);
+    handleClick(urlToUse);
   };
 
   const slides = useMemo(() => {
