@@ -42,6 +42,10 @@
   color: #ffffff99;
 }
 
+.footer-text > span {
+  cursor: pointer;
+}
+
 .content {
   width: 100%;
 }
