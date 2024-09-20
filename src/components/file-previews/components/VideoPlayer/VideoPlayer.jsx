@@ -117,6 +117,7 @@ const VideoPlayer = forwardRef(
               ref={playerRef}
               url={url}
               playing={playing}
+              playsinline={true}
               controls={false}
               className={styles.player}
               width={'100%'}
@@ -126,6 +127,7 @@ const VideoPlayer = forwardRef(
               key={url}
               forceload={'true'}
             />
+            <div className={styles['no-interaction-overlay']}></div>
           </div>
         )}
 
