@@ -25,12 +25,18 @@ import { SlidingModal } from '../../components/slidingModal';
 import PaymentMenu from '../../components/paymentMenu/Menu';
 import { transformSize } from '../../utils/transformSize';
 import { ReactComponent as Star } from '../../assets/star.svg';
+import { ReactComponent as Ton } from '../../assets/TON.svg';
 import { vibrate } from '../../utils/vibration';
 import { INVOICE_TYPE } from '../../utils/createStarInvoice';
 import { isDevEnv } from '../../utils/isDevEnv';
 import { sleep } from '../../utils/sleep';
 import { getToken } from '../../effects/set-token';
 import { runInitAnimation } from './animations';
+import {
+  isStarsPaymentEnabled,
+  isAnyPaymentEnabled,
+  isAllPaymentEnabled
+} from '../../utils/paymentChecker';
 
 import styles from './styles.module.css';
 
@@ -191,8 +197,15 @@ export const BoostPage = ({ tariffs, setTariffs }) => {
   };
 
   const handleSelect = (el) => {
-    setSelectedPayment(el);
-    dispatch(handlePaymentSelectModal(true));
+    if (isAnyPaymentEnabled && !isAllPaymentEnabled) {
+      const body = isStarsPaymentEnabled
+        ? { action: 'star', path: 'stars' }
+        : { action: 'ton', path: 'ton_price' }
+      handleStartPayment({ el, ...body })
+    } else if (isAllPaymentEnabled) {
+      setSelectedPayment(el);
+      dispatch(handlePaymentSelectModal(true));
+    }
   };
 
   return (
@@ -273,10 +286,15 @@ export const BoostPage = ({ tariffs, setTariffs }) => {
                         </p>
                       </div>
                     </div>
-                    <div className={styles.cost}>
-                      <p className={styles.cost_value}>{el?.stars}</p>
-                      <Star className={styles.cost_svg} viewBox="0 0 21 21" />
-                    </div>
+                    {isAnyPaymentEnabled ? (
+                      <div className={styles.cost}>
+                        <p className={styles.cost_value}>{ isStarsPaymentEnabled ? el?.stars : el.ton_price}</p>
+                        { isStarsPaymentEnabled ? (
+                          <Star className={styles.cost_svg} viewBox="0 0 21 21" /> ) : (
+                          <Ton className={styles.cost_svg} viewBox="0 0 25 28" /> )
+                        }
+                      </div>
+                    ) : null}
                   </button>
                 </li>
               ))}
