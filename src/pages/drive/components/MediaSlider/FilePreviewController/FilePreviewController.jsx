@@ -54,7 +54,7 @@ const FilePreviewController = ({ file, onExpand }) => {
   const getContent = async () => {
     setLoading(true);
     setFileContent(null);
-    
+
     const fileType = getPreviewFileType(file, false, true);
     setPreviewFileType(fileType);
 
@@ -64,6 +64,8 @@ const FilePreviewController = ({ file, onExpand }) => {
       } else {
         fetchBlobContent(fileType);
       }
+    } else {
+      setLoading(false);
     }
   };
 

@@ -79,26 +79,30 @@ export default function AdvertisementOfferModal() {
   if (!isOpen) return null;
 
   return (
-    <div
-      onClick={clickHandler}
-      className={classNames(
-        styles.container,
-        isClosing && styles['is-closing']
-      )}>
-      <div className={styles.content}>
-        {parts.map((part, index) =>
-          part === `${points}` ? (
-            <span key={index} className={styles.highlight}>
-              {part}
-            </span>
-          ) : (
-            <React.Fragment key={index}>
-              {part}
-              {index < parts.length - 1 && <br />}
-            </React.Fragment>
-          )
-        )}
+    <>
+      <div
+        onClick={clickHandler}
+        className={classNames(
+          styles.container,
+          isClosing && styles['is-closing']
+        )}>
+        <div className={styles.content}>
+          {parts.map((part, index) =>
+            part === `${points}` ? (
+              <span key={index} className={styles.highlight}>
+                {part}
+              </span>
+            ) : (
+              <React.Fragment key={index}>
+                {part}
+                {index < parts.length - 1 && <br />}
+              </React.Fragment>
+            )
+          )}
+        </div>
       </div>
-    </div>
+
+      <div onClick={clickHandler} className={styles['model-trigger']}></div>
+    </>
   );
 }
