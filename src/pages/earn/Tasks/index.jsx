@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import { TelegramShareButton } from 'react-share';
 
 import { saveUserWallet } from '../../../effects/userEffects';
-import useButtonVibration from '../../../hooks/useButtonVibration';
+import { vibrate } from '../../../utils/vibration';
 import { runInitAnimation } from './animations';
 import Task from '../../../components/Task/Task';
 import ListLoader from '../ListLoader/ListLoader';
@@ -29,7 +29,6 @@ export default function Tasks({
   const user = useSelector((state) => state.user.data);
   const link = useSelector((state) => state.user.link);
   const navigate = useNavigate();
-  const handleVibrationClick = useButtonVibration();
 
   useEffect(() => {
     if (!tasks || !tasks.length) return;
@@ -52,6 +51,7 @@ export default function Tasks({
   }, [address, user, user?.wallet, wallet]);
 
   const handleClick = (task) => {
+    vibrate();
     switch (task.id) {
       case 'JOIN_YOUTUBE':
       case 'JOIN_TG_CHANNEL':
@@ -98,7 +98,7 @@ export default function Tasks({
             url={link.copy}
             key={task.id}
             title={'Share this link with friends'}
-            onClick={handleVibrationClick()}>
+            onClick={vibrate}>
             <Task
               onClick={() => handleClick(task)}
               isDone={task.isDone}
@@ -112,7 +112,7 @@ export default function Tasks({
         ) : (
           <Task
             key={task.id}
-            onClick={handleVibrationClick(() => handleClick(task))}
+            onClick={() => handleClick(task)}
             isDone={task.isDone}
             points={task.points}
             imgUrl={task.imgUrl}

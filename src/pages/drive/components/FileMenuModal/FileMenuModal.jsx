@@ -8,7 +8,7 @@ import { toast } from 'react-toastify';
 import { handlePaperViewModal } from '../../../../store/reducers/modalSlice';
 import {
   setPPVFile,
-  setFileMenuFile,
+  setFileMenuModal,
   updateFileProperty
 } from '../../../../store/reducers/driveSlice';
 import {
@@ -19,7 +19,7 @@ import { restoreFileEffect } from '../../../../effects/file/restoreFileEffect';
 import { generateSharingLink } from '../../../../utils/generateSharingLink';
 import { getPreviewFileType } from '../../../../utils/preview';
 import { removeSlugHyphens } from '../../../../utils/string';
-import useButtonVibration from '../../../../hooks/useButtonVibration';
+import { vibrate } from '../../../../utils/vibration';
 import { BOT_NAME } from '../../../../utils/api-urls';
 import { isDevEnv } from '../../../../utils/isDevEnv';
 
@@ -27,14 +27,13 @@ import { ReactComponent as ShareArrowIcon } from '../../../../assets/arrow_share
 import { ReactComponent as RestoreIcon } from '../../../../assets/restore.svg';
 import { ReactComponent as PenIcon } from '../../../../assets/pen.svg';
 
-import style from './FileMenu.module.scss';
+import style from './FileMenuModal.module.scss';
 import { SlidingModal } from '../../../../components/slidingModal';
 import ToggleSwitch from '../../../../components/toggleSwitch';
 
-export const FileMenu = () => {
+export const FileMenuModal = () => {
   const { t: tSystem } = useTranslation('system');
-  const handleVibrationClick = useButtonVibration();
-  const file = useSelector((state) => state.drive.fileMenuFile);
+  const file = useSelector((state) => state.drive.fileMenuModal);
   const { t } = useTranslation('drive');
   const location = useLocation();
   const dispatch = useDispatch();
@@ -55,19 +54,20 @@ export const FileMenu = () => {
     new URLSearchParams(location.search).get('type') === 'delete';
 
   const onClose = () => {
-    dispatch(setFileMenuFile(null));
+    dispatch(setFileMenuModal(null));
   };
 
   const onShareClick = async (e) => {
     e.stopPropagation();
-
+    vibrate();
     await updateShareEffect(file.slug);
-    dispatch(setFileMenuFile(null));
+    dispatch(setFileMenuModal(null));
   };
 
   const onRestoreClick = async () => {
+    vibrate();
     const result = await restoreFileEffect(file.slug, dispatch);
-    dispatch(setFileMenuFile(null));
+    dispatch(setFileMenuModal(null));
     if (result === 'success') {
       toast.success(tSystem('message.fileRestored'), {
         position: 'bottom-center',
@@ -92,20 +92,19 @@ export const FileMenu = () => {
             value: null
           })
         );
-        dispatch(setFileMenuFile({ ...file, share_file: null }));
+        dispatch(setFileMenuModal({ ...file, share_file: null }));
       } else {
         dispatch(handlePaperViewModal(true));
+        dispatch(setFileMenuModal(null));
         dispatch(setPPVFile(file));
-        dispatch(setFileMenuFile(null));
       }
-      
     } catch (error) {
       console.warn(error);
     }
   };
 
   const onEditPPV = () => {
-    dispatch(setFileMenuFile(null));
+    dispatch(setFileMenuModal(null));
     dispatch(handlePaperViewModal(true));
     dispatch(setPPVFile(file));
   };
@@ -126,7 +125,7 @@ export const FileMenu = () => {
                     ? ''
                     : `${'dashbord.linkToFile'} "${file.name}"`
                 }
-                onClick={handleVibrationClick(onShareClick)}
+                onClick={onShareClick}
                 className={style.shareOption}>
                 <ShareArrowIcon />
                 <span className={style.menu__item__title}>
@@ -154,14 +153,14 @@ export const FileMenu = () => {
         {isDeletedPage && (
           <li
             className={style.menu__item}
-            onClick={handleVibrationClick(onRestoreClick)}>
+            onClick={onRestoreClick}>
             <RestoreIcon />
             <span className={style.menu__item__title}>Restore</span>
           </li>
         )}
         {/* <li
           className={style.menu__item}
-          onClick={handleVibrationClick(onDeleteClick)}>
+          onClick={onDeleteClick)>
           <DeleteIcon />
           <span className={cn(style.menu__item__title, style.deleteTitle)}>
             {isDeletedPage ? 'Delete permanently' : 'Delete'}

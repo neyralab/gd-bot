@@ -3,8 +3,8 @@ import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 
 import { checkTaskIsDone } from '../../../effects/EarnEffect';
-import useButtonVibration from '../../../hooks/useButtonVibration';
 import { PARTNER_KEY } from './utils';
+import { vibrate } from '../../../utils/vibration';
 import Task from '../TaskItem/Task';
 import ClaimPoints from '../../../components/ClaimPoints/ClaimPoints';
 import ListLoader from '../ListLoader/ListLoader';
@@ -13,7 +13,6 @@ import { runInitAnimation } from './animations';
 import styles from './styles.module.css';
 
 export default function Partners({ partners, setPartners, isLoading }) {
-  const handleVibrationClick = useButtonVibration();
   const { t } = useTranslation('system');
   const claimPointsModalRef = useRef(null);
 
@@ -23,6 +22,7 @@ export default function Partners({ partners, setPartners, isLoading }) {
   }, [partners]);
 
   const handleClick = (task) => {
+    vibrate();
     window.open(task.joinLink, '_blank');
   };
 
@@ -73,7 +73,7 @@ export default function Partners({ partners, setPartners, isLoading }) {
             <Task
               key={task.id}
               doVerify={doVerify}
-              onClick={handleVibrationClick(() => handleClick(task))}
+              onClick={() => handleClick(task)}
               {...task}
             />
           );

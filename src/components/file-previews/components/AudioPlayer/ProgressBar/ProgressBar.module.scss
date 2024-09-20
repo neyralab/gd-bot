@@ -1,0 +1,38 @@
+.progress-container {
+  position: relative;
+  width: 100%;
+  cursor: pointer;
+}
+
+.circle-audio-svg {
+  position: absolute;
+  top: 0;
+  left: 20px;
+  transform: rotate(-90deg); 
+  overflow: initial;
+}
+
+.progress-background {
+  fill: none;
+  stroke: #e0e0e0;
+}
+
+.progress {
+  fill: none;
+  stroke: url(#gradient);
+}
+
+.indicator {
+  position: absolute;
+  top: calc(50% - 10px);
+  left: calc(50% - 10px);
+  transform-origin: center center;
+}
+
+.indicator-dot {
+  width: 20px;
+  height: 20px;
+  background: linear-gradient(90deg, #00f2fe 0%, #4facfe 100%);
+  border-radius: 50%;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}

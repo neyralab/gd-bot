@@ -46,6 +46,9 @@
     "enterReport": "Введіть ваш звіт..",
     "report": "Звіт"
   },
+  "files": {
+    "expandFile": "Переглянути файл"
+  },
   "month": {
     "jan": "Січ",
     "feb": "Лют",

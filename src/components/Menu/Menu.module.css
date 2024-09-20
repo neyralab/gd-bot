@@ -1,69 +1,26 @@
 .container {
   position: fixed;
-  width: 100%;
-  max-width: 320px;
-  height: 60px;
+  max-width: 95%;
   left: 50%;
   bottom: 12px;
   transform: translateX(-50%);
-  backdrop-filter: blur(3px);
+  background: #2c2e31b2;
+  backdrop-filter: blur(8px);
   border-radius: 10px;
+  padding: 4px 8px;
   text-align: center;
   white-space: nowrap;
-  overflow-y: hidden;
+  overflow-y: auto;
   -ms-overflow-style: none;
   scrollbar-width: none;
   z-index: 10;
 }
-
 .container::-webkit-scrollbar {
   display: none;
 }
 
-.content {
-  display: flex;
-  width: 100%;
-  justify-content: space-around;
-  position: absolute;
-  bottom: 5px;
-  left: 0;
-  right: 0;
-}
-
-.bg {
-  position: relative;
-  bottom: -20px;
-  left: 0;
-  right: 0;
-}
-
-.bg-line1 {
-  position: absolute;
-  left: 18%;
-  bottom: 4px;
-}
-
-.bg-line2 {
-  position: absolute;
-  left: 40%;
-  bottom: 4px;
-}
-
-.bg-line3 {
-  position: absolute;
-  left: 60%;
-  bottom: 4px;
-  transform: scaleX(-1);
-}
-
-.bg-line4 {
-  position: absolute;
-  left: 77%;
-  bottom: 4px;
-  transform: scaleX(-1);
-}
-
 .item {
+  padding: 8px;
   width: 55px;
   border-radius: 10px;
   text-decoration: none;
@@ -74,50 +31,37 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding-bottom: 2px;
-  transition: background-color 0.9s ease, transform 0.9s ease;
-}
-
-.icon {
-  width: 40px;
-  height: 40px;
-  color: white;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transition: transform 0.7s ease, fill 0.7s ease;
-}
-
-.icon > svg > path {
-  stroke-width: 0.7;
-  transition: fill 0.9s ease;
+  margin: auto 4px;
 }
 
 .item.active {
-  transform: scale(1.01);
+  background-color: #151619;
+}
+
+.icon {
+  width: 24px;
+  height: 24px;
+  color: white;
+  opacity: 0.6;
 }
 
 .item.active .icon {
-  transform: scale(1.1);
+  opacity: 1;
 }
 
-.item.active > .icon > svg > path {
-  fill: #e2e0e0;
+.icon > svg {
+  width: 100%;
+  height: 100%;
+}
+
+.img-icon {
+  background: url(../../assets/logo-menu.png);
+  background-position: center center;
+  background-size: contain;
+  background-repeat: no-repeat;
 }
 
 .text {
-  font-family: 'IBM Plex Mono';
-  font-size: 9px;
-  font-weight: 400;
-  line-height: 11.7px;
-  text-align: center;
   color: white;
-  margin-top: 2px;
-  text-transform: uppercase;
-  transition: color 0.8s ease;
-}
-
-.gradient {
-  position: absolute;
-  opacity: 0;
+  font-size: 11px;
 }
