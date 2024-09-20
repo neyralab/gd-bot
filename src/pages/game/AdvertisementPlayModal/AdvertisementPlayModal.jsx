@@ -7,7 +7,7 @@ import {
   setSystemModal
 } from '../../../store/reducers/gameSlice';
 import Loader2 from '../../../components/Loader2/Loader2';
-import { ReactComponent as PlayIcon } from '../../../assets/play_media.svg';
+// import { ReactComponent as PlayIcon } from '../../../assets/play_media.svg';
 import {
   endWatchingAdvertisementVideo,
   startWatchingAdvertisementVideo
@@ -136,7 +136,16 @@ export default function AdvertisementPlayModal() {
           width="100%"
           height="100%"
           style={{ objectFit: 'contain' }}
-          config={{ youtube: { playerVars: { disablekb: 1 } } }}
+          config={{
+            youtube: {
+              playerVars: {
+                disablekb: 1,
+                controls: 0,
+                modestbranding: 1,
+                showinfo: 0
+              }
+            }
+          }}
         />
 
         {duration ? (
