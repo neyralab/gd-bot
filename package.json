@@ -2,6 +2,7 @@
   "name": "tg-app-react",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "dependencies": {
     "@esbuild-plugins/node-globals-polyfill": "^0.2.3",
     "@ipld/car": "^5.3.0",
@@ -59,6 +60,7 @@
     "react-wavify": "^1.11.0",
     "react-window": "^1.8.10",
     "react-window-infinite-loader": "^1.0.9",
+    "rollup-plugin-visualizer": "^5.12.0",
     "sass": "^1.77.4",
     "three": "^0.166.1",
     "tonweb": "^0.0.66",
@@ -73,7 +75,7 @@
     "postinstall": "node generateManifest.js && cd node_modules/@ton/ton && yarn install && yarn build && rm -rf node_modules && rm -rf src",
     "start": "vite --port=3000 --host",
     "build": "vite build",
-    "prod": "vite preview --host",
+    "prod": "vite preview",
     "test": "react-app-rewired test",
     "eject": "react-app-rewired eject",
     "sentry:sourcemaps": "sentry-cli sourcemaps inject --org ghostdrive-yw --project javascript-react ./Dockerfile && sentry-cli --url https://ghostdrive-yw.sentry.io/ sourcemaps upload --org ghostdrive-yw --project javascript-react ./Dockerfile"
@@ -104,6 +106,7 @@
     "@types/react-virtualized-auto-sizer": "^1.0.4",
     "@types/react-window": "^1.8.8",
     "@types/react-window-infinite-loader": "^1.0.9",
+    "@yushijinhun/three-minifier-rollup": "^0.4.0",
     "prettier": "^3.2.5",
     "typescript": "^5.4.5",
     "typescript-plugin-css-modules": "^5.1.0"
