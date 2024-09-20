@@ -278,7 +278,7 @@ const getAdvertisementOffer = async (dispatch) => {
     dispatch(
       setAdvertisementOfferModal({
         previewUrl: null,
-        videoUrl: `${videoInfo.video}?controls=0&modestbranding=1&rel=0&showinfo=0`, // this url params are only valid for youtube videos. If we decide to play videos hosted by other services - remove those
+        videoUrl: videoInfo.video,
         videoId: videoInfo.id
       })
     );
