@@ -1,9 +1,10 @@
-import React, { useCallback, useMemo, useRef } from 'react';
+import React, { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import CN from 'classnames';
 
 import NavigatItem from './NavigatItem';
+import { WalletConnect } from '../../../components/walletConnect';
 import { ReactComponent as WalletIcon } from '../assets/wallet.svg';
 import { ReactComponent as DriveIcon } from '../assets/drive.svg';
 import { ReactComponent as BoostIcon } from '../assets/boost.svg';
@@ -13,7 +14,6 @@ import {
   isEnabledConverter,
   isEnabledMultilanguage
 } from '../../../utils/featureFlags';
-import { useWallet } from '../../../store/context/WalletProvider';
 import { isDevEnv } from '../../../utils/isDevEnv';
 import { LANGUAGE_LIST } from '../../language';
 import { capitalize } from '../../../utils/string';
@@ -23,23 +23,16 @@ export default function Navigator({
   storage,
   human,
   tasks,
-  openDisconnectModal
 }) {
-  const { isConnected, connectWallet } = useWallet();
   const { t, i18n } = useTranslation('system');
   const navigate = useNavigate();
   const isDev = isDevEnv();
-  const ref = useRef(null);
 
   const HIDDEN_OPTION = useMemo(() => {
     const array = [];
     !isEnabledConverter && array.push(4);
     !isEnabledMultilanguage && array.push(5);
     return array;
-  }, []);
-
-  const handleWalletClick = useCallback(() => {
-    ref.current?.handleClick();
   }, []);
 
   const NAVIGATION = useMemo(() => {
@@ -59,8 +52,8 @@ export default function Navigator({
         id: 2,
         name: t('dashboard.wallet'),
         icon: <WalletIcon />,
-        html: (isConnected ? 'connected' : <span onClick={connectWallet}>Connect</span>),
-        onClick: handleWalletClick
+        html: <WalletConnect />,
+        onClick: () => {},
       },
       {
         id: 3,
@@ -99,8 +92,6 @@ export default function Navigator({
     storage,
     tasks,
     human,
-    handleWalletClick,
-    openDisconnectModal,
     navigate,
     isDev,
     i18n

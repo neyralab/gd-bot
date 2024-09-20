@@ -1,11 +1,14 @@
-import React, { useEffect, createContext, useContext, useState, ReactNode } from 'react';
+import React, { useEffect, createContext, useContext, useState, ReactNode, useMemo } from 'react';
 import { OKXTonConnect, OkxConnectError, OKX_CONNECT_ERROR_CODES } from 'okxconnect';
 import { API_WEB_APP_URL, BOT_NAME } from '../../utils/api-urls';
+import { isWebPlatform, isDesktopPlatform } from '../../utils/client';
+import { tg } from '../../App';
 
 interface WalletContextType {
   wallet: OKXTonConnect | null;
   isConnected: boolean;
   connectWallet: () => Promise<void>;
+  useOKXAddress: () => Promise<string>;
   disconnectWallet: () => void;
   error: string | null;
 }
@@ -28,8 +31,7 @@ export const WalletProvider: React.FC<WalletProviderProps> = ({ children }) => {
   const [wallet, setWallet] = useState<OKXTonConnect | null>(null);
   const [isConnected, setIsConnected] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
-
-  console.log(wallet);
+  const isMobile = false // useMemo(() => !(isWebPlatform(tg) || isDesktopPlatform(tg)), []);
 
   useEffect(() => {
     try {
@@ -40,9 +42,6 @@ export const WalletProvider: React.FC<WalletProviderProps> = ({ children }) => {
         },
       });
       setWallet(walletInstance);
-
-      // Try to restore the connection if available
-      walletInstance.restoreConnection();
     } catch (err) {
       console.warn(err);
       setError('Initialization error');
@@ -51,7 +50,12 @@ export const WalletProvider: React.FC<WalletProviderProps> = ({ children }) => {
 
   const connectWallet = async () => {
     try {
-      await wallet?.connect?.({ redirect: `https://t.me/${BOT_NAME}`, openUniversalLink: true });
+      const body = isMobile ? { redirect: `https://t.me/${BOT_NAME}`, openUniversalLink: true } :
+        { universalLink: '' , openUniversalLink: false };
+      const link =  await wallet?.connect?.(body);
+      if (!isMobile) {
+        window.open(link, '_blank')
+      }
     } catch (error: any) {
       if (error instanceof OkxConnectError) {
         if (error.code === OKX_CONNECT_ERROR_CODES.USER_REJECTS_ERROR) {
@@ -67,6 +71,28 @@ export const WalletProvider: React.FC<WalletProviderProps> = ({ children }) => {
     }
   };
 
+  const useOKXAddress = (): string => {
+    try {
+      if (wallet?.connected) {
+        return wallet?.['_wallet'].account.address
+      } else {
+        return  ''; 
+      }
+    } catch (error) {
+      console.warn(error);
+      return 'Error while restoring connection';
+    }
+  };
+
+  const recconectWallet = () => {
+    try {
+       wallet?.restoreConnection();
+    } catch (error) {
+      debugger
+      console.warn(error)
+    }
+  } 
+
   const disconnectWallet = () => {
     if (wallet) {
       wallet.disconnect();
@@ -76,7 +102,7 @@ export const WalletProvider: React.FC<WalletProviderProps> = ({ children }) => {
   };
 
   return (
-    <WalletContext.Provider value={{ wallet, isConnected, connectWallet, disconnectWallet, error }}>
+    <WalletContext.Provider value={{ wallet, isConnected, connectWallet, disconnectWallet, error, useOKXAddress, recconectWallet }}>
       {error && <div className="error-message">{error}</div>}
       {children}
     </WalletContext.Provider>

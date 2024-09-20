@@ -1,0 +1,89 @@
+.connect-btn {
+
+}
+
+.overlay {
+
+}
+
+.modal {
+  position: absolute;
+  max-width: calc(100% - 30px);
+  width: 100%;
+  height: 220px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 10px;
+  background: #1a1919;
+  overflow: auto;
+  border-radius: 12px;
+  outline: none;
+}
+
+.closeButton {
+  position: absolute;
+  cursor: pointer;
+  right: 0;
+  top: 0;
+}
+
+.container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.title {
+  font-family: 'SF Pro Text', sans-serif;
+  font-size: 20px;
+  text-align: center;
+  width: 100%;
+  padding: 0 32px;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  height: 50px;
+}
+
+.item-img {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.item-img > svg {
+  width: 100%;
+  height: 100%;
+}
+
+.item-title {
+  font-family: 'SF Pro Text', sans-serif;
+  font-size: 16px;
+  text-align: center;
+  margin-left: 20px;
+}
+
+.connect-btn {
+  height: 28px;
+  min-width: 60px;
+  font-family: 'SF Pro Text';
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 17px;
+  text-align: center;
+  background-color: #FFFFFF;
+  padding: 6px 16px;
+  border-radius: 23px;
+  color: #000;
+}
