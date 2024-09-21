@@ -72,17 +72,17 @@ jobs:
           cd ${{ env.PROJECT_DIR }}/src
           if git diff --dirstat=cumulative HEAD^ HEAD | grep "frontend/" >/dev/null; then
               cd ${{ env.PROJECT_DIR }}
-              docker compose pull
+              docker compose pull  front
               docker compose build front
-              docker compose down
+              docker compose stop  front
               docker compose up -d front
               docker system prune -f
           fi
           if git diff --dirstat=cumulative HEAD^ HEAD | grep "backend/" >/dev/null; then
               cd ${{ env.PROJECT_DIR }}
-              docker compose pull
+              docker compose pull  back
               docker compose build back
-              docker compose down
+              docker compose stop  back
               docker compose up -d back
               docker system prune -f
           fi
