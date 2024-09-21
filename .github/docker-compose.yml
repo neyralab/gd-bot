@@ -3,7 +3,7 @@ services:
   front:
     container_name: telegram-bot-front
     build:
-      context: ./src
+      context: ./src/frontend
       dockerfile: Dockerfile
     ports:
     - "3002:3000"
@@ -24,5 +24,7 @@ services:
   redis:
     container_name: telegram-bot-redis
     image: redis:alpine
+    volumes:
+      - ./vol-redis:/data
     ports:
       - "6379:6379"

@@ -60,21 +60,32 @@ jobs:
               echo "Variable file .env is ok"
           fi
 
-#    - name: Deploy
-#      uses: appleboy/ssh-action@master
-#      with:
-#        host: ${{ env.SSH_HOST }}
-#        port: ${{ env.SSH_PORT }}
-#        username: ${{ env.SSH_USER }}
-#        key: ${{ env.SSH_KEY }}
-#        script_stop: true
-#        script: |
-#          cd ${{ env.PROJECT_DIR }}
-#          docker system prune -f
-#          docker-compose -f docker-compose.yml pull
-#          docker-compose -f docker-compose.yml build
-#          docker-compose -f docker-compose.yml down
-#          docker-compose -f docker-compose.yml up -d
+    - name: Deploy
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ env.SSH_HOST }}
+        port: ${{ env.SSH_PORT }}
+        username: ${{ env.SSH_USER }}
+        key: ${{ env.SSH_KEY }}
+        script_stop: true
+        script: |
+          cd ${{ env.PROJECT_DIR }}/src
+          if git diff --dirstat=cumulative HEAD^ HEAD | grep "frontend/" >/dev/null; then
+              cd ${{ env.PROJECT_DIR }}
+              docker compose pull
+              docker compose build front
+              docker compose down
+              docker compose up -d front
+              docker system prune -f
+          fi
+          if git diff --dirstat=cumulative HEAD^ HEAD | grep "backend/" >/dev/null; then
+              cd ${{ env.PROJECT_DIR }}
+              docker compose pull
+              docker compose build back
+              docker compose down
+              docker compose up -d back
+              docker system prune -f
+          fi
 #
 #    - name: Push To Mercure
 #      run: |
