@@ -49,28 +49,26 @@ jobs:
         proxy_key: ${{ env.SSH_KEY }}
         script_stop: false
         script: |
-           echo "# Getting code"
-           cd ${{ env.PROJECT_DIR }}/src
-           git tag -l | xargs git tag -d
-           git fetch --all
-           git reset --hard ${{ inputs.tag }}
+          echo "# Getting code"
+          cd ${{ env.PROJECT_DIR }}/src
+          git tag -l | xargs git tag -d
+          git fetch --all
+          git reset --hard ${{ inputs.tag }}
 
-           cp .github/docker-compose.yml ../docker-compose.yml
+          cp .github/docker-compose.yml ../docker-compose.yml
 
-           echo "# Building .env"
-           jq -sr '.[0] * .[1] | to_entries[] | .key + "=\"" + (.value | gsub("[\\n]"; "")) + "\""' <(echo '${{ toJson(vars) }}'|jq -r .) <(echo '${{ toJson(secrets) }}'|jq -r .) | sed -e "s/\"/'/g" | grep -v -e 'github_token' -e 'SERVER_SSH_KEY' -e 'SLACK_TOKEN' > .env
-           cp .env backend/.env
+          echo "# Building .env"
+          jq -sr '.[0] * .[1] | to_entries[] | .key + "=\"" + (.value | gsub("[\\n]"; "")) + "\""' <(echo '${{ toJson(vars) }}'|jq -r .) <(echo '${{ toJson(secrets) }}'|jq -r .) | sed -e "s/\"/'/g" | grep -v -e 'github_token' -e 'SERVER_SSH_KEY' -e 'SLACK_TOKEN' -e 'MERCURE_SECRET' | tee .env backend/.env frontend/.env > /dev/null
 
-           echo "# Vadidating .env"
-           VAR_DIFF=$(comm -13 <(grep -v -e "^$" -e "^#" .env|awk -F '=' '{print $1}'|sort) <(grep -v -e "^$" -e "^#" .env.example|awk -F '=' '{print $1}'|sort))
-           if [ ! -z "${VAR_DIFF}" ]; then
-               echo "Lack of variables in .env file:"
-               echo "$VAR_DIFF"
-               exit 1
-           else
-               echo "Variable file .env is ok"
-           fi
-           cp .env backend/.env
+          echo "# Vadidating .env"
+          VAR_DIFF=$(comm -13 <(grep -v -e "^$" -e "^#" .env|awk -F '=' '{print $1}'|sort) <(grep -v -e "^$" -e "^#" .env.example|awk -F '=' '{print $1}'|sort))
+          if [ ! -z "${VAR_DIFF}" ]; then
+              echo "Lack of variables in .env file:"
+              echo "$VAR_DIFF"
+              exit 1
+          else
+              echo "Variable file .env is ok"
+          fi
 
     - name: Deploy
       uses: appleboy/ssh-action@master
@@ -86,11 +84,17 @@ jobs:
         script_stop: true
         script: |
           cd ${{ env.PROJECT_DIR }}
-          docker system prune -f
-          docker compose -f docker-compose.yml pull
-          docker compose -f docker-compose.yml build
-          docker compose -f docker-compose.yml down
-          docker compose -f docker-compose.yml up -d
+          echo "# Deploy Front"
+          docker compose pull  front
+          docker compose build front
+          docker compose stop  front
+          docker compose up -d front
+          echo "# Deploy Back"
+          docker compose pull  back
+          docker compose build back
+          docker compose stop  back
+          docker compose up -d back
+          docker system prune -af
 
     - name: Push To Mercure
       run: |
