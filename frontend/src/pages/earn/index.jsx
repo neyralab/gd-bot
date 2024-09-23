@@ -7,7 +7,6 @@ import React, {
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
-import moment from 'moment';
 
 import { tasks as tasksFromFile, tasksText } from './tasks';
 import { isEnabledPartners } from '../../utils/featureFlags';
@@ -23,7 +22,6 @@ import Partners from './Partners';
 import Mission from './Mission';
 import EarnModal from './EarnModal/EarnModal';
 import Segmented from '../../components/segmented';
-import FortuneWheelModal from '../../components/FortuneWheelModal/FortuneWheelModal';
 
 import styles from './styles.module.css';
 
@@ -41,19 +39,18 @@ export default function EarnPage() {
   const [activeSegment, setActiveSegment] = useState(DEFAULT_SEGMENT_OPTION);
   const [modalSelectedTask, setModalSelectedTask] = useState(null);
   const earnModalRef = useRef(null);
-  const fortuneWheelModalRef = useRef(null);
 
-  const showWheel = useMemo(() => {
-    const now = moment().unix();
-    const last24Hours = now - 24 * 60 * 60;
-    return earnedRecords.some((game) => {
-      if (game.text !== 'Game tapping') {
-        return false;
-      }
-      const gameEndsAt = parseInt(game.game.game_ends_at, 10);
-      return gameEndsAt >= last24Hours && gameEndsAt <= now;
-    });
-  }, [earnedRecords]);
+  // const showWheel = useMemo(() => {
+  //   const now = moment().unix();
+  //   const last24Hours = now - 24 * 60 * 60;
+  //   return earnedRecords.some((game) => {
+  //     if (game.text !== 'Game tapping') {
+  //       return false;
+  //     }
+  //     const gameEndsAt = parseInt(game.game.game_ends_at, 10);
+  //     return gameEndsAt >= last24Hours && gameEndsAt <= now;
+  //   });
+  // }, [earnedRecords]);
 
   useEffect(() => {
     runInitAnimation();
@@ -205,23 +202,13 @@ export default function EarnPage() {
     }
   };
 
-  const openFortuneWheel = () => {
-    fortuneWheelModalRef.current.open();
-  };
-
   return (
     <div className={styles.container}>
       <div className={styles['title-block']}>
         <div className={styles['title-inner-block']}>
           <span className={styles.spacer}></span>
           <h1 className={styles.title}>{t('earn.earn')}</h1>
-          {showWheel ? (
-            <button onClick={openFortuneWheel}>
-              <img src="/assets/fortune-wheel.png" alt="Fortune Wheel" />
-            </button>
-          ) : (
-            <span className={styles.spacer}></span>
-          )}
+          <span className={styles.spacer}></span>
         </div>
 
         <p className={styles.text}>{t('earn.getReward')}</p>
@@ -235,7 +222,6 @@ export default function EarnPage() {
 
       <EarnModal ref={earnModalRef} item={modalSelectedTask} />
 
-      <FortuneWheelModal ref={fortuneWheelModalRef} />
     </div>
   );
 }
