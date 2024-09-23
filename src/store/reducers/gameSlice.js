@@ -15,7 +15,6 @@ import {
 } from '../../effects/gameEffect';
 import { setUser } from './userSlice';
 import { getAdvertisementVideo } from '../../effects/advertisementEffect';
-import { API_PATH_ROOT } from '../../utils/api-urls';
 import { isDesktopPlatform, isWebPlatform } from '../../utils/client';
 import { tg } from '../../App';
 
@@ -278,7 +277,7 @@ const getAdvertisementOffer = async (dispatch) => {
     dispatch(
       setAdvertisementOfferModal({
         previewUrl: null,
-        videoUrl: `${API_PATH_ROOT}${videoInfo.video}`,
+        videoUrl: videoInfo.video,
         videoId: videoInfo.id
       })
     );
@@ -331,7 +330,7 @@ export const initGame = createAsyncThunk(
       if (now <= gameInfo.game_ends_at) {
         const endTime = gameInfo.game_ends_at;
         lockTimerCountdown(dispatch, endTime);
-        // getAdvertisementOffer(dispatch);
+        getAdvertisementOffer(dispatch);
       }
 
       if (isDesktopPlatform(tg) || isWebPlatform(tg)) {
@@ -457,7 +456,7 @@ export const finishRound = createAsyncThunk(
 
     if (state.game.theme.id === 'hawk') {
       dispatch(startNewFreeGameCountdown());
-      // getAdvertisementOffer(dispatch);
+      getAdvertisementOffer(dispatch);
     }
     console.log({ gameId });
 

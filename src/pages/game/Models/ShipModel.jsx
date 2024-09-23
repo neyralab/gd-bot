@@ -8,7 +8,7 @@ import React, {
 import { useFrame, useLoader } from '@react-three/fiber';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { useSelector } from 'react-redux';
-import * as THREE from 'three';
+import { Group, Clock, Color, AnimationMixer, LoopOnce } from 'three';
 import gsap from 'gsap';
 import {
   selectNextTheme,
@@ -17,18 +17,21 @@ import {
 } from '../../../store/reducers/gameSlice';
 import ShipWaveModel from './ShipWaveModel';
 import ShipTrailModel from './ShipTrailModel';
+import ShipWindowModel from './ShipWindowModel';
 
 const ShipModel = forwardRef((_, ref) => {
   const theme = useSelector(selectTheme);
   const nextTheme = useSelector(selectNextTheme);
   const status = useSelector(selectStatus);
-
+  const advertisementOffer = useSelector(
+    (state) => state.game.advertisementOfferModal
+  );
   const shipModel = useLoader(GLTFLoader, '/assets/game-page/ship.glb');
 
   const mixer = useRef(null);
   const shipRef = useRef(null);
   const shipGroupRef = useRef(null);
-  const waveGroupRef = useRef(new THREE.Group());
+  const waveGroupRef = useRef(new Group());
   const shipTrailModelRef = useRef();
   const flyTimeout = useRef(null);
   const floatingContext = useRef(null);
@@ -40,7 +43,7 @@ const ShipModel = forwardRef((_, ref) => {
   const themeChangeContext = useRef(null);
   const accentDetails2MaterialRef = useRef(null);
 
-  const [clock] = useState(() => new THREE.Clock());
+  const [clock] = useState(() => new Clock());
   const [waves, setWaves] = useState([]);
   const [isInitialized, setIsInitialized] = useState(false);
 
@@ -93,12 +96,12 @@ const ShipModel = forwardRef((_, ref) => {
               break;
             case 'BaseEmission2':
               material.color.set(theme.colors.emission);
-              material.emissive = new THREE.Color(theme.colors.emission);
+              material.emissive = new Color(theme.colors.emission);
               material.needsUpdate = true;
               break;
             case 'AccentDetailsEmission':
               material.color.set(theme.colors.accentEmission);
-              material.emissive = new THREE.Color(theme.colors.accentEmission);
+              material.emissive = new Color(theme.colors.accentEmission);
               material.emissiveIntensity = 8;
               material.needsUpdate = true;
               accentDetails2MaterialRef.current = material;
@@ -135,9 +138,9 @@ const ShipModel = forwardRef((_, ref) => {
     stopAllAnimations();
 
     if (shipModel.animations.length) {
-      mixer.current = new THREE.AnimationMixer(shipModel.scene); // action.reset() does not help to reset animation completely
+      mixer.current = new AnimationMixer(shipModel.scene); // action.reset() does not help to reset animation completely
       const action = mixer.current.clipAction(shipModel.animations[0]);
-      action.setLoop(THREE.LoopOnce);
+      action.setLoop(LoopOnce);
       action.clampWhenFinished = true;
       action.setEffectiveTimeScale(-1.5);
       action.time = action.getClip().duration;
@@ -186,11 +189,11 @@ const ShipModel = forwardRef((_, ref) => {
       return;
     }
 
-    mixer.current = new THREE.AnimationMixer(shipModel.scene); // action.reset() does not help to reset animation completely
+    mixer.current = new AnimationMixer(shipModel.scene); // action.reset() does not help to reset animation completely
     const action = mixer.current.clipAction(shipModel.animations[0]);
     if (!action) return;
 
-    action.setLoop(THREE.LoopOnce);
+    action.setLoop(LoopOnce);
     action.clampWhenFinished = true;
     action.time = 0;
     action.setEffectiveTimeScale(3.5);
@@ -366,9 +369,9 @@ const ShipModel = forwardRef((_, ref) => {
       });
     });
 
-    mixer.current = new THREE.AnimationMixer(shipModel.scene); // action.reset() does not help to reset animation completely
+    mixer.current = new AnimationMixer(shipModel.scene); // action.reset() does not help to reset animation completely
     const action = mixer.current.clipAction(shipModel.animations[1]);
-    action.setLoop(THREE.LoopOnce);
+    action.setLoop(LoopOnce);
     action.clampWhenFinished = true;
     action.setEffectiveTimeScale(3);
     action.play();
@@ -431,6 +434,10 @@ const ShipModel = forwardRef((_, ref) => {
         position={[0, -20, 0]}
         rotation={[0, -Math.PI * 2.5, 0]}>
         <primitive object={shipModel.scene} ref={shipRef} />
+
+        {advertisementOffer && theme.id === 'hawk' && status !== 'playing' && (
+          <ShipWindowModel />
+        )}
 
         {status === 'playing' && <ShipTrailModel ref={shipTrailModelRef} />}
       </group>
