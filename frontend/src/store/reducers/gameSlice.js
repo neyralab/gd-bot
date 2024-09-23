@@ -46,7 +46,7 @@ const gameSlice = createSlice({
       hawk: true, // tier id 1
       gold: false, // tier id 3
       ghost: false, // tier id 4
-      premium: false, // tier id 5
+      premium: false // tier id 5
     },
 
     balance: {
@@ -117,7 +117,7 @@ const gameSlice = createSlice({
      */
     systemModal: null,
 
-    isGameDisabled: false,
+    isGameDisabled: false
   },
   reducers: {
     setPendingGames: (state, { payload }) => {
@@ -340,7 +340,9 @@ export const initGame = createAsyncThunk(
 
       /** This function combines backend tiers and frontend themes */
       let newThemes = defaultThemes
-        .filter((theme) => games.some((game) => game.multiplier === theme.multiplier))
+        .filter((theme) =>
+          games.some((game) => game.multiplier === theme.multiplier)
+        )
         .map((theme) => {
           const findLevel = levels.find((el) => el.id === level);
           const { tierIdBN, tierId, ...findGame } = games.find(
@@ -352,7 +354,9 @@ export const initGame = createAsyncThunk(
                 ...theme,
                 tierId: findGame.id,
                 multiplier:
-                  theme.id === 'hawk' ? findLevel.multiplier : findGame.multiplier
+                  theme.id === 'hawk'
+                    ? findLevel.multiplier
+                    : findGame.multiplier
               }
             : theme;
           return newTheme;
@@ -364,14 +368,16 @@ export const initGame = createAsyncThunk(
 
       if (pendingGames.length > 0) {
         const pendingGame = pendingGames[0];
-        const pendingTheme = newThemes.find((el) => el.tierId === pendingGame.tier_id)
-        dispatch(setThemeAccess({
-          themeId: pendingTheme.id,
-          status: true
-        }));
-        dispatch(
-          setTheme(pendingTheme)
+        const pendingTheme = newThemes.find(
+          (el) => el.tierId === pendingGame.tier_id
         );
+        dispatch(
+          setThemeAccess({
+            themeId: pendingTheme.id,
+            status: true
+          })
+        );
+        dispatch(setTheme(pendingTheme));
         dispatch(setGameId(pendingGame.uuid || pendingGame.id));
         dispatch(setGameInfo(pendingGame));
       } else {
@@ -545,7 +551,7 @@ export const startNewFreeGameCountdown = createAsyncThunk(
 
 export const refreshFreeGame = createAsyncThunk(
   'game/refreshFreeGame',
-  async (_, { dispatch }) => {
+  async ({ points }, { dispatch }) => {
     dispatch(setLockIntervalId(null));
     dispatch(setLockTimerTimestamp(null));
     dispatch(setAdvertisementModal(null));
@@ -553,7 +559,7 @@ export const refreshFreeGame = createAsyncThunk(
     dispatch(setThemeAccess({ themeId: 'hawk', status: true }));
     dispatch(
       setRoundFinal({
-        roundPoints: 300,
+        roundPoints: points,
         isActive: true
       })
     );
