@@ -17,12 +17,15 @@ import {
 } from '../../../store/reducers/gameSlice';
 import ShipWaveModel from './ShipWaveModel';
 import ShipTrailModel from './ShipTrailModel';
+import ShipWindowModel from './ShipWindowModel';
 
 const ShipModel = forwardRef((_, ref) => {
   const theme = useSelector(selectTheme);
   const nextTheme = useSelector(selectNextTheme);
   const status = useSelector(selectStatus);
-
+  const advertisementOffer = useSelector(
+    (state) => state.game.advertisementOfferModal
+  );
   const shipModel = useLoader(GLTFLoader, '/assets/game-page/ship.glb');
 
   const mixer = useRef(null);
@@ -431,6 +434,10 @@ const ShipModel = forwardRef((_, ref) => {
         position={[0, -20, 0]}
         rotation={[0, -Math.PI * 2.5, 0]}>
         <primitive object={shipModel.scene} ref={shipRef} />
+
+        {advertisementOffer && theme.id === 'hawk' && status !== 'playing' && (
+          <ShipWindowModel />
+        )}
 
         {status === 'playing' && <ShipTrailModel ref={shipTrailModelRef} />}
       </group>

@@ -113,7 +113,7 @@
     "uploadFile": "Carregar arquivo"
   },
   "advertisement": {
-    "watchAndPlay": "Veja o anúncio para ganhar 300 pontos e jogar novamente"
+    "watchAndPlay": "Veja o anúncio para ganhar {{points}} pontos e jogar novamente"
   },
   "message": {
     "someTimeForTransaction": "Precisamos de algum tempo para analisar a transação.",
