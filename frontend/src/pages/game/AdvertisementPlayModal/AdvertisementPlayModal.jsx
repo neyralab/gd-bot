@@ -12,6 +12,9 @@ import {
   endWatchingAdvertisementVideo,
   startWatchingAdvertisementVideo
 } from '../../../effects/advertisementEffect';
+import ProgressBar from './ProgressBar/ProgressBar';
+import Timer from './Timer/Timer';
+import PointsCounter from './PointsCounter/PointsCounter';
 import styles from './AdvertisementPlayModal.module.scss';
 
 export default function AdvertisementPlayModal() {
@@ -110,21 +113,15 @@ export default function AdvertisementPlayModal() {
 
   const handleError = (error) => {
     console.error('Error playing video:', error);
-    setIsPlaying(false);
-    setIsReady(false);
   };
 
   if (!advertisementModal) return null;
-
-  /** these url params are only valid for youtube videos.
-   * If we decide to play videos hosted by other services - remove these params */
-  const videoUrl = `${advertisementModal.videoUrl}?controls=0&modestbranding=1&rel=0&showinfo=0&disablekb=1`;
 
   return (
     <div className={styles.container}>
       <div className={styles['video-wrapper']}>
         <ReactPlayer
-          url={videoUrl}
+          url={advertisementModal.videoUrl}
           playing={isPlaying}
           controls={false}
           playsinline={true}
@@ -150,21 +147,15 @@ export default function AdvertisementPlayModal() {
           }}
         />
 
-        {duration ? (
-          <div className={styles.timer}>
-            {`${Math.floor(timeLeft / 60)}:${Math.floor(timeLeft % 60)
-              .toString()
-              .padStart(2, '0')}`}
-          </div>
-        ) : (
-          <></>
-        )}
+        <PointsCounter
+          duration={duration}
+          timeLeft={timeLeft}
+          totalPoints={points}
+        />
 
-        <div className={styles['progress-bar']}>
-          <div
-            className={styles.progress}
-            style={{ width: `${progress}%` }}></div>
-        </div>
+        <Timer duration={duration} timeLeft={timeLeft} />
+
+        <ProgressBar progress={progress} />
       </div>
 
       {(isProcessing || !isReady || startWatchingIsLoading) && (
