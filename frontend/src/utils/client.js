@@ -28,22 +28,28 @@ export function getBrowserName() {
 }
 
 export function isiOS() {
-  return [
-    'iPad Simulator',
-    'iPhone Simulator',
-    'iPod Simulator',
-    'iPad',
-    'iPhone',
-    'iPod'
-  ].includes(navigator.platform)
-  // iPad on iOS 13 detection
-  || (navigator.userAgent.includes("Mac") && "ontouchend" in document)
+  return (
+    [
+      'iPad Simulator',
+      'iPhone Simulator',
+      'iPod Simulator',
+      'iPad',
+      'iPhone',
+      'iPod'
+    ].includes(navigator.platform) ||
+    // iPad on iOS 13 detection
+    (navigator.userAgent.includes('Mac') && 'ontouchend' in document)
+  );
 }
 
 export function isPhone() {
   const userAgent = navigator.userAgent || navigator.vendor || window.opera;
-  if (/android/i.test(userAgent)) { return true }
-  if (/iPhone|iPad|iPod/i.test(userAgent)) { return true }
+  if (/android/i.test(userAgent)) {
+    return true;
+  }
+  if (/iPhone|iPad|iPod/i.test(userAgent)) {
+    return true;
+  }
   return false;
 }
 
@@ -54,3 +60,10 @@ export function isWebPlatform(tgClient) {
 export function isDesktopPlatform(tgClient) {
   return TG_PLATFORMS.desktop.includes(tgClient?.platform);
 }
+
+export const isAppStoreUrl = (url) => {
+  return url.includes('apps.apple.com') || url.includes('itunes.apple.com');
+};
+export const isPlayStoreUrl = (url) => {
+  return url.includes('play.google.com');
+};
