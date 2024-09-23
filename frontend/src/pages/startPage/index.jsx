@@ -126,7 +126,7 @@ export const StartPage = ({ tariffs }) => {
 
   const openInNewTab = (url, isNativeLink = true) => {
     if (isNativeLink) {
-      tg?.openLink(url, { try_instant_view: true });
+      tg?.openLink(url);
     } else {
       window.open(url, '_blank', 'noreferrer');
     }
