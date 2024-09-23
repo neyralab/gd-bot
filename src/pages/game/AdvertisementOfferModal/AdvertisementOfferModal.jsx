@@ -21,7 +21,7 @@ export default function AdvertisementOfferModal() {
   const [isClosing, setIsClosing] = useState(false);
   const [isClickable, setIsClickable] = useState(false);
 
-  const points = 300;
+  const points = 1000;
   const parts = useMemo(() => {
     const translatedText = t('advertisement.watchAndPlay', { points });
     return translatedText.split(new RegExp(`(${points})`));
@@ -55,8 +55,7 @@ export default function AdvertisementOfferModal() {
 
   const clickHandler = (e) => {
     if (!isClickable) return;
-    e?.preventDefault();
-    e?.stopPropagation();
+
     dispatch(
       setAdvertisementModal({
         videoUrl: advertisementOfferModal.videoUrl,

@@ -116,7 +116,7 @@ const gameSlice = createSlice({
      */
     systemModal: null,
 
-    isGameDisabled: false,
+    isGameDisabled: false
   },
   reducers: {
     setPendingGames: (state, { payload }) => {
@@ -534,7 +534,7 @@ export const startNewFreeGameCountdown = createAsyncThunk(
 
 export const refreshFreeGame = createAsyncThunk(
   'game/refreshFreeGame',
-  async (_, { dispatch }) => {
+  async ({ points }, { dispatch }) => {
     dispatch(setLockIntervalId(null));
     dispatch(setLockTimerTimestamp(null));
     dispatch(setAdvertisementModal(null));
@@ -542,7 +542,7 @@ export const refreshFreeGame = createAsyncThunk(
     dispatch(setThemeAccess({ themeId: 'hawk', status: true }));
     dispatch(
       setRoundFinal({
-        roundPoints: 300,
+        roundPoints: points,
         isActive: true
       })
     );

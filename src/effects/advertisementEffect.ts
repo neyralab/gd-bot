@@ -21,7 +21,7 @@ export const getAdvertisementVideo = async () => {
   const { data } = await axiosInstance.get<{ data: AdvertisementVideoInfo[] }>(
     url
   );
-  return data.data[0] || data.data;
+  return data.data;
 };
 
 export const startWatchingAdvertisementVideo = async (videoId: string) => {
