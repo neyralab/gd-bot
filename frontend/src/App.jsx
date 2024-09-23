@@ -149,7 +149,7 @@ function App() {
             <Route
               path="/boost"
               exact
-              element={<BoostPage tariffs={tariffs} />}
+              element={<BoostPage tariffs={tariffs} setTariffs={setTariffs} />}
             />
             <Route path="/earn" exact element={<EarnPage />} />
             <Route path="/nodes-welcome" exact element={<NodesWelcomePage />} />
