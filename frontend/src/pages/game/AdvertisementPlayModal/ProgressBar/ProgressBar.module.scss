@@ -1,0 +1,21 @@
+.progress-bar {
+  position: absolute;
+  width: calc(100% - 32px);
+  height: 4px;
+  left: 16px;
+  bottom: 40px;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 2px;
+  z-index: 2;
+}
+
+.progress {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background: linear-gradient(to right, #00f2fe, #4facfe);
+  border-radius: 2px;
+  width: 0;
+  transition: 1s linear;
+}
