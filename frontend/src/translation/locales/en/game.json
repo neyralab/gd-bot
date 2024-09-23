@@ -113,7 +113,7 @@
     "uploadFile": "Upload file"
   },
   "advertisement": {
-    "watchAndPlay": "Watch ad to get 300 points and play again"
+    "watchAndPlay": "Watch ad to get {{points}} points and play again"
   },
   "message": {
     "someTimeForTransaction": "We need some time to review the transaction.",

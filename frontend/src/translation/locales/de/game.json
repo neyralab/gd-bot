@@ -114,7 +114,7 @@
     "uploadFile": "Datei hochladen"
   },
   "advertisement": {
-    "watchAndPlay": "Sehen Sie sich die Anzeige an, um 300 Punkte zu erhalten und erneut zu spielen"
+    "watchAndPlay": "Sehen Sie sich die Anzeige an, um {{points}} Punkte zu erhalten und erneut zu spielen"
   },
   "message": {
     "someTimeForTransaction": "Wir benötigen etwas Zeit, um die Transaktion zu prüfen.",

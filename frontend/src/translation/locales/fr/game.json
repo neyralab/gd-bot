@@ -113,7 +113,7 @@
     "uploadFile": "Télécharger un fichier"
   },
   "advertisement": {
-    "watchAndPlay": "Regardez la publicité pour obtenir 300 points et rejouer"
+    "watchAndPlay": "Regardez la publicité pour obtenir {{points}} points et rejouer"
   },
   "message": {
     "someTimeForTransaction": "Nous avons besoin de temps pour examiner la transaction.",

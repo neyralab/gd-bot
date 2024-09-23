@@ -113,7 +113,7 @@
     "uploadFile": "Unggah data"
   },
   "advertisement": {
-    "watchAndPlay": "Tonton iklan untuk mendapatkan 300 poin dan bermain lagi"
+    "watchAndPlay": "Tonton iklan untuk mendapatkan {{points}} poin dan bermain lagi"
   },
   "message": {
     "someTimeForTransaction": "Kami perlu waktu untuk meninjau transaksi tersebut.",
