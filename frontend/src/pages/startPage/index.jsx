@@ -287,10 +287,16 @@ export const StartPage = ({ tariffs }) => {
       {isDev && <Nodes wallet={user?.wallet} />}
       <footer className={style.footer}>
         <p className={style['footer-text']}>
-          <span onClick={() => {openInNewTab('https://docs.ghostdrive.com/legal/terms-of-service')}}>
+          <span onClick={() => {
+              openInNewTab('https://t.me/iv?url=https://docs.ghostdrive.com/legal/terms-of-service&rhash=e828db8fdbfbe21')
+          }}>
             Terms of use
           </span>
-          <span onClick={() => {openInNewTab('https://play.ghostdrive.com')}}>{' | Help | '}</span>
+          <span onClick={() => {
+              openInNewTab('https://t.me/iv?url=https://play.ghostdrive.com/&rhash=35bee60e65fd881')
+          }}>
+            {' | Help | '}
+          </span>
           <span onClick={() => {openInNewTab('https://t.me/ghostdrive_web3_chat', false)}}>Support.</span>
         </p>
       </footer>
