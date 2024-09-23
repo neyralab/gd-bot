@@ -15,6 +15,7 @@ import {
 } from '../../effects/gameEffect';
 import { setUser } from './userSlice';
 import { getAdvertisementVideo } from '../../effects/advertisementEffect';
+import { isEnabledMobileOnly } from '../../utils/featureFlags';
 import { isDesktopPlatform, isWebPlatform } from '../../utils/client';
 import { tg } from '../../App';
 
@@ -334,7 +335,7 @@ export const initGame = createAsyncThunk(
         getAdvertisementOffer(dispatch);
       }
 
-      if (isDesktopPlatform(tg) || isWebPlatform(tg)) {
+      if ((isDesktopPlatform(tg) || isWebPlatform(tg)) && isEnabledMobileOnly) {
         dispatch(setIsGameDisabled(true));
       }
 
