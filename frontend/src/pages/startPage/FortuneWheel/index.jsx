@@ -10,7 +10,6 @@ import styles from '../Navigator/Navigator.module.scss';
 
 export default function FortuneWheel({  }) {
   const fortuneWheelModalRef = useRef(null);
-  const navigate = useNavigate();
 
   const openFortuneWheel = () => {
     fortuneWheelModalRef.current.open();
