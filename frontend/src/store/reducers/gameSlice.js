@@ -469,7 +469,11 @@ export const finishRound = createAsyncThunk(
 
     if (state.game.theme.id === 'hawk') {
       dispatch(startNewFreeGameCountdown());
-      getAdvertisementOffer(dispatch);
+      
+      setTimeout(() => {
+        // wait for animation
+        getAdvertisementOffer(dispatch);
+      }, [2000]);
     }
     console.log({ gameId });
 
