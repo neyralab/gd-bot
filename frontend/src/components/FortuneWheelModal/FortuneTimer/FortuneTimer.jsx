@@ -1,60 +1,61 @@
-import React from 'react';
-// import { useDispatch, useSelector } from 'react-redux';
-import { useTimer } from 'react-timer-hook';
+import React, { useMemo } from 'react';
+import moment from 'moment';
 import { useTranslation } from 'react-i18next';
-// import { isDevEnv } from '../../../utils/isDevEnv';
-import { formatTime } from '../../../utils/dates';
-// import { INVOICE_TYPE } from '../../../utils/createStarInvoice';
-// import { makeInvoice } from '../../../effects/paymentEffect';
-// import { selectPaymenttByKey } from '../../../store/reducers/paymentSlice';
-// import { ReactComponent as StarIcon } from '../../../assets/star.svg';
+import { ReactComponent as FriendsIcon } from '../../../assets/friends.svg';
+import { Timer } from './Timer';
+
 import styles from './FortuneTimer.module.scss';
 
-export default function FortuneTimer({ timestamp, onComplete }) {
+const INVITE_COUNT_TO_NEXT_SPIN = 3;
+
+export default function FortuneTimer({ timestamp, onComplete, bonusSpins }) {
   const { t } = useTranslation('game');
-  // const dispatch = useDispatch();
-  // const user = useSelector((state) => state.user.data);
-  // const spinType = useSelector(selectPaymenttByKey('spin_game'));
-  // const isDev = useMemo(() => isDevEnv(), []);
-
-  const { seconds, minutes, hours } = useTimer({
-    expiryTimestamp: timestamp,
-    onExpire: () => {
-      onComplete?.();
+  const invitesPerNextSpin = useMemo(() => {
+    if (bonusSpins.count) {
+      return bonusSpins.count%INVITE_COUNT_TO_NEXT_SPIN;
     }
-  });
 
-  // const invoiceCallback = async (result) => {
-  //   try {
-  //     if (result === 'paid') {
-  //       await sleep(600);
-  //       onComplete?.();
-  //     } else {
-  //       console.warn(`error: The payment was not completed. ${result}`)
-  //     }
-  //   } catch (error) {
-  //     console.warn('error: ', error);
-  //   }
-  // };
+    return INVITE_COUNT_TO_NEXT_SPIN;
+  }, [bonusSpins]);
+  const hasInviteToNextSpin = useMemo(() => (
+    invitesPerNextSpin !== INVITE_COUNT_TO_NEXT_SPIN && invitesPerNextSpin !== 0
+  ), [invitesPerNextSpin]);
+  const showNextBonusTimer = useMemo(() => {
+    if (hasInviteToNextSpin) {
+      const givenDate = moment(bonusSpins.first_usage, 'YYYY-MM-DD HH:mm:ss');
+      const currentDate = moment();
+      const diffInHours = currentDate.diff(givenDate, 'hours');
 
-  // const onBuy = () => {
-  //   const input = `${spinType.Type};0;${user.id};0;0`;
-  //   makeInvoice({
-  //     input,
-  //     dispatch,
-  //     callback: invoiceCallback,
-  //     type: INVOICE_TYPE.spin,
-  //     theme: { stars: isDev ? 1 : 400 }
-  //   }); 
-  // };
+      return diffInHours < 24
+    } else {
+      return false
+    }
+  }, [hasInviteToNextSpin, bonusSpins]);
 
   return (
     <div className={styles.container}>
-      <div className={styles.description}>{t('earn.wheelNextSpin')}</div>
-      <div className={styles.timer}>
-        {formatTime(hours || 24)}:{formatTime(minutes || 0)}:
-        {formatTime(seconds || 0)}
-      </div> 
+      <div className={styles.description}>{
+        !hasInviteToNextSpin ?
+        t('earn.wheelNextSpin') :
+        <div>
+          {t('earn.wheelBonusSpin')}
+          {<span className={styles['red-text']}>{invitesPerNextSpin}</span>}
+          {`/${INVITE_COUNT_TO_NEXT_SPIN}`}
+        </div>
+      }</div>
+      <Timer
+        timestamp={showNextBonusTimer ?
+          moment(bonusSpins.first_usage, 'YYYY-MM-DD HH:mm:ss').add(24, 'hours').valueOf()
+          : timestamp}
+        onComplete={onComplete}
+      />
+      <div className={styles['bonus-spin']}>
+        <span className={styles['bonus-text']}>1 Spin</span>
+        <div className={styles['bonus-status']} >
+          <span>{`Invite ${invitesPerNextSpin} friends`}</span>
+          <FriendsIcon />
+        </div>
+      </div>
     </div>
   );
 }
