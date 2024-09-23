@@ -11,15 +11,27 @@ import { isAppStoreUrl, isiOS, isPlayStoreUrl } from '../../../utils/client';
 import { getBannersEffect } from '../../../effects/bannerEffect';
 import { API_PATH_ROOT } from '../../../utils/api-urls';
 import Loader2 from '../../../components/Loader2/Loader2';
+import BannerSource from '../assets/banner.png';
 
-const createBanners = ({ onClick, banners }) =>
-  banners.map((banner) => ({
+const createBanners = ({ onClick, banners, onOpenShareModal, storageSize }) => {
+  const items = banners.map((banner) => ({
     ...banner,
     bg: API_PATH_ROOT + banner.image,
     onClick: () => {
       onClick(banner.link, banner.link_second);
     }
   }));
+  return [
+    {
+      id: 0,
+      onOpenShareModal,
+      bg: BannerSource,
+      initialBaner: true,
+      storageSize
+    },
+    ...items
+  ];
+};
 
 const Banner = ({ storageSize, onOpenShareModal, ...res }) => {
   const [banners, setBanners] = useState([]);
@@ -64,7 +76,9 @@ const Banner = ({ storageSize, onOpenShareModal, ...res }) => {
   const slides = useMemo(() => {
     return createBanners({
       onClick: doRedirectToApp,
-      banners
+      banners,
+      onOpenShareModal,
+      storageSize
     }).map((el) => ({
       id: el.id,
       html: <BannerItem key={el.id} {...el} />
