@@ -55,8 +55,6 @@ export default function AdvertisementOfferModal() {
 
   const clickHandler = (e) => {
     if (!isClickable) return;
-    e?.preventDefault();
-    e?.stopPropagation();
     dispatch(
       setAdvertisementModal({
         videoUrl: advertisementOfferModal.videoUrl,
