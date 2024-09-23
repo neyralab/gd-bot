@@ -19,7 +19,7 @@ import { transformSize } from '../../utils/transformSize';
 import { isDevEnv } from '../../utils/isDevEnv';
 
 import GhostLoader from '../../components/ghostLoader';
-import Nodes from './Nodes/index';
+import FortuneWheel from './FortuneWheel';
 import { ReactComponent as TapIcon } from './assets/tap.svg';
 import { DisconnectWalletModal } from '../../components/disconnectWalletModal';
 import ShareStorage from './ShareStorage';
@@ -271,7 +271,9 @@ export const StartPage = ({ tariffs }) => {
           onClick={() => navigate('/game-3d')}
         />
       </ul>
-      {isDev && <Nodes wallet={user?.wallet} />}
+      {/* {isDev && <Nodes wallet={user?.wallet} />} */}
+      <FortuneWheel />
+      
       <footer className={style.footer}>
         <p className={style['footer-text']}>
           <span
