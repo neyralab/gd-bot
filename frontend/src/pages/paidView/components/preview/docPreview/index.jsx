@@ -1,7 +1,6 @@
 import React from 'react';
 import CN from 'classnames';
 
-import ExcelPreview from '../../../../../components/filePreviewModal/previewContent/ExcelPreview';
 import { FullscreenBtn } from '../../fullscreenBtn';
 import { removeExtension } from '../../../../../utils/string';
 

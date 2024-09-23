@@ -7,7 +7,7 @@ import {
   getFilesByTypeEffect,
   getFilesEffect,
   getPaidShareFilesEffect,
-  updateFileFavoriteEffect_v2
+  updateFileFavoriteEffect
 } from '../../effects/filesEffects';
 import { uploadFileEffect } from '../../effects/uploadFileEffect_v2';
 import { getResponseError } from '../../utils/string';
@@ -412,7 +412,7 @@ export const toggleFileFavorite = createAsyncThunk(
   'drive/toggleFileFavorite',
   async ({ slug }, { dispatch }) => {
     dispatch(setFileIsFavoriteUpdating({ slug, method: 'add' }));
-    const res = await updateFileFavoriteEffect_v2(slug);
+    const res = await updateFileFavoriteEffect(slug);
     dispatch(
       updateFileProperty({
         id: res.id,

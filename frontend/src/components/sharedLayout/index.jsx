@@ -1,8 +1,6 @@
 import React from 'react';
 
-import { FileMenu } from '../fileMenu';
 // import { DeleteFileModal } from '../deleteFileModal';
-import { FilePreviewModal } from '../filePreviewModal';
 import { ToastContainer } from 'react-toastify';
 import PPVModal from '../ppvModal/PPVModal';
 
@@ -19,9 +17,7 @@ const SharedLayout = ({ children }) => {
   return (
     <div className="App">
       {children}
-      <FileMenu />
       {/*<DeleteFileModal />*/}
-      <FilePreviewModal />
       <PPVModal />
       <ToastContainer closeButton={CloseNotificationButton} />
     </div>
