@@ -1,0 +1,84 @@
+.sheet-container {
+  background: #1F2023 !important;
+  border-top-right-radius: 16px !important;
+  border-top-left-radius: 16px !important;
+}
+
+.container {
+  position: relative;
+  padding: 0 16px 30px 16px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+
+  h2 {
+    font-size: 22px;
+    font-weight: 500;
+  }
+}
+
+.description {
+  font-weight: 300;
+  font-size: 14px;
+  opacity: 0.7;
+}
+
+.points {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+}
+
+.points span {
+  font-family: 'SF Pro Text';
+  font-size: 20.44px;
+  font-weight: 500;
+  text-align: center;
+}
+
+.points img {
+  width: 28px;
+  height: 26px;
+  object-fit: contain;
+}
+
+.close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.close svg {
+  width: 32px;
+  height: 32px;
+}
+
+.content {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.loader-container {
+  height: 184px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.spin-btn {
+  font-family: 'SF Pro Text';
+  padding: 2px 16px;
+  border: 1px solid #FFFFFF;
+  color: #fff;
+  border-radius: 20px;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 27px;
+  letter-spacing: 0.01em;
+  -webkit-tap-highlight-color: transparent;
+}

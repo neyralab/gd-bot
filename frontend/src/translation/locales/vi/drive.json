@@ -1,0 +1,70 @@
+{
+  "dashbord": {
+    "search": "Tìm kiếm",
+    "points": "Điểm",
+    "of": "của",
+    "all": "Tất cả",
+    "favorites": "Yêu thích",
+    "pictures": "Hình ảnh",
+    "documents": "Tài liệu",
+    "notes": "Ghi chú",
+    "audio": "Âm thanh",
+    "video": "Video",
+    "deleted": "Đã xóa",
+    "notFound": "Không tìm thấy tệp",
+    "isEmpty": "Trang này trống",
+    "ghostdrive": "GHOSTDRIVE",
+    "share": "Chia sẻ",
+    "linkToFile": "Nhấp vào liên kết này để xem tệp",
+    "games": "Trò chơi"
+  },
+  "ppv": {
+    "back": "Quay lại",
+    "ppv": "Trả tiền cho mỗi lượt xem",
+    "edit": "Chỉnh sửa",
+    "download": "Giá tải xuống (tùy chọn)",
+    "description": "Mô tả",
+    "policy": "Bạn sở hữu 100% doanh thu. Chính sách pháp lý",
+    "publish": "Xuất bản",
+    "wait": "Vui lòng đợi...",
+    "processing": "xử lý tệp",
+    "about": "Giới thiệu",
+    "totalViews": "Tổng lượt xem",
+    "starts": "Bắt đầu",
+    "downloadToStorage": "Tải xuống G:Drive của bạn",
+    "freeWatch": "Xem miễn phí",
+    "preview": "Xem trước",
+    "saveError": "Không thể lưu tệp vào bộ nhớ. Vui lòng thử lại hoặc liên hệ với bộ phận hỗ trợ nếu sự cố vẫn tiếp diễn.",
+    "saveSuccess": "Tệp đã được lưu thành công vào bộ nhớ.",
+    "fileAbsent": "Tệp không có",
+    "successReport": "Báo cáo của bạn đã được gửi thành công. Cảm ơn bạn đã giúp chúng tôi duy trì một cộng đồng an toàn và tôn trọng.",
+    "failReport": "Không thể gửi báo cáo của bạn. Vui lòng thử lại sau hoặc kiểm tra kết nối internet của bạn.",
+    "copyright": "Vi phạm bản quyền",
+    "spam": "Thư rác",
+    "violence": "Bạo lực hoặc nội dung nguy hiểm",
+    "other": "Khác",
+    "enterReport": "Nhập báo cáo của bạn..",
+    "report": "Báo cáo"
+  },
+  "files": {
+    "expandFile": "Xem tập tin"
+  },
+  "month": {
+    "jan": "Tháng 1",
+    "feb": "Tháng 2",
+    "mar": "Tháng 3",
+    "apr": "Tháng 4",
+    "may": "Tháng 5",
+    "jun": "Tháng 6",
+    "jul": "Tháng 7",
+    "aug": "Tháng 8",
+    "sep": "Tháng 9",
+    "oct": "Tháng 10",
+    "nov": "Tháng 11",
+    "dec": "Tháng 12"
+  },
+  "time": {
+    "am": "sáng",
+    "pm": "chiều"
+  }
+}

@@ -1,0 +1,70 @@
+{
+  "dashbord": {
+    "search": "Procurar",
+    "points": "Pontos",
+    "of": "de",
+    "all": "Todos",
+    "favorites": "Favoritos",
+    "pictures": "Fotos",
+    "documents": "Documentos",
+    "notes": "Notas",
+    "audio": "Áudio",
+    "video": "Vídeo",
+    "deleted": "Excluído",
+    "notFound": "Arquivos não encontrados",
+    "isEmpty": "Esta página está vazia",
+    "ghostdrive": "GHOSTDRIVE",
+    "share": "Compartilhar",
+    "linkToFile": "Toque neste link para ver o arquivo",
+    "games": "Jogos"
+  },
+  "ppv": {
+    "back": "Voltar",
+    "ppv": "Pague por visualização",
+    "edit": "Editar",
+    "download": "Preço de download (opcional)",
+    "description": "Descrição",
+    "policy": "Você possui 100% da receita. Política legal",
+    "publish": "Publicar",
+    "wait": "Por favor, espere...",
+    "processing": "processamento de arquivos",
+    "about": "Sobre",
+    "totalViews": "Visualizações totais",
+    "starts": "Inicia",
+    "downloadToStorage": "Baixar para o seu G:Drive",
+    "freeWatch": "Assistir gratuitamente",
+    "preview": "Pré-visualização",
+    "saveError": "Falha ao salvar o arquivo no armazenamento. Por favor, tente novamente ou entre em contato com o suporte se o problema persistir.",
+    "saveSuccess": "O arquivo foi salvo com sucesso no armazenamento.",
+    "fileAbsent": "O arquivo está ausente",
+    "successReport": "Seu relatório foi enviado com sucesso. Obrigado por nos ajudar a manter uma comunidade segura e respeitosa.",
+    "failReport": "Não foi possível enviar seu relatório. Tente novamente mais tarde ou verifique sua conexão com a internet.",
+    "copyright": "Violação de direitos autorais",
+    "spam": "Spam",
+    "violence": "Violência ou conteúdo perigoso",
+    "other": "Outro",
+    "enterReport": "Digite seu relatório..",
+    "report": "Relatório"
+  },
+  "files": {
+    "expandFile": "Ver ficheiro"
+  },
+  "month": {
+    "jan": "janeiro",
+    "feb": "fevereiro",
+    "mar": "março",
+    "apr": "abril",
+    "may": "maio",
+    "jun": "junho",
+    "jul": "julho",
+    "aug": "agosto",
+    "sep": "setembro",
+    "oct": "outubro",
+    "nov": "novembro",
+    "dec": "dezembro"
+  },
+  "time": {
+    "am": "am",
+    "pm": "pm"
+  }
+}

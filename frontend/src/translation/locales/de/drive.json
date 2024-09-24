@@ -1,0 +1,70 @@
+{
+  "dashbord": {
+    "search": "Suche",
+    "points": "Punkte",
+    "of": "von",
+    "all": "Alle",
+    "favorites": "Favoriten",
+    "pictures": "Bilder",
+    "documents": "Dokumente",
+    "notes": "Notizen",
+    "audio": "Audio",
+    "video": "Video",
+    "deleted": "Gelöscht",
+    "notFound": "Dateien nicht gefunden",
+    "isEmpty": "Diese Seite ist leer",
+    "ghostdrive": "GHOSTDRIVE",
+    "share": "Teilen",
+    "linkToFile": "Tippen Sie auf diesen Link, um die Datei anzuzeigen",
+    "games": "Spiele"
+  },
+  "ppv": {
+    "back": "Zurück",
+    "ppv": "Bezahlen pro Ansicht",
+    "edit": "Bearbeiten",
+    "download": "Download-Preis (optional)",
+    "description": "Beschreibung",
+    "policy": "Sie besitzen 100 % der Einnahmen. Rechtliche Hinweise",
+    "publish": "Veröffentlichen",
+    "wait": "Bitte warten...",
+    "processing": "Datei wird verarbeitet",
+    "about": "Über",
+    "totalViews": "Gesamtansichten",
+    "starts": "Startet",
+    "downloadToStorage": "Herunterladen auf Ihr G:Drive",
+    "freeWatch": "Kostenlos ansehen",
+    "preview": "Vorschau",
+    "saveError": "Fehler beim Speichern der Datei im Speicher. Bitte versuchen Sie es erneut oder wenden Sie sich an den Support, wenn das Problem weiterhin besteht.",
+    "saveSuccess": "Die Datei wurde erfolgreich im Speicher gespeichert.",
+    "fileAbsent": "Datei ist nicht vorhanden",
+    "successReport": "Ihr Bericht wurde erfolgreich eingereicht. Vielen Dank, dass Sie uns helfen, eine sichere und respektvolle Gemeinschaft zu erhalten.",
+    "failReport": "Ihr Bericht konnte nicht eingereicht werden. Bitte versuchen Sie es später erneut oder überprüfen Sie Ihre Internetverbindung.",
+    "copyright": "Urheberrechtsverletzung",
+    "spam": "Spam",
+    "violence": "Gewalt oder gefährliche Inhalte",
+    "other": "Andere",
+    "enterReport": "Geben Sie Ihren Bericht ein..",
+    "report": "Bericht"
+  },
+  "files": {
+    "expandFile": "Datei anzeigen"
+  },
+  "month": {
+    "jan": "Jan",
+    "feb": "Feb",
+    "mar": "Mär",
+    "apr": "Apr",
+    "may": "Mai",
+    "jun": "Jun",
+    "jul": "Jul",
+    "aug": "Aug",
+    "sep": "Sep",
+    "oct": "Okt",
+    "nov": "Nov",
+    "dec": "Dez"
+  },
+  "time": {
+    "am": "vorm.",
+    "pm": "nachm."
+  }
+}

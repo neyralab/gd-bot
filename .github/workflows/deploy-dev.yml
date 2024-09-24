@@ -41,15 +41,15 @@ jobs:
         script_stop: false
         script: |
           echo "# Getting code"
-          cd ${{ env.PROJECT_DIR}}/src
+          cd ${{ env.PROJECT_DIR }}/src
+          git log -1 --format=%H | tr -d '\n' > ../.git_commit_prev
           git fetch --all
           git reset --hard origin/${{ env.GIT_BRANCH }}
 
           cp .github/docker-compose.yml ../docker-compose.yml
 
           echo "# Building .env"
-          jq -sr '.[0] * .[1] | to_entries[] | .key + "=\"" + (.value | gsub("[\\n]"; "")) + "\""' <(echo '${{ toJson(vars) }}'|jq -r .) <(echo '${{ toJson(secrets) }}'|jq -r .) | sed -e "s/\"/'/g" | grep -v -e 'SERVER_SSH_KEY' -e 'SLACK_TOKEN' -e 'MERCURE_SECRET:' > .env
-          cp .env backup/.env
+          jq -sr '.[0] * .[1] | to_entries[] | .key + "=\"" + (.value | gsub("[\\n]"; "")) + "\""' <(echo '${{ toJson(vars) }}'|jq -r .) <(echo '${{ toJson(secrets) }}'|jq -r .) | sed -e "s/\"/'/g" | grep -v -e 'github_token' -e 'SERVER_SSH_KEY' -e 'SLACK_TOKEN' -e 'MERCURE_SECRET' | tee .env backend/.env frontend/.env > /dev/null
 
           echo "# Vadidating .env"
           VAR_DIFF=$(comm -13 <(grep -v -e "^$" -e "^#" .env|awk -F '=' '{print $1}'|sort) <(grep -v -e "^$" -e "^#" .env.example|awk -F '=' '{print $1}'|sort))
@@ -60,7 +60,6 @@ jobs:
           else
               echo "Variable file .env is ok"
           fi
-          cp .env backend/.env
 
     - name: Deploy
       uses: appleboy/ssh-action@master
@@ -69,14 +68,27 @@ jobs:
         port: ${{ env.SSH_PORT }}
         username: ${{ env.SSH_USER }}
         key: ${{ env.SSH_KEY }}
+        envs: GITHUB_EVENT_NAME
         script_stop: true
         script: |
-          cd ${{ env.PROJECT_DIR }}
-          docker system prune -f
-          docker-compose -f docker-compose.yml pull
-          docker-compose -f docker-compose.yml build
-          docker-compose -f docker-compose.yml down
-          docker-compose -f docker-compose.yml up -d
+          cd ${{ env.PROJECT_DIR }}/src
+          if [[ ${GITHUB_EVENT_NAME} = "workflow_dispatch" ]] || git diff --dirstat=cumulative $(cat ../.git_commit_prev) HEAD | grep "frontend/" >/dev/null; then
+              cd ${{ env.PROJECT_DIR }}
+              docker compose pull  front
+              docker compose build front
+              docker compose stop  front
+              docker compose up -d front
+              docker system prune -af
+          fi
+          cd ${{ env.PROJECT_DIR }}/src
+          if [[ ${GITHUB_EVENT_NAME} = "workflow_dispatch" ]] || git diff --dirstat=cumulative $(cat ../.git_commit_prev) HEAD | grep "backend/" >/dev/null; then
+              cd ${{ env.PROJECT_DIR }}
+              docker compose pull  back
+              docker compose build back
+              docker compose stop  back
+              docker compose up -d back
+              docker system prune -af
+          fi
 
     - name: Push To Mercure
       run: |

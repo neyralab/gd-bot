@@ -1,0 +1,70 @@
+{
+  "dashbord": {
+    "search": "検索",
+    "points": "ポイント",
+    "of": "の",
+    "all": "全て",
+    "favorites": "お気に入り",
+    "pictures": "画像",
+    "documents": "書類",
+    "notes": "メモ",
+    "audio": "音声",
+    "video": "ビデオ",
+    "deleted": "削除済み",
+    "notFound": "ファイルが見つかりません",
+    "isEmpty": "このページは空です",
+    "ghostdrive": "GHOSTDRIVE",
+    "share": "共有する",
+    "linkToFile": "このリンクをクリックしてファイルを表示",
+    "games": "ゲーム"
+  },
+  "ppv": {
+    "back": "戻る",
+    "ppv": "ペイ・パー・ビュー",
+    "edit": "編集",
+    "download": "ダウンロード価格（オプション）",
+    "description": "説明",
+    "policy": "収益の100％を所有しています。 法的方針",
+    "publish": "公開",
+    "wait": "お待ちください...",
+    "processing": "ファイル処理中",
+    "about": "約",
+    "totalViews": "総視聴数",
+    "starts": "開始",
+    "downloadToStorage": "G:Drive にダウンロード",
+    "freeWatch": "無料で視聴",
+    "preview": "プレビュー",
+    "saveError": "ファイルの保存に失敗しました。再試行するか、問題が解決しない場合はサポートに連絡してください。",
+    "saveSuccess": "ファイルは正常に保存されました。",
+    "fileAbsent": "ファイルが存在しません",
+    "successReport": "報告が正常に送信されました。安全で敬意のあるコミュニティを維持するためにご協力いただきありがとうございます。",
+    "failReport": "報告を送信できませんでした。後でもう一度お試しいただくか、インターネット接続を確認してください。",
+    "copyright": "著作権侵害",
+    "spam": "スパム",
+    "violence": "暴力や危険なコンテンツ",
+    "other": "その他",
+    "enterReport": "報告内容を入力してください..",
+    "report": "報告"
+  },
+  "files": {
+    "expandFile": "ファイルを表示"
+  },
+  "month": {
+    "jan": "1月",
+    "feb": "2月",
+    "mar": "3月",
+    "apr": "4月",
+    "may": "5月",
+    "jun": "6月",
+    "jul": "7月",
+    "aug": "8月",
+    "sep": "9月",
+    "oct": "10月",
+    "nov": "11月",
+    "dec": "12月"
+  },
+  "time": {
+    "am": "午前",
+    "pm": "午後"
+  }
+}

@@ -1,0 +1,100 @@
+.container {
+  text-align: center;
+  padding-top: 10px;
+  width: 100%;
+}
+
+.description {
+  font-family: 'SF Pro Text';
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 27px;
+  letter-spacing: 0.01em;
+  margin-bottom: 20px;
+}
+
+.timer {
+  font-size: 44px;
+  font-family: 'Digital Numbers';
+  font-size: 36px;
+  font-weight: 400;
+  line-height: 43px;
+  letter-spacing: 0.0em;
+}
+
+.timer > span {
+  font-size: 23px;
+  height: 22px;
+  line-height: 40px;
+}
+
+.actions {
+  margin-top: 44px;
+  width: 100%;
+
+  button {
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    width: 100%;
+    padding: 14px;
+    position: relative;
+    border: 1px solid white;
+    border-radius: 12px;;
+
+    * {
+      line-height: 1;
+      margin: 0;
+    }
+
+    span {
+      font-size: 16px;
+    }
+
+    b {
+      font-size: 16px;
+    }
+
+    svg {
+        position: relative;
+        top: -2px;
+    }
+  }
+}
+
+
+.bonus-spin {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 30px;
+  border-radius: 12px;
+  padding: 10px 16px;
+  border: 1px solid #FFFFFF;
+}
+
+.bonus-status {
+  display: flex;
+}
+
+.bonus-status > span {
+  font-family: 'SF Pro Text';
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 24px;
+  margin-right: 4px;
+}
+
+.bonus-text {
+  font-family: 'SF Pro Text';
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+}
+
+.red-text {
+  color: #ff4539;
+  margin-left: 4px;
+}

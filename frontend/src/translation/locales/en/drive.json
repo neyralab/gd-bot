@@ -1,0 +1,70 @@
+{
+  "dashbord": {
+    "search": "Search",
+    "points": "Points",
+    "of": "of",
+    "all": "All",
+    "favorites": "Favorites",
+    "pictures": "Pictures",
+    "documents": "Documents",
+    "notes": "Notes",
+    "audio": "Audio",
+    "video": "Video",
+    "deleted": "Deleted",
+    "notFound": "Files not found",
+    "isEmpty": "This page is empty",
+    "ghostdrive": "GHOSTDRIVE",
+    "share": "Share",
+    "linkToFile": "Tap this link to see the file",
+    "games": "Games"
+  },
+  "ppv": {
+    "back": "Back",
+    "ppv": "Pay per view",
+    "edit": "Edit",
+    "download": "Download price (optinal)",
+    "description": "Description",
+    "policy": "You own 100% revenue. Legal Policy",
+    "publish": "Publish",
+    "wait": "Please wait...",
+    "processing": "file processing",
+    "about": "About",
+    "totalViews": "Total views",
+    "starts": "Starts",
+    "downloadToStorage": "Download to your G:Drive",
+    "freeWatch": "Free watch",
+    "preview": "preview",
+    "saveError": "Failed to save the file to storage. Please try again or contact support if the issue persists.",
+    "saveSuccess": "The file has been successfully saved to storage.",
+    "fileAbsent": "File is absent",
+    "successReport": "Your report has been successfully submitted. Thank you for helping us maintain a safe and respectful community.",
+    "failReport": "Your report could not be submitted. Please try again later or check your internet connection.",
+    "copyright": "Copyright infringement",
+    "spam": "Spam",
+    "violence": "Violence or dangerous content",
+    "other": "Other",
+    "enterReport": "Enter your report..",
+    "report": "Report"
+  },
+  "files": {
+    "expandFile": "View file"
+  },
+  "month": {
+    "jan": "Jan",
+    "feb": "Feb",
+    "mar": "Mar",
+    "apr": "Apr",
+    "may": "May",
+    "jun": "Jun",
+    "jul": "Jul",
+    "aug": "Aug",
+    "sep": "Sep",
+    "oct": "Oct",
+    "nov": "Nov",
+    "dec": "Dec"
+  },
+  "time": {
+    "am": "am",
+    "pm": "pm"
+  }
+}
