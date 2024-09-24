@@ -21,7 +21,7 @@ export default function FortuneWheel({  }) {
         id: 1,
         name: 'Spin & Win',
         icon: <WheelIcon />,
-        html: <span className={CN(styles.actionBtn, styles.playBtn)}>Spin</span>,
+        html: <span className={styles.actionBtn}>Spin</span>,
         onClick: () => {openFortuneWheel()}
       }
     ],
