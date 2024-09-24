@@ -473,7 +473,7 @@ export const finishRound = createAsyncThunk(
       setTimeout(() => {
         // wait for animation
         getAdvertisementOffer(dispatch);
-      }, [2000]);
+      }, 2000);
     }
     console.log({ gameId });
 
