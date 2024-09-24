@@ -113,7 +113,7 @@
     "uploadFile": "Tải lên tệp"
   },
   "advertisement": {
-    "watchAndPlay": "Xem quảng cáo để nhận 300 điểm và chơi lại"
+    "watchAndPlay": "Xem quảng cáo để nhận {{points}} điểm và chơi lại"
   },
   "message": {
     "someTimeForTransaction": "Chúng tôi cần thời gian để xem xét giao dịch.",

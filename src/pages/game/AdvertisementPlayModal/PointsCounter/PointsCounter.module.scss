@@ -1,0 +1,31 @@
+.container {
+  position: absolute;
+  bottom: 48px;
+  left: 10px;
+  color: white;
+  border-radius: 4px;
+  padding: 2px 4px;
+  z-index: 2;
+  display: flex;
+  gap: 4px;
+}
+
+.description {
+  font-size: 14px;
+}
+
+.pointsWrapper {
+  position: relative;
+  width: 50px;
+  height: 18px; /* Adjust based on your font size */
+  overflow: hidden;
+}
+
+.prevPoints,
+.points {
+  position: absolute;
+
+  text-align: center;
+  font-weight: 700;
+  font-size: 16px;
+}

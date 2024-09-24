@@ -7,11 +7,14 @@ import {
   setSystemModal
 } from '../../../store/reducers/gameSlice';
 import Loader2 from '../../../components/Loader2/Loader2';
-import { ReactComponent as PlayIcon } from '../../../assets/play_media.svg';
+// import { ReactComponent as PlayIcon } from '../../../assets/play_media.svg';
 import {
   endWatchingAdvertisementVideo,
   startWatchingAdvertisementVideo
 } from '../../../effects/advertisementEffect';
+import ProgressBar from './ProgressBar/ProgressBar';
+import Timer from './Timer/Timer';
+import PointsCounter from './PointsCounter/PointsCounter';
 import styles from './AdvertisementPlayModal.module.scss';
 
 export default function AdvertisementPlayModal() {
@@ -27,19 +30,25 @@ export default function AdvertisementPlayModal() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [startWatchingIsLoading, setStartWatchingIsLoading] = useState(false);
 
+  const points = 1000;
+
   useEffect(() => {
     if (advertisementModal && advertisementModal.videoUrl) {
       startWatching();
     } else {
-      setProgress(0);
-      setTimeLeft(0);
-      setIsProcessing(false);
-      setIsReady(false);
-      setDuration(0);
-      setIsPlaying(false);
-      setStartWatchingIsLoading(false);
+      resetState();
     }
   }, [advertisementModal]);
+
+  const resetState = () => {
+    setProgress(0);
+    setTimeLeft(0);
+    setIsProcessing(false);
+    setIsReady(false);
+    setDuration(0);
+    setIsPlaying(false);
+    setStartWatchingIsLoading(false);
+  };
 
   const onReady = () => {
     setIsReady(true);
@@ -79,7 +88,7 @@ export default function AdvertisementPlayModal() {
 
     endWatchingAdvertisementVideo(advertisementModal.videoId)
       .then(() => {
-        dispatch(refreshFreeGame());
+        dispatch(refreshFreeGame({ points }));
         setIsProcessing(false);
         dispatch(setAdvertisementModal(null));
       })
@@ -94,8 +103,16 @@ export default function AdvertisementPlayModal() {
       });
   };
 
-  const handlePlayButtonClick = () => {
+  const handlePlay = () => {
     setIsPlaying(true);
+  };
+
+  const handlePause = () => {
+    setIsPlaying(false);
+  };
+
+  const handleError = (error) => {
+    console.error('Error playing video:', error);
   };
 
   if (!advertisementModal) return null;
@@ -112,26 +129,33 @@ export default function AdvertisementPlayModal() {
           onDuration={onDuration}
           onProgress={onProgress}
           onEnded={sendWatchFinished}
+          onPlay={handlePlay}
+          onPause={handlePause}
+          onError={handleError}
           width="100%"
           height="100%"
           style={{ objectFit: 'contain' }}
+          config={{
+            youtube: {
+              playerVars: {
+                disablekb: 1,
+                controls: 0,
+                modestbranding: 1,
+                showinfo: 0
+              }
+            }
+          }}
         />
 
-        {duration ? (
-          <div className={styles.timer}>
-            {`${Math.floor(timeLeft / 60)}:${Math.floor(timeLeft % 60)
-              .toString()
-              .padStart(2, '0')}`}
-          </div>
-        ) : (
-          <></>
-        )}
+        <PointsCounter
+          duration={duration}
+          timeLeft={timeLeft}
+          totalPoints={points}
+        />
 
-        <div className={styles['progress-bar']}>
-          <div
-            className={styles.progress}
-            style={{ width: `${progress}%` }}></div>
-        </div>
+        <Timer duration={duration} timeLeft={timeLeft} />
+
+        <ProgressBar progress={progress} />
       </div>
 
       {(isProcessing || !isReady || startWatchingIsLoading) && (
@@ -140,19 +164,23 @@ export default function AdvertisementPlayModal() {
         </div>
       )}
 
-      <div className={styles['no-interaction-overlay']}></div>
+      {isPlaying && <div className={styles['no-interaction-overlay']}></div>}
 
       {/* Android browsers may not allow to play advertisement automatically.
       Check for canPlay doesn't work. */}
-      {!isPlaying && isReady && !startWatchingIsLoading && (
+      {/* UNCOMMENT THIS IF
+      we decided to show advertisement hosted somewhere else but not youtube
+      The custom play button won't work with Youtube's iframe on Android devices.
+      That's why it's hidden for now */}
+      {/* {!isPlaying && isReady && !startWatchingIsLoading && (
         <div
           className={styles['play-button-overlay']}
-          onClick={handlePlayButtonClick}>
+          onClick={handlePlay}>
           <button className={styles['play-button']}>
             <PlayIcon />
           </button>
         </div>
-      )}
+      )} */}
     </div>
   );
 }

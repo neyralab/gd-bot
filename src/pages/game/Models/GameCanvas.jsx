@@ -18,7 +18,7 @@ import FogModel from './FogModel';
 import DirectionalLight from './DirectionalLight';
 import AmbientLight from './AmbientLight';
 
-function Loader() {
+const Loader = () => {
   const dispatch = useDispatch();
   const canvasIsLoaded = useSelector((state) => state.game.isCanvasLoaded);
   const { t } = useTranslation('system');
@@ -26,17 +26,15 @@ function Loader() {
 
   useEffect(() => {
     if (progress === 100 && !canvasIsLoaded) {
-      setTimeout(() => {
-        dispatch(setCanvasLoaded(true));
-      }, 500);
+      dispatch(setCanvasLoaded(true));
     }
-  }, [progress]);
+  }, [progress, canvasIsLoaded]);
 
   return (
     <Html>
       <div
         style={{
-          textAlign: 'Center',
+          textAlign: 'center',
           width: '200px',
           position: 'fixed',
           top: '50%',
@@ -47,7 +45,7 @@ function Loader() {
       </div>
     </Html>
   );
-}
+};
 
 const GameCanvas = forwardRef((_, ref) => {
   const shipRef = useRef(null);

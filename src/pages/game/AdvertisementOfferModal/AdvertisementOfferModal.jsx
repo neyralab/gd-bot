@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import classNames from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
@@ -6,8 +6,6 @@ import {
   setAdvertisementModal,
   setAdvertisementOfferModal
 } from '../../../store/reducers/gameSlice';
-import { ReactComponent as PlayIcon } from '../../../assets/play_media.svg';
-import AdvertisementOfferModalSvg from './AdvertisementOfferModalSvg';
 import styles from './AdvertisementOfferModal.module.scss';
 
 export default function AdvertisementOfferModal() {
@@ -22,7 +20,12 @@ export default function AdvertisementOfferModal() {
   const [isOpen, setIsOpen] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
   const [isClickable, setIsClickable] = useState(false);
-  const [image, setImage] = useState(null);
+
+  const points = 1000;
+  const parts = useMemo(() => {
+    const translatedText = t('advertisement.watchAndPlay', { points });
+    return translatedText.split(new RegExp(`(${points})`));
+  }, [t, points]);
 
   useEffect(() => {
     if (
@@ -33,7 +36,6 @@ export default function AdvertisementOfferModal() {
     ) {
       setIsOpen(true);
       setIsClickable(false);
-      setImage(advertisementOfferModal.previewUrl);
       setIsClosing(false);
       setTimeout(() => {
         setIsClickable(true);
@@ -53,8 +55,7 @@ export default function AdvertisementOfferModal() {
 
   const clickHandler = (e) => {
     if (!isClickable) return;
-    e?.preventDefault();
-    e?.stopPropagation();
+
     dispatch(
       setAdvertisementModal({
         videoUrl: advertisementOfferModal.videoUrl,
@@ -69,32 +70,38 @@ export default function AdvertisementOfferModal() {
     setIsClosing(true);
     setTimeout(() => {
       setIsOpen(false);
-      setImage(null);
       setIsClosing(false);
       setIsClickable(false);
     }, 600);
   };
 
-  if (!isOpen) return;
+  if (!isOpen) return null;
 
   return (
-    <div
-      onClick={clickHandler}
-      className={classNames(
-        styles.container,
-        isClosing && styles['is-closing']
-      )}>
-      <div className={styles.hexagon}>
-        <AdvertisementOfferModalSvg image={image} />
-      </div>
-
-      <div className={styles.content}>
-        <div className={styles.icon}>
-          <PlayIcon />
+    <>
+      <div
+        onClick={clickHandler}
+        className={classNames(
+          styles.container,
+          isClosing && styles['is-closing']
+        )}>
+        <div className={styles.content}>
+          {parts.map((part, index) =>
+            part === `${points}` ? (
+              <span key={index} className={styles.highlight}>
+                {part}
+              </span>
+            ) : (
+              <React.Fragment key={index}>
+                {part}
+                {index < parts.length - 1 && <br />}
+              </React.Fragment>
+            )
+          )}
         </div>
-
-        <span>{t('advertisement.watchAndPlay')}</span>
       </div>
-    </div>
+
+      <div onClick={clickHandler} className={styles['model-trigger']}></div>
+    </>
   );
 }
