@@ -237,7 +237,7 @@ export default function BuyButton() {
 
   const handleStartStarsPayment = () => {
     const input = isDev ?
-      `${gamePayment.Type};${0};${0};${theme.tierId};${user.id}` :
+      `${gamePayment.Type};${0};${theme.tierId};${user.id};${0}`:
       `${0};${theme.tierId};${user.id}`;
 
     makeInvoice({
