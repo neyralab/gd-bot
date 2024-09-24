@@ -4,7 +4,8 @@ import { useTranslation } from 'react-i18next';
 import CN from 'classnames';
 
 import NavigatItem from './NavigatItem';
-import { WalletConnect } from '../../../components/walletConnect';
+// import { WalletConnect } from '../../../components/walletConnect';
+import { WalletConnect } from '../WalletConnect';
 import { ReactComponent as WalletIcon } from '../assets/wallet.svg';
 import { ReactComponent as DriveIcon } from '../assets/drive.svg';
 import { ReactComponent as BoostIcon } from '../assets/boost.svg';
@@ -23,6 +24,7 @@ export default function Navigator({
   storage,
   human,
   tasks,
+  openDisconnectModal,
 }) {
   const { t, i18n } = useTranslation('system');
   const navigate = useNavigate();
@@ -52,7 +54,7 @@ export default function Navigator({
         id: 2,
         name: t('dashboard.wallet'),
         icon: <WalletIcon />,
-        html: <WalletConnect />,
+        html: <WalletConnect openDisconnectModal={openDisconnectModal} />,
         onClick: () => {},
       },
       {
