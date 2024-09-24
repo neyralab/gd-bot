@@ -4,7 +4,7 @@ import styles from './Slide.module.scss';
 import FilePreviewController from '../FilePreviewController/FilePreviewController';
 import Loader2 from '../../../../../components/Loader2/Loader2';
 
-const Slide = React.memo(({ file, id, onExpand }) => {
+const Slide = React.memo(({ file, id, onExpand, disableSwipeEvents }) => {
   const areFilesLazyLoading = useSelector(
     (state) => state.drive.areFilesLazyLoading
   );
@@ -33,7 +33,11 @@ const Slide = React.memo(({ file, id, onExpand }) => {
   return (
     <div className={styles.slide}>
       <div className={styles['slide-content']}>
-        <FilePreviewController file={file} onExpand={onExpand} />
+        <FilePreviewController
+          file={file}
+          onExpand={onExpand}
+          disableSwipeEvents={disableSwipeEvents}
+        />
       </div>
     </div>
   );

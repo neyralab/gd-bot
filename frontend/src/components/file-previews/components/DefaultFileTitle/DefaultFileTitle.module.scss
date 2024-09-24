@@ -8,6 +8,7 @@
   width: 100%;
   padding-left: 16px;
   padding-right: 48px;
+  pointer-events: none;
 
   &::before {
     content: '';
