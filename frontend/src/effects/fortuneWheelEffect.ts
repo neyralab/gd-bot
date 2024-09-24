@@ -25,6 +25,12 @@ export const getPendingSpins = async () => {
   return data.data;
 };
 
+export const getBonusSpins = async () => {
+  const url = `${API_PATH}/bonus/spin`;
+  const { data } = await axiosInstance.get<{ data: Spin[] | null }>(url);
+  return data;
+};
+
 export const startSpin = async (id?: number | null) => {
   const url = id ? `${API_PATH}/spin/${id}` : `${API_PATH}/spin`;
   const { data } = await axiosInstance.post<Effect<StartSpinResponse>>(url);

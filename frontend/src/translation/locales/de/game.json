@@ -75,7 +75,8 @@
     "freeSpin": "Freispiel",
     "earnGPoints": "GhostDrive-Punkte sammeln",
     "spinWheel": "Drehen",
-    "wheelNextSpin": "Der nächste Spin startet in",
+    "wheelNextSpin": "Der nächste kostenlose Dreh beginnt in",
+    "wheelBonusSpin": "Freunde sind eingeladen",
     "watchVideo": "Video ansehen"
   },
   "airdrop": {

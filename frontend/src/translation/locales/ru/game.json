@@ -74,7 +74,8 @@
     "freeSpin": "Бесплатное вращение",
     "earnGPoints": "Заработайте баллы GhostDrive",
     "spinWheel": "Вращать",
-    "wheelNextSpin": "Следующий раунд начнется через",
+    "wheelNextSpin": "Следующее бесплатное вращение начнется через",
+    "wheelBonusSpin": "Друзья приглашены",
     "watchVideo": "Смотреть видео"
   },
   "airdrop": {
