@@ -52,7 +52,7 @@ const PPVModal = () => {
       if (result === 'paid') {
         const shareId = isPPVActivated ? file.share_file.id : file.id;
         setIsProccess(true); 
-        await sleep(700);
+        await sleep(1000);
         const body = {
           priceView: state.view,
           currency: 1,

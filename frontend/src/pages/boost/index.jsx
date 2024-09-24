@@ -155,7 +155,7 @@ export const BoostPage = ({ tariffs, setTariffs }) => {
   const invoiceCallback = async (result) => {
     try {
       if (result === 'paid') {
-        await sleep(500);
+        await sleep(1000);
         const token = await getToken();
         await storageListEffect(token).then((data) => {
           setTariffs(data);
