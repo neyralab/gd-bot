@@ -1,14 +1,18 @@
 import React, { useMemo } from 'react';
-import moment from 'moment';
+import { useSelector } from 'react-redux';
+import { TelegramShareButton } from 'react-share';
 import { useTranslation } from 'react-i18next';
+import moment from 'moment';
 import { ReactComponent as FriendsIcon } from '../../../assets/friends.svg';
 import { Timer } from './Timer';
+import { vibrate } from '../../../utils/vibration';
 
 import styles from './FortuneTimer.module.scss';
 
 const INVITE_COUNT_TO_NEXT_SPIN = 3;
 
 export default function FortuneTimer({ timestamp, onComplete, bonusSpins }) {
+  const link = useSelector((state) => state.user.link);
   const { t } = useTranslation('game');
   const invitesPerNextSpin = useMemo(() => {
     if (bonusSpins.count) {
@@ -49,13 +53,19 @@ export default function FortuneTimer({ timestamp, onComplete, bonusSpins }) {
           : timestamp}
         onComplete={onComplete}
       />
-      <div className={styles['bonus-spin']}>
-        <span className={styles['bonus-text']}>1 Spin</span>
-        <div className={styles['bonus-status']} >
-          <span>{`Invite ${invitesPerNextSpin} friends`}</span>
-          <FriendsIcon />
-        </div>
-      </div>
+        <TelegramShareButton
+          url={link.copy}
+          className={styles['invite-btn']}
+          title={t('friends.inviteFriend')}
+          onClick={vibrate}>
+            <div className={styles['bonus-spin']}>
+              <span className={styles['bonus-text']}>1 Spin</span>
+              <div className={styles['bonus-status']} >
+                <span>{`Invite ${INVITE_COUNT_TO_NEXT_SPIN} friends`}</span>
+                <FriendsIcon />
+              </div>
+            </div>
+        </TelegramShareButton>
     </div>
   );
 }
