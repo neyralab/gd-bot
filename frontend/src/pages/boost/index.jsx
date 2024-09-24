@@ -198,7 +198,7 @@ export const BoostPage = ({ tariffs, setTariffs }) => {
   };
 
   const goToTerms = () => {
-    tg?.openLink('https://t.me/iv?url=https://docs.ghostdrive.com/legal/terms-of-service&rhash=e828db8fdbfbe21', { try_instant_view: true });
+    tg?.openLink('https://docs.ghostdrive.com/legal/terms-of-service');
   };
 
   const handleSelect = (el) => {

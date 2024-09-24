@@ -290,12 +290,12 @@ export const StartPage = ({ tariffs }) => {
       <footer className={style.footer}>
         <p className={style['footer-text']}>
           <span onClick={() => {
-              openInNewTab('https://t.me/iv?url=https://docs.ghostdrive.com/legal/terms-of-service&rhash=e828db8fdbfbe21')
+              openInNewTab('https://docs.ghostdrive.com/legal/terms-of-service')
           }}>
             Terms of use
           </span>
           <span onClick={() => {
-              openInNewTab('https://t.me/iv?url=https://play.ghostdrive.com/&rhash=35bee60e65fd881')
+              openInNewTab('https://play.ghostdrive.com')
           }}>
             {' | Help | '}
           </span>
