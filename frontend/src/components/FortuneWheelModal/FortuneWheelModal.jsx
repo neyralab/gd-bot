@@ -10,6 +10,7 @@ import { useTranslation } from 'react-i18next';
 import { getLastPlayedFreeSpin, getBonusSpins } from '../../effects/fortuneWheelEffect';
 import { ReactComponent as CloseIcon } from '../../assets/close.svg';
 import { vibrate } from '../../utils/vibration';
+import { isDevEnv } from '../../utils/isDevEnv';
 import FortuneWheel from './FortuneWheel/FortuneWheel';
 import FortuneTimer from './FortuneTimer/FortuneTimer';
 import Loader2 from '../Loader2/Loader2';
@@ -19,6 +20,7 @@ import styles from './FortuneWheelModal.module.scss';
 const INITIAL_BONUS_STATE = { count: 0, data: [], first_usage: '' };
 
 const FortuneWheelModal = forwardRef((_, ref) => {
+  const isDev = isDevEnv();
   const modalRef = useRef(null);
   const systemModalRef = useRef(null);
   const ts = useTranslation('system');
@@ -96,7 +98,7 @@ const FortuneWheelModal = forwardRef((_, ref) => {
       spinAvailable = 'free';
     }
 
-    if (startBonusSpins && bonusSpins.data.length) {
+    if (startBonusSpins && bonusSpins.data.length && isDev) {
       spinAvailable = bonusSpins.data[0];
     }
 

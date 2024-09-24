@@ -22,7 +22,11 @@ export const Referral = () => {
       try {
         setUsersLoading(false);
         const { data } = await referralEffect();
-        setUsers(data?.data?.current_usage || 0);
+        const totalUsers = data?.data?.reduce(
+          (acc, item) => acc + item?.current_usage,
+          0,
+        );
+        setUsers(totalUsers || 0);
         console.log({ referralEffect: data });
         setUsersLoading(false);
       } catch (error) {
