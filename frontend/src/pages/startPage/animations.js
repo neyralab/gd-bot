@@ -25,8 +25,7 @@ export const runInitAnimation = () => {
     `[data-animation="start-page-animation-2"]`,
     {
       opacity: 0,
-      y: -100,
-      scale: 0.5
+      y: -100
     },
     {
       opacity: 1,
