@@ -30,7 +30,6 @@ export const runInitAnimation = () => {
     {
       opacity: 1,
       y: 0,
-      scale: 1,
       stagger: 0.2,
       duration: 0.5,
       delay: 0.1,
