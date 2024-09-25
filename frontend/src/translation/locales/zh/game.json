@@ -114,7 +114,8 @@
     "wheelNextSpin": "下一轮开始于"
   },
   "advertisement": {
-    "watchAndPlay": "观看广告可获得 {{points}} 分并再次玩"
+    "watchAndPlay": "观看广告可获得 {{points}} 分并再次玩",
+    "points": "积分"
   },
   "message": {
     "someTimeForTransaction": "我们需要一些时间来审核该交易。",

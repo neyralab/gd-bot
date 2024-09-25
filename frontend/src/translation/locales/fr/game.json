@@ -114,7 +114,8 @@
     "uploadFile": "Télécharger un fichier"
   },
   "advertisement": {
-    "watchAndPlay": "Regardez la publicité pour obtenir {{points}} points et rejouer"
+    "watchAndPlay": "Regardez la publicité pour obtenir {{points}} points et rejouer",
+    "points": "Points"
   },
   "message": {
     "someTimeForTransaction": "Nous avons besoin de temps pour examiner la transaction.",

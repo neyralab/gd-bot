@@ -114,7 +114,8 @@
     "uploadFile": "파일 업로드"
   },
   "advertisement": {
-    "watchAndPlay": "광고를 시청하면 {{points}}포인트를 받고 다시 플레이할 수 있습니다."
+    "watchAndPlay": "광고를 시청하면 {{points}}포인트를 받고 다시 플레이할 수 있습니다.",
+    "points": "포인트"
   },
   "message": {
     "someTimeForTransaction": "거래를 검토하는 데 시간이 필요합니다.",
