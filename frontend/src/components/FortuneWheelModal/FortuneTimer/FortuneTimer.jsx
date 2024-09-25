@@ -12,50 +12,48 @@ import styles from './FortuneTimer.module.scss';
 
 const INVITE_COUNT_TO_NEXT_SPIN = 3;
 
-export default function FortuneTimer({ timestamp, onComplete, bonusSpins }) {
+export default function FortuneTimer({ timestamp, onComplete, invites }) {
   const link = useSelector((state) => state.user.link);
   const { t } = useTranslation('game');
   const isDev = isDevEnv();
-  const invitesPerNextSpin = useMemo(() => {
-    if (bonusSpins.count) {
-      return bonusSpins.count%INVITE_COUNT_TO_NEXT_SPIN;
-    }
 
-    return INVITE_COUNT_TO_NEXT_SPIN;
-  }, [bonusSpins]);
-  const hasInviteToNextSpin = useMemo(() => (
-    invitesPerNextSpin !== INVITE_COUNT_TO_NEXT_SPIN && invitesPerNextSpin !== 0
-  ), [invitesPerNextSpin]);
-  const showNextBonusTimer = useMemo(() => {
-    if (hasInviteToNextSpin) {
-      const givenDate = moment(bonusSpins.first_usage, 'YYYY-MM-DD HH:mm:ss');
+  const spinsForNextGame = invites.length%INVITE_COUNT_TO_NEXT_SPIN;
+  const invitePerNextSpin = useMemo(() => {
+    if (spinsForNextGame && spinsForNextGame !== INVITE_COUNT_TO_NEXT_SPIN) {
+      return invites[invites.length - spinsForNextGame];
+    }
+    return null;
+  }, [spinsForNextGame, invites]);
+
+  const timestampForNextBonusSpin = useMemo(() => {
+    if (invitePerNextSpin) {
+      const targetDate = moment(invitePerNextSpin.used_at);
       const currentDate = moment();
-      const diffInHours = currentDate.diff(givenDate, 'hours');
-
-      return diffInHours < 24
-    } else {
-      return false
+  
+      const differenceInHours = currentDate.diff(targetDate, 'hours');
+        const nextSpinTimestamp = targetDate.add(1, 'day').valueOf();
+  
+      return Math.abs(nextSpinTimestamp + differenceInHours * (1000 * 60 * 60));
     }
-  }, [hasInviteToNextSpin, bonusSpins]);
+    return null;
+  }, [invitePerNextSpin]);
 
   return (
     <div className={styles.container}>
       <div className={styles.description}>{
-        !hasInviteToNextSpin ?
+        !invitePerNextSpin ?
         t('earn.wheelNextSpin') :
         <div>
           {t('earn.wheelBonusSpin')}
-          {<span className={styles['red-text']}>{invitesPerNextSpin}</span>}
+          {<span className={styles['red-text']}>{spinsForNextGame}</span>}
           {`/${INVITE_COUNT_TO_NEXT_SPIN}`}
         </div>
       }</div>
       <Timer
-        timestamp={(isDev && showNextBonusTimer) ?
-          moment(bonusSpins.first_usage, 'YYYY-MM-DD HH:mm:ss').add(24, 'hours').valueOf()
-          : timestamp}
+        timestamp={timestampForNextBonusSpin || timestamp}
         onComplete={onComplete}
       />
-        { isDev && (
+        {isDev && (
           <TelegramShareButton
             url={link.copy}
             className={styles['invite-btn']}
@@ -64,12 +62,12 @@ export default function FortuneTimer({ timestamp, onComplete, bonusSpins }) {
               <div className={styles['bonus-spin']}>
                 <span className={styles['bonus-text']}>1 Spin</span>
                 <div className={styles['bonus-status']} >
-                  <span>{`Invite ${INVITE_COUNT_TO_NEXT_SPIN} friends`}</span>
+                  <span>{`Invite 3 friends`}</span>
                   <FriendsIcon />
                 </div>
               </div>
           </TelegramShareButton>
-        ) }
+        )}
     </div>
   );
 }
