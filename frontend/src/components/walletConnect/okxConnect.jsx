@@ -1,9 +1,11 @@
-import React, { useState  } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import QRCode from 'qrcode';
 
 import { ReactComponent as QRIcons } from '../../assets/qr.svg';
 import { ReactComponent as RefreshIcon } from '../../assets/refresh.svg';
+import { isWebPlatform, isDesktopPlatform } from '../../utils/client';
 import Loader2 from '../../components/Loader2/Loader2';
+import { tg } from '../../App';
 
 import styles from './styles.module.css';
 
@@ -11,6 +13,13 @@ const OkxConnect = ({ retry, okxConnectLink }) => {
   const [loading, setLoading] = useState(true);
   const [showQR, setShowQR] = useState(false);
   const [qrCodeUrl, setQrCodeUrl] = useState('');
+  const isMobile = useMemo(() => !(isWebPlatform(tg) || isDesktopPlatform(tg)), []);
+
+  useEffect(() => {
+    if (!isMobile) {
+      generateQRCode();
+    }
+  }, [])
 
   const generateQRCode = async () => {
     try {

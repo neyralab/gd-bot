@@ -63,7 +63,7 @@ export const WalletProvider: React.FC<WalletProviderProps> = ({ children }) => {
         : { universalLink: '', openUniversalLink: false };
       
       const link = await wallet?.connect?.(body);
-      if (!isMobile && link) {
+      if (isMobile && link) {
         window.open(link, '_blank');
       }
       return link ?? '';
