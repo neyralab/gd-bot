@@ -213,7 +213,7 @@ export default function BuyButton() {
   const invoiceCallback = async (result) => {
     try {
       if (result === 'paid') {
-        await sleep(600);
+        await sleep(1000);
         dispatch(setStatus('waiting'));
         const pendingGame = await getActivePayedGame();
         dispatch(setGameId(pendingGame?.uuid || pendingGame.id));
@@ -237,7 +237,7 @@ export default function BuyButton() {
 
   const handleStartStarsPayment = () => {
     const input = isDev ?
-      `${gamePayment.Type};${0};${0};${theme.tierId};${user.id}` :
+      `${gamePayment.Type};${0};${theme.tierId};${user.id};${0}`:
       `${0};${theme.tierId};${user.id}`;
 
     makeInvoice({

@@ -155,7 +155,7 @@ export const BoostPage = ({ tariffs, setTariffs }) => {
   const invoiceCallback = async (result) => {
     try {
       if (result === 'paid') {
-        await sleep(500);
+        await sleep(1000);
         const token = await getToken();
         await storageListEffect(token).then((data) => {
           setTariffs(data);
@@ -173,7 +173,7 @@ export const BoostPage = ({ tariffs, setTariffs }) => {
       payByTON(el);
     } else {
       const input = isDev ?
-        `${storagePayment.Type};0;${el?.id};${user.id};${ws}`:
+        `${storagePayment.Type};${el?.id};${user.id};${ws};0`:
         `${el?.id};${user.id};${ws}`;
 
       const theme = {
@@ -198,7 +198,7 @@ export const BoostPage = ({ tariffs, setTariffs }) => {
   };
 
   const goToTerms = () => {
-    tg?.openLink('https://t.me/iv?url=https://docs.ghostdrive.com/legal/terms-of-service&rhash=e828db8fdbfbe21', { try_instant_view: true });
+    tg?.openLink('https://docs.ghostdrive.com/legal/terms-of-service');
   };
 
   const handleSelect = (el) => {

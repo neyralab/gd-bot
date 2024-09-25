@@ -9,15 +9,17 @@ import { saveUserWallet } from '../../effects/userEffects';
 import { ReactComponent as TonIcon } from '../../assets/logo/ton.svg';
 import { ReactComponent as OKXIcon } from '../../assets/logo/okx.svg';
 import { ReactComponent as CloseIcon } from '../../assets/close.svg';
+import { OkxConnect } from './okxConnect';
 
 import styles from './styles.module.css';
 
 const ConnectModal = ({ isOpen, onClose }) => {
+  const [startOKXConnect, setStartOKXConnect] = useState(false);
+  const [okxConnectLink, setOKXConnectLink] = useState('');
   const user = useSelector((state) => state?.user?.data);
   const [tonConnectUI] = useTonConnectUI();
-  const { connectWallet } = useWallet();
+  const { wallet, connectWallet } = useWallet();
   const dispatch = useDispatch();
-
 
   useEffect(() => {
     tonConnectUI.modal.onStateChange(async (state) => {
@@ -31,7 +33,8 @@ const ConnectModal = ({ isOpen, onClose }) => {
           .length
       ) {
         const res = await saveUserWallet({
-          account: tonConnectUI?.account
+          account: tonConnectUI?.account,
+          channel: 'ton'
         });
         const newWallets = res.map((el) => el.public_address);
         dispatch(setUser({ ...user, wallet: newWallets }));
@@ -39,13 +42,43 @@ const ConnectModal = ({ isOpen, onClose }) => {
     });
   }, []);
 
+  useEffect(() => {
+    if (wallet) {
+      wallet.onStatusChange((res) => {
+        if (res) {
+          onClose()
+        }
+      })
+    }
+  }, [wallet]);
+
   const tonConnect = useCallback(async () => {
     await tonConnectUI?.openModal();
   }, [tonConnectUI]);
 
   const OKXConnect = useCallback(async () => {
-    connectWallet();
+    try {
+      const link = await connectWallet();
+      link && setOKXConnectLink(link);
+      setStartOKXConnect(true);      
+    } catch (error) {
+      console.warn(error);
+    }
   }, []);
+
+  const handleOnClose = () => {
+    setStartOKXConnect(false);
+    handleOnClose();
+  }
+
+  const retry = async () => {
+    try {
+      const link = await connectWallet();
+      link && setOKXConnectLink(link);
+    } catch (error) {
+      console.warn(error);
+    }
+  }
 
   const connectList = [
     {
@@ -63,17 +96,19 @@ const ConnectModal = ({ isOpen, onClose }) => {
   return (
     <Modal
       isOpen={isOpen}
-      onRequestClose={onClose}
+      onRequestClose={handleOnClose}
       overlayClassName={styles.overlay}
       shouldCloseOnOverlayClick={true}
       className={styles.modal}
     >
       <div className={styles.container}>
-        <h1 className={styles.title}>Choose a Wallet Connection Method</h1>
+        <h1 className={styles.title}>
+          { startOKXConnect ? 'OKX Wallet' : 'Choose a Wallet Connection Method' }
+          </h1>
         <button className={styles.closeButton} onClick={onClose} >
           <CloseIcon />
         </button>
-        <ul className={styles.list}>
+        {!startOKXConnect && <ul className={styles.list}>
           { connectList.map(({ icon, title, onClick }, index) => (
             <li
               key={`connect-method-${index}`}
@@ -85,8 +120,9 @@ const ConnectModal = ({ isOpen, onClose }) => {
               </div>
               <p className={styles['item-title']}>{title}</p>
             </li>
-          )) }
-        </ul>
+          ))}
+        </ul>}
+        {startOKXConnect && <OkxConnect retry={retry} okxConnectLink={okxConnectLink} /> }
       </div>
     </Modal>
   )

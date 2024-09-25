@@ -1,5 +1,4 @@
 import React, {
-  useCallback,
   useEffect,
   useImperativeHandle,
   useRef,
@@ -12,7 +11,7 @@ import ProgressBar from './ProgressBar/ProgressBar';
 import styles from './VideoPlayer.module.scss';
 
 const VideoPlayer = forwardRef(
-  ({ fileContent, fileContentType = 'blob' }, ref) => {
+  ({ fileContent, fileContentType = 'blob', disableSwipeEvents }, ref) => {
     const playerRef = useRef(null);
     const [playing, setPlaying] = useState(false);
     const [showControls, setShowControls] = useState(true);
@@ -30,6 +29,18 @@ const VideoPlayer = forwardRef(
         setUrl(fileContent);
       }
     }, [fileContentType]);
+
+    useEffect(() => {
+      if (seeking) {
+        disableSwipeEvents?.(true);
+      } else {
+        disableSwipeEvents?.(false);
+      }
+
+      return () => {
+        disableSwipeEvents?.(false);
+      };
+    }, [seeking]);
 
     useImperativeHandle(ref, () => ({
       runPreview: () => {
@@ -89,12 +100,6 @@ const VideoPlayer = forwardRef(
 
       setShowControls(!showControls);
     };
-
-    const handleSeek = useCallback((e) => {
-      const bounds = progressRef.current.getBoundingClientRect();
-      const seekPosition = (e.clientX - bounds.left) / bounds.width;
-      playerRef.current.seekTo(seekPosition);
-    }, []);
 
     const handleSeekMouseDown = () => setSeeking(true);
 
@@ -158,7 +163,6 @@ const VideoPlayer = forwardRef(
 
         <ProgressBar
           played={played}
-          handleSeek={handleSeek}
           handleSeekMouseDown={handleSeekMouseDown}
           handleSeekChange={handleSeekChange}
           handleSeekMouseUp={handleSeekMouseUp}

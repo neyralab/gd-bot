@@ -74,7 +74,8 @@
     "freeSpin": "Vòng quay miễn phí",
     "earnGPoints": "Kiếm điểm GhostDrive",
     "spinWheel": "Quay",
-    "wheelNextSpin": "Vòng tiếp theo bắt đầu sau",
+    "wheelNextSpin": "Vòng quay miễn phí tiếp theo bắt đầu trong",
+    "wheelBonusSpin": "Bạn bè đã được mời",
     "watchVideo": "Xem video"
   },
   "airdrop": {
@@ -113,7 +114,8 @@
     "uploadFile": "Tải lên tệp"
   },
   "advertisement": {
-    "watchAndPlay": "Xem quảng cáo để nhận {{points}} điểm và chơi lại"
+    "watchAndPlay": "Xem quảng cáo để nhận {{points}} điểm và chơi lại",
+    "points": "Điểm"
   },
   "message": {
     "someTimeForTransaction": "Chúng tôi cần thời gian để xem xét giao dịch.",

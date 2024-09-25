@@ -74,7 +74,8 @@
     "freeSpin": "Безкоштовне обертання",
     "earnGPoints": "Заробити бали GhostDrive",
     "spinWheel": "Обертати",
-    "wheelNextSpin": "Наступний раунд розпочнеться через",
+    "wheelNextSpin": "Наступне безкоштовне обертання почнеться через",
+    "wheelBonusSpin": "Друзів запрошено",
     "watchVideo": "Дивитися відео"
   },
   "airdrop": {
@@ -113,7 +114,8 @@
     "uploadFile": "Завантажити файл"
   },
   "advertisement": {
-    "watchAndPlay": "Перегляньте рекламу, щоб отримати {{points}} балів і грайте знову"
+    "watchAndPlay": "Перегляньте рекламу, щоб отримати {{points}} балів і грайте знову",
+    "points": "Бали"
   },
   "message": {
     "someTimeForTransaction": "Нам потрібен час, щоб перевірити трансакцію.",

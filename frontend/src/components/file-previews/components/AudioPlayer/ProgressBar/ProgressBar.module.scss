@@ -7,8 +7,8 @@
 .circle-audio-svg {
   position: absolute;
   top: 0;
-  left: 20px;
-  transform: rotate(-90deg); 
+  left: 50%;
+  transform: rotate(-90deg) translateY(-50%); 
   overflow: initial;
 }
 

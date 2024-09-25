@@ -16,7 +16,6 @@ import {
 import { DEFAULT_TARIFFS_NAMES } from '../upgradeStorage';
 import { fromByteToGb } from '../../utils/storage';
 import { transformSize } from '../../utils/transformSize';
-import { isDevEnv } from '../../utils/isDevEnv';
 
 import GhostLoader from '../../components/ghostLoader';
 import FortuneWheel from './FortuneWheel';
@@ -28,10 +27,8 @@ import PointCounter from './PointCounter/PointCounter';
 import SystemModal from '../../components/SystemModal/SystemModal';
 import NavigatItem from './Navigator/NavigatItem';
 import Navigator from './Navigator/Navigator';
-import { ReactComponent as LogoIcon } from '../../assets/ghost.svg';
-import BannerSource from '../../assets/node-banner.webp';
 import { runInitAnimation } from './animations';
-import { tg } from '../../App'; 
+import { tg } from '../../App';
 
 import style from './style.module.css';
 import navigatorStyle from './Navigator/Navigator.module.scss';
@@ -54,7 +51,6 @@ export const StartPage = ({ tariffs }) => {
   const currentWorkspace = useSelector(selectCurrentWorkspace);
   const user = useSelector((state) => state?.user?.data);
   const navigate = useNavigate();
-  const isDev = isDevEnv();
   const giftToken = useMemo(() => {
     const params = new URLSearchParams(location.search);
     return params.get('storageGift');
@@ -235,30 +231,11 @@ export const StartPage = ({ tariffs }) => {
 
   return (
     <div ref={wrapperRef} className={`${style.container}`}>
-      {isDev ? (
-        <Banner
-          storageSize={user.space_total}
-          onOpenShareModal={onOpenShareModal}
-          data-animation="start-page-animation-2"
-        />
-      ) : (
-        <div
-          data-animation="start-page-animation-2"
-          className={CN(style.card, style.banner)}>
-          <img src={BannerSource} alt="banner" />
-          <div className={style['banner-content']}>
-            <div onClick={onOpenShareModal} className={style['banner-header']}>
-              <div className={style['banner-header_img']}>
-                <LogoIcon />
-                <span className={style['banner-header-share-btn']}>
-                  {t('share.share')}
-                </span>
-              </div>
-              <h1>{transformSize(user.space_total)}</h1>
-            </div>
-          </div>
-        </div>
-      )}
+      <Banner
+        storageSize={user.space_total}
+        onOpenShareModal={onOpenShareModal}
+        data-animation="start-page-animation-2"
+      />
 
       <PointCounter
         points={user?.points}
@@ -289,17 +266,26 @@ export const StartPage = ({ tariffs }) => {
 
       <footer className={style.footer}>
         <p className={style['footer-text']}>
-          <span onClick={() => {
-              openInNewTab('https://t.me/iv?url=https://docs.ghostdrive.com/legal/terms-of-service&rhash=e828db8fdbfbe21')
-          }}>
+          <span
+            onClick={() => {
+              openInNewTab(
+                'https://docs.ghostdrive.com/legal/terms-of-service'
+              );
+            }}>
             Terms of use
           </span>
-          <span onClick={() => {
-              openInNewTab('https://t.me/iv?url=https://play.ghostdrive.com/&rhash=35bee60e65fd881')
-          }}>
+          <span
+            onClick={() => {
+              openInNewTab('https://play.ghostdrive.com');
+            }}>
             {' | Help | '}
           </span>
-          <span onClick={() => {openInNewTab('https://t.me/ghostdrive_web3_chat', false)}}>Support.</span>
+          <span
+            onClick={() => {
+              openInNewTab('https://t.me/ghostdrive_web3_chat', false);
+            }}>
+            Support.
+          </span>
         </p>
       </footer>
       {disconnectWalletModal && (

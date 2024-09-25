@@ -74,7 +74,8 @@
     "freeSpin": "Rodada Grátis",
     "earnGPoints": "Ganhe pontos GhostDrive",
     "spinWheel": "Girar",
-    "wheelNextSpin": "A próxima ronda começa em",
+    "wheelNextSpin": "A próxima rodada grátis começa em",
+    "wheelBonusSpin": "Amigos foram convidados",
     "watchVideo": "Assistir vídeo"
   },
   "airdrop": {
@@ -113,7 +114,8 @@
     "uploadFile": "Carregar arquivo"
   },
   "advertisement": {
-    "watchAndPlay": "Veja o anúncio para ganhar {{points}} pontos e jogar novamente"
+    "watchAndPlay": "Veja o anúncio para ganhar {{points}} pontos e jogar novamente",
+    "points": "Pontos"
   },
   "message": {
     "someTimeForTransaction": "Precisamos de algum tempo para analisar a transação.",

@@ -19,7 +19,8 @@ const PreviewSwitcher = forwardRef(
       filePreviewImage,
       onFavoriteClick,
       onInfoClick,
-      onExpand
+      onExpand,
+      disableSwipeEvents
     },
     ref
   ) => {
@@ -72,6 +73,7 @@ const PreviewSwitcher = forwardRef(
             fileContentType="url"
             onFavoriteClick={onFavoriteClick}
             onInfoClick={onInfoClick}
+            disableSwipeEvents={disableSwipeEvents}
           />
         );
 
@@ -86,6 +88,7 @@ const PreviewSwitcher = forwardRef(
             filePreviewImage={filePreviewImage}
             onFavoriteClick={onFavoriteClick}
             onInfoClick={onInfoClick}
+            disableSwipeEvents={disableSwipeEvents}
           />
         );
 

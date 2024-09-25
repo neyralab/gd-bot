@@ -30,8 +30,6 @@ export default function AdvertisementPlayModal() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [startWatchingIsLoading, setStartWatchingIsLoading] = useState(false);
 
-  const points = 1000;
-
   useEffect(() => {
     if (advertisementModal && advertisementModal.videoUrl) {
       startWatching();
@@ -88,7 +86,7 @@ export default function AdvertisementPlayModal() {
 
     endWatchingAdvertisementVideo(advertisementModal.videoId)
       .then(() => {
-        dispatch(refreshFreeGame({ points }));
+        dispatch(refreshFreeGame({ points: advertisementModal.points }));
         setIsProcessing(false);
         dispatch(setAdvertisementModal(null));
       })
@@ -150,7 +148,7 @@ export default function AdvertisementPlayModal() {
         <PointsCounter
           duration={duration}
           timeLeft={timeLeft}
-          totalPoints={points}
+          totalPoints={advertisementModal.points}
         />
 
         <Timer duration={duration} timeLeft={timeLeft} />

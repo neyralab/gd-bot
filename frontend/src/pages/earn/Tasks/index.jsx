@@ -42,7 +42,8 @@ export default function Tasks({
           account: {
             ...wallet?.account,
             uiAddress: address
-          }
+          },
+          channel: 'ton'
         });
         getTasks();
         console.log({ saveUserWallet: res });

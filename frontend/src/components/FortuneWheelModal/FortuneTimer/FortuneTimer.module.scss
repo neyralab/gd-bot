@@ -1,16 +1,31 @@
 .container {
   text-align: center;
-  padding-top: 16px;
+  padding-top: 10px;
   width: 100%;
 }
 
 .description {
-  font-size: 12px;
+  font-family: 'SF Pro Text';
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 27px;
+  letter-spacing: 0.01em;
+  margin-bottom: 20px;
 }
 
 .timer {
   font-size: 44px;
-  font-weight: 500;
+  font-family: 'Digital Numbers';
+  font-size: 36px;
+  font-weight: 400;
+  line-height: 43px;
+  letter-spacing: 0.0em;
+}
+
+.timer > span {
+  font-size: 23px;
+  height: 22px;
+  line-height: 40px;
 }
 
 .actions {
@@ -47,4 +62,43 @@
         top: -2px;
     }
   }
+}
+
+.invite-btn {
+  width: 100%;
+}
+
+.bonus-spin {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 30px;
+  border-radius: 12px;
+  padding: 10px 16px;
+  border: 1px solid #FFFFFF;
+}
+
+.bonus-status {
+  display: flex;
+}
+
+.bonus-status > span {
+  font-family: 'SF Pro Text';
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 24px;
+  margin-right: 4px;
+}
+
+.bonus-text {
+  font-family: 'SF Pro Text';
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+}
+
+.red-text {
+  color: #ff4539;
+  margin-left: 4px;
 }

@@ -13,13 +13,14 @@ export const DisconnectWalletModal = ({ isOpen, onClose }) => {
   const { disconnectWallet } = useWallet();
 
 
-  const disconnectOKX = async () => {
+  const disconnectOKX = () => {
     disconnectWallet();
     onClose();
   };
 
-  const disconnectTon = async () => {
-    await tonConnectUI.disconnect();
+  const disconnectTon = () => {
+    tonConnectUI.disconnect();
+    onClose()
   };
 
   const handleDisconnect = () => {

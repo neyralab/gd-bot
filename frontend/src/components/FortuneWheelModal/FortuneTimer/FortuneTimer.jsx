@@ -1,60 +1,73 @@
-import React from 'react';
-// import { useDispatch, useSelector } from 'react-redux';
-import { useTimer } from 'react-timer-hook';
+import React, { useMemo } from 'react';
+import { useSelector } from 'react-redux';
+import { TelegramShareButton } from 'react-share';
 import { useTranslation } from 'react-i18next';
-// import { isDevEnv } from '../../../utils/isDevEnv';
-import { formatTime } from '../../../utils/dates';
-// import { INVOICE_TYPE } from '../../../utils/createStarInvoice';
-// import { makeInvoice } from '../../../effects/paymentEffect';
-// import { selectPaymenttByKey } from '../../../store/reducers/paymentSlice';
-// import { ReactComponent as StarIcon } from '../../../assets/star.svg';
+import moment from 'moment';
+import { ReactComponent as FriendsIcon } from '../../../assets/friends.svg';
+import { Timer } from './Timer';
+import { vibrate } from '../../../utils/vibration';
+import { isDevEnv } from '../../../utils/isDevEnv';
+
 import styles from './FortuneTimer.module.scss';
 
-export default function FortuneTimer({ timestamp, onComplete }) {
+const INVITE_COUNT_TO_NEXT_SPIN = 3;
+
+export default function FortuneTimer({ timestamp, onComplete, invites }) {
+  const link = useSelector((state) => state.user.link);
   const { t } = useTranslation('game');
-  // const dispatch = useDispatch();
-  // const user = useSelector((state) => state.user.data);
-  // const spinType = useSelector(selectPaymenttByKey('spin_game'));
-  // const isDev = useMemo(() => isDevEnv(), []);
+  const isDev = isDevEnv();
 
-  const { seconds, minutes, hours } = useTimer({
-    expiryTimestamp: timestamp,
-    onExpire: () => {
-      onComplete?.();
+  const spinsForNextGame = invites.length%INVITE_COUNT_TO_NEXT_SPIN;
+  const invitePerNextSpin = useMemo(() => {
+    if (spinsForNextGame && spinsForNextGame !== INVITE_COUNT_TO_NEXT_SPIN) {
+      return invites[invites.length - spinsForNextGame];
     }
-  });
+    return null;
+  }, [spinsForNextGame, invites]);
 
-  // const invoiceCallback = async (result) => {
-  //   try {
-  //     if (result === 'paid') {
-  //       await sleep(600);
-  //       onComplete?.();
-  //     } else {
-  //       console.warn(`error: The payment was not completed. ${result}`)
-  //     }
-  //   } catch (error) {
-  //     console.warn('error: ', error);
-  //   }
-  // };
-
-  // const onBuy = () => {
-  //   const input = `${spinType.Type};0;${user.id};0;0`;
-  //   makeInvoice({
-  //     input,
-  //     dispatch,
-  //     callback: invoiceCallback,
-  //     type: INVOICE_TYPE.spin,
-  //     theme: { stars: isDev ? 1 : 400 }
-  //   }); 
-  // };
+  const timestampForNextBonusSpin = useMemo(() => {
+    if (invitePerNextSpin) {
+      const targetDate = moment(invitePerNextSpin.used_at);
+      const currentDate = moment();
+  
+      const differenceInHours = currentDate.diff(targetDate, 'hours');
+        const nextSpinTimestamp = targetDate.add(1, 'day').valueOf();
+  
+      return Math.abs(nextSpinTimestamp + differenceInHours * (1000 * 60 * 60));
+    }
+    return null;
+  }, [invitePerNextSpin]);
 
   return (
     <div className={styles.container}>
-      <div className={styles.description}>{t('earn.wheelNextSpin')}</div>
-      <div className={styles.timer}>
-        {formatTime(hours || 24)}:{formatTime(minutes || 0)}:
-        {formatTime(seconds || 0)}
-      </div> 
+      <div className={styles.description}>{
+        !invitePerNextSpin ?
+        t('earn.wheelNextSpin') :
+        <div>
+          {t('earn.wheelBonusSpin')}
+          {<span className={styles['red-text']}>{spinsForNextGame}</span>}
+          {`/${INVITE_COUNT_TO_NEXT_SPIN}`}
+        </div>
+      }</div>
+      <Timer
+        timestamp={timestampForNextBonusSpin || timestamp}
+        onComplete={onComplete}
+      />
+        {isDev && (
+          <TelegramShareButton
+            url={link.copy}
+            className={styles['invite-btn']}
+            title={t('friends.inviteFriend')}
+            onClick={vibrate}>
+              <div className={styles['bonus-spin']}>
+                <span className={styles['bonus-text']}>1 Spin</span>
+                <div className={styles['bonus-status']} >
+                  <span>{`Invite 3 friends`}</span>
+                  <FriendsIcon />
+                </div>
+              </div>
+          </TelegramShareButton>
+        )}
     </div>
   );
 }

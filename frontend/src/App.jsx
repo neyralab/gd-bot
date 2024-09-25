@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo } from 'react';
+import { useEffect, useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { TonConnectUIProvider } from '@tonconnect/ui-react';
@@ -38,11 +38,7 @@ import EarnPage from './pages/earn';
 import FriendsPage from './pages/friends';
 import NodesWelcomePage from './pages/nodes-welcome';
 import NodesPage from './pages/nodes';
-import NotAllow from './pages/notAllow';
 import DrivePage from './pages/drive';
-
-import { isEnabledMobileOnly } from './utils/featureFlags';
-import { isWebPlatform } from './utils/client';
 
 import './App.css';
 
@@ -50,10 +46,6 @@ export const tg = window.Telegram.WebApp;
 const GA = 'G-VEPRY1XE4E';
 
 function App() {
-  const ALLOW_PREVIEW = useMemo(
-    () => !!isEnabledMobileOnly || !isWebPlatform(tg),
-    [tg]
-  );
   const [tariffs, setTariffs] = useState(null);
   const dispatch = useDispatch();
   useLanguage();
@@ -105,16 +97,12 @@ function App() {
     tg?.expand();
     tg?.enableClosingConfirmation();
     console.log('tg:', tg);
-    ALLOW_PREVIEW && onPageLoad();
+    onPageLoad();
   }, []);
 
   const onClose = () => {
     tg.close();
   };
-
-  if (!ALLOW_PREVIEW) {
-    return <NotAllow />;
-  }
 
   return (
     <TonConnectUIProvider
@@ -161,7 +149,7 @@ function App() {
             <Route
               path="/boost"
               exact
-              element={<BoostPage tariffs={tariffs} />}
+              element={<BoostPage tariffs={tariffs} setTariffs={setTariffs} />}
             />
             <Route path="/earn" exact element={<EarnPage />} />
             <Route path="/nodes-welcome" exact element={<NodesWelcomePage />} />

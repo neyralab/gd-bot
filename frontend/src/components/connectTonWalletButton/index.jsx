@@ -58,7 +58,8 @@ export const ConnectTonWalletButton = ({ openDisconnectModal }) => {
           account: {
             ...wallet?.account,
             uiAddress: address
-          }
+          },
+          channel: 'ton'
         });
         console.log({ res });
       })();

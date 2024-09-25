@@ -7,29 +7,31 @@ import React, {
 } from 'react';
 import { Sheet } from 'react-modal-sheet';
 import { useTranslation } from 'react-i18next';
-import {
-  getLastPlayedFreeSpin,
-  getPendingSpins
-} from '../../effects/fortuneWheelEffect';
+import { getLastPlayedFreeSpin, getBonusSpins } from '../../effects/fortuneWheelEffect';
 import { ReactComponent as CloseIcon } from '../../assets/close.svg';
 import { vibrate } from '../../utils/vibration';
+import { isDevEnv } from '../../utils/isDevEnv';
 import FortuneWheel from './FortuneWheel/FortuneWheel';
 import FortuneTimer from './FortuneTimer/FortuneTimer';
 import Loader2 from '../Loader2/Loader2';
 import SystemModal from '../SystemModal/SystemModal';
 import styles from './FortuneWheelModal.module.scss';
 
+const INITIAL_BONUS_STATE = { usage: [], data: [] };
+
 const FortuneWheelModal = forwardRef((_, ref) => {
+  const isDev = isDevEnv();
   const modalRef = useRef(null);
   const systemModalRef = useRef(null);
   const ts = useTranslation('system');
   const tg = useTranslation('game');
   const [isOpen, setIsOpen] = useState(false);
   const [isInitialized, setIsInitialized] = useState(false);
+  const [startBonusSpins, setStartBonusSpins] = useState(false);
   const [available, setAvailable] = useState(true); // 'free', pendingGame, false
   const [freeSpinTimestamp, setFreeSpinTimestamp] = useState(null);
   const [lastPlayedFreeSpin, setLastPlayedFreeSpin] = useState(null);
-  const [pendingSpins, setPendingSpins] = useState([]);
+  const [bonusSpins, setBonusSpins] = useState(INITIAL_BONUS_STATE);
 
   useEffect(() => {
     if (isOpen) {
@@ -39,7 +41,7 @@ const FortuneWheelModal = forwardRef((_, ref) => {
 
   useEffect(() => {
     checkAvailable();
-  }, [freeSpinTimestamp, lastPlayedFreeSpin]);
+  }, [freeSpinTimestamp, lastPlayedFreeSpin, startBonusSpins]);
 
   const open = () => {
     setIsOpen(true);
@@ -48,19 +50,20 @@ const FortuneWheelModal = forwardRef((_, ref) => {
   const close = () => {
     vibrate()
     setIsOpen(false);
+    setStartBonusSpins(false);
   };
 
   const getInitialData = async () => {
     try {
       setIsInitialized(false);
-      const [lastPlayedFreeSpinRes, pendingSpinsRes] = await Promise.all([
+      const [lastPlayedFreeSpinRes, bonusSpinsRes] = await Promise.all([
         getLastPlayedFreeSpin(),
-        getPendingSpins()
+        getBonusSpins()
       ]);
       console.log({ lastPlayedFreeSpinRes });
-      console.log({ pendingSpinsRes });
+      console.log({ bonusSpinsRes });
       setLastPlayedFreeSpin(lastPlayedFreeSpinRes);
-      setPendingSpins(pendingSpinsRes);
+      setBonusSpins(bonusSpinsRes);
       setIsInitialized(true);
     } catch (error) {
       systemModalRef.current.open({
@@ -95,11 +98,8 @@ const FortuneWheelModal = forwardRef((_, ref) => {
       spinAvailable = 'free';
     }
 
-    if (pendingSpins) {
-      setPendingSpins(pendingSpins || []);
-      if (pendingSpins.length) {
-        spinAvailable = pendingSpins[0];
-      }
+    if (startBonusSpins && bonusSpins.data.length && isDev) {
+      spinAvailable = bonusSpins.data[0];
     }
 
     setAvailable(spinAvailable);
@@ -117,6 +117,12 @@ const FortuneWheelModal = forwardRef((_, ref) => {
     open: open
   }));
 
+  const startBunusGame = () => {
+    if (bonusSpins.data.length) {
+      setStartBonusSpins(true);
+    }
+  }
+
   return (
     <>
       <Sheet
@@ -124,16 +130,24 @@ const FortuneWheelModal = forwardRef((_, ref) => {
         isOpen={isOpen}
         onClose={close}
         detent="content-height">
-        <Sheet.Container className="react-modal-sheet-container">
+        <Sheet.Container className={styles['sheet-container']}>
           <Sheet.Header className="react-modal-sheet-header" />
           <Sheet.Content>
             <Sheet.Scroller>
               <div className={styles.container}>
                 <div className={styles.header}>
-                  <h2>
-                    {isInitialized && available && tg.t('earn.earnGPoints')}
-                  </h2>
-
+                  {!!bonusSpins.data.length &&
+                    !startBonusSpins && available !== 'free' ? (
+                    <button
+                      className={styles['spin-btn']}
+                      onClick={startBunusGame}
+                    >{`${bonusSpins.data.length} spin`}
+                  </button>
+                  ) : (
+                    <h2>
+                      {isInitialized && available && tg.t('earn.earnGPoints')}
+                    </h2>
+                  )}
                   <div
                     className={styles.close}
                     onClick={close}>
@@ -155,7 +169,7 @@ const FortuneWheelModal = forwardRef((_, ref) => {
                   )}
 
                   {isInitialized &&
-                    !freeSpinTimestamp &&
+                    (!freeSpinTimestamp || startBonusSpins) &&
                     available !== false && (
                       <FortuneWheel
                         spinId={available.id || null}
@@ -169,6 +183,8 @@ const FortuneWheelModal = forwardRef((_, ref) => {
                       <FortuneTimer
                         timestamp={freeSpinTimestamp}
                         onComplete={onTimerCompleted}
+                        bonusSpins={bonusSpins.data}
+                        invites={bonusSpins.usage}
                       />
                     )}
                 </div>
