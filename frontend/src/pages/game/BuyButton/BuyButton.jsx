@@ -260,13 +260,20 @@ export default function BuyButton() {
   };
 
   const hanldePyamentBtnClick = () => {
-    if (isStarPaymentAllow && isTonPaymentAllow) {
-      handleSelect();
-    } else if (isStarPaymentAllow) {
-      handleStartStarsPayment();
-    } else {
-      clickHandler();
-    }
+    toast.error(
+      'Boost Mode is temporarily unavailable; we expect to restore it shortly. Thank you for your patience.',
+      {
+        theme: 'colored',
+        position: 'top-center',
+      }
+    );
+    // if (isStarPaymentAllow && isTonPaymentAllow) {
+    //   handleSelect();
+    // } else if (isStarPaymentAllow) {
+    //   handleStartStarsPayment();
+    // } else {
+    //   clickHandler();
+    // }
   }
 
   if (status !== 'playing' && !themeAccess[theme.id] &&  theme?.id !== 'hawk' && isAnyPaymentEnabled) {
