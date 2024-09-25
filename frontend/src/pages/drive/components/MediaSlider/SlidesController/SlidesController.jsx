@@ -5,7 +5,7 @@ import { gsap } from 'gsap';
 import {
   assignFilesQueryData,
   getDriveFiles,
-  setMediaSliderCurrentFile,
+  setMediaSliderCurrentFile
 } from '../../../../../store/reducers/driveSlice';
 import Slide from '../Slide/Slide';
 import styles from './SlidesController.module.scss';
@@ -71,7 +71,7 @@ export default function SlidesController({ onExpand }) {
 
   useEffect(() => {
     gsap.set(slidesRef.current, { y: '-100vh' });
-  }, [slides])
+  }, [slides]);
 
   const handlers = useSwipeable({
     onSwipedUp: () => {
@@ -159,11 +159,21 @@ export default function SlidesController({ onExpand }) {
     onExpand?.(status);
   }, []);
 
+  const disableSwipeEvents = useCallback((status) => {
+    setCanSlide(!status);
+  }, []);
+
   return (
     <div className={styles.container} {...handlers}>
       <div className={styles['slide-list']} ref={slidesRef}>
         {slides.map((el) => (
-          <Slide key={el.key} file={el.file} id={el.key} onExpand={onExpandHandler} />
+          <Slide
+            key={el.key}
+            file={el.file}
+            id={el.key}
+            onExpand={onExpandHandler}
+            disableSwipeEvents={disableSwipeEvents}
+          />
         ))}
       </div>
     </div>

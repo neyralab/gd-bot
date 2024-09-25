@@ -19,7 +19,7 @@ import {
 const USE_STREAM_URL = ['audio', 'video'];
 const USE_PREVIEW_IMG = ['audio'];
 
-const FilePreviewController = ({ file, onExpand }) => {
+const FilePreviewController = ({ file, onExpand, disableSwipeEvents }) => {
   const dispatch = useDispatch();
   const { getCache, setCacheItem } = useMediaSliderCache();
   const mediaSliderCurrentFile = useSelector(
@@ -165,6 +165,7 @@ const FilePreviewController = ({ file, onExpand }) => {
       onFavoriteClick={onFavoriteClick}
       onInfoClick={onInfoClick}
       onExpand={onExpand}
+      disableSwipeEvents={disableSwipeEvents}
     />
   );
 };

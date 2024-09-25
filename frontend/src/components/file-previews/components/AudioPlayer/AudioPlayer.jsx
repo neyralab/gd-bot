@@ -11,12 +11,16 @@ import ProgressBar from './ProgressBar/ProgressBar';
 import styles from './AudioPlayer.module.scss';
 
 const AudioPlayer = forwardRef(
-  ({ fileContentType, fileContent, filePreviewImage }, ref) => {
+  (
+    { fileContentType, fileContent, filePreviewImage, disableSwipeEvents },
+    ref
+  ) => {
     const audioRef = useRef(null);
     const [isPlaying, setIsPlaying] = useState(false);
     const [progress, setProgress] = useState(0);
     const [radius, setRadius] = useState(0);
     const [url, setUrl] = useState();
+    const [duration, setDuration] = useState(0);
 
     useEffect(() => {
       if (fileContentType === 'blob') {
@@ -29,7 +33,8 @@ const AudioPlayer = forwardRef(
 
     useEffect(() => {
       const updateRadius = () => {
-        const newRadius = (window.innerWidth - 40) / 2;
+        const newRadius =
+          (Math.min(window.innerWidth, window.innerHeight) - 40) / 2;
         setRadius(newRadius);
       };
 
@@ -37,21 +42,6 @@ const AudioPlayer = forwardRef(
 
       window.addEventListener('resize', updateRadius);
       return () => window.removeEventListener('resize', updateRadius);
-    }, []);
-
-    useEffect(() => {
-      const updateProgress = () => {
-        const progressValue = audioRef.current
-          ? (audioRef.current.currentTime / audioRef.current.duration) * 100
-          : 0;
-        setProgress(progressValue);
-      };
-
-      audioRef.current.addEventListener('timeupdate', updateProgress);
-
-      return () => {
-        audioRef?.current?.removeEventListener('timeupdate', updateProgress);
-      };
     }, []);
 
     useImperativeHandle(ref, () => ({
@@ -73,6 +63,17 @@ const AudioPlayer = forwardRef(
       }
     }));
 
+    const handleTimeUpdate = () => {
+      const progressValue = audioRef.current
+        ? (audioRef.current.currentTime / audioRef.current.duration) * 100
+        : 0;
+      setProgress(progressValue);
+    };
+
+    const handleLoad = () => {
+      setDuration(audioRef.current.duration);
+    };
+
     const handlePlayPause = useCallback(() => {
       if (isPlaying) {
         audioRef.current.pause();
@@ -90,18 +91,9 @@ const AudioPlayer = forwardRef(
       audioRef.current.currentTime += 10;
     }, [audioRef]);
 
-    const handleProgressClick = useCallback(
-      (event) => {
-        const boundingRect = event.currentTarget.getBoundingClientRect();
-        const x = event.clientX - boundingRect.left - boundingRect.width / 2;
-        const y = event.clientY - boundingRect.top - boundingRect.height / 2;
-        const angle = Math.atan2(y, x) * (180 / Math.PI) + 90;
-        const adjustedAngle = angle < 0 ? angle + 360 : angle;
-        const newTime = (adjustedAngle / 360) * audioRef.current.duration;
-        audioRef.current.currentTime = newTime;
-      },
-      [audioRef]
-    );
+    const handleProgressChange = ({ newTime }) => {
+      audioRef.current.currentTime = newTime;
+    };
 
     const onFinish = useCallback(() => {
       setIsPlaying(false);
@@ -128,13 +120,17 @@ const AudioPlayer = forwardRef(
             ref={audioRef}
             onEnded={onFinish}
             onError={handleError}
+            onLoadedMetadata={handleLoad}
+            onTimeUpdate={handleTimeUpdate}
             src={url}
           />
 
           <ProgressBar
             progress={progress}
             radius={radius}
-            handleProgressClick={handleProgressClick}
+            duration={duration}
+            handleProgressChange={handleProgressChange}
+            disableSwipeEvents={disableSwipeEvents}
           />
 
           <Controls

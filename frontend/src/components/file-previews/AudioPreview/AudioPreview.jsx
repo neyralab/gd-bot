@@ -12,7 +12,8 @@ const AudioPreview = forwardRef(
       fileContentType,
       filePreviewImage,
       onFavoriteClick,
-      onInfoClick
+      onInfoClick,
+      disableSwipeEvents
     },
     ref
   ) => {
@@ -39,6 +40,7 @@ const AudioPreview = forwardRef(
           fileContent={fileContent}
           fileContentType={fileContentType}
           filePreviewImage={filePreviewImage}
+          disableSwipeEvents={disableSwipeEvents}
         />
 
         {mode === 'default' && (
