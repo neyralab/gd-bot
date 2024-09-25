@@ -37,6 +37,7 @@
     "moment": "^2.30.1",
     "okxconnect": "^1.1.1",
     "pdfjs-dist": "4.4.168",
+    "qrcode": "^1.5.4",
     "ramda": "^0.30.0",
     "react": "^18.2.0",
     "react-app-rewired": "^2.2.1",
@@ -110,8 +111,8 @@
     "@types/react-window-infinite-loader": "^1.0.9",
     "@yushijinhun/three-minifier-rollup": "^0.4.0",
     "prettier": "^3.2.5",
+    "rollup-plugin-visualizer": "^5.12.0",
     "typescript": "^5.4.5",
-    "typescript-plugin-css-modules": "^5.1.0",
-    "rollup-plugin-visualizer": "^5.12.0"
+    "typescript-plugin-css-modules": "^5.1.0"
   }
 }
