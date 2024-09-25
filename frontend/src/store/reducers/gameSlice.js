@@ -100,7 +100,7 @@ const gameSlice = createSlice({
      * When the free game is finished, this modal should appear
      * and offer our user to watch an advertisement to play another game.
      * If user accepts the offer, advertisement modal should be seen
-     * Parameters: null or {previewUrl: string, previewColor: string; videoUrl: string}
+     * Parameters: null or {points: number, previewColor: string; videoUrl: string}
      */
     advertisementOfferModal: null,
     advertisementModal: null,
@@ -275,12 +275,12 @@ const undateSubTheme = (dispatch, state, themes, level) => {
 const getAdvertisementOffer = async (dispatch) => {
   const videoInfo = await getAdvertisementVideo();
 
-  if (videoInfo && videoInfo.id && videoInfo.video) {
+  if (videoInfo && videoInfo.data.id && videoInfo.data.video) {
     dispatch(
       setAdvertisementOfferModal({
-        previewUrl: null,
-        videoUrl: videoInfo.video,
-        videoId: videoInfo.id
+        points: videoInfo.points,
+        videoUrl: videoInfo.data.video,
+        videoId: videoInfo.data.id
       })
     );
   }
@@ -470,7 +470,7 @@ export const finishRound = createAsyncThunk(
 
     if (state.game.theme.id === 'hawk') {
       dispatch(startNewFreeGameCountdown());
-      
+
       setTimeout(() => {
         // wait for animation
         getAdvertisementOffer(dispatch);
@@ -562,12 +562,14 @@ export const refreshFreeGame = createAsyncThunk(
     dispatch(setAdvertisementModal(null));
     dispatch(setStatus('waiting'));
     dispatch(setThemeAccess({ themeId: 'hawk', status: true }));
-    dispatch(
-      setRoundFinal({
-        roundPoints: points,
-        isActive: true
-      })
-    );
+    if (points) {
+      dispatch(
+        setRoundFinal({
+          roundPoints: points,
+          isActive: true
+        })
+      );
+    }
   }
 );
 
