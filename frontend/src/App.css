@@ -6,7 +6,7 @@
   font-weight: 500;
   src:
     local('SF Pro Text'),
-    url(./assets/fonts/sf-pro-text.woff) format('woff');
+    url(./assets/fonts/SF-Pro-Text-Regular.otf) format('opentype');
 }
 
 @font-face {
