@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import styles from './SliderItem.module.css';
 
-export default function SliderItem({ item }) {
+const SliderItem = forwardRef(({ item }, ref) => {
   return (
-    <li key={item.id} className={styles['slider-card']}>
+    <li key={item.id} className={styles['slider-card']} ref={ref}>
       <div className={styles['slider-card__icon']}>
         {item.iconText && (
           <span className={styles['slider-card__icon-text']}>
@@ -26,4 +26,6 @@ export default function SliderItem({ item }) {
       </div>
     </li>
   );
-}
+});
+
+export default SliderItem;

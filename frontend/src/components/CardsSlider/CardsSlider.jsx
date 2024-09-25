@@ -6,6 +6,7 @@ export default function CardsSlider({ items, timeout }) {
   const [activeIndex, setActiveIndex] = useState(0);
   const sliderCardsRef = useRef(null);
   const sliderControlsRef = useRef(null);
+  const itemRefs = useRef([]);
   const swipeHandlers = useSwipeable({
     onSwipedLeft: (e) => {
       goToNext(e, 'right');
@@ -45,9 +46,13 @@ export default function CardsSlider({ items, timeout }) {
 
   const updateHeight = () => {
     const slider = sliderCardsRef.current;
-    const activeCard = slider.children[activeIndex];
-    const rect = activeCard.getBoundingClientRect();
-    slider.style.height = `${rect.height}px`;
+    if (slider && itemRefs.current) {
+      const heights = itemRefs.current.map((item) =>
+        item ? item.offsetHeight : 0
+      );
+      const maxHeight = Math.max(...heights);
+      slider.style.height = `${maxHeight}px`;
+    }
   };
 
   const startSlideInterval = () => {
@@ -128,8 +133,11 @@ export default function CardsSlider({ items, timeout }) {
   return (
     <div className={styles.slider} {...swipeHandlers}>
       <ul className={styles['slider-cards']} ref={sliderCardsRef}>
-        {items.map((el) => {
-          return el.html;
+        {items.map((el, index) => {
+          return React.cloneElement(el.html, {
+            ref: (elem) => (itemRefs.current[index] = elem),
+            key: el.id
+          });
         })}
       </ul>
 
