@@ -21,11 +21,13 @@ export default function AdvertisementOfferModal() {
   const [isClosing, setIsClosing] = useState(false);
   const [isClickable, setIsClickable] = useState(false);
 
-  const points = 1000;
   const parts = useMemo(() => {
-    const translatedText = t('advertisement.watchAndPlay', { points });
+    const points = advertisementOfferModal ? advertisementOfferModal.points : 0;
+    const translatedText = t('advertisement.watchAndPlay', {
+      points
+    });
     return translatedText.split(new RegExp(`(${points})`));
-  }, [t, points]);
+  }, [t, advertisementOfferModal]);
 
   useEffect(() => {
     if (
@@ -57,6 +59,7 @@ export default function AdvertisementOfferModal() {
     if (!isClickable) return;
     dispatch(
       setAdvertisementModal({
+        points: advertisementOfferModal.points,
         videoUrl: advertisementOfferModal.videoUrl,
         videoId: advertisementOfferModal.videoId
       })
@@ -86,7 +89,8 @@ export default function AdvertisementOfferModal() {
         )}>
         <div className={styles.content}>
           {parts.map((part, index) =>
-            part === `${points}` ? (
+            part ===
+            `${advertisementOfferModal ? advertisementOfferModal.points : 0}` ? (
               <span key={index} className={styles.highlight}>
                 {part}
               </span>

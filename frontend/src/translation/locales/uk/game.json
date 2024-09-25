@@ -114,7 +114,8 @@
     "uploadFile": "Завантажити файл"
   },
   "advertisement": {
-    "watchAndPlay": "Перегляньте рекламу, щоб отримати {{points}} балів і грайте знову"
+    "watchAndPlay": "Перегляньте рекламу, щоб отримати {{points}} балів і грайте знову",
+    "points": "Бали"
   },
   "message": {
     "someTimeForTransaction": "Нам потрібен час, щоб перевірити трансакцію.",
