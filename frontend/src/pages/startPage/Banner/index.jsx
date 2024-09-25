@@ -64,13 +64,14 @@ const Banner = ({ storageSize, onOpenShareModal, ...res }) => {
   };
 
   const doRedirectToApp = (firstUrl, secondUrl) => {
-    if (!secondUrl) {
-      handleClick(firstUrl);
-      return;
-    }
+    if (!firstUrl && !secondUrl) return;
 
-    const urlToUse = getUrlForDevice(firstUrl, secondUrl);
-    handleClick(urlToUse);
+    if (firstUrl && secondUrl) {
+      const urlToUse = getUrlForDevice(firstUrl, secondUrl);
+      handleClick(urlToUse);
+    } else {
+      handleClick(firstUrl || secondUrl);
+    }
   };
 
   const slides = useMemo(() => {

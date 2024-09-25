@@ -27,7 +27,6 @@ jobs:
 
       - name: Update Tag
         run: |
-          cd src/
           git config user.email "git@github.com"
           git config user.name "GitHub"
           git fetch --all

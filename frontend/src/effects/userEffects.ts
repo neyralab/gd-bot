@@ -46,9 +46,9 @@ type Wallet = {
 export const saveUserWallet = async (
   walletData: unknown
 ): Promise<Wallet[]> => {
-  const { data } = await axiosInstance.post<Effect<Wallet[]>>(
-    `${API_PATH}/tg/wallet`,
+  const { data } = await axiosInstance.post<Wallet[]>(
+    `${API_PATH}/users/add/address`,
     walletData
   );
-  return data.data;
+  return data;
 };
