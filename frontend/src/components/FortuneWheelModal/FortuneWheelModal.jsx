@@ -17,7 +17,7 @@ import Loader2 from '../Loader2/Loader2';
 import SystemModal from '../SystemModal/SystemModal';
 import styles from './FortuneWheelModal.module.scss';
 
-const INITIAL_BONUS_STATE = { count: 0, data: [], first_usage: '' };
+const INITIAL_BONUS_STATE = { usage: [], data: [] };
 
 const FortuneWheelModal = forwardRef((_, ref) => {
   const isDev = isDevEnv();
@@ -137,7 +137,7 @@ const FortuneWheelModal = forwardRef((_, ref) => {
               <div className={styles.container}>
                 <div className={styles.header}>
                   {!!bonusSpins.data.length &&
-                    !startBonusSpins ? (
+                    !startBonusSpins && available !== 'free' ? (
                     <button
                       className={styles['spin-btn']}
                       onClick={startBunusGame}
@@ -183,7 +183,8 @@ const FortuneWheelModal = forwardRef((_, ref) => {
                       <FortuneTimer
                         timestamp={freeSpinTimestamp}
                         onComplete={onTimerCompleted}
-                        bonusSpins={bonusSpins}
+                        bonusSpins={bonusSpins.data}
+                        invites={bonusSpins.usage}
                       />
                     )}
                 </div>
