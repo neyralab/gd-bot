@@ -45,10 +45,10 @@ const WalletConnect = () => {
       <button className={styles['connect-btn']} onClick={openConnectModal}>
         {myAddress ? `...${myAddress.slice(-4)}` : t('dashboard.add')}
       </button>
-      <ConnectModal
+      {isConnectModal && <ConnectModal
         isOpen={isConnectModal}
         onClose={onCloseConnectModal}
-      />
+      />}
       <DisconnectWalletModal isOpen={isDisconectModal} onClose={onCloseDisconnectModal} />
     </>
   )
