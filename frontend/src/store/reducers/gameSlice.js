@@ -13,10 +13,12 @@ import {
   getPendingGames,
   startGame
 } from '../../effects/gameEffect';
+import { getUserEffect } from '../../effects/userEffects';
 import { setUser } from './userSlice';
 import { getAdvertisementVideo } from '../../effects/advertisementEffect';
 import { isEnabledMobileOnly } from '../../utils/featureFlags';
 import { isDesktopPlatform, isWebPlatform } from '../../utils/client';
+import { getToken } from '../../effects/set-token';
 import { tg } from '../../App';
 
 const gameSlice = createSlice({
@@ -494,7 +496,7 @@ export const finishRound = createAsyncThunk(
     }
 
     endGame({ id: gameId, taps: taps })
-      .then((data) => {
+      .then(() => {
         dispatch(
           setRoundFinal({
             roundPoints:
@@ -503,8 +505,14 @@ export const finishRound = createAsyncThunk(
             isActive: true
           })
         );
-        dispatch(setUser({ ...state.user.data, points: data?.data || 0 }));
         dispatch(setPendingGames(filteredGames));
+        getToken()
+        .then((token) => {
+          getUserEffect(token)
+            .then((user) => {
+              dispatch(setUser(user));
+            })
+        })
       })
       .catch((err) => {
         console.log({ endGameErr: err, m: err?.response.data });
