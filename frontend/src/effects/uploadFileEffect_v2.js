@@ -16,7 +16,8 @@ export const uploadFileEffect = async ({
   files,
   dispatch,
   afterFileUploadCallback,
-  onUploadProgress
+  onUploadProgress,
+  onUploadError
 }) => {
   let progresses = {};
 
@@ -134,6 +135,7 @@ export const uploadFileEffect = async ({
             autoClose: 5000
           });
         }
+        onUploadError?.(e);
       }
     };
 
