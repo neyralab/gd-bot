@@ -14,7 +14,7 @@ import GhostLoader from '../../components/ghostLoader';
 import {
   getPaidShareFileEffect,
   getDownloadOTT,
-  // getFileStarStatistic
+  getFileStarStatistic
 } from '../../effects/filesEffects';
 import { getFileCids } from '../../effects/file/getFileCid';
 import { makeInvoice } from '../../effects/paymentEffect';
@@ -44,24 +44,25 @@ export const PaidView = () => {
   const [file, setFile] = useState({});
   const { t } = useTranslation('drive');
   const [loading, setLoading] = useState(false);
-  // const [fileStatistics, setFileStatistics] = useState({});
+  const [fileStatistics, setFileStatistics] = useState({});
   const [expandDescription, setExpandDescription] = useState(false);
   const [showReportView, setShowReportView] = useState(false);
   const [downloadLoading, setDownloadLoading] = useState(false);
   const [fileContent, setFileContent] = useState(null);
   const user = useSelector((state) => state.user.data);
-  const ppvPayment = useSelector(selectPaymenttByKey('pay_per_view'));
+  const ppvPaymentAccess = useSelector(selectPaymenttByKey('pay_per_view_access'));
+  const ppvPaymentDownload = useSelector(selectPaymenttByKey('pay_per_view_download'));
   const [fullscreen, setFullscreen] = useState(false);
   const [step, setStep] = useState(STEPS.preview);
   const { id } = useParams();
   const allowPreview = useMemo(() => (step !== STEPS.preview ), [step]);
-
+  
   useEffect(() => {
     const init = async () => {
       try {
         const data = await getPaidShareFileEffect(addSlugHyphens(id));
-        // const fileStat = await getFileStarStatistic(data?.data?.file?.slug);
-
+        const fileStat = await getFileStarStatistic(data?.data?.file?.slug);
+        setFileStatistics(fileStat);
         if (!data.data) {
           toast.error(t('ppv.fileAbsent'), { position: 'top-center'  })
           return;
@@ -193,12 +194,12 @@ export const PaidView = () => {
 
   const showProcess = async () => {
     try {
-      const input = `${ppvPayment.Type};0;${user.id};${file.id};${file.payShare.id}`;
+      const input = `${ppvPaymentAccess.Type};0;${user.id};${file.id};${file.payShare.id}`;
       makeInvoice({
         input,
         dispatch,
         callback: invoicePreviewCallback,
-        type: INVOICE_TYPE.ppv,
+        type: INVOICE_TYPE.viewAccessPPV,
         theme: { multiplier: '', stars: file.payShare.price_view }
       });
     } catch (error) {
@@ -208,12 +209,12 @@ export const PaidView = () => {
 
   const downloadProcess = async () => {
     try {
-      const input = `${ppvPayment.Type};0;${user.id};${file.id};${file.payShare.id}`;
+      const input = `${ppvPaymentDownload.Type};0;${user.id};${file.id};${file.payShare.id}`;
       makeInvoice({
         input,
         dispatch,
         callback: invoiceDownloadCallback,
-        type: INVOICE_TYPE.ppv,
+        type: INVOICE_TYPE.downloadAccessPPV,
         theme: { multiplier: '', stars: file.payShare.price_download }
       });
     } catch (error) {
@@ -291,12 +292,12 @@ export const PaidView = () => {
           <div className={styles.stats}>
             <div className={styles.statItem}>
               <h5>{t('ppv.totalViews')}</h5>
-              <p>{file?.entry_statistic?.viewed}</p>
+              <p>{fileStatistics?.view}</p>
             </div>
             <div className={styles.divider}></div>
             <div className={styles.statItem}>
               <h5>{t('ppv.starts')}</h5>
-              <p>{file?.entry_statistic?.downloaded}</p>
+              <p>{fileStatistics?.stars}</p>
             </div>
           </div>
         </div>
