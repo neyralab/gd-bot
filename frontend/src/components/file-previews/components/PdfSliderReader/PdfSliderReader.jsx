@@ -13,7 +13,7 @@ pdfjs.GlobalWorkerOptions.workerSrc = new URL(
   import.meta.url
 ).toString();
 
-export default function PdfSliderReader({ fileContent }) {
+export default function PdfSliderReader({ fileContent, onFileReadError }) {
   const pdfRef = useRef(null);
   const pagesRef = useRef(null);
   const [totalPages, setTotalPages] = useState(0);
@@ -149,6 +149,7 @@ export default function PdfSliderReader({ fileContent }) {
           renderMode="canvas"
           inputRef={pdfRef}
           onLoadSuccess={onDocumentLoadSuccess}
+          onLoadError={onFileReadError}
           onItemClick={clickHandler}
           loading={
             <div className={styles['initial-loader-container']}>

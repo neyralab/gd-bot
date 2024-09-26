@@ -4,6 +4,8 @@ export default [
   '.midi',
   '.mp3',
   '.oga',
+  '.ogg',
+  '.flac',
   '.opus',
   '.wav',
   '.weba',
@@ -12,6 +14,7 @@ export default [
   '.aiff',
   '.ac3',
   '.wma',
+  '.m4a'
 ];
 
 export const audioMediaTypes = [
@@ -30,6 +33,10 @@ export const audioMediaTypes = [
   'audio/x-pn-wav',
   'audio/webm',
   'audio/x-flac',
+  'audio/vnd.dlna.adts',
+  'audio/aiff',
+  'audio/x-m4a',
+  'audio/x-ms-wma'
 ];
 
 export const audioMediaTypesContent = ['audio/mpeg', 'audio/wav'];

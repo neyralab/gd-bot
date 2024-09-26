@@ -20,21 +20,30 @@ export const readExcelContent = (fileContent) => {
       try {
         const data = new Uint8Array(e.target.result);
         const workbook = read(data, { type: 'array' });
+
+        if (!workbook.SheetNames.length) {
+          throw new Error('No sheets found in the Excel file');
+        }
+
         const sheetName = workbook.SheetNames[0];
         const worksheet = workbook.Sheets[sheetName];
-        const htmlString = utils.sheet_to_html(worksheet);
 
+        if (!worksheet) {
+          throw new Error('Sheet not found in the Excel file');
+        }
+
+        const htmlString = utils.sheet_to_html(worksheet);
         resolve(htmlString);
       } catch (error) {
-        reject(new Error('Error processing excel content'));
+        reject(new Error(`Error processing Excel content: ${error.message}`));
       }
     };
     reader.onerror = () => {
-      reject(new Error('Error reading excel content'));
+      reject(new Error('Error reading Excel content'));
     };
     reader.readAsArrayBuffer(fileContent);
   }).catch((error) => {
-    console.error('Error reading excel content:', error);
+    console.error('Error reading Excel content:', error);
     return Promise.reject(error);
   });
 };

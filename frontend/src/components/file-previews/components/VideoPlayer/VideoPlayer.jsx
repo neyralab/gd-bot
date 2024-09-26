@@ -5,6 +5,7 @@ import React, {
   useState,
   forwardRef
 } from 'react';
+import { useTranslation } from 'react-i18next';
 import ReactPlayer from 'react-player';
 import Controls from './Controls/Controls';
 import ProgressBar from './ProgressBar/ProgressBar';
@@ -12,12 +13,14 @@ import styles from './VideoPlayer.module.scss';
 
 const VideoPlayer = forwardRef(
   ({ fileContent, fileContentType = 'blob', disableSwipeEvents }, ref) => {
+    const { t } = useTranslation('drive');
     const playerRef = useRef(null);
     const [playing, setPlaying] = useState(false);
     const [showControls, setShowControls] = useState(true);
     const [seeking, setSeeking] = useState(false);
     const [played, setPlayed] = useState(0);
     const [url, setUrl] = useState(null);
+    const [error, setError] = useState(false);
 
     useEffect(() => {
       if (fileContentType === 'blob') {
@@ -123,6 +126,11 @@ const VideoPlayer = forwardRef(
       console.error('Error playing video:', error);
       setPlaying(false);
       setShowControls(true);
+
+      const errorStr = error.toString().trim().toLowerCase();
+      if (errorStr.includes('notsupportederror')) {
+        setError(true);
+      }
     };
 
     return (
@@ -160,6 +168,8 @@ const VideoPlayer = forwardRef(
             handleRewind={handleRewind}
           />
         )}
+
+        {error && <div className={styles.error}>{t('error.readFile')}</div>}
 
         <ProgressBar
           played={played}

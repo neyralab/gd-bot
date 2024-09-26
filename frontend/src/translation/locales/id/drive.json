@@ -66,5 +66,8 @@
   "time": {
     "am": "AM",
     "pm": "PM"
+  },
+  "error": {
+    "readFile": "File rusak atau tidak dapat diputar di perangkat ini"
   }
 }

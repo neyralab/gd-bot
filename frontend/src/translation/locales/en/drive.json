@@ -66,5 +66,8 @@
   "time": {
     "am": "am",
     "pm": "pm"
+  },
+  "error": {
+    "readFile": "The file is corrupted or cannot be played on this device."
   }
 }

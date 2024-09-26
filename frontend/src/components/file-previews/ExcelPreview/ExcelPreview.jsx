@@ -11,7 +11,8 @@ const ExcelPreview = ({
   fileContent,
   onFavoriteClick,
   onInfoClick,
-  onExpand
+  onExpand,
+  onFileReadError
 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
@@ -30,6 +31,7 @@ const ExcelPreview = ({
       <ExcelReader
         mode={isExpanded ? 'default' : 'simplified'}
         fileContent={fileContent}
+        onFileReadError={onFileReadError}
       />
 
       {isExpanded ? (

@@ -66,5 +66,8 @@
   "time": {
     "am": "am",
     "pm": "pm"
+  },
+  "error": {
+    "readFile": "Le fichier est endommagé ou ne peut pas être lu sur cet appareil"
   }
 }

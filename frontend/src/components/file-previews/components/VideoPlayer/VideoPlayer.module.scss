@@ -44,3 +44,14 @@
   user-select: none;
   touch-action: none;
 }
+
+.error {
+  position: absolute;
+  top: calc(50% + 32px);
+  left: 0;
+  width: 100%;
+  padding: 24px;
+  text-align: center;
+  color: #a5a5a5;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}

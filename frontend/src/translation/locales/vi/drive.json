@@ -66,5 +66,8 @@
   "time": {
     "am": "sáng",
     "pm": "chiều"
+  },
+  "error": {
+    "readFile": "Tệp bị hỏng hoặc không thể phát trên thiết bị này"
   }
 }

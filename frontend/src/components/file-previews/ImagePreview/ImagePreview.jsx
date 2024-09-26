@@ -8,13 +8,16 @@ const ImagePreview = ({
   file,
   fileContent,
   onFavoriteClick,
-  onInfoClick
+  onInfoClick,
+  onFileReadError
 }) => {
   return (
     <div className={styles.container}>
       <ImageReader
+        file={file}
         fileContentType={fileContentType}
         fileContent={fileContent}
+        onFileReadError={onFileReadError}
       />
 
       {mode === 'default' && (

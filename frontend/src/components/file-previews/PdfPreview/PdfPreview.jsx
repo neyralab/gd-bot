@@ -8,11 +8,15 @@ const PdfPreview = ({
   file,
   fileContent,
   onFavoriteClick,
-  onInfoClick
+  onInfoClick,
+  onFileReadError
 }) => {
   return (
     <div className={styles.container}>
-      <PdfSliderReader fileContent={fileContent} />
+      <PdfSliderReader
+        fileContent={fileContent}
+        onFileReadError={onFileReadError}
+      />
 
       {mode === 'default' && (
         <DefaultModeFileUI
