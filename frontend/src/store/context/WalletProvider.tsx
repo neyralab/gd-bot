@@ -109,7 +109,6 @@ export const WalletProvider: React.FC<WalletProviderProps> = ({ children }) => {
   const disconnectWallet = (): void => {
     if (wallet) {
       wallet.disconnect();
-      setWallet(null);
       setIsConnected(false);
     }
   };
