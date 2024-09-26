@@ -66,5 +66,8 @@
   "time": {
     "am": "am",
     "pm": "pm"
+  },
+  "error": {
+    "readFile": "El archivo está dañado o no se puede reproducir en este dispositivo"
   }
 }

@@ -66,5 +66,8 @@
   "time": {
     "am": "vorm.",
     "pm": "nachm."
+  },
+  "error": {
+    "readFile": "Die Datei ist beschädigt oder kann auf diesem Gerät nicht abgespielt werden"
   }
 }

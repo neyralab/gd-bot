@@ -3,7 +3,11 @@ import classNames from 'classnames';
 import { readExcelContent } from '../../../../utils/readers';
 import styles from './ExcelReader.module.scss';
 
-export default function ExcelReader({ mode = 'default', fileContent }) {
+export default function ExcelReader({
+  mode = 'default',
+  fileContent,
+  onFileReadError
+}) {
   const [htmlString, setHtmlString] = useState('');
 
   useEffect(() => {
@@ -12,8 +16,9 @@ export default function ExcelReader({ mode = 'default', fileContent }) {
         .then((result) => {
           setHtmlString(result);
         })
-        .catch(() => {
+        .catch((e) => {
           setHtmlString('');
+          onFileReadError?.(e);
         });
     }
   }, [fileContent]);
