@@ -106,7 +106,7 @@ export default function FriendsPage() {
             className={styles['invite-button']}
             url={link.copy}
             title={t('friends.inviteFriend')}
-            onClick={vibrate}>
+            onClick={() => {vibrate()}}>
             <span
               data-animation="friends-animation-2"
               className={styles['initial-state-for-animation']}>
