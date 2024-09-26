@@ -3,7 +3,9 @@ import { isDevEnv } from '../utils/isDevEnv';
 const INVOICE_TYPE = {
   boost: 'boost',
   game: 'game',
-  ppv: 'ppv',
+  ceatePPV: 'ceatePPV',
+  viewAccessPPV: 'viewAccessPPV',
+  downloadAccessPPV: 'downloadAccessPPV',
   spin: 'spin'
 }
 
@@ -34,14 +36,38 @@ const createInvoice = ({ type, additionalData }) => {
         }
       ],
     }
-  } else if (type === INVOICE_TYPE.ppv) {
+  } else if (type === INVOICE_TYPE.ceatePPV) {
     return {
-      title: 'Ghost Drive Pay per View',
-      description: 'Enables payment processing for the Pay-Per-View feature.',
+      title: 'Ghost Drive PPV Registration.',
+      description: 'Ghostdrive PPV: Stars Payment Link',
       payload: additionalData.payload || defPayload,
       prices: [
         {
-          label: `Ghost Drive Pay per View`,
+          label: 'Ghost Drive PPV Registration.',
+          amount: additionalData.price
+        }
+      ],
+    }
+  } else if (type === INVOICE_TYPE.viewAccessPPV) {
+    return {
+      title: 'Ghost Drive PPV Access',
+      description: 'Ghostdrive Pay per View Access payload type for stars payment link creation',
+      payload: additionalData.payload || defPayload,
+      prices: [
+        {
+          label: `Ghost Drive Pay per View Access`,
+          amount: additionalData.price
+        }
+      ],
+    }
+  } else if (type === INVOICE_TYPE.downloadAccessPPV) {
+    return {
+      title: 'Ghost Drive PPV Download',
+      description: 'Ghostdrive Pay per View Download payload type for stars payment link creation',
+      payload: additionalData.payload || defPayload,
+      prices: [
+        {
+          label: `Ghost Drive PPV Download`,
           amount: additionalData.price
         }
       ],

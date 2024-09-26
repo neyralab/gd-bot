@@ -334,8 +334,17 @@ export const createStreamEffect = async (slug) => {
 
 export const getFileStarStatistic = async (slug) => {
   try {
-    const data = await axios.get(`${API_PATH}/share/file/stat/${slug}`);
-    return data.data;
+    const { data } = await axios.get(`${API_PATH}/share/file/stat/${slug}`);
+
+    if (data && data.length) {
+      const res = data[0]?.reduce((acc, cur) => ({
+        view: cur.action === 'view' ? acc.view + cur.count : acc.view,
+        stars: acc.stars + (cur.stars ? parseInt(cur.stars, 10) : 0)
+      }), { view: 0, stars: 0 });
+      
+      return res;
+    }
+    return { view: 0, stars: 0 }
   } catch (error) {
     throw Error(error);
   }

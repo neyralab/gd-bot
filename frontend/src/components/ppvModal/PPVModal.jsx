@@ -27,7 +27,7 @@ const PPVModal = () => {
   const [isProccess, setIsProccess] = useState(false);
   const user = useSelector((state) => state.user.data);
   const [state, setState] = useState(INITIAL_STATE);
-  const ppvPayment = useSelector(selectPaymenttByKey('pay_per_view'));
+  const ppvPayment = useSelector(selectPaymenttByKey('pay_per_view_registration'));
   const file = useSelector((store) => store.drive.ppvFile);
   const isPPVActivated = useMemo(() => !!file?.share_file, [file?.share_file]);
 
@@ -87,12 +87,11 @@ const PPVModal = () => {
     try {
       const shareId = isPPVActivated ? file.share_file.id : 0;
       const input = `${ppvPayment.Type};0;${user.id};${file.id};${shareId}`;
-    
       makeInvoice({
         input,
         dispatch,
         callback: invoiceCallback,
-        type: INVOICE_TYPE.ppv,
+        type: INVOICE_TYPE.ceatePPV,
         theme: { multiplier: '', stars: 1 }
       });
     } catch (error) {
