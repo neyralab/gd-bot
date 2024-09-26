@@ -46,7 +46,7 @@ export default function UploadAction() {
       />
       <label
         htmlFor="file"
-        onClick={() => {vibrate()}}
+        onClick={() => {vibrate('soft')}}
         className={classNames(styles.button, isUploading && styles.uploading)}>
         <PlusIcon />
       </label>

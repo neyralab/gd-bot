@@ -270,7 +270,7 @@ export const BoostPage = ({ tariffs, setTariffs }) => {
                     data-animation="boost-animation-1"
                     className={styles['initial-state-for-animation']}
                     key={index}
-                    onClick={() => {vibrate()}}>
+                    onClick={() => {vibrate('soft')}}>
                     <button
                       disabled={currentPrice?.storage === el?.storage}
                       onClick={() => {

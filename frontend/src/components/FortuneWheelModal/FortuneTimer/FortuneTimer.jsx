@@ -58,7 +58,7 @@ export default function FortuneTimer({ timestamp, onComplete, invites }) {
             url={link.copy}
             className={styles['invite-btn']}
             title={t('friends.inviteFriend')}
-            onClick={() => {vibrate()}}>
+            onClick={() => {vibrate('soft')}}>
               <div className={styles['bonus-spin']}>
                 <span className={styles['bonus-text']}>1 Spin</span>
                 <div className={styles['bonus-status']} >

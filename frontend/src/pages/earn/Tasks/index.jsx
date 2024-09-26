@@ -99,7 +99,7 @@ export default function Tasks({
             url={link.copy}
             key={task.id}
             title={'Share this link with friends'}
-            onClick={() => {vibrate()}}>
+            onClick={() => {vibrate('soft')}}>
             <Task
               onClick={() => handleClick(task)}
               isDone={task.isDone}
