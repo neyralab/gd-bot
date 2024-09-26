@@ -1,24 +1,23 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { useTimer } from 'react-timer-hook';
-import { formatTime } from '../../../utils/dates';
+import moment from 'moment';
 
 import styles from './FortuneTimer.module.scss';
 
 const Timer = ({ timestamp, onComplete }) => {
-
   const { seconds, minutes, hours } = useTimer({
     expiryTimestamp: timestamp,
-    onExpire: () => {
-      onComplete?.();
-    }
+    onExpire: onComplete,
   });
+
+  const formattedTime = useMemo(() => moment({ hours, minutes, seconds }), [hours, minutes, seconds]);
 
   return (
     <div className={styles.timer}>
-      {formatTime(hours)}<span>:</span>{formatTime(minutes || 0)}<span>:</span>
-      {formatTime(seconds || 0)}
+      {formattedTime.format('HH')}<span>:</span>{formattedTime.format('mm')}<span>:</span>
+      {formattedTime.format('ss')}
     </div>
-  )
-}
+  );
+};
 
-export { Timer }
+export { Timer };
