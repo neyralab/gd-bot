@@ -13,10 +13,12 @@ import {
   getPendingGames,
   startGame
 } from '../../effects/gameEffect';
+import { getUserEffect } from '../../effects/userEffects';
 import { setUser } from './userSlice';
 import { getAdvertisementVideo } from '../../effects/advertisementEffect';
 import { isEnabledMobileOnly } from '../../utils/featureFlags';
 import { isDesktopPlatform, isWebPlatform } from '../../utils/client';
+import { getToken } from '../../effects/set-token';
 import { tg } from '../../App';
 
 const gameSlice = createSlice({
@@ -503,7 +505,6 @@ export const finishRound = createAsyncThunk(
             isActive: true
           })
         );
-        dispatch(setUser({ ...state.user.data, points: data?.data || 0 }));
         dispatch(setPendingGames(filteredGames));
       })
       .catch((err) => {
@@ -515,6 +516,14 @@ export const finishRound = createAsyncThunk(
           })
         );
       });
+
+    getToken()
+      .then((token) => {
+        getUserEffect(token)
+          .then((user) => {
+            dispatch(setUser(user));
+          })
+      })
 
     if (state.game.reachedNewLevel) {
       undateSubTheme(
