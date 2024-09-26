@@ -496,7 +496,7 @@ export const finishRound = createAsyncThunk(
     }
 
     endGame({ id: gameId, taps: taps })
-      .then((data) => {
+      .then(() => {
         dispatch(
           setRoundFinal({
             roundPoints:
@@ -506,6 +506,13 @@ export const finishRound = createAsyncThunk(
           })
         );
         dispatch(setPendingGames(filteredGames));
+        getToken()
+        .then((token) => {
+          getUserEffect(token)
+            .then((user) => {
+              dispatch(setUser(user));
+            })
+        })
       })
       .catch((err) => {
         console.log({ endGameErr: err, m: err?.response.data });
@@ -516,14 +523,6 @@ export const finishRound = createAsyncThunk(
           })
         );
       });
-
-    getToken()
-      .then((token) => {
-        getUserEffect(token)
-          .then((user) => {
-            dispatch(setUser(user));
-          })
-      })
 
     if (state.game.reachedNewLevel) {
       undateSubTheme(
