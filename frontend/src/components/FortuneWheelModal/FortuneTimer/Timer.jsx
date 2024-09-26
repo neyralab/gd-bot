@@ -15,7 +15,7 @@ const Timer = ({ timestamp, onComplete }) => {
 
   return (
     <div className={styles.timer}>
-      {formatTime(hours || 24)}<span>:</span>{formatTime(minutes || 0)}<span>:</span>
+      {formatTime(hours)}<span>:</span>{formatTime(minutes || 0)}<span>:</span>
       {formatTime(seconds || 0)}
     </div>
   )
