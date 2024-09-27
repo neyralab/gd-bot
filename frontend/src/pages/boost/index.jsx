@@ -202,23 +202,15 @@ export const BoostPage = ({ tariffs, setTariffs }) => {
   };
 
   const handleSelect = (el) => {
-    // if (isAnyPaymentEnabled && !isAllPaymentEnabled) {
-    //   const body = isStarsPaymentEnabled
-    //     ? { action: 'star', path: 'stars' }
-    //     : { action: 'ton', path: 'ton_price' }
-    //   handleStartPayment({ ...el, ...body })
-    // } else if (isAllPaymentEnabled) {
-    //   setSelectedPayment(el);
-    //   dispatch(handlePaymentSelectModal(true));
-    // }
-
-    toast.error(
-      'Storage update is temporarily unavailable. We expect to resolve this issue shortly. Thank you for your understanding.',
-      {
-        theme: 'colored',
-        position: 'top-center',
-      }
-    );
+    if (isAnyPaymentEnabled && !isAllPaymentEnabled) {
+      const body = isStarsPaymentEnabled
+        ? { action: 'star', path: 'stars' }
+        : { action: 'ton', path: 'ton_price' }
+      handleStartPayment({ ...el, ...body })
+    } else if (isAllPaymentEnabled) {
+      setSelectedPayment(el);
+      dispatch(handlePaymentSelectModal(true));
+    }
   };
 
   return (
