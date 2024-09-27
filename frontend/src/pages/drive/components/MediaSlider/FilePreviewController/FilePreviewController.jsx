@@ -123,10 +123,12 @@ const FilePreviewController = ({ file, onExpand }) => {
     }
 
     const realBlob = blob ? new Blob([blob]) : null;
-    setCacheItem(file.id, realBlob, preview?.value || null);
-    setFileContent(realBlob);
+    if (blob) {
+      setCacheItem(file.id, realBlob, preview?.value || null);
+      setFileContent(realBlob);
+      setPreviewFileType(realBlob ? getPreviewFileType(file, realBlob) : null);
+    }
     setFilePreviewImage(preview?.value || null);
-    setPreviewFileType(realBlob ? getPreviewFileType(file, realBlob) : null);
     setLoading(false);
   };
 
