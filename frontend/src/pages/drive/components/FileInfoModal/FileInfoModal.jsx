@@ -1,7 +1,8 @@
 import React from 'react';
-import { SlidingModal } from '../../../../components/slidingModal';
 import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
+import classNames from 'classnames';
+import { SlidingModal } from '../../../../components/slidingModal';
 import { setFileInfoModal } from '../../../../store/reducers/driveSlice';
 import { transformSize } from '../../../../utils/transformSize';
 import CopyButton from '../../../../components/copyButton';
@@ -26,6 +27,8 @@ export default function FileInfoModal() {
     dispatch(setFileInfoModal(null));
   };
 
+  console.log(file);
+
   return (
     <SlidingModal
       isOpen={!!file}
@@ -40,22 +43,26 @@ export default function FileInfoModal() {
             <li className={styles.item}>
               Type: <span>{file.extension}</span>
             </li>
+
             <li className={styles.item}>
               Size: <span>{transformSize(file.size)}</span>
             </li>
-            {file?.cid && (
-              <li className={styles.item}>
-                Hash: <span>{file?.cid}</span>
-                <CopyButton onClick={copyHash} />
-              </li>
-            )}
-            <li className={styles.item}>
-              Created: <span>{formattedDate}</span>
-            </li>
+
             <li className={styles.item}>
               Owner:{' '}
               <span>{file?.user?.displayed_name || file?.user?.username}</span>
             </li>
+
+            <li className={styles.item}>
+              Created: <span>{formattedDate}</span>
+            </li>
+
+            {file?.cid && (
+              <li className={classNames(styles.item, styles.hash)}>
+                Hash: <span>{`${file?.cid?.cid || file?.cid}`}</span>
+                <CopyButton onClick={copyHash} />
+              </li>
+            )}
           </ul>
         </div>
       )}
