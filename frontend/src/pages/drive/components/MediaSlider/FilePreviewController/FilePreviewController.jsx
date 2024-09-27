@@ -114,13 +114,15 @@ const FilePreviewController = ({ file, onExpand }) => {
         isEncrypted: false,
         uploadChunkSize:
           upload_chunk_size[file.slug] || gateway.upload_chunk_size,
-        cidData,
+        cidData: cidData.value,
         jwtOneTimeToken: jwt_ott
       });
     }
 
     const realBlob = blob ? new Blob([blob]) : null;
-    setCacheItem(file.id, realBlob, preview?.value || null);
+    if (blob) {
+      setCacheItem(file.id, realBlob, preview?.value || null);
+    }
     setFileContent(realBlob);
     setFilePreviewImage(preview?.value || null);
     setPreviewFileType(realBlob ? getPreviewFileType(file, realBlob) : null);
