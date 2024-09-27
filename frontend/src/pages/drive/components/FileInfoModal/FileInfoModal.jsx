@@ -10,6 +10,9 @@ import styles from './FileInfoModal.module.scss';
 export default function FileInfoModal() {
   const dispatch = useDispatch();
   const file = useSelector((state) => state.drive.fileInfoModal);
+
+  if (!file) return null;
+
   const formattedDate = moment
     .unix(file.created_at)
     .format('MMM D, YYYY, HH:mm');
