@@ -1,5 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
+import { useTranslation } from 'react-i18next';
 import moment from 'moment';
 import {
   setFileMenuModal,
@@ -17,7 +19,10 @@ import imageFileExtensions, {
   imagesWithoutPreview
 } from '../../../../config/image-file-extensions';
 import videoFileExtensions from '../../../../config/video-file-extensions';
-import { getFilePreviewEffect } from '../../../../effects/filesEffects';
+import {
+  getFilecoinPreviewEffect,
+  getFilePreviewEffect
+} from '../../../../effects/filesEffects';
 import styles from './FileViewController.module.scss';
 
 export default function FileViewController({
@@ -31,6 +36,7 @@ export default function FileViewController({
   const [preview, setPreview] = useState(null);
   const isFolder = file?.type === 2;
   const isSearchFile = file?.isSearch;
+  const { t } = useTranslation('system');
 
   const formattedDate = useMemo(() => {
     return moment.unix(file.created_at).format('MMM DD, YYYY, h:mma');
@@ -55,9 +61,20 @@ export default function FileViewController({
       videoFileExtensions.includes(`.${file.extension}`);
 
     if ((searchHasPreview || fileHasPreview) && showPreview) {
-      getFilePreviewEffect(file.slug, null, file.extension).then((res) => {
-        setPreview(res);
-      });
+      if (!file?.is_on_storage_provider) {
+        getFilePreviewEffect(file.slug, null, file.extension).then((res) => {
+          setPreview(res);
+        });
+      } else {
+        getFilecoinPreviewEffect(file)
+          .then(setPreview)
+          .catch((e) =>
+            toast.error(t('message.error'), {
+              theme: 'colored',
+              position: 'bottom-center'
+            })
+          );
+      }
     }
   }, []);
 

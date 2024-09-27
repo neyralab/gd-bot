@@ -2,7 +2,7 @@ import axios from 'axios';
 import { updateFile } from '../store/reducers/filesSlice';
 import { API_PATH } from '../utils/api-urls';
 import axiosInstance from './axiosInstance';
-import { saveBlob, downloadFile } from 'gdgateway-client';
+import { saveBlob, downloadFile, downloadFileFromSP } from 'gdgateway-client';
 import { FILE_ACTIONS } from '../config/contracts';
 import { CarReader } from '@ipld/car';
 
@@ -353,5 +353,31 @@ export const createFileReportEffect = async (slug, body) => {
     return data.data;
   } catch (error) {
     throw Error(error);
+  }
+};
+
+export const getFilecoinPreviewEffect = async (file) => {
+  if (!file) {
+    throw new Error('File is empty');
+  }
+  const fileBlob = await downloadFileFromSP({
+    carReader: CarReader,
+    url: `${file.storage_provider.url}/${
+      file.preview_large ?? file.preview_small
+    }`,
+    isEncrypted: false,
+    uploadChunkSize: 0,
+    key: undefined,
+    iv: undefined,
+    file,
+    level: 'root'
+  });
+  const realBlob = new Blob([fileBlob]);
+  const text = await realBlob?.text();
+  if (text && text.startsWith('data:image')) {
+    return text;
+  } else {
+    const urlCreator = window.URL || window.webkitURL;
+    return urlCreator.createObjectURL(realBlob);
   }
 };
