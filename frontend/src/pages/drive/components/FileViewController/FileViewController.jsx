@@ -19,6 +19,8 @@ import imageFileExtensions, {
 import videoFileExtensions from '../../../../config/video-file-extensions';
 import { getFilePreviewEffect } from '../../../../effects/filesEffects';
 import styles from './FileViewController.module.scss';
+import { downloadFileFromSP } from 'gdgateway-client';
+import { CarReader } from '@ipld/car';
 
 export default function FileViewController({
   file,
@@ -55,9 +57,34 @@ export default function FileViewController({
       videoFileExtensions.includes(`.${file.extension}`);
 
     if ((searchHasPreview || fileHasPreview) && showPreview) {
-      getFilePreviewEffect(file.slug, null, file.extension).then((res) => {
-        setPreview(res);
-      });
+      if (!file?.cid?.cid) {
+        getFilePreviewEffect(file.slug, null, file.extension).then((res) => {
+          setPreview(res);
+        });
+      } else {
+        (async () => {
+          const fileBlob = await downloadFileFromSP({
+            carReader: CarReader,
+            url: `${file.storage_provider.url}/${
+              file.preview_large ?? file.preview_small
+            }`,
+            isEncrypted: false,
+            uploadChunkSize: 0,
+            key: undefined,
+            iv: undefined,
+            file,
+            level: 'root'
+          });
+          const realBlob = new Blob([fileBlob]);
+          const text = await realBlob?.text();
+          if (text && text.startsWith('data:image')) {
+            setPreview(text);
+          } else {
+            const urlCreator = window.URL || window.webkitURL;
+            setPreview(urlCreator.createObjectURL(realBlob));
+          }
+        })();
+      }
     }
   }, []);
 
