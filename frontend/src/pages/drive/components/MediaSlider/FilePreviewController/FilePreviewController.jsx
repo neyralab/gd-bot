@@ -1,6 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { downloadFile } from 'gdgateway-client';
 import { useDispatch, useSelector } from 'react-redux';
+import { CarReader } from '@ipld/car';
+
 import { getPreviewFileType } from '../../../../../utils/preview';
 import { sendFileViewStatistic } from '../../../../../effects/file/statisticEfect';
 import { getFileCids } from '../../../../../effects/file/getFileCid';
@@ -114,8 +116,9 @@ const FilePreviewController = ({ file, onExpand }) => {
         isEncrypted: false,
         uploadChunkSize:
           upload_chunk_size[file.slug] || gateway.upload_chunk_size,
-        cidData,
-        jwtOneTimeToken: jwt_ott
+        cidData: cidData.value,
+        jwtOneTimeToken: jwt_ott,
+        carReader: CarReader
       });
     }
 
