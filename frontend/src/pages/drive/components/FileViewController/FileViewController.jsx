@@ -17,7 +17,10 @@ import imageFileExtensions, {
   imagesWithoutPreview
 } from '../../../../config/image-file-extensions';
 import videoFileExtensions from '../../../../config/video-file-extensions';
-import { getFilePreviewEffect } from '../../../../effects/filesEffects';
+import {
+  getFilecoinPreviewEffect,
+  getFilePreviewEffect
+} from '../../../../effects/filesEffects';
 import styles from './FileViewController.module.scss';
 
 export default function FileViewController({
@@ -55,9 +58,15 @@ export default function FileViewController({
       videoFileExtensions.includes(`.${file.extension}`);
 
     if ((searchHasPreview || fileHasPreview) && showPreview) {
-      getFilePreviewEffect(file.slug, null, file.extension).then((res) => {
-        setPreview(res);
-      });
+      if (!file?.is_on_storage_provider) {
+        getFilePreviewEffect(file.slug, null, file.extension).then((res) => {
+          setPreview(res);
+        });
+      } else {
+        getFilecoinPreviewEffect(file)
+          .then(setPreview)
+          .catch(() => setPreview(null));
+      }
     }
   }, []);
 

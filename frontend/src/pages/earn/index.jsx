@@ -12,7 +12,7 @@ import { tasks as tasksFromFile, tasksText } from './tasks';
 import { isEnabledPartners } from '../../utils/featureFlags';
 import { handlePartners, selectPartners } from '../../store/reducers/taskSlice';
 import { checkAllEarnTasks, getAllPartners } from '../../effects/EarnEffect';
-import { getAllTasks, getBalanceEffect } from '../../effects/balanceEffect';
+import { getAllTasks } from '../../effects/balanceEffect';
 import { handleTasks } from '../../store/reducers/taskSlice';
 import { runInitAnimation } from './animations';
 
@@ -35,7 +35,6 @@ export default function EarnPage() {
   const [tasksAreLoading, setTasksAreLoading] = useState(true);
   const [missions, setMissions] = useState([]);
   const [missionsAreLoading, setMissionsAreLoading] = useState(true);
-  const [earnedRecords, setEarnedRecords] = useState([]);
   const [activeSegment, setActiveSegment] = useState(DEFAULT_SEGMENT_OPTION);
   const [modalSelectedTask, setModalSelectedTask] = useState(null);
   const earnModalRef = useRef(null);
@@ -99,10 +98,6 @@ export default function EarnPage() {
     try {
       const allMissions = await getAllTasks();
       dispatch(handleTasks(allMissions));
-      const {
-        data: { data: userTasks }
-      } = await getBalanceEffect();
-      setEarnedRecords(userTasks);
       const realTasks = allMissions.map((task) => ({
         ...task,
         text: tasksText[task.action],
