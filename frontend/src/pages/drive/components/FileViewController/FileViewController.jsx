@@ -68,12 +68,7 @@ export default function FileViewController({
       } else {
         getFilecoinPreviewEffect(file)
           .then(setPreview)
-          .catch((e) =>
-            toast.error(t('message.error'), {
-              theme: 'colored',
-              position: 'bottom-center'
-            })
-          );
+          .catch(() => setPreview(null));
       }
     }
   }, []);
