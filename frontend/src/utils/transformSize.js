@@ -1,7 +1,7 @@
 export const transformSize = (size = '', showSize = true) => {
   const bytes = Number(size);
   const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
-  if (bytes === 0) {
+  if (!bytes) {
     return `0${showSize ? ' Bytes' : ''}`;
   }
   const i = Math.floor(Math.log(bytes) / Math.log(1024));

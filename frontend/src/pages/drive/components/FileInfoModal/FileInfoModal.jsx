@@ -10,8 +10,11 @@ import styles from './FileInfoModal.module.scss';
 export default function FileInfoModal() {
   const dispatch = useDispatch();
   const file = useSelector((state) => state.drive.fileInfoModal);
+
+  if (!file) return null;
+
   const formattedDate = moment
-    .unix(file.created_at)
+    .unix(file?.created_at || Date.now())
     .format('MMM D, YYYY, HH:mm');
   const hashLink = `https://filfox.info/en/block/${file?.cid}`;
 
