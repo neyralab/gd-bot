@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { downloadFile } from 'gdgateway-client';
 import { useTranslation } from 'react-i18next';
@@ -13,7 +13,7 @@ import GhostLoader from '../../components/ghostLoader';
 
 import {
   getPaidShareFileEffect,
-  getDownloadOTT,
+  getDownloadOTT
   // getFileStarStatistic
 } from '../../effects/filesEffects';
 import { getFileCids } from '../../effects/file/getFileCid';
@@ -28,13 +28,14 @@ import { sleep } from '../../utils/sleep';
 import { removeExtension, addSlugHyphens } from '../../utils/string';
 
 import styles from './styles.module.css';
-import { ReportForm } from "./components/reportForm";
+import { ReportForm } from './components/reportForm';
+import { CarReader } from '@ipld/car';
 
 const STEPS = {
   preview: 'preview',
   allowPreview: 'allowPreview',
   download: 'download'
-}
+};
 
 const ESCAPE_CONTENT_DOWNLOAD = ['encrypt'];
 
@@ -54,7 +55,7 @@ export const PaidView = () => {
   const [fullscreen, setFullscreen] = useState(false);
   const [step, setStep] = useState(STEPS.preview);
   const { id } = useParams();
-  const allowPreview = useMemo(() => (step !== STEPS.preview ), [step]);
+  const allowPreview = useMemo(() => step !== STEPS.preview, [step]);
 
   useEffect(() => {
     const init = async () => {
@@ -63,26 +64,25 @@ export const PaidView = () => {
         // const fileStat = await getFileStarStatistic(data?.data?.file?.slug);
 
         if (!data.data) {
-          toast.error(t('ppv.fileAbsent'), { position: 'top-center'  })
+          toast.error(t('ppv.fileAbsent'), { position: 'top-center' });
           return;
         }
         const shareFile = { ...data?.data };
         delete shareFile.file;
         setFile({ ...data?.data?.file, payShare: shareFile });
       } catch (error) {
-        toast.error(t('ppv.fileAbsent'), { position: 'top-center'  })
+        toast.error(t('ppv.fileAbsent'), { position: 'top-center' });
       }
-    }
+    };
     if (id) {
-      init()
+      init();
     }
   }, [id]);
 
   useEffect(() => {
     if (file?.slug) {
       const canPreview = getPreviewFileType(file, '   ');
-      if (canPreview !== 'audio')
-        setLoading(true);
+      if (canPreview !== 'audio') setLoading(true);
       if (canPreview && !ESCAPE_CONTENT_DOWNLOAD.includes(canPreview)) {
         getContent();
       } else {
@@ -112,7 +112,8 @@ export const PaidView = () => {
         uploadChunkSize:
           upload_chunk_size[file.slug] || gateway.upload_chunk_size,
         cidData,
-        jwtOneTimeToken: jwt_ott
+        jwtOneTimeToken: jwt_ott,
+        carReader: CarReader
       });
       if (blob) {
         const realBlob = new Blob([blob]);
@@ -144,7 +145,7 @@ export const PaidView = () => {
   const downloadContent = async () => {
     try {
       setDownloadLoading(true);
-  
+
       let blob;
       if (['txt', 'svg', 'pdf', 'xls', 'xlsx'].includes(file.extension)) {
         blob = new Blob([fileContent], { type: file.mime });
@@ -152,9 +153,9 @@ export const PaidView = () => {
         const response = await fetch(fileContent);
         blob = await response.blob();
       }
-  
+
       const uploadFile = new File([blob], file.name, { type: file.mime });
-  
+
       await uploadFileEffect({ files: [uploadFile], dispatch });
       toast.success(t('ppv.saveSuccess'));
     } catch (error) {
@@ -170,7 +171,7 @@ export const PaidView = () => {
         await sleep(700);
         setStep(STEPS.allowPreview);
       } else {
-        console.warn(`error: The payment was not completed. ${result}`)
+        console.warn(`error: The payment was not completed. ${result}`);
       }
     } catch (error) {
       console.warn('error: ', error);
@@ -184,7 +185,7 @@ export const PaidView = () => {
         setStep(STEPS.download);
         downloadContent();
       } else {
-        console.warn(`error: The payment was not completed. ${result}`)
+        console.warn(`error: The payment was not completed. ${result}`);
       }
     } catch (error) {
       console.warn('error: ', error);
@@ -204,7 +205,7 @@ export const PaidView = () => {
     } catch (error) {
       console.warn(error);
     }
-  }
+  };
 
   const downloadProcess = async () => {
     try {
@@ -219,40 +220,42 @@ export const PaidView = () => {
     } catch (error) {
       console.warn(error);
     }
-  }
+  };
 
   const onShowFullContent = () => {
     if (step === STEPS.preview) {
       showProcess();
-    } else if (step === STEPS.allowPreview && file.payShare.price_download && fileContent) {
+    } else if (
+      step === STEPS.allowPreview &&
+      file.payShare.price_download &&
+      fileContent
+    ) {
       downloadProcess();
     } else if (fileContent) {
       downloadContent();
     }
-  }
+  };
 
   const onFullscreen = () => {
     setFullscreen(!fullscreen);
-  }
+  };
 
   const goBack = () => {
     navigate(-1);
-  }
+  };
 
   const onExpandDescription = () => {
     setExpandDescription(true);
-  }
+  };
 
   const toggleReportView = () => {
     if (step !== STEPS.Preview) {
       setShowReportView(!showReportView);
     }
-  }
+  };
 
   if (showReportView) {
-    return (
-      <ReportForm slug={file.slug} onClose={toggleReportView} />
-    )
+    return <ReportForm slug={file.slug} onClose={toggleReportView} />;
   }
 
   return (
@@ -265,26 +268,30 @@ export const PaidView = () => {
       />
       <div className={styles.content}>
         {fullscreen && (
-          <h3 className={CN(styles.title, styles.secondTitle)}>{removeExtension(file.name)}</h3>
+          <h3 className={CN(styles.title, styles.secondTitle)}>
+            {removeExtension(file.name)}
+          </h3>
         )}
-        { loading ? (
+        {loading ? (
           <div className={styles.preloader}>
             <GhostLoader />
           </div>
         ) : (
-        <Preview
-          allowPreview={allowPreview}
-          file={file}
-          fileContent={fileContent}
-          fullscreen={fullscreen}
-          onFullscreen={onFullscreen}
-        />
+          <Preview
+            allowPreview={allowPreview}
+            file={file}
+            fileContent={fileContent}
+            fullscreen={fullscreen}
+            onFullscreen={onFullscreen}
+          />
         )}
         <div className={fullscreen && styles.hide_detail}>
           <div
             onClick={onExpandDescription}
-            className={CN(styles.description, expandDescription && styles.descriptionExpanded)}
-          >
+            className={CN(
+              styles.description,
+              expandDescription && styles.descriptionExpanded
+            )}>
             <h4>{t('ppv.about')}</h4>
             <p>{file?.payShare?.description}</p>
           </div>
@@ -303,19 +310,23 @@ export const PaidView = () => {
       </div>
       <button
         onClick={onShowFullContent}
-        className={CN(styles.payButton, step === STEPS.download && styles.payButtonDownload)}
-        disabled={loading || downloadLoading}
-      >
+        className={CN(
+          styles.payButton,
+          step === STEPS.download && styles.payButtonDownload
+        )}
+        disabled={loading || downloadLoading}>
         <p className={styles.payButton_text}>
           {step === STEPS.preview ? t('ppv.ppv') : t('ppv.downloadToStorage')}
         </p>
         <p className={styles.payButton_price}>
           <span>
-            {step === STEPS.preview ? file?.payShare?.price_view : file?.payShare?.price_download}
+            {step === STEPS.preview
+              ? file?.payShare?.price_view
+              : file?.payShare?.price_download}
           </span>
-          <StarIcon width='20' height='20' viewBox="0 0 22  22" />
+          <StarIcon width="20" height="20" viewBox="0 0 22  22" />
         </p>
       </button>
     </div>
   );
-}
+};

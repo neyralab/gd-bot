@@ -33,6 +33,7 @@ import { ReactComponent as InfoIcon } from './assets/info.svg';
 import { ReactComponent as SendIcon } from './assets/send.svg';
 
 import style from './styles.module.scss';
+import { CarReader } from '@ipld/car';
 
 Modal.setAppElement('#root');
 
@@ -92,7 +93,8 @@ export const FilePreviewModal = () => {
         uploadChunkSize:
           upload_chunk_size[file.slug] || gateway.upload_chunk_size,
         cidData,
-        jwtOneTimeToken: jwt_ott
+        jwtOneTimeToken: jwt_ott,
+        carReader: CarReader
       });
       if (blob) {
         const realBlob = new Blob([blob]);
