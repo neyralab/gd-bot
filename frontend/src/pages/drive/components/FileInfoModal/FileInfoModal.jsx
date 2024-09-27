@@ -1,7 +1,8 @@
 import React from 'react';
-import { SlidingModal } from '../../../../components/slidingModal';
 import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
+import classNames from 'classnames';
+import { SlidingModal } from '../../../../components/slidingModal';
 import { setFileInfoModal } from '../../../../store/reducers/driveSlice';
 import { transformSize } from '../../../../utils/transformSize';
 import CopyButton from '../../../../components/copyButton';
@@ -10,8 +11,11 @@ import styles from './FileInfoModal.module.scss';
 export default function FileInfoModal() {
   const dispatch = useDispatch();
   const file = useSelector((state) => state.drive.fileInfoModal);
+
+  if (!file) return null;
+
   const formattedDate = moment
-    .unix(file.created_at)
+    .unix(file?.created_at || Date.now())
     .format('MMM D, YYYY, HH:mm');
   const hashLink = `https://filfox.info/en/block/${file?.cid}`;
 
@@ -37,22 +41,26 @@ export default function FileInfoModal() {
             <li className={styles.item}>
               Type: <span>{file.extension}</span>
             </li>
+
             <li className={styles.item}>
               Size: <span>{transformSize(file.size)}</span>
             </li>
-            {file?.cid && (
-              <li className={styles.item}>
-                Hash: <span>{file?.cid}</span>
-                <CopyButton onClick={copyHash} />
-              </li>
-            )}
-            <li className={styles.item}>
-              Created: <span>{formattedDate}</span>
-            </li>
+
             <li className={styles.item}>
               Owner:{' '}
               <span>{file?.user?.displayed_name || file?.user?.username}</span>
             </li>
+
+            <li className={styles.item}>
+              Created: <span>{formattedDate}</span>
+            </li>
+
+            {file?.cid && (
+              <li className={classNames(styles.item, styles.hash)}>
+                Hash: <span>{`${file?.cid?.cid || file?.cid}`}</span>
+                <CopyButton onClick={copyHash} />
+              </li>
+            )}
           </ul>
         </div>
       )}

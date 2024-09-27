@@ -19,7 +19,6 @@
   padding: 12px 16px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
 }
 
 .title {
@@ -36,12 +35,22 @@
 }
 
 .item {
+  display: flex;
+  align-items: baseline;
+  align-content: baseline;
   color: #fff;
   font-family: 'SF Pro Text';
   font-size: 14px;
   font-weight: 400;
   line-height: 17px;
   text-transform: capitalize;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  position: relative;
+  padding: 6px 0;
+  gap: 4px;
+
   & span {
     color: rgba(255, 255, 255, 0.7);
     font-family: 'SF Pro Text';
@@ -49,6 +58,49 @@
     font-weight: 400;
     line-height: 17px;
     text-transform: capitalize;
+  }
+}
+
+.hash {
+  gap: 4px;
+
+  span {
+    width: 79%;
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    position: relative;
+    text-overflow: ellipsis;
+
+    &:before,
+    &:after {
+      content: '...';
+      position: absolute;
+      color: inherit;
+    }
+
+    &:before {
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    &:after {
+      right: 0;
+      padding-left: 0.5em;
+      background: inherit;
+    }
+  }
+
+  button {
+    position: absolute;
+    right: 4px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  svg {
+    width: 16px;
+    height: 16px;
   }
 }
 
