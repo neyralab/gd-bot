@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { downloadFile } from 'gdgateway-client';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
@@ -10,26 +9,21 @@ import Header from '../../components/ppvModal/components/Header';
 import { Preview } from './components/preview';
 import { ReactComponent as StarIcon } from '../../assets/star.svg';
 import GhostLoader from '../../components/ghostLoader';
-
 import {
   getPaidShareFileEffect,
-  getDownloadOTT,
-  getFileStarStatistic
+  getFileStarStatistic,
+  getFilecoinBlobEffect
 } from '../../effects/filesEffects';
-import { getFileCids } from '../../effects/file/getFileCid';
 import { makeInvoice } from '../../effects/paymentEffect';
 import { uploadFileEffect } from '../../effects/uploadFileEffect';
-import { sendFileViewStatistic } from '../../effects/file/statisticEfect';
 import { selectPaymenttByKey } from '../../store/reducers/paymentSlice';
 import { INVOICE_TYPE } from '../../utils/createStarInvoice';
 import { getPreviewFileType } from '../../utils/preview';
 import { sleep } from '../../utils/sleep';
-
+import { ReportForm } from './components/reportForm';
 import { removeExtension, addSlugHyphens } from '../../utils/string';
 
 import styles from './styles.module.css';
-import { ReportForm } from './components/reportForm';
-import { CarReader } from '@ipld/car';
 
 const STEPS = {
   preview: 'preview',
@@ -51,8 +45,12 @@ export const PaidView = () => {
   const [downloadLoading, setDownloadLoading] = useState(false);
   const [fileContent, setFileContent] = useState(null);
   const user = useSelector((state) => state.user.data);
-  const ppvPaymentAccess = useSelector(selectPaymenttByKey('pay_per_view_access'));
-  const ppvPaymentDownload = useSelector(selectPaymenttByKey('pay_per_view_download'));
+  const ppvPaymentAccess = useSelector(
+    selectPaymenttByKey('pay_per_view_access')
+  );
+  const ppvPaymentDownload = useSelector(
+    selectPaymenttByKey('pay_per_view_download')
+  );
   const [fullscreen, setFullscreen] = useState(false);
   const [step, setStep] = useState(STEPS.preview);
   const { id } = useParams();
@@ -94,30 +92,11 @@ export const PaidView = () => {
 
   const getContent = async () => {
     try {
-      await sendFileViewStatistic(file.slug);
-      const cidData = await getFileCids({ slug: file.slug });
-      const {
-        data: {
-          jwt_ott,
-          user_tokens: { token: oneTimeToken },
-          gateway,
-          upload_chunk_size
-        }
-      } = await getDownloadOTT([{ slug: file.slug }]);
-
-      const blob = await downloadFile({
-        file,
-        oneTimeToken,
-        endpoint: gateway.url,
-        isEncrypted: false,
-        uploadChunkSize:
-          upload_chunk_size[file.slug] || gateway.upload_chunk_size,
-        cidData,
-        jwtOneTimeToken: jwt_ott,
-        carReader: CarReader
+      const { realBlob } = await getFilecoinBlobEffect({
+        file
       });
-      if (blob) {
-        const realBlob = new Blob([blob]);
+
+      if (realBlob) {
         const url = URL.createObjectURL(realBlob);
         if (file.extension === 'svg' || file.extension === 'txt') {
           const text = await realBlob.text();
