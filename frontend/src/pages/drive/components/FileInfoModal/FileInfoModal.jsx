@@ -27,8 +27,6 @@ export default function FileInfoModal() {
     dispatch(setFileInfoModal(null));
   };
 
-  console.log(file);
-
   return (
     <SlidingModal
       isOpen={!!file}
