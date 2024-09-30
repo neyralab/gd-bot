@@ -13,7 +13,13 @@ import styles from './AudioPlayer.module.scss';
 
 const AudioPlayer = forwardRef(
   (
-    { fileContentType, fileContent, filePreviewImage, disableSwipeEvents },
+    {
+      fileContentType,
+      fileContent,
+      filePreviewImage,
+      disableSwipeEvents,
+      onFileReadError
+    },
     ref
   ) => {
     const { t } = useTranslation('drive');
@@ -109,8 +115,9 @@ const AudioPlayer = forwardRef(
 
       const errorStr = error.toString().trim().toLowerCase();
       if (errorStr.includes('notsupportederror')) {
-        setError(true);
+        onFileReadError?.(error);
       }
+      console.log(errorStr);
     };
 
     return (

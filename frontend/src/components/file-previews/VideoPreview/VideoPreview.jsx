@@ -12,7 +12,8 @@ const VideoPreview = forwardRef(
       file,
       onFavoriteClick,
       onInfoClick,
-      disableSwipeEvents
+      disableSwipeEvents,
+      onFileReadError
     },
     ref
   ) => {
@@ -38,6 +39,7 @@ const VideoPreview = forwardRef(
           ref={playerRef}
           fileContent={fileContent}
           disableSwipeEvents={disableSwipeEvents}
+          onFileReadError={onFileReadError}
         />
 
         {mode === 'default' && (

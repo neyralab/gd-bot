@@ -97,6 +97,7 @@ const PreviewSwitcher = forwardRef(
             onFavoriteClick={onFavoriteClick}
             onInfoClick={onInfoClick}
             disableSwipeEvents={disableSwipeEvents}
+            onFileReadError={onFileReadError}
           />
         );
 

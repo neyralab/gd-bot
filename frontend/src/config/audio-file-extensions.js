@@ -40,3 +40,7 @@ export const audioMediaTypes = [
 ];
 
 export const audioMediaTypesContent = ['audio/mpeg', 'audio/wav'];
+
+export const audioWithoutPreview = ['.ac3', '.wma'];
+export const audioWithoutPreviewIOS = ['.m4a', '.ogg'];
+export const audioWithoutPreviewOther = ['.aiff'];

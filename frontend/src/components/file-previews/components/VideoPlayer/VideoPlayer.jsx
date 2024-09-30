@@ -12,7 +12,15 @@ import ProgressBar from './ProgressBar/ProgressBar';
 import styles from './VideoPlayer.module.scss';
 
 const VideoPlayer = forwardRef(
-  ({ fileContent, fileContentType = 'blob', disableSwipeEvents }, ref) => {
+  (
+    {
+      fileContent,
+      fileContentType = 'blob',
+      disableSwipeEvents,
+      onFileReadError
+    },
+    ref
+  ) => {
     const { t } = useTranslation('drive');
     const playerRef = useRef(null);
     const [playing, setPlaying] = useState(false);
@@ -129,7 +137,7 @@ const VideoPlayer = forwardRef(
 
       const errorStr = error.toString().trim().toLowerCase();
       if (errorStr.includes('notsupportederror')) {
-        setError(true);
+        onFileReadError?.(error);
       }
     };
 
