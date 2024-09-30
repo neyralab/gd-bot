@@ -737,7 +737,6 @@ export const gameCleanup = createAsyncThunk(
   async (_, { dispatch }) => {
     dispatch(setRoundFinal({ roundPoins: null, isActive: false }));
     dispatch(setReachedNewLevel(false));
-    dispatch(setStatus('waiting'));
     dispatch(setGameModal(null));
     dispatch(setSystemModal(null));
   }
