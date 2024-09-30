@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useCallback } from 'react';
 
-const MAX_CACHED_FILES = 20;
+const MAX_CACHED_FILES = 7;
 
 const MediaSliderCacheContext = createContext();
 
