@@ -20,28 +20,31 @@ export default function FortuneTimer({ timestamp, onComplete, invites }) {
   const spinsForNextGame = invites.length%INVITE_COUNT_TO_NEXT_SPIN;
   const invitePerNextSpin = useMemo(() => {
     if (spinsForNextGame && spinsForNextGame !== INVITE_COUNT_TO_NEXT_SPIN) {
-      return invites[invites.length - spinsForNextGame];
+      const invite = invites[invites.length - spinsForNextGame]
+      return { ...invite, used_at: `${invite.used_at}+00:00` };
     }
     return null;
   }, [spinsForNextGame, invites]);
 
   const timestampForNextBonusSpin = useMemo(() => {
     if (invitePerNextSpin) {
-      const targetDate = moment(invitePerNextSpin.used_at);
+      const initialData = moment(invitePerNextSpin.used_at).format();
+      const targetData = moment(initialData).add(1, 'days');
       const currentDate = moment();
-  
-      const differenceInHours = currentDate.diff(targetDate, 'hours');
-        const nextSpinTimestamp = targetDate.add(1, 'day').valueOf();
-  
-      return Math.abs(nextSpinTimestamp + differenceInHours * (1000 * 60 * 60));
+
+      if (targetData.valueOf() > currentDate.valueOf()) {
+        return targetData.valueOf();
+      } else {
+        return null;
+      }
     }
     return null;
-  }, [invitePerNextSpin]);
+  }, [invitePerNextSpin?.used_at]);
 
   return (
     <div className={styles.container}>
       <div className={styles.description}>{
-        !invitePerNextSpin ?
+        (!invitePerNextSpin || !timestampForNextBonusSpin) ?
         t('earn.wheelNextSpin') :
         <div>
           {t('earn.wheelBonusSpin')}
@@ -58,11 +61,11 @@ export default function FortuneTimer({ timestamp, onComplete, invites }) {
             url={link.copy}
             className={styles['invite-btn']}
             title={t('friends.inviteFriend')}
-            onClick={vibrate}>
+            onClick={() => {vibrate('soft')}}>
               <div className={styles['bonus-spin']}>
                 <span className={styles['bonus-text']}>1 Spin</span>
                 <div className={styles['bonus-status']} >
-                  <span>{`Invite 3 friends`}</span>
+                  <span>Invite 3 friends</span>
                   <FriendsIcon />
                 </div>
               </div>

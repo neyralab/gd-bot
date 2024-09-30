@@ -5,14 +5,21 @@ import { readBlobContent } from '../../../../utils/readers';
 
 import styles from './TxtReader.module.scss';
 
-export default function TxtReader({ mode = 'default', fileContent }) {
+export default function TxtReader({
+  mode = 'default',
+  fileContent,
+  onFileReadError
+}) {
   const [textContent, setTextContent] = useState('');
 
   useEffect(() => {
     if (fileContent) {
       readBlobContent(fileContent)
         .then((content) => setTextContent(content))
-        .catch((error) => setTextContent(error));
+        .catch((error) => {
+          setTextContent('');
+          onFileReadError(error);
+        });
     }
   }, [fileContent]);
 

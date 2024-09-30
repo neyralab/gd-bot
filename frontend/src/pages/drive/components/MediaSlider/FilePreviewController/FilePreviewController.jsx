@@ -1,13 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { downloadFile } from 'gdgateway-client';
 import { useDispatch, useSelector } from 'react-redux';
 import { getPreviewFileType } from '../../../../../utils/preview';
-import { sendFileViewStatistic } from '../../../../../effects/file/statisticEfect';
-import { getFileCids } from '../../../../../effects/file/getFileCid';
 import {
-  createStreamEffect,
-  getDownloadOTT,
-  getFilePreviewEffect
+  getFilecoinBlobEffect,
+  getFilecoinStreamEffect,
 } from '../../../../../effects/filesEffects';
 import { useMediaSliderCache } from '../MediaSliderCache';
 import PreviewSwitcher from '../../../../../components/file-previews/PreviewSwitcher/PreviewSwitcher';
@@ -83,47 +79,17 @@ const FilePreviewController = ({ file, onExpand, disableSwipeEvents }) => {
     const cache = checkFileCache();
     if (cache) return;
 
-    const promises = [
-      sendFileViewStatistic(file.slug),
-      getFileCids({ slug: file.slug }),
-      getDownloadOTT([{ slug: file.slug }])
-    ];
-    if (USE_PREVIEW_IMG.includes(fileType)) {
-      promises.push(getFilePreviewEffect(file.slug, null, file.extension));
+    const { realBlob, preview } = await getFilecoinBlobEffect({
+      file,
+      getPreview: USE_PREVIEW_IMG.includes(fileType)
+    });
+
+    if (realBlob) {
+      setCacheItem(file.id, realBlob, preview?.value || null);
+      setFileContent(realBlob);
+      setPreviewFileType(realBlob ? getPreviewFileType(file, realBlob) : null);
     }
-
-    const [_, cidData, downloadOTTResponse, preview] =
-      await Promise.allSettled(promises);
-
-    let blob;
-
-    if (cidData?.value && downloadOTTResponse?.value) {
-      const {
-        data: {
-          jwt_ott,
-          user_tokens: { token: oneTimeToken },
-          gateway,
-          upload_chunk_size
-        }
-      } = downloadOTTResponse.value;
-
-      blob = await downloadFile({
-        file,
-        oneTimeToken,
-        endpoint: gateway.url,
-        isEncrypted: false,
-        uploadChunkSize:
-          upload_chunk_size[file.slug] || gateway.upload_chunk_size,
-        cidData,
-        jwtOneTimeToken: jwt_ott
-      });
-    }
-
-    const realBlob = blob ? new Blob([blob]) : null;
-    setCacheItem(file.id, realBlob, preview?.value || null);
-    setFileContent(realBlob);
     setFilePreviewImage(preview?.value || null);
-    setPreviewFileType(realBlob ? getPreviewFileType(file, realBlob) : null);
     setLoading(false);
   };
 
@@ -131,15 +97,16 @@ const FilePreviewController = ({ file, onExpand, disableSwipeEvents }) => {
     const cache = checkFileCache();
     if (cache) return;
 
-    const promises = [createStreamEffect(file.slug)];
-    if (USE_PREVIEW_IMG.includes(fileType)) {
-      promises.push(getFilePreviewEffect(file.slug, null, file.extension));
-    }
+    const { streamData, preview } = await getFilecoinStreamEffect({
+      file,
+      getPreview: USE_PREVIEW_IMG.includes(fileType)
+    });
 
-    const [streamData, preview] = await Promise.allSettled(promises);
-    setCacheItem(file.id, streamData?.value || null, preview?.value || null);
-    setFileContent(streamData?.value || null);
-    setFilePreviewImage(preview?.value || null);
+    if (streamData) {
+      setCacheItem(file.id, streamData?.value || null, preview?.value || null);
+      setFileContent(streamData?.value || null);
+      setFilePreviewImage(preview?.value || null);
+    }
     setLoading(false);
     if (!streamData || !streamData.value) {
       setPreviewFileType(null);

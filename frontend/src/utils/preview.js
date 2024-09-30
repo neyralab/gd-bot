@@ -4,36 +4,51 @@ import {
 } from '../config/image-file-extensions';
 import audioFilesExtensions, {
   audioMediaTypes,
-  audioMediaTypesContent
+  audioMediaTypesContent,
+  audioWithoutPreview,
+  audioWithoutPreviewIOS,
+  audioWithoutPreviewOther
 } from '../config/audio-file-extensions';
 import {
   videoMediaExtentionPreview,
-  videoWithoutPreview
+  videoWithoutPreview,
+  videoWithoutPreviewIOS,
+  videoWithoutPreviewOther
 } from '../config/video-file-extensions';
 import {
   docMediaTypesContent,
   docMediaWithoutPreview,
   pdfMediaTypes
 } from '../config/docs-file-extensions';
+import { isiOS } from './client';
+
 
 const getPreviewFileType = (file, entityContent, withoutContent) => {
   let entityFileType = '';
 
-  if (file?.is_clientside_encrypted) entityFileType = 'encrypt';
-  else {
+  if (file?.is_clientside_encrypted) {
+    entityFileType = 'encrypt';
+  } else {
     if (videoMediaExtentionPreview.includes(file.extension) && !entityContent) {
       entityFileType = 'video';
     }
     if (file.mime && (entityContent || withoutContent)) {
-      if (videoMediaExtentionPreview.includes(file.extension)) {
+      if (
+        videoMediaExtentionPreview.includes(file.extension) &&
+        !videoWithoutPreview.includes(file.extension) &&
+        !(isiOS() && videoWithoutPreviewIOS.includes(file.extension)) &&
+        !(!isiOS() && videoWithoutPreviewOther.includes(file.extension))
+      ) {
         entityFileType = 'video';
-        if (videoWithoutPreview.includes(file.extension)) {
-          entityFileType = '';
-        }
       } else if (audioMediaTypes.includes(file.mime)) {
         entityFileType = 'audio';
-      } else if (audioFilesExtensions.includes(`.${file.extension}`)) {
-        entityContent = '';
+      } else if (
+        audioFilesExtensions.includes(`.${file.extension}`) ||
+        audioWithoutPreview.includes(`.${file.extension}`) ||
+        (isiOS() && audioWithoutPreviewIOS.includes(`.${file.extension}`)) ||
+        (!isiOS() && audioWithoutPreviewOther.includes(`.${file.extension}`))
+      ) {
+        entityFileType = '';
       } else if (file.mime === 'application/pdf') {
         entityFileType = 'pdf';
       } else if (

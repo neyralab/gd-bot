@@ -198,7 +198,7 @@ export const BoostPage = ({ tariffs, setTariffs }) => {
   };
 
   const goToTerms = () => {
-    tg?.openLink('https://docs.ghostdrive.com/legal/terms-of-service');
+    tg?.openLink('https://telegra.ph/Terms-of-Service-GhostDrive-09-29', { try_instant_view: true });
   };
 
   const handleSelect = (el) => {
@@ -270,7 +270,7 @@ export const BoostPage = ({ tariffs, setTariffs }) => {
                     data-animation="boost-animation-1"
                     className={styles['initial-state-for-animation']}
                     key={index}
-                    onClick={vibrate}>
+                    onClick={() => {vibrate('soft')}}>
                     <button
                       disabled={currentPrice?.storage === el?.storage}
                       onClick={() => {

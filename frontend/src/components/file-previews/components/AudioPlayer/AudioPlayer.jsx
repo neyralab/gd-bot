@@ -6,21 +6,30 @@ import React, {
   useState,
   forwardRef
 } from 'react';
+import { useTranslation } from 'react-i18next';
 import Controls from './Controls/Controls';
 import ProgressBar from './ProgressBar/ProgressBar';
 import styles from './AudioPlayer.module.scss';
 
 const AudioPlayer = forwardRef(
   (
-    { fileContentType, fileContent, filePreviewImage, disableSwipeEvents },
+    {
+      fileContentType,
+      fileContent,
+      filePreviewImage,
+      disableSwipeEvents,
+      onFileReadError
+    },
     ref
   ) => {
+    const { t } = useTranslation('drive');
     const audioRef = useRef(null);
     const [isPlaying, setIsPlaying] = useState(false);
     const [progress, setProgress] = useState(0);
     const [radius, setRadius] = useState(0);
     const [url, setUrl] = useState();
     const [duration, setDuration] = useState(0);
+    const [error, setError] = useState(false);
 
     useEffect(() => {
       if (fileContentType === 'blob') {
@@ -103,6 +112,11 @@ const AudioPlayer = forwardRef(
     const handleError = (error) => {
       console.error('Error playing audio:', error);
       setIsPlaying(false);
+
+      const errorStr = error.toString().trim().toLowerCase();
+      if (errorStr.includes('notsupportederror')) {
+        onFileReadError?.(error);
+      }
     };
 
     return (
@@ -142,6 +156,8 @@ const AudioPlayer = forwardRef(
             handleForward={handleForward}
           />
         </div>
+
+        {error && <div className={styles.error}>{t('error.readFile')}</div>}
       </div>
     );
   }

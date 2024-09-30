@@ -8,7 +8,7 @@ import {
   selectIsTransactionLoading,
   selectIsGameDisabled,
   gameCleanup,
-  checkAdvertisementOffer,
+  checkAdvertisementOffer
 } from '../../store/reducers/gameSlice';
 import { Header } from '../../components/header_v2';
 import BuyButton from './BuyButton/BuyButton';
@@ -69,9 +69,12 @@ export function GamePage() {
 
   if (!isInitialized || !userIsInitialized || isTransactionLoading) {
     return (
-      <GhostLoader
-        texts={isTransactionLoading ? [t('message.transaction')] : []}
-      />
+      <>
+        <GhostLoader
+          texts={isTransactionLoading ? [t('message.transaction')] : []}
+        />
+        <Menu />
+      </>
     );
   }
 
@@ -81,7 +84,11 @@ export function GamePage() {
 
       <div className={styles.content}>
         <div className={styles['canvas-container']}>
-          <div className={CN(styles.canvas, isGamedDisabled && styles['canvas-disabled'])}>
+          <div
+            className={CN(
+              styles.canvas,
+              isGamedDisabled && styles['canvas-disabled']
+            )}>
             <GameCanvas ref={canvasRef} />
           </div>
         </div>

@@ -30,7 +30,7 @@
     "processing": "xử lý tệp",
     "about": "Giới thiệu",
     "totalViews": "Tổng lượt xem",
-    "starts": "Bắt đầu",
+    "stars": "Những ngôi sao",
     "downloadToStorage": "Tải xuống G:Drive của bạn",
     "freeWatch": "Xem miễn phí",
     "preview": "Xem trước",
@@ -66,5 +66,8 @@
   "time": {
     "am": "sáng",
     "pm": "chiều"
+  },
+  "error": {
+    "readFile": "Tệp bị hỏng hoặc không thể phát trên thiết bị này"
   }
 }

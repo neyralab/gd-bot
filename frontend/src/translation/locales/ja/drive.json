@@ -30,7 +30,7 @@
     "processing": "ファイル処理中",
     "about": "約",
     "totalViews": "総視聴数",
-    "starts": "開始",
+    "stars": "星",
     "downloadToStorage": "G:Drive にダウンロード",
     "freeWatch": "無料で視聴",
     "preview": "プレビュー",
@@ -66,5 +66,8 @@
   "time": {
     "am": "午前",
     "pm": "午後"
+  },
+  "error": {
+    "readFile": "ファイルが破損しているか、このデバイスでは再生できません"
   }
 }

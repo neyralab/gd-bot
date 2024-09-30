@@ -57,6 +57,7 @@ export default function AdvertisementOfferModal() {
 
   const clickHandler = (e) => {
     if (!isClickable) return;
+
     dispatch(
       setAdvertisementModal({
         points: advertisementOfferModal.points,

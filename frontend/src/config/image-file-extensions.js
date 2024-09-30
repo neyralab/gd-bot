@@ -16,20 +16,22 @@ const imageFileExtensions = [
   '.jfif',
   '.heif',
   '.heic',
+  '.tiff',
+  '.avif',
+  '.dds',
+  '.dng',
+  '.cr2'
+];
+
+export const imagesWithoutPreview = [
+  '.psd',
+  '.dds',
+  '.dng',
+  '.heic',
+  '.heif',
+  '.cr2',
   '.tiff'
 ];
-
-export const canBePreview = [
-  'image/jpeg',
-  'image/png',
-  'image/webp',
-  'image/x-icon',
-  // 'image/svg+xml',
-  'application/octet-stream', //ai images
-  'hdri'
-];
-
-export const imagesWithoutPreview = ['.psd', '.dds', '.tiff', '.heic', '.heif'];
 
 export const imageMediaTypes = [
   'image/apng',
@@ -46,8 +48,9 @@ export const imageMediaTypes = [
   'application/octet-stream', //ai images
   'image/heif',
   'image/heic',
-  'image/tiff',
-  'hdri'
+  'hdri',
+  'image/DNG',
+  'image/avif'
 ];
 
 export const imageMediaTypesPreview = [
@@ -61,9 +64,9 @@ export const imageMediaTypesPreview = [
   'image/heic',
   'image/gif',
   'image/svg+xml',
-  'image/tiff',
   'image/bmp',
-  'hdri'
+  'hdri',
+  'image/avif'
 ];
 
 export default imageFileExtensions;

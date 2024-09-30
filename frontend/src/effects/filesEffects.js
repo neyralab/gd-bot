@@ -1,8 +1,11 @@
 import axios from 'axios';
+import { CarReader } from '@ipld/car';
+import { saveBlob, downloadFile, downloadFileFromSP } from 'gdgateway-client';
 import { API_PATH } from '../utils/api-urls';
 import axiosInstance from './axiosInstance';
-import { saveBlob, downloadFile } from 'gdgateway-client';
 import { FILE_ACTIONS } from '../config/contracts';
+import { sendFileViewStatistic } from './file/statisticEfect';
+import { getFileCids } from './file/getFileCid';
 
 export const getDownloadOTT = (body) => {
   const url = `${API_PATH}/download/generate/token`;
@@ -104,7 +107,8 @@ export const downloadFileEffect = async (file, afterCb) => {
     isEncrypted: false,
     signal: controller.signal,
     uploadChunkSize: upload_chunk_size[file.slug] || gateway.upload_chunk_size,
-    jwtOneTimeToken: jwt_ott
+    jwtOneTimeToken: jwt_ott,
+    carReader: CarReader
   });
   if (blob && !blob?.failed) {
     const realBlob = new Blob([blob]);
@@ -205,7 +209,9 @@ export const getFilesEffect = async (page = 1, order = 'desc') => {
 
 export const getPaidShareFilesEffect = async (page = 1) => {
   try {
-    const data = await axiosInstance.get(`${API_PATH}/share/file/list?page=${page}`);
+    const data = await axiosInstance.get(
+      `${API_PATH}/share/file/list?page=${page}`
+    );
     return data?.data;
   } catch (error) {
     throw Error(error);
@@ -224,14 +230,13 @@ export const createPaidShareFileEffect = async (id, body) => {
 export const deletePaidShareEffect = async (id, body) => {
   try {
     const url = `${API_PATH}/share/file/${id}`;
-    return await axiosInstance.delete(url, body)
-      .then((result) => {
-        if (result.data.message === "success") {
-          return result?.data;
-        } else {
-          throw Error('Something went wrong');
-        }
-      });
+    return await axiosInstance.delete(url, body).then((result) => {
+      if (result.data.message === 'success') {
+        return result?.data;
+      } else {
+        throw Error('Something went wrong');
+      }
+    });
   } catch (error) {
     throw Error(error);
   }
@@ -240,7 +245,7 @@ export const deletePaidShareEffect = async (id, body) => {
 export const getPaidShareFileEffect = async (slug) => {
   try {
     const data = await axiosInstance.get(`${API_PATH}/share/file/${slug}`);
-    return data?.data
+    return data?.data;
   } catch (error) {
     throw Error(error);
   }
@@ -319,8 +324,20 @@ export const createStreamEffect = async (slug) => {
 
 export const getFileStarStatistic = async (slug) => {
   try {
-    const data = await axios.get(`${API_PATH}/share/file/stat/${slug}`);
-    return data.data;
+    const { data } = await axios.get(`${API_PATH}/share/file/stat/${slug}`);
+
+    if (data && data.length) {
+      const res = data[0]?.reduce(
+        (acc, cur) => ({
+          view: cur.action === 'view' ? acc.view + cur.count : acc.view,
+          stars: acc.stars + (cur.stars ? parseInt(cur.stars, 10) : 0)
+        }),
+        { view: 0, stars: 0 }
+      );
+
+      return res;
+    }
+    return { view: 0, stars: 0 };
   } catch (error) {
     throw Error(error);
   }
@@ -328,9 +345,97 @@ export const getFileStarStatistic = async (slug) => {
 
 export const createFileReportEffect = async (slug, body) => {
   try {
-    const data = await axiosInstance.post(`${API_PATH}/suspicious-report/${slug}`, body);
+    const data = await axiosInstance.post(
+      `${API_PATH}/suspicious-report/${slug}`,
+      body
+    );
     return data.data;
   } catch (error) {
     throw Error(error);
   }
+};
+
+export const getFilecoinPreviewEffect = async (file) => {
+  if (!file) {
+    throw new Error('File is empty');
+  }
+  const fileBlob = await downloadFileFromSP({
+    carReader: CarReader,
+    url: `${file.storage_provider.url}/${
+      file.preview_large ?? file.preview_small
+    }`,
+    isEncrypted: false,
+    uploadChunkSize: 0,
+    key: undefined,
+    iv: undefined,
+    file,
+    level: 'root'
+  });
+  const realBlob = new Blob([fileBlob]);
+  const text = await realBlob?.text();
+  if (text && text.startsWith('data:image')) {
+    return text;
+  } else {
+    const urlCreator = window.URL || window.webkitURL;
+    return urlCreator.createObjectURL(realBlob);
+  }
+};
+
+export const getFilecoinBlobEffect = async ({ file, getPreview = false }) => {
+  if (!file) {
+    throw new Error('File is empty');
+  }
+
+  const promises = [
+    sendFileViewStatistic(file.slug),
+    getFileCids({ slug: file.slug }),
+    getDownloadOTT([{ slug: file.slug }])
+  ];
+
+  if (getPreview) {
+    promises.push(getFilecoinPreviewEffect(file));
+  }
+
+  const [_, cidData, downloadOTTResponse, preview] =
+    await Promise.allSettled(promises);
+
+  let blob;
+
+  if (cidData?.value && downloadOTTResponse?.value) {
+    const {
+      data: {
+        jwt_ott,
+        user_tokens: { token: oneTimeToken },
+        gateway,
+        upload_chunk_size
+      }
+    } = downloadOTTResponse.value;
+
+    blob = await downloadFile({
+      file,
+      oneTimeToken,
+      endpoint: gateway.url,
+      isEncrypted: false,
+      uploadChunkSize:
+        upload_chunk_size[file.slug] || gateway.upload_chunk_size,
+      cidData: cidData.value,
+      jwtOneTimeToken: jwt_ott,
+      carReader: CarReader
+    });
+  }
+
+  const realBlob = blob ? new Blob([blob]) : null;
+
+  return { realBlob, preview };
+};
+
+export const getFilecoinStreamEffect = async ({ file, getPreview = false }) => {
+  const promises = [createStreamEffect(file.slug)];
+  if (getPreview) {
+    promises.push(getFilecoinPreviewEffect(file));
+  }
+
+  const [streamData, preview] = await Promise.allSettled(promises);
+
+  return { streamData, preview };
 };

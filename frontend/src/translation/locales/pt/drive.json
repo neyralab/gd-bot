@@ -30,7 +30,7 @@
     "processing": "processamento de arquivos",
     "about": "Sobre",
     "totalViews": "Visualizações totais",
-    "starts": "Inicia",
+    "stars": "Estrelas",
     "downloadToStorage": "Baixar para o seu G:Drive",
     "freeWatch": "Assistir gratuitamente",
     "preview": "Pré-visualização",
@@ -66,5 +66,8 @@
   "time": {
     "am": "am",
     "pm": "pm"
+  },
+  "error": {
+    "readFile": "O ficheiro está danificado ou não pode ser reproduzido neste dispositivo"
   }
 }

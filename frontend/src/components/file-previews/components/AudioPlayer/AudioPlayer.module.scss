@@ -30,3 +30,14 @@
   color: white;
   -webkit-tap-highlight-color: transparent;
 }
+
+.error {
+  position: absolute;
+  bottom: 96px;
+  left: 0;
+  width: 100%;
+  padding: 0 48px;
+  text-align: center;
+  color: #a5a5a5;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
