@@ -408,7 +408,7 @@ export const getFilecoinBlobEffect = async ({ file, getPreview = false }) => {
   ];
 
   if (getPreview) {
-    promises.push(getFilePreviewEffect(file.slug, null, file.extension));
+    promises.push(getFilecoinPreviewEffect(file));
   }
 
   const [_, cidData, downloadOTTResponse, preview] =
@@ -447,7 +447,7 @@ export const getFilecoinBlobEffect = async ({ file, getPreview = false }) => {
 export const getFilecoinStreamEffect = async ({ file, getPreview = false }) => {
   const promises = [createStreamEffect(file.slug)];
   if (getPreview) {
-    promises.push(getFilePreviewEffect(file.slug, null, file.extension));
+    promises.push(getFilecoinPreviewEffect(file));
   }
 
   const [streamData, preview] = await Promise.allSettled(promises);
