@@ -117,7 +117,6 @@ const AudioPlayer = forwardRef(
       if (errorStr.includes('notsupportederror')) {
         onFileReadError?.(error);
       }
-      console.log(errorStr);
     };
 
     return (
