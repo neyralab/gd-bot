@@ -303,7 +303,7 @@ export const PaidView = () => {
             </div>
             <div className={styles.divider}></div>
             <div className={styles.statItem}>
-              <h5>{t('ppv.starts')}</h5>
+              <h5>{t('ppv.stars')}</h5>
               <p>{fileStatistics?.stars}</p>
             </div>
           </div>

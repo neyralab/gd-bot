@@ -68,7 +68,7 @@ const ConnectModal = ({ isOpen, onClose }) => {
 
   const handleOnClose = () => {
     setStartOKXConnect(false);
-    handleOnClose();
+    onClose();
   }
 
   const retry = async () => {

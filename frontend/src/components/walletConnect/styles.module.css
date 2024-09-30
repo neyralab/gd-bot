@@ -3,7 +3,9 @@
 }
 
 .overlay {
-
+  position: fixed;
+  inset: 0px;
+  backdrop-filter: blur(4px);
 }
 
 .modal {
@@ -52,7 +54,16 @@
 .item {
   display: flex;
   align-items: center;
+  padding-left: 8px;
   height: 50px;
+  transition: background-color 0.4s ease, box-shadow 0.3s ease;
+  border-radius: 10px;
+}
+
+.item:active {
+  background-color: #007acc;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+  transform: scale(0.98);
 }
 
 .item-img {
