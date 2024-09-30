@@ -122,7 +122,7 @@ export const StartPage = ({ tariffs }) => {
 
   const openInNewTab = (url, isNativeLink = true) => {
     if (isNativeLink) {
-      tg?.openLink(url);
+      tg?.openLink(url, { try_instant_view: true });
     } else {
       window.open(url, '_blank', 'noreferrer');
     }
@@ -269,14 +269,14 @@ export const StartPage = ({ tariffs }) => {
           <span
             onClick={() => {
               openInNewTab(
-                'https://docs.ghostdrive.com/legal/terms-of-service'
+                'https://telegra.ph/Terms-of-Service-GhostDrive-09-29'
               );
             }}>
             Terms of use
           </span>
           <span
             onClick={() => {
-              openInNewTab('https://play.ghostdrive.com');
+              openInNewTab('https://telegra.ph/Ghostdrive-Giveaway-Program-09-29');
             }}>
             {' | Help | '}
           </span>
