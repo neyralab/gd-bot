@@ -109,8 +109,9 @@ const FortuneWheelModal = forwardRef((_, ref) => {
     getInitialData();
   };
 
-  const onTimerCompleted = () => {
-    getInitialData();
+  const onTimerCompleted = async () => {
+    await getInitialData();
+    setFreeSpinTimestamp(null);
   };
 
   useImperativeHandle(ref, () => ({
