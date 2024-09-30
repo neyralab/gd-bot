@@ -1,5 +1,4 @@
 import React, { useMemo, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
 import CN from 'classnames';
 
 import NavigatItem from '../Navigator/NavigatItem';
