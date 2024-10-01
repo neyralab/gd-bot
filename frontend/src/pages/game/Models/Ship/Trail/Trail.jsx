@@ -1,15 +1,25 @@
-import React, { useRef, forwardRef, useImperativeHandle } from 'react';
-import { useFrame, useLoader } from '@react-three/fiber';
+import { useRef, forwardRef, useImperativeHandle, useEffect } from 'react';
+import { useFrame, useLoader, useThree } from '@react-three/fiber';
 import { TextureLoader } from 'three/src/loaders/TextureLoader';
 import { useSelector } from 'react-redux';
-import { BackSide } from 'three';
+import {
+  BackSide,
+  ConeGeometry,
+  Group,
+  Mesh,
+  MeshStandardMaterial
+} from 'three';
 import { selectTheme } from '../../../../../store/reducers/gameSlice';
+import { setTrailMaterials } from './materials';
+import { frameConeAnimation } from './animations';
 
 const Trail = forwardRef((_, ref) => {
   const theme = useSelector(selectTheme);
+  const { scene } = useThree();
   const groupRef = useRef(null);
   const outerConeRef = useRef(null);
   const innerConeRef = useRef(null);
+  const addedRef = useRef(false); // Ref to track if the model has been added
 
   const alphaMap1 = useLoader(
     TextureLoader,
@@ -27,6 +37,69 @@ const Trail = forwardRef((_, ref) => {
     runPushAnimation: runPushAnimation
   }));
 
+  useEffect(() => {
+    setTrailMaterials(theme, outerConeRef, innerConeRef);
+  }, [theme]);
+
+  useEffect(() => {
+    createTrail();
+  }, [scene, theme, alphaMap1, alphaMap2]);
+
+  const createTrail = () => {
+    if (scene && !addedRef.current) {
+      // Create the outer cone mesh
+      const outerConeGeometry = new ConeGeometry(0.55, 10, 12, 1, true);
+      const outerConeMaterial = new MeshStandardMaterial({
+        color: theme.colors.shipTrailEmission,
+        emissive: theme.colors.shipTrailEmission,
+        transparent: true,
+        opacity: 0,
+        emissiveIntensity: 0,
+        alphaMap: alphaMap1,
+        side: BackSide
+      });
+      outerConeMaterial.transparent = true;
+      const outerCone = new Mesh(outerConeGeometry, outerConeMaterial);
+      outerCone.scale.set(0, 0, 0);
+      outerConeRef.current = outerCone;
+
+      // Create the inner cone mesh
+      const innerConeGeometry = new ConeGeometry(0.22, 6, 12, 1, true);
+      const innerConeMaterial = new MeshStandardMaterial({
+        color: '#FFFFFF',
+        emissive: '#FFFFFF',
+        transparent: true,
+        opacity: 0,
+        emissiveIntensity: 0,
+        alphaMap: alphaMap2,
+        depthTest: false,
+        side: BackSide
+      });
+      innerConeMaterial.transparent = true;
+      const innerCone = new Mesh(innerConeGeometry, innerConeMaterial);
+      innerCone.scale.set(0, 0, 0);
+      innerConeRef.current = innerCone;
+
+      // Create a group for cones
+      const group = new Group();
+      group.scale.set(100, 100, 100);
+      group.position.set(0, -360, 0);
+      group.rotation.set(0, 0, -Math.PI);
+
+      groupRef.current = group;
+      group.add(outerCone);
+      group.add(innerCone);
+
+      // Add the meshes to the root bone
+      scene.traverse((child) => {
+        if (child.isBone && child.name === 'root') {
+          child.add(group);
+          addedRef.current = true;
+        }
+      });
+    }
+  };
+
   useFrame((state, delta) => {
     const deltaCoef = delta * 100;
     speedRef.current = Math.max(
@@ -35,81 +108,14 @@ const Trail = forwardRef((_, ref) => {
     ); // Gradually slow down the speed
 
     const time = state.clock.getElapsedTime();
-    const scaleOuter = (0.5 + 0.05 * Math.sin(time * 100)) * speedRef.current;
-    const scaleInner = (0.4 + 0.02 * Math.sin(time * 100)) * speedRef.current;
-    let emissionIntensityOuter = 20 + 5 * Math.sin(time * 30);
-    let emissionIntensityInner = 8 + 5 * Math.sin(time * 50);
-    let opacityOuter = 0.1;
-    let opacityInner = 0.8;
-
-    if (speedRef.current < 0.7) {
-      const factor = (speedRef.current / 0.5) * 0.5;
-      emissionIntensityInner *= factor;
-      opacityInner *= factor;
-    }
-
-    if (speedRef.current < 0.5) {
-      const factor = (speedRef.current / 0.5) * 0.01;
-      emissionIntensityInner *= factor;
-      opacityInner *= factor;
-    }
-
-    if (outerConeRef.current) {
-      outerConeRef.current.scale.set(1, scaleOuter, 1);
-      outerConeRef.current.position.y = 4.8 * (scaleOuter - 1);
-      outerConeRef.current.material.emissiveIntensity = emissionIntensityOuter;
-      outerConeRef.current.material.opacity = opacityOuter;
-    }
-    if (innerConeRef.current) {
-      if (speedRef.current < 0.4) {
-        innerConeRef.current.scale.set(1, scaleInner, 1);
-      } else {
-        innerConeRef.current.scale.set(1, scaleInner, 1);
-      }
-
-      innerConeRef.current.position.y =
-        5 * (1 + scaleOuter) * (scaleInner - 1) + 1.5;
-      innerConeRef.current.material.emissiveIntensity = emissionIntensityInner;
-      innerConeRef.current.material.opacity = opacityInner;
-    }
+    frameConeAnimation(time, speedRef, outerConeRef, innerConeRef);
   });
 
   const runPushAnimation = () => {
     speedRef.current = Math.min(speedRef.current + 0.1, maxSpeed);
   };
 
-  return (
-    <group ref={groupRef} position={[0, -3.5, 0]} rotation={[0, 0, -Math.PI]}>
-      {/* Outer Cone */}
-      <mesh ref={outerConeRef} position={[0, 0, 0]}>
-        <coneGeometry args={[0.55, 10, 12]} openEnded={true} />
-        <meshStandardMaterial
-          color={theme.colors.shipTrailEmission}
-          emissive={theme.colors.shipTrailEmission}
-          transparent
-          opacity={0.1}
-          emissiveIntensity={20}
-          alphaMap={alphaMap1}
-          side={BackSide}
-        />
-      </mesh>
-
-      {/* Inner Cone */}
-      <mesh ref={innerConeRef} position={[0, 0, 0]}>
-        <coneGeometry args={[0.22, 6, 12]} openEnded={true} />
-        <meshStandardMaterial
-          color="#FFFFFF"
-          emissive="#FFFFFF"
-          transparent
-          opacity={0.8}
-          emissiveIntensity={2}
-          alphaMap={alphaMap2}
-          depthTest={false}
-          side={BackSide}
-        />
-      </mesh>
-    </group>
-  );
+  return null;
 });
 
 export default Trail;

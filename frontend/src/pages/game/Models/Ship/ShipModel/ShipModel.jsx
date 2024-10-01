@@ -244,8 +244,6 @@ const ShipModel = forwardRef((_, ref) => {
         position={[0, -20, 0]}
         rotation={[0, -Math.PI * 2.5, 0]}>
         <primitive object={shipModel.scene} ref={shipRef} />
-
-        {status === 'playing' && <Trail ref={shipTrailModelRef} />}
       </group>
 
       <group ref={waveGroupRef}>
@@ -254,6 +252,8 @@ const ShipModel = forwardRef((_, ref) => {
         ))}
       </group>
 
+      <Trail ref={shipTrailModelRef} />
+      
       <Window />
     </>
   );
