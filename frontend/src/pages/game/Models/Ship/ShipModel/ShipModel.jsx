@@ -8,13 +8,13 @@ import React, {
 import { useFrame, useLoader } from '@react-three/fiber';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { useSelector } from 'react-redux';
-import { Group, Clock, AnimationMixer, LoopOnce } from 'three';
+import { Clock, AnimationMixer, LoopOnce } from 'three';
 import {
   selectNextTheme,
   selectStatus,
   selectTheme
 } from '../../../../../store/reducers/gameSlice';
-import Wave from '../Wave/Wave';
+import Waves from '../Waves/Waves';
 import Trail from '../Trail/Trail';
 import Window from '../Window/Window';
 import { setThemeMaterials } from './materials';
@@ -37,7 +37,6 @@ const ShipModel = forwardRef((_, ref) => {
   const mixer = useRef(null);
   const shipRef = useRef(null);
   const shipGroupRef = useRef(null);
-  const waveGroupRef = useRef(new Group());
   const shipTrailModelRef = useRef();
   const flyTimeout = useRef(null);
   const floatingContext = useRef(null);
@@ -48,9 +47,9 @@ const ShipModel = forwardRef((_, ref) => {
   const finishTimeout = useRef(null);
   const themeChangeContext = useRef(null);
   const accentDetails2MaterialRef = useRef(null);
+  const wavesRef = useRef(null);
 
   const [clock] = useState(() => new Clock());
-  const [waves, setWaves] = useState([]);
   const [isInitialized, setIsInitialized] = useState(false);
 
   const scale = 0.16;
@@ -76,10 +75,14 @@ const ShipModel = forwardRef((_, ref) => {
   }, [status]);
 
   const runPushAnimation = () => {
-    runWaveAnimation();
     runShipPushAnimation();
+
     if (shipTrailModelRef.current) {
       shipTrailModelRef.current.runPushAnimation();
+    }
+
+    if (wavesRef.current) {
+      wavesRef.current.runWaveAnimation();
     }
 
     if (flyTimeout.current) {
@@ -110,17 +113,15 @@ const ShipModel = forwardRef((_, ref) => {
         action.play();
       }, 500);
 
-      initialAnimationContext(
-        initialContext,
-        shipGroupRef,
-        () => {
-          runFloatingAnimation({ cleanupPower: 1 });
-        }
-      );
+      initialAnimationContext(initialContext, shipGroupRef, () => {
+        runFloatingAnimation({ cleanupPower: 1 });
+      });
     }
 
     setTimeout(() => {
-      runWaveAnimation();
+      if (wavesRef.current) {
+        wavesRef.current.runWaveAnimation();
+      }
     }, 1400);
   };
 
@@ -146,27 +147,19 @@ const ShipModel = forwardRef((_, ref) => {
     action.setEffectiveTimeScale(3.5);
     action.play();
 
-    themeChangeAnimationContext(
-      themeChangeContext,
-      shipGroupRef,
-      () => {
-        runInitialAnimation();
-        setThemeMaterials(
-          nextTheme.theme || theme,
-          shipRef,
-          accentDetails2MaterialRef
-        );
-      }
-    );
+    themeChangeAnimationContext(themeChangeContext, shipGroupRef, () => {
+      runInitialAnimation();
+      setThemeMaterials(
+        nextTheme.theme || theme,
+        shipRef,
+        accentDetails2MaterialRef
+      );
+    });
   };
 
   const runFloatingAnimation = ({ cleanupPower = 1 }) => {
     stopAllAnimations();
-    floatingAnimationContext(
-      floatingContext,
-      shipGroupRef,
-      cleanupPower
-    );
+    floatingAnimationContext(floatingContext, shipGroupRef, cleanupPower);
   };
 
   const runFlyAnimation = () => {
@@ -200,15 +193,6 @@ const ShipModel = forwardRef((_, ref) => {
       () => runFloatingAnimation({ cleanupPower: 1 }),
       2600
     );
-  };
-
-  const runWaveAnimation = () => {
-    const waveId = Date.now();
-    setWaves((prevWaves) => [...prevWaves, waveId]);
-  };
-
-  const removeWave = (id) => {
-    setWaves((prevWaves) => prevWaves.filter((el) => el !== id));
   };
 
   const stopAllAnimations = () => {
@@ -246,14 +230,10 @@ const ShipModel = forwardRef((_, ref) => {
         <primitive object={shipModel.scene} ref={shipRef} />
       </group>
 
-      <group ref={waveGroupRef}>
-        {waves.map((el) => (
-          <Wave key={el} onComplete={() => removeWave(el)} />
-        ))}
-      </group>
+      <Waves ref={wavesRef} />
 
       <Trail ref={shipTrailModelRef} />
-      
+
       <Window />
     </>
   );
