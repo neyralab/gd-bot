@@ -1,13 +1,25 @@
-import React, { useEffect, useRef } from 'react';
-import { useLoader } from '@react-three/fiber';
-import { Color } from 'three';
+import { useEffect, useRef } from 'react';
+import { useLoader, useThree } from '@react-three/fiber';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { useSelector } from 'react-redux';
-import { selectTheme } from '../../../../../store/reducers/gameSlice';
+import {
+  selectNextTheme,
+  selectStatus,
+  selectTheme
+} from '../../../../../store/reducers/gameSlice';
+import { setThemeMaterials } from './materials';
+import { fadeIn, fadeOut } from './animations';
 
 export default function Window() {
+  const { scene } = useThree();
   const theme = useSelector(selectTheme);
+  const nextTheme = useSelector(selectNextTheme);
+  const advertisementOffer = useSelector(
+    (state) => state.game.advertisementOfferModal
+  );
+  const status = useSelector(selectStatus);
   const windowRef = useRef(null);
+  const addedRef = useRef(false); // Ref to track if the model has been added
 
   const windowModel = useLoader(
     GLTFLoader,
@@ -15,41 +27,42 @@ export default function Window() {
   );
 
   useEffect(() => {
-    setThemeMaterials(theme);
+    setThemeMaterials(theme, windowRef);
   }, [windowModel, theme]);
 
-  const setThemeMaterials = (theme) => {
-    if (!windowRef.current || !theme) return;
+  useEffect(() => {
+    if (windowModel && scene && !addedRef.current) {
+      scene.traverse((child) => {
+        if (child.isBone && child.name === 'corp2') {
+          windowModel.scene.scale.set(100, 100, 100);
+          windowModel.scene.position.set(-120, -390, 0);
+          child.add(windowModel.scene);
+          addedRef.current = true;
+        }
+      });
+    }
+  }, [windowModel, scene]);
 
-    windowRef.current.traverse((child) => {
-      if (child.isMesh) {
-        const materials = Array.isArray(child.material)
-          ? child.material
-          : [child.material];
-        materials.forEach((material) => {
-          switch (material.name) {
-            case 'BaseMaterial':
-              material.color.set(theme.colors.shipBase);
-              material.metalness = theme.shipMetalness;
-              material.roughness = theme.shipRoughness;
-              break;
-
-            case 'BaseEmission2':
-              material.color.set(theme.colors.emission);
-              material.emissive = new Color(theme.colors.emission);
-              material.needsUpdate = true;
-              break;
-          }
-        });
+  useEffect(() => {
+    if (windowModel) {
+      if (
+        advertisementOffer &&
+        theme.id === 'hawk' &&
+        status !== 'playing' &&
+        !nextTheme.isSwitching
+      ) {
+        fadeIn(windowModel);
+      } else {
+        fadeOut(windowModel);
       }
-    });
-  };
+    }
+  }, [
+    advertisementOffer,
+    theme.id,
+    status,
+    nextTheme.isSwitching,
+    windowModel
+  ]);
 
-  return (
-    <primitive
-      object={windowModel.scene}
-      ref={windowRef}
-      position={[0.2, 0, 0]}
-    />
-  );
+  return null;
 }
