@@ -3,9 +3,9 @@ import { useFrame, useLoader } from '@react-three/fiber';
 import { TextureLoader } from 'three/src/loaders/TextureLoader';
 import { useSelector } from 'react-redux';
 import { BackSide } from 'three';
-import { selectTheme } from '../../../store/reducers/gameSlice';
+import { selectTheme } from '../../../../../store/reducers/gameSlice';
 
-const ShipTrailModel = forwardRef((_, ref) => {
+const Trail = forwardRef((_, ref) => {
   const theme = useSelector(selectTheme);
   const groupRef = useRef(null);
   const outerConeRef = useRef(null);
@@ -112,4 +112,4 @@ const ShipTrailModel = forwardRef((_, ref) => {
   );
 });
 
-export default ShipTrailModel;
+export default Trail;

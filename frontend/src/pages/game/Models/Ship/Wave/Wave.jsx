@@ -2,9 +2,9 @@ import React, { useRef, useEffect } from 'react';
 import gsap from 'gsap';
 import { AdditiveBlending } from 'three';
 import { useSelector } from 'react-redux';
-import { selectTheme } from '../../../store/reducers/gameSlice';
+import { selectTheme } from '../../../../../store/reducers/gameSlice';
 
-const ShipWaveModel = ({ id, onComplete }) => {
+const Wave = ({ id, onComplete }) => {
   const theme = useSelector(selectTheme);
 
   const circleRef = useRef();
@@ -56,4 +56,4 @@ const ShipWaveModel = ({ id, onComplete }) => {
   );
 };
 
-export default ShipWaveModel;
+export default Wave;

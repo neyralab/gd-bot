@@ -3,25 +3,25 @@ import { useLoader } from '@react-three/fiber';
 import { Color } from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { useSelector } from 'react-redux';
-import { selectTheme } from '../../../store/reducers/gameSlice';
+import { selectTheme } from '../../../../../store/reducers/gameSlice';
 
-export default function ShipWindowModel() {
+export default function Window() {
   const theme = useSelector(selectTheme);
-  const shipWindowRef = useRef(null);
+  const windowRef = useRef(null);
 
-  const shipWindowModel = useLoader(
+  const windowModel = useLoader(
     GLTFLoader,
     '/assets/game-page/ship-window.glb'
   );
 
   useEffect(() => {
     setThemeMaterials(theme);
-  }, [shipWindowModel, theme]);
+  }, [windowModel, theme]);
 
   const setThemeMaterials = (theme) => {
-    if (!shipWindowRef.current || !theme) return;
+    if (!windowRef.current || !theme) return;
 
-    shipWindowRef.current.traverse((child) => {
+    windowRef.current.traverse((child) => {
       if (child.isMesh) {
         const materials = Array.isArray(child.material)
           ? child.material
@@ -47,8 +47,8 @@ export default function ShipWindowModel() {
 
   return (
     <primitive
-      object={shipWindowModel.scene}
-      ref={shipWindowRef}
+      object={windowModel.scene}
+      ref={windowRef}
       position={[0.2, 0, 0]}
     />
   );
