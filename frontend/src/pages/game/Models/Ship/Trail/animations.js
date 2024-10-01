@@ -11,15 +11,9 @@ export const frameConeAnimation = (
   let opacityOuter = 0.1;
   let opacityInner = 0.1;
 
-  if (speedRef.current <= 0) {
+  if (speedRef.current <= 0.1) {
     opacityInner = 0;
     opacityOuter = 0;
-  }
-
-  if (speedRef.current < 0.01) {
-    const factor = (speedRef.current / 0.5) * 1;
-    emissionIntensityInner *= factor;
-    opacityInner *= factor;
   }
 
   if (speedRef.current < 0.8) {
