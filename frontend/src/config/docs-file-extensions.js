@@ -227,4 +227,4 @@ export const docMediaTypesContent = [
   'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
   'application/msword'
 ];
-export const docMediaWithoutPreview = ['odt', 'tex', 'epub'];
+export const docMediaWithoutPreview = ['odt', 'tex', 'epub', 'doc'];
