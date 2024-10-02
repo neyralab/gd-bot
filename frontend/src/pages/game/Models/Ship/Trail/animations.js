@@ -16,7 +16,7 @@ export const frameConeAnimation = (
     opacityOuter = 0;
   }
 
-  if (speedRef.current < 0.8) {
+  if (speedRef.current < 0.45) {
     const factor = (speedRef.current / 0.5) * 0.001;
     emissionIntensityInner *= factor;
     opacityInner *= factor;
@@ -32,7 +32,7 @@ export const frameConeAnimation = (
 
   if (innerConeRef.current) {
     innerConeRef.current.scale.set(0.9, scaleInner, 0.9);
-    innerConeRef.current.position.y = 0.3 * (scaleInner - 1) + 0.7;
+    innerConeRef.current.position.y = scaleInner * 0.9;
     innerConeRef.current.material.transparent = true;
     innerConeRef.current.material.emissiveIntensity = emissionIntensityInner;
     innerConeRef.current.material.opacity = opacityInner;
