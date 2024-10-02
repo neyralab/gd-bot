@@ -41,6 +41,11 @@ export default [
       'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
   },
   {
+    extension: '.csv',
+    'mime-type':
+      'text/csv'
+  },
+  {
     extension: '.xlsm',
     'mime-type': 'application/vnd.ms-excel.sheet.macroEnabled.12'
   },
