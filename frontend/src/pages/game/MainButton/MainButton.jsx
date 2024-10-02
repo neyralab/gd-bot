@@ -18,8 +18,8 @@ import styles from './MainButton.module.scss';
 
 const MainButton = ({ onPushAnimation }) => {
   const pointsAreaRef = useRef(null);
-
   const dispatch = useDispatch();
+  const allowThemeChange = useSelector((state) => state.game.allowThemeChange);
   const isCanvasLoaded = useSelector((state) => state.game.isCanvasLoaded);
   const theme = useSelector(selectTheme);
   const themes = useSelector(selectThemes);
@@ -38,11 +38,19 @@ const MainButton = ({ onPushAnimation }) => {
   const recentlyFinishedLocker = useSelector(
     (state) => state.game.recentlyFinishedLocker
   );
-  const themeIndex = useMemo(() => themes.findIndex((el) => el.id === theme.id), [theme, themes]);
+  const themeIndex = useMemo(
+    () => themes.findIndex((el) => el.id === theme.id),
+    [theme, themes]
+  );
 
   const swipeHandlers = useSwipeable({
     onSwipedLeft: () => {
-      if (!isCanvasLoaded || theme.id === themes[themes.length - 1].id) return;
+      if (
+        !isCanvasLoaded ||
+        !allowThemeChange ||
+        theme.id === themes[themes.length - 1].id
+      )
+        return;
       const isNextGodTheme = themes[themeIndex + 1].id === 'gold';
       dispatch(
         switchTheme({
@@ -53,7 +61,7 @@ const MainButton = ({ onPushAnimation }) => {
       );
     },
     onSwipedRight: () => {
-      if (!isCanvasLoaded || theme.id === 'hawk') return;
+      if (!isCanvasLoaded || !allowThemeChange || theme.id === 'hawk') return;
       const isNextGodTheme = themes[themeIndex - 1].id === 'gold';
       dispatch(
         switchTheme({

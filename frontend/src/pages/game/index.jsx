@@ -8,7 +8,8 @@ import {
   selectIsTransactionLoading,
   selectIsGameDisabled,
   gameCleanup,
-  checkAdvertisementOffer
+  checkAdvertisementOffer,
+  setAllowThemeChange
 } from '../../store/reducers/gameSlice';
 import { Header } from '../../components/header_v2';
 import BuyButton from './BuyButton/BuyButton';
@@ -40,6 +41,8 @@ export function GamePage() {
 
   const isInitialized = useSelector(selectIsInitialized);
   const userIsInitialized = useSelector((state) => !!state.user.data);
+  const isCanvasLoaded = useSelector((state) => state.game.isCanvasLoaded);
+  const allowThemeChange = useSelector((state) => state.game.allowThemeChange);
   const isTransactionLoading = useSelector(selectIsTransactionLoading);
   const isGamedDisabled = useSelector(selectIsGameDisabled);
 
@@ -56,6 +59,24 @@ export function GamePage() {
       dispatch(gameCleanup());
     };
   }, [userIsInitialized]);
+
+  useEffect(() => {
+    let timeout;
+    if (
+      isInitialized &&
+      userIsInitialized &&
+      isCanvasLoaded &&
+      !allowThemeChange
+    ) {
+      timeout = setTimeout(() => {
+        dispatch(setAllowThemeChange(true));
+      }, 1000);
+    }
+
+    return () => {
+      clearTimeout(timeout);
+    };
+  }, [isInitialized, userIsInitialized, isCanvasLoaded, allowThemeChange]);
 
   const onPushAnimation = () => {
     canvasRef.current?.runPushAnimation();

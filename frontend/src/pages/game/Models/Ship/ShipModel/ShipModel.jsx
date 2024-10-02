@@ -56,13 +56,16 @@ const ShipModel = forwardRef((_, ref) => {
 
   useEffect(() => {
     if (isInitialized) return;
+    setThemeMaterials(
+      nextTheme.theme || theme,
+      shipRef,
+      accentDetails2MaterialRef
+    );
     runInitialAnimation();
-    setThemeMaterials(theme, shipRef, accentDetails2MaterialRef);
     setIsInitialized(true);
-  }, [shipModel, theme]);
+  }, [shipModel, theme, nextTheme.theme]);
 
   useEffect(() => {
-    if (!isInitialized || !nextTheme.theme) return;
     if (nextTheme.theme) {
       runThemeChange();
     }
