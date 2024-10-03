@@ -54,7 +54,6 @@ import {
   isTonPaymentEnabled,
   isStarsPaymentEnabled,
 } from '../../../utils/paymentChecker';
-import { isDevEnv } from '../../../utils/isDevEnv';
 import { sleep } from '../../../utils/sleep';
 import styles from './BuyButton.module.css';
 
@@ -76,7 +75,6 @@ export default function BuyButton() {
 
   const user = useSelector((state) => state?.user?.data);
   const contractAddress = useSelector(selectContractAddress);
-  const isDev = isDevEnv();
   const [isDisabled, setIsDisabled] = useState(false);
   const isStarPaymentAllow = useMemo(() => isStarsPaymentEnabled && theme.stars, [isStarsPaymentEnabled, theme]);
   const isTonPaymentAllow = useMemo(() => isTonPaymentEnabled && theme.ton_price, [isTonPaymentEnabled, theme]);
@@ -236,9 +234,7 @@ export default function BuyButton() {
   };
 
   const handleStartStarsPayment = () => {
-    const input = isDev ?
-      `${gamePayment.Type};${0};${theme.tierId};${user.id};${0}`:
-      `${0};${theme.tierId};${user.id}`;
+    const input = `${gamePayment.Type};${0};${theme.tierId};${user.id};${0}`;
 
     makeInvoice({
       input,
@@ -246,7 +242,6 @@ export default function BuyButton() {
       callback: invoiceCallback,
       type: INVOICE_TYPE.game,
       theme,
-      isDev
     }); 
   }
 

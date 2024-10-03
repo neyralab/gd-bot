@@ -1,4 +1,5 @@
 import React, { useMemo, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import CN from 'classnames';
 
 import NavigatItem from '../Navigator/NavigatItem';
@@ -7,7 +8,8 @@ import FortuneWheelModal from '../../../components/FortuneWheelModal/FortuneWhee
 
 import styles from '../Navigator/Navigator.module.scss';
 
-export default function FortuneWheel({  }) {
+export default function FortuneWheel() {
+  const { t } = useTranslation('game');
   const fortuneWheelModalRef = useRef(null);
 
   const openFortuneWheel = () => {
@@ -18,9 +20,9 @@ export default function FortuneWheel({  }) {
     () => [
       {
         id: 1,
-        name: 'Spin & Win',
+        name: t('earn.spinAndWin'),
         icon: <WheelIcon />,
-        html: <span className={styles.actionBtn}>Spin</span>,
+        html: <span className={styles.actionBtn}>{t('earn.spinWheel')}</span>,
         onClick: () => {openFortuneWheel()}
       }
     ],
