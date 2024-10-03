@@ -1,8 +1,8 @@
 {
   "mode": {
     "playNow": "Play now",
-    "freePlay": "Next free play",
-    "play": "Play mode",
+    "freePlay": "Charging Time",
+    "play": "mining mode (KBs)",
     "boost": "Boost mode"
   },
   "navigate": {
@@ -116,7 +116,7 @@
     "uploadFile": "Upload file"
   },
   "advertisement": {
-    "watchAndPlay": "Watch ad to get {{points}} points and play again",
+    "watchAndPlay": "Watch and earn {{points}}",
     "points": "Points"
   },
   "message": {

@@ -5,6 +5,7 @@ import classNames from 'classnames';
 import { SlidingModal } from '../../../../components/slidingModal';
 import { setFileInfoModal } from '../../../../store/reducers/driveSlice';
 import { transformSize } from '../../../../utils/transformSize';
+import { removeExtension } from '../../../../utils/string';
 import CopyButton from '../../../../components/copyButton';
 import styles from './FileInfoModal.module.scss';
 
@@ -35,8 +36,8 @@ export default function FileInfoModal() {
       backgroundClass={styles.background}>
       {file && (
         <div className={styles.wrapper}>
-          <h2 className={styles.fileName}>{file.name}</h2>
-          <h3 className={styles.title}>Meta</h3>
+          <h2 className={styles.fileName}>{removeExtension(file.name)}</h2>
+          {/* <h3 className={styles.title}>Meta</h3> */}
           <ul className={styles.list}>
             <li className={styles.item}>
               Type: <span>{file.extension}</span>

@@ -2,8 +2,8 @@
 {
   "mode": {
     "playNow": "Jetzt spielen",
-    "freePlay": "Nächstes kostenloses Spiel",
-    "play": "Spielmodus",
+    "freePlay": "Ladezeit",
+    "play": "Mining-Modus (KBs)",
     "boost": "Boost-Modus"
   },
   "navigate": {
@@ -117,7 +117,7 @@
     "uploadFile": "Datei hochladen"
   },
   "advertisement": {
-    "watchAndPlay": "Sehen Sie sich die Anzeige an, um {{points}} Punkte zu erhalten und erneut zu spielen",
+    "watchAndPlay": "Schau und verdiene {{points}}",
     "points": "Punkte"
   },
   "message": {
