@@ -140,7 +140,7 @@ const FortuneWheelModal = forwardRef((_, ref) => {
                     <button
                       className={styles['spin-btn']}
                       onClick={startBunusGame}
-                    >{`${bonusSpins.data.length} spin`}
+                    >{`${bonusSpins.data.length} ${tg.t('earn.spinWheel')?.toLowerCase?.()}`}
                   </button>
                   ) : (
                     <h2>

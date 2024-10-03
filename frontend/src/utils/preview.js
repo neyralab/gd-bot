@@ -22,7 +22,6 @@ import {
 } from '../config/docs-file-extensions';
 import { isiOS } from './client';
 
-
 const getPreviewFileType = (file, entityContent, withoutContent) => {
   let entityFileType = '';
 
@@ -65,7 +64,11 @@ const getPreviewFileType = (file, entityContent, withoutContent) => {
         } else {
           entityFileType = 'img';
         }
-      } else if (file.extension === 'xlsx' || file.extension === 'xls') {
+      } else if (
+        file.extension === 'xlsx' ||
+        file.extension === 'xls' ||
+        file.extension === 'csv'
+      ) {
         entityFileType = 'xlsx';
       } else if (file.mime === 'text/plain') {
         entityFileType = 'txt';
