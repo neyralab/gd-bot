@@ -173,7 +173,7 @@ export default function FortuneWheel({ spinId, onSpinned }) {
     const randomIndex = Math.floor(Math.random() * matchingEntries.length);
 
     setReward(matchingEntries[randomIndex]);
-    dispatch(setUser({ ...user, points: user.points + res.points }));
+    dispatch(setUser({ ...user, points: user.points + points }));
     rewardRef.current = matchingEntries[randomIndex];
     console.log(matchingEntries[randomIndex]);
   };
