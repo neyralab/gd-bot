@@ -60,9 +60,9 @@ export default function FortuneTimer({ timestamp, onComplete, invites }) {
         title={t('friends.inviteFriend')}
         onClick={() => {vibrate('soft')}}>
           <div className={styles['bonus-spin']}>
-            <span className={styles['bonus-text']}>1 Spin</span>
+            <span className={styles['bonus-text']}>{`1 ${t('earn.spinWheel')}`}</span>
             <div className={styles['bonus-status']} >
-              <span>Invite 3 friends</span>
+              <span>{t('earn.spinInvite')}</span>
               <FriendsIcon />
             </div>
           </div>
