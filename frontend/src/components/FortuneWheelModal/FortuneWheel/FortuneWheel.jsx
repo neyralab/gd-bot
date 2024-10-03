@@ -1,9 +1,11 @@
 import React, { useRef, useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import classNames from 'classnames';
 import { useSwipeable } from 'react-swipeable';
 import { gsap } from 'gsap';
 import { startSpin } from '../../../effects/fortuneWheelEffect';
+import { setUser } from '../../../store/reducers/userSlice';
 import BackgroundSvg from './BackgroundSvg';
 import Confetti from '../../Confetti/Confetti';
 import SystemModal from '../../SystemModal/SystemModal';
@@ -24,6 +26,8 @@ export default function FortuneWheel({ spinId, onSpinned }) {
   const ts = useTranslation('system');
   const tg = useTranslation('game');
 
+  const user = useSelector((state) => state?.user?.data);
+  const dispatch = useDispatch();
   const systemModalRef = useRef(null);
   const wheelRef = useRef(null);
   const spinIntervalId = useRef(null);
@@ -169,6 +173,7 @@ export default function FortuneWheel({ spinId, onSpinned }) {
     const randomIndex = Math.floor(Math.random() * matchingEntries.length);
 
     setReward(matchingEntries[randomIndex]);
+    dispatch(setUser({ ...user, points: user.points + res.points }));
     rewardRef.current = matchingEntries[randomIndex];
     console.log(matchingEntries[randomIndex]);
   };
