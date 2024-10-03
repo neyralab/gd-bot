@@ -1,10 +1,12 @@
 import axios from 'axios';
+import { CarReader } from '@ipld/car';
+import { saveBlob, downloadFile, downloadFileFromSP } from 'gdgateway-client';
 import { updateFile } from '../store/reducers/filesSlice';
 import { API_PATH } from '../utils/api-urls';
 import axiosInstance from './axiosInstance';
-import { saveBlob, downloadFile, downloadFileFromSP } from 'gdgateway-client';
 import { FILE_ACTIONS } from '../config/contracts';
-import { CarReader } from '@ipld/car';
+import { sendFileViewStatistic } from './file/statisticEfect';
+import { getFileCids } from './file/getFileCid';
 
 export const getDownloadOTT = (body) => {
   const url = `${API_PATH}/download/generate/token`;
@@ -337,8 +339,20 @@ export const createStreamEffect = async (slug) => {
 
 export const getFileStarStatistic = async (slug) => {
   try {
-    const data = await axios.get(`${API_PATH}/share/file/stat/${slug}`);
-    return data.data;
+    const { data } = await axios.get(`${API_PATH}/share/file/stat/${slug}`);
+
+    if (data && data.length) {
+      const res = data[0]?.reduce(
+        (acc, cur) => ({
+          view: cur.action === 'view' ? acc.view + cur.count : acc.view,
+          stars: acc.stars + (cur.stars ? parseInt(cur.stars, 10) : 0)
+        }),
+        { view: 0, stars: 0 }
+      );
+
+      return res;
+    }
+    return { view: 0, stars: 0 };
   } catch (error) {
     throw Error(error);
   }
@@ -380,4 +394,63 @@ export const getFilecoinPreviewEffect = async (file) => {
     const urlCreator = window.URL || window.webkitURL;
     return urlCreator.createObjectURL(realBlob);
   }
+};
+
+export const getFilecoinBlobEffect = async ({ file, getPreview = false }) => {
+  if (!file) {
+    throw new Error('File is empty');
+  }
+
+  const promises = [
+    sendFileViewStatistic(file.slug),
+    getFileCids({ slug: file.slug }),
+    getDownloadOTT([{ slug: file.slug }])
+  ];
+
+  if (getPreview) {
+    promises.push(getFilecoinPreviewEffect(file));
+  }
+
+  const [_, cidData, downloadOTTResponse, preview] =
+    await Promise.allSettled(promises);
+
+  let blob;
+
+  if (cidData?.value && downloadOTTResponse?.value) {
+    const {
+      data: {
+        jwt_ott,
+        user_tokens: { token: oneTimeToken },
+        gateway,
+        upload_chunk_size
+      }
+    } = downloadOTTResponse.value;
+
+    blob = await downloadFile({
+      file,
+      oneTimeToken,
+      endpoint: gateway.url,
+      isEncrypted: false,
+      uploadChunkSize:
+        upload_chunk_size[file.slug] || gateway.upload_chunk_size,
+      cidData: cidData.value,
+      jwtOneTimeToken: jwt_ott,
+      carReader: CarReader
+    });
+  }
+
+  const realBlob = blob ? new Blob([blob]) : null;
+
+  return { realBlob, preview };
+};
+
+export const getFilecoinStreamEffect = async ({ file, getPreview = false }) => {
+  const promises = [createStreamEffect(file.slug)];
+  if (getPreview) {
+    promises.push(getFilecoinPreviewEffect(file));
+  }
+
+  const [streamData, preview] = await Promise.allSettled(promises);
+
+  return { streamData, preview };
 };

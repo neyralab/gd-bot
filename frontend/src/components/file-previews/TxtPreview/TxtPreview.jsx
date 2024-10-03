@@ -11,7 +11,8 @@ const TxtPreview = ({
   file,
   onFavoriteClick,
   onInfoClick,
-  onExpand
+  onExpand,
+  onFileReadError
 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
@@ -30,6 +31,7 @@ const TxtPreview = ({
       <TxtReader
         mode={isExpanded ? 'default' : 'simplified'}
         fileContent={fileContent}
+        onFileReadError={onFileReadError}
       />
 
       {isExpanded ? (

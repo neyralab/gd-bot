@@ -10,17 +10,15 @@ import { useTranslation } from 'react-i18next';
 import { getLastPlayedFreeSpin, getBonusSpins } from '../../effects/fortuneWheelEffect';
 import { ReactComponent as CloseIcon } from '../../assets/close.svg';
 import { vibrate } from '../../utils/vibration';
-import { isDevEnv } from '../../utils/isDevEnv';
 import FortuneWheel from './FortuneWheel/FortuneWheel';
 import FortuneTimer from './FortuneTimer/FortuneTimer';
 import Loader2 from '../Loader2/Loader2';
 import SystemModal from '../SystemModal/SystemModal';
 import styles from './FortuneWheelModal.module.scss';
 
-const INITIAL_BONUS_STATE = { count: 0, data: [], first_usage: '' };
+const INITIAL_BONUS_STATE = { usage: [], data: [] };
 
 const FortuneWheelModal = forwardRef((_, ref) => {
-  const isDev = isDevEnv();
   const modalRef = useRef(null);
   const systemModalRef = useRef(null);
   const ts = useTranslation('system');
@@ -98,7 +96,7 @@ const FortuneWheelModal = forwardRef((_, ref) => {
       spinAvailable = 'free';
     }
 
-    if (startBonusSpins && bonusSpins.data.length && isDev) {
+    if (startBonusSpins && bonusSpins.data.length) {
       spinAvailable = bonusSpins.data[0];
     }
 
@@ -109,8 +107,9 @@ const FortuneWheelModal = forwardRef((_, ref) => {
     getInitialData();
   };
 
-  const onTimerCompleted = () => {
-    getInitialData();
+  const onTimerCompleted = async () => {
+    await getInitialData();
+    setFreeSpinTimestamp(null);
   };
 
   useImperativeHandle(ref, () => ({
@@ -137,11 +136,11 @@ const FortuneWheelModal = forwardRef((_, ref) => {
               <div className={styles.container}>
                 <div className={styles.header}>
                   {!!bonusSpins.data.length &&
-                    !startBonusSpins ? (
+                    !startBonusSpins && available !== 'free' ? (
                     <button
                       className={styles['spin-btn']}
                       onClick={startBunusGame}
-                    >{`${bonusSpins.data.length} spin`}
+                    >{`${bonusSpins.data.length} ${tg.t('earn.spinWheel')?.toLowerCase?.()}`}
                   </button>
                   ) : (
                     <h2>
@@ -183,7 +182,8 @@ const FortuneWheelModal = forwardRef((_, ref) => {
                       <FortuneTimer
                         timestamp={freeSpinTimestamp}
                         onComplete={onTimerCompleted}
-                        bonusSpins={bonusSpins}
+                        bonusSpins={bonusSpins.data}
+                        invites={bonusSpins.usage}
                       />
                     )}
                 </div>

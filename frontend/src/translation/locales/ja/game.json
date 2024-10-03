@@ -74,6 +74,8 @@
     "freeSpin": "フリースピン",
     "earnGPoints": "GhostDriveポイントを獲得",
     "spinWheel": "回転",
+    "spinAndWin": "スピンして勝つ",
+    "spinInvite": "友達を3人招待",
     "wheelNextSpin": "次の無料スピンはあと",
     "wheelBonusSpin": "友達が招待されました",
     "watchVideo": "動画を見る"
@@ -114,7 +116,8 @@
     "uploadFile": "ファイルをアップロード"
   },
   "advertisement": {
-    "watchAndPlay": "広告を視聴して{{points}}ポイントを獲得し、再度プレイしましょう"
+    "watchAndPlay": "広告を視聴して{{points}}ポイントを獲得し、再度プレイしましょう",
+    "points": "ポイント"
   },
   "message": {
     "someTimeForTransaction": "取引を確認するには少し時間が必要です。",

@@ -74,6 +74,8 @@
     "freeSpin": "Бесплатное вращение",
     "earnGPoints": "Заработайте баллы GhostDrive",
     "spinWheel": "Вращать",
+    "spinAndWin": "Крути и выигрывай",
+    "spinInvite": "Пригласите 3 друзей",
     "wheelNextSpin": "Следующее бесплатное вращение начнется через",
     "wheelBonusSpin": "Друзья приглашены",
     "watchVideo": "Смотреть видео"
@@ -114,7 +116,8 @@
     "uploadFile": "Загрузить файл"
   },
   "advertisement": {
-    "watchAndPlay": "Посмотрите рекламу, чтобы получить {{points}} очков и сыграть снова"
+    "watchAndPlay": "Посмотрите рекламу, чтобы получить {{points}} очков и сыграть снова",
+    "points": "Очки"
   },
   "message": {
     "someTimeForTransaction": "Нам нужно некоторое время для проверки транзакции.",

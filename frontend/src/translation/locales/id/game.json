@@ -74,6 +74,8 @@
     "freeSpin": "Putaran Gratis",
     "earnGPoints": "Dapatkan Poin GhostDrive",
     "spinWheel": "Memutar",
+    "spinAndWin": "Putar & Menang",
+    "spinInvite": "Undang 3 teman",
     "wheelNextSpin": "Putaran gratis berikutnya dimulai dalam",
     "wheelBonusSpin": "Teman-teman diundang",
     "watchVideo": "Tonton video"
@@ -114,7 +116,8 @@
     "uploadFile": "Unggah data"
   },
   "advertisement": {
-    "watchAndPlay": "Tonton iklan untuk mendapatkan {{points}} poin dan bermain lagi"
+    "watchAndPlay": "Tonton iklan untuk mendapatkan {{points}} poin dan bermain lagi",
+    "points": "Poin"
   },
   "message": {
     "someTimeForTransaction": "Kami perlu waktu untuk meninjau transaksi tersebut.",

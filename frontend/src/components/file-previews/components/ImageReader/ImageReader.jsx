@@ -1,36 +1,80 @@
 import { useEffect, useRef, useState } from 'react';
 import styles from './ImageReader.module.scss';
 
-export default function ImageReader({ fileContent, fileContentType = 'blob' }) {
+export default function ImageReader({
+  file,
+  fileContent,
+  fileContentType = 'blob',
+  onFileReadError
+}) {
   const [url, setUrl] = useState();
-  const isSvg = file.extension === 'svg';
   const svgRef = useRef(null);
 
   useEffect(() => {
     if (fileContentType === 'blob') {
-      setUrl(URL.createObjectURL(fileContent));
+      const objectUrl = URL.createObjectURL(fileContent);
+      setUrl(objectUrl);
+
+      return () => {
+        URL.revokeObjectURL(objectUrl);
+      };
     }
     if (fileContentType === 'url') {
       setUrl(fileContent);
     }
-  }, [fileContent]);
+  }, [fileContent, fileContentType]);
 
   useEffect(() => {
-    if (isSvg && typeof fileContent === 'string') {
-      const parser = new DOMParser();
-      const svgDocument = parser.parseFromString(fileContent, 'image/svg+xml');
-      const svgElement = svgDocument.documentElement;
-      svgRef.current.innerHTML = '';
-      svgRef.current.appendChild(svgElement);
+    if (file.extension === 'svg' && svgRef.current) {
+      if (fileContentType === 'url') {
+        fetch(fileContent)
+          .then((response) => response.text())
+          .then((svgText) => {
+            const parser = new DOMParser();
+            const svgDocument = parser.parseFromString(
+              svgText,
+              'image/svg+xml'
+            );
+            const svgElement = svgDocument.documentElement;
+            svgRef.current.innerHTML = '';
+            svgRef.current.appendChild(svgElement);
+          })
+          .catch((e) => {
+            onFileReadError?.(e);
+          });
+      } else if (fileContentType === 'blob') {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const parser = new DOMParser();
+          const svgDocument = parser.parseFromString(
+            e.target.result,
+            'image/svg+xml'
+          );
+          const svgElement = svgDocument.documentElement;
+          svgRef.current.innerHTML = '';
+          svgRef.current.appendChild(svgElement);
+        };
+        reader.onerror = (e) => {
+          onFileReadError?.(e);
+        };
+        reader.readAsText(fileContent);
+      }
     }
-  }, [fileContent, isSvg]);
+  }, [url, file, fileContentType, svgRef.current]);
+
+  if (!file || !file.extension) return null;
 
   return (
     <div className={styles.container}>
-      {isSvg ? (
-        <div ref={svgRef}></div>
+      {file.extension === 'svg' ? (
+        <div className={styles['svg-container']} ref={svgRef}></div>
       ) : (
-        <img className={styles.image} alt={file.name} src={url} />
+        <img
+          className={styles.image}
+          alt={file.name}
+          src={url}
+          onError={(e) => onFileReadError?.(e)}
+        />
       )}
     </div>
   );

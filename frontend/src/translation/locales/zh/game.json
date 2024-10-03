@@ -73,6 +73,9 @@
     "joinNewsTg": "加入我们的新闻频道",
     "freeSpin": "免费旋转",
     "earnGPoints": "赚取 GhostDrive 积分",
+    "spinWheel": "旋转",
+    "spinAndWin": "旋转赢取",
+    "spinInvite": "邀请3个朋友",
     "wheelNextSpin": "下次免费旋转开始于",
     "wheelBonusSpin": "朋友们已被邀请",
     "watchVideo": "观看视频"
@@ -114,7 +117,8 @@
     "wheelNextSpin": "下一轮开始于"
   },
   "advertisement": {
-    "watchAndPlay": "观看广告可获得 {{points}} 分并再次玩"
+    "watchAndPlay": "观看广告可获得 {{points}} 分并再次玩",
+    "points": "积分"
   },
   "message": {
     "someTimeForTransaction": "我们需要一些时间来审核该交易。",

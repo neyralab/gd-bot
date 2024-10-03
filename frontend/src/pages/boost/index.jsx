@@ -28,7 +28,6 @@ import { ReactComponent as Star } from '../../assets/star.svg';
 import { ReactComponent as Ton } from '../../assets/TON.svg';
 import { vibrate } from '../../utils/vibration';
 import { INVOICE_TYPE } from '../../utils/createStarInvoice';
-import { isDevEnv } from '../../utils/isDevEnv';
 import { sleep } from '../../utils/sleep';
 import { getToken } from '../../effects/set-token';
 import { runInitAnimation } from './animations';
@@ -57,7 +56,6 @@ export const BoostPage = ({ tariffs, setTariffs }) => {
   const storagePayment = useSelector(selectPaymenttByKey('storage'));
   const user = useSelector((state) => state.user.data);
   const wallet = useTonWallet();
-  const isDev = isDevEnv();
   const [tonConnectUI] = useTonConnectUI();
   const { open } = useTonConnectModal();
   const dispatch = useDispatch();
@@ -172,9 +170,7 @@ export const BoostPage = ({ tariffs, setTariffs }) => {
     if (el.action === 'ton') {
       payByTON(el);
     } else {
-      const input = isDev ?
-        `${storagePayment.Type};${el?.id};${user.id};${ws};0`:
-        `${el?.id};${user.id};${ws}`;
+      const input = `${storagePayment.Type};${el?.id};${user.id};${ws};0`;
 
       const theme = {
         multiplier: el.multiplicator,
@@ -186,7 +182,6 @@ export const BoostPage = ({ tariffs, setTariffs }) => {
         callback: invoiceCallback,
         type: INVOICE_TYPE.boost,
         theme,
-        isDev,
       });
     }
     onClosePaymentModal();
@@ -198,7 +193,7 @@ export const BoostPage = ({ tariffs, setTariffs }) => {
   };
 
   const goToTerms = () => {
-    tg?.openLink('https://docs.ghostdrive.com/legal/terms-of-service');
+    tg?.openLink('https://telegra.ph/Terms-of-Service-GhostDrive-09-29', { try_instant_view: true });
   };
 
   const handleSelect = (el) => {
@@ -270,7 +265,7 @@ export const BoostPage = ({ tariffs, setTariffs }) => {
                     data-animation="boost-animation-1"
                     className={styles['initial-state-for-animation']}
                     key={index}
-                    onClick={vibrate}>
+                    onClick={() => {vibrate('soft')}}>
                     <button
                       disabled={currentPrice?.storage === el?.storage}
                       onClick={() => {

@@ -30,7 +30,7 @@
     "processing": "Datei wird verarbeitet",
     "about": "Über",
     "totalViews": "Gesamtansichten",
-    "starts": "Startet",
+    "stars": "Sterne",
     "downloadToStorage": "Herunterladen auf Ihr G:Drive",
     "freeWatch": "Kostenlos ansehen",
     "preview": "Vorschau",
@@ -66,5 +66,8 @@
   "time": {
     "am": "vorm.",
     "pm": "nachm."
+  },
+  "error": {
+    "readFile": "Die Datei ist beschädigt oder kann auf diesem Gerät nicht abgespielt werden"
   }
 }

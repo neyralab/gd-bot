@@ -30,7 +30,7 @@
     "processing": "pemrosesan file",
     "about": "Tentang",
     "totalViews": "Total tampilan",
-    "starts": "Mulai",
+    "stars": "Bintang",
     "downloadToStorage": "Unduh ke G:Drive Anda",
     "freeWatch": "Tonton gratis",
     "preview": "Pratinjau",
@@ -66,5 +66,8 @@
   "time": {
     "am": "AM",
     "pm": "PM"
+  },
+  "error": {
+    "readFile": "File rusak atau tidak dapat diputar di perangkat ini"
   }
 }

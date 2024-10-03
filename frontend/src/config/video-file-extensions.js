@@ -43,7 +43,18 @@ export const videoMediaExtentionPreview = [
   'vob'
 ];
 
-export const videoWithoutPreview = ['3g2', 'flv', 'rm', 'vob'];
+export const videoWithoutPreview = [
+  '3g2',
+  'flv',
+  'rm',
+  'vob',
+  'mpeg',
+  'avi',
+  'mpg',
+  'wmv'
+];
+export const videoWithoutPreviewIOS = ['mkv', 'webm'];
+export const videoWithoutPreviewOther = [];
 
 export const videoWithoutThumbnail = [
   '3g2',
@@ -54,13 +65,4 @@ export const videoWithoutThumbnail = [
   'mpg',
   'avi',
   'wmv'
-];
-
-export const videoMediaExtentionContent = [
-  'video/avi',
-  'video/mpeg',
-  'video/mpg',
-  'video/quicktime',
-  'video/mp4',
-  'video/x-ms-wmv'
 ];

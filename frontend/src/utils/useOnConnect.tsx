@@ -28,7 +28,8 @@ export function useOnConnect() {
         console.log({ exist });
         if (!exist) {
           const res = await saveUserWallet({
-            account: tonConnectUI?.account
+            account: tonConnectUI?.account,
+            channel: 'ton'
           });
           const newWallets = res.map((el) => el.public_address);
           dispatch(setUser({ ...user, wallet: newWallets }));

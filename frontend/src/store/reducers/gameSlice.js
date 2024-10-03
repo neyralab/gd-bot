@@ -13,10 +13,12 @@ import {
   getPendingGames,
   startGame
 } from '../../effects/gameEffect';
+import { getUserEffect } from '../../effects/userEffects';
 import { setUser } from './userSlice';
 import { getAdvertisementVideo } from '../../effects/advertisementEffect';
 import { isEnabledMobileOnly } from '../../utils/featureFlags';
 import { isDesktopPlatform, isWebPlatform } from '../../utils/client';
+import { getToken } from '../../effects/set-token';
 import { tg } from '../../App';
 
 const gameSlice = createSlice({
@@ -100,7 +102,7 @@ const gameSlice = createSlice({
      * When the free game is finished, this modal should appear
      * and offer our user to watch an advertisement to play another game.
      * If user accepts the offer, advertisement modal should be seen
-     * Parameters: null or {previewUrl: string, previewColor: string; videoUrl: string}
+     * Parameters: null or {points: number, previewColor: string; videoUrl: string}
      */
     advertisementOfferModal: null,
     advertisementModal: null,
@@ -275,12 +277,12 @@ const undateSubTheme = (dispatch, state, themes, level) => {
 const getAdvertisementOffer = async (dispatch) => {
   const videoInfo = await getAdvertisementVideo();
 
-  if (videoInfo && videoInfo.id && videoInfo.video) {
+  if (videoInfo && videoInfo.data.id && videoInfo.data.video) {
     dispatch(
       setAdvertisementOfferModal({
-        previewUrl: null,
-        videoUrl: videoInfo.video,
-        videoId: videoInfo.id
+        points: videoInfo.points,
+        videoUrl: videoInfo.data.video,
+        videoId: videoInfo.data.id
       })
     );
   }
@@ -494,7 +496,7 @@ export const finishRound = createAsyncThunk(
     }
 
     endGame({ id: gameId, taps: taps })
-      .then((data) => {
+      .then(() => {
         dispatch(
           setRoundFinal({
             roundPoints:
@@ -503,8 +505,14 @@ export const finishRound = createAsyncThunk(
             isActive: true
           })
         );
-        dispatch(setUser({ ...state.user.data, points: data?.data || 0 }));
         dispatch(setPendingGames(filteredGames));
+        getToken()
+        .then((token) => {
+          getUserEffect(token)
+            .then((user) => {
+              dispatch(setUser(user));
+            })
+        })
       })
       .catch((err) => {
         console.log({ endGameErr: err, m: err?.response.data });
@@ -562,12 +570,14 @@ export const refreshFreeGame = createAsyncThunk(
     dispatch(setAdvertisementModal(null));
     dispatch(setStatus('waiting'));
     dispatch(setThemeAccess({ themeId: 'hawk', status: true }));
-    dispatch(
-      setRoundFinal({
-        roundPoints: points,
-        isActive: true
-      })
-    );
+    if (points) {
+      dispatch(
+        setRoundFinal({
+          roundPoints: points,
+          isActive: true
+        })
+      );
+    }
   }
 );
 
@@ -727,7 +737,6 @@ export const gameCleanup = createAsyncThunk(
   async (_, { dispatch }) => {
     dispatch(setRoundFinal({ roundPoins: null, isActive: false }));
     dispatch(setReachedNewLevel(false));
-    dispatch(setStatus('waiting'));
     dispatch(setGameModal(null));
     dispatch(setSystemModal(null));
   }

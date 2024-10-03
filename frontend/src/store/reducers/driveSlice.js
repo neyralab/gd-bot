@@ -285,7 +285,8 @@ export const uploadFile = createAsyncThunk(
         dispatch,
         afterFileUploadCallback,
         onUploadProgress: (progress) =>
-          dispatch(setUploadFileProgress(progress)) // onUploadProgress is not supported yet
+          dispatch(setUploadFileProgress(progress)), // onUploadProgress is not supported yet
+        onUploadError: afterFileUploadCallback
       });
 
       dispatch(fetchTypesCount({ useLoader: false }));

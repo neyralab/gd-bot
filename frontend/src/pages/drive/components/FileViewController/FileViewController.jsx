@@ -1,7 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { toast } from 'react-toastify';
-import { useTranslation } from 'react-i18next';
 import moment from 'moment';
 import {
   setFileMenuModal,
@@ -36,7 +34,6 @@ export default function FileViewController({
   const [preview, setPreview] = useState(null);
   const isFolder = file?.type === 2;
   const isSearchFile = file?.isSearch;
-  const { t } = useTranslation('system');
 
   const formattedDate = useMemo(() => {
     return moment.unix(file.created_at).format('MMM DD, YYYY, h:mma');

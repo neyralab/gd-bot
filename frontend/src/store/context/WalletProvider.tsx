@@ -4,17 +4,21 @@ import { API_WEB_APP_URL, BOT_NAME } from '../../utils/api-urls';
 import { isWebPlatform, isDesktopPlatform } from '../../utils/client';
 import { tg } from '../../App';
 
+// Define WalletContextType interface
 interface WalletContextType {
   wallet: OKXTonConnect | null;
   isConnected: boolean;
-  connectWallet: () => Promise<void>;
-  useOKXAddress: () => Promise<string>;
+  connectWallet: () => Promise<void | string>;
+  useOKXAddress: () => string;
   disconnectWallet: () => void;
+  reconnectWallet: () => void;
   error: string | null;
 }
 
+// Create WalletContext with initial value undefined
 const WalletContext = createContext<WalletContextType | undefined>(undefined);
 
+// Hook to use WalletContext
 export const useWallet = (): WalletContextType => {
   const context = useContext(WalletContext);
   if (!context) {
@@ -23,16 +27,19 @@ export const useWallet = (): WalletContextType => {
   return context;
 };
 
+// Define WalletProviderProps interface
 interface WalletProviderProps {
   children: ReactNode;
 }
 
+// WalletProvider Component
 export const WalletProvider: React.FC<WalletProviderProps> = ({ children }) => {
   const [wallet, setWallet] = useState<OKXTonConnect | null>(null);
   const [isConnected, setIsConnected] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
-  const isMobile = false // useMemo(() => !(isWebPlatform(tg) || isDesktopPlatform(tg)), []);
+  const isMobile = useMemo(() => !(isWebPlatform(tg) || isDesktopPlatform(tg)), []);
 
+  // Initialize wallet instance on component mount
   useEffect(() => {
     try {
       const walletInstance = new OKXTonConnect({
@@ -48,14 +55,18 @@ export const WalletProvider: React.FC<WalletProviderProps> = ({ children }) => {
     }
   }, []);
 
-  const connectWallet = async () => {
+  // Function to connect wallet
+  const connectWallet = async (): Promise<void | string> => {
     try {
-      const body = isMobile ? { redirect: `https://t.me/${BOT_NAME}`, openUniversalLink: true } :
-        { universalLink: '' , openUniversalLink: false };
-      const link =  await wallet?.connect?.(body);
-      if (!isMobile) {
-        window.open(link, '_blank')
+      const body = isMobile
+        ? { redirect: `https://t.me/${BOT_NAME}`, openUniversalLink: true }
+        : { universalLink: '', openUniversalLink: false };
+      
+      const link = await wallet?.connect?.(body);
+      if (isMobile && link) {
+        window.open(link, '_blank');
       }
+      return link ?? '';
     } catch (error: any) {
       if (error instanceof OkxConnectError) {
         if (error.code === OKX_CONNECT_ERROR_CODES.USER_REJECTS_ERROR) {
@@ -71,12 +82,13 @@ export const WalletProvider: React.FC<WalletProviderProps> = ({ children }) => {
     }
   };
 
+  // Function to get OKX address
   const useOKXAddress = (): string => {
     try {
       if (wallet?.connected) {
-        return wallet?.['_wallet'].account.address
+        return wallet?.['_wallet'].account.address || '';
       } else {
-        return  ''; 
+        return '';
       }
     } catch (error) {
       console.warn(error);
@@ -84,25 +96,35 @@ export const WalletProvider: React.FC<WalletProviderProps> = ({ children }) => {
     }
   };
 
-  const recconectWallet = () => {
+  // Function to reconnect wallet
+  const reconnectWallet = (): void => {
     try {
-       wallet?.restoreConnection();
+      wallet?.restoreConnection();
     } catch (error) {
-      debugger
-      console.warn(error)
+      console.warn(error);
     }
-  } 
+  };
 
-  const disconnectWallet = () => {
+  // Function to disconnect wallet
+  const disconnectWallet = (): void => {
     if (wallet) {
       wallet.disconnect();
-      setWallet(null);
       setIsConnected(false);
     }
   };
 
   return (
-    <WalletContext.Provider value={{ wallet, isConnected, connectWallet, disconnectWallet, error, useOKXAddress, recconectWallet }}>
+    <WalletContext.Provider
+      value={{
+        wallet,
+        isConnected,
+        connectWallet,
+        disconnectWallet,
+        reconnectWallet,
+        error,
+        useOKXAddress,
+      }}
+    >
       {error && <div className="error-message">{error}</div>}
       {children}
     </WalletContext.Provider>

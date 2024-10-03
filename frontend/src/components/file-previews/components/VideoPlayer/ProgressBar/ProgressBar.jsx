@@ -3,7 +3,6 @@ import styles from './ProgressBar.module.scss';
 
 const ProgressBar = ({
   played,
-  handleSeek,
   handleSeekMouseDown,
   handleSeekChange,
   handleSeekMouseUp
@@ -11,10 +10,7 @@ const ProgressBar = ({
   const progressRef = useRef(null);
 
   return (
-    <div
-      ref={progressRef}
-      className={styles.progressWrapper}
-      onClick={handleSeek}>
+    <div ref={progressRef} className={styles.progressWrapper}>
       <input
         className={styles.bar}
         type="range"

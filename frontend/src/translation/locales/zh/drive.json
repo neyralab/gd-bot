@@ -30,7 +30,7 @@
     "processing": "文件处理中",
     "about": "关于",
     "totalViews": "总观看次数",
-    "starts": "开始",
+    "stars": "星星",
     "downloadToStorage": "下载到您的G:Drive",
     "freeWatch": "免费观看",
     "preview": "预览",
@@ -66,5 +66,8 @@
   "time": {
     "am": "上午",
     "pm": "下午"
+  },
+  "error": {
+    "readFile": "文件已损坏或无法在此设备上播放"
   }
 }

@@ -1,4 +1,10 @@
-import React, { forwardRef, useImperativeHandle, useRef } from 'react';
+import React, {
+  forwardRef,
+  useCallback,
+  useImperativeHandle,
+  useRef,
+  useState
+} from 'react';
 import LoadingPreview from '../LoadingPreview/LoadingPreview';
 import ImagePreview from '../ImagePreview/ImagePreview';
 import VideoPreview from '../VideoPreview/VideoPreview';
@@ -6,6 +12,7 @@ import AudioPreview from '../AudioPreview/AudioPreview';
 import TxtPreview from '../TxtPreview/TxtPreview';
 import PdfPreview from '../PdfPreview/PdfPreview';
 import ExcelPreview from '../ExcelPreview/ExcelPreview';
+import DocPreview from '../DocPreview/DocPreview';
 import DefaultPreview from '../DefaultPreview/DefaultPreview';
 
 const PreviewSwitcher = forwardRef(
@@ -19,11 +26,13 @@ const PreviewSwitcher = forwardRef(
       filePreviewImage,
       onFavoriteClick,
       onInfoClick,
-      onExpand
+      onExpand,
+      disableSwipeEvents
     },
     ref
   ) => {
     const playerRef = useRef(null);
+    const [readError, setReadError] = useState(false);
 
     useImperativeHandle(ref, () => ({
       runPreview: () => {
@@ -38,9 +47,24 @@ const PreviewSwitcher = forwardRef(
       }
     }));
 
+    const onFileReadError = useCallback(() => {
+      setReadError(true);
+    }, []);
+
     if (loading) {
       return (
         <LoadingPreview
+          mode={mode}
+          file={file}
+          onFavoriteClick={onFavoriteClick}
+          onInfoClick={onInfoClick}
+        />
+      );
+    }
+
+    if (readError) {
+      return (
+        <DefaultPreview
           mode={mode}
           file={file}
           onFavoriteClick={onFavoriteClick}
@@ -59,6 +83,7 @@ const PreviewSwitcher = forwardRef(
             fileContentType="blob"
             onFavoriteClick={onFavoriteClick}
             onInfoClick={onInfoClick}
+            onFileReadError={onFileReadError}
           />
         );
 
@@ -72,6 +97,8 @@ const PreviewSwitcher = forwardRef(
             fileContentType="url"
             onFavoriteClick={onFavoriteClick}
             onInfoClick={onInfoClick}
+            disableSwipeEvents={disableSwipeEvents}
+            onFileReadError={onFileReadError}
           />
         );
 
@@ -86,6 +113,8 @@ const PreviewSwitcher = forwardRef(
             filePreviewImage={filePreviewImage}
             onFavoriteClick={onFavoriteClick}
             onInfoClick={onInfoClick}
+            disableSwipeEvents={disableSwipeEvents}
+            onFileReadError={onFileReadError}
           />
         );
 
@@ -99,6 +128,7 @@ const PreviewSwitcher = forwardRef(
             onFavoriteClick={onFavoriteClick}
             onInfoClick={onInfoClick}
             onExpand={onExpand}
+            onFileReadError={onFileReadError}
           />
         );
 
@@ -111,6 +141,7 @@ const PreviewSwitcher = forwardRef(
             fileContentType="blob"
             onFavoriteClick={onFavoriteClick}
             onInfoClick={onInfoClick}
+            onFileReadError={onFileReadError}
           />
         );
 
@@ -124,6 +155,21 @@ const PreviewSwitcher = forwardRef(
             onFavoriteClick={onFavoriteClick}
             onInfoClick={onInfoClick}
             onExpand={onExpand}
+            onFileReadError={onFileReadError}
+          />
+        );
+
+      case 'document':
+        return (
+          <DocPreview
+            mode={mode}
+            file={file}
+            fileContent={fileContent}
+            fileContentType="blob"
+            onFavoriteClick={onFavoriteClick}
+            onInfoClick={onInfoClick}
+            onExpand={onExpand}
+            onFileReadError={onFileReadError}
           />
         );
 
