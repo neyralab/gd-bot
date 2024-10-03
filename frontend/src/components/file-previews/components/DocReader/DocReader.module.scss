@@ -28,4 +28,17 @@
   ul, ol {
     padding-left: 24px;
   }
+
+  img {
+    max-width: 100%;
+  }
+
+  table {
+    width: 100%;
+    overflow: auto;
+  }
+
+  p {
+    margin: 12px 0;
+  }
 }
