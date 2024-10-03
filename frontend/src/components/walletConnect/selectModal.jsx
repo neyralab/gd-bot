@@ -44,9 +44,17 @@ const ConnectModal = ({ isOpen, onClose }) => {
 
   useEffect(() => {
     if (wallet) {
-      wallet.onStatusChange((res) => {
+      wallet.onStatusChange(async (res) => {
         if (res) {
-          onClose()
+          if (!!user?.wallet?.filter((el) => el !== res.account?.address).length) {
+            const data = await saveUserWallet({
+              account: res?.account,
+              channel: 'ton'
+            });
+            const newWallets = data.map((el) => el.public_address);
+            dispatch(setUser({ ...user, wallet: newWallets }));
+          }
+          onClose();
         }
       })
     }
