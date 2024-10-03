@@ -12,6 +12,7 @@ import AudioPreview from '../AudioPreview/AudioPreview';
 import TxtPreview from '../TxtPreview/TxtPreview';
 import PdfPreview from '../PdfPreview/PdfPreview';
 import ExcelPreview from '../ExcelPreview/ExcelPreview';
+import DocPreview from '../DocPreview/DocPreview';
 import DefaultPreview from '../DefaultPreview/DefaultPreview';
 
 const PreviewSwitcher = forwardRef(
@@ -147,6 +148,20 @@ const PreviewSwitcher = forwardRef(
       case 'xlsx':
         return (
           <ExcelPreview
+            mode={mode}
+            file={file}
+            fileContent={fileContent}
+            fileContentType="blob"
+            onFavoriteClick={onFavoriteClick}
+            onInfoClick={onInfoClick}
+            onExpand={onExpand}
+            onFileReadError={onFileReadError}
+          />
+        );
+
+      case 'document':
+        return (
+          <DocPreview
             mode={mode}
             file={file}
             fileContent={fileContent}
