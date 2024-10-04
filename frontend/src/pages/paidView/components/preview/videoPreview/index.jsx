@@ -2,10 +2,10 @@ import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import ReactPlayer from 'react-player';
 
-import { ReactComponent as ForwardIcon } from '../../../../../components/filePreviewModal/previewContent/VideoPreview/assets/forward_10.svg';
-import { ReactComponent as RewindIcon } from '../../../../../components/filePreviewModal/previewContent/VideoPreview/assets/replay_10.svg';
-import { ReactComponent as PauseIcon } from '../../../../../components/filePreviewModal/previewContent/VideoPreview/assets/pause.svg';
-import { ReactComponent as PlayIcon } from '../../../../../components/filePreviewModal/previewContent/VideoPreview/assets/play.svg';
+import { ReactComponent as ForwardIcon } from '../../../../../assets/forward_10.svg';
+import { ReactComponent as RewindIcon } from '../../../../../assets/replay_10.svg';
+import { ReactComponent as PauseIcon } from '../../../../../assets/pause.svg';
+import { ReactComponent as PlayIcon } from '../../../../../assets/play-player.svg';
 import { removeExtension, formatDuration } from '../../../../../utils/string';
 
 import styles from './styles.module.css';

@@ -8,7 +8,6 @@ import { toast } from 'react-toastify';
 
 import { getOneTimeToken } from './getOneTimeToken';
 import { uploadFileData } from '../config/upload-file-data';
-import { afterFileUploadAction } from '../store/reducers/filesSlice';
 import { imagesWithoutPreview } from '../config/image-file-extensions';
 import { videoWithoutThumbnail } from '../config/video-file-extensions';
 import { getResponseError } from '../utils/string';
@@ -97,8 +96,6 @@ export const uploadFileEffect = async ({ files, dispatch }) => {
         } catch (error) {
           console.error(error);
         }
-
-        dispatch(afterFileUploadAction(result.data));
 
         if (!result) {
           console.log('error', error);

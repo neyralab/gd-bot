@@ -1,20 +1,12 @@
 import React, { memo, useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useSelector } from 'react-redux';
-
-import { selectUploadingProgress } from '../../store/reducers/filesSlice';
-
-import { ReactComponent as GhostLogoLoader } from './svg/ghost-logo-loader.svg';
-
 import classNames from 'classnames';
+import { ReactComponent as GhostLogoLoader } from './svg/ghost-logo-loader.svg';
 import s from './ghostLoader.module.css';
 
-function GhostLoader({ texts = [], flashing = true, startup = false }) {
+function GhostLoader({ texts = [], startup = false, uploadingFile, progress }) {
   const { t } = useTranslation('system');
   const [displayText, setDisplayText] = useState('');
-  const { progress, file: uploadingFile } = useSelector(
-    selectUploadingProgress
-  );
 
   const currentTextRef = useRef('');
   const charIndexRef = useRef(0);
