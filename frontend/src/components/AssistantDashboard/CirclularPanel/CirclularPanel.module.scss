@@ -5,17 +5,88 @@
   top: 0;
   left: 0;
   overflow: hidden;
+  animation: ContainerAnimation 10s ease-in-out infinite;
+}
+
+@keyframes ContainerAnimation {
+  0% {
+    transform: translate(0, 0) scale(1);
+  }
+  25% {
+    transform: translate(2%, 0) scale(1.06);
+  }
+
+  50% {
+    transform: translate(-1%, 0.5%) scale(1.05);
+  }
+
+  75% {
+    transform: translate(0.5%, -0.5%) scale(0.95);
+  }
+
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
 }
 
 .layer {
   position: absolute;
   background-position: center center;
-  width: 100vh;
-  height: 100vh;
-  top: 0;
+  top: 50%;
   left: 50%;
 
   background-repeat: no-repeat;
   background-size: cover;
-  transform: translateX(-50%);
+  transform: translate(-50%, -50%);
+}
+
+.layer1 {
+  width: 200vw;
+  height: 200vw;
+  animation: DefaultLayerAniamtion 20s linear infinite;
+}
+
+.layer2 {
+  width: 160vw;
+  height: 160vw;
+  animation: DefaultLayerAniamtion 16s linear infinite alternate-reverse;
+}
+
+.layer3 {
+  width: 140vw;
+  height: 140vw;
+  animation: DefaultLayerAniamtion 12s linear infinite;
+}
+
+.layer4 {
+  width: 100vw;
+  height: 100vw;
+  animation: DefaultLayerAniamtion 6s ease-in-out infinite alternate-reverse;
+}
+
+@keyframes DefaultLayerAniamtion {
+  0% {
+    transform: translate(-50%, -50%) rotate(0) translate(0, 0);
+    opacity: 0.2;
+  }
+  20%,
+  25% {
+    transform: translate(-50%, -50%) rotate(35deg) translate(0.5%, 0.2%);
+    opacity: 0.4;
+  }
+  45%,
+  50% {
+    transform: translate(-50%, -50%) rotate(0) translate(0, 0);
+    opacity: 0.4;
+  }
+  70%,
+  75% {
+    transform: translate(-50%, -50%) rotate(-35deg) translate(-0.2%, -0.7%);
+    opacity: 0.6;
+  }
+  95%,
+  100% {
+    transform: translate(-50%, -50%) rotate(0) translate(0, 0);
+    opacity: 0.2;
+  }
 }

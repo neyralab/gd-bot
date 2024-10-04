@@ -7,7 +7,7 @@
 
 .captain-container {
   position: absolute;
-  top: 0;
+  bottom: 0;
   left: 0;
   width: 100%;
   height: 100%;
@@ -27,13 +27,17 @@
 .captain {
   position: absolute;
   bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 100dvh;
+  left: 50%;
+  width: 100vw;
+  height: 124vw;
 
-  background-position: center bottom;
+  background-position: center center;
   background-size: contain;
   background-repeat: no-repeat;
 
-  transform: scale(1.2) translateX(-4%) translateY(-4dvh);
+  transform: scale(1.1) translateX(-45%);
+
+  @media (min-aspect-ratio: 1.5/1) {
+    transform: scale(0.6) translateX(-85%) translateY(-10%);
+  }
 }

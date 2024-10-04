@@ -8,8 +8,11 @@ export default function AssistantDashboard() {
   return (
     <div className={styles.container}>
       <Background />
-      <Assistant />
-      <CirclularPanel />
+
+      <div className={styles['assistant-wrapper']}>
+        <CirclularPanel />
+        <Assistant />
+      </div>
     </div>
   );
 }
