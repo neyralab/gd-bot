@@ -1,0 +1,39 @@
+.container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.captain-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  animation: IdleAnimation 8s ease-in-out infinite;
+}
+
+@keyframes IdleAnimation {
+  0%,
+  100% {
+    transform: scale(1) translateY(0);
+  }
+  40% {
+    transform: scale(1.01) translateY(1.5vh);
+  }
+}
+
+.captain {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100dvh;
+
+  background-position: center bottom;
+  background-size: contain;
+  background-repeat: no-repeat;
+
+  transform: scale(1.2) translateX(-4%) translateY(-4dvh);
+}
