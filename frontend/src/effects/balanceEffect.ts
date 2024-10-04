@@ -44,7 +44,6 @@ interface History {
 }
 
 export const getBalanceEffect = (params: { page?: number }) => {
-  // @ts-ignore
   let url = `${import.meta.env.VITE_API_PATH}/gd/user/points`;
   if (params && params.page) {
     url += `?page=${params.page}`;
@@ -53,7 +52,6 @@ export const getBalanceEffect = (params: { page?: number }) => {
 };
 
 export const getAllTasks = async () => {
-  // @ts-ignore
   const url = `${import.meta.env.VITE_API_PATH}/gd/points`;
   const { data } = await axiosInstance.get<{ data: Task[] }>(url);
   return data?.data;
