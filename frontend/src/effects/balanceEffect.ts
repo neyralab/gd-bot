@@ -1,4 +1,5 @@
 import axiosInstance from './axiosInstance';
+import { Task } from './types/tasks';
 
 interface History {
   data: {
@@ -42,14 +43,6 @@ interface History {
   total: number;
 }
 
-interface Task {
-  action: string;
-  amount: number;
-  earn?: number;
-  id: number;
-}
-
-
 export const getBalanceEffect = (params: { page?: number }) => {
   // @ts-ignore
   let url = `${import.meta.env.VITE_API_PATH}/gd/user/points`;
@@ -62,6 +55,6 @@ export const getBalanceEffect = (params: { page?: number }) => {
 export const getAllTasks = async () => {
   // @ts-ignore
   const url = `${import.meta.env.VITE_API_PATH}/gd/points`;
-  const { data } = await axiosInstance.get<{data: Task[]}>(url);
+  const { data } = await axiosInstance.get<{ data: Task[] }>(url);
   return data?.data;
 };
