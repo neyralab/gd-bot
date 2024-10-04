@@ -22,7 +22,6 @@ export const NavigationHistoryProvider: React.FC<NavigationHistoryProviderProps>
     const currentPath = location.pathname;
 
     setHistory((prevHistory) => {
-      console.log(prevHistory, removedElement.current);
       if (!removedElement.current) {
         return [...prevHistory, currentPath];
       }

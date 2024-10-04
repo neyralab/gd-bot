@@ -1,8 +1,8 @@
 {
   "mode": {
     "playNow": "今すぐプレイ",
-    "freePlay": "次の無料プレイ",
-    "play": "プレイモード",
+    "freePlay": "充電時間",
+    "play": "マイニングモード（KB）",
     "boost": "ブーストモード"
   },
   "navigate": {
@@ -116,7 +116,7 @@
     "uploadFile": "ファイルをアップロード"
   },
   "advertisement": {
-    "watchAndPlay": "広告を視聴して{{points}}ポイントを獲得し、再度プレイしましょう",
+    "watchAndPlay": "見て稼ぐ {{points}}",
     "points": "ポイント"
   },
   "message": {
