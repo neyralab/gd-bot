@@ -1,13 +1,10 @@
+import { AxiosError } from 'axios';
 import { API_PATH } from '../utils/api-urls';
 import axiosInstance from './axiosInstance';
 import { formatPartnerResponce } from '../pages/earn/Partners/utils';
 import { Task } from './types/tasks';
 import { Partner } from './types/partners';
-import { AxiosError } from 'axios';
-
-interface CheckTask1Response {
-  message: string;
-}
+import { DefaultResponse } from './types/defaults';
 
 interface CheckTask2Response {
   success: string;
@@ -30,7 +27,7 @@ export const checkTgJoin = async () => {
   const url = `${API_PATH}/join/tg/channel`;
 
   try {
-    const { data } = await axiosInstance.get<CheckTask1Response>(url);
+    const { data } = await axiosInstance.get<DefaultResponse>(url);
     if (data?.message === 'success') {
       return 'success';
     } else {
@@ -45,7 +42,7 @@ export const checkTgChatJoin = async () => {
   const url = `${API_PATH}/join/tg/chat/channel`;
 
   try {
-    const { data } = await axiosInstance.get<CheckTask1Response>(url);
+    const { data } = await axiosInstance.get<DefaultResponse>(url);
     if (data?.message === 'success') {
       return 'success';
     } else {
@@ -61,7 +58,7 @@ export const checkYoutubeJoin = async () => {
   const url = `${API_PATH}/join/youtube`;
 
   try {
-    const { data } = await axiosInstance.get<CheckTask1Response>(url);
+    const { data } = await axiosInstance.get<DefaultResponse>(url);
     if (data?.message === 'success') {
       return 'success';
     } else {
@@ -77,7 +74,7 @@ export const checkXJoin = async () => {
   const url = `${API_PATH}/join/twitter`;
 
   try {
-    const { data } = await axiosInstance.get<CheckTask1Response>(url);
+    const { data } = await axiosInstance.get<DefaultResponse>(url);
     if (data?.message === 'success') {
       return 'success';
     } else {
@@ -93,7 +90,7 @@ export const checkInstagramJoin = async () => {
   const url = `${API_PATH}/join/instagram`;
 
   try {
-    const { data } = await axiosInstance.get<CheckTask1Response>(url);
+    const { data } = await axiosInstance.get<DefaultResponse>(url);
     if (data?.message === 'success') {
       return 'success';
     } else {
@@ -109,7 +106,7 @@ export const checkGithubJoin = async () => {
   const url = `${API_PATH}/join/github`;
 
   try {
-    const { data } = await axiosInstance.get<CheckTask1Response>(url);
+    const { data } = await axiosInstance.get<DefaultResponse>(url);
     if (data?.message === 'success') {
       return 'success';
     } else {
@@ -149,7 +146,7 @@ export const checkWatchVideo = async () => {
   const url = `${API_PATH}/watch/video`;
 
   try {
-    const { data } = await axiosInstance.get<CheckTask1Response>(url);
+    const { data } = await axiosInstance.get<DefaultResponse>(url);
     if (data?.message === 'success') {
       return 'success';
     } else {
@@ -165,7 +162,7 @@ export const trackSocial = async (id: number) => {
   const url = `${API_PATH}/track/social`;
 
   try {
-    const { data } = await axiosInstance.post<CheckTask1Response>(url, {
+    const { data } = await axiosInstance.post<DefaultResponse>(url, {
       type: id
     });
     if (data?.message === 'success') {

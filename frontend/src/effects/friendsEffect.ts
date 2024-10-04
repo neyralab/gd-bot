@@ -1,7 +1,7 @@
 import { API_PATH } from '../utils/api-urls';
 import axiosInstance from './axiosInstance';
 import * as Sentry from '@sentry/react';
-import { Friend } from './types/friends';
+import { Friend } from './types/users';
 
 interface FriendsResponse {
   points: number;
@@ -9,8 +9,6 @@ interface FriendsResponse {
 }
 
 export const getFriends = async (): Promise<FriendsResponse> => {
-  const token = localStorage.getItem('token');
-
   try {
     const response = await axiosInstance.get<FriendsResponse>(
       `${API_PATH}/user/referrals`

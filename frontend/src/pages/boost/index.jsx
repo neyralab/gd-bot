@@ -154,8 +154,7 @@ export const BoostPage = ({ tariffs, setTariffs }) => {
     try {
       if (result === 'paid') {
         await sleep(1000);
-        const token = await getToken();
-        await storageListEffect(token).then((data) => {
+        await storageListEffect().then((data) => {
           setTariffs(data);
         });
       } else {

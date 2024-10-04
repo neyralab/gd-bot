@@ -6,3 +6,11 @@ export interface Friend {
   telegram_id: number;
   username: string;
 }
+
+export interface LeadboardPerson {
+  displayed_name: string;
+  id: number;
+  points: number;
+  telegram_id: number;
+  username: string;
+}

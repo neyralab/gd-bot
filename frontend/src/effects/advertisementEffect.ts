@@ -1,6 +1,7 @@
 import { API_PATH } from '../utils/api-urls';
 import axiosInstance from './axiosInstance';
 import { Effect } from './types';
+import { DefaultResponse } from './types/defaults';
 
 interface AdvertisementVideoInfo {
   data: {
@@ -16,10 +17,6 @@ interface AdvertisementVideoInfo {
   points: number;
 }
 
-interface WatchAdvertisementResponse {
-  message: string;
-}
-
 export const getAdvertisementVideo = async () => {
   const url = `${API_PATH}/video`;
   const { data } = await axiosInstance.get<AdvertisementVideoInfo[]>(url);
@@ -28,7 +25,7 @@ export const getAdvertisementVideo = async () => {
 
 export const startWatchingAdvertisementVideo = async (videoId: string) => {
   const url = `${API_PATH}/start/watch`;
-  const { data } = await axiosInstance.post<Effect<WatchAdvertisementResponse>>(
+  const { data } = await axiosInstance.post<Effect<DefaultResponse>>(
     url,
     {
       video: videoId
@@ -39,7 +36,7 @@ export const startWatchingAdvertisementVideo = async (videoId: string) => {
 
 export const endWatchingAdvertisementVideo = async (videoId: string) => {
   const url = `${API_PATH}/end/watch`;
-  const { data } = await axiosInstance.post<Effect<WatchAdvertisementResponse>>(
+  const { data } = await axiosInstance.post<Effect<DefaultResponse>>(
     url,
     {
       video: videoId
