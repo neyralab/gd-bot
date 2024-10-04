@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "ESNext",
+    "target": "es2020",
     "types": ["vite/client"],
     "module": "ESNext",
     "esModuleInterop": true,

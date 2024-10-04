@@ -16,14 +16,12 @@ interface ReferrerResponse {
 }
 
 export const referralEffect = () => {
-  // @ts-ignore
   const url = `${import.meta.env.VITE_API_PATH}/user/coupon`;
   return axiosInstance.get<ReferralResponse>(url);
 };
 
 export const refererEffect = async () => {
   try {
-    // @ts-ignore
     const url = `${import.meta.env.VITE_API_PATH}/referral/address`;
     const { data } = await axiosInstance.get<ReferrerResponse>(url);
     return data.data;
