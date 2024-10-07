@@ -11,6 +11,7 @@ import {
   setFileInfoModal,
   toggleFileFavorite
 } from '../../../../../store/reducers/driveSlice';
+import { isDataprepUrl } from '../../../../../utils/gateway';
 
 const USE_STREAM_URL = ['audio', 'video'];
 const USE_PREVIEW_IMG = ['audio'];
@@ -21,6 +22,7 @@ const FilePreviewController = ({ file, onExpand, disableSwipeEvents }) => {
   const mediaSliderCurrentFile = useSelector(
     (state) => state.drive.mediaSlider.currentFile
   );
+  const user = useSelector((state) => state.user.data);
   const [loading, setLoading] = useState(true); // leave it loading initially, so there is no extra render flips
   const [fileContent, setFileContent] = useState(null);
   const [filePreviewImage, setFilePreviewImage] = useState(false);
@@ -53,9 +55,10 @@ const FilePreviewController = ({ file, onExpand, disableSwipeEvents }) => {
 
     const fileType = getPreviewFileType(file, false, true);
     setPreviewFileType(fileType);
+    const isDataprep = isDataprepUrl(user.gateway.url);
 
     if (!fileContent && fileType) {
-      if (USE_STREAM_URL.includes(fileType)) {
+      if (USE_STREAM_URL.includes(fileType) && isDataprep) {
         fetchStreamContent(fileType);
       } else {
         fetchBlobContent(fileType);
