@@ -21,9 +21,6 @@ export const uploadFileEffect = async ({
 }) => {
   let progresses = {};
 
-  console.log('uploadFile', files);
-  debugger
-
   for (let i = 0; i < files.length; i++) {
     progresses[files[i]?.folderData?.uploadId] = 0;
   }
@@ -65,8 +62,6 @@ export const uploadFileEffect = async ({
           async () => file.arrayBuffer(),
           () => file.stream()
         );
-
-        debugger
 
         result = await uploadFile({
           file: localFileBuffer,
