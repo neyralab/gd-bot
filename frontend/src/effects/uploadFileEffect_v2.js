@@ -21,9 +21,6 @@ export const uploadFileEffect = async ({
 }) => {
   let progresses = {};
 
-  console.log('uploadFile', file);
-  debugger
-
   for (let i = 0; i < files.length; i++) {
     progresses[files[i]?.folderData?.uploadId] = 0;
   }
@@ -32,6 +29,9 @@ export const uploadFileEffect = async ({
     let error = true;
     const multiUploadFile = async (index) => {
       const file = files[index];
+      console.log('uploadFile', files);
+      debugger
+
       index++;
       try {
         const {
