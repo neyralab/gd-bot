@@ -14,6 +14,7 @@ import PdfPreview from '../PdfPreview/PdfPreview';
 import ExcelPreview from '../ExcelPreview/ExcelPreview';
 import DocPreview from '../DocPreview/DocPreview';
 import DefaultPreview from '../DefaultPreview/DefaultPreview';
+import { isBlobType } from '../../../utils/gateway';
 
 const PreviewSwitcher = forwardRef(
   (
@@ -72,6 +73,7 @@ const PreviewSwitcher = forwardRef(
         />
       );
     }
+    const contentType = isBlobType(fileContent) ? 'blob' : 'url';
 
     switch (previewFileType) {
       case 'img':
@@ -94,7 +96,7 @@ const PreviewSwitcher = forwardRef(
             ref={playerRef}
             file={file}
             fileContent={fileContent}
-            fileContentType="url"
+            fileContentType={contentType}
             onFavoriteClick={onFavoriteClick}
             onInfoClick={onInfoClick}
             disableSwipeEvents={disableSwipeEvents}
@@ -109,7 +111,7 @@ const PreviewSwitcher = forwardRef(
             ref={playerRef}
             file={file}
             fileContent={fileContent}
-            fileContentType="url"
+            fileContentType={contentType}
             filePreviewImage={filePreviewImage}
             onFavoriteClick={onFavoriteClick}
             onInfoClick={onInfoClick}
