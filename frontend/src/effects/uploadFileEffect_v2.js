@@ -29,6 +29,9 @@ export const uploadFileEffect = async ({
     let error = true;
     const multiUploadFile = async (index) => {
       const file = files[index];
+      console.log('uploadFile', files);
+      debugger
+
       index++;
       try {
         const {
@@ -61,14 +64,6 @@ export const uploadFileEffect = async ({
           async () => file.arrayBuffer(),
           () => file.stream()
         );
-
-        console.log('uploadFile', {
-            size: file.size,
-            name: file.name,
-            type: file.type,
-            folderId: file.folderId,
-            uploadId: file.uploadId
-        });
 
         result = await uploadFile({
           file: localFileBuffer,
