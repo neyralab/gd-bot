@@ -22,6 +22,7 @@ export default function UploadAction() {
         fileRef.current.value = '';
       }
     };
+    debugger
     dispatch(uploadFile({ files, onUploadCallback }));
   };
 
