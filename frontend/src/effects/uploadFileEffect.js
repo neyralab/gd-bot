@@ -55,6 +55,9 @@ export const uploadFileEffect = async ({ files, dispatch }) => {
           async () => file.arrayBuffer(),
           () => file.stream()
         );
+
+        debugger
+
         result = await uploadFile({
           file: localFileBuffer,
           oneTimeToken,
