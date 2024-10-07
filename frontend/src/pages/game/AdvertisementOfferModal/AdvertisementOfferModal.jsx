@@ -6,6 +6,7 @@ import {
   setAdvertisementModal,
   setAdvertisementOfferModal
 } from '../../../store/reducers/gameSlice';
+import { useAdsgram } from '../../../utils/useAdsgram';
 import styles from './AdvertisementOfferModal.module.scss';
 
 const HIDE_ADD_MODAL_KEY = 'ad-modal-display'; 
@@ -88,13 +89,23 @@ export default function AdvertisementOfferModal() {
     }, 600);
   };
 
+  const onReward = () => {
+    console.log('Adsgram reward success');
+  }
+
+  const onError = (e) => {
+    console.log('Adsgram error ', e);
+  }
+
+  const showAd = useAdsgram({ onReward, onError });
+
   if (!isOpen) return null;
 
   return (
     <>
       {!isADModalHidden && (
         <div
-          onClick={clickHandler}
+          onClick={showAd}
           className={classNames(
             styles.container,
             isClosing && styles['is-closing']
@@ -117,7 +128,7 @@ export default function AdvertisementOfferModal() {
         </div>
       )}
 
-      <div onClick={clickHandler} className={styles['model-trigger']}></div>
+      <div onClick={showAd} className={styles['model-trigger']}></div>
     </>
   );
 }
