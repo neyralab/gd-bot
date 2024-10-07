@@ -5,6 +5,7 @@ import {
   getThumbnailVideo
 } from 'gdgateway-client';
 import { toast } from 'react-toastify';
+import mime from 'mime/lite';
 
 import { getOneTimeToken } from './getOneTimeToken';
 import { uploadFileData } from '../config/upload-file-data';
@@ -52,10 +53,12 @@ export const uploadFileEffect = async ({
             console.error(`Handler "${type}" isn't provided`);
           }
         };
+        const fileType = file.type || mime.getType(file.name);
+
         const localFileBuffer = new LocalFileBuffer(
           file.size,
           file.name,
-          file.type,
+          fileType,
           file.folderId,
           file.uploadId,
           async () => file.arrayBuffer(),
