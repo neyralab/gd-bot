@@ -34,59 +34,30 @@
   background-position: center center;
   top: 50%;
   left: 50%;
-
   background-repeat: no-repeat;
   background-size: cover;
   transform: translate(-50%, -50%);
+
+  transform: translate(-50%, -50%) rotate(0) translate(0, 0); // animation frame 1
+  opacity: 0.2;
 }
 
 .layer1 {
   width: 230vw;
   height: 230vw;
-  animation: DefaultLayerAniamtion 20s linear infinite;
 }
 
 .layer2 {
   width: 180vw;
   height: 180vw;
-  animation: DefaultLayerAniamtion 16s linear infinite alternate-reverse;
 }
 
 .layer3 {
   width: 140vw;
   height: 140vw;
-  animation: DefaultLayerAniamtion 12s linear infinite;
 }
 
 .layer4 {
   width: 100vw;
   height: 100vw;
-  animation: DefaultLayerAniamtion 6s ease-in-out infinite alternate-reverse;
-}
-
-@keyframes DefaultLayerAniamtion {
-  0% {
-    transform: translate(-50%, -50%) rotate(0) translate(0, 0);
-    opacity: 0.2;
-  }
-  20%,
-  25% {
-    transform: translate(-50%, -50%) rotate(35deg) translate(0.5%, 0.2%);
-    opacity: 0.4;
-  }
-  45%,
-  50% {
-    transform: translate(-50%, -50%) rotate(0) translate(0, 0);
-    opacity: 0.4;
-  }
-  70%,
-  75% {
-    transform: translate(-50%, -50%) rotate(-35deg) translate(-0.2%, -0.7%);
-    opacity: 0.6;
-  }
-  95%,
-  100% {
-    transform: translate(-50%, -50%) rotate(0) translate(0, 0);
-    opacity: 0.2;
-  }
 }
