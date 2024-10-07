@@ -28,7 +28,7 @@
     "buffer": "^6.0.3",
     "classnames": "^2.5.1",
     "framer-motion": "^11.2.10",
-    "gdgateway-client": "github:neyralab/gdgateway-client#1.4.9",
+    "gdgateway-client": "github:neyralab/gdgateway-client#1.4.15",
     "gsap": "^3.12.5",
     "i18next": "^23.12.2",
     "i18next-browser-languagedetector": "^8.0.0",
