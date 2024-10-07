@@ -15,7 +15,7 @@ import { getUserEffect } from './effects/userEffects';
 import { authorizeUser } from './effects/authorizeUser';
 import { setPaymentTypesEffect } from './effects/paymentEffect';
 import { storageListEffect } from './effects/storageEffects';
-import { API_WEB_APP_URL } from './utils/api-urls';
+import { API_WEB_APP_URL, ADSGRAM_BLOCK_ID } from './utils/api-urls';
 import { WalletProvider } from './store/context/WalletProvider'
 import { useLanguage } from './utils/useLanguage';
 
@@ -43,6 +43,8 @@ import DrivePage from './pages/drive';
 import './App.css';
 
 export const tg = window.Telegram.WebApp;
+export const AdController = window?.Adsgram?.init({ blockId: ADSGRAM_BLOCK_ID });
+
 const GA = 'G-VEPRY1XE4E';
 
 function App() {
