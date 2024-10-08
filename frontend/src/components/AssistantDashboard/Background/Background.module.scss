@@ -4,7 +4,8 @@
   position: absolute;
   top: 0;
   left: 0;
-  background: linear-gradient(to bottom, #0e121e 20%, #171e32);
+  // background: radial-gradient(to center, #0e121e 20%, #0a0d15);
+  background: black;
   overflow: hidden;
 }
 
@@ -45,7 +46,7 @@
 .light2 {
   background: radial-gradient(
     circle closest-side,
-    rgba(58, 33, 87, 0.6),
+    rgba(58, 33, 87, 0.3),
     rgba(68, 33, 87, 0)
   );
   background-size: contain;
@@ -71,7 +72,7 @@
 .light3 {
   background: radial-gradient(
     circle closest-side,
-    rgba(33, 67, 87, 07),
+    rgba(33, 67, 87, 0.2),
     rgba(33, 67, 87, 0)
   );
   background-size: contain;

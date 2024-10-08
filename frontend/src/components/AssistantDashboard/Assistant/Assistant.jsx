@@ -48,7 +48,7 @@ export default function Assistant() {
           <div
             className={styles.captain}
             style={{ backgroundImage: 'url(/assets/assistant/captain.png)' }}>
-            <HelmetDecor />
+            {/* <HelmetDecor /> */}
             <Equalizer />
           </div>
         </div>
