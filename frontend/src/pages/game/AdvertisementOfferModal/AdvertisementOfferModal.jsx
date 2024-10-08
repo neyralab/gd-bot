@@ -6,7 +6,10 @@ import {
   setAdvertisementModal,
   setAdvertisementOfferModal
 } from '../../../store/reducers/gameSlice';
+import { useAdsgram } from '../../../utils/useAdsgram';
 import styles from './AdvertisementOfferModal.module.scss';
+
+const HIDE_ADD_MODAL_KEY = 'ad-modal-display'; 
 
 export default function AdvertisementOfferModal() {
   const dispatch = useDispatch();
@@ -28,6 +31,9 @@ export default function AdvertisementOfferModal() {
     });
     return translatedText.split(new RegExp(`(${points})`));
   }, [t, advertisementOfferModal]);
+  const isADModalHidden = useMemo(() => (
+    !!JSON.parse(localStorage.getItem(HIDE_ADD_MODAL_KEY))
+  ), [status, theme]);
 
   useEffect(() => {
     if (
@@ -53,7 +59,11 @@ export default function AdvertisementOfferModal() {
     ) {
       closeModal();
     }
-  }, [advertisementOfferModal, theme.id, nextTheme.isSwitching, status]);
+  }, [advertisementOfferModal, theme.id, nextTheme.isSwitching, status, isADModalHidden]);
+
+  const disabledAdModal = () => {
+    localStorage.setItem(HIDE_ADD_MODAL_KEY, true);
+  }
 
   const clickHandler = (e) => {
     if (!isClickable) return;
@@ -65,6 +75,7 @@ export default function AdvertisementOfferModal() {
         videoId: advertisementOfferModal.videoId
       })
     );
+    !isADModalHidden && disabledAdModal();
     closeModal();
     dispatch(setAdvertisementOfferModal(null));
   };
@@ -78,34 +89,46 @@ export default function AdvertisementOfferModal() {
     }, 600);
   };
 
+  const onReward = () => {
+    console.log('Adsgram reward success');
+  }
+
+  const onError = (e) => {
+    console.log('Adsgram error ', e);
+  }
+
+  const showAd = useAdsgram({ onReward, onError });
+
   if (!isOpen) return null;
 
   return (
     <>
-      <div
-        onClick={clickHandler}
-        className={classNames(
-          styles.container,
-          isClosing && styles['is-closing']
-        )}>
-        <div className={styles.content}>
-          {parts.map((part, index) =>
-            part ===
-            `${advertisementOfferModal ? advertisementOfferModal.points : 0}` ? (
-              <span key={index} className={styles.highlight}>
-                {part}
-              </span>
-            ) : (
-              <React.Fragment key={index}>
-                {part}
-                {index < parts.length - 1 && <br />}
-              </React.Fragment>
-            )
-          )}
+      {!isADModalHidden && (
+        <div
+          onClick={showAd}
+          className={classNames(
+            styles.container,
+            isClosing && styles['is-closing']
+          )}>
+          <div className={styles.content}>
+            {parts.map((part, index) =>
+              part ===
+              `${advertisementOfferModal ? advertisementOfferModal.points : 0}` ? (
+                <span key={index} className={styles.highlight}>
+                  {part}
+                </span>
+              ) : (
+                <React.Fragment key={index}>
+                  {part}
+                  {index < parts.length - 1 && <br />}
+                </React.Fragment>
+              )
+            )}
+          </div>
         </div>
-      </div>
+      )}
 
-      <div onClick={clickHandler} className={styles['model-trigger']}></div>
+      <div onClick={showAd} className={styles['model-trigger']}></div>
     </>
   );
 }

@@ -12,8 +12,8 @@ import styles from './ThemeSwitcherControllers.module.css';
 
 export default function ThemeSwitcherControllers({ themeChangeTimeout }) {
   const dispatch = useDispatch();
-
-  const canvasIsLoaded = useSelector((state) => state.game.isCanvasLoaded);
+  const allowThemeChange = useSelector((state) => state.game.allowThemeChange);
+  const isCanvasLoaded = useSelector((state) => state.game.isCanvasLoaded);
   const status = useSelector(selectStatus);
   const themes = useSelector(selectThemes);
   const theme = useSelector(selectTheme);
@@ -21,7 +21,10 @@ export default function ThemeSwitcherControllers({ themeChangeTimeout }) {
   const counterIsFinished = useSelector(
     (state) => state.game.counter.isFinished
   );
-  const themeIndex = useMemo(() => themes.findIndex((el) => el.id === theme.id), [theme, themes]);
+  const themeIndex = useMemo(
+    () => themes.findIndex((el) => el.id === theme.id),
+    [theme, themes]
+  );
 
   const clickHandler = (e, direction) => {
     e?.preventDefault?.();
@@ -45,7 +48,12 @@ export default function ThemeSwitcherControllers({ themeChangeTimeout }) {
     );
   };
 
-  if (status !== 'playing' && counterIsFinished && canvasIsLoaded) {
+  if (
+    status !== 'playing' &&
+    counterIsFinished &&
+    allowThemeChange &&
+    isCanvasLoaded
+  ) {
     return (
       <div
         className={classNames(
@@ -58,7 +66,7 @@ export default function ThemeSwitcherControllers({ themeChangeTimeout }) {
           </div>
         )}
 
-        {(themeIndex !== themes.length - 1) && (
+        {themeIndex !== themes.length - 1 && (
           <div className={styles.next} onClick={(e) => clickHandler(e, 'next')}>
             {'>'}
           </div>

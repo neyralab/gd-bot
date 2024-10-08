@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { DebounceInput } from 'react-debounce-input';
 
 import { ReactComponent as SearchIcon } from '../../../assets/search_input.svg';
-import { ReactComponent as CloseIcon } from '../../filesSystemPage/assets/close.svg';
+import { ReactComponent as CloseIcon } from '../../../assets/cross.svg';
 
 import { vibrate } from '../../../utils/vibration';
 

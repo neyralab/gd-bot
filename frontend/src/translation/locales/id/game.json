@@ -1,8 +1,8 @@
 {
   "mode": {
     "playNow": "Main sekarang",
-    "freePlay": "Permainan bebas berikutnya",
-    "play": "Modus bermain",
+    "freePlay": "Waktu pengisian",
+    "play": "mode penambangan (KBs)",
     "boost": "Mode peningkatan"
   },
   "navigate": {
@@ -116,7 +116,7 @@
     "uploadFile": "Unggah data"
   },
   "advertisement": {
-    "watchAndPlay": "Tonton iklan untuk mendapatkan {{points}} poin dan bermain lagi",
+    "watchAndPlay": "Tonton dan dapatkan {{points}}",
     "points": "Poin"
   },
   "message": {

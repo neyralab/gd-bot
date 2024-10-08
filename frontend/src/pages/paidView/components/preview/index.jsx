@@ -3,9 +3,9 @@ import React, { useMemo } from "react";
 import { ImagePreview } from './imagePreview';
 import { AudioPreview } from './audioPreview';
 import { VideoPreview } from './videoPreview';
-import PdfPreview from '../../../../components/filePreviewModal/previewContent/PdfPreview';
-import TxtPreview from '../../../../components/filePreviewModal/previewContent/TxtPreview';
-import ExcelPreview from '../../../../components/filePreviewModal/previewContent/ExcelPreview';
+import PdfPreview from './pdfPreview';
+import TxtPreview from './txtPreview';
+import ExcelPreview from './excelPreview';
 import { DocPreview } from './docPreview';
 import { getPreviewFileType } from '../../../../utils/preview';
 

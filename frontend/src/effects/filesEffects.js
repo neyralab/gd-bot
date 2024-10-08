@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { CarReader } from '@ipld/car';
 import { saveBlob, downloadFile, downloadFileFromSP } from 'gdgateway-client';
-import { updateFile } from '../store/reducers/filesSlice';
 import { API_PATH } from '../utils/api-urls';
 import axiosInstance from './axiosInstance';
 import { FILE_ACTIONS } from '../config/contracts';
@@ -181,22 +180,8 @@ export const updateEntrySorting = async (direction) => {
   });
 };
 
-export const updateFileFavoriteEffect = async (slug, dispatch) => {
-  const url = `${API_PATH}/files/favorite/toggle/${slug}`;
-  try {
-    const { data } = await axiosInstance.post(url);
-    const file = data?.data;
-    if (file) {
-      dispatch(updateFile(file));
-    } else {
-      throw Error();
-    }
-  } catch (e) {
-    console.warn(e);
-  }
-};
 
-export const updateFileFavoriteEffect_v2 = async (slug) => {
+export const updateFileFavoriteEffect = async (slug) => {
   const url = `${API_PATH}/files/favorite/toggle/${slug}`;
   try {
     const { data } = await axiosInstance.post(url);

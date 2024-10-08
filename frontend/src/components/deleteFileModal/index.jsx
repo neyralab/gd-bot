@@ -6,13 +6,8 @@ import { useTranslation } from 'react-i18next';
 
 import {
   handleDeleteFileModal,
-  handleFileMenu,
   selectisDeleteFileModalOpen
 } from '../../store/reducers/modalSlice';
-import {
-  selecSelectedFile,
-  setSelectedFile
-} from '../../store/reducers/filesSlice';
 import {
   deleteFileEffect,
   permanentlyDeleteFileEffect
@@ -24,7 +19,7 @@ import style from './style.module.css';
 export const DeleteFileModal = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation('system');
-  const file = useSelector(selecSelectedFile);
+  const file = useSelector(state => state.drive.fileMenuModal);
   const isOpen = useSelector(selectisDeleteFileModalOpen);
   const location = useLocation();
   const isDeletedPage =
@@ -34,8 +29,6 @@ export const DeleteFileModal = () => {
   const onClose = () => {
     vibrate();
     dispatch(handleDeleteFileModal(false));
-    dispatch(handleFileMenu(false));
-    dispatch(setSelectedFile({}));
   };
 
   const onAccept = async () => {

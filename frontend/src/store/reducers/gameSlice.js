@@ -91,6 +91,8 @@ const gameSlice = createSlice({
       isSwitching: false
     },
 
+    allowThemeChange: false,
+
     pendingGames: [],
 
     gameInfo: null,
@@ -193,6 +195,9 @@ const gameSlice = createSlice({
     },
     setNextTheme: (state, { payload }) => {
       state.nextTheme = payload;
+    },
+    setAllowThemeChange: (state, { payload }) => {
+      state.allowThemeChange = payload;
     },
     setCounterIsActive: (state, { payload }) => {
       state.counter.isActive = payload;
@@ -739,6 +744,7 @@ export const gameCleanup = createAsyncThunk(
     dispatch(setReachedNewLevel(false));
     dispatch(setGameModal(null));
     dispatch(setSystemModal(null));
+    dispatch(setAllowThemeChange(false));
   }
 );
 
@@ -764,6 +770,7 @@ export const {
   setExperiencePoints,
   setReachedNewLevel,
   setNextTheme,
+  setAllowThemeChange,
   setLevels,
   setCounterIsActive,
   setCounterCount,

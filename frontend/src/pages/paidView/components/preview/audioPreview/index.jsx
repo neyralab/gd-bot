@@ -3,10 +3,10 @@ import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import CN from 'classnames';
 
-import { ReactComponent as ForwardIcon } from '../../../../../components/filePreviewModal/components/AudioPreview/assets/forward.svg';
-import { ReactComponent as RewindIcon } from '../../../../../components/filePreviewModal/components/AudioPreview/assets/rewind.svg';
-import { ReactComponent as PLayIcon } from '../../../../../components/filePreviewModal/components/AudioPreview/assets/play.svg';
-import { ReactComponent as PauseIcon } from '../../../../../components/filePreviewModal/components/AudioPreview/assets/pause.svg';
+import { ReactComponent as ForwardIcon } from '../../../../../assets/forward.svg';
+import { ReactComponent as RewindIcon } from '../../../../../assets/rewind.svg';
+import { ReactComponent as PLayIcon } from '../../../../../assets/play-player.svg';
+import { ReactComponent as PauseIcon } from '../../../../../assets/pause.svg';
 import { removeExtension, formatDuration } from '../../../../../utils/string';
 import { createStreamEffect } from '../../../../../effects/filesEffects';
 
