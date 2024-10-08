@@ -84,7 +84,7 @@ export const Balance = () => {
 
   return (
     <div className={styles.container}>
-      <Header label={t('convert.storage')} />
+      <Header hideBack label={t('convert.storage')} />
       <div data-animation="balance-animation-2">
         <InfoBox points={user?.points} />
       </div>

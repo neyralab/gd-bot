@@ -16,7 +16,7 @@ export default function NodesWelcomePage() {
 
   return (
     <div className={styles.container}>
-      <Header label={t('node.node')} />
+      <Header hideBack label={t('node.node')} />
 
       <div className={styles.content}>
         <div className={styles['img-container']}>

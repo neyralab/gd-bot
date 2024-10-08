@@ -140,7 +140,7 @@ export const LanguagePage = () => {
 
   return (
     <div className={styles.container}>
-      <Header label={t('dashboard.language')} />
+      <Header hideBack label={t('dashboard.language')} />
       <SearchInput value={searchValue} onChange={onChange} onClose={onReset} />
       <h2 data-animation="language-animation-2" className={styles.subTitle}>
         {t('language.interface')}

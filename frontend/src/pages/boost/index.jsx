@@ -211,7 +211,7 @@ export const BoostPage = ({ tariffs, setTariffs }) => {
   return (
     <div className={styles.container}>
       <div>
-        <Header label={t('boost.upgradeStorage')} className={styles.backBtn} />
+        <Header hideBack label={t('boost.upgradeStorage')} className={styles.backBtn} />
 
         {tariffs && (
           <>

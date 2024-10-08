@@ -150,7 +150,7 @@ export default function NodesPage() {
 
   return (
     <div className={styles.container}>
-      <Header label={t('node.node')} />
+      <Header hideBack label={t('node.node')} />
 
       <div className={styles.content}>
         <div

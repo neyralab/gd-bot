@@ -79,8 +79,6 @@ export const UpgradeStoragePage = ({ tariffs }) => {
     }
   }, [tariffs]);
 
-  const onBackButtonClick = () => navigate(-1);
-
   const tariffList = useMemo(() => {
     if (!availableTariffs) return [];
 
@@ -194,9 +192,6 @@ export const UpgradeStoragePage = ({ tariffs }) => {
   return (
     <div className={s.wrapper}>
       <header className={s.header}>
-        <button className={s.header__backBtn} onClick={onBackButtonClick}>
-          Back
-        </button>
         {/* <h2 className={s.header__upgradeBtn}>Upgrade Storage</h2> */}
         <TonConnectButton />
       </header>

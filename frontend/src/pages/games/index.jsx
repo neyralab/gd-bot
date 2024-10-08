@@ -58,7 +58,6 @@ export const GamesPage = () => {
 
   return (
     <div className={styles.container}>
-      <Header />
       <SearchInput value={search} setValue={handleChange} />
       {isLoading && (
         <div className={styles.loader}>
