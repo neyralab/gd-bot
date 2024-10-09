@@ -10,6 +10,7 @@ import { ReactComponent as TonIcon } from '../../assets/logo/ton.svg';
 import { ReactComponent as OKXIcon } from '../../assets/logo/okx.svg';
 import { ReactComponent as CloseIcon } from '../../assets/close.svg';
 import { OkxConnect } from './okxConnect';
+import { isOkxWallet } from '../../utils/string';
 
 import styles from './styles.module.css';
 
@@ -32,9 +33,11 @@ const ConnectModal = ({ isOpen, onClose }) => {
         !!user?.wallet?.filter((el) => el !== tonConnectUI.account?.address)
           .length
       ) {
+        const walletName = isOkxWallet(tonConnectUI.walletInfo.name) ? 'okx' : 'ton';
         const res = await saveUserWallet({
           account: tonConnectUI?.account,
-          channel: 'ton'
+          channel: 'ton',
+          [walletName]: true
         });
         const newWallets = res.map((el) => el.public_address);
         dispatch(setUser({ ...user, wallet: newWallets }));
@@ -49,7 +52,8 @@ const ConnectModal = ({ isOpen, onClose }) => {
           if (!!user?.wallet?.filter((el) => el !== res.account?.address).length) {
             const data = await saveUserWallet({
               account: res?.account,
-              channel: 'ton'
+              channel: 'ton',
+              okx: true
             });
             const newWallets = data.map((el) => el.public_address);
             dispatch(setUser({ ...user, wallet: newWallets }));
