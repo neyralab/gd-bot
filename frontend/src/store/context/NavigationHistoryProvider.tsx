@@ -35,11 +35,13 @@ export const NavigationHistoryProvider: React.FC<NavigationHistoryProviderProps>
   }, [location.pathname]);
 
   useEffect(() => {
-    if (mobilePlatform && location.pathname === '/start' && tg.BackButton.isVisible) {
-      tg.BackButton.hide();
-    } else if (mobilePlatform && location.pathname !== '/start' && !tg.BackButton.isVisible) {
-      tg.BackButton.show();
-      tg.BackButton.onClick(() => {navigate(-1)})
+    if (mobilePlatform) {
+      if (location.pathname === '/start' && tg.BackButton.isVisible) {
+        tg.BackButton.hide();
+      } else if (location.pathname !== '/start' && !tg.BackButton.isVisible) {
+        tg.BackButton.show();
+        tg.BackButton.onClick(() => {navigate(-1)})
+      }
     }
   }, [location.pathname])
 
