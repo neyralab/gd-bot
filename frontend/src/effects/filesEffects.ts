@@ -412,7 +412,7 @@ export const getFilecoinBlobEffect = async ({
     throw new Error('File is empty');
   }
 
-  const promises = [
+  const promises: Promise<any>[] = [
     sendFileViewStatistic(file.slug),
     getFileCids({ slug: file.slug }),
     getDownloadOTT([{ slug: file.slug }])

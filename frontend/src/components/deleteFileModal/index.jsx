@@ -15,11 +15,12 @@ import {
 import { vibrate } from '../../utils/vibration';
 
 import style from './style.module.css';
+import { decreaseUsedSpace } from '../../store/reducers/userSlice';
 
 export const DeleteFileModal = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation('system');
-  const file = useSelector(state => state.drive.fileMenuModal);
+  const file = useSelector((state) => state.drive.fileMenuModal);
   const isOpen = useSelector(selectisDeleteFileModalOpen);
   const location = useLocation();
   const isDeletedPage =
@@ -36,6 +37,9 @@ export const DeleteFileModal = () => {
     vibrate();
     if (isDeletedPage) {
       result = await permanentlyDeleteFileEffect(file, dispatch);
+      if (result === 'success') {
+        dispatch(decreaseUsedSpace(file.size));
+      }
     } else {
       result = await deleteFileEffect(file.slug, dispatch);
     }
@@ -70,9 +74,7 @@ export const DeleteFileModal = () => {
         <button className={style.noBtn} onClick={onClose}>
           No
         </button>
-        <button
-          className={style.yesBtn}
-          onClick={onAccept}>
+        <button className={style.yesBtn} onClick={onAccept}>
           Yes
         </button>
       </div>
