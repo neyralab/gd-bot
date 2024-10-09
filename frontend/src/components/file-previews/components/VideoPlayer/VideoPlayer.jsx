@@ -17,7 +17,9 @@ const VideoPlayer = forwardRef(
       fileContent,
       fileContentType = 'blob',
       disableSwipeEvents,
-      onFileReadError
+      onFileReadError,
+      hideControlUtils,
+      playerProps = {},
     },
     ref
   ) => {
@@ -69,7 +71,8 @@ const VideoPlayer = forwardRef(
         if (playerRef.current) {
           playerRef.current.seekTo(0);
         }
-      }
+      },
+      playerRef: playerRef.current,
     }));
 
     const handleFastForward = () => {
@@ -163,12 +166,13 @@ const VideoPlayer = forwardRef(
               onError={handleError}
               key={url}
               forceload={'true'}
+              {...playerProps}
             />
             <div className={styles['no-interaction-overlay']}></div>
           </div>
         )}
 
-        {showControls && (
+        {(showControls && !hideControlUtils) && (
           <Controls
             playing={playing}
             handlePlayPause={handlePlayPause}
@@ -179,12 +183,14 @@ const VideoPlayer = forwardRef(
 
         {error && <div className={styles.error}>{t('error.readFile')}</div>}
 
-        <ProgressBar
-          played={played}
-          handleSeekMouseDown={handleSeekMouseDown}
-          handleSeekChange={handleSeekChange}
-          handleSeekMouseUp={handleSeekMouseUp}
-        />
+        {!hideControlUtils && (
+          <ProgressBar
+            played={played}
+            handleSeekMouseDown={handleSeekMouseDown}
+            handleSeekChange={handleSeekChange}
+            handleSeekMouseUp={handleSeekMouseUp}
+          />
+        )}
       </div>
     );
   }
