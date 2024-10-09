@@ -3,10 +3,15 @@ import classNames from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import {
+  refreshFreeGame,
   setAdvertisementModal,
   setAdvertisementOfferModal
 } from '../../../store/reducers/gameSlice';
 import { useAdsgram } from '../../../utils/useAdsgram';
+import {
+  startWatchingAdvertisementVideo,
+  endWatchingAdvertisementVideo,
+} from '../../../effects/advertisementEffect';
 import styles from './AdvertisementOfferModal.module.scss';
 
 const HIDE_ADD_MODAL_KEY = 'ad-modal-display'; 
@@ -65,9 +70,7 @@ export default function AdvertisementOfferModal() {
     localStorage.setItem(HIDE_ADD_MODAL_KEY, true);
   }
 
-  const clickHandler = (e) => {
-    if (!isClickable) return;
-
+  const showLocalAD = () => {
     dispatch(
       setAdvertisementModal({
         points: advertisementOfferModal.points,
@@ -89,15 +92,32 @@ export default function AdvertisementOfferModal() {
     }, 600);
   };
 
-  const onReward = () => {
-    console.log('Adsgram reward success');
+  const onReward = async () => {
+    try {
+      await endWatchingAdvertisementVideo();
+      dispatch(refreshFreeGame({ points: advertisementOfferModal.points }));
+    } catch (error) {
+      console.warn(error);
+    }
   }
 
   const onError = (e) => {
-    console.log('Adsgram error ', e);
+    console.warn('Adsgram error: ', e);
+    showLocalAD();
   }
 
   const showAd = useAdsgram({ onReward, onError });
+
+  const clickHandler = async (e) => {
+    if (!isClickable) return;
+
+    try {
+      await showAd();
+      await startWatchingAdvertisementVideo(advertisementOfferModal.videoId);
+    } catch (error) {
+      console.warn(error);
+    }
+  }
 
   if (!isOpen) return null;
 
@@ -105,7 +125,7 @@ export default function AdvertisementOfferModal() {
     <>
       {!isADModalHidden && (
         <div
-          onClick={showAd}
+          onClick={clickHandler}
           className={classNames(
             styles.container,
             isClosing && styles['is-closing']
@@ -128,7 +148,7 @@ export default function AdvertisementOfferModal() {
         </div>
       )}
 
-      <div onClick={showAd} className={styles['model-trigger']}></div>
+      <div onClick={clickHandler} className={styles['model-trigger']}></div>
     </>
   );
 }
