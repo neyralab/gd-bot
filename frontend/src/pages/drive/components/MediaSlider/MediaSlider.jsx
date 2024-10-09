@@ -1,3 +1,4 @@
+import { useCallback, useState, useEffect } from 'react';
 import Modal from 'react-modal';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
@@ -7,8 +8,9 @@ import {
 } from '../../../../store/reducers/driveSlice';
 import SlidesController from './SlidesController/SlidesController';
 import { vibrate } from '../../../../utils/vibration';
+import { isMobilePlatform } from '../../../../utils/client';
+import { tg } from '../../../../App';
 import styles from './MediaSlider.module.scss';
-import { useCallback, useState } from 'react';
 
 Modal.setAppElement('#root');
 
@@ -17,6 +19,21 @@ export default function MediaSlider() {
   const isOpen = useSelector((state) => state.drive.mediaSlider.isOpen);
   const [isExpanded, setIsExpanded] = useState(false);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (isOpen && isMobilePlatform) {
+      tg.BackButton.onClick(() => {
+        dispatch(setMediaSliderOpen(false));
+        dispatch(setMediaSliderCurrentFile(null));
+      });
+    }
+
+    return () => {
+      if (isOpen) {
+        tg.BackButton.onClick(() => { navigate(-1) });
+      }
+    }
+  }, [isOpen])
 
   const onClose = useCallback(() => {
     vibrate();
@@ -39,9 +56,11 @@ export default function MediaSlider() {
 
         {!isExpanded && (
           <div className={styles.header}>
-            <button className={styles.back} onClick={onClose}>
-              {t('dashboard.back')}
-            </button>
+            {!isMobilePlatform && (
+              <button className={styles.back} onClick={onClose}>
+                {t('dashboard.back')}
+              </button>
+            )}
           </div>
         )}
       </div>

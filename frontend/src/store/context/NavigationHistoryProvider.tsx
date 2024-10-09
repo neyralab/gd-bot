@@ -1,5 +1,7 @@
 import React, { createContext, useRef, useState, useEffect, ReactNode } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { isMobilePlatform } from '../../utils/client';
+import { tg } from '../../App';
 
 interface NavigationHistoryContextType {
   history: string[];
@@ -16,6 +18,8 @@ export const NavigationHistoryProvider: React.FC<NavigationHistoryProviderProps>
   const [history, setHistory] = useState<string[]>([]);
   const [isInitialRoute, setIsInitialRoute] = useState(true);
   const removedElement = useRef<boolean>(false);
+  const mobilePlatform = isMobilePlatform;
+  const navigate = useNavigate();
   const location = useLocation();
 
   useEffect(() => {
@@ -29,6 +33,17 @@ export const NavigationHistoryProvider: React.FC<NavigationHistoryProviderProps>
       return prevHistory;
     });
   }, [location.pathname]);
+
+  useEffect(() => {
+    if (mobilePlatform) {
+      if (location.pathname === '/start' && tg.BackButton.isVisible) {
+        tg.BackButton.hide();
+      } else if (location.pathname !== '/start' && !tg.BackButton.isVisible) {
+        tg.BackButton.show();
+        tg.BackButton.onClick(() => {navigate(-1)})
+      }
+    }
+  }, [location.pathname])
 
   useEffect(() => {
     if (isInitialRoute && history.length > 1) {
