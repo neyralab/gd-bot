@@ -94,7 +94,7 @@ export default function AdvertisementOfferModal() {
 
   const onReward = async () => {
     try {
-      await endWatchingAdvertisementVideo();
+      await endWatchingAdvertisementVideo(advertisementOfferModal.videoId);
       dispatch(refreshFreeGame({ points: advertisementOfferModal.points }));
     } catch (error) {
       console.warn(error);
