@@ -96,6 +96,7 @@ export default function AdvertisementOfferModal() {
     try {
       await endWatchingAdvertisementVideo(advertisementOfferModal.videoId);
       dispatch(refreshFreeGame({ points: advertisementOfferModal.points }));
+      closeModal();
     } catch (error) {
       console.warn(error);
     }
