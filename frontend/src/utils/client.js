@@ -1,4 +1,5 @@
 import { TG_PLATFORMS } from '../config/contracts';
+import { tg } from '../App'
 
 export function isSafari() {
   let userAgentString = navigator.userAgent.toLowerCase();
@@ -60,6 +61,8 @@ export function isWebPlatform(tgClient) {
 export function isDesktopPlatform(tgClient) {
   return TG_PLATFORMS.desktop.includes(tgClient?.platform);
 }
+
+export const isMobilePlatform = !(isDesktopPlatform(tg) || isDesktopPlatform(tg));
 
 export const isAppStoreUrl = (url) => {
   return url.includes('apps.apple.com') || url.includes('itunes.apple.com');
