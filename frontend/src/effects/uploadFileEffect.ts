@@ -51,7 +51,7 @@ export const uploadFileEffect = async ({
           params
         }: {
           type: string;
-          params: { [key: string]: string };
+          params: Record<string, string>;
         }) => {
           if (handlers.includes(type)) {
             callbacks[type]({ ...params, dispatch });

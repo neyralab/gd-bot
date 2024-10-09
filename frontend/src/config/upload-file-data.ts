@@ -1,6 +1,7 @@
-interface UploadFileDataCallbacks {
-  [key: string]: (params: { [key: string]: any }) => void;
-}
+type UploadFileDataCallbacks = Record<
+  string,
+  (params: Record<string, any>) => void
+>;
 
 export const uploadFileData = {
   callbacks: {

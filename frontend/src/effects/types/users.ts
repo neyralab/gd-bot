@@ -29,7 +29,7 @@ export interface UserToken {
   is_on_sp: [];
   car_files: Record<string, string | null>;
   boost_deals: [];
-  sizes: { [key: string]: number | null };
+  sizes: Record<string, number | null>;
   preview_large: Record<string, string | null>;
   preview_small: Record<string, string | null>;
 }
