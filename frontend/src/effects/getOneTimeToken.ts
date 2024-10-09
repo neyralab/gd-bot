@@ -5,12 +5,20 @@ import { AxiosResponse } from 'axios';
 interface FileData {
   filesize?: string;
   filename?: string;
+  isPublic: boolean;
 }
 
 interface TokenResponse {
   jwt_ott: string[];
   user_token: { token: string }[];
-  gateway: { url: string };
+  gateway: {
+    id: number;
+    interim_chunk_size: number;
+    same_ip_upload: boolean;
+    type: string;
+    upload_chunk_size: number;
+    url: string;
+  };
 }
 
 export const getOneTimeToken = (
