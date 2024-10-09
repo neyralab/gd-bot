@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { saveUserWallet } from '../effects/userEffects';
 import { setUser } from '../store/reducers/userSlice';
+import { isOkxWallet } from '../utils/string';
 
 export function useOnConnect() {
   const [tonConnectUI] = useTonConnectUI();
@@ -25,11 +26,13 @@ export function useOnConnect() {
         const exist = user?.wallet?.find(
           (el: string) => el !== tonConnectUI.account?.address
         );
+        const walletName = isOkxWallet(tonConnectUI?.walletInfo?.name) ? 'okx' : 'ton';
         console.log({ exist });
         if (!exist) {
           const res = await saveUserWallet({
             account: tonConnectUI?.account,
-            channel: 'ton'
+            channel: 'ton',
+            [walletName]: true
           });
           const newWallets = res.map((el) => el.public_address);
           dispatch(setUser({ ...user, wallet: newWallets }));
