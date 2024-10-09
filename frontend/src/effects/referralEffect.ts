@@ -1,14 +1,8 @@
 import axiosInstance from './axiosInstance';
+import { UserReferral } from './types/users';
 
 interface ReferralResponse {
-  data: {
-    code: string;
-    credit_amount: number | null;
-    current_usage: number;
-    id: number;
-    max_usage: number | null;
-    only_on_signup: boolean;
-  }[];
+  data: UserReferral[];
 }
 
 interface ReferrerResponse {
