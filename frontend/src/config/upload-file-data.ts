@@ -1,9 +1,5 @@
-interface CallbackParams {
-  [key: string]: any;
-}
-
-interface Callbacks {
-  [key: string]: (params: CallbackParams) => void;
+interface UploadFileDataCallbacks {
+  [key: string]: (params: { [key: string]: any }) => void;
 }
 
 export const uploadFileData = {
@@ -12,6 +8,6 @@ export const uploadFileData = {
     onSuccess: () => {},
     onError: () => {},
     onProgress: () => {}
-  } as Callbacks,
+  } as UploadFileDataCallbacks,
   handlers: ['onStart', 'onSuccess', 'onError', 'onProgress']
 };
