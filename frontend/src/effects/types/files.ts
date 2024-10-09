@@ -117,7 +117,7 @@ export interface FileDetails {
   description: string | null;
   user_favorites: FileUserFavorite[];
   trusted_members: unknown[];
-  storage_provider: unknown;
+  storage_provider: { url: string } | null;
   created_at: string;
   updated_at: string | null;
   slug: string;

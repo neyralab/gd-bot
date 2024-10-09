@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { CancelToken } from 'axios';
 import { CarReader } from '@ipld/car';
 import { saveBlob, downloadFile, downloadFileFromSP } from 'gdgateway-client';
 import { API_PATH } from '../utils/api-urls';
@@ -6,10 +6,12 @@ import axiosInstance from './axiosInstance';
 import { FILE_ACTIONS } from '../config/contracts';
 import { sendFileViewStatistic } from './file/statisticEfect';
 import { getFileCids } from './file/getFileCid';
+import { File, FileDetails, FileToken, PPVFile } from './types/files';
+import { DefaultResponse } from './types/defaults';
 
-export const getDownloadOTT = (body) => {
+export const getDownloadOTT = (body: { slug: string }[]) => {
   const url = `${API_PATH}/download/generate/token`;
-  return axiosInstance.post(url, body, {
+  return axiosInstance.post<FileToken>(url, body, {
     headers: {
       'X-Action': FILE_ACTIONS.downloaded
     }
@@ -17,9 +19,9 @@ export const getDownloadOTT = (body) => {
 };
 
 export const getFilePreviewEffect = async (
-  fileId,
-  cancelToken = null,
-  type = undefined
+  fileId: string,
+  cancelToken: CancelToken | undefined = undefined,
+  type: string | undefined = undefined
 ) => {
   const {
     data: {
@@ -30,20 +32,18 @@ export const getFilePreviewEffect = async (
   } = await getDownloadOTT([{ slug: fileId }]);
 
   let url;
-  if (type.includes('doc')) {
+  if (type && type.includes('doc')) {
     url = `${gateway.url}/doc/preview/${fileId}`;
-    return axiosInstance
+    return axios
       .create({
         headers: {
           'One-Time-Token': oneTimeToken,
           'X-Download-OTT-JWT': jwt_ott
         }
       })
-      .get(url, null, {
-        options: {
-          responseType: 'blob',
-          cancelToken
-        }
+      .get(url, {
+        responseType: 'blob',
+        cancelToken
       })
       .then((response) => {
         const urlCreator = window.URL || window.webkitURL;
@@ -55,7 +55,7 @@ export const getFilePreviewEffect = async (
   } else {
     url = `${gateway.url}/preview/${fileId}`;
 
-    return axiosInstance
+    return axios
       .create({
         headers: {
           'one-time-token': oneTimeToken,
@@ -81,15 +81,10 @@ export const getFilePreviewEffect = async (
   }
 };
 
-export const getTotalDownloadFileSize = (files) => {
-  const totalSize = files.reduce((accumulator, file) => {
-    return accumulator + file.size;
-  }, 0);
-
-  return totalSize;
-};
-
-export const downloadFileEffect = async (file, afterCb) => {
+export const downloadFileEffect = async (
+  file: FileDetails,
+  afterCb: Function
+) => {
   const {
     data: {
       jwt_ott,
@@ -122,10 +117,10 @@ export const downloadFileEffect = async (file, afterCb) => {
   }
 };
 
-export const autoCompleteSearchEffect = async (term = '') => {
+export const autoCompleteSearchEffect = async (term: string = '') => {
   const url = `${API_PATH}/search/autocomplete?term=${term}`;
   return await axiosInstance
-    .get(url)
+    .get<File[]>(url)
     .then(({ data }) => {
       return data;
     })
@@ -134,24 +129,12 @@ export const autoCompleteSearchEffect = async (term = '') => {
     });
 };
 
-export const getFileInfoEffect = async (id) => {
-  const url = `${API_PATH}/files/file/${id}`;
-  return await axiosInstance
-    .get(url)
-    .then(({ data }) => {
-      return data.entry;
-    })
-    .catch((error) => {
-      console.error(error);
-    });
-};
-
 export const updateShareEffect = async (
-  fileId,
-  shareId = 1,
-  canComment = false,
-  canEdit = false,
-  expiredAt = 0
+  fileId: string,
+  shareId: number = 1,
+  canComment: boolean = false,
+  canEdit: boolean = false,
+  expiredAt: number = 0
 ) => {
   const url = `${API_PATH}/files/${fileId}/share/${shareId}`;
 
@@ -169,22 +152,10 @@ export const updateShareEffect = async (
     });
 };
 
-export const updateEntrySorting = async (direction) => {
-  const body = {
-    orderBy: 'createdAt',
-    orderDirection: direction,
-    page: 'root_files'
-  };
-  return axiosInstance.post(`${API_PATH}/entry-sorting`, body).catch((e) => {
-    console.error(e);
-  });
-};
-
-
-export const updateFileFavoriteEffect = async (slug) => {
+export const updateFileFavoriteEffect = async (slug: string) => {
   const url = `${API_PATH}/files/favorite/toggle/${slug}`;
   try {
-    const { data } = await axiosInstance.post(url);
+    const { data } = await axiosInstance.post<{ data: FileDetails }>(url);
     const file = data?.data;
     return file;
   } catch (e) {
@@ -192,45 +163,65 @@ export const updateFileFavoriteEffect = async (slug) => {
   }
 };
 
-export const createFolderEffect = async (name) =>
-  axiosInstance
-    .post(`${API_PATH}/folders/folder`, { name, parent: null })
-    .then((response) => {
-      return response.data.data;
-    })
-    .catch((err) => {
-      return err;
-    });
+interface GetFilesResponse {
+  data: FileDetails[];
+  count: number;
+  members?: unknown[];
+  orderBy: unknown;
+  orderDirection: unknown;
+}
 
-export const getFilesEffect = async (page = 1, order = 'desc') => {
-  const url = `${API_PATH}/files?page=${page}&order_by=createdAt&order=${order}`;
-  return await axiosInstance.get(url).then((result) => result.data);
+export const getFilesEffect = async (
+  page: number = 1,
+  order: 'asc' | 'desc' = 'desc'
+) => {
+  const url = `${API_PATH}/files`;
+  return await axiosInstance
+    .get<GetFilesResponse>(url, {
+      params: { order_by: 'createdAt', order, page }
+    })
+    .then((result) => result.data);
 };
+
+interface GetPPVFilesResponse {
+  items: PPVFile[];
+  total: number;
+}
 
 export const getPaidShareFilesEffect = async (page = 1) => {
   try {
-    const data = await axiosInstance.get(
-      `${API_PATH}/share/file/list?page=${page}`
+    const data = await axiosInstance.get<GetPPVFilesResponse>(
+      `${API_PATH}/share/file/list`,
+      { params: { page } }
     );
     return data?.data;
   } catch (error) {
-    throw Error(error);
+    throw Error(error as any);
   }
 };
 
-export const createPaidShareFileEffect = async (id, body) => {
+export const createPaidShareFileEffect = async (
+  id: number,
+  body: {
+    priceView: number;
+    currency: number;
+    priceDownload: number;
+    description: string;
+    file: number;
+  }
+) => {
   try {
     const data = await axiosInstance.post(`${API_PATH}/share/file/${id}`, body);
     return data?.data;
   } catch (error) {
-    throw Error(error);
+    throw Error(error as any);
   }
 };
 
-export const deletePaidShareEffect = async (id, body) => {
+export const deletePaidShareEffect = async (id: number) => {
   try {
     const url = `${API_PATH}/share/file/${id}`;
-    return await axiosInstance.delete(url, body).then((result) => {
+    return await axiosInstance.delete<DefaultResponse>(url).then((result) => {
       if (result.data.message === 'success') {
         return result?.data;
       } else {
@@ -238,24 +229,29 @@ export const deletePaidShareEffect = async (id, body) => {
       }
     });
   } catch (error) {
-    throw Error(error);
+    throw Error(error as any);
   }
 };
 
-export const getPaidShareFileEffect = async (slug) => {
+export const getPaidShareFileEffect = async (slug: string) => {
   try {
     const data = await axiosInstance.get(`${API_PATH}/share/file/${slug}`);
     return data?.data;
   } catch (error) {
-    throw Error(error);
+    throw Error(error as any);
   }
 };
 
-export const getFilesByTypeEffect = async (type, page = 1) => {
+export const getFilesByTypeEffect = async (type: string, page: number = 1) => {
   return axiosInstance
-    .get(
-      `${API_PATH}/files?extension=${type}&page=${page}&order_by=createdAt&order=desc`
-    )
+    .get<GetFilesResponse>(`${API_PATH}/files`, {
+      params: {
+        page,
+        extension: type,
+        order_by: 'createdAt',
+        order: 'desc'
+      }
+    })
     .then((response) => {
       return response.data;
     })
@@ -263,9 +259,10 @@ export const getFilesByTypeEffect = async (type, page = 1) => {
       throw Error(err);
     });
 };
+
 export const getFavoritesEffect = async () => {
   return axiosInstance
-    .get(`${API_PATH}/files/file/favorites`)
+    .get<GetFilesResponse>(`${API_PATH}/files/file/favorites`)
     .then((response) => {
       return response.data;
     })
@@ -273,11 +270,12 @@ export const getFavoritesEffect = async () => {
       throw Error(err);
     });
 };
+
 export const getSharedFilesEffect = async (page = 1) => {
   return axiosInstance
-    .get(
-      `${API_PATH}/files/shared/my?page=${page}&order_by=createdAt&order=desc`
-    )
+    .get<GetFilesResponse>(`${API_PATH}/files/shared/my`, {
+      params: { page, order_by: 'createdAt', order: 'desc' }
+    })
     .then((response) => {
       return response.data;
     })
@@ -285,9 +283,10 @@ export const getSharedFilesEffect = async (page = 1) => {
       throw Error(err);
     });
 };
+
 export const getDeletedFilesEffect = async (page = 1) => {
   return axiosInstance
-    .get(`${API_PATH}/trash?page=${page}`)
+    .get<GetFilesResponse>(`${API_PATH}/trash`, { params: { page } })
     .then((response) => {
       return response.data;
     })
@@ -295,11 +294,12 @@ export const getDeletedFilesEffect = async (page = 1) => {
       throw Error(err);
     });
 };
+
 export const getGeoPinFilesEffect = async (page = 1) => {
   return axiosInstance
-    .get(
-      `${API_PATH}/files/geo/security?page=${page}&order_by=createdAt&order=desc'`
-    )
+    .get<GetFilesResponse>(`${API_PATH}/files/geo/security`, {
+      params: { page, order_by: 'createdAt', order: 'desc' }
+    })
     .then((response) => {
       return response.data.data;
     })
@@ -307,7 +307,8 @@ export const getGeoPinFilesEffect = async (page = 1) => {
       throw Error(err);
     });
 };
-export const createStreamEffect = async (slug) => {
+
+export const createStreamEffect = async (slug: string) => {
   try {
     const {
       data: {
@@ -318,13 +319,21 @@ export const createStreamEffect = async (slug) => {
     const url = `${gateway.url}/stream/${slug}/${oneTimeToken}`;
     return url;
   } catch (error) {
-    throw Error(error);
+    throw Error(error as any);
   }
 };
 
-export const getFileStarStatistic = async (slug) => {
+interface GetFileStarStatisticsResponse {
+  action: string;
+  stars: string;
+  count: number;
+}
+
+export const getFileStarStatistic = async (slug: string) => {
   try {
-    const { data } = await axios.get(`${API_PATH}/share/file/stat/${slug}`);
+    const { data } = await axios.get<GetFileStarStatisticsResponse[][]>(
+      `${API_PATH}/share/file/stat/${slug}`
+    );
 
     if (data && data.length) {
       const res = data[0]?.reduce(
@@ -339,11 +348,14 @@ export const getFileStarStatistic = async (slug) => {
     }
     return { view: 0, stars: 0 };
   } catch (error) {
-    throw Error(error);
+    throw Error(error as any);
   }
 };
 
-export const createFileReportEffect = async (slug, body) => {
+export const createFileReportEffect = async (
+  slug: string,
+  body: { comment: string; type: number }
+) => {
   try {
     const data = await axiosInstance.post(
       `${API_PATH}/suspicious-report/${slug}`,
@@ -351,26 +363,34 @@ export const createFileReportEffect = async (slug, body) => {
     );
     return data.data;
   } catch (error) {
-    throw Error(error);
+    throw Error(error as any);
   }
 };
 
-export const getFilecoinPreviewEffect = async (file) => {
+export const getFilecoinPreviewEffect = async (file: FileDetails) => {
   if (!file) {
     throw new Error('File is empty');
   }
   const fileBlob = await downloadFileFromSP({
     carReader: CarReader,
-    url: `${file.storage_provider.url}/${
-      file.preview_large ?? file.preview_small
-    }`,
+    url:
+      file.storage_provider && file.storage_provider.url
+        ? `${file.storage_provider.url}/${
+            file.preview_large ?? file.preview_small
+          }`
+        : '',
     isEncrypted: false,
     uploadChunkSize: 0,
-    key: undefined,
-    iv: undefined,
+    key: '',
+    iv: '',
     file,
     level: 'root'
   });
+
+  if (!fileBlob) {
+    throw new Error('Failed to download file');
+  }
+
   const realBlob = new Blob([fileBlob]);
   const text = await realBlob?.text();
   if (text && text.startsWith('data:image')) {
@@ -381,7 +401,13 @@ export const getFilecoinPreviewEffect = async (file) => {
   }
 };
 
-export const getFilecoinBlobEffect = async ({ file, getPreview = false }) => {
+export const getFilecoinBlobEffect = async ({
+  file,
+  getPreview = false
+}: {
+  file: FileDetails;
+  getPreview: boolean;
+}) => {
   if (!file) {
     throw new Error('File is empty');
   }
@@ -401,7 +427,12 @@ export const getFilecoinBlobEffect = async ({ file, getPreview = false }) => {
 
   let blob;
 
-  if (cidData?.value && downloadOTTResponse?.value) {
+  if (
+    cidData.status === 'fulfilled' &&
+    downloadOTTResponse.status === 'fulfilled' &&
+    cidData.value &&
+    downloadOTTResponse.value
+  ) {
     const {
       data: {
         jwt_ott,
@@ -420,7 +451,8 @@ export const getFilecoinBlobEffect = async ({ file, getPreview = false }) => {
         upload_chunk_size[file.slug] || gateway.upload_chunk_size,
       cidData: cidData.value,
       jwtOneTimeToken: jwt_ott,
-      carReader: CarReader
+      carReader: CarReader,
+      signal: undefined
     });
   }
 
@@ -429,7 +461,13 @@ export const getFilecoinBlobEffect = async ({ file, getPreview = false }) => {
   return { realBlob, preview };
 };
 
-export const getFilecoinStreamEffect = async ({ file, getPreview = false }) => {
+export const getFilecoinStreamEffect = async ({
+  file,
+  getPreview = false
+}: {
+  file: FileDetails;
+  getPreview: boolean;
+}) => {
   const promises = [createStreamEffect(file.slug)];
   if (getPreview) {
     promises.push(getFilecoinPreviewEffect(file));
