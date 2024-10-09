@@ -1,0 +1,113 @@
+.decor-container {
+  position: relative;
+
+  div {
+    position: absolute;
+    background-repeat: no-repeat;
+    background-size: contain;
+  }
+
+  .decor1 {
+    width: 30vw;
+    height: 30vw;
+    top: 14vw;
+    left: calc(50% - 15vw);
+    animation: DecorRotateDefault 15s linear infinite;
+  }
+
+  .decor2,
+  .decor3,
+  .decor4,
+  .decor5 {
+    width: 8vw;
+    height: 8vw;
+    animation: DottedCirclesAnimation 1.5s ease-in-out infinite alternate;
+  }
+
+  .decor2 {
+    top: 13vw;
+    left: calc(50% - 17vw);
+  }
+  .decor3 {
+    top: 12vw;
+    left: calc(50% + 9vw);
+  }
+  .decor4 {
+    top: 36vw;
+    left: calc(50% - 17vw);
+  }
+  .decor5 {
+    top: 36vw;
+    left: calc(50% + 9vw);
+  }
+
+  .decor6,
+  .decor7 {
+    width: 3vw;
+    height: 3vw;
+    top: 28vw;
+    animation: SideCirclesAnimation 1.8s ease-in-out infinite alternate;
+  }
+
+  .decor6 {
+    left: calc(50% - 22vw);
+  }
+  .decor7 {
+    left: calc(50% + 19vw);
+  }
+
+  .decor8,
+  .decor9 {
+    width: 2vw;
+    height: 2vw;
+    top: 28.5vw;
+    animation: SideCirclesAnimation 1s ease-in-out infinite alternate;
+  }
+
+  .decor8 {
+    left: calc(50% - 15vw);
+  }
+  .decor9 {
+    left: calc(50% + 13vw);
+  }
+}
+
+@keyframes DecorRotateDefault {
+  0% {
+    transform: rotate(0deg);
+    opacity: 0.2;
+  }
+  25% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 0.3;
+  }
+  75% {
+    opacity: 0.5;
+  }
+  100% {
+    transform: rotate(360deg);
+    opacity: 0.2;
+  }
+}
+
+@keyframes DottedCirclesAnimation {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes SideCirclesAnimation {
+  0% {
+    opacity: 0.1;
+  }
+
+  100% {
+    opacity: 0.3;
+  }
+}

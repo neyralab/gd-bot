@@ -39,6 +39,7 @@ import FriendsPage from './pages/friends';
 import NodesWelcomePage from './pages/nodes-welcome';
 import NodesPage from './pages/nodes';
 import DrivePage from './pages/drive';
+import AssistantDashboard from './components/AssistantDashboard/AssistantDashboard';
 
 import './App.css';
 
@@ -156,6 +157,7 @@ function App() {
             <Route path="/earn" exact element={<EarnPage />} />
             <Route path="/nodes-welcome" exact element={<NodesWelcomePage />} />
             <Route path="/nodes" exact element={<NodesPage />} />
+            <Route path="/assistant" exact element={<AssistantDashboard />} />
           </Routes>
         </SharedLayout>
       </WalletProvider>
@@ -164,4 +166,3 @@ function App() {
 }
 
 export default App;
-  
