@@ -12,6 +12,7 @@ import {
   startWatchingAdvertisementVideo,
   endWatchingAdvertisementVideo,
 } from '../../../effects/advertisementEffect';
+import { AdController } from '../../../App';
 import styles from './AdvertisementOfferModal.module.scss';
 
 const HIDE_ADD_MODAL_KEY = 'ad-modal-display'; 
@@ -39,6 +40,17 @@ export default function AdvertisementOfferModal() {
   const isADModalHidden = useMemo(() => (
     !!JSON.parse(localStorage.getItem(HIDE_ADD_MODAL_KEY))
   ), [status, theme]);
+
+  useEffect(() => {
+    if (AdController) {
+      const bannerNotFound = () => { console.warn('onBannerNotFound') };
+      AdController?.addEventListener?.('onBannerNotFound', bannerNotFound);
+  
+      return () => {
+        AdController?.removeEventListener?.('onBannerNotFound', bannerNotFound);
+      }
+    }
+  }, [AdController])
 
   useEffect(() => {
     if (
@@ -78,9 +90,7 @@ export default function AdvertisementOfferModal() {
         videoId: advertisementOfferModal.videoId
       })
     );
-    !isADModalHidden && disabledAdModal();
     closeModal();
-    dispatch(setAdvertisementOfferModal(null));
   };
 
   const closeModal = () => {
@@ -97,6 +107,7 @@ export default function AdvertisementOfferModal() {
       await endWatchingAdvertisementVideo(advertisementOfferModal.videoId);
       dispatch(refreshFreeGame({ points: advertisementOfferModal.points }));
       closeModal();
+      dispatch(setAdvertisementOfferModal(null));
     } catch (error) {
       console.warn(error);
     }
@@ -113,6 +124,7 @@ export default function AdvertisementOfferModal() {
     if (!isClickable) return;
 
     try {
+      !isADModalHidden && disabledAdModal();
       await showAd();
       await startWatchingAdvertisementVideo(advertisementOfferModal.videoId);
     } catch (error) {
