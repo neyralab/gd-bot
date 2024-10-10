@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -6,7 +6,6 @@ import Search from '../Search/Search';
 import { vibrate } from '../../../../utils/vibration';
 import { assignFilesQueryData } from '../../../../store/reducers/driveSlice';
 import { isMobilePlatform } from '../../../../utils/client';
-import { tg } from '../../../../App';
 import styles from './Header.module.scss';
 
 export default function Header() {
@@ -14,24 +13,6 @@ export default function Header() {
   const queryData = useSelector((state) => state.drive.filesQueryData);
   const { t } = useTranslation('system');
   const navigate = useNavigate();
-
-  useEffect(() => {
-    if ((!!queryData.search || queryData.category !== null) && isMobilePlatform) {
-      const goBack = () => { navigate(-1) };
-      const closeList = () => {
-        dispatch(assignFilesQueryData({
-          filesQueryData: { search: null, category: null }
-        }));
-      }
-      tg.BackButton.offClick(goBack);
-      tg.BackButton.onClick(closeList);
-
-      return () => {
-        tg.BackButton.offClick(closeList);
-        tg.BackButton.onClick(goBack);
-      }
-    }
-  }, [queryData]);
 
   const onBackClick = () => {
     vibrate();
