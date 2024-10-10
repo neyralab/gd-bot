@@ -2,7 +2,6 @@ import { API_PATH } from '../utils/api-urls';
 import axiosInstance from './axiosInstance';
 import * as Sentry from '@sentry/react';
 import { AxiosError } from 'axios';
-import { Effect } from './types';
 
 export const getUserEffect = async (token: string) => {
   return await axiosInstance

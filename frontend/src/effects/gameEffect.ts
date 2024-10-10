@@ -2,10 +2,12 @@ import { API_PATH } from '../utils/api-urls';
 import axiosInstance from './axiosInstance';
 import BigNumber from 'bignumber.js';
 import { Effect } from './types';
+import { DataWrappedResponse } from './types/defaults';
 
 export const getGamePlans = async () => {
   const url = `${API_PATH}/tg/game/plans`;
-  const { data } = await axiosInstance.get<{ data: GamePlan[] }>(url);
+  const { data } =
+    await axiosInstance.get<DataWrappedResponse<GamePlan[]>>(url);
   return data?.data?.map((el) => ({
     ...el,
     tierIdBN: new BigNumber(el.id),
@@ -16,7 +18,8 @@ export const getGamePlans = async () => {
 
 export const gameLevels = async () => {
   const url = `${API_PATH}/tap/levels`;
-  const { data } = await axiosInstance.get<{ data: GameLevel[] }>(url);
+  const { data } =
+    await axiosInstance.get<DataWrappedResponse<GameLevel[]>>(url);
   console.log({ gameLevels: data });
   return data.data;
 };
@@ -59,7 +62,8 @@ export const endGame = async ({ id, taps }: { id: number; taps: number }) => {
 
 export const getGameContractAddress = async () => {
   const url = `${API_PATH}/net/ton`;
-  const { data } = await axiosInstance.get<{ data: GameContract }>(url);
+  const { data } =
+    await axiosInstance.get<DataWrappedResponse<GameContract>>(url);
   console.log({ getGameContractAddress: data });
   return data.data?.click_counter; //.find((net) => net.name.toLowerCase().includes('telegram'))
 };

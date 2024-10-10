@@ -9,7 +9,7 @@ import {
   getPaidShareFilesEffect,
   updateFileFavoriteEffect
 } from '../../effects/filesEffects';
-import { uploadFileEffect } from '../../effects/uploadFileEffect_v2';
+import { uploadFileEffect } from '../../effects/uploadFileEffect';
 import { getResponseError } from '../../utils/string';
 import { getFileTypesCountEffect } from '../../effects/storageEffects';
 import { getAllPartners } from '../../effects/EarnEffect';

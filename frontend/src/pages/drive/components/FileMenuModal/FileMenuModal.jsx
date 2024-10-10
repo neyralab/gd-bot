@@ -40,7 +40,7 @@ export const FileMenuModal = () => {
   const isDev = useMemo(() => isDevEnv(), []);
   const isPPVActivated = useMemo(() => !!file?.share_file, [file?.share_file]);
   const fileHasPreview = useMemo(
-    () => (!!getPreviewFileType(file, '', true) && isDev),
+    () => !!getPreviewFileType(file, '', true) && isDev,
     [file, isDev]
   );
   const url = useMemo(() => {
@@ -151,9 +151,7 @@ export const FileMenuModal = () => {
           </>
         )}
         {isDeletedPage && (
-          <li
-            className={style.menu__item}
-            onClick={onRestoreClick}>
+          <li className={style.menu__item} onClick={onRestoreClick}>
             <RestoreIcon />
             <span className={style.menu__item__title}>Restore</span>
           </li>

@@ -1,15 +1,14 @@
 import axios from 'axios';
-// import { deleteFile } from '../../store/reducers/filesSlice';
 import { API_PATH } from '../../utils/api-urls';
 import axiosInstance from '../axiosInstance';
-import { decreaseUsedSpace } from '../../store/reducers/userSlice';
+import { FileDetails, FileToken } from '../types/files';
 
-export const getDeleteOTT = (body) => {
+export const getDeleteOTT = (body: string[]) => {
   const url = `${API_PATH}/delete/generate/token`;
-  return axiosInstance.post(url, body);
+  return axiosInstance.post<FileToken>(url, body);
 };
 
-export const deleteFileEffect = async (slug, dispatch) => {
+export const deleteFileEffect = async (slug: string) => {
   const url = `${API_PATH}/files/multiply/delete`;
 
   return await axiosInstance
@@ -17,13 +16,12 @@ export const deleteFileEffect = async (slug, dispatch) => {
       data: [slug]
     })
     .then(() => {
-      // dispatch(deleteFile(slug));
       return 'success';
     })
     .catch(() => 'error');
 };
 
-export const permanentlyDeleteFileEffect = async (file, dispatch) => {
+export const permanentlyDeleteFileEffect = async (file: FileDetails) => {
   const {
     data: {
       jwt_ott,
@@ -43,8 +41,6 @@ export const permanentlyDeleteFileEffect = async (file, dispatch) => {
     })
     .delete(url, { data: [file.slug] })
     .then(() => {
-      dispatch(deleteFile(file.slug));
-      dispatch(decreaseUsedSpace(file.size));
       return 'success';
     })
     .catch(() => 'error');

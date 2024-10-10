@@ -1,6 +1,7 @@
 import { API_PATH } from '../utils/api-urls';
 import axiosInstance from './axiosInstance';
 import { Effect } from './types';
+import { DataWrappedResponse } from './types/defaults';
 
 interface Spin {
   id: number;
@@ -15,19 +16,22 @@ interface StartSpinResponse {
 
 export const getLastPlayedFreeSpin = async () => {
   const url = `${API_PATH}/last/spin`;
-  const { data } = await axiosInstance.get<{ data: Spin | null }>(url);
+  const { data } =
+    await axiosInstance.get<DataWrappedResponse<Spin | null>>(url);
   return data.data;
 };
 
 export const getPendingSpins = async () => {
   const url = `${API_PATH}/pending/spin`;
-  const { data } = await axiosInstance.get<{ data: Spin[] | null }>(url);
+  const { data } =
+    await axiosInstance.get<DataWrappedResponse<Spin | null>>(url);
   return data.data;
 };
 
 export const getBonusSpins = async () => {
   const url = `${API_PATH}/bonus/spin`;
-  const { data } = await axiosInstance.get<{ data: Spin[] | null }>(url);
+  const { data } =
+    await axiosInstance.get<DataWrappedResponse<Spin | null>>(url);
   return data;
 };
 
