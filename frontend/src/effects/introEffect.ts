@@ -1,7 +1,7 @@
 import { API_PATH } from '../utils/api-urls';
 import axiosInstance from './axiosInstance';
 import { Effect } from './types';
-import { DefaultResponse } from './types/defaults';
+import { DataWrappedResponse, DefaultResponse } from './types/defaults';
 
 interface IntroInfo {
   data: boolean;
@@ -9,7 +9,8 @@ interface IntroInfo {
 
 export const checkIntro = async () => {
   const url = `${API_PATH}/intro`;
-  const { data } = await axiosInstance.get<{ data: IntroInfo[] }>(url);
+  const { data } =
+    await axiosInstance.get<DataWrappedResponse<IntroInfo[]>>(url);
   return data.data;
 };
 

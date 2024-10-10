@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import * as Sentry from '@sentry/react';
 import { ThunkAction } from '@reduxjs/toolkit';
 
@@ -28,8 +28,8 @@ interface UserTokens {
 }
 
 export const applyCouponEffect = async (token: string, coupon?: string) => {
-  axiosInstance
-    .post(
+  try {
+    await axiosInstance.post(
       API_COUPON,
       { coupon },
       {
@@ -37,45 +37,58 @@ export const applyCouponEffect = async (token: string, coupon?: string) => {
           'X-Token': `Bearer ${token}`
         }
       }
-    )
-    .catch((err) => console.error(err));
+    );
+  } catch (err) {
+    console.error(err);
+  }
 };
 
 export const authorizeUser = async (reqBody: UserData, ref?: string) => {
-  const res = await axios
-    .post<AuthorizeduserResponse>(API_AUTHORIZATION, reqBody)
-    .then(async (response) => {
-      await setToken(response.data.token);
-      if (ref) {
-        applyCouponEffect(response.data.token, ref);
-      }
-      return response.data;
-    })
-    .catch((error) => {
-      Sentry.captureMessage(
-        `Error ${error?.response?.status} in authorizeUser: ${error?.response?.data?.message}`
-      );
-      return error.message;
-    });
+  try {
+    const response = await axios.post<AuthorizeduserResponse>(
+      API_AUTHORIZATION,
+      reqBody
+    );
+    await setToken(response.data.token);
 
-  return res;
+    if (ref) {
+      applyCouponEffect(response.data.token, ref);
+    }
+
+    return response.data;
+  } catch (e: any) {
+    const error = e as AxiosError<{ message: string }>;
+    Sentry.captureMessage(
+      `Error ${error?.response?.status} in authorizeUser: ${error?.response?.data?.message}`
+    );
+
+    return error.message;
+  }
 };
 
 export const connectUserV8 =
   (): ThunkAction<Promise<string | null>, any, unknown, any> =>
   async (_, getState) => {
-    const initData = await getState().user.initData;
-    const body = {
-      provider: 'telegram',
-      initData
-    };
-    const res = await axios
-      .put<Effect<UserTokens>>(API_NEYRA_CONNECT, body, {
-        headers: {
-          'Content-Type': 'application/json'
+    try {
+      const initData = await getState().user.initData;
+      const body = {
+        provider: 'telegram',
+        initData
+      };
+
+      const response = await axios.put<Effect<UserTokens>>(
+        API_NEYRA_CONNECT,
+        body,
+        {
+          headers: {
+            'Content-Type': 'application/json'
+          }
         }
-      })
-      .then(({ data }) => data?.data?.access_token)
-      .catch(() => null);
-    return res;
+      );
+
+      const { data } = response;
+      return data?.data?.access_token || null;
+    } catch {
+      return null;
+    }
   };

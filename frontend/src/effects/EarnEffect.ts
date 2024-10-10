@@ -4,7 +4,7 @@ import axiosInstance from './axiosInstance';
 import { formatPartnerResponce } from '../pages/earn/Partners/utils';
 import { Task } from './types/tasks';
 import { Partner } from './types/partners';
-import { DefaultResponse } from './types/defaults';
+import { DataWrappedResponse, DefaultResponse } from './types/defaults';
 
 interface CheckTask2Response {
   success: string;
@@ -16,7 +16,7 @@ export const checkAllEarnTasks = async () => {
   const url = `${API_PATH}/user/earn`;
 
   try {
-    const { data } = await axiosInstance.get<{ data: Task[] }>(url);
+    const { data } = await axiosInstance.get<DataWrappedResponse<Task[]>>(url);
     return data.data;
   } catch (e) {
     return false;

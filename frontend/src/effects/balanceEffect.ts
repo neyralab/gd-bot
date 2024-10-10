@@ -1,43 +1,20 @@
 import axiosInstance from './axiosInstance';
+import { DataWrappedResponse } from './types/defaults';
+import { Game } from './types/games';
+import { EarnedPointsItem } from './types/points';
 import { Task } from './types/tasks';
 
-interface History {
-  data: {
-    game: {
-      created_at: number;
-      game_ends_at: number;
-      id: number;
-      is_paid: boolean | null;
-      points_earned: boolean | null;
-      purchase_id: number | null;
-      status: number;
-      taps_earned: number | null;
-      tier: {
-        charge_minutes: number;
-        game_time: number;
-        id: number;
-        is_active: boolean;
-        multiplier: number;
-        per_tap: number;
-        session_tap_limit: number;
-        stars: number | null;
-        storage_bonus: number;
-        ton_price: number;
-      };
-      txid: string | null;
-      uuid: number;
-    } | null;
-    id: number;
-    point: {
-      action: string;
-      amount: number;
-      id: number;
-      text: string;
-    } | null;
-    points: number;
-    taps_count: number | null;
-    text: string;
-  }[];
+interface GetBalanceResponseDetails {
+  game: Game | null;
+  id: number;
+  point: EarnedPointsItem | null;
+  points: number;
+  taps_count: number | null;
+  text: string;
+}
+
+interface GetBalanceResponse {
+  data: GetBalanceResponseDetails[];
   fileCnt: number;
   points: number;
   total: number;
@@ -45,14 +22,13 @@ interface History {
 
 export const getBalanceEffect = (params: { page?: number }) => {
   let url = `${import.meta.env.VITE_API_PATH}/gd/user/points`;
-  if (params && params.page) {
-    url += `?page=${params.page}`;
-  }
-  return axiosInstance.get<History>(url);
+  return axiosInstance.get<GetBalanceResponse>(url, {
+    params: { page: params.page }
+  });
 };
 
 export const getAllTasks = async () => {
   const url = `${import.meta.env.VITE_API_PATH}/gd/points`;
-  const { data } = await axiosInstance.get<{ data: Task[] }>(url);
+  const { data } = await axiosInstance.get<DataWrappedResponse<Task[]>>(url);
   return data?.data;
 };

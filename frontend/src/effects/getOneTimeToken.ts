@@ -8,17 +8,23 @@ interface FileData {
   isPublic: boolean;
 }
 
+interface TokenGateway {
+  id: number;
+  interim_chunk_size: number;
+  same_ip_upload: boolean;
+  type: string;
+  upload_chunk_size: number;
+  url: string;
+}
+
+interface UserToken {
+  token: string;
+}
+
 interface TokenResponse {
   jwt_ott: string[];
-  user_token: { token: string }[];
-  gateway: {
-    id: number;
-    interim_chunk_size: number;
-    same_ip_upload: boolean;
-    type: string;
-    upload_chunk_size: number;
-    url: string;
-  };
+  user_token: UserToken[];
+  gateway: TokenGateway;
 }
 
 export const getOneTimeToken = (

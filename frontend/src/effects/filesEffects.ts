@@ -7,9 +7,13 @@ import { FILE_ACTIONS } from '../config/contracts';
 import { sendFileViewStatistic } from './file/statisticEfect';
 import { getFileCids } from './file/getFileCid';
 import { File, FileDetails, FileToken, PPVFile } from './types/files';
-import { DefaultResponse } from './types/defaults';
+import { DataWrappedResponse, DefaultResponse } from './types/defaults';
 
-export const getDownloadOTT = (body: { slug: string }[]) => {
+type GetDownloadOTTParams = {
+  slug: string;
+}[];
+
+export const getDownloadOTT = (body: GetDownloadOTTParams) => {
   const url = `${API_PATH}/download/generate/token`;
   return axiosInstance.post<FileToken>(url, body, {
     headers: {
@@ -155,7 +159,8 @@ export const updateShareEffect = async (
 export const updateFileFavoriteEffect = async (slug: string) => {
   const url = `${API_PATH}/files/favorite/toggle/${slug}`;
   try {
-    const { data } = await axiosInstance.post<{ data: FileDetails }>(url);
+    const { data } =
+      await axiosInstance.post<DataWrappedResponse<FileDetails>>(url);
     const file = data?.data;
     return file;
   } catch (e) {
@@ -331,7 +336,7 @@ interface GetFileStarStatisticsResponse {
 
 export const getFileStarStatistic = async (slug: string) => {
   try {
-    const { data } = await axios.get<GetFileStarStatisticsResponse[][]>(
+    const { data } = await axiosInstance.get<GetFileStarStatisticsResponse[][]>(
       `${API_PATH}/share/file/stat/${slug}`
     );
 
