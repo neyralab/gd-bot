@@ -7,6 +7,7 @@ import {
   setMediaSliderCurrentFile
 } from '../reducers/driveSlice';
 
+import { useTelegramBackButton } from '../../utils/useTelegramBackButton';
 import { isMobilePlatform } from '../../utils/client';
 import { tg } from '../../App';
 
@@ -45,37 +46,6 @@ export const NavigationHistoryProvider: React.FC<NavigationHistoryProviderProps>
     });
   }, [location.pathname]);
 
-  useEffect(() => {
-    if (mobilePlatform) {
-      const goBack = () => {navigate(-1)};
-
-      if (location.pathname === '/start' && tg.BackButton.isVisible) {
-        tg.BackButton.hide();
-      } else if (location.pathname !== '/start' &&
-        !tg.BackButton.isVisible &&
-        location.pathname !== '/drive'
-      ) {
-        tg.BackButton.show();
-        tg.BackButton.onClick(goBack)
-      } else if (location.pathname == '/drive') {
-        !tg.BackButton.isVisible && tg.BackButton.show();
-        if (!!queryData.search || queryData.category !== null) {
-          tg.BackButton.onClick(() => {
-            dispatch(assignFilesQueryData({
-              filesQueryData: { search: null, category: null }
-            }))
-          })
-        } else if (mediaSliderIsOpen) {
-          tg.BackButton.onClick(() => {
-            dispatch(setMediaSliderOpen(false));
-            dispatch(setMediaSliderCurrentFile(null));
-          })
-        } else {
-          tg.BackButton.onClick(goBack)
-        }
-      }
-    }
-  }, [location.pathname, queryData, mediaSliderIsOpen])
 
   useEffect(() => {
     if (isInitialRoute && history.length > 1) {
@@ -100,6 +70,24 @@ export const NavigationHistoryProvider: React.FC<NavigationHistoryProviderProps>
       window.removeEventListener("popstate", handlePopState);
     };
   }, []);
+
+  const handleBackAction = () => {
+    if (mediaSliderIsOpen) {
+      dispatch(setMediaSliderOpen(false));
+      dispatch(setMediaSliderCurrentFile(null));
+    } else if (location.pathname === '/drive' &&
+    (!!queryData.search || queryData.category !== null)
+    ) {
+      dispatch(assignFilesQueryData({ filesQueryData: { search: null, category: null }}));
+    } else {
+      navigate(-1)
+    }
+  };
+
+  useTelegramBackButton(
+    handleBackAction,
+    location.pathname !== '/start' && location.pathname !== '/' 
+  );
 
   return (
     <NavigationHistoryContext.Provider value={{ history, isInitialRoute }}>
