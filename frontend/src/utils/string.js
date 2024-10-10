@@ -66,6 +66,14 @@ const isOkxWallet = (walletName = '') => {
   return walletName.toLocaleLowerCase().includes('okx');
 };
 
+const isValidEnvVariable = (value) => {
+  if (!value || value === 'undefined') {
+    return false;
+  }
+
+  return value;
+}
+
 export {
   getWallet,
   fomatNumber,
@@ -76,5 +84,6 @@ export {
   removeExtension,
   formatDuration,
   removeSlugHyphens,
-  addSlugHyphens
+  addSlugHyphens,
+  isValidEnvVariable
 };
