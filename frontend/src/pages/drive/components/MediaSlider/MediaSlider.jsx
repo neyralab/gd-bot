@@ -25,13 +25,8 @@ export default function MediaSlider() {
       tg.BackButton.onClick(() => {
         dispatch(setMediaSliderOpen(false));
         dispatch(setMediaSliderCurrentFile(null));
-      });
-    }
-
-    return () => {
-      if (isOpen) {
         tg.BackButton.onClick(() => { navigate(-1) });
-      }
+      });
     }
   }, [isOpen])
 
