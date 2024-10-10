@@ -44,7 +44,9 @@
     "violence": "Violencia o contenido peligroso",
     "other": "Otro",
     "enterReport": "Introduce tu informe..",
-    "report": "Informar"
+    "report": "Informar",
+    "swap": "Cambiar a Puntos GD",
+    "earned": "Ganado:"
   },
   "files": {
     "expandFile": "Ver archivo"

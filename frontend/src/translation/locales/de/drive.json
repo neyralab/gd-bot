@@ -44,7 +44,9 @@
     "violence": "Gewalt oder gefährliche Inhalte",
     "other": "Andere",
     "enterReport": "Geben Sie Ihren Bericht ein..",
-    "report": "Bericht"
+    "report": "Bericht",
+    "swap": "Zu GD-Punkten wechseln",
+    "earned": "Verdient:"
   },
   "files": {
     "expandFile": "Datei anzeigen"
