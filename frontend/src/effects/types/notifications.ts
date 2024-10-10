@@ -1,12 +1,7 @@
 export interface Notification {
+  id: number;
   text: string;
   viewed: boolean;
-  recipient: {
-    id: number;
-  };
-  sender: {
-    id: number;
-    readed: boolean;
-    unread: boolean;
-  };
+  status: number;
+  created_at: string;
 }
