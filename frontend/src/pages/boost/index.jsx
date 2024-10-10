@@ -29,6 +29,7 @@ import { ReactComponent as Ton } from '../../assets/TON.svg';
 import { vibrate } from '../../utils/vibration';
 import { INVOICE_TYPE } from '../../utils/createStarInvoice';
 import { sleep } from '../../utils/sleep';
+import { isMobilePlatform } from '../../utils/client';
 import { getToken } from '../../effects/set-token';
 import { runInitAnimation } from './animations';
 import {
@@ -211,7 +212,11 @@ export const BoostPage = ({ tariffs, setTariffs }) => {
   return (
     <div className={styles.container}>
       <div>
-        <Header label={t('boost.upgradeStorage')} className={styles.backBtn} />
+        <Header
+          hideBack={isMobilePlatform}
+          label={t('boost.upgradeStorage')}
+          className={styles.backBtn}
+        />
 
         {tariffs && (
           <>

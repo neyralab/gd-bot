@@ -1,8 +1,8 @@
 {
   "mode": {
     "playNow": "现在播放",
-    "freePlay": "下次免费玩",
-    "play": "游戏模式",
+    "freePlay": "充电时间",
+    "play": "挖矿模式 (KB)",
     "boost": "提升模式"
   },
   "navigate": {
@@ -117,7 +117,7 @@
     "wheelNextSpin": "下一轮开始于"
   },
   "advertisement": {
-    "watchAndPlay": "观看广告可获得 {{points}} 分并再次玩",
+    "watchAndPlay": "观看并赚取 {{points}}",
     "points": "积分"
   },
   "message": {

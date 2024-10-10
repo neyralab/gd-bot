@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useTonAddress, useTonConnectUI } from '@tonconnect/ui-react';
 import { saveUserWallet } from '../../../effects/userEffects';
 import { setUser } from '../../../store/reducers/userSlice';
+import { isOkxWallet } from '../../../utils/string';
 
 import style from './style.module.css';
 
@@ -60,9 +61,11 @@ export const WalletConnect = forwardRef(({ openDisconnectModal }, ref) => {
         !!user?.wallet?.filter((el) => el !== tonConnectUI.account?.address)
           .length
       ) {
+        const walletName = isOkxWallet(tonConnectUI?.walletInfo?.name) ? 'okx' : 'ton';
         const res = await saveUserWallet({
           account: tonConnectUI?.account,
-          channel: 'ton'
+          channel: 'ton',
+          [walletName]: true
         });
         const newWallets = res.map((el) => el.public_address);
         dispatch(setUser({ ...user, wallet: newWallets }));

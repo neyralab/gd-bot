@@ -1,8 +1,8 @@
 {
   "mode": {
     "playNow": "지금 플레이",
-    "freePlay": "다음 무료 플레이",
-    "play": "플레이 모드",
+    "freePlay": "충전 시간",
+    "play": "마이닝 모드 (KB)",
     "boost": "부스트 모드"
   },
   "navigate": {
@@ -116,7 +116,7 @@
     "uploadFile": "파일 업로드"
   },
   "advertisement": {
-    "watchAndPlay": "광고를 시청하면 {{points}}포인트를 받고 다시 플레이할 수 있습니다.",
+    "watchAndPlay": "보고 를 얻으세요 {{points}}",
     "points": "포인트"
   },
   "message": {

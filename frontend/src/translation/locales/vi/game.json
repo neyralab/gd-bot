@@ -1,8 +1,8 @@
 {
   "mode": {
     "playNow": "Chơi ngay",
-    "freePlay": "Chơi miễn phí tiếp theo",
-    "play": "Chế độ chơi",
+    "freePlay": "Thời gian sạc",
+    "play": "chế độ khai thác (KB)",
     "boost": "Chế độ tăng cường"
   },
   "navigate": {
@@ -116,7 +116,7 @@
     "uploadFile": "Tải lên tệp"
   },
   "advertisement": {
-    "watchAndPlay": "Xem quảng cáo để nhận {{points}} điểm và chơi lại",
+    "watchAndPlay": "Xem và kiếm {{points}}",
     "points": "Điểm"
   },
   "message": {

@@ -62,11 +62,16 @@ const addSlugHyphens = (uuidString = '') => {
   return `${formattedString.slice(0, 8)}-${formattedString.slice(8, 12)}-${formattedString.slice(12, 16)}-${formattedString.slice(16, 20)}-${formattedString.slice(20)}`;
 };
 
+const isOkxWallet = (walletName = '') => {
+  return walletName.toLocaleLowerCase().includes('okx');
+};
+
 export {
   getWallet,
   fomatNumber,
   getNumbers,
   capitalize,
+  isOkxWallet,
   getResponseError,
   removeExtension,
   formatDuration,

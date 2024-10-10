@@ -1,6 +1,5 @@
 import React, { createContext, useRef, useState, useEffect, ReactNode } from "react";
 import { useLocation } from "react-router-dom";
-
 interface NavigationHistoryContextType {
   history: string[];
   isInitialRoute: boolean;
@@ -22,7 +21,6 @@ export const NavigationHistoryProvider: React.FC<NavigationHistoryProviderProps>
     const currentPath = location.pathname;
 
     setHistory((prevHistory) => {
-      console.log(prevHistory, removedElement.current);
       if (!removedElement.current) {
         return [...prevHistory, currentPath];
       }
@@ -30,6 +28,7 @@ export const NavigationHistoryProvider: React.FC<NavigationHistoryProviderProps>
       return prevHistory;
     });
   }, [location.pathname]);
+
 
   useEffect(() => {
     if (isInitialRoute && history.length > 1) {

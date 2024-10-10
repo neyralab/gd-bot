@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { deleteFile } from '../../store/reducers/filesSlice';
+// import { deleteFile } from '../../store/reducers/filesSlice';
 import { API_PATH } from '../../utils/api-urls';
 import axiosInstance from '../axiosInstance';
 import { decreaseUsedSpace } from '../../store/reducers/userSlice';
@@ -17,7 +17,7 @@ export const deleteFileEffect = async (slug, dispatch) => {
       data: [slug]
     })
     .then(() => {
-      dispatch(deleteFile(slug));
+      // dispatch(deleteFile(slug));
       return 'success';
     })
     .catch(() => 'error');

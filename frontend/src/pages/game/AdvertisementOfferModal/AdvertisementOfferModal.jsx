@@ -3,10 +3,21 @@ import classNames from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import {
+  refreshFreeGame,
   setAdvertisementModal,
   setAdvertisementOfferModal
 } from '../../../store/reducers/gameSlice';
+import { useAdsgram } from '../../../utils/useAdsgram';
+import { ADSGRAM_BLOCK_ID } from '../../../utils/api-urls';
+
+import {
+  startWatchingAdvertisementVideo,
+  endWatchingAdvertisementVideo,
+} from '../../../effects/advertisementEffect';
+import { AdController } from '../../../App';
 import styles from './AdvertisementOfferModal.module.scss';
+
+const HIDE_ADD_MODAL_KEY = 'ad-modal-display'; 
 
 export default function AdvertisementOfferModal() {
   const dispatch = useDispatch();
@@ -28,6 +39,20 @@ export default function AdvertisementOfferModal() {
     });
     return translatedText.split(new RegExp(`(${points})`));
   }, [t, advertisementOfferModal]);
+  const isADModalHidden = useMemo(() => (
+    !!JSON.parse(localStorage.getItem(HIDE_ADD_MODAL_KEY))
+  ), [status, theme]);
+
+  useEffect(() => {
+    if (AdController) {
+      const bannerNotFound = () => { console.warn('onBannerNotFound') };
+      AdController?.addEventListener?.('onBannerNotFound', bannerNotFound);
+  
+      return () => {
+        AdController?.removeEventListener?.('onBannerNotFound', bannerNotFound);
+      }
+    }
+  }, [AdController])
 
   useEffect(() => {
     if (
@@ -53,11 +78,13 @@ export default function AdvertisementOfferModal() {
     ) {
       closeModal();
     }
-  }, [advertisementOfferModal, theme.id, nextTheme.isSwitching, status]);
+  }, [advertisementOfferModal, theme.id, nextTheme.isSwitching, status, isADModalHidden]);
 
-  const clickHandler = (e) => {
-    if (!isClickable) return;
+  const disabledAdModal = () => {
+    localStorage.setItem(HIDE_ADD_MODAL_KEY, true);
+  }
 
+  const showLocalAD = () => {
     dispatch(
       setAdvertisementModal({
         points: advertisementOfferModal.points,
@@ -66,7 +93,6 @@ export default function AdvertisementOfferModal() {
       })
     );
     closeModal();
-    dispatch(setAdvertisementOfferModal(null));
   };
 
   const closeModal = () => {
@@ -78,32 +104,68 @@ export default function AdvertisementOfferModal() {
     }, 600);
   };
 
+  const onReward = async () => {
+    try {
+      await endWatchingAdvertisementVideo(advertisementOfferModal.videoId);
+      dispatch(refreshFreeGame({ points: advertisementOfferModal.points }));
+      closeModal();
+      dispatch(setAdvertisementOfferModal(null));
+    } catch (error) {
+      console.warn(error);
+    }
+  }
+
+  const onError = (e) => {
+    console.warn('Adsgram error: ', e);
+    showLocalAD();
+  }
+
+  const showAd = useAdsgram({ onReward, onError });
+
+  const clickHandler = async (e) => {
+    if (!isClickable) return;
+
+    try {
+      !isADModalHidden && disabledAdModal();
+      if (ADSGRAM_BLOCK_ID) {
+        await showAd();
+        await startWatchingAdvertisementVideo(advertisementOfferModal.videoId);
+      } else {
+        showLocalAD();
+      }
+    } catch (error) {
+      console.warn(error);
+    }
+  }
+
   if (!isOpen) return null;
 
   return (
     <>
-      <div
-        onClick={clickHandler}
-        className={classNames(
-          styles.container,
-          isClosing && styles['is-closing']
-        )}>
-        <div className={styles.content}>
-          {parts.map((part, index) =>
-            part ===
-            `${advertisementOfferModal ? advertisementOfferModal.points : 0}` ? (
-              <span key={index} className={styles.highlight}>
-                {part}
-              </span>
-            ) : (
-              <React.Fragment key={index}>
-                {part}
-                {index < parts.length - 1 && <br />}
-              </React.Fragment>
-            )
-          )}
+      {!isADModalHidden && (
+        <div
+          onClick={clickHandler}
+          className={classNames(
+            styles.container,
+            isClosing && styles['is-closing']
+          )}>
+          <div className={styles.content}>
+            {parts.map((part, index) =>
+              part ===
+              `${advertisementOfferModal ? advertisementOfferModal.points : 0}` ? (
+                <span key={index} className={styles.highlight}>
+                  {part}
+                </span>
+              ) : (
+                <React.Fragment key={index}>
+                  {part}
+                  {index < parts.length - 1 && <br />}
+                </React.Fragment>
+              )
+            )}
+          </div>
         </div>
-      </div>
+      )}
 
       <div onClick={clickHandler} className={styles['model-trigger']}></div>
     </>

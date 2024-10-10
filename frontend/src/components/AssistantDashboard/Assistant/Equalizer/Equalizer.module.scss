@@ -1,0 +1,14 @@
+.equalizer {
+  position: relative;
+  width: 100%;
+  height: auto;
+}
+
+.canvas {
+  width: 40vw;
+  height: 20vw;
+  position: absolute;
+  left: 50%;
+  top: 20vw;
+  transform: translateX(-50%);
+}

@@ -30,6 +30,7 @@ export const uploadFileEffect = async ({
     let error = true;
     const multiUploadFile = async (index) => {
       const file = files[index];
+
       index++;
       try {
         const {
