@@ -23,7 +23,7 @@ const ConnectModal = ({ isOpen, onClose }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    tonConnectUI.modal.onStateChange(async (state) => {
+    const unsubscribe = tonConnectUI.modal.onStateChange(async (state) => {
       if (state.status === "opened") {
         onClose()
       }
@@ -40,13 +40,14 @@ const ConnectModal = ({ isOpen, onClose }) => {
         });
         const newWallets = res.map((el) => el.public_address);
         dispatch(setUser({ ...user, wallet: newWallets }));
+        unsubscribe()
       }
     });
   }, []);
 
   useEffect(() => {
     if (wallet) {
-      wallet.onStatusChange(async (res) => {
+      const unsubscribe = wallet.onStatusChange(async (res) => {
         if (res) {
           if (!user?.wallet?.some((el) => el === res.account?.address)) {
             const data = await saveUserWallet({
@@ -58,6 +59,7 @@ const ConnectModal = ({ isOpen, onClose }) => {
             dispatch(setUser({ ...user, wallet: newWallets }));
           }
           onClose();
+          unsubscribe()
         }
       })
     }
