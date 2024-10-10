@@ -44,7 +44,9 @@
     "violence": "폭력 또는 위험한 콘텐츠",
     "other": "기타",
     "enterReport": "신고 내용을 입력하십시오..",
-    "report": "신고"
+    "report": "신고",
+    "swap": "GD 포인트로 전환",
+    "earned": "획득:"
   },
   "files": {
     "expandFile": "파일 보기"

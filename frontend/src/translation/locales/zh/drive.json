@@ -44,7 +44,9 @@
     "violence": "暴力或危险内容",
     "other": "其他",
     "enterReport": "输入您的报告..",
-    "report": "举报"
+    "report": "举报",
+    "swap": "兑换为GD积分",
+    "earned": "已赚取:"
   },
   "files": {
     "expandFile": "查看文件"

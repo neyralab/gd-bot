@@ -44,7 +44,9 @@
     "violence": "Kekerasan atau konten berbahaya",
     "other": "Lainnya",
     "enterReport": "Masukkan laporan Anda..",
-    "report": "Laporkan"
+    "report": "Laporkan",
+    "swap": "Tukar ke Poin GD",
+    "earned": "Diperoleh:"
   },
   "files": {
     "expandFile": "Lihat berkas"

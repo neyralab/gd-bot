@@ -44,7 +44,9 @@
     "violence": "Bạo lực hoặc nội dung nguy hiểm",
     "other": "Khác",
     "enterReport": "Nhập báo cáo của bạn..",
-    "report": "Báo cáo"
+    "report": "Báo cáo",
+    "swap": "Đổi sang Điểm GD",
+    "earned": "Kiếm được:"
   },
   "files": {
     "expandFile": "Xem tập tin"
