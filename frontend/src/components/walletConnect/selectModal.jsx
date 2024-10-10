@@ -30,8 +30,7 @@ const ConnectModal = ({ isOpen, onClose }) => {
       if (
         state.status === 'closed' &&
         state.closeReason === 'wallet-selected' &&
-        !!user?.wallet?.filter((el) => el !== tonConnectUI.account?.address)
-          .length
+        !user?.wallet?.some((el) => el === tonConnectUI.account?.address)
       ) {
         const walletName = isOkxWallet(tonConnectUI.walletInfo.name) ? 'okx' : 'ton';
         const res = await saveUserWallet({
