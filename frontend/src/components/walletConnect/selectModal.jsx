@@ -48,7 +48,7 @@ const ConnectModal = ({ isOpen, onClose }) => {
     if (wallet) {
       wallet.onStatusChange(async (res) => {
         if (res) {
-          if (!!user?.wallet?.filter((el) => el !== res.account?.address).length) {
+          if (!user?.wallet?.some((el) => el === res.account?.address)) {
             const data = await saveUserWallet({
               account: res?.account,
               channel: 'ton',
