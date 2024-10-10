@@ -17,12 +17,13 @@ export default function Header() {
 
   useEffect(() => {
     if ((!!queryData.search || queryData.category !== null) && isMobilePlatform) {
-      tg.BackButton.onClick(() => {
+      tg.BackButton.offClick(() => {
         dispatch(assignFilesQueryData({
           filesQueryData: { search: null, category: null }
         }));
-        tg.BackButton.onClick(() => { navigate(-1) });
-      })
+        tg.BackButton.offClick(() => { navigate(-1) });
+        }
+      );
     }
   }, [queryData]);
 
