@@ -9,6 +9,7 @@ import {
 } from '../../../store/reducers/gameSlice';
 import { useAdsgram } from '../../../utils/useAdsgram';
 import { ADSGRAM_BLOCK_ID } from '../../../utils/api-urls';
+import { isValidEnvVariable } from '../../../utils/string';
 
 import {
   startWatchingAdvertisementVideo,
@@ -127,7 +128,7 @@ export default function AdvertisementOfferModal() {
 
     try {
       !isADModalHidden && disabledAdModal();
-      if (ADSGRAM_BLOCK_ID) {
+      if (isValidEnvVariable(ADSGRAM_BLOCK_ID)) {
         await showAd();
         await startWatchingAdvertisementVideo(advertisementOfferModal.videoId);
       } else {
