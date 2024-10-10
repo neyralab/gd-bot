@@ -1,5 +1,12 @@
 import React, { createContext, useRef, useState, useEffect, ReactNode } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from 'react-redux';
+import {
+  assignFilesQueryData,
+  setMediaSliderOpen,
+  setMediaSliderCurrentFile
+} from '../reducers/driveSlice';
+
 import { isMobilePlatform } from '../../utils/client';
 import { tg } from '../../App';
 
@@ -17,8 +24,12 @@ interface NavigationHistoryProviderProps {
 export const NavigationHistoryProvider: React.FC<NavigationHistoryProviderProps> = ({ children }) => {
   const [history, setHistory] = useState<string[]>([]);
   const [isInitialRoute, setIsInitialRoute] = useState(true);
+  const queryData = useSelector((state: any) => state.drive.filesQueryData);
+  const mediaSliderIsOpen = useSelector((state: any) => state.drive.mediaSlider.isOpen);
+
   const removedElement = useRef<boolean>(false);
   const mobilePlatform = isMobilePlatform;
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -36,14 +47,35 @@ export const NavigationHistoryProvider: React.FC<NavigationHistoryProviderProps>
 
   useEffect(() => {
     if (mobilePlatform) {
+      const goBack = () => {navigate(-1)};
+
       if (location.pathname === '/start' && tg.BackButton.isVisible) {
         tg.BackButton.hide();
-      } else if (location.pathname !== '/start' && !tg.BackButton.isVisible) {
+      } else if (location.pathname !== '/start' &&
+        !tg.BackButton.isVisible &&
+        location.pathname !== '/drive'
+      ) {
         tg.BackButton.show();
-        tg.BackButton.onClick(() => {navigate(-1)})
+        tg.BackButton.onClick(goBack)
+      } else if (location.pathname == '/drive') {
+        !tg.BackButton.isVisible && tg.BackButton.show();
+        if (!!queryData.search || queryData.category !== null) {
+          tg.BackButton.onClick(() => {
+            dispatch(assignFilesQueryData({
+              filesQueryData: { search: null, category: null }
+            }))
+          })
+        } else if (mediaSliderIsOpen) {
+          tg.BackButton.onClick(() => {
+            dispatch(setMediaSliderOpen(false));
+            dispatch(setMediaSliderCurrentFile(null));
+          })
+        } else {
+          tg.BackButton.onClick(goBack)
+        }
       }
     }
-  }, [location.pathname])
+  }, [location.pathname, queryData, mediaSliderIsOpen])
 
   useEffect(() => {
     if (isInitialRoute && history.length > 1) {

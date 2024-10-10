@@ -1,4 +1,4 @@
-import { useCallback, useState, useEffect } from 'react';
+import { useCallback, useState } from 'react';
 import Modal from 'react-modal';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
@@ -9,7 +9,6 @@ import {
 import SlidesController from './SlidesController/SlidesController';
 import { vibrate } from '../../../../utils/vibration';
 import { isMobilePlatform } from '../../../../utils/client';
-import { tg } from '../../../../App';
 import styles from './MediaSlider.module.scss';
 
 Modal.setAppElement('#root');
@@ -19,23 +18,6 @@ export default function MediaSlider() {
   const isOpen = useSelector((state) => state.drive.mediaSlider.isOpen);
   const [isExpanded, setIsExpanded] = useState(false);
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    if (isOpen && isMobilePlatform) {
-      const onCloseMedia = () => {
-        dispatch(setMediaSliderOpen(false));
-        dispatch(setMediaSliderCurrentFile(null));
-      };
-      const goBack = () => { navigate(-1) };
-      tg.BackButton.offClick(goBack);
-      tg.BackButton.onClick(onCloseMedia);
-
-      return () => {
-        tg.BackButton.offClick(onCloseMedia);
-        tg.BackButton.onClick(goBack);
-      }
-    }
-  }, [isOpen])
 
   const onClose = useCallback(() => {
     vibrate();
