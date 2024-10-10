@@ -17,13 +17,19 @@ export default function Header() {
 
   useEffect(() => {
     if ((!!queryData.search || queryData.category !== null) && isMobilePlatform) {
-      tg.BackButton.offClick(() => {
+      const goBack = () => { navigate(-1) };
+      const closeList = () => {
         dispatch(assignFilesQueryData({
           filesQueryData: { search: null, category: null }
         }));
-        tg.BackButton.offClick(() => { navigate(-1) });
-        }
-      );
+      }
+      tg.BackButton.offClick(goBack);
+      tg.BackButton.onClick(closeList);
+
+      return () => {
+        tg.BackButton.offClick(closeList);
+        tg.BackButton.onClick(goBack);
+      }
     }
   }, [queryData]);
 

@@ -22,11 +22,18 @@ export default function MediaSlider() {
 
   useEffect(() => {
     if (isOpen && isMobilePlatform) {
-      tg.BackButton.offClick(() => {
+      const onCloseMedia = () => {
         dispatch(setMediaSliderOpen(false));
         dispatch(setMediaSliderCurrentFile(null));
-        tg.BackButton.offClick(() => { navigate(-1) });
-      });
+      };
+      const goBack = () => { navigate(-1) };
+      tg.BackButton.offClick(goBack);
+      tg.BackButton.onClick(onCloseMedia);
+
+      return () => {
+        tg.BackButton.offClick(onCloseMedia);
+        tg.BackButton.onClick(goBack);
+      }
     }
   }, [isOpen])
 
