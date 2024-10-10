@@ -21,13 +21,8 @@ export default function Header() {
         dispatch(assignFilesQueryData({
           filesQueryData: { search: null, category: null }
         }));
-      })
-    }
-
-    return () => {
-      if ((!!queryData.search || queryData.category !== null) && isMobilePlatform) {
         tg.BackButton.onClick(() => { navigate(-1) });
-      }
+      })
     }
   }, [queryData]);
 
