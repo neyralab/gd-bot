@@ -17,4 +17,6 @@ const rootReducer = combineReducers({
   drive: driveSlice
 });
 
+export type RootState = ReturnType<typeof rootReducer>;
+
 export default rootReducer;

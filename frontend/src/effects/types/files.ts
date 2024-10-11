@@ -132,3 +132,22 @@ export interface FileDetails {
   converted_extension: string | null;
   root_cid: unknown | null;
 }
+
+export interface FileTypesCount {
+  audios: number;
+  deleted: number;
+  docs: number;
+  folders: number;
+  geo: number;
+  images: number;
+  links: number;
+  memos: number;
+  notes: number;
+  ppv: number;
+  recent: number;
+  shared: number;
+  starred: number;
+  tokenized: number;
+  total: number;
+  videos: number;
+}
