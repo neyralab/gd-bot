@@ -2,27 +2,18 @@ import { useEffect } from 'react';
 
 const useTelegramBackButton = (onBackAction, shouldShow = true) => {
   useEffect(() => {
-    // Show or hide the back button based on `shouldShow` flag
     if (shouldShow) {
       Telegram.WebApp.BackButton.show();
     } else {
       Telegram.WebApp.BackButton.hide();
     }
+    
+    Telegram.WebApp.BackButton.onClick(onBackAction);
 
-    // Handle the back button click event
-    const handleBackButtonClick = () => {
-      if (onBackAction) {
-        onBackAction();
-      }
-    };
-
-    Telegram.WebApp.BackButton.onClick(handleBackButtonClick);
-
-    // Cleanup on unmount
     return () => {
-      Telegram.WebApp.BackButton.offClick(handleBackButtonClick); // Remove the listener
+      Telegram.WebApp.BackButton.offClick(onBackAction);
     };
-  }, [onBackAction, shouldShow]); // Dependency array ensures it runs when dependencies change
+  }, [onBackAction, shouldShow]);
 };
 
 export { useTelegramBackButton };
