@@ -5,7 +5,8 @@ import {
   API_AUTHORIZATION,
   API_COUPON,
   API_NEYRA_CONNECT,
-  API_PATH
+  API_PATH,
+  BOT_NAME
 } from '../utils/api-urls';
 import { setToken } from './set-token';
 import axiosInstance from './axiosInstance';
@@ -37,7 +38,7 @@ export const authorizeUser = async (reqBody, ref) => {
     .catch((error) => {
       const status = error?.response?.status;
       if (status && (status === 404 || status === 412)) {
-        const link = `https://t.me/${process.env.VITE_BOT_NAME}?start=${ref}`;
+        const link = `https://t.me/${BOT_NAME}?start=${ref}`;
         window?.Telegram?.WebApp?.showAlert(
           `Please start the bot before using the web app`,
           () => {
