@@ -35,9 +35,9 @@ export default defineConfig({
     minify: 'terser', // Use 'terser' for better compression
     terserOptions: {
       compress: {
-        drop_console: true,
+        drop_console: false,
         drop_debugger: true,
-        pure_funcs: ['console.log'], // Remove console logs
+        pure_funcs: [], // Remove console logs
         passes: 3 // Increase the number of passes for compression
       },
       mangle: true, // Enable mangling for shorter variable names
