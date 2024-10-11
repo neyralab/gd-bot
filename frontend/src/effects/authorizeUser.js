@@ -9,7 +9,6 @@ import {
 } from '../utils/api-urls';
 import { setToken } from './set-token';
 import axiosInstance from './axiosInstance';
-import { tg } from '../tg.js';
 
 export const applyCouponEffect = async (token, coupon) => {
   axiosInstance
