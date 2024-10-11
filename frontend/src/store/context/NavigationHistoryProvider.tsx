@@ -9,7 +9,6 @@ import {
 
 import { useTelegramBackButton } from '../../utils/useTelegramBackButton';
 import { isMobilePlatform } from '../../utils/client';
-import { tg } from '../../App';
 
 interface NavigationHistoryContextType {
   history: string[];
@@ -72,21 +71,23 @@ export const NavigationHistoryProvider: React.FC<NavigationHistoryProviderProps>
   }, []);
 
   const handleBackAction = () => {
-    if (mediaSliderIsOpen) {
-      dispatch(setMediaSliderOpen(false));
-      dispatch(setMediaSliderCurrentFile(null));
-    } else if (location.pathname === '/drive' &&
-    (!!queryData.search || queryData.category !== null)
-    ) {
-      dispatch(assignFilesQueryData({ filesQueryData: { search: null, category: null }}));
-    } else {
-      navigate(-1)
+    if (mobilePlatform) {
+      if (mediaSliderIsOpen) {
+        dispatch(setMediaSliderOpen(false));
+        dispatch(setMediaSliderCurrentFile(null));
+      } else if (location.pathname === '/drive' &&
+      (!!queryData.search || queryData.category !== null)
+      ) {
+        dispatch(assignFilesQueryData({ filesQueryData: { search: null, category: null }}));
+      } else {
+        navigate(-1)
+      }
     }
   };
 
   useTelegramBackButton(
     handleBackAction,
-    location.pathname !== '/start' && location.pathname !== '/' 
+    location.pathname !== '/start' && location.pathname !== '/' && mobilePlatform
   );
 
   return (
