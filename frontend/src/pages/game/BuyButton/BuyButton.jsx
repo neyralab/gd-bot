@@ -231,10 +231,8 @@ export default function BuyButton() {
         });
         eventSource.onmessage = async (data) => {
           try {
-            console.log('eventSource: => ', data) ;
             dispatch(setStatus('waiting'));
             const pendingGame = await getActivePayedGame();
-            console.log('pendingGame: => ', pendingGame);
             dispatch(setGameId(pendingGame?.uuid || pendingGame.id));
             dispatch(setGameInfo(pendingGame));
             afterBought();
