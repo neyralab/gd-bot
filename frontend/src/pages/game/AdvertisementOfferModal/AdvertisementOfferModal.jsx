@@ -94,6 +94,7 @@ export default function AdvertisementOfferModal() {
       })
     );
     closeModal();
+    dispatch(setAdvertisementOfferModal(null));
   };
 
   const closeModal = () => {
@@ -129,8 +130,8 @@ export default function AdvertisementOfferModal() {
     try {
       !isADModalHidden && disabledAdModal();
       if (isValidEnvVariable(ADSGRAM_BLOCK_ID)) {
-        await showAd();
         await startWatchingAdvertisementVideo(advertisementOfferModal.videoId);
+        await showAd();
       } else {
         showLocalAD();
       }
