@@ -1,0 +1,120 @@
+.main-background {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  // background: radial-gradient(to center, #0e121e 20%, #0a0d15);
+  background: black;
+  overflow: hidden;
+}
+
+.light {
+  position: absolute;
+  width: 140vw;
+  height: 140vw;
+  top: 50%;
+  left: 50%;
+}
+
+.light1 {
+  background: radial-gradient(
+    circle closest-side,
+    rgba(67, 134, 198, 0.1),
+    rgba(67, 134, 198, 0)
+  );
+  width: 500vw;
+  height: 200vh;
+  background-size: contain;
+  background-position: center;
+  animation: MoveLight1 6s linear infinite;
+  z-index: 1;
+}
+
+@keyframes MoveLight1 {
+  0% {
+    transform: translate(-200%, -50%);
+  }
+  40% {
+    transform: translate(200%, -50%);
+  }
+  100% {
+    transform: translate(200%, -50%);
+  }
+}
+
+.light2 {
+  background: radial-gradient(
+    circle closest-side,
+    rgba(58, 33, 87, 0.3),
+    rgba(68, 33, 87, 0)
+  );
+  background-size: contain;
+  background-position: center;
+  animation: MoveLight2 12s linear infinite;
+}
+
+@keyframes MoveLight2 {
+  0% {
+    transform: translate(0, -50vh);
+    opacity: 0.2;
+  }
+  50% {
+    transform: translate(-50vw, -100vh);
+    opacity: 0.7;
+  }
+  100% {
+    transform: translate(0, -50vh);
+    opacity: 0.2;
+  }
+}
+
+.light3 {
+  background: radial-gradient(
+    circle closest-side,
+    rgba(33, 67, 87, 0.2),
+    rgba(33, 67, 87, 0)
+  );
+  background-size: contain;
+  background-position: center;
+  animation: MoveLight3 15s ease infinite;
+}
+
+@keyframes MoveLight3 {
+  0% {
+    transform: translate(-100vw, 30vh);
+    opacity: 0.7;
+  }
+  50% {
+    transform: translate(-100vw, -30vh);
+    opacity: 0.4;
+  }
+  100% {
+    transform: translate(-100vw, 30vh);
+    opacity: 0.7;
+  }
+}
+
+.light4 {
+  background: radial-gradient(
+    circle closest-side,
+    rgba(84, 69, 153, 0.3),
+    rgba(33, 67, 87, 0)
+  );
+  background-size: contain;
+  background-position: center;
+  animation: MoveLight4 8s ease infinite;
+  z-index: 1;
+}
+
+@keyframes MoveLight4 {
+  0%,
+  100% {
+    transform: translate(-50%, 30%);
+    opacity: 0;
+  }
+  50% {
+    transform: translate(-50%, 0%);
+    opacity: 0.9;
+  }
+}

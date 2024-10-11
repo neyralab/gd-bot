@@ -1,164 +1,130 @@
-import React, { useCallback, useMemo, useRef, useState } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import ReactPlayer from 'react-player';
 
-import { ReactComponent as ForwardIcon } from '../../../../../assets/forward_10.svg';
-import { ReactComponent as RewindIcon } from '../../../../../assets/replay_10.svg';
-import { ReactComponent as PauseIcon } from '../../../../../assets/pause.svg';
-import { ReactComponent as PlayIcon } from '../../../../../assets/play-player.svg';
 import { removeExtension, formatDuration } from '../../../../../utils/string';
+import VideoPlayer from '../../../../../components/file-previews/components/VideoPlayer/VideoPlayer';
+import Controls from '../../../../../components/file-previews/components/VideoPlayer/Controls/Controls';
+import ProgressBar from '../../../../../components/file-previews/components/VideoPlayer/ProgressBar/ProgressBar';
 
 import styles from './styles.module.css';
 
 const PAUSE_THRESHOLD_SECONDS = 10;
 
 export const VideoPreview = ({ file, fileContent, allowPreview }) => {
-  const { t } = useTranslation('drive');
-  const playerRef = useRef(null);
-  const progressRef = useRef(null);
-  
-  const [playing, setPlaying] = useState(true);
-  const [showControls, setShowControls] = useState(false);
-  const [dimension, setDimensions] = useState({ width: 0, height: 0 });
-  const [seeking, setSeeking] = useState(false);
+  const [showControls, setShowControls] = useState(true);
+  const [playing, setPlaying] = useState(false);
   const [played, setPlayed] = useState(0);
+  const { t } = useTranslation('drive');
+  const videoPlayerRef = useRef();
 
-  const handleFastForward = () => {
-    const player = playerRef.current;
-    if (player && allowPreview) {
-      player.seekTo(player.getCurrentTime() + 10);
+  const toggleControlsVisibility = () => {
+    if (playing) {
+      setPlaying(false);
     }
+    setShowControls(!showControls);
   };
 
-  const handleRewind = () => {
-    const player = playerRef.current;
-    if (player && allowPreview) {
-      player.seekTo(player.getCurrentTime() - 10);
+  const timeToPercent = (time) => {
+    const timeDuration = videoPlayerRef.current?.playerRef?.getDuration();
+
+    return time/timeDuration || 0;
+  }
+
+  const handleProgress = (state) => {
+    if (!allowPreview && state.playedSeconds > PAUSE_THRESHOLD_SECONDS) {
+      setPlaying(false);
+      setShowControls(true);
+    } else {
+      setPlayed(state.played);
     }
   };
 
   const handlePlayPause = () => {
-    if (allowPreview) {
+    const player = videoPlayerRef.current?.playerRef;
+    const currentTime = player?.getCurrentTime();
+    if (allowPreview || (!allowPreview && (currentTime <= PAUSE_THRESHOLD_SECONDS))) {
       setPlaying(!playing);
       if (!playing) {
         setShowControls(false);
       }
     } else {
-      const time = playerRef.current.getCurrentTime();
-      if (time >= PAUSE_THRESHOLD_SECONDS) {
-        playerRef.current.seekTo(0);
-        setPlaying(!playing);
-        setShowControls(false);
-      } else {
-        setPlaying(!playing);
-        if (!playing) {
-          setShowControls(false);
-        }
-      }
+      setPlaying(true);
+      player.seekTo(0);
+      setPlayed(0);
     }
   };
 
-  const handleProgress = (state) => {
-    if (!seeking) {
-      setPlayed(state.played);
-      const currentTime = state.playedSeconds;
-      
-      if (currentTime >= PAUSE_THRESHOLD_SECONDS && !allowPreview) {
-        setShowControls(true);
-        setPlaying(false);
-      }
+  const handleFastForward = (e) => {
+    const player = videoPlayerRef.current?.playerRef;
+    if (player && ((!allowPreview &&
+      (player.getCurrentTime() + 10 <= PAUSE_THRESHOLD_SECONDS)) || allowPreview)
+    ) {
+      player.seekTo(player.getCurrentTime() + 10);
     }
   };
 
-  const toggleControlsVisibility = () => {
-    if (playing) {
-      setPlaying(false);
-      setShowControls(true);
+  const handleRewind = (e) => {
+    const player = videoPlayerRef.current?.playerRef;
+    if (player) {
+      player.seekTo(played - timeToPercent(10));
     }
   };
-
-  const handleSeek = useCallback((e) => {
-    const bounds = progressRef.current.getBoundingClientRect();
-    const seekPosition = (e.clientX - bounds.left) / bounds.width;
-    playerRef.current.seekTo(seekPosition);
-  }, []);
-
-  const handleSeekMouseDown = () => setSeeking(true);
 
   const handleSeekChange = (e) => {
+    const player = videoPlayerRef.current?.playerRef;
     const value = parseFloat(e.target.value);
-    setPlayed(value);
-    playerRef.current.seekTo(value, 'fraction');
-  };
-
-  const handleSeekMouseUp = () => setSeeking(false);
-
-  const handleReady = () => {
-    const player = playerRef.current.getInternalPlayer();
-    if (player) {
-      setDimensions({
-        width: player.videoWidth,
-        height: player.videoHeight
-      });
+    const currentTime = player?.getCurrentTime();
+    if (currentTime <= PAUSE_THRESHOLD_SECONDS || allowPreview) {
+      setPlayed(value);
+      player?.seekTo(value, 'fraction');
     }
   };
 
-  const videoSize = useMemo(() => {
-    if (dimension.width < dimension.height) {
-      return { width: 'auto', height: '100%' };
-    } else {
-      return { width: '100%', height: 'auto' };
-    }
-  }, [dimension.width, dimension.height]);
+  const handleEnded = () => {
+    setPlaying(false);
+    setShowControls(true);
+  };
 
   return (
     <>
-      <div className={styles.container} onClick={toggleControlsVisibility}>
-        <ReactPlayer
-          ref={playerRef}
-          url={fileContent}
-          playing={playing}
-          controls={false}
-          className={styles.player}
-          width={videoSize.width}
-          height={videoSize.height}
-          onProgress={handleProgress}
-          onReady={handleReady}
+      <div
+        className={styles['player-container']}
+        onClick={toggleControlsVisibility}
+      >
+        <VideoPlayer
+          file={file}
+          fileContent={fileContent}
+          fileContentType='url'
+          ref={videoPlayerRef}
+          hideControlUtils
+          playerProps={{
+            playing: playing,
+            onProgress: handleProgress,
+            onEnded: handleEnded
+          }}
         />
         {showControls && (
-          <div className={styles.controls}>
-            <button onClick={handleRewind}>
-              <RewindIcon />
-            </button>
-            <button onClick={handlePlayPause} className={styles.pauseBtn}>
-              {playing ? <PauseIcon /> : <PlayIcon />}
-            </button>
-            <button onClick={handleFastForward}>
-              <ForwardIcon />
-            </button>
-          </div>
-        )}
-        <div ref={progressRef} className={styles.progressWrapper} onClick={handleSeek}>
-          <input
-            className={styles.bar}
-            type="range"
-            min={0}
-            max={1}
-            step="any"
-            value={played}
-            disabled={!allowPreview}
-            onMouseDown={handleSeekMouseDown}
-            onChange={handleSeekChange}
-            onMouseUp={handleSeekMouseUp}
+          <Controls
+            playing={playing}
+            handlePlayPause={handlePlayPause}
+            handleFastForward={handleFastForward}
+            handleRewind={handleRewind}
           />
-        </div>
+        )}
+        <ProgressBar
+          played={played}
+          handleSeekMouseDown={() => {}}
+          handleSeekChange={handleSeekChange}
+          handleSeekMouseUp={() => {}}
+        />
       </div>
+
       <div className={styles.info}>
         <h3 className={styles.title}>{removeExtension(file.name)}</h3>
         {!allowPreview && (
           <p className={styles.progress}>
             <span>{t('ppv.freeWatch')}</span>
-            {`0:10 | ${formatDuration(playerRef.current?.getDuration())}`}
+            {`0:10 | ${formatDuration(videoPlayerRef.current?.playerRef?.getDuration?.())}`}
           </p>
         )}
       </div>
