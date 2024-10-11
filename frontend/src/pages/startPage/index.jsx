@@ -1,5 +1,5 @@
 import { useRef, useMemo, useState, useEffect, useCallback } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import CN from 'classnames';
@@ -287,6 +287,8 @@ export const StartPage = ({ tariffs }) => {
             Support.
           </span>
         </p>
+
+        <Link className={style['hidden-button']} to="/assistant" ></Link>
       </footer>
       {disconnectWalletModal && (
         <DisconnectWalletModal

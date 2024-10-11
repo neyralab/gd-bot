@@ -31,6 +31,7 @@
 .footer {
   margin-top: 10px;
   width: 100%;
+  position: relative;
 }
 
 .footer-text {
@@ -136,4 +137,14 @@
     opacity: 1;
     transform: scale(1);
   }
+}
+
+
+.hidden-button {
+  position: fixed;
+  width: 80px;
+  height: 50px;
+  position: absolute;
+  bottom:-20px;
+  right: -16px;
 }
