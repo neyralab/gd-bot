@@ -60,13 +60,10 @@ export const connectUserV8 = () => async (_, getState) => {
   return res;
 };
 
-export  const getMercureJwt = async () => {
+export const getMercureJwt = async () => {
   try {
-    const response = await fetch(`${API_PATH}/demo/mercure-jwt`);
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    return await response.json();
+    const response = await axios.get(`${API_PATH}/demo/mercure-jwt`);
+    return response.data;
   } catch (error) {
     console.error('An error occurred while fetching the JWT:', error);
     throw error;
