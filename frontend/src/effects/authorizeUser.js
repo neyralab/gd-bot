@@ -4,7 +4,8 @@ import * as Sentry from '@sentry/react';
 import {
   API_AUTHORIZATION,
   API_COUPON,
-  API_NEYRA_CONNECT
+  API_NEYRA_CONNECT,
+  API_PATH,
 } from '../utils/api-urls';
 import { setToken } from './set-token';
 import axiosInstance from './axiosInstance';
@@ -58,3 +59,13 @@ export const connectUserV8 = () => async (_, getState) => {
     .catch(() => null);
   return res;
 };
+
+export const getMercureJwt = async () => {
+  try {
+    const response = await axios.get(`${API_PATH}/demo/mercure-jwt`);
+    return response.data;
+  } catch (error) {
+    console.error('An error occurred while fetching the JWT:', error);
+    throw error;
+  }
+}
