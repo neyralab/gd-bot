@@ -13,7 +13,7 @@ export function useAdsgram({ onReward, onError }) {
     }
 
     try {
-      await AdController.show();
+      await AdController?.show?.();
       onReward();
     } catch (error) {
       onError?.(error);

@@ -66,6 +66,32 @@ const isOkxWallet = (walletName = '') => {
   return walletName.toLocaleLowerCase().includes('okx');
 };
 
+const isValidEnvVariable = (value) => {
+  if (!value || value === 'undefined') {
+    return false;
+  }
+
+  return value;
+}
+
+const getOriginWithoutSubdomain = (url) => {
+  try {
+    const urlObj = new URL(url);
+    const hostParts = urlObj.hostname.split('.');
+
+    if (hostParts.length > 2) {
+      hostParts.shift();
+    }
+
+    const cleanHost = hostParts.join('.');
+    
+    return `${urlObj.protocol}//${cleanHost}`;
+  } catch (error) {
+    console.error('Invalid URL:', error);
+    throw error;
+  }
+}
+
 export {
   getWallet,
   fomatNumber,
@@ -76,5 +102,7 @@ export {
   removeExtension,
   formatDuration,
   removeSlugHyphens,
-  addSlugHyphens
+  addSlugHyphens,
+  isValidEnvVariable,
+  getOriginWithoutSubdomain
 };

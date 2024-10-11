@@ -24,11 +24,9 @@ interface NavigationHistoryProviderProps {
 export const NavigationHistoryProvider: React.FC<NavigationHistoryProviderProps> = ({ children }) => {
   const [history, setHistory] = useState<string[]>([]);
   const [isInitialRoute, setIsInitialRoute] = useState(true);
-  const queryData = useSelector((state: any) => state.drive.filesQueryData);
   const mediaSliderIsOpen = useSelector((state: any) => state.drive.mediaSlider.isOpen);
-
+  const queryData = useSelector((state: any) => state.drive.filesQueryData);
   const removedElement = useRef<boolean>(false);
-  const mobilePlatform = isMobilePlatform;
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
@@ -71,7 +69,7 @@ export const NavigationHistoryProvider: React.FC<NavigationHistoryProviderProps>
   }, []);
 
   const handleBackAction = () => {
-    if (mobilePlatform) {
+    if (isMobilePlatform) {
       if (mediaSliderIsOpen) {
         dispatch(setMediaSliderOpen(false));
         dispatch(setMediaSliderCurrentFile(null));
@@ -87,7 +85,7 @@ export const NavigationHistoryProvider: React.FC<NavigationHistoryProviderProps>
 
   useTelegramBackButton(
     handleBackAction,
-    location.pathname !== '/start' && location.pathname !== '/' && mobilePlatform
+    location.pathname !== '/start' && location.pathname !== '/' && isMobilePlatform
   );
 
   return (

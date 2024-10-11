@@ -2,7 +2,7 @@
   "mode": {
     "playNow": "Reproducir ahora",
     "freePlay": "Tiempo de carga",
-    "play": "modo de minería (KBs)",
+    "play": "modo de minería (KB)",
     "boost": "Modo de impulso"
   },
   "navigate": {

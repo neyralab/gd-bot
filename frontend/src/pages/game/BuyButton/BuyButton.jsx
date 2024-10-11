@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Address, toNano } from '@ton/core';
 import { TonClient } from '@ton/ton';
 import { getHttpEndpoint } from '@orbs-network/ton-access';
+import { EventSourcePolyfill } from 'event-source-polyfill';
 import ReactGA from 'react-ga4';
 import {
   useTonConnectModal,
@@ -12,8 +13,11 @@ import {
   useTonWallet
 } from '@tonconnect/ui-react';
 
+import { API_NEYRA } from '../../../utils/api-urls';
+import { getOriginWithoutSubdomain } from '../../../utils/string';
 import { GDTapBooster } from '../../../effects/contracts/tact_GDTapBooster';
 import { getHexByBoc } from '../../../effects/contracts/helper';
+import { getMercureJwt } from '../../../effects/authorizeUser';
 import { selectPaymenttByKey } from '../../../store/reducers/paymentSlice';
 import { SlidingModal } from '../../../components/slidingModal';
 import PaymentMenu from '../../../components/paymentMenu/Menu';
@@ -211,12 +215,30 @@ export default function BuyButton() {
   const invoiceCallback = async (result) => {
     try {
       if (result === 'paid') {
-        await sleep(1000);
-        dispatch(setStatus('waiting'));
-        const pendingGame = await getActivePayedGame();
-        dispatch(setGameId(pendingGame?.uuid || pendingGame.id));
-        dispatch(setGameInfo(pendingGame));
-        afterBought();
+        const mercureJwt = await getMercureJwt();
+        const urlOrign = getOriginWithoutSubdomain(API_NEYRA);
+        const url = new URL(`${urlOrign}/.well-known/mercure`);
+        url.searchParams.append(
+          'topic',
+          `gamev2-${user.id}`
+        );
+        const eventSource = new EventSourcePolyfill(url, {
+          withCredentials: true,
+          onmessage: () => {},
+          headers: {
+            Authorization: `Bearer ${mercureJwt}`,
+          },
+        });
+        eventSource.onmessage = (data) => {
+          console.log('eventSource: => ', data)
+        }
+
+        // await sleep(1000);
+        // dispatch(setStatus('waiting'));
+        // const pendingGame = await getActivePayedGame();
+        // dispatch(setGameId(pendingGame?.uuid || pendingGame.id));
+        // dispatch(setGameInfo(pendingGame));
+        // afterBought();
       } else {
         console.warn(`error: The payment was not completed. ${result}`)
       }
