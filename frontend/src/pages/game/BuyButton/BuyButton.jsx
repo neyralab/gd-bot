@@ -13,7 +13,8 @@ import {
   useTonWallet
 } from '@tonconnect/ui-react';
 
-import { API_PATH_ROOT } from '../../../utils/api-urls';
+import { API_NEYRA } from '../../../utils/api-urls';
+import { getOriginWithoutSubdomain } from '../../../utils/string';
 import { GDTapBooster } from '../../../effects/contracts/tact_GDTapBooster';
 import { getHexByBoc } from '../../../effects/contracts/helper';
 import { getMercureJwt } from '../../../effects/authorizeUser';
@@ -215,7 +216,8 @@ export default function BuyButton() {
     try {
       if (result === 'paid') {
         const mercureJwt = await getMercureJwt();
-        const url = new URL(`${API_PATH_ROOT}/.well-known/mercure`);
+        const urlOrign = getOriginWithoutSubdomain(API_NEYRA);
+        const url = new URL(`${urlOrign}/.well-known/mercure`);
         url.searchParams.append(
           'topic',
           `gamev2-${user.id}`
