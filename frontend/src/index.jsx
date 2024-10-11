@@ -5,11 +5,12 @@ import { Provider } from 'react-redux';
 import { I18nextProvider } from 'react-i18next';
 import { NavigationHistoryProvider } from './store/context/NavigationHistoryProvider';
 import i18n from './translation/i18n';
-import store from './store/store';
+import StoreProvider from './store/StoreProvider';
 import { ErrorBoundary } from 'react-error-boundary';
 import { FallbackComponent } from './pages/FallbackComponent';
 
 import App from './App';
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 const onError = (e) => {
@@ -22,7 +23,7 @@ const onError = (e) => {
 };
 
 root.render(
-  <Provider store={store}>
+  <StoreProvider>
     <ErrorBoundary FallbackComponent={FallbackComponent} onError={onError}>
       <Suspense fallback={FallbackComponent} onError={onError}>
         <BrowserRouter>
@@ -34,5 +35,5 @@ root.render(
         </BrowserRouter>
       </Suspense>
     </ErrorBoundary>
-  </Provider>
+  </StoreProvider>
 );
