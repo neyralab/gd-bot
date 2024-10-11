@@ -5,10 +5,11 @@ import {
   API_AUTHORIZATION,
   API_COUPON,
   API_NEYRA_CONNECT,
-  API_PATH,
+  API_PATH
 } from '../utils/api-urls';
 import { setToken } from './set-token';
 import axiosInstance from './axiosInstance';
+import { tg } from '../tg.js';
 
 export const applyCouponEffect = async (token, coupon) => {
   axiosInstance
@@ -35,6 +36,11 @@ export const authorizeUser = async (reqBody, ref) => {
       return response.data;
     })
     .catch((error) => {
+      const status = error?.response?.data.status;
+      console.log({ status });
+      if (status && status === 404) {
+        tg.showAlert('Please start the bot before using the web app');
+      }
       Sentry.captureMessage(
         `Error ${error?.response?.status} in authorizeUser: ${error?.response?.data?.message}`
       );
@@ -68,4 +74,4 @@ export const getMercureJwt = async () => {
     console.error('An error occurred while fetching the JWT:', error);
     throw error;
   }
-}
+};
