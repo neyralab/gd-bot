@@ -28,6 +28,7 @@
     "bignumber.js": "^9.1.2",
     "buffer": "^6.0.3",
     "classnames": "^2.5.1",
+    "event-source-polyfill": "^1.0.31",
     "framer-motion": "^11.11.0",
     "gdgateway-client": "github:neyralab/gdgateway-client#1.4.15",
     "gsap": "^3.12.5",
