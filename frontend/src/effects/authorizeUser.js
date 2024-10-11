@@ -39,7 +39,9 @@ export const authorizeUser = async (reqBody, ref) => {
       const status = error?.response?.data.status;
       console.log({ status });
       if (status && status === 404) {
-        tg.showAlert('Please start the bot before using the web app');
+        window?.Telegram?.WebApp?.showAlert(
+          'Please start the bot before using the web app'
+        );
       }
       Sentry.captureMessage(
         `Error ${error?.response?.status} in authorizeUser: ${error?.response?.data?.message}`
