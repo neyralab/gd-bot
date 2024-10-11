@@ -494,7 +494,6 @@ export const getUserStorageInfo = createAsyncThunk(
     const token = await getToken();
     if (!token) return;
     const user = await getUserEffect(token);
-    console.log(user)
 
     const { space_total, space_used, points } = user;
     const percent = Math.round(

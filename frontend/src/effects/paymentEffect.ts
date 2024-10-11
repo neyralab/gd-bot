@@ -11,6 +11,7 @@ import { connectUserV8 } from './authorizeUser';
 
 import { Effect } from './types';
 import { InvoiceType } from '../utils/createStarInvoice'; 
+import { PaymentType } from './types/payments';
 
 let stripePromise: Promise<any | null>;
 
@@ -149,14 +150,6 @@ export const sendStarInvoice = async (dispatch: Function, invoice: Invoice): Pro
     return '';
   }
 };
-
-interface PaymentType {
-  Description: string;
-  Env: string;
-  Key: string;
-  Title: string;
-  Type: number;
-}
 
 interface PaymentTypesResponse {
   data: PaymentType[];

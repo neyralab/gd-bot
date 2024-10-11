@@ -7,7 +7,11 @@ export default function TemporaryControls() {
     useAssistantAudio();
 
   const loadClickHandler = () => {
-    loadAudio('/assets/dummy/male-voice-2.mp3');
+    if (!audio) {
+      loadAudio('/assets/dummy/male-voice-2.mp3');
+    } else {
+      playAudio();
+    }
   };
 
   useEffect(() => {
