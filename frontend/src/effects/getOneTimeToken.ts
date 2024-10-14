@@ -3,7 +3,7 @@ import { API_PATH } from '../utils/api-urls';
 import { AxiosResponse } from 'axios';
 
 interface FileData {
-  filesize?: string;
+  filesize?: string | number;
   filename?: string;
   isPublic: boolean;
 }

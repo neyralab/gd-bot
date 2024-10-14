@@ -11,20 +11,22 @@ import { uploadFileData } from '../config/upload-file-data';
 import { imagesWithoutPreview } from '../config/image-file-extensions';
 import { videoWithoutThumbnail } from '../config/video-file-extensions';
 import { getResponseError } from '../utils/string';
-import { AxiosError } from 'axios';
+import { DefaultError } from './types/defaults';
+
+interface UploadFileParams {
+  files: FileList;
+  dispatch: Function;
+  afterFileUploadCallback: (e: any) => void;
+  onUploadProgress: (e: any) => void;
+  onUploadError: (e: any) => void;
+}
 
 export const uploadFileEffect = async ({
   files,
   dispatch,
   afterFileUploadCallback,
   onUploadError
-}: {
-  files: FileList;
-  dispatch: Function;
-  afterFileUploadCallback: (e: any) => void;
-  onUploadProgress: (e: any) => void;
-  onUploadError: (e: any) => void;
-}) => {
+}: UploadFileParams) => {
   if (files.length) {
     let error = true;
     const multiUploadFile = async (index: number) => {
@@ -36,7 +38,7 @@ export const uploadFileEffect = async ({
           data: { user_token, gateway, jwt_ott }
         } = await getOneTimeToken([
           {
-            filesize: file.size + '',
+            filesize: file.size,
             filename: file.name,
             isPublic: true
           }
@@ -121,9 +123,7 @@ export const uploadFileEffect = async ({
         if (index < files.length) await multiUploadFile(index);
       } catch (e) {
         console.log('error', e);
-        const error = e as AxiosError<{
-          errors?: string;
-        }>;
+        const error = e as DefaultError<string>;
         if (error?.response?.data?.errors === 'Not enough free space') {
           toast.error(
             'The file you are trying to upload exceeds the available free space on your drive. Please free up some storage and try again.',
