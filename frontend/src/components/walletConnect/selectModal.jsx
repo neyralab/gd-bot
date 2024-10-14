@@ -25,7 +25,7 @@ const ConnectModal = ({ isOpen, onClose, successCallback }) => {
   useEffect(() => {
     const unsubscribe = tonConnectUI.modal.onStateChange(async (state) => {
       if (state.status === "opened") {
-        onClose()
+        handleOnClose();
       }
       if (
         state.status === 'closed' &&
@@ -44,10 +44,14 @@ const ConnectModal = ({ isOpen, onClose, successCallback }) => {
         unsubscribe();
       }
     });
-  }, []);
+
+    return () => {
+      unsubscribe();
+    }
+  }, [isOpen]);
 
   useEffect(() => {
-    if (wallet) {
+    if (wallet && isOpen) {
       const unsubscribe = wallet.onStatusChange(async (res) => {
         if (res) {
           if (!!user?.wallet?.filter((el) => el !== res.account?.address).length) {
@@ -59,17 +63,15 @@ const ConnectModal = ({ isOpen, onClose, successCallback }) => {
             const newWallets = data.map((el) => el.public_address);
             dispatch(setUser({ ...user, wallet: newWallets }));
           }
-          onClose();
+          handleOnClose();
           unsubscribe();
           successCallback?.();
         }
       })
 
-      return () => {
-        unsubscribe();
-      }
+      return () => { unsubscribe() }
     }
-  }, [wallet]);
+  }, [wallet, isOpen]);
 
   const tonConnect = useCallback(async () => {
     await tonConnectUI?.openModal();
@@ -124,7 +126,7 @@ const ConnectModal = ({ isOpen, onClose, successCallback }) => {
         <h1 className={styles.title}>
           { startOKXConnect ? 'OKX Wallet' : 'Choose a Wallet Connection Method' }
           </h1>
-        <button className={styles.closeButton} onClick={onClose} >
+        <button className={styles.closeButton} onClick={handleOnClose} >
           <CloseIcon />
         </button>
         {!startOKXConnect && <ul className={styles.list}>
