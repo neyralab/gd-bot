@@ -74,6 +74,24 @@ const isValidEnvVariable = (value) => {
   return value;
 }
 
+const getOriginWithoutSubdomain = (url) => {
+  try {
+    const urlObj = new URL(url);
+    const hostParts = urlObj.hostname.split('.');
+
+    if (hostParts.length > 2) {
+      hostParts.shift();
+    }
+
+    const cleanHost = hostParts.join('.');
+    
+    return `${urlObj.protocol}//${cleanHost}`;
+  } catch (error) {
+    console.error('Invalid URL:', error);
+    throw error;
+  }
+}
+
 export {
   getWallet,
   fomatNumber,
@@ -85,5 +103,6 @@ export {
   formatDuration,
   removeSlugHyphens,
   addSlugHyphens,
-  isValidEnvVariable
+  isValidEnvVariable,
+  getOriginWithoutSubdomain
 };
