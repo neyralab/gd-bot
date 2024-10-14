@@ -60,11 +60,8 @@ const ConnectModal = ({ isOpen, onClose, successCallback }) => {
             dispatch(setUser({ ...user, wallet: newWallets }));
           }
           onClose();
-<<<<<<< HEAD
           unsubscribe();
           successCallback?.();
-=======
->>>>>>> origin/master
         }
       })
 
