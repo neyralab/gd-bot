@@ -9,7 +9,6 @@ import {
   API_PATH,
   BOT_NAME
 } from '../utils/api-urls';
-import { setToken } from './set-token';
 import axiosInstance from './axiosInstance';
 import { Effect } from './types';
 import { tg } from '../App';
@@ -30,17 +29,9 @@ interface UserTokens {
   refresh_token_ttl: number;
 }
 
-export const applyCouponEffect = async (token: string, coupon?: string) => {
+export const applyCouponEffect = async (coupon?: string) => {
   try {
-    await axiosInstance.post(
-      API_COUPON,
-      { coupon },
-      {
-        headers: {
-          'X-Token': `Bearer ${token}`
-        }
-      }
-    );
+    await axiosInstance.post(API_COUPON, { coupon });
   } catch (err) {
     console.error(err);
   }
@@ -52,10 +43,9 @@ export const authorizeUser = async (reqBody: UserData, ref?: string) => {
       API_AUTHORIZATION,
       reqBody
     );
-    await setToken(response.data.token);
 
     if (ref) {
-      applyCouponEffect(response.data.token, ref);
+      applyCouponEffect(ref);
     }
 
     return response.data;
@@ -64,13 +54,10 @@ export const authorizeUser = async (reqBody: UserData, ref?: string) => {
     const status = error?.response?.status;
     if (status && (status === 404 || status === 412)) {
       const link = `https://t.me/${BOT_NAME}?start=${ref}`;
-      tg.showAlert(
-        `Please start the bot before using the web app`,
-        () => {
-          tg.openTelegramLink(link);
-          tg.close();
-        }
-      );
+      tg.showAlert(`Please start the bot before using the web app`, () => {
+        tg.openTelegramLink(link);
+        tg.close();
+      });
     }
     Sentry.captureMessage(
       `Error ${error?.response?.status} in authorizeUser: ${error?.response?.data?.message}`
