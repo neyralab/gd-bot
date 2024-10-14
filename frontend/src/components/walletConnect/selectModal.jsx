@@ -30,8 +30,8 @@ const ConnectModal = ({ isOpen, onClose, successCallback }) => {
       if (
         state.status === 'closed' &&
         state.closeReason === 'wallet-selected' &&
-        !user?.wallet?.some((el) => el === tonConnectUI.account?.address)
-      ) {
+        !!user?.wallet?.filter((el) => el !== tonConnectUI.account?.address).length
+        ) {
         const walletName = isOkxWallet(tonConnectUI.walletInfo.name) ? 'okx' : 'ton';
         const res = await saveUserWallet({
           account: tonConnectUI?.account,
@@ -50,7 +50,7 @@ const ConnectModal = ({ isOpen, onClose, successCallback }) => {
     if (wallet) {
       const unsubscribe = wallet.onStatusChange(async (res) => {
         if (res) {
-          if (!user?.wallet?.some((el) => el === res.account?.address)) {
+          if (!!user?.wallet?.filter((el) => el !== res.account?.address).length) {
             const data = await saveUserWallet({
               account: res?.account,
               channel: 'ton',
@@ -60,10 +60,17 @@ const ConnectModal = ({ isOpen, onClose, successCallback }) => {
             dispatch(setUser({ ...user, wallet: newWallets }));
           }
           onClose();
+<<<<<<< HEAD
           unsubscribe();
           successCallback?.();
+=======
+>>>>>>> origin/master
         }
       })
+
+      return () => {
+        unsubscribe();
+      }
     }
   }, [wallet]);
 

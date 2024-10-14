@@ -2,22 +2,26 @@ import { API_PATH } from '../utils/api-urls';
 import axiosInstance from './axiosInstance';
 import * as Sentry from '@sentry/react';
 import { AxiosError } from 'axios';
-import { Effect } from './types';
 
 export const getUserEffect = async (token: string) => {
-  return await axiosInstance
-    .get(`${API_PATH}/tg/me`, {
-      headers: {
-        'X-Token': `Bearer ${token}`
+  try {
+    const response = await axiosInstance.get<{ data: GetMe }>(
+      `${API_PATH}/tg/me`,
+      {
+        headers: {
+          'X-Token': `Bearer ${token}`
+        }
       }
-    })
-    .then((response: { data: GetMe }) => response.data)
-    .catch((error: AxiosError<{ message: string }>) => {
-      Sentry.captureMessage(
-        `Error ${error?.response?.status} in getUserEffect: ${error?.response?.data?.message}`
-      );
-      throw error;
-    });
+    );
+    return response.data;
+  } catch (e) {
+    const error = e as AxiosError<{ message: string }>;
+    Sentry.captureMessage(
+      `Error ${error?.response?.status} in getUserEffect: ${error?.response?.data?.message}`
+    );
+    console.error(error);
+    throw error;
+  }
 };
 
 type GetMe = {

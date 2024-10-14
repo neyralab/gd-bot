@@ -5,30 +5,31 @@ import {
   getThumbnailVideo
 } from 'gdgateway-client';
 import { toast } from 'react-toastify';
-import mime from 'mime/lite';
 
 import { getOneTimeToken } from './getOneTimeToken';
 import { uploadFileData } from '../config/upload-file-data';
 import { imagesWithoutPreview } from '../config/image-file-extensions';
 import { videoWithoutThumbnail } from '../config/video-file-extensions';
 import { getResponseError } from '../utils/string';
+import { DefaultError } from './types/defaults';
+
+interface UploadFileParams {
+  files: FileList;
+  dispatch: Function;
+  afterFileUploadCallback: (e: any) => void;
+  onUploadProgress: (e: any) => void;
+  onUploadError: (e: any) => void;
+}
 
 export const uploadFileEffect = async ({
   files,
   dispatch,
   afterFileUploadCallback,
-  onUploadProgress,
   onUploadError
-}) => {
-  let progresses = {};
-
-  for (let i = 0; i < files.length; i++) {
-    progresses[files[i]?.folderData?.uploadId] = 0;
-  }
-
+}: UploadFileParams) => {
   if (files.length) {
     let error = true;
-    const multiUploadFile = async (index) => {
+    const multiUploadFile = async (index: number) => {
       const file = files[index];
 
       index++;
@@ -47,21 +48,26 @@ export const uploadFileEffect = async ({
         let result;
         const { handlers, callbacks } = uploadFileData;
 
-        const callback = ({ type, params }) => {
+        const callback = ({
+          type,
+          params
+        }: {
+          type: string;
+          params: Record<string, string>;
+        }) => {
           if (handlers.includes(type)) {
             callbacks[type]({ ...params, dispatch });
           } else {
             console.error(`Handler "${type}" isn't provided`);
           }
         };
-        const fileType = file.type || mime.getType(file.name);
 
         const localFileBuffer = new LocalFileBuffer(
           file.size,
           file.name,
-          fileType,
-          file.folderId,
-          file.uploadId,
+          file.type,
+          '',
+          '',
           async () => file.arrayBuffer(),
           () => file.stream()
         );
@@ -72,9 +78,6 @@ export const uploadFileEffect = async ({
           gateway,
           callback,
           handlers,
-          progress: progresses[file?.folderData?.uploadId],
-          totalSize: file?.folderSize,
-          startedAt: file?.startedAt,
           jwtOneTimeToken
         });
 
@@ -86,7 +89,7 @@ export const uploadFileEffect = async ({
             uploadedFile?.mime.startsWith('image') &&
             !imagesWithoutPreview.includes(`.${uploadedFile?.extension}`)
           ) {
-            const thumbnail = await getThumbnailImage({
+            await getThumbnailImage({
               file,
               quality: 3,
               oneTimeToken,
@@ -98,7 +101,7 @@ export const uploadFileEffect = async ({
             uploadedFile?.mime.startsWith('video') &&
             !videoWithoutThumbnail.includes(uploadedFile?.extension)
           ) {
-            const thumbnail = await getThumbnailVideo({
+            await getThumbnailVideo({
               file,
               quality: 3,
               oneTimeToken,
@@ -118,12 +121,10 @@ export const uploadFileEffect = async ({
         }
 
         if (index < files.length) await multiUploadFile(index);
-        if (file?.folderData) {
-          progresses[file?.folderData?.uploadId] += file.size;
-        }
       } catch (e) {
         console.log('error', e);
-        if (e?.response?.data?.errors === 'Not enough free space') {
+        const error = e as DefaultError<string>;
+        if (error?.response?.data?.errors === 'Not enough free space') {
           toast.error(
             'The file you are trying to upload exceeds the available free space on your drive. Please free up some storage and try again.',
             {
