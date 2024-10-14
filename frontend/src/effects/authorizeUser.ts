@@ -1,4 +1,4 @@
-import axios, { AxiosError } from 'axios';
+import { AxiosError } from 'axios';
 import * as Sentry from '@sentry/react';
 import { ThunkAction } from '@reduxjs/toolkit';
 
@@ -47,7 +47,7 @@ export const applyCouponEffect = async (token: string, coupon?: string) => {
 
 export const authorizeUser = async (reqBody: UserData, ref?: string) => {
   try {
-    const response = await axios.post<AuthorizeduserResponse>(
+    const response = await axiosInstance.post<AuthorizeduserResponse>(
       API_AUTHORIZATION,
       reqBody
     );
@@ -88,7 +88,7 @@ export const connectUserV8 =
         initData
       };
 
-      const response = await axios.put<Effect<UserTokens>>(
+      const response = await axiosInstance.put<Effect<UserTokens>>(
         API_NEYRA_CONNECT,
         body,
         {
@@ -107,7 +107,7 @@ export const connectUserV8 =
 
 export const getMercureJwt = async () => {
   try {
-    const response = await axios.get(`${API_PATH}/demo/mercure-jwt`);
+    const response = await axiosInstance.get(`${API_PATH}/demo/mercure-jwt`);
     return response.data;
   } catch (error) {
     console.error('An error occurred while fetching the JWT:', error);

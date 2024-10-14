@@ -10,11 +10,12 @@ interface LeadboardResponse {
 }
 
 export const getLeaderboardEffect = async () => {
-  const url = `${API_PATH}/users/rankings`;
-  const res = await axiosInstance
-    .get<LeadboardResponse>(url)
-    .then(({ data }) => data)
-    .catch(() => null);
-
-  return res;
+  try {
+    const url = `${API_PATH}/users/rankings`;
+    const response = await axiosInstance.get<LeadboardResponse>(url);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
 };
