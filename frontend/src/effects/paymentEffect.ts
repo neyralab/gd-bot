@@ -6,7 +6,6 @@ import { API_PATH, API_TON_WALLET, API_NEYRA } from '../utils/api-urls';
 import { NumberEncoder } from '../utils/numberEncoder';
 import { createInvoice } from '../utils/createStarInvoice';
 import { handlePayment } from '../store/reducers/paymentSlice';
-import axios from 'axios';
 import { connectUserV8 } from './authorizeUser';
 
 import { Effect } from './types';
@@ -17,7 +16,9 @@ let stripePromise: Promise<any | null>;
 
 export const getStripe = (): Promise<any | null> => {
   if (!stripePromise) {
-    stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY as string);
+    stripePromise = loadStripe(
+      import.meta.env.VITE_STRIPE_PUBLIC_KEY as string
+    );
   }
   return stripePromise;
 };
@@ -27,25 +28,39 @@ interface StripeSubscriptionResponse {
   priceId: string;
 }
 
-export const createStripeSorageSub = async (priceId: string, quantity: number = 1): Promise<StripeSubscriptionResponse | undefined> => {
+export const createStripeSorageSub = async (
+  priceId: string,
+  quantity: number = 1
+): Promise<StripeSubscriptionResponse | undefined> => {
   try {
-    const { data } = await axiosInstance.post<{ subscriptionId: string }>(`${API_PATH}/workspace/storage/create/subscription`, [{ price: priceId, quantity }]);
+    const { data } = await axiosInstance.post<{ subscriptionId: string }>(
+      `${API_PATH}/workspace/storage/create/subscription`,
+      [{ price: priceId, quantity }]
+    );
     return { ...data, priceId };
   } catch (error) {
     console.error(error);
   }
 };
 
-export const checkPayment = async (payId: string): Promise<boolean | undefined> => {
+export const checkPayment = async (
+  payId: string
+): Promise<boolean | undefined> => {
   try {
-    const { data } = await axiosInstance.post<{success: boolean }>(`${API_PATH}/workspace/storage/check/payment`, { payment: payId });
+    const { data } = await axiosInstance.post<{ success: boolean }>(
+      `${API_PATH}/workspace/storage/check/payment`,
+      { payment: payId }
+    );
     return data.success;
   } catch (error) {
     console.error(error);
   }
 };
 
-export const updateWsStorage = async (price: number, subscription: string): Promise<any> => {
+export const updateWsStorage = async (
+  price: number,
+  subscription: string
+): Promise<any> => {
   try {
     const url = `${API_PATH}/workspace/update/storage`;
     const body = { price, stripe_sub_id: subscription };
@@ -60,17 +75,24 @@ interface TonWalletResponse {
   memo: string;
 }
 
-export const getTonWallet = async (dispatch: any, comment: string): Promise<TonWalletResponse | null> => {
+export const getTonWallet = async (
+  dispatch: any,
+  comment: string
+): Promise<TonWalletResponse | null> => {
   const token = await dispatch(connectUserV8());
   const body = { symbol: 'ton', comment };
 
   try {
-    const { data } = await axios.create({
-      headers: {
-        Authorization: `Bearer ${token}`
+    const { data } = await axiosInstance.post<Effect<TonWalletResponse>>(
+      API_TON_WALLET,
+      body,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
       }
-    }).post<Effect<TonWalletResponse>>(API_TON_WALLET, body);
-    
+    );
+
     return data?.data;
   } catch {
     return null;
@@ -85,7 +107,13 @@ interface MakeInvoiceProps {
   theme: { multiplier: number; stars: number };
 }
 
-export const makeInvoice = async ({ input, dispatch, callback, type, theme }: MakeInvoiceProps): Promise<void> => {
+export const makeInvoice = async ({
+  input,
+  dispatch,
+  callback,
+  type,
+  theme
+}: MakeInvoiceProps): Promise<void> => {
   try {
     const schema = [1, 1, 8, 8, 8];
     const encoder = new NumberEncoder();
@@ -128,21 +156,28 @@ interface InvoiceResponse {
   invoice_link: string;
 }
 
-export const sendStarInvoice = async (dispatch: Function, invoice: Invoice): Promise<string> => {
+export const sendStarInvoice = async (
+  dispatch: Function,
+  invoice: Invoice
+): Promise<string> => {
   try {
     const token = await dispatch(connectUserV8());
     const chat_id = tg?.initDataUnsafe?.user?.user;
 
-    const { data } = await axios.create({
-      headers: {
-        Authorization: `Bearer ${token}`
+    const { data } = await axiosInstance.post<InvoiceResponse>(
+      `${API_NEYRA}/gateway/billing/create_invoice_link`,
+      {
+        invoice_payload: {
+          chat_id,
+          ...invoice
+        }
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
       }
-    }).post<InvoiceResponse>(`${API_NEYRA}/gateway/billing/create_invoice_link`, {
-      invoice_payload: {
-        chat_id,
-        ...invoice
-      }
-    });
+    );
 
     return data?.invoice_link || ''; // Return the invoice link if available
   } catch (error) {
@@ -157,14 +192,19 @@ interface PaymentTypesResponse {
   status: string;
 }
 
-export const setPaymentTypesEffect = async (dispatch: Function): Promise<void> => {
+export const setPaymentTypesEffect = async (
+  dispatch: Function
+): Promise<void> => {
   try {
     const token = await dispatch(connectUserV8());
-    const { data } = await axios.create({
-      headers: {
-        Authorization: `Bearer ${token}`
+    const { data } = await axiosInstance.get<PaymentTypesResponse>(
+      `${API_NEYRA}/gateway/billing/retrieve_types`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
       }
-    }).get<PaymentTypesResponse>(`${API_NEYRA}/gateway/billing/retrieve_types`);
+    );
     dispatch(handlePayment(data?.data || []));
   } catch (error) {
     console.log(error);

@@ -16,14 +16,14 @@ interface Invoice {
   }[];
 }
 
-const INVOICE_TYPE = {
-  boost: 'boost',
-  game: 'game',
-  ceatePPV: 'ceatePPV',
-  viewAccessPPV: 'viewAccessPPV',
-  downloadAccessPPV: 'downloadAccessPPV',
-  spin: 'spin'
-} as const;
+enum INVOICE_TYPE {
+  boost = 'boost',
+  game = 'game',
+  ceatePPV = 'ceatePPV',
+  viewAccessPPV = 'viewAccessPPV',
+  downloadAccessPPV = 'downloadAccessPPV',
+  spin = 'spin'
+}
 
 const defPayload = '';
 
@@ -34,7 +34,10 @@ interface CreateInvoiceParams {
   additionalData: AdditionalData;
 }
 
-const createInvoice = ({ type, additionalData }: CreateInvoiceParams): Invoice => {
+const createInvoice = ({
+  type,
+  additionalData
+}: CreateInvoiceParams): Invoice => {
   switch (type) {
     case INVOICE_TYPE.boost:
       return {
@@ -46,7 +49,7 @@ const createInvoice = ({ type, additionalData }: CreateInvoiceParams): Invoice =
             label: `Multiplier Х${additionalData.mult}`,
             amount: isDevEnv() ? 1 : additionalData.price
           }
-        ],
+        ]
       };
 
     case INVOICE_TYPE.game:
@@ -59,7 +62,7 @@ const createInvoice = ({ type, additionalData }: CreateInvoiceParams): Invoice =
             label: `Boost Game Х${additionalData.mult}`,
             amount: isDevEnv() ? 1 : additionalData.price
           }
-        ],
+        ]
       };
 
     case INVOICE_TYPE.ceatePPV:
@@ -72,33 +75,35 @@ const createInvoice = ({ type, additionalData }: CreateInvoiceParams): Invoice =
             label: 'Ghost Drive PPV Registration.',
             amount: additionalData.price
           }
-        ],
+        ]
       };
 
     case INVOICE_TYPE.viewAccessPPV:
       return {
         title: 'Ghost Drive PPV Access',
-        description: 'Ghostdrive Pay per View Access payload type for stars payment link creation',
+        description:
+          'Ghostdrive Pay per View Access payload type for stars payment link creation',
         payload: additionalData.payload || defPayload,
         prices: [
           {
             label: `Ghost Drive Pay per View Access`,
             amount: additionalData.price
           }
-        ],
+        ]
       };
 
     case INVOICE_TYPE.downloadAccessPPV:
       return {
         title: 'Ghost Drive PPV Download',
-        description: 'Ghostdrive Pay per View Download payload type for stars payment link creation',
+        description:
+          'Ghostdrive Pay per View Download payload type for stars payment link creation',
         payload: additionalData.payload || defPayload,
         prices: [
           {
             label: `Ghost Drive PPV Download`,
             amount: additionalData.price
           }
-        ],
+        ]
       };
 
     case INVOICE_TYPE.spin:
@@ -111,7 +116,7 @@ const createInvoice = ({ type, additionalData }: CreateInvoiceParams): Invoice =
             label: `Ghost Drive Spin Game`,
             amount: additionalData.price
           }
-        ],
+        ]
       };
 
     default:
@@ -124,8 +129,9 @@ const createInvoice = ({ type, additionalData }: CreateInvoiceParams): Invoice =
             label: `Boost Game Х${additionalData.mult}`,
             amount: isDevEnv() ? 1 : additionalData.price
           }
-        ],
-      };  }
+        ]
+      };
+  }
 };
 
 export { createInvoice, INVOICE_TYPE };

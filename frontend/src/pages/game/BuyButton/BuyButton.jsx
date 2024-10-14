@@ -229,16 +229,18 @@ export default function BuyButton() {
             Authorization: `Bearer ${mercureJwt}`,
           },
         });
-        eventSource.onmessage = (data) => {
-          console.log('eventSource: => ', data)
+        eventSource.onmessage = async (data) => {
+          try {
+            dispatch(setStatus('waiting'));
+            const pendingGame = await getActivePayedGame();
+            dispatch(setGameId(pendingGame?.uuid || pendingGame.id));
+            dispatch(setGameInfo(pendingGame));
+            afterBought();
+            eventSource?._close?.();
+          } catch (error) {
+            console.warn(`error: Cannot find the game. ${result}`)
+          }
         }
-
-        // await sleep(1000);
-        // dispatch(setStatus('waiting'));
-        // const pendingGame = await getActivePayedGame();
-        // dispatch(setGameId(pendingGame?.uuid || pendingGame.id));
-        // dispatch(setGameInfo(pendingGame));
-        // afterBought();
       } else {
         console.warn(`error: The payment was not completed. ${result}`)
       }

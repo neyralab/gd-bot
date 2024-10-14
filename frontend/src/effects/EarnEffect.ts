@@ -1,16 +1,17 @@
-import { AxiosError } from 'axios';
 import { API_PATH } from '../utils/api-urls';
 import axiosInstance from './axiosInstance';
 import { formatPartnerResponce } from '../pages/earn/Partners/utils';
 import { Task } from './types/tasks';
 import { Partner } from './types/partners';
-import { DataWrappedResponse, DefaultResponse } from './types/defaults';
+import {
+  DataWrappedResponse,
+  DefaultError,
+  DefaultResponse
+} from './types/defaults';
 
 interface CheckTask2Response {
   success: string;
 }
-
-type ErrorResponse = AxiosError<{ errors: any }>;
 
 export const checkAllEarnTasks = async () => {
   const url = `${API_PATH}/user/earn`;
@@ -28,11 +29,7 @@ export const checkTgJoin = async () => {
 
   try {
     const { data } = await axiosInstance.get<DefaultResponse>(url);
-    if (data?.message === 'success') {
-      return 'success';
-    } else {
-      throw Error();
-    }
+    return data?.message;
   } catch (e) {
     return false;
   }
@@ -43,13 +40,9 @@ export const checkTgChatJoin = async () => {
 
   try {
     const { data } = await axiosInstance.get<DefaultResponse>(url);
-    if (data?.message === 'success') {
-      return 'success';
-    } else {
-      throw Error();
-    }
+    return data?.message;
   } catch (e) {
-    const error = e as ErrorResponse;
+    const error = e as DefaultError<string>;
     return error?.response?.data?.errors;
   }
 };
@@ -59,13 +52,9 @@ export const checkYoutubeJoin = async () => {
 
   try {
     const { data } = await axiosInstance.get<DefaultResponse>(url);
-    if (data?.message === 'success') {
-      return 'success';
-    } else {
-      throw Error();
-    }
+    return data?.message;
   } catch (e) {
-    const error = e as ErrorResponse;
+    const error = e as DefaultError<string>;
     return error?.response?.data?.errors;
   }
 };
@@ -75,13 +64,9 @@ export const checkXJoin = async () => {
 
   try {
     const { data } = await axiosInstance.get<DefaultResponse>(url);
-    if (data?.message === 'success') {
-      return 'success';
-    } else {
-      throw Error();
-    }
+    return data?.message;
   } catch (e) {
-    const error = e as ErrorResponse;
+    const error = e as DefaultError<string>;
     return error?.response?.data?.errors;
   }
 };
@@ -91,13 +76,9 @@ export const checkInstagramJoin = async () => {
 
   try {
     const { data } = await axiosInstance.get<DefaultResponse>(url);
-    if (data?.message === 'success') {
-      return 'success';
-    } else {
-      throw Error();
-    }
+    return data?.message;
   } catch (e) {
-    const error = e as ErrorResponse;
+    const error = e as DefaultError<string>;
     return error?.response?.data?.errors;
   }
 };
@@ -107,13 +88,9 @@ export const checkGithubJoin = async () => {
 
   try {
     const { data } = await axiosInstance.get<DefaultResponse>(url);
-    if (data?.message === 'success') {
-      return 'success';
-    } else {
-      throw Error();
-    }
+    return data?.message;
   } catch (e) {
-    const error = e as ErrorResponse;
+    const error = e as DefaultError<string>;
     return error?.response?.data?.errors;
   }
 };
@@ -125,7 +102,7 @@ export const getAllPartners = async () => {
     const { data } = await axiosInstance.get<Partner[]>(url);
     return formatPartnerResponce(data);
   } catch (e) {
-    const error = e as ErrorResponse;
+    const error = e as DefaultError<string>;
     return error?.response?.data?.errors;
   }
 };
@@ -137,7 +114,7 @@ export const checkTaskIsDone = async (id: number) => {
     const { data } = await axiosInstance.post<CheckTask2Response>(url);
     return data;
   } catch (e) {
-    const error = e as ErrorResponse;
+    const error = e as DefaultError<string>;
     return error?.response?.data?.errors;
   }
 };
@@ -147,13 +124,9 @@ export const checkWatchVideo = async () => {
 
   try {
     const { data } = await axiosInstance.get<DefaultResponse>(url);
-    if (data?.message === 'success') {
-      return 'success';
-    } else {
-      throw Error();
-    }
+    return data?.message;
   } catch (e) {
-    const error = e as ErrorResponse;
+    const error = e as DefaultError<string>;
     return error?.response?.data?.errors;
   }
 };
@@ -165,13 +138,9 @@ export const trackSocial = async (id: number) => {
     const { data } = await axiosInstance.post<DefaultResponse>(url, {
       type: id
     });
-    if (data?.message === 'success') {
-      return 'success';
-    } else {
-      throw Error();
-    }
+    return data?.message;
   } catch (e) {
-    const error = e as ErrorResponse;
+    const error = e as DefaultError<string>;
     return error?.response?.data?.errors;
   }
 };

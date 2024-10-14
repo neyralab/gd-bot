@@ -1,4 +1,4 @@
-import axios, { CancelToken } from 'axios';
+import { CancelToken } from 'axios';
 import { CarReader } from '@ipld/car';
 import { saveBlob, downloadFile, downloadFileFromSP } from 'gdgateway-client';
 import { API_PATH } from '../utils/api-urls';
@@ -27,61 +27,42 @@ export const getFilePreviewEffect = async (
   cancelToken: CancelToken | undefined = undefined,
   type: string | undefined = undefined
 ) => {
-  const {
-    data: {
-      jwt_ott,
-      user_tokens: { token: oneTimeToken },
-      gateway
+  try {
+    const {
+      data: {
+        jwt_ott,
+        user_tokens: { token: oneTimeToken },
+        gateway
+      }
+    } = await getDownloadOTT([{ slug: fileId }]);
+
+    let url;
+    if (type && type.includes('doc')) {
+      url = `${gateway.url}/doc/preview/${fileId}`;
+    } else {
+      url = `${gateway.url}/preview/${fileId}`;
     }
-  } = await getDownloadOTT([{ slug: fileId }]);
 
-  let url;
-  if (type && type.includes('doc')) {
-    url = `${gateway.url}/doc/preview/${fileId}`;
-    return axios
-      .create({
-        headers: {
-          'One-Time-Token': oneTimeToken,
-          'X-Download-OTT-JWT': jwt_ott
-        }
-      })
-      .get(url, {
-        responseType: 'blob',
-        cancelToken
-      })
-      .then((response) => {
-        const urlCreator = window.URL || window.webkitURL;
-        return urlCreator.createObjectURL(response.data);
-      })
-      .catch((response) => {
-        throw response;
-      });
-  } else {
-    url = `${gateway.url}/preview/${fileId}`;
+    const response = await axiosInstance.get(url, {
+      responseType: 'blob',
+      cancelToken,
+      headers: {
+        'One-Time-Token': oneTimeToken,
+        'X-Download-OTT-JWT': jwt_ott
+      }
+    });
 
-    return axios
-      .create({
-        headers: {
-          'one-time-token': oneTimeToken,
-          'X-Download-OTT-JWT': jwt_ott
-        },
-        responseType: 'blob'
-      })
-      .get(url, {
-        cancelToken
-      })
-      .then(async (response) => {
-        const text = await response.data.text();
-        if (text.startsWith('data:image')) {
-          return text;
-        } else {
-          return URL.createObjectURL(response.data);
-        }
-      })
-      .catch((err) => {
-        console.log({ downloadErr: err });
-        return null;
-      });
+    if (!type || !type.includes('doc')) {
+      const text = await response.data.text();
+      if (text.startsWith('data:image')) {
+        return text;
+      }
+    }
+    const urlCreator = window.URL || window.webkitURL;
+    return urlCreator.createObjectURL(response.data);
+  } catch (err) {
+    console.log({ downloadErr: err });
+    return null;
   }
 };
 
@@ -113,8 +94,7 @@ export const downloadFileEffect = async (
     const realBlob = new Blob([blob]);
     saveBlob({
       blob: realBlob,
-      name: file?.name,
-      mime: file?.mime
+      name: file?.name
     });
     afterCb && afterCb(file);
     return;
@@ -122,15 +102,14 @@ export const downloadFileEffect = async (
 };
 
 export const autoCompleteSearchEffect = async (term: string = '') => {
-  const url = `${API_PATH}/search/autocomplete?term=${term}`;
-  return await axiosInstance
-    .get<File[]>(url)
-    .then(({ data }) => {
-      return data;
-    })
-    .catch((error) => {
-      console.error(error);
-    });
+  try {
+    const url = `${API_PATH}/search/autocomplete?term=${term}`;
+    const { data } = await axiosInstance.get<File[]>(url);
+    return data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
 };
 
 export const updateShareEffect = async (
@@ -140,20 +119,18 @@ export const updateShareEffect = async (
   canEdit: boolean = false,
   expiredAt: number = 0
 ) => {
-  const url = `${API_PATH}/files/${fileId}/share/${shareId}`;
-
-  return axiosInstance
-    .post(url, {
+  try {
+    const url = `${API_PATH}/files/${fileId}/share/${shareId}`;
+    const response = await axiosInstance.post(url, {
       canComment: canEdit || canComment,
       canEdit,
       expiredAt
-    })
-    .then((response) => {
-      return response.data;
-    })
-    .catch((response) => {
-      console.error(response);
     });
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
 };
 
 export const updateFileFavoriteEffect = async (slug: string) => {
@@ -164,7 +141,8 @@ export const updateFileFavoriteEffect = async (slug: string) => {
     const file = data?.data;
     return file;
   } catch (e) {
-    console.warn(e);
+    console.error(e);
+    throw e;
   }
 };
 
@@ -180,12 +158,16 @@ export const getFilesEffect = async (
   page: number = 1,
   order: 'asc' | 'desc' = 'desc'
 ) => {
-  const url = `${API_PATH}/files`;
-  return await axiosInstance
-    .get<GetFilesResponse>(url, {
+  try {
+    const url = `${API_PATH}/files`;
+    const { data } = await axiosInstance.get<GetFilesResponse>(url, {
       params: { order_by: 'createdAt', order, page }
-    })
-    .then((result) => result.data);
+    });
+    return data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
 };
 
 interface GetPPVFilesResponse {
@@ -201,6 +183,7 @@ export const getPaidShareFilesEffect = async (page = 1) => {
     );
     return data?.data;
   } catch (error) {
+    console.error(error);
     throw Error(error as any);
   }
 };
@@ -219,6 +202,7 @@ export const createPaidShareFileEffect = async (
     const data = await axiosInstance.post(`${API_PATH}/share/file/${id}`, body);
     return data?.data;
   } catch (error) {
+    console.error(error);
     throw Error(error as any);
   }
 };
@@ -226,15 +210,15 @@ export const createPaidShareFileEffect = async (
 export const deletePaidShareEffect = async (id: number) => {
   try {
     const url = `${API_PATH}/share/file/${id}`;
-    return await axiosInstance.delete<DefaultResponse>(url).then((result) => {
-      if (result.data.message === 'success') {
-        return result?.data;
-      } else {
-        throw Error('Something went wrong');
-      }
-    });
+    const result = await axiosInstance.delete<DefaultResponse>(url);
+    if (result.data.message === 'success') {
+      return result.data;
+    } else {
+      throw new Error('Something went wrong');
+    }
   } catch (error) {
-    throw Error(error as any);
+    console.error(error);
+    throw new Error(error as any);
   }
 };
 
@@ -248,69 +232,78 @@ export const getPaidShareFileEffect = async (slug: string) => {
 };
 
 export const getFilesByTypeEffect = async (type: string, page: number = 1) => {
-  return axiosInstance
-    .get<GetFilesResponse>(`${API_PATH}/files`, {
-      params: {
-        page,
-        extension: type,
-        order_by: 'createdAt',
-        order: 'desc'
+  try {
+    const response = await axiosInstance.get<GetFilesResponse>(
+      `${API_PATH}/files`,
+      {
+        params: {
+          page,
+          extension: type,
+          order_by: 'createdAt',
+          order: 'desc'
+        }
       }
-    })
-    .then((response) => {
-      return response.data;
-    })
-    .catch((err) => {
-      throw Error(err);
-    });
+    );
+    return response.data;
+  } catch (err) {
+    console.error(err);
+    throw new Error(err as any);
+  }
 };
 
 export const getFavoritesEffect = async () => {
-  return axiosInstance
-    .get<GetFilesResponse>(`${API_PATH}/files/file/favorites`)
-    .then((response) => {
-      return response.data;
-    })
-    .catch((err) => {
-      throw Error(err);
-    });
+  try {
+    const response = await axiosInstance.get<GetFilesResponse>(
+      `${API_PATH}/files/file/favorites`
+    );
+    return response.data;
+  } catch (err) {
+    console.error(err);
+    throw new Error(err as any);
+  }
 };
 
 export const getSharedFilesEffect = async (page = 1) => {
-  return axiosInstance
-    .get<GetFilesResponse>(`${API_PATH}/files/shared/my`, {
-      params: { page, order_by: 'createdAt', order: 'desc' }
-    })
-    .then((response) => {
-      return response.data;
-    })
-    .catch((err) => {
-      throw Error(err);
-    });
+  try {
+    const response = await axiosInstance.get<GetFilesResponse>(
+      `${API_PATH}/files/shared/my`,
+      {
+        params: { page, order_by: 'createdAt', order: 'desc' }
+      }
+    );
+    return response.data;
+  } catch (err) {
+    console.error(err);
+    throw new Error(err as any);
+  }
 };
 
 export const getDeletedFilesEffect = async (page = 1) => {
-  return axiosInstance
-    .get<GetFilesResponse>(`${API_PATH}/trash`, { params: { page } })
-    .then((response) => {
-      return response.data;
-    })
-    .catch((err) => {
-      throw Error(err);
-    });
+  try {
+    const response = await axiosInstance.get<GetFilesResponse>(
+      `${API_PATH}/trash`,
+      { params: { page } }
+    );
+    return response.data;
+  } catch (err) {
+    console.error(err);
+    throw new Error(err as any);
+  }
 };
 
 export const getGeoPinFilesEffect = async (page = 1) => {
-  return axiosInstance
-    .get<GetFilesResponse>(`${API_PATH}/files/geo/security`, {
-      params: { page, order_by: 'createdAt', order: 'desc' }
-    })
-    .then((response) => {
-      return response.data.data;
-    })
-    .catch((err) => {
-      throw Error(err);
-    });
+  try {
+    const response = await axiosInstance.get<GetFilesResponse>(
+      `${API_PATH}/files/geo/security`,
+      {
+        params: { page, order_by: 'createdAt', order: 'desc' }
+      }
+    );
+    return response.data.data;
+  } catch (err) {
+    console.error(err);
+    throw new Error(err as any);
+  }
 };
 
 export const createStreamEffect = async (slug: string) => {

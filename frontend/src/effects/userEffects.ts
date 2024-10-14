@@ -5,19 +5,24 @@ import { AxiosError } from 'axios';
 import { Me, UserPublicAddress } from './types/users';
 
 export const getUserEffect = async (token: string) => {
-  return await axiosInstance
-    .get(`${API_PATH}/tg/me`, {
-      headers: {
-        'X-Token': `Bearer ${token}`
+  try {
+    const response = await axiosInstance.get<{ data: Me }>(
+      `${API_PATH}/tg/me`,
+      {
+        headers: {
+          'X-Token': `Bearer ${token}`
+        }
       }
-    })
-    .then((response: { data: Me }) => response.data)
-    .catch((error: AxiosError<{ message: string }>) => {
-      Sentry.captureMessage(
-        `Error ${error?.response?.status} in getUserEffect: ${error?.response?.data?.message}`
-      );
-      throw error;
-    });
+    );
+    return response.data;
+  } catch (e) {
+    const error = e as AxiosError<{ message: string }>;
+    Sentry.captureMessage(
+      `Error ${error?.response?.status} in getUserEffect: ${error?.response?.data?.message}`
+    );
+    console.error(error);
+    throw error;
+  }
 };
 
 export const saveUserWallet = async (
