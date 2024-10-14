@@ -1,4 +1,4 @@
-import { AxiosError } from 'axios';
+import axios, { AxiosError } from 'axios';
 import * as Sentry from '@sentry/react';
 import { ThunkAction } from '@reduxjs/toolkit';
 
@@ -88,7 +88,7 @@ export const connectUserV8 =
         initData
       };
 
-      const response = await axiosInstance.put<Effect<UserTokens>>(
+      const response = await axios.put<Effect<UserTokens>>(
         API_NEYRA_CONNECT,
         body,
         {

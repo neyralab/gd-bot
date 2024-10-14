@@ -1,5 +1,6 @@
 import { loadStripe } from '@stripe/stripe-js/pure';
 import { toast } from 'react-toastify';
+import axios from 'axios';
 import axiosInstance from './axiosInstance';
 import { tg } from '../App';
 import { API_PATH, API_TON_WALLET, API_NEYRA } from '../utils/api-urls';
@@ -7,7 +8,6 @@ import { NumberEncoder } from '../utils/numberEncoder';
 import { createInvoice } from '../utils/createStarInvoice';
 import { handlePayment } from '../store/reducers/paymentSlice';
 import { connectUserV8 } from './authorizeUser';
-
 import { Effect } from './types';
 import { InvoiceType } from '../utils/createStarInvoice';
 
@@ -82,15 +82,13 @@ export const getTonWallet = async (
   const body = { symbol: 'ton', comment };
 
   try {
-    const { data } = await axiosInstance.post<Effect<TonWalletResponse>>(
-      API_TON_WALLET,
-      body,
-      {
+    const { data } = await axios
+      .create({
         headers: {
           Authorization: `Bearer ${token}`
         }
-      }
-    );
+      })
+      .post<Effect<TonWalletResponse>>(API_TON_WALLET, body);
 
     return data?.data;
   } catch {
@@ -163,20 +161,21 @@ export const sendStarInvoice = async (
     const token = await dispatch(connectUserV8());
     const chat_id = tg?.initDataUnsafe?.user?.user;
 
-    const { data } = await axiosInstance.post<InvoiceResponse>(
-      `${API_NEYRA}/gateway/billing/create_invoice_link`,
-      {
-        invoice_payload: {
-          chat_id,
-          ...invoice
-        }
-      },
-      {
+    const { data } = await axios
+      .create({
         headers: {
           Authorization: `Bearer ${token}`
         }
-      }
-    );
+      })
+      .post<InvoiceResponse>(
+        `${API_NEYRA}/gateway/billing/create_invoice_link`,
+        {
+          invoice_payload: {
+            chat_id,
+            ...invoice
+          }
+        }
+      );
 
     return data?.invoice_link || ''; // Return the invoice link if available
   } catch (error) {
@@ -204,14 +203,13 @@ export const setPaymentTypesEffect = async (
 ): Promise<void> => {
   try {
     const token = await dispatch(connectUserV8());
-    const { data } = await axiosInstance.get<PaymentTypesResponse>(
-      `${API_NEYRA}/gateway/billing/retrieve_types`,
-      {
+    const { data } = await axios
+      .create({
         headers: {
           Authorization: `Bearer ${token}`
         }
-      }
-    );
+      })
+      .get<PaymentTypesResponse>(`${API_NEYRA}/gateway/billing/retrieve_types`);
     dispatch(handlePayment(data?.data || []));
   } catch (error) {
     console.log(error);
