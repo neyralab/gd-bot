@@ -224,7 +224,6 @@ export default function BuyButton() {
         );
         const eventSource = new EventSourcePolyfill(url, {
           withCredentials: true,
-          onmessage: () => {},
           headers: {
             Authorization: `Bearer ${mercureJwt}`,
           },
