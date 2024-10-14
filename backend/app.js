@@ -284,7 +284,7 @@ function buildButtons(userRefCode) {
   const youtubeButton = Markup.button.url('🔴 Youtube', 'https://www.youtube.com/@ghostdrive-web3');
   const websiteButton = Markup.button.url('🛸 Website', 'https://ghostdrive.com');
 
-  const referralLink = `https://t.me/${process.env.BOT_NAME}/ghostdrive?startapp=${userRefCode}`;
+  const referralLink = `https://t.me/${process.env.BOT_NAME}?start=${userRefCode}`;
   const shareButton = {
     text: '👥 Invite Friends',
     url: `https://t.me/share/url?url=${encodeURIComponent(referralLink)}`,
