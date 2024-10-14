@@ -6,6 +6,7 @@ import {
   API_COUPON,
   API_NEYRA_CONNECT,
   API_PATH,
+  BOT_NAME,
 } from '../utils/api-urls';
 import { setToken } from './set-token';
 import axiosInstance from './axiosInstance';
@@ -35,6 +36,17 @@ export const authorizeUser = async (reqBody, ref) => {
       return response.data;
     })
     .catch((error) => {
+      const status = error?.response?.status;
+      if (status && (status === 404 || status === 412)) {
+        const link = `https://t.me/${BOT_NAME}?start=${ref}`;
+        window?.Telegram?.WebApp?.showAlert(
+          `Please start the bot before using the web app`,
+          () => {
+            window?.Telegram?.WebApp?.openTelegramLink(link);
+            window?.Telegram?.WebApp?.close();
+          }
+        );
+      }
       Sentry.captureMessage(
         `Error ${error?.response?.status} in authorizeUser: ${error?.response?.data?.message}`
       );
