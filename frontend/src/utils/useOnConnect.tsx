@@ -10,14 +10,13 @@ export function useOnConnect() {
   const [tonConnectUI] = useTonConnectUI();
   const user = useSelector((state: any) => state.user.data);
   const dispatch = useDispatch();
-
   useEffect(() => {
     console.log({ w: user?.wallet });
     if (!user?.wallet) {
       return;
     }
 
-    tonConnectUI.modal.onStateChange(async (state) => {
+    const unsubscribe = tonConnectUI.modal.onStateChange(async (state) => {
       console.log('state change', state);
       if (
         state.status === 'closed' &&
@@ -39,5 +38,7 @@ export function useOnConnect() {
         }
       }
     });
+
+    return () => { unsubscribe() }
   }, [user?.wallet]);
 }

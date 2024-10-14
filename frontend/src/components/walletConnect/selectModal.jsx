@@ -14,7 +14,7 @@ import { isOkxWallet } from '../../utils/string';
 
 import styles from './styles.module.css';
 
-const ConnectModal = ({ isOpen, onClose }) => {
+const ConnectModal = ({ isOpen, onClose, successCallback }) => {
   const [startOKXConnect, setStartOKXConnect] = useState(false);
   const [okxConnectLink, setOKXConnectLink] = useState('');
   const user = useSelector((state) => state?.user?.data);
@@ -40,7 +40,8 @@ const ConnectModal = ({ isOpen, onClose }) => {
         });
         const newWallets = res.map((el) => el.public_address);
         dispatch(setUser({ ...user, wallet: newWallets }));
-        unsubscribe()
+        successCallback?.();
+        unsubscribe();
       }
     });
   }, []);
@@ -59,7 +60,8 @@ const ConnectModal = ({ isOpen, onClose }) => {
             dispatch(setUser({ ...user, wallet: newWallets }));
           }
           onClose();
-          unsubscribe()
+          unsubscribe();
+          successCallback?.();
         }
       })
     }

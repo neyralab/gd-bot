@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { ConnectModal } from './selectModal';
@@ -16,7 +16,7 @@ const WalletConnect = () => {
   const [isConnectModal, setIsConnectModal] = useState(false);
   const [isDisconectModal, setIsDisconectModal] = useState(false);
 
-  const myAddress = address || okxAddress || '';
+  const myAddress = useMemo(() =>(address || okxAddress || ''), [address, okxAddress]);
 
   useEffect(() => {
     if (wallet) {
