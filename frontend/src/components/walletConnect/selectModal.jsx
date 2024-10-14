@@ -10,6 +10,7 @@ import { ReactComponent as TonIcon } from '../../assets/logo/ton.svg';
 import { ReactComponent as OKXIcon } from '../../assets/logo/okx.svg';
 import { ReactComponent as CloseIcon } from '../../assets/close.svg';
 import { OkxConnect } from './okxConnect';
+import { isOkxWallet } from '../../utils/string';
 
 import styles from './styles.module.css';
 
@@ -22,39 +23,43 @@ const ConnectModal = ({ isOpen, onClose }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    tonConnectUI.modal.onStateChange(async (state) => {
+    const unsubscribe = tonConnectUI.modal.onStateChange(async (state) => {
       if (state.status === "opened") {
         onClose()
       }
       if (
         state.status === 'closed' &&
         state.closeReason === 'wallet-selected' &&
-        !!user?.wallet?.filter((el) => el !== tonConnectUI.account?.address)
-          .length
+        !user?.wallet?.some((el) => el === tonConnectUI.account?.address)
       ) {
+        const walletName = isOkxWallet(tonConnectUI.walletInfo.name) ? 'okx' : 'ton';
         const res = await saveUserWallet({
           account: tonConnectUI?.account,
-          channel: 'ton'
+          channel: 'ton',
+          [walletName]: true
         });
         const newWallets = res.map((el) => el.public_address);
         dispatch(setUser({ ...user, wallet: newWallets }));
+        unsubscribe()
       }
     });
   }, []);
 
   useEffect(() => {
     if (wallet) {
-      wallet.onStatusChange(async (res) => {
+      const unsubscribe = wallet.onStatusChange(async (res) => {
         if (res) {
-          if (!!user?.wallet?.filter((el) => el !== res.account?.address).length) {
+          if (!user?.wallet?.some((el) => el === res.account?.address)) {
             const data = await saveUserWallet({
               account: res?.account,
-              channel: 'ton'
+              channel: 'ton',
+              okx: true
             });
             const newWallets = data.map((el) => el.public_address);
             dispatch(setUser({ ...user, wallet: newWallets }));
           }
           onClose();
+          unsubscribe()
         }
       })
     }

@@ -3,10 +3,19 @@ import classNames from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import {
+  refreshFreeGame,
   setAdvertisementModal,
   setAdvertisementOfferModal
 } from '../../../store/reducers/gameSlice';
 import { useAdsgram } from '../../../utils/useAdsgram';
+import { ADSGRAM_BLOCK_ID } from '../../../utils/api-urls';
+import { isValidEnvVariable } from '../../../utils/string';
+
+import {
+  startWatchingAdvertisementVideo,
+  endWatchingAdvertisementVideo,
+} from '../../../effects/advertisementEffect';
+import { AdController } from '../../../App';
 import styles from './AdvertisementOfferModal.module.scss';
 
 const HIDE_ADD_MODAL_KEY = 'ad-modal-display'; 
@@ -34,6 +43,17 @@ export default function AdvertisementOfferModal() {
   const isADModalHidden = useMemo(() => (
     !!JSON.parse(localStorage.getItem(HIDE_ADD_MODAL_KEY))
   ), [status, theme]);
+
+  useEffect(() => {
+    if (AdController) {
+      const bannerNotFound = () => { console.warn('onBannerNotFound') };
+      AdController?.addEventListener?.('onBannerNotFound', bannerNotFound);
+  
+      return () => {
+        AdController?.removeEventListener?.('onBannerNotFound', bannerNotFound);
+      }
+    }
+  }, [AdController])
 
   useEffect(() => {
     if (
@@ -65,9 +85,7 @@ export default function AdvertisementOfferModal() {
     localStorage.setItem(HIDE_ADD_MODAL_KEY, true);
   }
 
-  const clickHandler = (e) => {
-    if (!isClickable) return;
-
+  const showLocalAD = () => {
     dispatch(
       setAdvertisementModal({
         points: advertisementOfferModal.points,
@@ -75,7 +93,6 @@ export default function AdvertisementOfferModal() {
         videoId: advertisementOfferModal.videoId
       })
     );
-    !isADModalHidden && disabledAdModal();
     closeModal();
     dispatch(setAdvertisementOfferModal(null));
   };
@@ -89,15 +106,39 @@ export default function AdvertisementOfferModal() {
     }, 600);
   };
 
-  const onReward = () => {
-    console.log('Adsgram reward success');
+  const onReward = async () => {
+    try {
+      await endWatchingAdvertisementVideo(advertisementOfferModal.videoId);
+      dispatch(refreshFreeGame({ points: advertisementOfferModal.points }));
+      closeModal();
+      dispatch(setAdvertisementOfferModal(null));
+    } catch (error) {
+      console.warn(error);
+    }
   }
 
   const onError = (e) => {
-    console.log('Adsgram error ', e);
+    console.warn('Adsgram error: ', e);
+    showLocalAD();
   }
 
   const showAd = useAdsgram({ onReward, onError });
+
+  const clickHandler = async (e) => {
+    if (!isClickable) return;
+
+    try {
+      !isADModalHidden && disabledAdModal();
+      if (isValidEnvVariable(ADSGRAM_BLOCK_ID)) {
+        await startWatchingAdvertisementVideo(advertisementOfferModal.videoId);
+        await showAd();
+      } else {
+        showLocalAD();
+      }
+    } catch (error) {
+      console.warn(error);
+    }
+  }
 
   if (!isOpen) return null;
 
@@ -105,7 +146,7 @@ export default function AdvertisementOfferModal() {
     <>
       {!isADModalHidden && (
         <div
-          onClick={showAd}
+          onClick={clickHandler}
           className={classNames(
             styles.container,
             isClosing && styles['is-closing']
@@ -128,7 +169,7 @@ export default function AdvertisementOfferModal() {
         </div>
       )}
 
-      <div onClick={showAd} className={styles['model-trigger']}></div>
+      <div onClick={clickHandler} className={styles['model-trigger']}></div>
     </>
   );
 }

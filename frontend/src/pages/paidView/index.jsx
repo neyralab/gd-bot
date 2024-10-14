@@ -92,9 +92,7 @@ export const PaidView = () => {
 
   const getContent = async () => {
     try {
-      const { realBlob } = await getFilecoinBlobEffect({
-        file
-      });
+      const { realBlob } = await getFilecoinBlobEffect({ file });
 
       if (realBlob) {
         const url = URL.createObjectURL(realBlob);

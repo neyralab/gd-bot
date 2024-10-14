@@ -18,6 +18,7 @@ import { storageListEffect } from './effects/storageEffects';
 import { API_WEB_APP_URL, ADSGRAM_BLOCK_ID } from './utils/api-urls';
 import { WalletProvider } from './store/context/WalletProvider'
 import { useLanguage } from './utils/useLanguage';
+import { isValidEnvVariable } from './utils/string';
 
 import SharedLayout from './components/sharedLayout';
 import { StartPage } from './pages/startPage';
@@ -39,11 +40,12 @@ import FriendsPage from './pages/friends';
 import NodesWelcomePage from './pages/nodes-welcome';
 import NodesPage from './pages/nodes';
 import DrivePage from './pages/drive';
+import AssistantDashboard from './components/AssistantDashboard/AssistantDashboard';
 
 import './App.css';
 
 export const tg = window.Telegram.WebApp;
-export const AdController = window?.Adsgram?.init({ blockId: ADSGRAM_BLOCK_ID });
+export const AdController = isValidEnvVariable(ADSGRAM_BLOCK_ID) ? window?.Adsgram?.init?.({ blockId: ADSGRAM_BLOCK_ID}) : {};
 
 const GA = 'G-VEPRY1XE4E';
 
@@ -156,6 +158,7 @@ function App() {
             <Route path="/earn" exact element={<EarnPage />} />
             <Route path="/nodes-welcome" exact element={<NodesWelcomePage />} />
             <Route path="/nodes" exact element={<NodesPage />} />
+            <Route path="/assistant" exact element={<AssistantDashboard />} />
           </Routes>
         </SharedLayout>
       </WalletProvider>
@@ -164,4 +167,3 @@ function App() {
 }
 
 export default App;
-  

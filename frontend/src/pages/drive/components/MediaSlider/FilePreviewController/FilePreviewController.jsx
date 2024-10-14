@@ -12,6 +12,8 @@ import {
   toggleFileFavorite
 } from '../../../../../store/reducers/driveSlice';
 import { isDataprepUrl } from '../../../../../utils/gateway';
+import { isiOS } from '../../../../../utils/client';
+import { convertFile } from '../../../../../utils/convertFile';
 
 const USE_STREAM_URL = ['audio', 'video'];
 const USE_PREVIEW_IMG = ['audio'];
@@ -28,6 +30,7 @@ const FilePreviewController = ({ file, onExpand, disableSwipeEvents }) => {
   const [filePreviewImage, setFilePreviewImage] = useState(false);
   const [previewFileType, setPreviewFileType] = useState(null);
   const playablePreview = useRef(null);
+  const isOggFileOnIOS = file.extension === 'ogg' && isiOS();
 
   useEffect(() => {
     if (file.slug) {
@@ -58,7 +61,7 @@ const FilePreviewController = ({ file, onExpand, disableSwipeEvents }) => {
     const isDataprep = isDataprepUrl(user.gateway.url);
 
     if (!fileContent && fileType) {
-      if (USE_STREAM_URL.includes(fileType) && isDataprep) {
+      if (USE_STREAM_URL.includes(fileType) && isDataprep && !isOggFileOnIOS) {
         fetchStreamContent(fileType);
       } else {
         fetchBlobContent(fileType);
@@ -78,6 +81,17 @@ const FilePreviewController = ({ file, onExpand, disableSwipeEvents }) => {
     return cache;
   };
 
+  const processBlob = async (blob, mimeType) => {
+    if (isOggFileOnIOS) {
+      return await convertFile({
+        blob,
+        mimeType,
+        outputExtension: 'mp3'
+      });
+    }
+    return blob;
+  };
+
   const fetchBlobContent = async (fileType) => {
     const cache = checkFileCache();
     if (cache) return;
@@ -87,10 +101,12 @@ const FilePreviewController = ({ file, onExpand, disableSwipeEvents }) => {
       getPreview: USE_PREVIEW_IMG.includes(fileType)
     });
 
-    if (realBlob) {
-      setCacheItem(file.id, realBlob, preview?.value || null);
-      setFileContent(realBlob);
-      setPreviewFileType(realBlob ? getPreviewFileType(file, realBlob) : null);
+    const blob = await processBlob(realBlob, file.mime);
+
+    if (blob) {
+      setCacheItem(file.id, blob, preview?.value || null);
+      setFileContent(blob);
+      setPreviewFileType(blob ? getPreviewFileType(file, blob) : null);
     }
     setFilePreviewImage(preview?.value || null);
     setLoading(false);

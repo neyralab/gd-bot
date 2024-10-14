@@ -1,0 +1,63 @@
+.container {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+  animation: ContainerAnimation 10s ease-in-out infinite;
+}
+
+@keyframes ContainerAnimation {
+  0% {
+    transform: translate(0, 0) scale(1);
+  }
+  25% {
+    transform: translate(2%, 0) scale(1.06);
+  }
+
+  50% {
+    transform: translate(-1%, 0.5%) scale(1.05);
+  }
+
+  75% {
+    transform: translate(0.5%, -0.5%) scale(0.95);
+  }
+
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+}
+
+.layer {
+  position: absolute;
+  background-position: center center;
+  top: 50%;
+  left: 50%;
+  background-repeat: no-repeat;
+  background-size: cover;
+  transform: translate(-50%, -50%);
+
+  transform: translate(-50%, -50%) rotate(0) translate(0, 0); // animation frame 1
+  opacity: 0.2;
+}
+
+.layer1 {
+  width: 230vw;
+  height: 230vw;
+}
+
+.layer2 {
+  width: 180vw;
+  height: 180vw;
+}
+
+.layer3 {
+  width: 140vw;
+  height: 140vw;
+}
+
+.layer4 {
+  width: 100vw;
+  height: 100vw;
+}

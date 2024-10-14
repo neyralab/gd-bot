@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Search from '../Search/Search';
 import { vibrate } from '../../../../utils/vibration';
 import { assignFilesQueryData } from '../../../../store/reducers/driveSlice';
+import { isMobilePlatform } from '../../../../utils/client';
 import styles from './Header.module.scss';
 
 export default function Header() {
@@ -31,10 +32,11 @@ export default function Header() {
 
   return (
     <div className={styles.header}>
-      <button type="button" onClick={onBackClick} className={styles.btn}>
-        {t('dashboard.back')}
-      </button>
-
+      { isMobilePlatform ? <span></span> : (
+        <button type="button" onClick={onBackClick} className={styles.btn}>
+          {t('dashboard.back')}
+        </button>
+      ) }
       <Search />
     </div>
   );

@@ -6,6 +6,7 @@ import { ReactComponent as CheckIcon } from '../../assets/check.svg';
 import SearchInput from './SearchInput';
 import { runInitAnimation, runListAnimation } from './animations';
 import { debounce } from '../../utils/debounce';
+import { isMobilePlatform } from '../../utils/client';
 import styles from './styles.module.scss';
 
 export const LANGUAGE_LIST = [
@@ -140,7 +141,7 @@ export const LanguagePage = () => {
 
   return (
     <div className={styles.container}>
-      <Header label={t('dashboard.language')} />
+      <Header hideBack={isMobilePlatform} label={t('dashboard.language')} />
       <SearchInput value={searchValue} onChange={onChange} onClose={onReset} />
       <h2 data-animation="language-animation-2" className={styles.subTitle}>
         {t('language.interface')}

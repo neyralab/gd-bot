@@ -62,14 +62,47 @@ const addSlugHyphens = (uuidString = '') => {
   return `${formattedString.slice(0, 8)}-${formattedString.slice(8, 12)}-${formattedString.slice(12, 16)}-${formattedString.slice(16, 20)}-${formattedString.slice(20)}`;
 };
 
+const isOkxWallet = (walletName = '') => {
+  return walletName.toLocaleLowerCase().includes('okx');
+};
+
+const isValidEnvVariable = (value) => {
+  if (!value || value === 'undefined') {
+    return false;
+  }
+
+  return value;
+}
+
+const getOriginWithoutSubdomain = (url) => {
+  try {
+    const urlObj = new URL(url);
+    const hostParts = urlObj.hostname.split('.');
+
+    if (hostParts.length > 2) {
+      hostParts.shift();
+    }
+
+    const cleanHost = hostParts.join('.');
+    
+    return `${urlObj.protocol}//${cleanHost}`;
+  } catch (error) {
+    console.error('Invalid URL:', error);
+    throw error;
+  }
+}
+
 export {
   getWallet,
   fomatNumber,
   getNumbers,
   capitalize,
+  isOkxWallet,
   getResponseError,
   removeExtension,
   formatDuration,
   removeSlugHyphens,
-  addSlugHyphens
+  addSlugHyphens,
+  isValidEnvVariable,
+  getOriginWithoutSubdomain
 };

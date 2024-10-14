@@ -1,11 +1,13 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
 import { Header } from '../../components/header';
 import { getAllPartners } from '../../effects/EarnEffect';
 import { SearchInput } from './SearchInput';
 import Game from './GameItem';
 import { handlePartners, selectPartners } from '../../store/reducers/taskSlice';
+import { isMobilePlatform } from '../../utils/client';
 
 import styles from './styles.module.css';
 import { runInitAnimation, runListAnimation } from './animations';
@@ -13,6 +15,7 @@ import GhostLoader from '../../components/ghostLoader';
 
 export const GamesPage = () => {
   const dispatch = useDispatch();
+  const { t } = useTranslation('drive');
   const { games } = useSelector(selectPartners);
   const [list, setList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -58,7 +61,7 @@ export const GamesPage = () => {
 
   return (
     <div className={styles.container}>
-      <Header />
+      <Header hideBack={isMobilePlatform} label={t('dashbord.games')} />
       <SearchInput value={search} setValue={handleChange} />
       {isLoading && (
         <div className={styles.loader}>
