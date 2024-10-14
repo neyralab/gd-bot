@@ -12,6 +12,7 @@ import {
 import { setToken } from './set-token';
 import axiosInstance from './axiosInstance';
 import { Effect } from './types';
+import { tg } from '../App';
 
 interface UserData {
   initData: string;
@@ -63,11 +64,11 @@ export const authorizeUser = async (reqBody: UserData, ref?: string) => {
     const status = error?.response?.status;
     if (status && (status === 404 || status === 412)) {
       const link = `https://t.me/${BOT_NAME}?start=${ref}`;
-      window?.Telegram.WebApp?.showAlert(
+      tg.showAlert(
         `Please start the bot before using the web app`,
         () => {
-          window?.Telegram?.WebApp?.openTelegramLink(link);
-          window?.Telegram?.WebApp?.close();
+          tg.openTelegramLink(link);
+          tg.close();
         }
       );
     }
