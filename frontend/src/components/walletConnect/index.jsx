@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { ConnectModal } from './selectModal';
@@ -16,7 +16,7 @@ const WalletConnect = () => {
   const [isConnectModal, setIsConnectModal] = useState(false);
   const [isDisconectModal, setIsDisconectModal] = useState(false);
 
-  const myAddress = address || okxAddress || '';
+  const myAddress = useMemo(() =>(address || okxAddress || ''), [address, okxAddress]);
 
   useEffect(() => {
     if (wallet) {
@@ -45,9 +45,7 @@ const WalletConnect = () => {
       <button className={styles['connect-btn']} onClick={openConnectModal}>
         {myAddress ? `...${myAddress.slice(-4)}` : t('dashboard.add')}
       </button>
-      {isConnectModal && (
-        <ConnectModal isOpen={isConnectModal} onClose={onCloseConnectModal} />
-      )}
+      <ConnectModal isOpen={isConnectModal} onClose={onCloseConnectModal} />
       <DisconnectWalletModal
         isOpen={isDisconectModal}
         onClose={onCloseDisconnectModal}
