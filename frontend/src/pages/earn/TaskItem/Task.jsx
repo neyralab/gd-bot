@@ -5,9 +5,7 @@ import { useTranslation } from 'react-i18next';
 import {
   getPartnerTranslate,
   PARTNER_TASK_TYPES,
-  getPartnerName,
-  isNeedVerify,
-  PARTNER_KEY
+  getPartnerName
 } from '../Partners/utils';
 import gameTranslateJSON from '../../../translation/locales/en/game.json';
 import { API_PATH, API_PATH_ROOT } from '../../../utils/api-urls';
@@ -26,7 +24,8 @@ export default function Task({
   done,
   rewardParams,
   id,
-  doVerify
+  doVerify,
+  log,
 }) {
   const { t } = useTranslation('game');
   const formattedPoints = useMemo(
@@ -38,18 +37,10 @@ export default function Task({
     () => getPartnerTranslate(description, t, gameTranslateJSON),
     [description, t]
   );
-  const [needVerify, setNeedVerify] = useState(isNeedVerify(id), [id]);
 
   const goToLink = useCallback(async () => {
     try {
       const token = await getToken();
-      const partnertList = JSON.parse(
-        localStorage.getItem(PARTNER_KEY) || '[]'
-      );
-      localStorage.setItem(PARTNER_KEY, JSON.stringify([...partnertList, id]));
-      setTimeout(() => {
-        setNeedVerify(isNeedVerify(id));
-      }, [TIME_DELAY]);
       window.location.href = `${API_PATH}/aff/missions/exit/${id}?bearer=${token}`;
     } catch (error) {
       console.warn(error);
@@ -57,7 +48,7 @@ export default function Task({
   }, [id]);
 
   const renderActionBtn = useCallback(() => {
-    if (!done && needVerify) {
+    if (!done && log) {
       return (
         <button
           className={classNames(styles.actionBtn, styles.actionVerify)}
@@ -74,7 +65,7 @@ export default function Task({
         </button>
       );
     } else return '';
-  }, [needVerify, done, id]);
+  }, [log, done, id]);
 
   const setUpDefaultLogo = (e) => {
     e.target.src = DEFAULT_TASK_IMAGE;
