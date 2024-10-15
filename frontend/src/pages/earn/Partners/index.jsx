@@ -3,7 +3,6 @@ import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 
 import { checkTaskIsDone } from '../../../effects/EarnEffect';
-import { PARTNER_KEY } from './utils';
 import { vibrate } from '../../../utils/vibration';
 import Task from '../TaskItem/Task';
 import ClaimPoints from '../../../components/ClaimPoints/ClaimPoints';
@@ -30,11 +29,6 @@ export default function Partners({ partners, setPartners, isLoading }) {
     try {
       const res = await checkTaskIsDone(id);
       if (res.success) {
-        const taskList = JSON.parse(localStorage.getItem(PARTNER_KEY) || []);
-        localStorage.setItem(
-          PARTNER_KEY,
-          JSON.stringify(taskList.filter((item) => item !== id))
-        );
         setPartners(
           partners.map((item) =>
             item.id === id ? { ...item, done: true } : item
