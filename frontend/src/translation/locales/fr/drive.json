@@ -44,7 +44,9 @@
     "violence": "Violence ou contenu dangereux",
     "other": "Autre",
     "enterReport": "Entrez votre rapport..",
-    "report": "Signaler"
+    "report": "Signaler",
+    "swap": "Échanger contre des Points GD",
+    "earned": "Gagné:"
   },
   "files": {
     "expandFile": "Voir le fichier"

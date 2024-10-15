@@ -44,7 +44,9 @@
     "violence": "暴力や危険なコンテンツ",
     "other": "その他",
     "enterReport": "報告内容を入力してください..",
-    "report": "報告"
+    "report": "報告",
+    "swap": "GDポイントに交換",
+    "earned": "獲得:"
   },
   "files": {
     "expandFile": "ファイルを表示"

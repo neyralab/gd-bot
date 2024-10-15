@@ -62,7 +62,7 @@ export function isDesktopPlatform(tgClient) {
   return TG_PLATFORMS.desktop.includes(tgClient?.platform);
 }
 
-export const isMobilePlatform =  false // !(isWebPlatform(tg) || isDesktopPlatform(tg));
+export const isMobilePlatform = !(isWebPlatform(tg) || isDesktopPlatform(tg));
 
 export const isAppStoreUrl = (url) => {
   return url.includes('apps.apple.com') || url.includes('itunes.apple.com');

@@ -6,6 +6,8 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import { ReactComponent as GridIcon } from '../../../../assets/grid_view.svg';
 import { ReactComponent as ListIcon } from '../../../../assets/list_view.svg';
 import { ReactComponent as FileIcon } from '../../../../assets/file_draft.svg';
+import { ReactComponent as InfoIcon } from '../../../../assets/info.svg';
+import { ReactComponent as StarIcon } from '../../../../assets/star.svg';
 import { vibrate } from '../../../../utils/vibration';
 import {
   assignFilesQueryData,
@@ -23,6 +25,7 @@ export default function FilesList() {
   const dispatch = useDispatch();
   const viewType = useSelector((state) => state.drive.viewType);
   const queryData = useSelector((state) => state.drive.filesQueryData);
+  const payShareEarn = useSelector((state) => state.drive.payShareEarn);
   const files = useSelector((state) => state.drive.files);
   const areFilesLoading = useSelector((state) => state.drive.areFilesLoading);
   const areFilesLazyLoading = useSelector(
@@ -32,6 +35,7 @@ export default function FilesList() {
   const [mode, setMode] = useState(null); // null | 'search' | 'category'
   const highestAnimatedIndex = useRef(-1);
   const scrollRef = useRef(null);
+  const isPayShareList = queryData.category === 'payShare';
 
   useEffect(() => {
     if (!!queryData.search) {
@@ -106,6 +110,20 @@ export default function FilesList() {
         </button>
       </div>
 
+      {isPayShareList && (
+        <div className={styles['ppv-header']}>
+          <div className={styles['ppv-info']}>
+            <InfoIcon width={11} height={11} viewBox='2 3 20 20' />
+            <span className={styles['ppv-text-earn']}>{t('ppv.earned')}</span>
+            <span className={styles['ppv-text-count']}>{ payShareEarn || 0 }</span>
+            <StarIcon width={16} height={16} viewBox='0 0 21 21' />
+          </div>
+          <span className={styles['ppv-action']}>
+            {t('ppv.swap')}
+          </span>
+        </div>
+      )}
+
       <div className={styles.content}>
         {/* Initial loading */}
         {areFilesLoading && (
@@ -124,7 +142,10 @@ export default function FilesList() {
         )}
 
         {!!files.length && !areFilesLoading && (
-          <div className={styles['list-container']} id="scrollableDiv">
+          <div
+            className={styles[isPayShareList ? 'list-container-short' : 'list-container']}
+            id="scrollableDiv"
+          >
             <InfiniteScroll
               ref={scrollRef}
               className={classNames(

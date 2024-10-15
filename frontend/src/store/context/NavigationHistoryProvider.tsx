@@ -1,5 +1,15 @@
 import React, { createContext, useRef, useState, useEffect, ReactNode } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from 'react-redux';
+import {
+  assignFilesQueryData,
+  setMediaSliderOpen,
+  setMediaSliderCurrentFile
+} from '../reducers/driveSlice';
+
+import { useTelegramBackButton } from '../../utils/useTelegramBackButton';
+import { isMobilePlatform } from '../../utils/client';
+
 interface NavigationHistoryContextType {
   history: string[];
   isInitialRoute: boolean;
@@ -14,7 +24,11 @@ interface NavigationHistoryProviderProps {
 export const NavigationHistoryProvider: React.FC<NavigationHistoryProviderProps> = ({ children }) => {
   const [history, setHistory] = useState<string[]>([]);
   const [isInitialRoute, setIsInitialRoute] = useState(true);
+  const mediaSliderIsOpen = useSelector((state: any) => state.drive.mediaSlider.isOpen);
+  const queryData = useSelector((state: any) => state.drive.filesQueryData);
   const removedElement = useRef<boolean>(false);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const location = useLocation();
 
   useEffect(() => {
@@ -53,6 +67,26 @@ export const NavigationHistoryProvider: React.FC<NavigationHistoryProviderProps>
       window.removeEventListener("popstate", handlePopState);
     };
   }, []);
+
+  const handleBackAction = () => {
+    if (isMobilePlatform) {
+      if (mediaSliderIsOpen) {
+        dispatch(setMediaSliderOpen(false));
+        dispatch(setMediaSliderCurrentFile(null));
+      } else if (location.pathname === '/drive' &&
+      (!!queryData.search || queryData.category !== null)
+      ) {
+        dispatch(assignFilesQueryData({ filesQueryData: { search: null, category: null }}));
+      } else {
+        navigate(-1)
+      }
+    }
+  };
+
+  useTelegramBackButton(
+    handleBackAction,
+    location.pathname !== '/start' && location.pathname !== '/' && isMobilePlatform
+  );
 
   return (
     <NavigationHistoryContext.Provider value={{ history, isInitialRoute }}>

@@ -49,7 +49,8 @@ const driveSlice = createSlice({
       nextFile: null
     },
     fileInfoModal: null,
-    ppvFile: null
+    ppvFile: null,
+    payShareEarn: null,
   },
   reducers: {
     setFilesQueryData: (state, { payload }) => {
@@ -177,7 +178,10 @@ const driveSlice = createSlice({
     },
     setPPVFile: (state, { payload }) => {
       state.ppvFile = payload;
-    }
+    },
+    setPayShareEarn: (state, { payload }) => {
+      state.payShareEarn = payload;
+    },
   }
 });
 
@@ -382,6 +386,7 @@ export const getDriveFiles = createAsyncThunk(
             return { ...item.file, share_file: selectedFile };
           });
           totalFilesCount = files.length;
+          dispatch(setPayShareEarn(res.earned || 0));
           break;
         }
         default: {
@@ -450,6 +455,7 @@ export const clearDriveState = createAsyncThunk(
   'drive/clearDriveState',
   async (_, { dispatch }) => {
     dispatch(setFilesQueryData({ search: null, category: null, page: 1 }));
+    dispatch(setPayShareEarn(null));
     dispatch(setFiles([]));
     dispatch(setFileMenuModal(null));
     dispatch(setFileIsFavoriteUpdating([]));
@@ -466,6 +472,7 @@ export const {
   setItemsPerPage,
   setFiles,
   updateFileProperty,
+  setPayShareEarn,
   addFiles,
   setPPVFile,
   areFilesLoading,
