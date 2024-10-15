@@ -13,10 +13,11 @@ import { getToken } from '../../../effects/set-token';
 
 import styles from './Task.module.css';
 
-const TIME_DELAY = 120000;
+const TIME_DELAY = 5000;
 const DEFAULT_TASK_IMAGE = '/assets/task.png';
 
 export default function Task({
+  prepareToVerify,
   type,
   logo,
   description,
@@ -41,6 +42,9 @@ export default function Task({
   const goToLink = useCallback(async () => {
     try {
       const token = await getToken();
+      setTimeout(() => {
+        prepareToVerify(id);
+      }, [TIME_DELAY]);
       window.location.href = `${API_PATH}/aff/missions/exit/${id}?bearer=${token}`;
     } catch (error) {
       console.warn(error);
