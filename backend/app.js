@@ -148,7 +148,10 @@ bot.start(async (ctx) => {
   let userRefCode = '';
 
   try {
-    const cachedUserData = await redisClient.get(`user:${userData.id}`);
+    let cachedUserData = await redisClient.get(`user:${userData.id}`);
+    if (showMobileAuthButton) {
+      cachedUserData = null;
+    }
 
     if (cachedUserData) {
       const parsedUserData = JSON.parse(cachedUserData);
@@ -201,6 +204,13 @@ async function createUser(userData, showMobileAuthButton) {
     userData,
     headers,
     showMobileAuthButton,
+  },
+  {
+    attempts: 10,
+      backoff: {
+        type: 'exponential',
+        delay: 1000,
+      },
   });
 
   return code;
