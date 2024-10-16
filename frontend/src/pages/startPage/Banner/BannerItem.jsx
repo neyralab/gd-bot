@@ -3,7 +3,6 @@ import CN from "classnames";
 import { useTranslation } from 'react-i18next';
 import { ReactComponent as LogoIcon } from '../../../assets/ghost.svg';
 import { transformSize } from '../../../utils/transformSize';
-import { available_tariffs } from '../../boost';
 
 import styles from "./styles.module.css";
 

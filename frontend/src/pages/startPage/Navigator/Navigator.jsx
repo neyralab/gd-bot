@@ -17,6 +17,7 @@ import {
   isEnabledMultilanguage
 } from '../../../utils/featureFlags';
 import { isDevEnv } from '../../../utils/isDevEnv';
+import { available_tariffs } from '../../boost';
 import { LANGUAGE_LIST } from '../../language';
 import { capitalize } from '../../../utils/string';
 import styles from './Navigator.module.scss';
@@ -25,6 +26,7 @@ const MIN_SHARE_SIZE = 262144000;
 
 export default function Navigator({
   onOpenShareModal,
+  storageSize,
   storage,
   human,
   tasks,
@@ -47,7 +49,7 @@ export default function Navigator({
     } else {
       return false;
     }
-  }, [initialBaner, storageSize]); 
+  }, [storageSize]); 
 
   const NAVIGATION = useMemo(() => {
     const list = [

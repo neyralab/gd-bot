@@ -252,6 +252,7 @@ export const StartPage = ({ tariffs }) => {
         openDisconnectModal={setDisconnectWalletModal}
         tasks={tasks}
         onOpenShareModal={onOpenShareModal}
+        storageSize={user.space_total}
       />
       {/* <ul className={CN(navigatorStyle['navigator'])}>
         <NavigatItem
