@@ -16,6 +16,7 @@ import {
 import { DEFAULT_TARIFFS_NAMES } from '../upgradeStorage';
 import { fromByteToGb } from '../../utils/storage';
 import { transformSize } from '../../utils/transformSize';
+import { isMobilePlatform } from '../../utils/client';
 
 import GhostLoader from '../../components/ghostLoader';
 import FortuneWheel from './FortuneWheel';
@@ -27,6 +28,8 @@ import PointCounter from './PointCounter/PointCounter';
 import SystemModal from '../../components/SystemModal/SystemModal';
 import NavigatItem from './Navigator/NavigatItem';
 import Navigator from './Navigator/Navigator';
+import Header from './Header/Header';
+
 import { runInitAnimation } from './animations';
 import { tg } from '../../App';
 
@@ -231,6 +234,7 @@ export const StartPage = ({ tariffs }) => {
 
   return (
     <div ref={wrapperRef} className={`${style.container}`}>
+      {!isMobilePlatform && <Header />}
       <Banner
         storageSize={user.space_total}
         onOpenShareModal={onOpenShareModal}
@@ -247,8 +251,9 @@ export const StartPage = ({ tariffs }) => {
         human={human}
         openDisconnectModal={setDisconnectWalletModal}
         tasks={tasks}
+        onOpenShareModal={onOpenShareModal}
       />
-      <ul className={CN(navigatorStyle['navigator'])}>
+      {/* <ul className={CN(navigatorStyle['navigator'])}>
         <NavigatItem
           name={t('dashboard.mining')}
           icon={<TapIcon />}
@@ -260,9 +265,9 @@ export const StartPage = ({ tariffs }) => {
           }
           onClick={() => navigate('/game-3d')}
         />
-      </ul>
+      </ul> */}
       {/* {isDev && <Nodes wallet={user?.wallet} />} */}
-      <FortuneWheel />
+      {/* <FortuneWheel /> */}
 
       <footer className={style.footer}>
         <p className={style['footer-text']}>

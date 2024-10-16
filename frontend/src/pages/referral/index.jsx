@@ -6,7 +6,6 @@ import { getBalanceEffect } from '../../effects/balanceEffect';
 import { Header } from '../../components/header';
 import { Tab } from '../../components/tab';
 import { History } from '../../components/history';
-import Menu from '../../components/Menu/Menu';
 import { runInitAnimation } from './animations';
 import styles from './styles.module.css';
 
@@ -82,8 +81,6 @@ export const Referral = () => {
       </div>
 
       <History />
-
-      <Menu />
     </div>
   );
 };

@@ -49,7 +49,7 @@ export const IntroPage = () => {
 
     const isLoadedBefore = localStorage.getItem(DEFAULT_NAME);
     if (isLoadedBefore) {
-      navigate('/start');
+      navigate('/assistant');
       setIsLoading(false);
     } else {
       /**  Extra check because when we update the app,
@@ -61,7 +61,7 @@ export const IntroPage = () => {
           // false if never seen
           if (res) {
             localStorage.setItem(DEFAULT_NAME, true.toString());
-            navigate('/start');
+            navigate('/assistant');
           }
           setIsLoading(false);
         })
@@ -96,7 +96,7 @@ export const IntroPage = () => {
     vibrate();
     localStorage.setItem(DEFAULT_NAME, true.toString());
     sendIntroIsSeen();
-    navigate('/start');
+    navigate('/assistant');
   };
 
   if (isLoading) {

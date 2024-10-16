@@ -6,10 +6,12 @@ import CN from 'classnames';
 import NavigatItem from './NavigatItem';
 import { WalletConnect } from '../../../components/walletConnect';
 import { ReactComponent as WalletIcon } from '../assets/wallet.svg';
-import { ReactComponent as DriveIcon } from '../assets/drive.svg';
 import { ReactComponent as BoostIcon } from '../assets/boost.svg';
+import { ReactComponent as AirdropIcon } from '../../../assets/atr.svg';
 import { ReactComponent as ConvertIcon } from '../assets/convertor.svg';
 import { ReactComponent as LanguageIcon } from '../assets/language.svg';
+import { ReactComponent as GiftIcon } from '../assets/gift.svg';
+
 import {
   isEnabledConverter,
   isEnabledMultilanguage
@@ -19,7 +21,10 @@ import { LANGUAGE_LIST } from '../../language';
 import { capitalize } from '../../../utils/string';
 import styles from './Navigator.module.scss';
 
+const MIN_SHARE_SIZE = 262144000;
+
 export default function Navigator({
+  onOpenShareModal,
   storage,
   human,
   tasks,
@@ -30,34 +35,46 @@ export default function Navigator({
 
   const HIDDEN_OPTION = useMemo(() => {
     const array = [];
-    !isEnabledConverter && array.push(4);
-    !isEnabledMultilanguage && array.push(5);
+    !isEnabledConverter && array.push(5);
+    !isEnabledMultilanguage && array.push(6);
     return array;
   }, []);
+
+  const isGiftShareModalAllowed = useMemo(() => {
+    if (storageSize > available_tariffs["1GB"]) {
+      const availableSize = storageSize - available_tariffs["1GB"];
+      return availableSize > MIN_SHARE_SIZE
+    } else {
+      return false;
+    }
+  }, [initialBaner, storageSize]); 
 
   const NAVIGATION = useMemo(() => {
     const list = [
       {
         id: 1,
-        name: 'G: Drive',
-        icon: <DriveIcon />,
-        html: (
-          <span className={CN(styles.actionBtn, styles.addBt)}>
-            {human.percent.label}
-          </span>
-        ),
-        onClick: () => navigate('/drive')
+        name: 'Airdrop',
+        icon: <AirdropIcon />,
+        html: <span></span>,
+        onClick: () => navigate('/point-tracker')
       },
       {
         id: 2,
+        name: 'Sent a gift',
+        icon: <GiftIcon width='20' />,
+        html: <span></span>,
+        onClick: onOpenShareModal,
+      },
+      {
+        id: 3,
         name: t('dashboard.wallet'),
         icon: <WalletIcon />,
         html: <WalletConnect />,
         onClick: () => {},
       },
       {
-        id: 3,
-        name: t('dashboard.boost'),
+        id: 4,
+        name: 'Premium',
         icon: <BoostIcon />,
         html: (
           <span className={styles.actionBtn}>{`X${storage.multiplier}`}</span>
@@ -65,14 +82,14 @@ export default function Navigator({
         onClick: () => navigate('/boost')
       },
       {
-        id: 4,
+        id: 5,
         name: t('dashboard.conver'),
         icon: <ConvertIcon />,
         html: <span className={styles.actionBtn}>{t('dashboard.go')}</span>,
         onClick: () => navigate('/balance')
       },
       {
-        id: 5,
+        id: 6,
         name: t('dashboard.language'),
         icon: <LanguageIcon />,
         html: (

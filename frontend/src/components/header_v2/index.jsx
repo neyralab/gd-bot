@@ -8,7 +8,7 @@ export const Header = () => {
   return (
     <header>
       <Link
-        to="/start"
+        to="/assistant"
         className={styles['back-button']}
         onClick={() => {vibrate('soft')}}>
         {t('dashboard.back')}

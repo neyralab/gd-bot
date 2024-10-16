@@ -7,8 +7,6 @@ import { available_tariffs } from '../../boost';
 
 import styles from "./styles.module.css";
 
-const MIN_SHARE_SIZE = 262144000;
-
 const BannerItem = ({ 
   title, 
   text, 
@@ -17,29 +15,16 @@ const BannerItem = ({
   bg, 
   onClick, 
   storageSize,  
-  onOpenShareModal 
 }) => {
   const { t } = useTranslation('system');
-  const isGiftShareModalAllowed = useMemo(() => {
-    if (storageSize > available_tariffs["1GB"]) {
-      const availableSize = storageSize - available_tariffs["1GB"];
-      return availableSize > MIN_SHARE_SIZE
-    } else {
-      return false;
-    }
-  }, [initialBaner, storageSize]); 
 
   return (
     <div className={styles.bannerItem} onClick={onClick}>
       <img className={styles.image} src={bg} alt={title} />
       {initialBaner ? (
         <div className={styles.bannerHeader}>
-          <div
-            className={styles.logo}
-            onClick={ isGiftShareModalAllowed ? onOpenShareModal : undefined}
-          >
+          <div className={styles.logo}>
             <LogoIcon />
-             {isGiftShareModalAllowed && <span className={styles.shareText}>{t('share.share')}</span>}
           </div>
           <span className={styles.price}>{transformSize(storageSize)}</span>
         </div>
