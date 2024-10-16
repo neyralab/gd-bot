@@ -25,6 +25,10 @@ export default function Partners({ partners, setPartners, isLoading }) {
     window.open(task.joinLink, '_blank');
   };
 
+  const prepareToVerify = (id) => {
+    setPartners(partners.map((item) => item.id === id ? { ...item, log: true } : item ));
+  }
+
   const doVerify = useCallback(async (id) => {
     try {
       const res = await checkTaskIsDone(id);
@@ -68,6 +72,7 @@ export default function Partners({ partners, setPartners, isLoading }) {
               key={task.id}
               doVerify={doVerify}
               onClick={() => handleClick(task)}
+              prepareToVerify={prepareToVerify}
               {...task}
             />
           );
