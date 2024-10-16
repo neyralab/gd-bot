@@ -28,6 +28,7 @@ import PointCounter from './PointCounter/PointCounter';
 import SystemModal from '../../components/SystemModal/SystemModal';
 import NavigatItem from './Navigator/NavigatItem';
 import Navigator from './Navigator/Navigator';
+import AssistantControls from '../../components/AssistantDashboard/TemporaryControls/TemporaryControls';
 import Header from './Header/Header';
 
 import { runInitAnimation } from './animations';
@@ -254,6 +255,7 @@ export const StartPage = ({ tariffs }) => {
         onOpenShareModal={onOpenShareModal}
         storageSize={user.space_total}
       />
+      <AssistantControls className={style['assistent-controller']} />
       {/* <ul className={CN(navigatorStyle['navigator'])}>
         <NavigatItem
           name={t('dashboard.mining')}
@@ -270,7 +272,7 @@ export const StartPage = ({ tariffs }) => {
       {/* {isDev && <Nodes wallet={user?.wallet} />} */}
       {/* <FortuneWheel /> */}
 
-      <footer className={style.footer}>
+      {/* <footer className={style.footer}>
         <p className={style['footer-text']}>
           <span
             onClick={() => {
@@ -295,7 +297,10 @@ export const StartPage = ({ tariffs }) => {
         </p>
 
         <Link className={style['hidden-button']} to="/assistant" ></Link>
-      </footer>
+      </footer> */}
+
+
+
       {disconnectWalletModal && (
         <DisconnectWalletModal
           isOpen={disconnectWalletModal}

@@ -27,6 +27,7 @@ import SystemModalWrapper from './SystemModalWrapper/SystemModalWrapper';
 import MainButton from './MainButton/MainButton';
 import AdvertisementOfferModal from './AdvertisementOfferModal/AdvertisementOfferModal';
 import AdvertisementPlayModal from './AdvertisementPlayModal/AdvertisementPlayModal';
+import { isMobilePlatform } from '../../utils/client';
 import styles from './styles.module.css';
 
 /** Please, do not add extra selectors or state
@@ -101,7 +102,7 @@ export function GamePage() {
 
   return (
     <div className={styles.container}>
-      <Header />
+      {!isMobilePlatform && <Header />}
 
       <div className={styles.content}>
         <div className={styles['canvas-container']}>

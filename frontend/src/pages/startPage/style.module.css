@@ -124,6 +124,12 @@
   animation: AppearAnim 0.5s ease-out forwards;
 }
 
+.assistent-controller {
+  display: flex;
+  position: initial;
+  margin-top: 10px;
+}
+
 @keyframes AppearAnim {
   0% {
     opacity: 0;

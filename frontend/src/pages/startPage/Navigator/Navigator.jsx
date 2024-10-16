@@ -51,6 +51,12 @@ export default function Navigator({
     }
   }, [storageSize]); 
 
+  const handelGiftShare = () => {
+    if (isGiftShareModalAllowed) {
+      onOpenShareModal()
+    }
+  }
+
   const NAVIGATION = useMemo(() => {
     const list = [
       {
