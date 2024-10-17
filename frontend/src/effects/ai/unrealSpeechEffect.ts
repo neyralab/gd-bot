@@ -30,6 +30,6 @@ export const unrealSpeechStream = async (text: string) => {
     return audioUrl;
   } catch (error) {
     console.error('Error fetching audio:', error);
-    return null;
+    throw error;
   }
 };
