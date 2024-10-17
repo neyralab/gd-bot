@@ -148,7 +148,6 @@ function App() {
               exact
               element={<LeaderboardFriends />}
             />
-            <Route path="/friends" exact element={<FriendsPage />} />
             <Route path="/game-3d" exact element={<GamePage />} />
             <Route
               path="/boost"

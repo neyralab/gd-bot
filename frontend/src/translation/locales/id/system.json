@@ -19,7 +19,12 @@
     "conver": "Konverter",
     "go": "Pergi",
     "language": "Bahasa",
-    "back": "Kembali"
+    "back": "Kembali",
+    "airdrop": "Airdrop",
+    "track": "Lacak",
+    "sendGift": "Kirim hadiah",
+    "gift": "Hadiah",
+    "premium": "Premium"
   },
   "banner": {
     "upload": "Unggah & Simpan file Anda",
@@ -167,5 +172,13 @@
     "offerAcceptDesc": "Kabar baik! Hadiah penyimpanan {size} yang Anda kirimkan untuk {name} telah diterima. Penerima sekarang menikmati ruang tambahan. Terima kasih telah membantu mereka!",
     "tryAgain": "Coba lagi",
     "ok": "OK"
-  }
+  },
+  "assistent": {
+    "messageError": "Terjadi kesalahan saat memproses pesan. Silakan coba lagi",
+    "browserSupport": "Browser Anda tidak mendukung pengenalan suara",
+    "listening": "Saya mendengarkan...",
+    "generat": "Sedang membuat respons...",
+    "space": "Ruang terpakai",
+    "files": "Berkas"
+  }  
 }

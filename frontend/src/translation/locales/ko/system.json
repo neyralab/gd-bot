@@ -19,7 +19,12 @@
     "conver": "변환기",
     "go": "가기",
     "language": "언어",
-    "back": "뒤로"
+    "back": "뒤로",
+    "airdrop": "에어드롭",
+    "track": "추적",
+    "sendGift": "선물을 보냈습니다",
+    "gift": "선물",
+    "premium": "프리미엄"
   },
   "banner": {
     "upload": "파일 업로드 및 저장",
@@ -167,5 +172,13 @@
     "offerAcceptDesc": "좋은 소식입니다! {name}를 위해 보낸 {size} 스토리지 선물이 수락되었습니다. 수신자는 이제 추가 공간을 즐기고 있습니다. 도와주셔서 감사합니다!",
     "tryAgain": "다시 시도",
     "ok": "확인"
-  }
+  },
+  "assistent": {
+    "messageError": "메시지를 처리하는 중에 오류가 발생했습니다. 다시 시도해주세요",
+    "browserSupport": "브라우저가 음성 인식을 지원하지 않습니다",
+    "listening": "듣고 있어요...",
+    "generat": "응답을 생성 중...",
+    "space": "사용된 공간",
+    "files": "파일"
+  }  
 }

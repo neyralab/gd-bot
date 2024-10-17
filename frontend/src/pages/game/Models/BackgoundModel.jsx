@@ -183,7 +183,7 @@ const BackgroundModel = forwardRef((_, ref) => {
       </group>
 
       {/* Glare */}
-      <group ref={glareRef} position={[0, 3, 0]}>
+      {/* <group ref={glareRef} position={[0, 3, 0]}>
         <mesh position={[1, -0.1, -2]} rotation={[0, 0, Math.PI * 2]}>
           <planeGeometry args={[7.5, 7.5]} />
           <meshBasicMaterial
@@ -202,7 +202,7 @@ const BackgroundModel = forwardRef((_, ref) => {
             side={FrontSide}
           />
         </mesh>
-      </group>
+      </group> */}
 
       {/* Planet */}
       <group ref={planetRef} position={[1.1, 10, -1.9]}>

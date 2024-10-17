@@ -19,7 +19,12 @@
     "conver": "Konverter",
     "go": "Los",
     "language": "Sprache",
-    "back": "Zurück"
+    "back": "Zurück",
+    "airdrop": "Airdrop",
+    "track": "Verfolgen",
+    "sendGift": "Geschenk gesendet",
+    "gift": "Geschenk",
+    "premium": "Premium"
   },
   "banner": {
     "upload": "Laden Sie Ihre Dateien hoch und speichern Sie sie",
@@ -167,5 +172,13 @@
     "offerAcceptDesc": "Gute Nachrichten! Das von Ihnen gesendete Speichergeschenk über {size} für {name} wurde akzeptiert. Der Empfänger nutzt nun den zusätzlichen Speicherplatz. Vielen Dank für Ihre Unterstützung!",
     "tryAgain": "Erneut versuchen",
     "ok": "OK"
-  }
+  },
+  "assistent": {
+    "messageError": "Beim Verarbeiten der Nachricht ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut",
+    "browserSupport": "Ihr Browser unterstützt keine Spracherkennung",
+    "listening": "Ich höre zu...",
+    "generat": "Antwort wird generiert...",
+    "space": "Verwendeter Speicherplatz",
+    "files": "Dateien"
+  }  
 }

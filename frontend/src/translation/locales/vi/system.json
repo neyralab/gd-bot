@@ -19,7 +19,12 @@
     "conver": "Chuyển đổi",
     "go": "Đi",
     "language": "Ngôn ngữ",
-    "back": "Quay lại"
+    "back": "Quay lại",
+    "airdrop": "Airdrop",
+    "track": "Theo dõi",
+    "sendGift": "Đã gửi quà",
+    "gift": "Quà",
+    "premium": "Cao cấp"
   },
   "banner": {
     "upload": "Tải lên và lưu trữ tệp của bạn",
@@ -167,5 +172,13 @@
     "offerAcceptDesc": "Tin tuyệt vời! Món quà tặng dung lượng lưu trữ {size} mà bạn đã gửi cho {name} đã được chấp nhận. Người nhận hiện đang tận hưởng không gian bổ sung. Cảm ơn bạn đã giúp họ!",
     "tryAgain": "Thử lại",
     "ok": "OK"
-  }
+  },
+  "assistent": {
+    "messageError": "Đã xảy ra lỗi khi xử lý tin nhắn. Vui lòng thử lại",
+    "browserSupport": "Trình duyệt của bạn không hỗ trợ nhận dạng giọng nói",
+    "listening": "Tôi đang nghe bạn...",
+    "generat": "Đang tạo phản hồi...",
+    "space": "Dung lượng đã sử dụng",
+    "files": "Tệp"
+  }  
 }

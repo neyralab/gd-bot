@@ -19,7 +19,12 @@
     "conver": "Convertidor",
     "go": "Ir",
     "language": "Idioma",
-    "back": "Volver"
+    "back": "Volver",
+    "airdrop": "Airdrop",
+    "track": "Rastrear",
+    "sendGift": "Envié un regalo",
+    "gift": "Regalo",
+    "premium": "Premium"
   },
   "banner": {
     "upload": "Sube y almacena tus archivos",
@@ -167,5 +172,13 @@
     "offerAcceptDesc": "¡Buenas noticias! El regalo de almacenamiento de {size} que enviaste para {name} ha sido aceptado. El destinatario ahora está disfrutando del espacio adicional. ¡Gracias por ayudarles!",
     "tryAgain": "Intentar de nuevo",
     "ok": "OK"
-  }
+  },
+  "assistent": {
+    "messageError": "Ocurrió un error al procesar el mensaje. Por favor, inténtelo de nuevo",
+    "browserSupport": "Su navegador no admite reconocimiento de voz",
+    "listening": "Te estoy escuchando...",
+    "generat": "Generando respuesta...",
+    "space": "Espacio usado",
+    "files": "Archivos"
+  }  
 }

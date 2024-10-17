@@ -5,7 +5,6 @@ import { NavLink, useLocation } from 'react-router-dom';
 import { ReactComponent as LeadboardIcon } from '../../assets/leadboard2.svg';
 import { ReactComponent as FriendsIcon } from '../../assets/groups.svg';
 import { ReactComponent as EarnIcon } from '../../assets/toll.svg';
-import { ReactComponent as AirdropIcon } from '../../assets/atr.svg';
 
 import classNames from 'classnames';
 import styles from './Menu.module.css';
@@ -64,18 +63,6 @@ export default function Menu() {
           <EarnIcon />
         </div>
         <span className={styles.text}>{t('process.earn')}</span>
-      </NavLink>
-
-      <NavLink
-        className={({ isActive }) =>
-          classNames(styles.item, isActive && styles.active)
-        }
-        to={'/point-tracker'}
-      >
-        <div className={styles.icon}>
-          <AirdropIcon />
-        </div>
-        <span className={styles.text}>{t('process.airdrop')}</span>
       </NavLink>
     </div>
   );

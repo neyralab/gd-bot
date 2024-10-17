@@ -6,8 +6,8 @@ import { getBalanceEffect } from '../../effects/balanceEffect';
 import { Header } from '../../components/header';
 import { Tab } from '../../components/tab';
 import { History } from '../../components/history';
-import Menu from '../../components/Menu/Menu';
 import { runInitAnimation } from './animations';
+import { isMobilePlatform } from '../../utils/client';
 import styles from './styles.module.css';
 
 export const Referral = () => {
@@ -54,7 +54,7 @@ export const Referral = () => {
   return (
     <div className={styles.container}>
       <Header
-        hideBack
+        hideBack={isMobilePlatform}
         label={t('airdrop.airdrop')}
         headerClassName={styles.header}
       />
@@ -82,8 +82,6 @@ export const Referral = () => {
       </div>
 
       <History />
-
-      <Menu />
     </div>
   );
 };

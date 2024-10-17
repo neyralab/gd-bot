@@ -1,5 +1,8 @@
 export const API_PATH = `${import.meta.env.VITE_API_PATH}`;
-export const API_PATH_ROOT = `${import.meta.env.VITE_API_PATH}`.replace(/\/api$/, "");
+export const API_PATH_ROOT = `${import.meta.env.VITE_API_PATH}`.replace(
+  /\/api$/,
+  ''
+);
 export const API_AUTHORIZATION = `${import.meta.env.VITE_API_PATH}/tg/auth/telegram`;
 export const API_COUPON = `${import.meta.env.VITE_API_PATH}/use/coupon`;
 export const API_FILE_SHARING = `${import.meta.env.VITE_SHARING_FILE_URL}`;
@@ -7,5 +10,8 @@ export const API_NEYRA = `${import.meta.env.VITE_NEIRA_AI_API}`;
 export const API_NEYRA_CONNECT = `${import.meta.env.VITE_NEIRA_AI_API}/auth/identity/connect_userv8`;
 export const API_TON_WALLET = `${import.meta.env.VITE_NEIRA_AI_API}/gateway/billing/retrieve_crypto`;
 export const API_WEB_APP_URL = `${import.meta.env.VITE_APP_FRONTEND_URL}`;
-export const BOT_NAME = `${import.meta.env.VITE_BOT_NAME}`
-export const ADSGRAM_BLOCK_ID = `${import.meta.env.VITE_APP_ADSGRAM_BLOCK_ID}`
+export const BOT_NAME = `${import.meta.env.VITE_BOT_NAME}`;
+export const ADSGRAM_BLOCK_ID = `${import.meta.env.VITE_APP_ADSGRAM_BLOCK_ID}`;
+export const NEYRA_CHAT_KEY = `${import.meta.env.VITE_NEYRA_CHAT_KEY}`;
+export const UNREAL_SPEECH_KEY = `${import.meta.env.VITE_UNREAL_SPEECH_KEY}`;
+export const API_UNREAL_SPEECH = `https://api.v6.unrealspeech.com/stream`;

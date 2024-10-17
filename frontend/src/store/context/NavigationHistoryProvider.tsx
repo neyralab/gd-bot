@@ -85,7 +85,7 @@ export const NavigationHistoryProvider: React.FC<NavigationHistoryProviderProps>
 
   useTelegramBackButton(
     handleBackAction,
-    location.pathname !== '/start' && location.pathname !== '/' && isMobilePlatform
+    location.pathname !== '/assistant' && location.pathname !== '/' && isMobilePlatform
   );
 
   return (

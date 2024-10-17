@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { TelegramShareButton } from 'react-share';
 import { useTranslation } from 'react-i18next';
+import CN from 'classnames';
 
 import Menu from '../../components/Menu/Menu';
 import Task from '../../components/Task/Task';
@@ -74,9 +75,28 @@ export default function FriendsPage() {
 
   return (
     <div className={styles.container}>
-      <div className={styles['title-block']}>
+      {/* <div className={styles['title-block']}>
         <h1>{t('friends.inviteGetBonus')}</h1>
-      </div>
+      </div> */}
+
+      <h2
+        data-animation="friends-animation-3"
+        className={CN(styles['initial-state-for-animation'], styles['title-block'])}>
+        {t('friends.yourFriends')}{' '}
+        {friendsAreLoading ? '' : `(${friends.length || 0})`}
+      </h2>
+
+      <TelegramShareButton
+        className={styles['invite-button']}
+        url={link.copy}
+        title={t('friends.inviteFriend')}
+        onClick={() => {vibrate('soft')}}>
+        <span
+          data-animation="friends-animation-2"
+          className={styles['initial-state-for-animation']}>
+          {t('friends.inviteFriend')}
+        </span>
+      </TelegramShareButton>
 
       {!showContent && (
         <div className={styles['loader-container']}>
@@ -102,19 +122,7 @@ export default function FriendsPage() {
             })}
           </div>
 
-          <TelegramShareButton
-            className={styles['invite-button']}
-            url={link.copy}
-            title={t('friends.inviteFriend')}
-            onClick={() => {vibrate('soft')}}>
-            <span
-              data-animation="friends-animation-2"
-              className={styles['initial-state-for-animation']}>
-              {t('friends.inviteFriend')}
-            </span>
-          </TelegramShareButton>
-
-          <div className={styles['friends-container']}>
+          {/* <div className={styles['friends-container']}>
             <h2
               data-animation="friends-animation-3"
               className={styles['initial-state-for-animation']}>
@@ -136,11 +144,9 @@ export default function FriendsPage() {
                 })}
               </div>
             )}
-          </div>
+          </div> */}
         </>
       )}
-
-      <Menu />
     </div>
   );
 }

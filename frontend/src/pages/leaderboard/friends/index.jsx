@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 
 import Banner2 from '../assets/Banner2/Banner2';
-import Menu from '../../../components/Menu/Menu';
 import Header from '../assets/Header/Header';
 import Table from '../assets/Table/Table';
 import { getFriends } from '../../../effects/friendsEffect';
@@ -37,7 +36,6 @@ export const LeaderboardFriends = () => {
 
       {!isLoading && leaderboard.length > 0 && <Table items={leaderboard} />}
 
-      <Menu />
     </div>
   );
 };

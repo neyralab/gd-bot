@@ -55,7 +55,7 @@ export default defineConfig({
     }
   },
   optimizeDeps: {
-    include: ['react', 'react-dom', 'three'], // Pre-bundling dependencies
+    include: ['react', 'react-dom', 'three', 'regenerator-runtime'], // Pre-bundling dependencies
     exclude: ['@ffmpeg/ffmpeg', '@ffmpeg/util']
   }
 });

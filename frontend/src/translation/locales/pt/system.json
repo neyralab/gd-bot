@@ -19,7 +19,12 @@
     "conver": "Conversor",
     "go": "Ir",
     "language": "Idioma",
-    "back": "Voltar"
+    "back": "Voltar",
+    "airdrop": "Airdrop",
+    "track": "Rastrear",
+    "sendGift": "Enviou um presente",
+    "gift": "Presente",
+    "premium": "Premium"
   },
   "banner": {
     "upload": "Envie e armazene seus arquivos",
@@ -167,5 +172,13 @@
     "offerAcceptDesc": "Ótimas notícias! O presente de armazenamento de {size} que você enviou para {name} foi aceito. O destinatário agora está aproveitando o espaço adicional. Obrigado por ajudá-los!",
     "tryAgain": "Tente novamente",
     "ok": "OK"
-  }
+  },
+  "assistent": {
+    "messageError": "Ocorreu um erro ao processar a mensagem. Por favor, tente novamente",
+    "browserSupport": "Seu navegador não suporta reconhecimento de voz",
+    "listening": "Estou ouvindo...",
+    "generat": "Gerando resposta...",
+    "space": "Espaço usado",
+    "files": "Arquivos"
+  }  
 }
