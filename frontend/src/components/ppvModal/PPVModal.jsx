@@ -7,7 +7,7 @@ import {
   handlePPVModal
 } from '../../store/reducers/modalSlice';
 import { selectPaymenttByKey } from '../../store/reducers/paymentSlice';
-import { setPPVFile, updateFileProperty } from '../../store/reducers/driveSlice';
+import { setPPVFile, updateFileProperty } from '../../store/reducers/drive/drive.slice';
 import { makeInvoice } from '../../effects/paymentEffect';
 import { INVOICE_TYPE } from '../../utils/createStarInvoice';
 import { sleep } from '../../utils/sleep';

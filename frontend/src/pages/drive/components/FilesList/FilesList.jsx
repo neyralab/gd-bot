@@ -7,11 +7,11 @@ import { ReactComponent as GridIcon } from '../../../../assets/grid_view.svg';
 import { ReactComponent as ListIcon } from '../../../../assets/list_view.svg';
 import { ReactComponent as FileIcon } from '../../../../assets/file_draft.svg';
 import { vibrate } from '../../../../utils/vibration';
+import { setViewType } from '../../../../store/reducers/drive/drive.slice';
 import {
   assignFilesQueryData,
-  getDriveFiles,
-  setViewType
-} from '../../../../store/reducers/driveSlice';
+  getDriveFiles
+} from '../../../../store/reducers/drive/drive.thunks';
 import GhostLoader from '../../../../components/ghostLoader';
 import FileViewController from '../FileViewController/FileViewController';
 import LoaderRow from './LoaderRow/LoaderRow';

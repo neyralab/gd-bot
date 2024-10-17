@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import classNames from 'classnames';
 import { ReactComponent as SearchIcon } from '../../../../assets/search.svg';
 import { ReactComponent as CloseIcon } from '../../../../assets/cross.svg';
-import { assignFilesQueryData } from '../../../../store/reducers/driveSlice';
+import { assignFilesQueryData } from '../../../../store/reducers/drive/drive.thunks';
 import styles from './Search.module.scss';
 
 export default function Search() {

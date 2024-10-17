@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import { AdditiveBlending } from 'three';
 import { useSelector } from 'react-redux';
-import { selectTheme } from '../../../../../store/reducers/gameSlice';
+import { selectTheme } from '../../../../../store/reducers/game/game.selectors';
 import { waveAnimation } from './animations';
 
 const Wave = ({ id, onComplete }) => {

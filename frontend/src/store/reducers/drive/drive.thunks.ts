@@ -1,5 +1,33 @@
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createAsyncThunk } from '@reduxjs/toolkit';
 import { toast } from 'react-toastify';
+import {
+  addFiles,
+  areFilesLazyLoading,
+  areFilesLoading,
+  clearFileIsFavoriteUpdating,
+  setFileIsFavoriteUpdating,
+  setFileMenuModal,
+  setFiles,
+  setFilesQueryData,
+  setFileTypesCount,
+  setFileTypesCountIsFetching,
+  setMediaSliderCurrentFile,
+  setMediaSliderOpen,
+  setStorageInfo,
+  setTotalFilesCount,
+  setTotalPages,
+  setUploadFileIsUploaded,
+  setUploadFileIsUploading,
+  setUploadFileProgress,
+  updateFileProperty
+} from './drive.slice';
+import { getFileTypesCountEffect } from '../../../effects/storageEffects';
+import { getAllPartners } from '../../../effects/EarnEffect';
+import { FilesQueryData } from './drive.types';
+import { RootState } from '..';
+import { uploadFileEffect } from '../../../effects/uploadFileEffect';
+import { getResponseError } from '../../../utils/string';
+import { FileDetails } from '../../../effects/types/files';
 import {
   autoCompleteSearchEffect,
   getDeletedFilesEffect,
@@ -8,266 +36,10 @@ import {
   getFilesEffect,
   getPaidShareFilesEffect,
   updateFileFavoriteEffect
-} from '../../effects/filesEffects';
-import { uploadFileEffect } from '../../effects/uploadFileEffect';
-import { getResponseError } from '../../utils/string';
-import { getFileTypesCountEffect } from '../../effects/storageEffects';
-import { getAllPartners } from '../../effects/EarnEffect';
-import { fromByteToGb, transformSize } from '../../utils/storage';
-import { getToken } from '../../effects/set-token';
-import { getUserEffect } from '../../effects/userEffects';
-import { FileDetails, FileTypesCount } from '../../effects/types/files';
-import { RootState } from '.';
-
-interface FilesQueryData {
-  search: string | null;
-  category: 'all' | 'fav' | 'delete' | 'payShare' | null;
-  page: number;
-}
-
-interface ExtendedFileTypesCount extends FileTypesCount {
-  games: number;
-}
-
-interface StorageInfo {
-  points: number;
-  total: string;
-  used: string;
-  percent: {
-    label: string;
-    value: number;
-  };
-}
-
-type ViewType = 'grid' | 'list';
-
-interface MediaSlider {
-  isOpen: boolean;
-  previousFile: FileDetails | null;
-  currentFile: FileDetails | null;
-  nextFile: FileDetails | null;
-}
-
-interface UploadFile {
-  isUploading: boolean;
-  progress: number | null;
-  isUploaded: boolean;
-}
-
-interface InitialState {
-  filesQueryData: FilesQueryData;
-  viewType: ViewType;
-  files: FileDetails[];
-  totalFilesCount: number;
-  totalPages: number;
-  itemsPerPage: number;
-  areFilesLoading: boolean;
-  areFilesLazyLoading: boolean;
-  uploadFile: UploadFile;
-  fileTypesCount: ExtendedFileTypesCount | {};
-  fileTypesCountIsFetching: boolean;
-  fileIsFavoriteUpdating: string[];
-  fileMenuModal: FileDetails | null;
-  storageInfo: StorageInfo | null;
-  mediaSlider: MediaSlider;
-  fileInfoModal: FileDetails | null;
-  ppvFile: FileDetails | null;
-}
-
-const initialState: InitialState = {
-  filesQueryData: {
-    search: null,
-    category: null,
-    page: 1
-  },
-  viewType: 'grid',
-  files: [],
-  totalFilesCount: 0,
-  totalPages: 0,
-  itemsPerPage: 0,
-  areFilesLoading: false,
-  areFilesLazyLoading: false,
-  uploadFile: {
-    isUploading: false,
-    progress: null,
-    isUploaded: false
-  },
-  fileTypesCount: {},
-  fileTypesCountIsFetching: false,
-  fileIsFavoriteUpdating: [],
-  fileMenuModal: null,
-  storageInfo: null,
-  mediaSlider: {
-    isOpen: false,
-    previousFile: null,
-    currentFile: null,
-    nextFile: null
-  },
-  fileInfoModal: null,
-  ppvFile: null
-};
-
-const driveSlice = createSlice({
-  name: 'drive',
-  initialState: initialState,
-  reducers: {
-    setFilesQueryData: (state, { payload }: PayloadAction<FilesQueryData>) => {
-      state.filesQueryData = payload;
-    },
-    setViewType: (state, { payload }: PayloadAction<ViewType>) => {
-      state.viewType = payload;
-    },
-    setTotalFilesCount: (state, { payload }: PayloadAction<number>) => {
-      state.totalFilesCount = payload;
-    },
-    setTotalPages: (state, { payload }: PayloadAction<number>) => {
-      state.totalPages = payload;
-    },
-    setItemsPerPage: (state, { payload }: PayloadAction<number>) => {
-      state.itemsPerPage = payload;
-    },
-    setFiles: (state, { payload }: PayloadAction<FileDetails[]>) => {
-      state.files = payload;
-    },
-    updateFileProperty: (
-      state,
-      {
-        payload
-      }: PayloadAction<{ id: number; property: keyof FileDetails; value: any }>
-    ) => {
-      const { id, property, value } = payload;
-      const fileIndex = state.files.findIndex((file) => file.id === id);
-      if (fileIndex !== -1) {
-        (state.files[fileIndex][property] as typeof value) = value;
-      }
-
-      if (
-        state.mediaSlider.currentFile &&
-        state.mediaSlider.currentFile.id === id
-      ) {
-        (state.mediaSlider.currentFile[property] as typeof value) = value;
-      }
-
-      if (state.mediaSlider.nextFile && state.mediaSlider.nextFile.id === id) {
-        (state.mediaSlider.nextFile[property] as typeof value) = value;
-      }
-
-      if (
-        state.mediaSlider.previousFile &&
-        state.mediaSlider.previousFile.id === id
-      ) {
-        (state.mediaSlider.previousFile[property] as typeof value) = value;
-      }
-
-      if (state.fileMenuModal && state.fileMenuModal.id === id) {
-        (state.fileMenuModal[property] as typeof value) = value;
-      }
-
-      if (state.fileInfoModal && state.fileInfoModal.id === id) {
-        (state.fileInfoModal[property] as typeof value) = value;
-      }
-    },
-
-    addFiles: (state, { payload }: PayloadAction<FileDetails[]>) => {
-      state.files = [...state.files, ...payload];
-    },
-    areFilesLoading: (state, { payload }: PayloadAction<boolean>) => {
-      state.areFilesLoading = payload;
-    },
-    areFilesLazyLoading: (state, { payload }: PayloadAction<boolean>) => {
-      state.areFilesLazyLoading = payload;
-    },
-    setUploadFileIsUploading: (state, { payload }: PayloadAction<boolean>) => {
-      state.uploadFile.isUploading = payload;
-    },
-    setUploadFileProgress: (
-      state,
-      { payload }: PayloadAction<number | null>
-    ) => {
-      state.uploadFile.progress = payload;
-    },
-    setUploadFileIsUploaded: (state, { payload }: PayloadAction<boolean>) => {
-      state.uploadFile.isUploaded = payload;
-    },
-    setFileTypesCountIsFetching: (
-      state,
-      { payload }: PayloadAction<boolean>
-    ) => {
-      state.fileTypesCountIsFetching = payload;
-    },
-    setFileTypesCount: (
-      state,
-      { payload }: PayloadAction<ExtendedFileTypesCount>
-    ) => {
-      state.fileTypesCount = payload;
-    },
-    setFileIsFavoriteUpdating: (
-      state,
-      { payload }: PayloadAction<{ method: 'add' | 'remove'; slug: string }>
-    ) => {
-      if (payload.method === 'add') {
-        state.fileIsFavoriteUpdating.push(payload.slug);
-      } else if (payload.method === 'remove') {
-        state.fileIsFavoriteUpdating = state.fileIsFavoriteUpdating.filter(
-          (slug) => slug !== payload.slug
-        );
-      }
-    },
-    clearFileIsFavoriteUpdating: (state) => {
-      state.fileIsFavoriteUpdating = [];
-    },
-    setFileMenuModal: (
-      state,
-      { payload }: PayloadAction<FileDetails | null>
-    ) => {
-      state.fileMenuModal = payload;
-    },
-    setStorageInfo: (state, { payload }: PayloadAction<StorageInfo | null>) => {
-      state.storageInfo = payload;
-    },
-    setMediaSliderOpen: (state, { payload }: PayloadAction<boolean>) => {
-      state.mediaSlider.isOpen = payload;
-    },
-    setMediaSliderCurrentFile: (
-      state,
-      { payload }: PayloadAction<FileDetails | null>
-    ) => {
-      let currentFile = payload;
-      let currentFileIndex = -1;
-      if (currentFile) {
-        currentFileIndex = state.files.findIndex(
-          (el) => el.id === currentFile!.id
-        );
-      }
-      if (currentFileIndex >= 0) {
-        currentFile = state.files[currentFileIndex];
-      }
-
-      let previousFile = null;
-      if (currentFileIndex > 0) {
-        previousFile = state.files[currentFileIndex - 1];
-      }
-
-      let nextFile = null;
-      if (currentFileIndex < state.files.length - 1) {
-        nextFile = state.files[currentFileIndex + 1];
-      }
-
-      state.mediaSlider.previousFile = previousFile;
-      state.mediaSlider.currentFile = currentFile;
-      state.mediaSlider.nextFile = nextFile;
-    },
-    setFileInfoModal: (
-      state,
-      { payload }: PayloadAction<FileDetails | null>
-    ) => {
-      state.fileInfoModal = payload;
-    },
-    setPPVFile: (state, { payload }: PayloadAction<FileDetails | null>) => {
-      state.ppvFile = payload;
-    }
-  }
-});
+} from '../../../effects/filesEffects';
+import { getToken } from '../../../effects/set-token';
+import { getUserEffect } from '../../../effects/userEffects';
+import { fromByteToGb, transformSize } from '../../../utils/storage';
 
 export const initDrive = createAsyncThunk(
   'drive/initDrive',
@@ -561,30 +333,3 @@ export const clearDriveState = createAsyncThunk(
     dispatch(setMediaSliderCurrentFile(null));
   }
 );
-
-export const {
-  setFilesQueryData,
-  setViewType,
-  setTotalFilesCount,
-  setTotalPages,
-  setItemsPerPage,
-  setFiles,
-  updateFileProperty,
-  addFiles,
-  setPPVFile,
-  areFilesLoading,
-  areFilesLazyLoading,
-  setUploadFileIsUploading,
-  setUploadFileProgress,
-  setUploadFileIsUploaded,
-  setFileTypesCount,
-  setFileTypesCountIsFetching,
-  setFileIsFavoriteUpdating,
-  clearFileIsFavoriteUpdating,
-  setFileMenuModal,
-  setStorageInfo,
-  setMediaSliderOpen,
-  setMediaSliderCurrentFile,
-  setFileInfoModal
-} = driveSlice.actions;
-export default driveSlice.reducer;

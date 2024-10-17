@@ -23,21 +23,23 @@ import { SlidingModal } from '../../../components/slidingModal';
 import PaymentMenu from '../../../components/paymentMenu/Menu';
 
 import {
-  selectContractAddress,
-  selectIsGameDisabled,
-  selectStatus,
-  selectTheme,
-  selectThemeAccess,
-  selectThemes,
   setGameId,
   setGameInfo,
   setIsTransactionLoading,
   setLockIntervalId,
   setLockTimerTimestamp,
   setStatus,
-  setThemeAccess,
-  startCountdown
-} from '../../../store/reducers/gameSlice';
+  setThemeAccess
+} from '../../../store/reducers/game/game.slice';
+import { startCountdown } from '../../../store/reducers/game/game.thunks';
+import {
+  selectContractAddress,
+  selectIsGameDisabled,
+  selectStatus,
+  selectTheme,
+  selectThemeAccess,
+  selectThemes
+} from '../../../store/reducers/game/game.selectors';
 import {
   handlePaymentSelectModal,
   selectPaymentSelectModal
@@ -56,7 +58,7 @@ import { useOnConnect } from '../../../utils/useOnConnect';
 import {
   isAnyPaymentEnabled,
   isTonPaymentEnabled,
-  isStarsPaymentEnabled,
+  isStarsPaymentEnabled
 } from '../../../utils/paymentChecker';
 import { sleep } from '../../../utils/sleep';
 import styles from './BuyButton.module.css';
@@ -80,8 +82,14 @@ export default function BuyButton() {
   const user = useSelector((state) => state?.user?.data);
   const contractAddress = useSelector(selectContractAddress);
   const [isDisabled, setIsDisabled] = useState(false);
-  const isStarPaymentAllow = useMemo(() => isStarsPaymentEnabled && theme.stars, [isStarsPaymentEnabled, theme]);
-  const isTonPaymentAllow = useMemo(() => isTonPaymentEnabled && theme.ton_price, [isTonPaymentEnabled, theme]);
+  const isStarPaymentAllow = useMemo(
+    () => isStarsPaymentEnabled && theme.stars,
+    [isStarsPaymentEnabled, theme]
+  );
+  const isTonPaymentAllow = useMemo(
+    () => isTonPaymentEnabled && theme.ton_price,
+    [isTonPaymentEnabled, theme]
+  );
 
   const clickHandler = async () => {
     if (isDisabled) return;
@@ -218,16 +226,13 @@ export default function BuyButton() {
         const mercureJwt = await getMercureJwt();
         const urlOrign = getOriginWithoutSubdomain(API_NEYRA);
         const url = new URL(`${urlOrign}/.well-known/mercure`);
-        url.searchParams.append(
-          'topic',
-          `gamev2-${user.id}`
-        );
+        url.searchParams.append('topic', `gamev2-${user.id}`);
         const eventSource = new EventSourcePolyfill(url, {
           withCredentials: true,
           onmessage: () => {},
           headers: {
-            Authorization: `Bearer ${mercureJwt}`,
-          },
+            Authorization: `Bearer ${mercureJwt}`
+          }
         });
         eventSource.onmessage = async (data) => {
           try {
@@ -238,11 +243,11 @@ export default function BuyButton() {
             afterBought();
             eventSource?._close?.();
           } catch (error) {
-            console.warn(`error: Cannot find the game. ${result}`)
+            console.warn(`error: Cannot find the game. ${result}`);
           }
-        }
+        };
       } else {
-        console.warn(`error: The payment was not completed. ${result}`)
+        console.warn(`error: The payment was not completed. ${result}`);
       }
     } catch (error) {
       console.warn('error: ', error);
@@ -265,9 +270,9 @@ export default function BuyButton() {
       dispatch,
       callback: invoiceCallback,
       type: INVOICE_TYPE.game,
-      theme,
-    }); 
-  }
+      theme
+    });
+  };
 
   const handleStartPayment = (el) => {
     if (el.action === 'ton') {
@@ -286,20 +291,24 @@ export default function BuyButton() {
     } else {
       clickHandler();
     }
-  }
+  };
 
-  if (status !== 'playing' && !themeAccess[theme.id] &&  theme?.id !== 'hawk' && isAnyPaymentEnabled) {
+  if (
+    status !== 'playing' &&
+    !themeAccess[theme.id] &&
+    theme?.id !== 'hawk' &&
+    isAnyPaymentEnabled
+  ) {
     return (
       <div className={styles['actions-flex']}>
         <button
           type="button"
           className={classNames(styles.button, styles[theme.id])}
           disabled={isGameDisabled}
-          onClick={hanldePyamentBtnClick}
-        >
+          onClick={hanldePyamentBtnClick}>
           {isStarPaymentAllow ? (
             <StarIcon className={styles['star-icon']} viewBox="0 0 21 21" />
-            ) : (
+          ) : (
             <TonIcon className={styles['star-icon']} viewBox="0 0 24 24" />
           )}
           <span className={styles.cost}>

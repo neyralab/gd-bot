@@ -10,7 +10,7 @@ import {
   setPPVFile,
   setFileMenuModal,
   updateFileProperty
-} from '../../../../store/reducers/driveSlice';
+} from '../../../../store/reducers/drive/drive.slice';
 import {
   updateShareEffect,
   deletePaidShareEffect

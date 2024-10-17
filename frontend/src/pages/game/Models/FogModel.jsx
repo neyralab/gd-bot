@@ -5,7 +5,7 @@ import { Color, MathUtils } from 'three';
 import {
   selectNextTheme,
   selectTheme
-} from '../../../store/reducers/gameSlice';
+} from '../../../store/reducers/game/game.selectors';
 
 export default function FogModel() {
   const theme = useSelector(selectTheme);

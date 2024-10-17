@@ -3,22 +3,22 @@ import classNames from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import {
-  refreshFreeGame,
   setAdvertisementModal,
   setAdvertisementOfferModal
-} from '../../../store/reducers/gameSlice';
+} from '../../../store/reducers/game/game.slice';
+import { refreshFreeGame } from '../../../store/reducers/game/game.thunks';
 import { useAdsgram } from '../../../utils/useAdsgram';
 import { ADSGRAM_BLOCK_ID } from '../../../utils/api-urls';
 import { isValidEnvVariable } from '../../../utils/string';
 
 import {
   startWatchingAdvertisementVideo,
-  endWatchingAdvertisementVideo,
+  endWatchingAdvertisementVideo
 } from '../../../effects/advertisementEffect';
 import { AdController } from '../../../App';
 import styles from './AdvertisementOfferModal.module.scss';
 
-const HIDE_ADD_MODAL_KEY = 'ad-modal-display'; 
+const HIDE_ADD_MODAL_KEY = 'ad-modal-display';
 
 export default function AdvertisementOfferModal() {
   const dispatch = useDispatch();
@@ -40,20 +40,23 @@ export default function AdvertisementOfferModal() {
     });
     return translatedText.split(new RegExp(`(${points})`));
   }, [t, advertisementOfferModal]);
-  const isADModalHidden = useMemo(() => (
-    !!JSON.parse(localStorage.getItem(HIDE_ADD_MODAL_KEY))
-  ), [status, theme]);
+  const isADModalHidden = useMemo(
+    () => !!JSON.parse(localStorage.getItem(HIDE_ADD_MODAL_KEY)),
+    [status, theme]
+  );
 
   useEffect(() => {
     if (AdController) {
-      const bannerNotFound = () => { console.warn('onBannerNotFound') };
+      const bannerNotFound = () => {
+        console.warn('onBannerNotFound');
+      };
       AdController?.addEventListener?.('onBannerNotFound', bannerNotFound);
-  
+
       return () => {
         AdController?.removeEventListener?.('onBannerNotFound', bannerNotFound);
-      }
+      };
     }
-  }, [AdController])
+  }, [AdController]);
 
   useEffect(() => {
     if (
@@ -79,11 +82,17 @@ export default function AdvertisementOfferModal() {
     ) {
       closeModal();
     }
-  }, [advertisementOfferModal, theme.id, nextTheme.isSwitching, status, isADModalHidden]);
+  }, [
+    advertisementOfferModal,
+    theme.id,
+    nextTheme.isSwitching,
+    status,
+    isADModalHidden
+  ]);
 
   const disabledAdModal = () => {
     localStorage.setItem(HIDE_ADD_MODAL_KEY, true);
-  }
+  };
 
   const showLocalAD = () => {
     dispatch(
@@ -115,12 +124,12 @@ export default function AdvertisementOfferModal() {
     } catch (error) {
       console.warn(error);
     }
-  }
+  };
 
   const onError = (e) => {
     console.warn('Adsgram error: ', e);
     showLocalAD();
-  }
+  };
 
   const showAd = useAdsgram({ onReward, onError });
 
@@ -138,7 +147,7 @@ export default function AdvertisementOfferModal() {
     } catch (error) {
       console.warn(error);
     }
-  }
+  };
 
   if (!isOpen) return null;
 

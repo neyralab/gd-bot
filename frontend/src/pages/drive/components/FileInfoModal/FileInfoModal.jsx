@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
 import classNames from 'classnames';
 import { SlidingModal } from '../../../../components/slidingModal';
-import { setFileInfoModal } from '../../../../store/reducers/driveSlice';
+import { setFileInfoModal } from '../../../../store/reducers/drive/drive.slice';
 import { transformSize } from '../../../../utils/transformSize';
 import { removeExtension } from '../../../../utils/string';
 import CopyButton from '../../../../components/copyButton';
