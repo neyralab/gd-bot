@@ -28,8 +28,8 @@ import PointCounter from './PointCounter/PointCounter';
 import SystemModal from '../../components/SystemModal/SystemModal';
 import NavigatItem from './Navigator/NavigatItem';
 import Navigator from './Navigator/Navigator';
+import UserCard from './UserCard/UserCard';
 import AssistantControls from '../../components/AssistantDashboard/TemporaryControls/TemporaryControls';
-import Header from './Header/Header';
 
 import { runInitAnimation } from './animations';
 import { tg } from '../../App';
@@ -235,12 +235,13 @@ export const StartPage = ({ tariffs }) => {
 
   return (
     <div ref={wrapperRef} className={`${style.container}`}>
-      {!isMobilePlatform && <Header />}
-      <Banner
+      {/* <Banner
         storageSize={user.space_total}
         onOpenShareModal={onOpenShareModal}
         data-animation="start-page-animation-2"
-      />
+      /> */}
+
+      <UserCard />
 
       <PointCounter
         points={user?.points}

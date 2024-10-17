@@ -14,8 +14,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 66px;
-  height: 66px;
+  width: 70px;
+  height: 70px;
   position: relative;
 
   svg {
@@ -31,8 +31,8 @@
 
 .loader-container {
   position: absolute;
-  width: 64px;
-  height: 64px;
+  width: 70px;
+  height: 70px;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%) scale(1);

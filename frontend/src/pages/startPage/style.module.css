@@ -14,7 +14,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 20px 16px;
+  padding: 20px 16px 10px 16px;
   height: 100%;
   width: 100%;
   overflow-x: hidden;
@@ -25,7 +25,7 @@
 }
 
 .point-counter {
-  margin-top: 10px;
+  margin-top: 24px;
 }
 
 .footer {
@@ -127,7 +127,9 @@
 .assistent-controller {
   display: flex;
   position: initial;
-  margin-top: 10px;
+  margin-top: auto;
+  padding-top: 16px;
+  animation: AppearAnim 0.5s ease-out forwards;
 }
 
 @keyframes AppearAnim {
@@ -144,7 +146,6 @@
     transform: scale(1);
   }
 }
-
 
 .hidden-button {
   position: fixed;

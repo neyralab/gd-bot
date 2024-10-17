@@ -15,6 +15,7 @@ import { Header } from '../../components/header_v2';
 import BuyButton from './BuyButton/BuyButton';
 import Timer from './Timer/Timer';
 import Menu from '../../components/Menu/Menu';
+import TemporaryControls from '../../components/AssistantDashboard/TemporaryControls/TemporaryControls';
 import ProgressBar from './ProgressBar/ProgressBar';
 import GhostLoader from '../../components/ghostLoader';
 import Balance from './Balance/Balance';
@@ -95,15 +96,14 @@ export function GamePage() {
         <GhostLoader
           texts={isTransactionLoading ? [t('message.transaction')] : []}
         />
-        <Menu />
+        <TemporaryControls className={styles['control-paner']} />
       </>
     );
   }
 
   return (
     <div className={styles.container}>
-      {!isMobilePlatform && <Header />}
-
+      <Header />
       <div className={styles.content}>
         <div className={styles['canvas-container']}>
           <div
@@ -141,7 +141,7 @@ export function GamePage() {
         </div>
       </div>
 
-      <Menu />
+      <TemporaryControls />
 
       <GoldPlayModal />
 

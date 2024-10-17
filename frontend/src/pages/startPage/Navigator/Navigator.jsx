@@ -61,28 +61,28 @@ export default function Navigator({
     const list = [
       {
         id: 1,
-        name: 'Airdrop',
-        icon: <AirdropIcon />,
-        html: <span></span>,
-        onClick: () => navigate('/point-tracker')
-      },
-      {
-        id: 2,
-        name: 'Sent a gift',
-        icon: <GiftIcon width='20' />,
-        html: <span></span>,
-        onClick: onOpenShareModal,
-      },
-      {
-        id: 3,
         name: t('dashboard.wallet'),
         icon: <WalletIcon />,
         html: <WalletConnect />,
         onClick: () => {},
       },
       {
+        id: 2,
+        name: t('dashboard.airdrop'),
+        icon: <AirdropIcon />,
+        html: <span className={styles.actionBtn}>{t('dashboard.track')}</span>,
+        onClick: () => navigate('/point-tracker')
+      },
+      {
+        id: 3,
+        name: t('dashboard.sendGift'),
+        icon: <GiftIcon />,
+        html: <span className={styles.actionBtn}>{t('dashboard.gift')}</span>,
+        onClick: onOpenShareModal,
+      },
+      {
         id: 4,
-        name: 'Premium',
+        name: t('dashboard.premium'),
         icon: <BoostIcon />,
         html: (
           <span className={styles.actionBtn}>{`X${storage.multiplier}`}</span>

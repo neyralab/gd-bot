@@ -1,5 +1,6 @@
-import { useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useRef, useState, useMemo } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import 'regenerator-runtime/runtime'; // this thing is important for speech recognition to be imported before react-speech-recognition
 import SpeechRecognition, {
@@ -23,7 +24,9 @@ export default function TemporaryControls({ className }) {
   const [isRecodring, setIsRecording] = useState(false);
   const [recordedText, setRecordedText] = useState('');
   const [isResponseGenerating, setIsResponseGenerating] = useState(false);
+  const { t } = useTranslation('system');
   const navigate = useNavigate();
+  const location = useLocation();
   const audioRef = useRef(null);
   const {
     transcript,
@@ -31,6 +34,7 @@ export default function TemporaryControls({ className }) {
     resetTranscript,
     browserSupportsSpeechRecognition
   } = useSpeechRecognition({ clearTranscriptOnListen: true });
+  const isAssistantPage = useMemo(() => location.pathname === '/assistant', [location]);
 
   const getNeyraResponse = async (text) => {
     try {
@@ -45,9 +49,7 @@ export default function TemporaryControls({ className }) {
       }
     } catch (error) {
       console.error('Error:', error);
-      toast.error(
-        'An error occurred while processing message. Please try again'
-      );
+      toast.error(t('assistent.messageError'));
     } finally {
       setIsResponseGenerating(false);
     }
@@ -61,7 +63,7 @@ export default function TemporaryControls({ className }) {
 
   const startRecording = () => {
     if (!browserSupportsSpeechRecognition) {
-      toast.error('Your browser does not support speech recognition');
+      toast.error(t('assistent.browserSupport'));
       return;
     }
     setIsRecording(true);
@@ -90,35 +92,52 @@ export default function TemporaryControls({ className }) {
   });
 
   const goToDrive = () => {
-    navigate('/drive');
-  };
+    navigate(location.pathname === '/drive' ? '/assistant' : '/drive');
+  }
 
   const goToGame = () => {
-    navigate('/game-3d');
-  };
+    navigate(location.pathname === '/game-3d' ? '/assistant' : '/game-3d');
+  }
+
+  const clickProps = useMemo(() => isAssistantPage ?
+    { onClick: listening ? stopRecording : startRecording } :
+    { ...bind() }
+  , [listening, isAssistantPage]);
 
   return (
     <div className={CN(styles.controls, className)}>
-      <button className={styles['navigate-button']} onClick={goToDrive}>
+      <button
+        className={CN(
+          styles['navigate-button'],
+          location.pathname === '/drive' && styles['active-button']
+        )}
+        onClick={goToDrive}
+      >
         <RectIcon width="100%" height="100%" viewBox="0 0 34 34" />
       </button>
-      <button className={styles['main-button']} {...bind()}>
+      <button className={styles['main-button']} { ...clickProps }>
         {isRecodring ? (
-          <StopRecordIcon width="100%" height="100%" viewBox="0 0 70 70" />
+          <StopRecordIcon width="70" height="70" viewBox="0 0 70 70" />
         ) : (
           <UploadAction />
         )}
       </button>
-      <button className={styles['navigate-button']} onClick={goToGame}>
+      <button
+        className={CN(
+          styles['navigate-button'],
+          location.pathname === '/game-3d' && styles['active-button']
+        )}
+        onClick={goToGame}
+      >
         <TriangleIcon width="100%" height="100%" viewBox="0 0 34 34" />
       </button>
       <audio ref={audioRef} className={styles['hidden']} />
       {isRecodring && (
-        <div className={styles['listening-tooltip']}>I'm listening you...</div>
+        <div className={styles['listening-tooltip']}>{t('assistent.listening')}</div>
       )}
       {isResponseGenerating && (
         <div className={styles['listening-tooltip']}>
-          Generating response...
+         {t('assistent.generat')}
         </div>
       )}
     </div>

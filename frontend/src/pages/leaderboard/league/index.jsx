@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 
 import { getLeaderboardEffect } from '../../../effects/leaderboardEffect';
 import Banner1 from '../assets/Banner1/Banner1';
-import Menu from '../../../components/Menu/Menu';
 import Header from '../assets/Header/Header';
 import Statistic from '../assets/Statistic/Statistic';
 import Table from '../assets/Table/Table';
@@ -59,7 +58,6 @@ export const LeaderboardLeague = () => {
         </>
       )}
 
-      <Menu />
     </div>
   );
 };
