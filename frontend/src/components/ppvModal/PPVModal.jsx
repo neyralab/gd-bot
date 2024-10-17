@@ -3,8 +3,8 @@ import Modal from 'react-modal';
 import { useDispatch, useSelector } from 'react-redux';
 
 import {
-  selectPaperViewModal,
-  handlePaperViewModal
+  selectPPVModal,
+  handlePPVModal
 } from '../../store/reducers/modalSlice';
 import { selectPaymenttByKey } from '../../store/reducers/paymentSlice';
 import { setPPVFile, updateFileProperty } from '../../store/reducers/driveSlice';
@@ -23,7 +23,7 @@ const INITIAL_STATE = { view: 1, download: 0, description: '' };
 
 const PPVModal = () => {
   const dispatch = useDispatch();
-  const isOpen = useSelector(selectPaperViewModal);
+  const isOpen = useSelector(selectPPVModal);
   const [isProccess, setIsProccess] = useState(false);
   const user = useSelector((state) => state.user.data);
   const [state, setState] = useState(INITIAL_STATE);
@@ -42,7 +42,7 @@ const PPVModal = () => {
   }, [isPPVActivated]);
 
   const onClose = () => {
-    dispatch(handlePaperViewModal(false));
+    dispatch(handlePPVModal(false));
     dispatch(setPPVFile({}));
     setState(INITIAL_STATE);
   };

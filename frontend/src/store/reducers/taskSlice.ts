@@ -7,15 +7,22 @@ interface Partners {
   tasks: Task[];
 }
 
+interface InitialState {
+  tasks: Task[];
+  partners: Partners;
+}
+
+const initialState: InitialState = {
+  tasks: [],
+  partners: {
+    games: [],
+    tasks: []
+  }
+};
+
 const taskSlice = createSlice({
   name: 'task',
-  initialState: {
-    tasks: [] as Task[],
-    partners: {
-      games: [],
-      tasks: []
-    } as Partners
-  },
+  initialState: initialState,
   reducers: {
     handleTasks: (state, { payload }: PayloadAction<Task[]>) => {
       state.tasks = payload;

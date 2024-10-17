@@ -1,14 +1,23 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '.';
 
+interface InitialState {
+  currentWorkspace: number | null;
+  allWorkspaces: number[] | null;
+  workspacePlan: number | boolean | null;
+  totalWsCount: number;
+}
+
+const initialState: InitialState = {
+  currentWorkspace: null,
+  allWorkspaces: null,
+  workspacePlan: null,
+  totalWsCount: 1
+};
+
 const workspaceSlice = createSlice({
   name: 'workspace',
-  initialState: {
-    currentWorkspace: null as number | null,
-    allWorkspaces: null as number[] | null,
-    workspacePlan: null as number | boolean | null,
-    totalWsCount: 1 as number
-  },
+  initialState: initialState,
   reducers: {
     setCurrentWorkspace: (state, { payload }: PayloadAction<number | null>) => {
       state.currentWorkspace = payload;

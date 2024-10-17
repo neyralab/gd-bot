@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-import { handlePaperViewModal } from '../../../../store/reducers/modalSlice';
+import { handlePPVModal } from '../../../../store/reducers/modalSlice';
 import {
   setPPVFile,
   setFileMenuModal,
@@ -94,7 +94,7 @@ export const FileMenuModal = () => {
         );
         dispatch(setFileMenuModal({ ...file, share_file: null }));
       } else {
-        dispatch(handlePaperViewModal(true));
+        dispatch(handlePPVModal(true));
         dispatch(setFileMenuModal(null));
         dispatch(setPPVFile(file));
       }
@@ -105,7 +105,7 @@ export const FileMenuModal = () => {
 
   const onEditPPV = () => {
     dispatch(setFileMenuModal(null));
-    dispatch(handlePaperViewModal(true));
+    dispatch(handlePPVModal(true));
     dispatch(setPPVFile(file));
   };
 

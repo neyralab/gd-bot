@@ -7,17 +7,25 @@ interface UserLinks {
   label: string;
 }
 
+interface InitialState {
+  data: Me | null;
+  link: UserLinks;
+  initData: string | null;
+}
+
+const initialState: InitialState = {
+  data: null,
+  link: {
+    copy: '',
+    send: '',
+    label: ''
+  },
+  initData: null
+};
+
 const userSlice = createSlice({
   name: 'user',
-  initialState: {
-    data: null as Me | null,
-    link: {
-      copy: '',
-      send: '',
-      label: ''
-    } as UserLinks,
-    initData: null as string | null
-  },
+  initialState: initialState,
   reducers: {
     setUser: (state, { payload }: PayloadAction<Me | null>) => {
       state.data = payload;

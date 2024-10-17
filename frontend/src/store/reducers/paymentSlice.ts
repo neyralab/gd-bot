@@ -2,11 +2,17 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '.';
 import { PaymentType } from '../../effects/types/payments';
 
+interface InitialState {
+  types: PaymentType[];
+}
+
+const initialState: InitialState = {
+  types: []
+};
+
 const paymentSlice = createSlice({
   name: 'payment',
-  initialState: {
-    types: [] as PaymentType[]
-  },
+  initialState: initialState,
   reducers: {
     handlePayment: (state, { payload }: PayloadAction<PaymentType[]>) => {
       state.types = payload || [];

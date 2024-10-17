@@ -6,7 +6,7 @@ import { Me, UserPublicAddress } from './types/users';
 
 export const getUserEffect = async (token: string) => {
   try {
-    const response = await axiosInstance.get<{ data: Me }>(
+    const response = await axiosInstance.get<Me>(
       `${API_PATH}/tg/me`,
       {
         headers: {

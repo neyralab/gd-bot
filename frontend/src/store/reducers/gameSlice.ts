@@ -47,105 +47,122 @@ interface Balance {
   label: number; // points
 }
 
+interface InitialState {
+  isInitializing: boolean;
+  isInitialized: boolean;
+  isCanvasLoaded: boolean;
+  contractAddress: string | null;
+  gameId: number | null;
+  themes: GameTheme[];
+  isTransactionLoading: boolean;
+  status: GameStatus;
+  theme: GameTheme | null;
+  levels: GameLevel[];
+  themeAccess: GameAccess;
+  balance: Balance;
+  experienceLevel: number;
+  experiencePoints: number;
+  maxLevel: number;
+  reachedNewLevel: boolean;
+  roundTimerTimestamp: number | null;
+  roundTimeoutId: NodeJS.Timeout | null;
+  lockTimerTimestamp: number | null;
+  lockIntervalId: NodeJS.Timeout | null;
+  counter: {
+    isActive: boolean;
+    count: number | null;
+    isFinished: boolean;
+  };
+  roundFinal: {
+    isActive: boolean;
+    roundPoints: number | null;
+  };
+  nextTheme: {
+    theme: GameTheme | null;
+    direction: NextThemeDirection | null;
+    isSwitching: boolean;
+  };
+  allowThemeChange: boolean;
+  pendingGames: PendingGame[];
+  gameInfo: Game | PendingGame | null;
+  recentlyFinishedLocker: boolean;
+  advertisementOfferModal: AdvertisementOfferModalProps | null;
+  advertisementModal: AdvertisementModalProps | null;
+  gameModal: GameModalType | null;
+  systemModal: { type: GameSystemModalType; message: string } | null;
+  isGameDisabled: boolean;
+}
+
+const initialState: InitialState = {
+  isInitializing: false,
+  isInitialized: false,
+  isCanvasLoaded: false,
+  contractAddress: null,
+  gameId: null,
+  themes: [],
+  isTransactionLoading: false,
+  status: 'waiting',
+  theme: null,
+  levels: [],
+  themeAccess: {
+    hawk: true, // tier id 1
+    gold: false, // tier id 3
+    ghost: false, // tier id 4
+    premium: false // tier id 5
+  },
+  balance: {
+    value: 0, // taps
+    label: 0 // points
+  },
+  experienceLevel: 1,
+  experiencePoints: 0,
+  maxLevel: 0,
+  reachedNewLevel: false,
+  roundTimerTimestamp: null,
+  roundTimeoutId: null,
+  lockTimerTimestamp: null,
+  lockIntervalId: null,
+  counter: {
+    isActive: false,
+    count: null,
+    isFinished: true
+  },
+  roundFinal: {
+    isActive: false,
+    roundPoints: null
+  },
+  /** nextTheme is for animation purposes only */
+  nextTheme: {
+    theme: null,
+    direction: null,
+    isSwitching: false
+  },
+  allowThemeChange: false,
+  pendingGames: [],
+  gameInfo: null,
+  recentlyFinishedLocker: false, //  To prevent accidental tap to start another game when just finished
+  /** Shows an offer to watch an advertisement
+   * When the free game is finished, this modal should appear
+   * and offer our user to watch an advertisement to play another game.
+   * If user accepts the offer, advertisement modal should be seen
+   */
+  advertisementOfferModal: null,
+  advertisementModal: null,
+  /** Fancy modal with some information/notification.
+   * Right now is used to show 'We need some time to review the transaction'
+   * Check GameModal component for parameters
+   */
+  gameModal: null,
+  /** Alerts
+   * Check SystemModalWrapper component and it's child SystemModal for parameters
+   */
+  systemModal: null,
+  isGameDisabled: false
+};
+
 const gameSlice = createSlice({
   name: 'game',
-  initialState: {
-    isInitializing: false as boolean,
-
-    isInitialized: false as boolean,
-
-    isCanvasLoaded: false as boolean,
-
-    contractAddress: null as string | null,
-
-    gameId: null as number | null,
-
-    themes: [] as GameTheme[],
-
-    isTransactionLoading: false as boolean,
-
-    status: 'waiting' as GameStatus,
-
-    theme: null as GameTheme | null,
-
-    levels: [] as GameLevel[],
-
-    themeAccess: {
-      hawk: true, // tier id 1
-      gold: false, // tier id 3
-      ghost: false, // tier id 4
-      premium: false // tier id 5
-    } as GameAccess,
-
-    balance: {
-      value: 0, // taps
-      label: 0 // points
-    } as Balance,
-
-    experienceLevel: 1 as number,
-
-    experiencePoints: 0 as number,
-
-    maxLevel: 0 as number,
-
-    reachedNewLevel: false as boolean,
-
-    roundTimerTimestamp: null as number | null,
-
-    roundTimeoutId: null as NodeJS.Timeout | null,
-
-    lockTimerTimestamp: null as number | null,
-
-    lockIntervalId: null as NodeJS.Timeout | null,
-
-    counter: {
-      isActive: false as boolean,
-      count: null as number | null,
-      isFinished: true as boolean
-    },
-
-    roundFinal: {
-      isActive: false as boolean,
-      roundPoints: null as number | null
-    },
-
-    /** nextTheme is for animation purposes only */
-    nextTheme: {
-      theme: null as GameTheme | null,
-      direction: null as NextThemeDirection,
-      isSwitching: false as boolean
-    },
-
-    allowThemeChange: false as boolean,
-
-    pendingGames: [] as PendingGame[],
-
-    gameInfo: null as Game | PendingGame | null,
-
-    /** To prevent accidental tap to start another game when just finished */
-    recentlyFinishedLocker: false as boolean,
-
-    /** Shows an offer to watch an advertisement
-     * When the free game is finished, this modal should appear
-     * and offer our user to watch an advertisement to play another game.
-     * If user accepts the offer, advertisement modal should be seen
-     */
-    advertisementOfferModal: null as AdvertisementOfferModalProps | null,
-    advertisementModal: null as AdvertisementModalProps | null,
-
-    /** Fancy modal with some information/notification.
-     * Right now is used to show 'We need some time to review the transaction'
-     * Check GameModal component for parameters
-     */
-    gameModal: null as GameModalType,
-
-    /** Alerts
-     * Check SystemModalWrapper component and it's child SystemModal for parameters
-     */
-    systemModal: null as { type: GameSystemModalType; message: string } | null,
-
-    isGameDisabled: false as boolean
-  },
+  initialState: initialState,
   reducers: {
     setPendingGames: (state, { payload }: PayloadAction<PendingGame[]>) => {
       state.pendingGames = payload;

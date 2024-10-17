@@ -1,13 +1,21 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '.';
 
+interface InitialState {
+  deleteFileModal: boolean;
+  paymentSelectModal: boolean;
+  ppvModal: boolean;
+}
+
+const initialState: InitialState = {
+  deleteFileModal: false,
+  paymentSelectModal: false,
+  ppvModal: false
+};
+
 const modalSlice = createSlice({
   name: 'modal',
-  initialState: {
-    deleteFileModal: false as boolean,
-    paymentSelectModal: false as boolean,
-    paperViewModal: false as boolean
-  },
+  initialState: initialState,
   reducers: {
     handleDeleteFileModal: (state, { payload }: PayloadAction<boolean>) => {
       state.deleteFileModal = payload;
@@ -15,8 +23,8 @@ const modalSlice = createSlice({
     handlePaymentSelectModal: (state, { payload }: PayloadAction<boolean>) => {
       state.paymentSelectModal = payload;
     },
-    handlePaperViewModal: (state, { payload }: PayloadAction<boolean>) => {
-      state.paperViewModal = payload;
+    handlePPVModal: (state, { payload }: PayloadAction<boolean>) => {
+      state.ppvModal = payload;
     }
   }
 });
@@ -24,12 +32,11 @@ const modalSlice = createSlice({
 export const {
   handleDeleteFileModal,
   handlePaymentSelectModal,
-  handlePaperViewModal
+  handlePPVModal
 } = modalSlice.actions;
 export default modalSlice.reducer;
 
-export const selectPaperViewModal = (state: RootState) =>
-  state.modal.paperViewModal;
+export const selectPPVModal = (state: RootState) => state.modal.ppvModal;
 export const selectisDeleteFileModalOpen = (state: RootState) =>
   state.modal.deleteFileModal;
 export const selectPaymentSelectModal = (state: RootState) =>

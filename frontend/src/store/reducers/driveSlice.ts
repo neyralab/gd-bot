@@ -41,40 +41,75 @@ interface StorageInfo {
 
 type ViewType = 'grid' | 'list';
 
+interface MediaSlider {
+  isOpen: boolean;
+  previousFile: FileDetails | null;
+  currentFile: FileDetails | null;
+  nextFile: FileDetails | null;
+}
+
+interface UploadFile {
+  isUploading: boolean;
+  progress: number | null;
+  isUploaded: boolean;
+}
+
+interface InitialState {
+  filesQueryData: FilesQueryData;
+  viewType: ViewType;
+  files: FileDetails[];
+  totalFilesCount: number;
+  totalPages: number;
+  itemsPerPage: number;
+  areFilesLoading: boolean;
+  areFilesLazyLoading: boolean;
+  uploadFile: UploadFile;
+  fileTypesCount: ExtendedFileTypesCount | {};
+  fileTypesCountIsFetching: boolean;
+  fileIsFavoriteUpdating: string[];
+  fileMenuModal: FileDetails | null;
+  storageInfo: StorageInfo | null;
+  mediaSlider: MediaSlider;
+  fileInfoModal: FileDetails | null;
+  ppvFile: FileDetails | null;
+}
+
+const initialState: InitialState = {
+  filesQueryData: {
+    search: null,
+    category: null,
+    page: 1
+  },
+  viewType: 'grid',
+  files: [],
+  totalFilesCount: 0,
+  totalPages: 0,
+  itemsPerPage: 0,
+  areFilesLoading: false,
+  areFilesLazyLoading: false,
+  uploadFile: {
+    isUploading: false,
+    progress: null,
+    isUploaded: false
+  },
+  fileTypesCount: {},
+  fileTypesCountIsFetching: false,
+  fileIsFavoriteUpdating: [],
+  fileMenuModal: null,
+  storageInfo: null,
+  mediaSlider: {
+    isOpen: false,
+    previousFile: null,
+    currentFile: null,
+    nextFile: null
+  },
+  fileInfoModal: null,
+  ppvFile: null
+};
+
 const driveSlice = createSlice({
   name: 'drive',
-  initialState: {
-    filesQueryData: {
-      search: null,
-      category: null,
-      page: 1
-    } as FilesQueryData,
-    viewType: 'grid' as ViewType,
-    files: [] as FileDetails[],
-    totalFilesCount: 0 as number,
-    totalPages: 0 as number,
-    itemsPerPage: 0 as number,
-    areFilesLoading: false as boolean,
-    areFilesLazyLoading: false as boolean,
-    uploadFile: {
-      isUploading: false as boolean,
-      progress: null as number | null,
-      isUploaded: false as boolean
-    },
-    fileTypesCount: {} as ExtendedFileTypesCount,
-    fileTypesCountIsFetching: false as boolean,
-    fileIsFavoriteUpdating: [] as string[],
-    fileMenuModal: null as FileDetails | null,
-    storageInfo: null as StorageInfo | null,
-    mediaSlider: {
-      isOpen: false as boolean,
-      previousFile: null as FileDetails | null,
-      currentFile: null as FileDetails | null,
-      nextFile: null as FileDetails | null
-    },
-    fileInfoModal: null as FileDetails | null,
-    ppvFile: null as FileDetails | null
-  },
+  initialState: initialState,
   reducers: {
     setFilesQueryData: (state, { payload }: PayloadAction<FilesQueryData>) => {
       state.filesQueryData = payload;
@@ -103,33 +138,33 @@ const driveSlice = createSlice({
       const { id, property, value } = payload;
       const fileIndex = state.files.findIndex((file) => file.id === id);
       if (fileIndex !== -1) {
-        (state.files[fileIndex] as any)[property] = value;
+        (state.files[fileIndex][property] as typeof value) = value;
       }
 
       if (
         state.mediaSlider.currentFile &&
         state.mediaSlider.currentFile.id === id
       ) {
-        (state.mediaSlider.currentFile as any)[property] = value;
+        (state.mediaSlider.currentFile[property] as typeof value) = value;
       }
 
       if (state.mediaSlider.nextFile && state.mediaSlider.nextFile.id === id) {
-        (state.mediaSlider.nextFile as any)[property] = value;
+        (state.mediaSlider.nextFile[property] as typeof value) = value;
       }
 
       if (
         state.mediaSlider.previousFile &&
         state.mediaSlider.previousFile.id === id
       ) {
-        (state.mediaSlider.previousFile as any)[property] = value;
+        (state.mediaSlider.previousFile[property] as typeof value) = value;
       }
 
       if (state.fileMenuModal && state.fileMenuModal.id === id) {
-        (state.fileMenuModal as any)[property] = value;
+        (state.fileMenuModal[property] as typeof value) = value;
       }
 
       if (state.fileInfoModal && state.fileInfoModal.id === id) {
-        (state.fileInfoModal as any)[property] = value;
+        (state.fileInfoModal[property] as typeof value) = value;
       }
     },
 
@@ -242,35 +277,40 @@ export const initDrive = createAsyncThunk(
   }
 );
 
+interface FetchTypesCountParams {
+  useLoader: boolean;
+}
+
 export const fetchTypesCount = createAsyncThunk(
   'drive/fetchTypesCount',
-  async ({ useLoader }: { useLoader: boolean }, { dispatch }) => {
+  async ({ useLoader }: FetchTypesCountParams, { dispatch }) => {
     if (useLoader) {
       dispatch(setFileTypesCountIsFetching(true));
     }
 
     const types = await getFileTypesCountEffect();
     const partnersRes = await getAllPartners();
-    dispatch(
-      setFileTypesCount({
-        ...types,
-        games: partnersRes.games ? partnersRes.games.length : 0
-      })
-    );
+    if (partnersRes) {
+      dispatch(
+        setFileTypesCount({
+          ...types,
+          games: partnersRes.games ? partnersRes.games.length : 0
+        })
+      );
+    }
     dispatch(setFileTypesCountIsFetching(false));
   }
 );
 
+interface AssignFilesQueryParams {
+  filesQueryData: Partial<FilesQueryData>;
+  callback?: (params: FilesQueryData) => void;
+}
+
 export const assignFilesQueryData = createAsyncThunk(
   'drive/assignFilesQueryData',
   async (
-    {
-      filesQueryData,
-      callback
-    }: {
-      filesQueryData: Partial<FilesQueryData>;
-      callback?: (params: FilesQueryData) => void;
-    },
+    { filesQueryData, callback }: AssignFilesQueryParams,
     { dispatch, getState }
   ) => {
     /**
