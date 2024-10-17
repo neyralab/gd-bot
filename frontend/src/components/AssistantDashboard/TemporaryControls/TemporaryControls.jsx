@@ -11,6 +11,7 @@ import { useLongPress } from 'use-long-press';
 import { sendMessageToAi } from '../../../effects/ai/neyraChatEffect';
 import { unrealSpeechStream } from '../../../effects/ai/unrealSpeechEffect';
 
+import UploadAction from '../../../pages/drive/components/Actions/UploadAction/UploadAction';
 import { ReactComponent as RectIcon } from '../../../../public/assets/assistant/neon-rect.svg';
 import { ReactComponent as TriangleIcon } from '../../../../public/assets/assistant/neon-triangle.svg';
 import { ReactComponent as CircleIcon } from '../../../../public/assets/assistant/neon-circle.svg';
@@ -30,10 +31,6 @@ export default function TemporaryControls({ className }) {
     resetTranscript,
     browserSupportsSpeechRecognition
   } = useSpeechRecognition({ clearTranscriptOnListen: true });
-
-  useEffect(() => {
-    setIsRecording(listening);
-  }, [listening]);
 
   const getNeyraResponse = async (text) => {
     try {
@@ -67,19 +64,21 @@ export default function TemporaryControls({ className }) {
       toast.error('Your browser does not support speech recognition');
       return;
     }
+    setIsRecording(true);
     resetTranscript();
     SpeechRecognition.startListening({ language: 'en-EN', continuous: true });
   };
 
   const stopRecording = () => {
     SpeechRecognition.stopListening();
+    setTimeout(() => {
+      setIsRecording(false);
+    }, 500);
   };
 
   const handleRegularClick = () => {
     if (listening) {
       stopRecording();
-    } else {
-      console.log('Short press detected - handling upload');
     }
   };
 
@@ -107,7 +106,7 @@ export default function TemporaryControls({ className }) {
         {isRecodring ? (
           <StopRecordIcon width="100%" height="100%" viewBox="0 0 70 70" />
         ) : (
-          <CircleIcon width="100%" height="100%" viewBox="0 0 70 70" />
+          <UploadAction />
         )}
       </button>
       <button className={styles['navigate-button']} onClick={goToGame}>
