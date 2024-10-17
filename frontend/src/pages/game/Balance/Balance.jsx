@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { selectExperiencePoints } from '../../../store/reducers/gameSlice';
+import { selectExperiencePoints } from '../../../store/reducers/game/game.selectors';
 import styles from './Balance.module.css';
 
 export default function Balance() {

@@ -173,6 +173,7 @@ export const getFilesEffect = async (
 interface GetPPVFilesResponse {
   items: PPVFile[];
   total: number;
+  earned: number;
 }
 
 export const getPaidShareFilesEffect = async (page = 1) => {

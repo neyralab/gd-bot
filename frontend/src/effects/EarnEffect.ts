@@ -103,7 +103,7 @@ export const getAllPartners = async () => {
     return formatPartnerResponce(data);
   } catch (e) {
     const error = e as DefaultError<string>;
-    return error?.response?.data?.errors;
+    throw error?.response?.data?.errors;
   }
 };
 

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import { setGameModal } from '../../../store/reducers/gameSlice';
+import { setGameModal } from '../../../store/reducers/game/game.slice';
 import styles from './GameModal.module.css';
 
 export default function GameModal() {

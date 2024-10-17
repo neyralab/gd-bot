@@ -9,11 +9,11 @@ import { ReactComponent as FileIcon } from '../../../../assets/file_draft.svg';
 import { ReactComponent as InfoIcon } from '../../../../assets/info.svg';
 import { ReactComponent as StarIcon } from '../../../../assets/star.svg';
 import { vibrate } from '../../../../utils/vibration';
+import { setViewType } from '../../../../store/reducers/drive/drive.slice';
 import {
   assignFilesQueryData,
-  getDriveFiles,
-  setViewType
-} from '../../../../store/reducers/driveSlice';
+  getDriveFiles
+} from '../../../../store/reducers/drive/drive.thunks';
 import GhostLoader from '../../../../components/ghostLoader';
 import FileViewController from '../FileViewController/FileViewController';
 import LoaderRow from './LoaderRow/LoaderRow';

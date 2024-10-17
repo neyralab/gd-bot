@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react';
 import ReactPlayer from 'react-player';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  refreshFreeGame,
   setAdvertisementModal,
   setSystemModal
-} from '../../../store/reducers/gameSlice';
+} from '../../../store/reducers/game/game.slice';
+import { refreshFreeGame } from '../../../store/reducers/game/game.thunks';
 import Loader2 from '../../../components/Loader2/Loader2';
 // import { ReactComponent as PlayIcon } from '../../../assets/play_media.svg';
 import {

@@ -5,12 +5,14 @@ import {
   selectStatus,
   selectTheme,
   selectThemes,
-  startRound,
   selectThemeAccess,
-  proceedTap,
-  switchTheme,
   selectIsGameDisabled
-} from '../../../store/reducers/gameSlice';
+} from '../../../store/reducers/game/game.selectors';
+import {
+  startRound,
+  proceedTap,
+  switchTheme
+} from '../../../store/reducers/game/game.thunks';
 import EndGameAddedPoints from '../EndGameAddedPoints/EndGameAddedPoints';
 import PointsGrowArea from '../PointsGrowArea/PointsGrowArea';
 import Counter from '../Counter/Counter';

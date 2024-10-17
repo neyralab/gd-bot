@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import SystemModal from '../../../components/SystemModal/SystemModal';
-import { setSystemModal } from '../../../store/reducers/gameSlice';
+import { setSystemModal } from '../../../store/reducers/game/game.slice';
 
 /** We could use it directly on the game page
  * But I want to avoid rerenders, so I placed the logic of modals here
