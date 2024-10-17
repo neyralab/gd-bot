@@ -1,10 +1,13 @@
 import React, { useRef } from 'react';
-import classNames from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
-import { ReactComponent as PlusIcon } from '../../../../../assets/plus.svg';
-import UploadLoader from './UploadLoader';
+import classNames from 'classnames';
+
 import { uploadFile } from '../../../../../store/reducers/driveSlice';
 import { vibrate } from '../../../../../utils/vibration';
+
+import UploadLoader from './UploadLoader';
+import { ReactComponent as CircleIcon } from '../../../../../../public/assets/assistant/neon-circle.svg';
+
 import styles from './UploadAction.module.scss';
 
 export default function UploadAction() {
@@ -46,9 +49,11 @@ export default function UploadAction() {
       />
       <label
         htmlFor="file"
-        onClick={() => {vibrate('soft')}}
+        onClick={() => {
+          vibrate('soft');
+        }}
         className={classNames(styles.button, isUploading && styles.uploading)}>
-        <PlusIcon />
+        <CircleIcon width="100%" height="100%" viewBox="0 0 70 70" />
       </label>
     </div>
   );
