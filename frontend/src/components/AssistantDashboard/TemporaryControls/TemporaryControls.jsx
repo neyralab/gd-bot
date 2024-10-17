@@ -21,6 +21,7 @@ import styles from './TemporaryControls.module.scss';
 export default function TemporaryControls({ className }) {
   const [isRecodring, setIsRecording] = useState(false);
   const [recordedText, setRecordedText] = useState('');
+  const [isResponseGenerating, setIsResponseGenerating] = useState(false);
   const navigate = useNavigate();
   const audioRef = useRef(null);
   const {
@@ -36,6 +37,7 @@ export default function TemporaryControls({ className }) {
 
   const getNeyraResponse = async (text) => {
     try {
+      setIsResponseGenerating(true);
       const res = await sendMessageToAi(transcript);
       const message = res.data.data.response;
       const audioUrl = await unrealSpeechStream(message);
@@ -49,6 +51,8 @@ export default function TemporaryControls({ className }) {
       toast.error(
         'An error occurred while processing message. Please try again'
       );
+    } finally {
+      setIsResponseGenerating(false);
     }
   };
 
@@ -112,6 +116,11 @@ export default function TemporaryControls({ className }) {
       <audio ref={audioRef} className={styles['hidden']} />
       {isRecodring && (
         <div className={styles['listening-tooltip']}>I'm listening you...</div>
+      )}
+      {isResponseGenerating && (
+        <div className={styles['listening-tooltip']}>
+          Generating response...
+        </div>
       )}
     </div>
   );
