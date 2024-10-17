@@ -1,18 +1,15 @@
-import React, { useEffect } from 'react';
-import {
-  useTonAddress,
-  useTonConnectUI,
-  useTonWallet
-} from '@tonconnect/ui-react';
+import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { TelegramShareButton } from 'react-share';
+import { useTonAddress, useTonConnectUI } from '@tonconnect/ui-react';
 
-import { saveUserWallet } from '../../../effects/userEffects';
 import { vibrate } from '../../../utils/vibration';
 import { runInitAnimation } from './animations';
 import Task from '../../../components/Task/Task';
 import ListLoader from '../ListLoader/ListLoader';
+import { ConnectModal } from '../../../components/walletConnect/selectModal';
+import { useWallet } from '../../../store/context/WalletProvider';
 
 import styles from './styles.module.css';
 
@@ -23,10 +20,11 @@ export default function Tasks({
   earnModalRef,
   isLoading
 }) {
+  const [isConnectModal, setIsConnectModal] = useState(false);
+  const { useOKXAddress, disconnectWallet } = useWallet();
   const [tonConnectUI] = useTonConnectUI();
-  const address = useTonAddress(true);
-  const wallet = useTonWallet();
-  const user = useSelector((state) => state.user.data);
+  const address = useTonAddress();
+  const okxAddress = useOKXAddress();
   const link = useSelector((state) => state.user.link);
   const navigate = useNavigate();
 
@@ -35,21 +33,15 @@ export default function Tasks({
     runInitAnimation();
   }, [tasks]);
 
-  useEffect(() => {
-    if (user !== null && !user.wallet && address && wallet) {
-      (async () => {
-        const res = await saveUserWallet({
-          account: {
-            ...wallet?.account,
-            uiAddress: address
-          },
-          channel: 'ton'
-        });
-        getTasks();
-        console.log({ saveUserWallet: res });
-      })();
-    }
-  }, [address, user, user?.wallet, wallet]);
+  const handleConnectWallet = () => {
+    address && tonConnectUI.disconnect();
+    okxAddress && disconnectWallet();
+    setIsConnectModal(true);
+  }
+
+  const onCloseWalletModal = () => {
+    setIsConnectModal(false);
+  }
 
   const handleClick = (task) => {
     vibrate();
@@ -69,8 +61,7 @@ export default function Tasks({
         break;
 
       case 'WALLET_CONNECTION':
-        address && tonConnectUI.disconnect();
-        tonConnectUI.openModal();
+        handleConnectWallet();
         break;
 
       case 'STORAGE_PURCHASE':
@@ -123,6 +114,11 @@ export default function Tasks({
           />
         );
       })}
+      <ConnectModal
+        isOpen={isConnectModal}
+        onClose={onCloseWalletModal}
+        successCallback={getTasks}
+      />
     </div>
   );
 }

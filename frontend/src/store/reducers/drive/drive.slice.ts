@@ -161,7 +161,10 @@ const driveSlice = createSlice({
     },
     setPPVFile: (state, { payload }: PayloadAction<FileDetails | null>) => {
       state.ppvFile = payload;
-    }
+    },
+    setPayShareEarn: (state, { payload }) => {
+      state.payShareEarn = payload;
+    },
   }
 });
 
@@ -188,6 +191,7 @@ export const {
   setStorageInfo,
   setMediaSliderOpen,
   setMediaSliderCurrentFile,
-  setFileInfoModal
+  setFileInfoModal,
+  setPayShareEarn
 } = driveSlice.actions;
 export default driveSlice.reducer;

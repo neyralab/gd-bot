@@ -1,7 +1,5 @@
 import { getKeyTranslate } from '../../../translation/utils';
 
-const PARTNER_KEY = 'partnertsToVerify';
-
 const PARTNER_TASK_TYPES = {
   bot: 'tg-bot',
   channel: 'tg-channel',
@@ -72,11 +70,6 @@ const getParnterIcon = (text) => {
   return `/assets/${name.toLowerCase()}.webp`
 }
 
-const isNeedVerify = (id) => {
-  const parnterList =  JSON.parse(localStorage.getItem(PARTNER_KEY), '[]');
-  return parnterList?.includes(id) || false;
-}
-
 const getPartnerTaskType = (name) => {
   if (name.endsWith('TG bot')) {
     return PARTNER_TASK_TYPES.bot;
@@ -119,8 +112,6 @@ const formatPartnerResponce = (data) => {
 };
 
 export {
-  PARTNER_KEY,
-  isNeedVerify,
   getPartnerName,
   getParnterIcon,
   getPartnerTranslate,

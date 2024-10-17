@@ -119,7 +119,8 @@ export default function AdvertisementOfferModal() {
     try {
       await endWatchingAdvertisementVideo(advertisementOfferModal.videoId);
       dispatch(refreshFreeGame({ points: advertisementOfferModal.points }));
-      closeModal();
+      setIsOpen(false);
+      setIsClickable(false);
       dispatch(setAdvertisementOfferModal(null));
     } catch (error) {
       console.warn(error);

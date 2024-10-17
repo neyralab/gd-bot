@@ -13,6 +13,7 @@ import {
   setFileTypesCountIsFetching,
   setMediaSliderCurrentFile,
   setMediaSliderOpen,
+  setPayShareEarn,
   setStorageInfo,
   setTotalFilesCount,
   setTotalPages,
@@ -255,6 +256,7 @@ export const getDriveFiles = createAsyncThunk(
             return { ...file, share_file: selectedFile };
           });
           totalFilesCount = files.length;
+          dispatch(setPayShareEarn(res.earned || 0));
           break;
         }
         default: {
@@ -326,6 +328,7 @@ export const clearDriveState = createAsyncThunk(
   'drive/clearDriveState',
   async (_, { dispatch }) => {
     dispatch(setFilesQueryData({ search: null, category: null, page: 1 }));
+    dispatch(setPayShareEarn(null));
     dispatch(setFiles([]));
     dispatch(setFileMenuModal(null));
     dispatch(clearFileIsFavoriteUpdating());

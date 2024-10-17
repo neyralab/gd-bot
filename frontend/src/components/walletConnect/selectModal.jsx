@@ -14,7 +14,7 @@ import { isOkxWallet } from '../../utils/string';
 
 import styles from './styles.module.css';
 
-const ConnectModal = ({ isOpen, onClose }) => {
+const ConnectModal = ({ isOpen, onClose, successCallback }) => {
   const [startOKXConnect, setStartOKXConnect] = useState(false);
   const [okxConnectLink, setOKXConnectLink] = useState('');
   const user = useSelector((state) => state?.user?.data);
@@ -25,7 +25,7 @@ const ConnectModal = ({ isOpen, onClose }) => {
   useEffect(() => {
     const unsubscribe = tonConnectUI.modal.onStateChange(async (state) => {
       if (state.status === "opened") {
-        onClose()
+        handleOnClose();
       }
       if (
         state.status === 'closed' &&
@@ -40,13 +40,18 @@ const ConnectModal = ({ isOpen, onClose }) => {
         });
         const newWallets = res.map((el) => el.public_address);
         dispatch(setUser({ ...user, wallet: newWallets }));
-        unsubscribe()
+        successCallback?.();
+        unsubscribe();
       }
     });
-  }, []);
+
+    return () => {
+      unsubscribe();
+    }
+  }, [isOpen]);
 
   useEffect(() => {
-    if (wallet) {
+    if (wallet && isOpen) {
       const unsubscribe = wallet.onStatusChange(async (res) => {
         if (res) {
           if (!!user?.wallet?.filter((el) => el !== res.account?.address).length) {
@@ -58,15 +63,15 @@ const ConnectModal = ({ isOpen, onClose }) => {
             const newWallets = data.map((el) => el.public_address);
             dispatch(setUser({ ...user, wallet: newWallets }));
           }
-          onClose();
+          handleOnClose();
+          unsubscribe();
+          successCallback?.();
         }
       })
 
-      return () => {
-        unsubscribe();
-      }
+      return () => { unsubscribe() }
     }
-  }, [wallet]);
+  }, [wallet, isOpen]);
 
   const tonConnect = useCallback(async () => {
     await tonConnectUI?.openModal();
@@ -121,7 +126,7 @@ const ConnectModal = ({ isOpen, onClose }) => {
         <h1 className={styles.title}>
           { startOKXConnect ? 'OKX Wallet' : 'Choose a Wallet Connection Method' }
           </h1>
-        <button className={styles.closeButton} onClick={onClose} >
+        <button className={styles.closeButton} onClick={handleOnClose} >
           <CloseIcon />
         </button>
         {!startOKXConnect && <ul className={styles.list}>

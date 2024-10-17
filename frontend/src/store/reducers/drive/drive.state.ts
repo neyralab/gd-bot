@@ -30,5 +30,6 @@ export const initialState: InitialState = {
     nextFile: null
   },
   fileInfoModal: null,
-  ppvFile: null
+  ppvFile: null,
+  payShareEarn: null,
 };

@@ -53,4 +53,5 @@ export interface InitialState {
   mediaSlider: MediaSlider;
   fileInfoModal: FileDetails | null;
   ppvFile: FileDetails | null;
+  payShareEarn: number | null;
 }

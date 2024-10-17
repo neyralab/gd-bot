@@ -57,7 +57,13 @@ export default function FileViewController({
         imageFileExtensions.includes(`.${file.extension}`)) ||
       videoFileExtensions.includes(`.${file.extension}`);
 
-    if ((searchHasPreview || fileHasPreview) && showPreview) {
+    const fileHasValidPreview = file.preview_small || file.preview_large;
+
+    if (
+      (searchHasPreview || fileHasPreview) &&
+      showPreview &&
+      fileHasValidPreview
+    ) {
       if (!file?.is_on_storage_provider) {
         getFilePreviewEffect(file.slug, null, file.extension).then((res) => {
           setPreview(res);
