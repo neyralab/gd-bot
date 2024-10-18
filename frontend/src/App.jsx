@@ -9,7 +9,7 @@ import {
   setCurrentWorkspace,
   setWorkspacePlan
 } from './store/reducers/workspaceSlice';
-import { setExperienceLevel } from './store/reducers/gameSlice';
+import { setExperienceLevel } from './store/reducers/game/game.slice';
 
 import { getUserEffect } from './effects/userEffects';
 import { authorizeUser } from './effects/authorizeUser';

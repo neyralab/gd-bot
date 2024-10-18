@@ -7,15 +7,15 @@ import { useTranslation } from 'react-i18next';
 import {
   handleDeleteFileModal,
   selectisDeleteFileModalOpen
-} from '../../store/reducers/modalSlice';
+} from '../../store/reducers/uiSlice';
 import {
   deleteFileEffect,
   permanentlyDeleteFileEffect
 } from '../../effects/file/deleteFileEffect';
 import { vibrate } from '../../utils/vibration';
+import { decreaseUsedSpace } from '../../store/reducers/userSlice';
 
 import style from './style.module.css';
-import { decreaseUsedSpace } from '../../store/reducers/userSlice';
 
 export const DeleteFileModal = () => {
   const dispatch = useDispatch();

@@ -144,3 +144,20 @@ export interface User {
   is_pin_authenticator_enabled: boolean;
   is_key_authenticator_enabled: boolean;
 }
+
+export interface Me {
+  referral_code: string;
+  points: number;
+  id: number;
+  space_actual: number;
+  space_available: number;
+  space_total: number;
+  space_used: number;
+  ws_id: number;
+  workspace_plan: boolean | any;
+  wallet: string[];
+  current_level: {
+    level: number;
+    multiplier: number;
+  };
+}

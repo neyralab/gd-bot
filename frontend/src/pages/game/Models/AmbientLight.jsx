@@ -5,7 +5,7 @@ import { MathUtils } from 'three';
 import {
   selectTheme,
   selectNextTheme
-} from '../../../store/reducers/gameSlice';
+} from '../../../store/reducers/game/game.selectors';
 
 export default function AmbientLight() {
   const theme = useSelector(selectTheme);

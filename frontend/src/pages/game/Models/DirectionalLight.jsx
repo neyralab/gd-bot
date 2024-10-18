@@ -5,7 +5,7 @@ import { Color, MathUtils } from 'three';
 import {
   selectTheme,
   selectNextTheme
-} from '../../../store/reducers/gameSlice';
+} from '../../../store/reducers/game/game.selectors';
 
 const DirectionalLight = () => {
   const theme = useSelector(selectTheme);
