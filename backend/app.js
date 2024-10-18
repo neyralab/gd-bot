@@ -369,7 +369,6 @@ userCreationQueue.process(async (job) => {
         {
           s:response.status,
           statusText: response.statusText,
-          e:await response.text(),
           url,
           userData,
           headers
