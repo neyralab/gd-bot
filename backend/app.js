@@ -44,7 +44,7 @@ const redisClient = createClient({
 });
 await redisClient.connect();
 
-const userCreationQueue = new Queue('userCreation', process.env.REDIS_URL);
+const userCreationQueue = new Queue('userCreationNew', process.env.REDIS_URL);
 
 bot.on('pre_checkout_query', async (ctx) => {
   try {
