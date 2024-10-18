@@ -16,7 +16,7 @@ import { getAllTasks } from '../../effects/balanceEffect';
 import { handleTasks } from '../../store/reducers/taskSlice';
 import { runInitAnimation } from './animations';
 
-import Menu from '../../components/Menu/Menu';
+import Friends from '../friends'
 import Tasks from './Tasks/index';
 import Partners from './Partners';
 import Mission from './Mission';
@@ -25,7 +25,7 @@ import Segmented from '../../components/segmented';
 
 import styles from './styles.module.css';
 
-const DEFAULT_SEGMENT_OPTION = 'task';
+const DEFAULT_SEGMENT_OPTION = 'friends';
 
 export default function EarnPage() {
   const dispatch = useDispatch();
@@ -127,8 +127,15 @@ export default function EarnPage() {
 
   const segmentOption = useMemo(() => {
     const disabledTabs = [];
-    !isEnabledPartners && disabledTabs.push('partner');
+    !isEnabledPartners && disabledTabs.push('friends');
     return [
+      {
+        title: t('process.frens'),
+        name: 'friends',
+        onClick: () => {
+          setActiveSegment('friends');
+        }
+      },
       {
         title: t('earn.task'),
         name: 'task',
@@ -143,13 +150,6 @@ export default function EarnPage() {
           setActiveSegment('partner');
         }
       },
-      {
-        title: t('earn.mission'),
-        name: 'mission',
-        onClick: () => {
-          setActiveSegment('mission');
-        }
-      }
     ].filter((tab) => !disabledTabs.includes(tab.name));
   }, [t]);
 
@@ -179,21 +179,12 @@ export default function EarnPage() {
             setPartners={handlePartnersUpdate}
           />
         );
-      case 'mission':
+      case 'friends':
         return (
-          <Mission
-            tasks={missions}
-            setModalSelectedTask={setModalSelectedTask}
-            isLoading={missionsAreLoading}
-          />
+          <Friends />
         );
       default:
-        <Tasks
-          tasks={tasks}
-          getTasks={getTasks}
-          setModalSelectedTask={setModalSelectedTask}
-          isLoading={tasksAreLoading}
-        />;
+        <Friends />;
     }
   };
 
@@ -212,8 +203,6 @@ export default function EarnPage() {
       <Segmented options={segmentOption} active={activeSegment} />
 
       {renderList()}
-
-      <Menu />
 
       <EarnModal ref={earnModalRef} item={modalSelectedTask} />
 

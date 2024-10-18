@@ -12,6 +12,7 @@ import {
 import axiosInstance from './axiosInstance';
 import { Effect } from './types';
 import { tg } from '../App';
+import { setToken } from './set-token';
 
 interface UserData {
   initData: string;
@@ -39,7 +40,7 @@ export const applyCouponEffect = async (coupon?: string) => {
 
 export const authorizeUser = async (reqBody: UserData, ref?: string) => {
   try {
-    const response = await axiosInstance.post<AuthorizeduserResponse>(
+    const response = await axios.post<AuthorizeduserResponse>(
       API_AUTHORIZATION,
       reqBody
     );
@@ -47,7 +48,7 @@ export const authorizeUser = async (reqBody: UserData, ref?: string) => {
     if (ref) {
       applyCouponEffect(ref);
     }
-
+    await setToken(response.data.token);
     return response.data;
   } catch (e: any) {
     const error = e as AxiosError<{ message: string }>;

@@ -4,15 +4,15 @@
   width: 100%;
   border-radius: 10px;
   margin-top: 20px;
+  padding: 0 16px;
 }
 
 .navigat-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 11px 16px;
+  padding: 11px 0;
   height: 54px;
-  background-color: #151517;
 
   &:first-child {
     border-top-left-radius: 10px;
@@ -27,7 +27,7 @@
 
 .navigat-left {
   display: flex;
-  gap: 14px;
+  gap: 16px;
 }
 
 .navigat-icon {

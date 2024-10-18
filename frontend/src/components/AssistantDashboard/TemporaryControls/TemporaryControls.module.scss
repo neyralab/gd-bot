@@ -1,19 +1,64 @@
 .controls {
   position: fixed;
-  top: 100px;
+  bottom: 10px;
   width: 100%;
   left: 0;
   display: flex;
-  gap: 24px;
+  gap: 30px;
   color: white;
-  z-index: 999999;
+  z-index: 1;
   justify-content: center;
   align-items: center;
   justify-items: center;
   user-select: auto;
+}
 
-  button {
-    color: white;
-    font-size: 20px;
+.navigate-button {
+  width: 40px;
+  height: 40px;
+  -webkit-tap-highlight-color: transparent;
+
+  &:hover {
+    stroke-width: 1.5px;
+    stroke: var(--1, #4facfe);
+    filter: drop-shadow(0px 0px 5px #00d1ff) drop-shadow(0px 1px 6px #00d1ff);
   }
+}
+
+.main-button {
+  display: block;
+  height: 70px;
+  -webkit-tap-highlight-color: transparent;
+
+  &:hover {
+    stroke-width: 1.5px;
+    stroke: var(--1, #4facfe);
+    filter: drop-shadow(0px 0px 5px #00d1ff) drop-shadow(0px 1px 6px #00d1ff);
+  }
+}
+
+.active-button {
+  stroke: var(#4facfe);
+  filter: drop-shadow(0px 0px 5px #00d1ff) drop-shadow(0px 1px 6px #00d1ff);
+}
+
+.hidden {
+  display: none;
+}
+
+.listening-tooltip {
+  position: fixed;
+  top: 16vh;
+  left: 16px;
+  padding: 6.686px 13.371px;
+  border-radius: 5.014px;
+  background: linear-gradient(0deg, #1c2233 -100.75%, rgba(28, 34, 51, 0) 100%);
+  box-shadow: 0px 2.229px 2.229px 0px rgba(0, 0, 0, 0.25);
+
+  color: #fff;
+  font-family: 'SF Pro Text';
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 200;
+  line-height: normal;
 }

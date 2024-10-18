@@ -8,6 +8,7 @@ import {
 import Header from './components/Header/Header';
 import Storage from './components/Storage/Storage';
 import Content from './components/Content/Content';
+import TemporaryControls from '../../components/AssistantDashboard/TemporaryControls/TemporaryControls';
 import Actions from './components/Actions/Actions';
 import { FileMenuModal } from './components/FileMenuModal/FileMenuModal';
 import FileInfoModal from './components/FileInfoModal/FileInfoModal';
@@ -51,8 +52,9 @@ export default function DrivePage() {
         </div>
         <Content />
       </div>
-      <Actions />
 
+      <TemporaryControls />
+      
       {fileMenuModal && <FileMenuModal />}
       {fileInfoModal && <FileInfoModal />}
 

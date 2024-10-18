@@ -1,0 +1,16 @@
+.container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 30px;
+}
+
+.backBtn {
+  color: #fff;
+  font-size: 14px;
+  font-weight: 300;
+  font-family: 'SF Pro Text';
+  z-index: 10;
+  text-decoration: none;
+}
