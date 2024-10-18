@@ -341,7 +341,6 @@ userCreationQueue.process(async (job) => {
       timeout: 180000 // 3 minutes in milliseconds
     });
 
-    if (!response.ok) {
       logger.error(
         'Error http',
         {
@@ -353,16 +352,28 @@ userCreationQueue.process(async (job) => {
           headers
         }
       );
+    if (!response.ok) {
       throw new Error(`HTTP error ${response.status}`);
     }
 
     const data = await response.json();
+    logger.info('asdasdasd =>',{data})
+    try {
+      logger.info('saving to redis record =>',{
+          1:`user:${userData.id}`,
+        2:JSON.stringify(data),
+        3:'EX',
+      })
+
     await redisClient.set(
       `user:${userData.id}`,
       JSON.stringify(data),
       'EX',
       ttl
     );
+    }catch (e) {
+      logger.info('err saving to redis record =>', {error:errorTransformer(e)});
+    }
     if (showMobileAuthButton) {
       sendMobileAuthButton(userData.chat_id, data.jwt);
     }
