@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next';
 import {
   handleDeleteFileModal,
   selectisDeleteFileModalOpen
-} from '../../store/reducers/modalSlice';
+} from '../../store/reducers/uiSlice';
 import {
   deleteFileEffect,
   permanentlyDeleteFileEffect

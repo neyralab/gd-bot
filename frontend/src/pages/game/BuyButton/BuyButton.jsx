@@ -43,7 +43,7 @@ import {
 import {
   handlePaymentSelectModal,
   selectPaymentSelectModal
-} from '../../../store/reducers/modalSlice';
+} from '../../../store/reducers/uiSlice';
 import { INVOICE_TYPE } from '../../../utils/createStarInvoice';
 import { makeInvoice } from '../../../effects/paymentEffect';
 import { useQueryId } from '../../../effects/contracts/useQueryId';
