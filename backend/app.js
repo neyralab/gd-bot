@@ -347,7 +347,10 @@ userCreationQueue.process(async (job) => {
         {
           s:response.status,
           statusText: response.statusText,
-          e:await response.text()
+          e:await response.text(),
+          url,
+          userData,
+          headers
         }
       );
       throw new Error(`HTTP error ${response.status}`);
