@@ -207,7 +207,7 @@ async function createUser(userData, showMobileAuthButton) {
   {
     attempts: 10,
       backoff: {
-        type: 'exponential',
+        type: 'fixed',
         delay: 1000,
       },
   });
