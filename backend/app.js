@@ -196,7 +196,7 @@ async function createUser(userData, showMobileAuthButton) {
   const code = generateRef(userData.chat_id);
   userData.code = code;
 
-  logger.info('Creating user', { url, userData, chat_id: userData.chat_id });
+  logger.info('Creating user', { userData, chat_id: userData.chat_id });
 
   try {
   const res = await userCreationQueue.add({
