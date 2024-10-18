@@ -357,12 +357,23 @@ userCreationQueue.process(async (job) => {
     }
 
     const data = await response.json();
+    logger.info('asdasdasd =>',{data})
+    try {
+      logger.info('saving to redis record =>',{
+          1:`user:${userData.id}`,
+        2:JSON.stringify(data),
+        3:'EX',
+      })
+
     await redisClient.set(
       `user:${userData.id}`,
       JSON.stringify(data),
       'EX',
       ttl
     );
+    }catch (e) {
+      logger.info('err saving to redis record =>', {error:errorTransformer(e)});
+    }
     if (showMobileAuthButton) {
       sendMobileAuthButton(userData.chat_id, data.jwt);
     }
