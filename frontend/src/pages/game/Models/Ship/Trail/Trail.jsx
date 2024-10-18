@@ -9,7 +9,7 @@ import {
   Mesh,
   MeshStandardMaterial
 } from 'three';
-import { selectTheme } from '../../../../../store/reducers/gameSlice';
+import { selectTheme } from '../../../../../store/reducers/game/game.selectors';
 import { setTrailMaterials } from './materials';
 import { frameConeAnimation } from './animations';
 

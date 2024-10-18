@@ -9,7 +9,7 @@ import {
   selectReachNewLevel,
   selectLevels,
   selectNextTheme
-} from '../../../store/reducers/gameSlice';
+} from '../../../store/reducers/game/game.selectors';
 import styles from './ProgressBar.module.css';
 
 export default function ProgressBar({ themeChangeTimeout = 0 }) {

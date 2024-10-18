@@ -1,6 +1,6 @@
 import React, { useRef, useImperativeHandle, forwardRef } from 'react';
 import { useSelector } from 'react-redux';
-import { selectTheme } from '../../../store/reducers/gameSlice';
+import { selectTheme } from '../../../store/reducers/game/game.selectors';
 import styles from './PointsGrowArea.module.css';
 
 const PointsGrowArea = forwardRef((_, ref) => {

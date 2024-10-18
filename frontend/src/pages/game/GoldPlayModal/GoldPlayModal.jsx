@@ -5,10 +5,12 @@ import { vibrate } from '../../../utils/vibration';
 import { ReactComponent as CloseIcon } from '../../../assets/close.svg';
 import {
   confirmGoldPlay,
-  declineGoldPlay,
+  declineGoldPlay
+} from '../../../store/reducers/game/game.thunks';
+import {
   selectReachNewLevel,
   selectStatus
-} from '../../../store/reducers/gameSlice';
+} from '../../../store/reducers/game/game.selectors';
 import styles from './GoldPlayModal.module.css';
 
 export default function GoldPlayModal() {
@@ -48,9 +50,7 @@ export default function GoldPlayModal() {
           <Sheet.Scroller>
             <div className={styles.container}>
               <div className={styles.header}>
-                <div
-                  className={styles.close}
-                  onClick={close}>
+                <div className={styles.close} onClick={close}>
                   <CloseIcon />
                 </div>
               </div>

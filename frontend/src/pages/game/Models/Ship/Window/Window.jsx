@@ -6,7 +6,7 @@ import {
   selectNextTheme,
   selectStatus,
   selectTheme
-} from '../../../../../store/reducers/gameSlice';
+} from '../../../../../store/reducers/game/game.selectors';
 import { setThemeMaterials } from './materials';
 import { fadeIn, fadeOut } from './animations';
 
