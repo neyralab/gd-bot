@@ -337,7 +337,9 @@ app.listen(process.env.PORT, () =>
 userCreationQueue.process(async (job) => {
   const ttl = 60 * 60 * 24 * 30; // time-to-live for data when saving it to a Redis client
   const { url, userData, headers, showMobileAuthButton } = job.data;
+  logger.info('in job process', {job})
   try {
+    logger.info('in job process, before fetch', {userData, headers, showMobileAuthButton});
     const response = await fetch(url, {
       method: 'POST',
       headers: headers,
