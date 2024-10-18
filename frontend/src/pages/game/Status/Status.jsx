@@ -6,7 +6,7 @@ import {
   selectStatus,
   selectTheme,
   selectThemeAccess
-} from '../../../store/reducers/gameSlice';
+} from '../../../store/reducers/game/game.selectors';
 import styles from './Status.module.css';
 
 export default function Status() {

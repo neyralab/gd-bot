@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useThree } from '@react-three/fiber';
 import { useSelector } from 'react-redux';
 import gsap from 'gsap';
-import { selectStatus } from '../../../store/reducers/gameSlice';
+import { selectStatus } from '../../../store/reducers/game/game.selectors';
 
 const MoveCamera = () => {
   const { camera } = useThree();

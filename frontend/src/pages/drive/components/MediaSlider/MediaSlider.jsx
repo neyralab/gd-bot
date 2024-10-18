@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import {
   setMediaSliderCurrentFile,
   setMediaSliderOpen
-} from '../../../../store/reducers/driveSlice';
+} from '../../../../store/reducers/drive/drive.slice';
 import SlidesController from './SlidesController/SlidesController';
 import { vibrate } from '../../../../utils/vibration';
 import { isMobilePlatform } from '../../../../utils/client';

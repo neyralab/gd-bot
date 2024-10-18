@@ -2,7 +2,7 @@ import React, { useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { assignFilesQueryData } from '../../../../store/reducers/driveSlice';
+import { assignFilesQueryData } from '../../../../store/reducers/drive/drive.thunks';
 import { ReactComponent as ImpulseLoader } from '../../../../assets/loader-impulse.svg';
 import { vibrate } from '../../../../utils/vibration';
 import { isDevEnv } from '../../../../utils/isDevEnv';

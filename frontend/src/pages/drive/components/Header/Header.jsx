@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import Search from '../Search/Search';
 import { vibrate } from '../../../../utils/vibration';
-import { assignFilesQueryData } from '../../../../store/reducers/driveSlice';
+import { assignFilesQueryData } from '../../../../store/reducers/drive/drive.thunks';
 import { isMobilePlatform } from '../../../../utils/client';
 import styles from './Header.module.scss';
 

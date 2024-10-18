@@ -13,7 +13,7 @@ import {
   selectNextTheme,
   selectStatus,
   selectTheme
-} from '../../../../../store/reducers/gameSlice';
+} from '../../../../../store/reducers/game/game.selectors';
 import Waves from '../Waves/Waves';
 import Trail from '../Trail/Trail';
 import Window from '../Window/Window';

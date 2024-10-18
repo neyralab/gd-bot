@@ -1,22 +1,21 @@
 import { API_PATH } from '../utils/api-urls';
 import axiosInstance from './axiosInstance';
-import { DefaultResponse } from './types/defaults';
+import { DataWrappedResponse, DefaultResponse } from './types/defaults';
+import { FileTypesCount } from './types/files';
 import { Notification } from './types/notifications';
 
-interface StorageListResponse {
-  data: {
-    duration: number;
-    id: number;
-    multiplicator: number;
-    stars: number;
-    storage: number;
-    ton_price: number;
-  } | null;
+interface StorageList {
+  duration: number;
+  id: number;
+  multiplicator: number;
+  stars: number;
+  storage: number;
+  ton_price: number;
 }
 
 export const storageListEffect = async () => {
   try {
-    const response = await axiosInstance.get<StorageListResponse>(
+    const response = await axiosInstance.get<DataWrappedResponse<StorageList>>(
       `${API_PATH}/storage/ton`
     );
     return response.data.data;
@@ -26,32 +25,11 @@ export const storageListEffect = async () => {
   }
 };
 
-interface FileTypesCountResponse {
-  data: {
-    audios: number;
-    deleted: number;
-    docs: number;
-    folders: number;
-    geo: number;
-    images: number;
-    links: number;
-    memos: number;
-    notes: number;
-    ppv: number;
-    recent: number;
-    shared: number;
-    starred: number;
-    tokenized: number;
-    total: number;
-    videos: number;
-  };
-}
-
 export const getFileTypesCountEffect = async () => {
   try {
-    const response = await axiosInstance.get<FileTypesCountResponse>(
-      `${API_PATH}/workspace/count/types`
-    );
+    const response = await axiosInstance.get<
+      DataWrappedResponse<FileTypesCount>
+    >(`${API_PATH}/workspace/count/types`);
     return response.data.data;
   } catch (e) {
     console.error(e);

@@ -2,7 +2,8 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import CountUp from 'react-countup';
-import { selectLevel, setRoundFinal } from '../../../store/reducers/gameSlice';
+import { selectLevel } from '../../../store/reducers/game/game.selectors';
+import { setRoundFinal } from '../../../store/reducers/game/game.slice';
 import styles from './EndGameAddedPoints.module.css';
 
 const TIME_OUT = 8000;
@@ -45,8 +46,11 @@ const EndGameAddedPoints = () => {
 
   return (
     <div className={styles.container}>
-      { showRank && user.rank ? (
-        <span className={styles[`points-text-rank`]}>{`${t('leadboard.rank')}:${user.rank}`}</span>
+      {showRank && user.rank ? (
+        <span
+          className={
+            styles[`points-text-rank`]
+          }>{`${t('leadboard.rank')}:${user.rank}`}</span>
       ) : (
         <>
           <CountUp className={styles.count} delay={1} end={counter} />

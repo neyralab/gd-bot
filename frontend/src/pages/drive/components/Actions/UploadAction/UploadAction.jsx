@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
 import { ReactComponent as PlusIcon } from '../../../../../assets/plus.svg';
 import UploadLoader from './UploadLoader';
-import { uploadFile } from '../../../../../store/reducers/driveSlice';
+import { uploadFile } from '../../../../../store/reducers/drive/drive.thunks';
 import { vibrate } from '../../../../../utils/vibration';
 import styles from './UploadAction.module.scss';
 

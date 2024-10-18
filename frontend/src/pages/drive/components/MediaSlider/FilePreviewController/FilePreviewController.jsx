@@ -3,14 +3,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getPreviewFileType } from '../../../../../utils/preview';
 import {
   getFilecoinBlobEffect,
-  getFilecoinStreamEffect,
+  getFilecoinStreamEffect
 } from '../../../../../effects/filesEffects';
 import { useMediaSliderCache } from '../MediaSliderCache';
 import PreviewSwitcher from '../../../../../components/file-previews/PreviewSwitcher/PreviewSwitcher';
-import {
-  setFileInfoModal,
-  toggleFileFavorite
-} from '../../../../../store/reducers/driveSlice';
+import { setFileInfoModal } from '../../../../../store/reducers/drive/drive.slice';
+import { toggleFileFavorite } from '../../../../../store/reducers/drive/drive.thunks';
 import { isDataprepUrl } from '../../../../../utils/gateway';
 import { isiOS } from '../../../../../utils/client';
 import { convertFile } from '../../../../../utils/convertFile';

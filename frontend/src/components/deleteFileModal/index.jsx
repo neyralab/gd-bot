@@ -13,9 +13,9 @@ import {
   permanentlyDeleteFileEffect
 } from '../../effects/file/deleteFileEffect';
 import { vibrate } from '../../utils/vibration';
+import { decreaseUsedSpace } from '../../store/reducers/userSlice';
 
 import style from './style.module.css';
-import { decreaseUsedSpace } from '../../store/reducers/userSlice';
 
 export const DeleteFileModal = () => {
   const dispatch = useDispatch();

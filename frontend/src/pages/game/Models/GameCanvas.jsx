@@ -10,7 +10,7 @@ import { useTranslation } from 'react-i18next';
 import { Canvas } from '@react-three/fiber';
 import { EffectComposer, Bloom } from '@react-three/postprocessing';
 import { Html, OrbitControls, useProgress } from '@react-three/drei';
-import { setCanvasLoaded } from '../../../store/reducers/gameSlice';
+import { setCanvasLoaded } from '../../../store/reducers/game/game.slice';
 import ShipModel from './Ship/ShipModel/ShipModel';
 import BackgroundModel from './BackgoundModel';
 import MoveCamera from './MoveCamera';

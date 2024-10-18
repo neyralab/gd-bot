@@ -4,9 +4,9 @@ import moment from 'moment';
 import {
   setFileMenuModal,
   setMediaSliderCurrentFile,
-  setMediaSliderOpen,
-  toggleFileFavorite
-} from '../../../../store/reducers/driveSlice';
+  setMediaSliderOpen
+} from '../../../../store/reducers/drive/drive.slice';
+import { toggleFileFavorite } from '../../../../store/reducers/drive/drive.thunks';
 import PPVFileGridView from './file/PPVFileGridView';
 import SimpleFileGridView from './file/SimpleFileGridView';
 import PPVFileListView from './file/PPVFileListView';

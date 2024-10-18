@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { clearDriveState, initDrive } from '../../store/reducers/driveSlice';
+import { clearDriveState, initDrive } from '../../store/reducers/drive/drive.thunks';
 import {
   MediaSliderCacheProvider,
   useMediaSliderCache
