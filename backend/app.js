@@ -342,6 +342,14 @@ userCreationQueue.process(async (job) => {
     });
 
     if (!response.ok) {
+      logger.error(
+        'Error http',
+        {
+          s:response.status,
+          statusText: response.statusText,
+          e:await response.text()
+        }
+      );
       throw new Error(`HTTP error ${response.status}`);
     }
 
