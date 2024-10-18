@@ -44,7 +44,7 @@ const redisClient = createClient({
 });
 await redisClient.connect();
 
-const userCreationQueue = new Queue('userCreationNew', process.env.REDIS_URL);
+const userCreationQueue = new Queue('userCreation', process.env.REDIS_URL);
 
 bot.on('pre_checkout_query', async (ctx) => {
   try {
@@ -192,7 +192,6 @@ function buildUserData(user, chat_id, refCode) {
 }
 
 async function createUser(userData, showMobileAuthButton) {
-  const url = `/apiv2/user/create/telegram`;
   const headers = buildHeaders();
   const code = generateRef(userData.chat_id);
   userData.code = code;
@@ -201,7 +200,6 @@ async function createUser(userData, showMobileAuthButton) {
 
   try {
   const res = await userCreationQueue.add({
-    url,
     userData,
     headers,
     showMobileAuthButton,
@@ -336,36 +334,25 @@ app.listen(process.env.PORT, () =>
 
 userCreationQueue.process(async (job) => {
   const ttl = 60 * 60 * 24 * 30; // time-to-live for data when saving it to a Redis client
-  const { url, userData, headers, showMobileAuthButton } = job.data;
+  const { userData, headers, showMobileAuthButton } = job.data;
   logger.info('in job process', {job})
   try {
     logger.info('in job process, before fetch', {userData, headers, showMobileAuthButton});
 
-    let correctUrl = ''
-    const old_ip = '162.55.193.107'
-
-    if (url.includes(process.env.GD_BACKEND_URL)) {
-      correctUrl = url;
-    } else {
-      if (url.includes(old_ip)){
-        correctUrl=url.replace(old_ip, process.env.GD_BACKEND_URL.replace('https://', ''))
-      }
-      if (!url.startsWith('https://')){
-        correctUrl = `${process.env.GD_BACKEND_URL}/${url}`
-      }
-    }
+    const url = `${process.env.GD_BACKEND_URL}/apiv2/user/create/telegram`;
 
     const response = await fetch(
-      correctUrl,
-{
-      method: 'POST',
-      headers: headers,
-      body: JSON.stringify(userData),
-      timeout: 180000 // 3 minutes in milliseconds
-    });
+      url,
+      {
+        method: 'POST',
+        headers: headers,
+        body: JSON.stringify(userData),
+        timeout: 180000 // 3 minutes in milliseconds
+      }
+    );
 
-      logger.error(
-        'Error http',
+      logger.debug(
+        'http signup request',
         {
           s:response.status,
           statusText: response.statusText,
