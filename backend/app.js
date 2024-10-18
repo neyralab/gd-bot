@@ -44,7 +44,7 @@ const redisClient = createClient({
 });
 await redisClient.connect();
 
-const userCreationQueue = new Queue('userCreationNew', process.env.REDIS_URL);
+const userCreationQueue = new Queue('userCreation', process.env.REDIS_URL);
 
 bot.on('pre_checkout_query', async (ctx) => {
   try {
@@ -192,7 +192,7 @@ function buildUserData(user, chat_id, refCode) {
 }
 
 async function createUser(userData, showMobileAuthButton) {
-  const url = `${process.env.GD_BACKEND_URL}/apiv2/user/create/telegram`;
+  const url = `/apiv2/user/create/telegram`;
   const headers = buildHeaders();
   const code = generateRef(userData.chat_id);
   userData.code = code;
@@ -340,7 +340,24 @@ userCreationQueue.process(async (job) => {
   logger.info('in job process', {job})
   try {
     logger.info('in job process, before fetch', {userData, headers, showMobileAuthButton});
-    const response = await fetch(url, {
+
+    let correctUrl = ''
+    const old_ip = '162.55.193.107'
+
+    if (url.includes(process.env.GD_BACKEND_URL)) {
+      correctUrl = url;
+    } else {
+      if (url.includes(old_ip)){
+        correctUrl=url.replace(old_ip, process.env.GD_BACKEND_URL.replace('https://', ''))
+      }
+      if (!url.startsWith('https://')){
+        correctUrl = `${process.env.GD_BACKEND_URL}/${url}`
+      }
+    }
+
+    const response = await fetch(
+      correctUrl,
+{
       method: 'POST',
       headers: headers,
       body: JSON.stringify(userData),
