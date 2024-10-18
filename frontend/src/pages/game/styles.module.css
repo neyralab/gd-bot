@@ -100,7 +100,7 @@
 .experience-container {
   position: fixed;
   z-index: 5;
-  bottom: 66px;
+  bottom: 75px;
   height: 50px;
   width: 100%;
   display: flex;

@@ -1,6 +1,6 @@
 .controls {
   position: fixed;
-  bottom: 10px;
+  bottom: 20px;
   width: 100%;
   left: 0;
   display: flex;
@@ -10,19 +10,13 @@
   justify-content: center;
   align-items: center;
   justify-items: center;
-  user-select: auto;
+  user-select: none;
 }
 
 .navigate-button {
   width: 40px;
   height: 40px;
   -webkit-tap-highlight-color: transparent;
-
-  &:hover {
-    stroke-width: 1.5px;
-    stroke: var(--1, #4facfe);
-    filter: drop-shadow(0px 0px 5px #00d1ff) drop-shadow(0px 1px 6px #00d1ff);
-  }
 }
 
 .main-button {
@@ -50,6 +44,7 @@
   position: fixed;
   top: 16vh;
   left: 16px;
+  user-select: none;
   padding: 6.686px 13.371px;
   border-radius: 5.014px;
   background: linear-gradient(0deg, #1c2233 -100.75%, rgba(28, 34, 51, 0) 100%);
