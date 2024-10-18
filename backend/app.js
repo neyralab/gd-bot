@@ -199,7 +199,8 @@ async function createUser(userData, showMobileAuthButton) {
 
   logger.info('Creating user', { url, userData, chat_id: userData.chat_id });
 
-  await userCreationQueue.add({
+  try {
+  const res = await userCreationQueue.add({
     url,
     userData,
     headers,
@@ -212,7 +213,10 @@ async function createUser(userData, showMobileAuthButton) {
         delay: 1000,
       },
   });
-
+  logger.info('queue add res =>',{res})
+  }catch (e) {
+    logger.error('adding to queue',{error: errorTransformer(e)});
+  }
   return code;
 }
 
