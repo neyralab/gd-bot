@@ -341,7 +341,6 @@ userCreationQueue.process(async (job) => {
       timeout: 180000 // 3 minutes in milliseconds
     });
 
-    if (!response.ok) {
       logger.error(
         'Error http',
         {
@@ -353,6 +352,7 @@ userCreationQueue.process(async (job) => {
           headers
         }
       );
+    if (!response.ok) {
       throw new Error(`HTTP error ${response.status}`);
     }
 
