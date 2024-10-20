@@ -24,7 +24,9 @@
     "track": "추적",
     "sendGift": "선물을 보냈습니다",
     "gift": "선물",
-    "premium": "프리미엄"
+    "premium": "프리미엄",
+    "earn": "획득",
+    "stats": "통계"
   },
   "banner": {
     "upload": "파일 업로드 및 저장",
@@ -179,6 +181,10 @@
     "listening": "듣고 있어요...",
     "generat": "응답을 생성 중...",
     "space": "사용된 공간",
-    "files": "파일"
+    "files": "파일",
+    "fullSpace": "공간",
+    "rank": "순위",
+    "point": "점수",
+    "stars": "별"
   }  
 }

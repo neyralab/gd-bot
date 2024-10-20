@@ -34,7 +34,11 @@
     "inviteFriendCapitalize": "Пригласите Друга",
     "yourFriends": "Ваши Друзья",
     "inviteFriend": "Пригласить друга",
-    "invitePremiumFriend": "Пригласите 25 друзей с Premium"
+    "invitePremiumFriend": "Пригласите 25 друзей с Premium",
+    "inviteSome": "Пригласите {count} друзей",
+    "rewards": "Дополнительные награды",
+    "rewardStorage": "Каждый приглашённый друг получает 1 ГБ бесплатного хранилища.",
+    "secureAndEncrypted": "Безопасно и зашифровано: Их данные защищены с помощью высокоуровневого шифрования."
   },
   "earn": {
     "earn": "Зарабатывайте больше баллов",

@@ -24,7 +24,9 @@
     "track": "Theo dõi",
     "sendGift": "Đã gửi quà",
     "gift": "Quà",
-    "premium": "Cao cấp"
+    "premium": "Cao cấp",
+    "earn": "Kiếm",
+    "stats": "Thống kê"
   },
   "banner": {
     "upload": "Tải lên và lưu trữ tệp của bạn",
@@ -179,6 +181,10 @@
     "listening": "Tôi đang nghe bạn...",
     "generat": "Đang tạo phản hồi...",
     "space": "Dung lượng đã sử dụng",
-    "files": "Tệp"
+    "files": "Tệp",
+    "fullSpace": "Không gian",
+    "rank": "Hạng",
+    "point": "Điểm",
+    "stars": "Những ngôi sao"
   }  
 }

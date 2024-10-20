@@ -24,7 +24,9 @@
     "track": "Suivre",
     "sendGift": "Envoyé un cadeau",
     "gift": "Cadeau",
-    "premium": "Premium"
+    "premium": "Premium",
+    "earn": "Gagner",
+    "stats": "Statistiques"
   },
   "banner": {
     "upload": "Téléchargez et stockez vos fichiers",
@@ -179,6 +181,10 @@
     "listening": "Te estoy escuchando...",
     "generat": "Generando respuesta...",
     "space": "Espace utilisé",
-    "files": "Fichiers"
+    "files": "Fichiers",
+    "fullSpace": "Espace",
+    "rank": "Rang",
+    "point": "Point",
+    "stars": "Étoiles"
   }  
 }

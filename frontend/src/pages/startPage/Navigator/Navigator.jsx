@@ -10,6 +10,7 @@ import { ReactComponent as BoostIcon } from '../assets/boost.svg';
 import { ReactComponent as AirdropIcon } from '../../../assets/atr.svg';
 import { ReactComponent as ConvertIcon } from '../assets/convertor.svg';
 import { ReactComponent as LanguageIcon } from '../assets/language.svg';
+import { ReactComponent as EarnIcon } from '../../../assets/earn.svg';
 import { ReactComponent as GiftIcon } from '../assets/gift.svg';
 
 import {
@@ -37,8 +38,8 @@ export default function Navigator({
 
   const HIDDEN_OPTION = useMemo(() => {
     const array = [];
-    !isEnabledConverter && array.push(5);
-    !isEnabledMultilanguage && array.push(6);
+    !isEnabledConverter && array.push(6);
+    !isEnabledMultilanguage && array.push(7);
     return array;
   }, []);
 
@@ -68,20 +69,27 @@ export default function Navigator({
       },
       {
         id: 2,
-        name: t('dashboard.airdrop'),
-        icon: <AirdropIcon />,
-        html: <span className={styles.actionBtn}>{t('dashboard.track')}</span>,
-        onClick: () => navigate('/point-tracker')
+        name: t('dashboard.earn'),
+        icon: <EarnIcon width={24} height={24} viewBox="0 0 30 30" />,
+        html: <span className={styles.actionBtn}>{t('task.task')}</span>,
+        onClick: () => navigate('/earn')
       },
       {
         id: 3,
+        name: t('dashboard.airdrop'),
+        icon: <AirdropIcon />,
+        html: <span className={styles.actionBtn}>{t('dashboard.stats')}</span>,
+        onClick: () => navigate('/point-tracker')
+      },
+      {
+        id: 4,
         name: t('dashboard.sendGift'),
         icon: <GiftIcon />,
         html: <span className={styles.actionBtn}>{t('dashboard.gift')}</span>,
         onClick: onOpenShareModal,
       },
       {
-        id: 4,
+        id: 5,
         name: t('dashboard.premium'),
         icon: <BoostIcon />,
         html: (
@@ -90,14 +98,14 @@ export default function Navigator({
         onClick: () => navigate('/boost')
       },
       {
-        id: 5,
+        id: 6,
         name: t('dashboard.conver'),
         icon: <ConvertIcon />,
         html: <span className={styles.actionBtn}>{t('dashboard.go')}</span>,
         onClick: () => navigate('/balance')
       },
       {
-        id: 6,
+        id: 7,
         name: t('dashboard.language'),
         icon: <LanguageIcon />,
         html: (
@@ -109,7 +117,7 @@ export default function Navigator({
           </span>
         ),
         onClick: () => navigate('/language')
-      }
+      },
     ];
 
     return list.filter((item) => !HIDDEN_OPTION.includes(item.id));

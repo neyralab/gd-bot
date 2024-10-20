@@ -41,10 +41,10 @@ const Form = ({ onClose, onSubmitProcess, state, setState }) => {
   };
 
   return (
-    <>
+    <div className={styles['form-container']}>
       <div className={styles.container}>
         <div className={styles.form}>
-          <Header leftText={t('ppv.back')} onClose={onClose} />
+          <Header leftText={t('ppv.back')} />
 
           <CountSelector
             title={t('ppv.ppv')}
@@ -55,14 +55,25 @@ const Form = ({ onClose, onSubmitProcess, state, setState }) => {
             max={MAX_STARS_VALUE}
           />
 
-          <CountSelector
+          {/* <CountSelector
             title={t('ppv.download')}
             value={Number(state.download)}
             onChange={onChange}
             name="download"
             min={0}
             max={MAX_STARS_VALUE}
-          />
+          /> */}
+
+          <button
+            data-animation="ppv-footer-animation-2"
+            disabled={startValidation && !isValid}
+            className={styles.footerButton}
+            onClick={onSubmit}>
+            {t('ppv.publish')}
+            <span>
+              1 <StarIcon viewBox="0 0 21 21" />
+            </span>
+          </button>
 
           <div
             data-animation="ppv-textarea-animation-1"
@@ -70,7 +81,6 @@ const Form = ({ onClose, onSubmitProcess, state, setState }) => {
               styles.areaContainer,
               startValidation && !isValid && styles.areaError
             )}>
-            <p className={styles.areaTitle}>{t('ppv.description')}</p>
             <textarea
               className={styles.area}
               placeholder={t('ppv.description')}
@@ -91,19 +101,8 @@ const Form = ({ onClose, onSubmitProcess, state, setState }) => {
           className={styles.footerTitle}>
           {t('ppv.policy')}
         </p>
-
-        <button
-          data-animation="ppv-footer-animation-2"
-          disabled={startValidation && !isValid}
-          className={styles.footerButton}
-          onClick={onSubmit}>
-          {t('ppv.publish')}
-          <span>
-            1 <StarIcon viewBox="0 0 21 21" />
-          </span>
-        </button>
       </div>
-    </>
+    </div>
   );
 };
 
