@@ -15,6 +15,7 @@ import { checkAllEarnTasks, getAllPartners } from '../../effects/EarnEffect';
 import { getAllTasks } from '../../effects/balanceEffect';
 import { handleTasks } from '../../store/reducers/taskSlice';
 import { runInitAnimation } from './animations';
+import { isMobilePlatform } from '../../utils/client';
 
 import Friends from '../friends';
 import Tasks from './Tasks/index';
@@ -23,6 +24,7 @@ import Mission from './Mission';
 import EarnModal from './EarnModal/EarnModal';
 import Segmented from '../../components/segmented';
 import TemporaryControls from '../../components/AssistantDashboard/TemporaryControls/TemporaryControls';
+import { BackButton } from '../../components/backButton';
 
 import styles from './styles.module.css';
 
@@ -189,6 +191,7 @@ export default function EarnPage() {
 
   return (
     <div className={styles.container}>
+      {!isMobilePlatform && <BackButton />}
       <div className={styles['title-block']}>
         <div className={styles['title-inner-block']}>
           <span className={styles.spacer}></span>
