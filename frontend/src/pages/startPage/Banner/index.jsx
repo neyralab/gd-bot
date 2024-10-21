@@ -82,7 +82,6 @@ const Banner = ({ storageSize, onOpenShareModal, ...res }) => {
     return createBanners({
       onClick: doRedirectToApp,
       banners,
-      onOpenShareModal,
       storageSize
     }).map((el) => ({
       id: el.id,

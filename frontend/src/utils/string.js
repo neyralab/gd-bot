@@ -92,6 +92,24 @@ const getOriginWithoutSubdomain = (url) => {
   }
 }
 
+const getQueryParamValue = (queryString, paramName, jsonKey = null) => {
+  const params = new URLSearchParams(queryString);
+  
+  const paramEncoded = params.get(paramName);
+  if (!paramEncoded) {
+      return null;
+  }
+
+  const paramDecoded = decodeURIComponent(paramEncoded);
+  if (!jsonKey) {
+      return paramDecoded;
+  }
+
+  const paramObject = JSON.parse(paramDecoded);
+
+  return paramObject[jsonKey] || null;
+}
+
 export {
   getWallet,
   fomatNumber,
@@ -103,6 +121,7 @@ export {
   formatDuration,
   removeSlugHyphens,
   addSlugHyphens,
+  getQueryParamValue,
   isValidEnvVariable,
   getOriginWithoutSubdomain
 };

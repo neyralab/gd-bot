@@ -17,6 +17,7 @@ import { Header } from '../../components/header_v2';
 import BuyButton from './BuyButton/BuyButton';
 import Timer from './Timer/Timer';
 import Menu from '../../components/Menu/Menu';
+import TemporaryControls from '../../components/AssistantDashboard/TemporaryControls/TemporaryControls';
 import ProgressBar from './ProgressBar/ProgressBar';
 import GhostLoader from '../../components/ghostLoader';
 import Balance from './Balance/Balance';
@@ -29,6 +30,7 @@ import SystemModalWrapper from './SystemModalWrapper/SystemModalWrapper';
 import MainButton from './MainButton/MainButton';
 import AdvertisementOfferModal from './AdvertisementOfferModal/AdvertisementOfferModal';
 import AdvertisementPlayModal from './AdvertisementPlayModal/AdvertisementPlayModal';
+import { isMobilePlatform } from '../../utils/client';
 import styles from './styles.module.css';
 
 /** Please, do not add extra selectors or state
@@ -96,7 +98,7 @@ export function GamePage() {
         <GhostLoader
           texts={isTransactionLoading ? [t('message.transaction')] : []}
         />
-        <Menu />
+        <TemporaryControls className={styles['control-paner']} />
       </>
     );
   }
@@ -104,7 +106,6 @@ export function GamePage() {
   return (
     <div className={styles.container}>
       <Header />
-
       <div className={styles.content}>
         <div className={styles['canvas-container']}>
           <div
@@ -142,7 +143,7 @@ export function GamePage() {
         </div>
       </div>
 
-      <Menu />
+      <TemporaryControls />
 
       <GoldPlayModal />
 

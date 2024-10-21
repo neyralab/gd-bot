@@ -19,7 +19,12 @@
     "conver": "Convertisseur",
     "go": "Aller",
     "language": "Langue",
-    "back": "Retour"
+    "back": "Retour",
+    "airdrop": "Airdrop",
+    "track": "Suivre",
+    "sendGift": "Envoyé un cadeau",
+    "gift": "Cadeau",
+    "premium": "Premium"
   },
   "banner": {
     "upload": "Téléchargez et stockez vos fichiers",
@@ -167,5 +172,13 @@
     "offerAcceptDesc": "Bonne nouvelle ! Le cadeau de stockage de {size} que vous avez envoyé pour {name} a été accepté. Le destinataire profite maintenant de l'espace supplémentaire. Merci de les avoir aidés !",
     "tryAgain": "Réessayer",
     "ok": "OK"
-  }
+  },
+  "assistent": {
+    "messageError": "Ocurrió un error al procesar el mensaje. Por favor, inténtelo de nuevo",
+    "browserSupport": "Su navegador no admite reconocimiento de voz",
+    "listening": "Te estoy escuchando...",
+    "generat": "Generando respuesta...",
+    "space": "Espace utilisé",
+    "files": "Fichiers"
+  }  
 }
