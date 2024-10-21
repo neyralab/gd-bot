@@ -54,14 +54,6 @@ interface GetStorageNotificationsResponse {
   items: Notification[];
 }
 
-interface Accumulator {
-  sender: {
-    unread: Notification[];
-    readed: Notification[];
-  };
-  recipient: Notification[];
-}
-
 export const getStorageNotificationsEffect = async () => {
   try {
     const response = await axiosInstance.get<GetStorageNotificationsResponse>(
@@ -69,40 +61,7 @@ export const getStorageNotificationsEffect = async () => {
     );
     const data = response.data?.items || [];
 
-    const res = data.reduce<Accumulator>(
-      (accumulator, currentValue) => {
-        if (
-          currentValue.text.includes('accept') ||
-          currentValue.text.includes('rejected')
-        ) {
-          if (currentValue.viewed) {
-            return {
-              ...accumulator,
-              sender: {
-                ...accumulator.sender,
-                readed: [...accumulator.sender.readed, currentValue]
-              }
-            };
-          } else {
-            return {
-              ...accumulator,
-              sender: {
-                ...accumulator.sender,
-                unread: [...accumulator.sender.unread, currentValue]
-              }
-            };
-          }
-        } else {
-          return {
-            ...accumulator,
-            recipient: [...accumulator.recipient, currentValue]
-          };
-        }
-      },
-      { sender: { unread: [], readed: [] }, recipient: [] }
-    );
-
-    return res;
+    return data;
   } catch (e) {
     console.error(e);
     throw e;

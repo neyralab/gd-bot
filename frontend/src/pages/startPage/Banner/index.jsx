@@ -1,17 +1,22 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { toast } from 'react-toastify';
 import { useTranslation } from 'react-i18next';
-
-import styles from './styles.module.css';
+import { useSelector } from 'react-redux';
 
 import CardsSlider from '../../../components/CardsSlider/CardsSlider';
 import { BannerItem } from './BannerItem';
-
 import { isAppStoreUrl, isiOS, isPlayStoreUrl } from '../../../utils/client';
 import { getBannersEffect } from '../../../effects/bannerEffect';
 import { API_PATH_ROOT } from '../../../utils/api-urls';
 import Loader2 from '../../../components/Loader2/Loader2';
 import BannerSource from '../assets/banner.png';
+import {
+  getAdvertisementBanners,
+  selectAdvertisementBanners
+} from '../../../store/reducers/uiSlice';
+import { useAppDispatch } from '../../../store/hooks';
+
+import styles from './styles.module.css';
 
 const createBanners = ({ onClick, banners, onOpenShareModal, storageSize }) => {
   const items = banners.map((banner) => ({
@@ -34,18 +39,15 @@ const createBanners = ({ onClick, banners, onOpenShareModal, storageSize }) => {
 };
 
 const Banner = ({ storageSize, onOpenShareModal, ...res }) => {
-  const [banners, setBanners] = useState([]);
+  const dispatch = useAppDispatch();
+  const banners = useSelector(selectAdvertisementBanners);
   const { t } = useTranslation('system');
 
   useEffect(() => {
-    getBannersEffect()
-      .then((data) => setBanners(data))
-      .catch(() => {
-        toast.error(t('message.errorAndRetry'), {
-          position: 'bottom-center'
-        });
-      });
-  }, []);
+    if (!banners) {
+      dispatch(getAdvertisementBanners());
+    }
+  }, [banners]);
 
   const handleClick = (url) => {
     const link = document.createElement('a');
@@ -75,6 +77,8 @@ const Banner = ({ storageSize, onOpenShareModal, ...res }) => {
   };
 
   const slides = useMemo(() => {
+    if (!banners) return;
+
     return createBanners({
       onClick: doRedirectToApp,
       banners,
@@ -87,7 +91,7 @@ const Banner = ({ storageSize, onOpenShareModal, ...res }) => {
 
   return (
     <div className={styles.banner} {...res}>
-      {banners.length > 0 ? (
+      {banners && banners.length > 0 ? (
         <CardsSlider items={slides} timeout={10000} />
       ) : (
         <Loader2 />

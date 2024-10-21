@@ -16,7 +16,7 @@ import { selectCurrentWorkspace } from '../../store/reducers/workspaceSlice';
 import {
   handlePaymentSelectModal,
   selectPaymentSelectModal
-} from '../../store/reducers/modalSlice';
+} from '../../store/reducers/uiSlice';
 import { DEFAULT_TARIFFS_NAMES } from '../upgradeStorage';
 import { selectPaymenttByKey } from '../../store/reducers/paymentSlice';
 import { getTonWallet, makeInvoice } from '../../effects/paymentEffect';

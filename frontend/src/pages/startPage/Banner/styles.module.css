@@ -2,6 +2,7 @@
   width: 100%;
   height: 226px;
   min-height: 226px;
+  position: relative;
 }
 
 .banner > div > ul {
@@ -22,7 +23,6 @@
   margin: auto 0;
   border-radius: 12px;
   overflow: hidden;
-  position: relative;
 }
 
 .image {
@@ -71,7 +71,7 @@
 }
 
 .banner > div > div > span {
-  border: 0.6px solid #FFFFFF66;
+  border: 0.6px solid #ffffff66;
 }
 
 .bannerHeader {
