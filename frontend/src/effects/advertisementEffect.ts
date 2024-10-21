@@ -19,7 +19,7 @@ interface AdvertisementVideoInfo {
 
 export const getAdvertisementVideo = async () => {
   const url = `${API_PATH}/video`;
-  const { data } = await axiosInstance.get<AdvertisementVideoInfo[]>(url);
+  const { data } = await axiosInstance.get<AdvertisementVideoInfo>(url);
   return data;
 };
 

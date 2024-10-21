@@ -1,8 +1,51 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import {
-  themes as defaultThemes,
-  levelSubThemes
-} from '../../pages/game/themes';
+  createAsyncThunk,
+  ThunkDispatch,
+  UnknownAction
+} from '@reduxjs/toolkit';
+import { AxiosError } from 'axios';
+import {
+  addBalance,
+  setAdvertisementModal,
+  setAdvertisementOfferModal,
+  setAllowThemeChange,
+  setBalance,
+  setContractAddress,
+  setCounterCount,
+  setCounterIsActive,
+  setCounterIsFinished,
+  setExperienceLevel,
+  setExperiencePoints,
+  setGameId,
+  setGameInfo,
+  setGameModal,
+  setIsGameDisabled,
+  setIsInitialized,
+  setIsInitializing,
+  setLevels,
+  setLockIntervalId,
+  setLockTimerTimestamp,
+  setMaxLevel,
+  setNextTheme,
+  setPendingGames,
+  setReachedNewLevel,
+  setRecentlyFinishedLocker,
+  setRoundFinal,
+  setRoundTimeoutId,
+  setRoundTimerTimestamp,
+  setStatus,
+  setSystemModal,
+  setTheme,
+  setThemeAccess,
+  setThemes
+} from './game.slice';
+import { RootState } from '..';
+import {
+  GameSubTheme,
+  GameTheme,
+  NextThemeDirection
+} from '../../../pages/game/game.types';
+import { getAdvertisementVideo } from '../../../effects/advertisementEffect';
 import {
   beforeGame,
   endGame,
@@ -12,233 +55,25 @@ import {
   getGamePlans,
   getPendingGames,
   startGame
-} from '../../effects/gameEffect';
-import { getUserEffect } from '../../effects/userEffects';
-import { setUser } from './userSlice';
-import { getAdvertisementVideo } from '../../effects/advertisementEffect';
-import { isEnabledMobileOnly } from '../../utils/featureFlags';
-import { isDesktopPlatform, isWebPlatform } from '../../utils/client';
-import { getToken } from '../../effects/set-token';
-import { tg } from '../../App';
+} from '../../../effects/gameEffect';
+import { isDesktopPlatform, isWebPlatform } from '../../../utils/client';
 
-const gameSlice = createSlice({
-  name: 'game',
-  initialState: {
-    isInitializing: false,
+import { getToken } from '../../../effects/set-token';
+import { getUserEffect } from '../../../effects/userEffects';
+import { setUser } from '../userSlice';
+import { tg } from '../../../App';
+import { isEnabledMobileOnly } from '../../../utils/featureFlags';
+import {
+  themes as defaultThemes,
+  levelSubThemes
+} from '../../../pages/game/themes';
+import { selectLevel, selectPendingGames } from './game.selectors';
+import { Timeout } from '../../../types';
 
-    isInitialized: false,
-
-    isCanvasLoaded: false,
-
-    contractAddress: null,
-
-    gameId: null,
-
-    themes: [],
-
-    isTransactionLoading: false,
-
-    /** 'waiting', 'playing', 'finished' */
-    status: 'waiting',
-
-    theme: null,
-
-    levels: [],
-
-    themeAccess: {
-      hawk: true, // tier id 1
-      gold: false, // tier id 3
-      ghost: false, // tier id 4
-      premium: false // tier id 5
-    },
-
-    balance: {
-      value: 0, // taps
-      label: 0 // points
-    },
-
-    experienceLevel: 1,
-
-    experiencePoints: 0,
-
-    maxLevel: 0,
-
-    reachedNewLevel: false,
-
-    roundTimerTimestamp: null,
-
-    roundTimeoutId: null,
-
-    lockTimerTimestamp: null,
-
-    lockIntervalId: null,
-
-    counter: {
-      isActive: false,
-      count: null,
-      isFinished: true
-    },
-
-    roundFinal: {
-      isActive: false,
-      roundPoints: null
-    },
-
-    /** nextTheme is for animation purposes only */
-    nextTheme: {
-      theme: null,
-      direction: null,
-      isSwitching: false
-    },
-
-    allowThemeChange: false,
-
-    pendingGames: [],
-
-    gameInfo: null,
-
-    /** To prevent accidental tap to start another game when just finished */
-    recentlyFinishedLocker: false,
-
-    /** Shows an offer to watch an advertisement
-     * When the free game is finished, this modal should appear
-     * and offer our user to watch an advertisement to play another game.
-     * If user accepts the offer, advertisement modal should be seen
-     * Parameters: null or {points: number, previewColor: string; videoUrl: string}
-     */
-    advertisementOfferModal: null,
-    advertisementModal: null,
-
-    /** Fancy modal with some information/notification.
-     * Right now is used to show 'We need some time to review the transaction'
-     * Check GameModal component for parameters
-     * Right now it accepts values: null, 'TIME_FOR_TRANSACTION'
-     */
-    gameModal: null,
-
-    /** Alerts
-     * Check SystemModalWrapper component and it's child SystemModal for parameters
-     * Right now it accepts values: null, 'REACHED_MAX_TAPS'
-     */
-    systemModal: null,
-
-    isGameDisabled: false
-  },
-  reducers: {
-    setPendingGames: (state, { payload }) => {
-      state.pendingGames = payload;
-    },
-    setIsInitializing: (state, { payload }) => {
-      state.isInitializing = payload;
-    },
-    setIsInitialized: (state, { payload }) => {
-      state.isInitialized = payload;
-    },
-    setCanvasLoaded: (state, { payload }) => {
-      state.isCanvasLoaded = payload;
-    },
-    setContractAddress: (state, { payload }) => {
-      state.contractAddress = payload;
-    },
-    setThemes: (state, { payload }) => {
-      state.themes = payload;
-    },
-    setGameId: (state, { payload }) => {
-      state.gameId = payload;
-    },
-    setIsTransactionLoading: (state, { payload }) => {
-      state.isTransactionLoading = payload;
-    },
-    setStatus: (state, { payload }) => {
-      state.status = payload;
-    },
-    setLevels: (state, { payload }) => {
-      state.levels = payload;
-    },
-    setTheme: (state, { payload }) => {
-      state.theme = payload;
-    },
-    setBalance: (state, { payload }) => {
-      state.balance = payload;
-    },
-    addBalance: (state, { payload }) => {
-      state.balance = {
-        label: state.balance.label + payload,
-        value: state.balance.value + 1
-      };
-    },
-    setRoundTimerTimestamp: (state, { payload }) => {
-      state.roundTimerTimestamp = payload;
-    },
-    setRoundTimeoutId: (state, { payload }) => {
-      clearTimeout(state.roundTimeoutId);
-      state.roundTimeoutId = payload;
-    },
-    setLockTimerTimestamp: (state, { payload }) => {
-      state.lockTimerTimestamp = payload;
-    },
-    setLockIntervalId: (state, { payload }) => {
-      clearInterval(state.lockIntervalId);
-      state.lockIntervalId = payload;
-    },
-    setThemeAccess: (state, { payload }) => {
-      state.themeAccess[payload.themeId] = payload.status;
-    },
-    setExperienceLevel: (state, { payload }) => {
-      state.experienceLevel = payload;
-    },
-    setExperiencePoints: (state, { payload }) => {
-      state.experiencePoints = payload;
-    },
-    setReachedNewLevel: (state, { payload }) => {
-      state.reachedNewLevel = payload;
-    },
-    setNextTheme: (state, { payload }) => {
-      state.nextTheme = payload;
-    },
-    setAllowThemeChange: (state, { payload }) => {
-      state.allowThemeChange = payload;
-    },
-    setCounterIsActive: (state, { payload }) => {
-      state.counter.isActive = payload;
-    },
-    setCounterCount: (state, { payload }) => {
-      state.counter.count = payload;
-    },
-    setCounterIsFinished: (state, { payload }) => {
-      state.counter.isFinished = payload;
-    },
-    setRoundFinal: (state, { payload }) => {
-      state.roundFinal = payload;
-    },
-    setMaxLevel: (state, { payload }) => {
-      state.maxLevel = payload;
-    },
-    setRecentlyFinishedLocker: (state, { payload }) => {
-      state.recentlyFinishedLocker = payload;
-    },
-    setAdvertisementOfferModal: (state, { payload }) => {
-      state.advertisementOfferModal = payload;
-    },
-    setAdvertisementModal: (state, { payload }) => {
-      state.advertisementModal = payload;
-    },
-    setGameModal: (state, { payload }) => {
-      state.gameModal = payload;
-    },
-    setSystemModal: (state, { payload }) => {
-      state.systemModal = payload;
-    },
-    setGameInfo: (state, { payload }) => {
-      state.gameInfo = payload;
-    },
-    setIsGameDisabled: (state, { payload }) => {
-      state.isGameDisabled = payload;
-    }
-  }
-});
-
-const lockTimerCountdown = (dispatch, endTime) => {
+const lockTimerCountdown = (
+  dispatch: ThunkDispatch<unknown, unknown, UnknownAction>,
+  endTime: number
+) => {
   dispatch(setLockTimerTimestamp(endTime));
 
   const intervalId = setInterval(() => {
@@ -257,29 +92,39 @@ const lockTimerCountdown = (dispatch, endTime) => {
   dispatch(setLockIntervalId(intervalId));
 };
 
-const undateSubTheme = (dispatch, state, themes, level) => {
+const updateSubTheme = (
+  dispatch: ThunkDispatch<unknown, unknown, UnknownAction>,
+  state: RootState,
+  themes: GameTheme[],
+  level: number
+) => {
   /** In the hawk theme (tier id 1) we might have subthemes. It depend on levels.
    * Each level has its own color scheme and images */
   const levelSubTheme =
-    levelSubThemes.find((el) => el.level === level) || levelSubThemes[0];
+    (levelSubThemes as GameSubTheme[]).find((el) => el.level === level) ||
+    (levelSubThemes[0] as GameSubTheme);
 
-  const newThemes = themes.map((theme) => {
+  const newThemes: GameTheme[] = themes.map((theme) => {
     if (theme.id === 'hawk') {
-      return { ...theme, ...levelSubTheme };
+      return { ...theme, ...levelSubTheme } as GameTheme;
     }
     return theme;
   });
 
   dispatch(setThemes(newThemes));
   if (state.game.theme) {
-    const foundTheme = newThemes.find((el) => el.id === state.game.theme.id);
-    dispatch(setTheme(foundTheme));
+    const foundTheme = newThemes.find((el) => el.id === state.game.theme!.id);
+    if (foundTheme) {
+      dispatch(setTheme(foundTheme));
+    }
   }
 
   return newThemes;
 };
 
-const getAdvertisementOffer = async (dispatch) => {
+const getAdvertisementOffer = async (
+  dispatch: ThunkDispatch<unknown, unknown, UnknownAction>
+) => {
   const videoInfo = await getAdvertisementVideo();
 
   if (videoInfo && videoInfo.data.id && videoInfo.data.video) {
@@ -296,7 +141,7 @@ const getAdvertisementOffer = async (dispatch) => {
 export const checkAdvertisementOffer = createAsyncThunk(
   'game/checkAdvertisementOffer',
   async (_, { dispatch, getState }) => {
-    const state = getState();
+    const state = getState() as RootState;
     if (state.game.lockTimerTimestamp) {
       getAdvertisementOffer(dispatch);
     }
@@ -320,9 +165,9 @@ export const initGame = createAsyncThunk(
         ]);
       console.log({ pendingGames });
 
-      const state = getState();
+      const state = getState() as RootState;
       const maxLevel = levels.length;
-      let level = state.user.data.current_level.level;
+      let level = state.user.data?.current_level.level || 0;
       if (level > maxLevel) {
         level = maxLevel;
       }
@@ -347,38 +192,49 @@ export const initGame = createAsyncThunk(
       }
 
       /** This function combines backend tiers and frontend themes */
-      let newThemes = defaultThemes
+      let newThemes = (defaultThemes as GameTheme[])
         .filter((theme) =>
           games.some((game) => game.multiplier === theme.multiplier)
         )
         .map((theme) => {
           const findLevel = levels.find((el) => el.id === level);
-          const { tierIdBN, tierId, ...findGame } = games.find(
+          if (!findLevel) return;
+
+          const game = games.find(
             (game) => game.multiplier === theme.multiplier
           );
-          let newTheme = findGame
-            ? {
-                ...findGame,
-                ...theme,
-                tierId: findGame.id,
-                multiplier:
-                  theme.id === 'hawk'
-                    ? findLevel.multiplier
-                    : findGame.multiplier
-              }
-            : theme;
-          return newTheme;
-        });
+
+          if (game) {
+            const { tierIdBN, tierId, ...findGame } = game;
+            return {
+              ...findGame,
+              ...theme,
+              tierId: findGame.id,
+              multiplier:
+                theme.id === 'hawk' ? findLevel.multiplier : findGame.multiplier
+            };
+          }
+
+          return theme;
+        })
+        .filter((theme): theme is GameTheme => theme !== undefined);
 
       /** This function combines frontend color schemes and images for hawk theme.
        * Hawk theme can have different colors depends on level */
-      newThemes = undateSubTheme(dispatch, state, newThemes, level);
+      newThemes = updateSubTheme(dispatch, state, newThemes, level);
+
+      console.log(newThemes);
 
       if (pendingGames.length > 0) {
         const pendingGame = pendingGames[0];
         const pendingTheme = newThemes.find(
           (el) => el.tierId === pendingGame.tier_id
         );
+
+        if (!pendingTheme || !pendingGame) return;
+
+        const gameWithTier = { ...pendingGame, tier: pendingTheme.tierId };
+
         dispatch(
           setThemeAccess({
             themeId: pendingTheme.id,
@@ -387,7 +243,7 @@ export const initGame = createAsyncThunk(
         );
         dispatch(setTheme(pendingTheme));
         dispatch(setGameId(pendingGame.uuid || pendingGame.id));
-        dispatch(setGameInfo(pendingGame));
+        dispatch(setGameInfo(gameWithTier));
       } else {
         dispatch(setTheme(newThemes[0]));
       }
@@ -405,11 +261,14 @@ export const initGame = createAsyncThunk(
 export const startRound = createAsyncThunk(
   'game/startRound',
   async (_, { dispatch, getState }) => {
-    setRoundFinal({ roundPoins: null, isActive: false });
+    setRoundFinal({ roundPoints: null, isActive: false });
     dispatch(setRoundTimeoutId(null));
     dispatch(setStatus('playing'));
     dispatch(setReachedNewLevel(false));
-    const state = getState();
+
+    const state = getState() as RootState;
+    if (!state.game.theme) return;
+
     const gameTime = state.game.theme.game_time * 1000;
 
     const endTime = Date.now() + gameTime;
@@ -423,26 +282,29 @@ export const startRound = createAsyncThunk(
 
     if (state.game.theme.id !== 'ghost') {
       try {
-        const game = await beforeGame(null, state.game.theme.tierId);
+        const game = await beforeGame(null, state.game.theme.tierId!);
         try {
-          const g = await startGame(game.uuid || game.id, null);
+          await startGame(game.uuid || game.id, null);
           dispatch(setGameId(game?.uuid || game?.id));
           dispatch(setGameInfo(game));
         } catch (err) {
-          console.log({ startGameErr: err, m: err?.response?.data });
+          const error = err as AxiosError<{ errors: string }>;
+          console.log({ startGameErr: err, m: error?.response?.data });
           dispatch(
             setSystemModal({
               type: 'START_GAME_ERROR',
-              message: err?.response?.data?.errors || 'Unexpected Error'
+              message: error?.response?.data?.errors || 'Unexpected Error'
             })
           );
         }
       } catch (err) {
-        console.log({ beforeGameErr: err, m: err?.response?.data });
+        const error = err as AxiosError<{ errors: string }>;
+        console.log({ beforeGameErr: err, m: error?.response?.data });
+
         dispatch(
           setSystemModal({
             type: 'BEFORE_GAME_ERROR',
-            message: err?.response?.data?.errors || 'Unexpected Error'
+            message: error?.response?.data?.errors || 'Unexpected Error'
           })
         );
       }
@@ -453,7 +315,7 @@ export const startRound = createAsyncThunk(
 export const finishRound = createAsyncThunk(
   'game/finishRound',
   async (_, { dispatch, getState }) => {
-    const state = getState();
+    const state = getState() as RootState;
     const pendingGames = selectPendingGames(state);
     const gameId = state.game.gameId;
     const filteredGames = pendingGames.filter((el) => el.uuid !== gameId);
@@ -464,7 +326,7 @@ export const finishRound = createAsyncThunk(
     dispatch(setRoundTimeoutId(null));
     dispatch(
       setThemeAccess({
-        themeId: state.game.theme.id,
+        themeId: state.game.theme!.id,
         status: !!filteredGames.length
       })
     );
@@ -475,7 +337,7 @@ export const finishRound = createAsyncThunk(
       dispatch(setGameInfo(firstPendingGame));
     }
 
-    if (state.game.theme.id === 'hawk') {
+    if (state.game.theme!.id === 'hawk') {
       dispatch(startNewFreeGameCountdown());
 
       setTimeout(() => {
@@ -489,9 +351,9 @@ export const finishRound = createAsyncThunk(
     dispatch(setBalance({ value: 0, label: state.game.balance.label }));
 
     if (
-      state.game.theme.id !== 'hawk' &&
-      state.game.theme.id !== 'gold' &&
-      state.game.gameInfo.txid
+      state.game.theme!.id !== 'hawk' &&
+      state.game.theme!.id !== 'gold' &&
+      state.game.gameInfo!.txid
     ) {
       /** This modal should be seen only if the game was paid
        * AND it was bought with TON.
@@ -500,24 +362,22 @@ export const finishRound = createAsyncThunk(
       dispatch(setGameModal('TIME_FOR_TRANSACTION'));
     }
 
-    endGame({ id: gameId, taps: taps })
+    endGame({ id: gameId!, taps: taps })
       .then(() => {
         dispatch(
           setRoundFinal({
             roundPoints:
-              state.game.balance.value * state.game.theme.multiplier ||
-              undefined,
+              state.game.balance.value * state.game.theme!.multiplier || null,
             isActive: true
           })
         );
         dispatch(setPendingGames(filteredGames));
-        getToken()
-        .then((token) => {
-          getUserEffect(token)
-            .then((user) => {
-              dispatch(setUser(user));
-            })
-        })
+        getToken().then((token) => {
+          if (!token) return;
+          getUserEffect(token).then((user) => {
+            dispatch(setUser(user));
+          });
+        });
       })
       .catch((err) => {
         console.log({ endGameErr: err, m: err?.response.data });
@@ -530,7 +390,7 @@ export const finishRound = createAsyncThunk(
       });
 
     if (state.game.reachedNewLevel) {
-      undateSubTheme(
+      updateSubTheme(
         dispatch,
         state,
         state.game.themes,
@@ -538,7 +398,7 @@ export const finishRound = createAsyncThunk(
       ); // Update the hawk subtheme that depends on level
     }
 
-    if (state.game.theme.id === 'gold') {
+    if (state.game.theme!.id === 'gold') {
       setTimeout(() => {
         dispatch(
           switchTheme({
@@ -557,11 +417,11 @@ export const finishRound = createAsyncThunk(
 export const startNewFreeGameCountdown = createAsyncThunk(
   'game/startNewFreeGameCountdown',
   async (_, { dispatch, getState }) => {
-    const state = getState();
+    const state = getState() as RootState;
     dispatch(setLockIntervalId(null));
     dispatch(setThemeAccess({ themeId: 'hawk', status: false }));
     const level = selectLevel(state);
-    const freezeTime = level?.recharge_mins * 60 * 1000;
+    const freezeTime = level!.recharge_mins * 60 * 1000;
     const endTime = Date.now() + freezeTime;
     lockTimerCountdown(dispatch, endTime);
   }
@@ -569,7 +429,7 @@ export const startNewFreeGameCountdown = createAsyncThunk(
 
 export const refreshFreeGame = createAsyncThunk(
   'game/refreshFreeGame',
-  async ({ points }, { dispatch }) => {
+  async ({ points }: { points: number }, { dispatch }) => {
     dispatch(setLockIntervalId(null));
     dispatch(setLockTimerTimestamp(null));
     dispatch(setAdvertisementModal(null));
@@ -589,7 +449,7 @@ export const refreshFreeGame = createAsyncThunk(
 export const proceedTap = createAsyncThunk(
   'game/proceedTap',
   async (_, { dispatch, getState }) => {
-    const state = getState();
+    const state = getState() as RootState;
     const level = selectLevel(state);
 
     if (!level) return;
@@ -605,7 +465,7 @@ export const proceedTap = createAsyncThunk(
       dispatch(setReachedNewLevel(true)); // Update the new level trigger
     }
 
-    dispatch(addBalance(state.game.theme.multiplier));
+    dispatch(addBalance(state.game.theme!.multiplier));
     dispatch(setExperiencePoints(newPoints));
   }
 );
@@ -624,8 +484,11 @@ export const activateRecentlyFinishedLocker = createAsyncThunk(
 
 export const startCountdown = createAsyncThunk(
   'game/startCountdown',
-  async ({ seconds, startNextRound }, { dispatch, getState }) => {
-    const state = getState();
+  async (
+    { seconds, startNextRound }: { seconds: number; startNextRound: boolean },
+    { dispatch, getState }
+  ) => {
+    const state = getState() as RootState;
     if (state.game.counter.isActive) return;
 
     dispatch(setCounterIsActive(true));
@@ -634,7 +497,7 @@ export const startCountdown = createAsyncThunk(
 
     let innerCount = seconds;
 
-    let intervalId;
+    let intervalId: Timeout;
 
     intervalId = setInterval(() => {
       let prevCount = innerCount;
@@ -659,17 +522,26 @@ export const startCountdown = createAsyncThunk(
 
 export const switchTheme = createAsyncThunk(
   'game/switchTheme',
-  async ({ themeId, direction, timeout = 500 }, { dispatch, getState }) => {
+  async (
+    {
+      themeId,
+      direction,
+      timeout = 500
+    }: { themeId: string; direction: NextThemeDirection; timeout: number },
+    { dispatch, getState }
+  ) => {
     /** direction: next, prev, updateCurrent */
     /** themeId: hawk, gold, ghost */
 
-    const state = getState();
+    const state = getState() as RootState;
     const themes = state.game.themes;
 
     if (state.game.status === 'playing') return;
     if (!state.game.counter.isFinished) return;
 
     const newTheme = themes.find((el) => el.id === themeId);
+
+    if (!newTheme) return;
 
     dispatch(
       setNextTheme({
@@ -691,6 +563,7 @@ export const switchTheme = createAsyncThunk(
     }, timeout);
 
     if (newTheme.id !== 'hawk') {
+      if (!newTheme.tierId) return;
       const newPendingGames = await getPendingGames({
         tierId: newTheme.tierId
       });
@@ -719,11 +592,11 @@ export const confirmGoldPlay = createAsyncThunk(
 export const declineGoldPlay = createAsyncThunk(
   'game/declineGoldPlay',
   async (_, { dispatch, getState }) => {
-    const state = getState();
+    const state = getState() as RootState;
     dispatch(setReachedNewLevel(false));
     dispatch(setThemeAccess({ themeId: 'gold', status: false }));
 
-    if (state.game.theme.id === 'hawk') {
+    if (state.game.theme!.id === 'hawk') {
       // only hawk has subthemes, and we need to update them
       dispatch(
         switchTheme({
@@ -740,77 +613,10 @@ export const declineGoldPlay = createAsyncThunk(
 export const gameCleanup = createAsyncThunk(
   'game/gameCleanup',
   async (_, { dispatch }) => {
-    dispatch(setRoundFinal({ roundPoins: null, isActive: false }));
+    dispatch(setRoundFinal({ roundPoints: null, isActive: false }));
     dispatch(setReachedNewLevel(false));
     dispatch(setGameModal(null));
     dispatch(setSystemModal(null));
     dispatch(setAllowThemeChange(false));
   }
 );
-
-export const {
-  setPendingGames,
-  setIsInitializing,
-  setIsInitialized,
-  setCanvasLoaded,
-  setContractAddress,
-  setThemes,
-  setGameId,
-  setIsTransactionLoading,
-  setStatus,
-  setTheme,
-  setBalance,
-  addBalance,
-  setRoundTimerTimestamp,
-  setRoundTimeoutId,
-  setLockTimerTimestamp,
-  setLockIntervalId,
-  setThemeAccess,
-  setExperienceLevel,
-  setExperiencePoints,
-  setReachedNewLevel,
-  setNextTheme,
-  setAllowThemeChange,
-  setLevels,
-  setCounterIsActive,
-  setCounterCount,
-  setCounterIsFinished,
-  setRoundFinal,
-  setMaxLevel,
-  setRecentlyFinishedLocker,
-  setAdvertisementOfferModal,
-  setAdvertisementModal,
-  setGameModal,
-  setSystemModal,
-  setGameInfo,
-  setIsGameDisabled
-} = gameSlice.actions;
-export default gameSlice.reducer;
-
-export const selectIsInitialized = (state) => state.game.isInitialized;
-export const selectIsInitializing = (state) => state.game.isInitializing;
-export const selectIsTransactionLoading = (state) =>
-  state.game.isTransactionLoading;
-export const selectContractAddress = (state) => state.game.contractAddress;
-export const selectGameId = (state) => state.game.gameId;
-export const selectStatus = (state) => state.game.status;
-export const selectTheme = (state) => state.game.theme;
-export const selectThemes = (state) => state.game.themes;
-export const selectThemeAccess = (state) => state.game.themeAccess;
-export const selectBalance = (state) => state.game.balance;
-export const selectRoundTimerTimestamp = (state) =>
-  state.game.roundTimerTimestamp;
-export const selectLockTimerTimestamp = (state) =>
-  state.game.lockTimerTimestamp;
-export const selectExperienceLevel = (state) => state.game.experienceLevel;
-export const selectExperiencePoints = (state) => state.game.experiencePoints;
-export const selectReachNewLevel = (state) => state.game.reachedNewLevel;
-export const selectNextTheme = (state) => state.game.nextTheme;
-export const selectLevels = (state) => state.game.levels;
-export const selectPendingGames = (state) => state.game.pendingGames;
-export const selectIsGameDisabled = (state) => state.game.isGameDisabled;
-export const selectLevel = (state) => {
-  const userLevel = selectExperienceLevel(state);
-  const levels = selectLevels(state);
-  return levels?.find((l) => l.id === userLevel);
-};

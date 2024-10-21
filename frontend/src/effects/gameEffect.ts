@@ -3,6 +3,13 @@ import axiosInstance from './axiosInstance';
 import BigNumber from 'bignumber.js';
 import { Effect } from './types';
 import { DataWrappedResponse } from './types/defaults';
+import {
+  Game,
+  GameContract,
+  GameLevel,
+  GamePlan,
+  PendingGame
+} from './types/games';
 
 export const getGamePlans = async () => {
   const url = `${API_PATH}/tg/game/plans`;
@@ -29,7 +36,7 @@ export const beforeGame = async (
   tier_id: number
 ) => {
   const url = `${API_PATH}/game/start`;
-  const { data } = await axiosInstance.post<Effect<Game[]>>(url, {
+  const { data } = await axiosInstance.post<Effect<Game>>(url, {
     purchase_id,
     tier_id
   });
@@ -37,7 +44,7 @@ export const beforeGame = async (
   return data.data;
 };
 
-export const startGame = async (game_id: number, txid: string) => {
+export const startGame = async (game_id: number, txid: string | null) => {
   const url = `${API_PATH}/game/process`;
   const { data } = await axiosInstance.post<Effect<Game[]>>(url, {
     txid,
@@ -102,78 +109,4 @@ export const getActivePayedGame = async () => {
     await axiosInstance.get<Effect<({ purchase_id: string } & Game)[]>>(url);
   console.log({ getActivePayedGame: data });
   return data.data;
-};
-
-type GamePlan = {
-  id: number;
-  per_tap: number;
-  multiplier: number;
-  ton_price: number;
-  game_time: number;
-  charge_minutes: number;
-  storage_bonus: number;
-  session_tap_limit: number;
-};
-
-type GameContract = {
-  id: number;
-  name: string;
-  chain_id: number;
-  symbol: string;
-  rpc_url: string;
-  private_rpc_url: null;
-  file_tokenization_factory: null;
-  note_tokenization_factory: null;
-  workspace_access_factory: null;
-  nft_subscription_v1: null;
-  nft_astro: null;
-  nft_blue: null;
-  shop_simple: null;
-  shop_signed: null;
-  list_helper: null;
-  nft_metadata_url_file: null;
-  explorer_url: null;
-  click_counter?: string;
-  created_at: Date | string;
-  is_active: boolean | number;
-  multisig_factory: null;
-};
-
-type Tier = {
-  id: number;
-  per_tap: number;
-  multiplier: number;
-  ton_price: number;
-  game_time: number;
-  charge_minutes: number;
-  storage_bonus: number;
-  session_tap_limit: number;
-};
-
-type Game = {
-  id: number;
-  tier: Tier;
-  created_at: number;
-  game_ends_at: number;
-  status: number;
-  uuid: number;
-};
-
-type PendingGame = {
-  purchase_id: null | string;
-  tier_id: number;
-  user_id: number;
-  txid: string | null;
-  is_paid: boolean;
-  points_earned: null | number;
-  taps_earned: null | number;
-};
-
-type GameLevel = {
-  id: number;
-  tapping_from: number;
-  tapping_to: number;
-  recharge_mins: number;
-  play_time: number;
-  multiplier: number;
 };

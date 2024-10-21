@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { selectLevel } from '../../../store/reducers/gameSlice';
+import { selectLevel } from '../../../store/reducers/game/game.selectors';
 import styles from './LevelDescription.module.css';
 
 export default function LevelDescription() {

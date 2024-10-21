@@ -2,11 +2,11 @@ import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useSwipeable } from 'react-swipeable';
 import { gsap } from 'gsap';
+import { setMediaSliderCurrentFile } from '../../../../../store/reducers/drive/drive.slice';
 import {
   assignFilesQueryData,
-  getDriveFiles,
-  setMediaSliderCurrentFile
-} from '../../../../../store/reducers/driveSlice';
+  getDriveFiles
+} from '../../../../../store/reducers/drive/drive.thunks';
 import Slide from '../Slide/Slide';
 import styles from './SlidesController.module.scss';
 

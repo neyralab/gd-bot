@@ -2,15 +2,17 @@ import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import CN from 'classnames';
+import { setAllowThemeChange } from '../../store/reducers/game/game.slice';
 import {
-  initGame,
   selectIsInitialized,
   selectIsTransactionLoading,
-  selectIsGameDisabled,
+  selectIsGameDisabled
+} from '../../store/reducers/game/game.selectors';
+import {
+  initGame,
   gameCleanup,
-  checkAdvertisementOffer,
-  setAllowThemeChange
-} from '../../store/reducers/gameSlice';
+  checkAdvertisementOffer
+} from '../../store/reducers/game/game.thunks';
 import { Header } from '../../components/header_v2';
 import BuyButton from './BuyButton/BuyButton';
 import Timer from './Timer/Timer';

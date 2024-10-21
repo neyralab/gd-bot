@@ -5,7 +5,7 @@ import {
   selectRoundTimerTimestamp,
   selectLockTimerTimestamp,
   selectStatus
-} from '../../../store/reducers/gameSlice';
+} from '../../../store/reducers/game/game.selectors';
 import styles from './Times.module.css';
 
 export default function Timer() {

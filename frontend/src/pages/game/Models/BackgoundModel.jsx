@@ -17,7 +17,7 @@ import { useSelector } from 'react-redux';
 import {
   selectNextTheme,
   selectTheme
-} from '../../../store/reducers/gameSlice';
+} from '../../../store/reducers/game/game.selectors';
 
 const BackgroundModel = forwardRef((_, ref) => {
   const theme = useSelector(selectTheme);

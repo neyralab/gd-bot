@@ -5,9 +5,9 @@ import {
   selectNextTheme,
   selectThemes,
   selectStatus,
-  selectTheme,
-  switchTheme
-} from '../../../store/reducers/gameSlice';
+  selectTheme
+} from '../../../store/reducers/game/game.selectors';
+import { switchTheme } from '../../../store/reducers/game/game.thunks';
 import styles from './ThemeSwitcherControllers.module.css';
 
 export default function ThemeSwitcherControllers({ themeChangeTimeout }) {
