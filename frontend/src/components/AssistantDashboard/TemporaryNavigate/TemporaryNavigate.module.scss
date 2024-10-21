@@ -1,0 +1,56 @@
+.top-button {
+  position: fixed;
+  z-index: 10;
+  top: 28px;
+  left: 16px;
+  text-decoration: none;
+}
+
+.profile-button {
+  position: fixed;
+  z-index: 10;
+  top: 32px;
+  right: 16px;
+  text-decoration: none;
+}
+
+.info {
+  position: fixed;
+  z-index: 10;
+  top: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.info p {
+  font-family: 'SF Pro Text';
+  font-size: 12px;
+  font-weight: 200;
+  line-height: 18px;
+  color: #fff;
+  text-shadow: #058ead 1px 1px 12px;
+  animation: blinkAnimation 10s linear;
+}
+
+.info span {
+  font-family: 'SF Pro Text';
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 18px;
+  margin-left: 4px;
+}
+
+@keyframes AppearAnim {
+  0% {
+    opacity: 0;
+    transform: scale(0);
+  }
+  70% {
+    opacity: 1;
+    transform: scale(1.1);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}

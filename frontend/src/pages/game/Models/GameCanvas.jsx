@@ -70,7 +70,7 @@ const GameCanvas = forwardRef((_, ref) => {
         <AmbientLight />
         <DirectionalLight />
 
-        <FogModel />
+        {/* <FogModel /> */}
 
         <BackgroundModel ref={backgroundRef} />
         <ShipModel ref={shipRef} />

@@ -19,7 +19,12 @@
     "conver": "转换器",
     "go": "前往",
     "language": "语言",
-    "back": "返回"
+    "back": "返回",
+    "airdrop": "空投",
+    "track": "跟踪",
+    "sendGift": "发送了礼物",
+    "gift": "礼物",
+    "premium": "高级"
   },
   "banner": {
     "upload": "上传并存储您的文件",
@@ -167,5 +172,13 @@
     "offerAcceptDesc": "好消息！您为 {name} 发送的 {size} 存储赠礼已被接受。收件人现在正在享受额外的空间。感谢您的帮助！",
     "tryAgain": "再试一次",
     "ok": "好的"
-  }
+  },
+  "assistent": {
+    "messageError": "处理消息时发生错误。请再试一次",
+    "browserSupport": "您的浏览器不支持语音识别",
+    "listening": "我在听你说...",
+    "generat": "正在生成回复...",
+    "space": "已用空间",
+    "files": "文件"
+  }  
 }

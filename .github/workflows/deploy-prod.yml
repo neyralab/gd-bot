@@ -11,7 +11,7 @@ env:
   GIT_BRANCH: prod
   PROJECT_DIR: /opt/gd-bot
   SSH_HOST: 10.0.6.152
-  SSH_PROXY: 162.55.193.107
+  SSH_PROXY: 144.76.218.59
   SSH_PORT: 22
   SSH_USER: app
   SSH_KEY: ${{ secrets.SERVER_SSH_KEY }}

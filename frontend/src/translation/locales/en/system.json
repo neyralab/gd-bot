@@ -19,7 +19,12 @@
     "conver": "Convertor",
     "go": "Go",
     "language": "Language",
-    "back": "Back"
+    "back": "Back",
+    "airdrop": "Airdrop",
+    "track": "Track",
+    "sendGift": "Sent a gift",
+    "gift": "Gift",
+    "premium": "Premium"
   },
   "banner": {
     "upload": "Upload & Store your files",
@@ -167,5 +172,13 @@
     "offerAcceptDesc": "Great news! The {size} storage gift you sent for {name} has been accepted. The recipient is now enjoying the additional space. Thank you for helping them out!",
     "tryAgain": "Try again",
     "ok": "OK"
+  },
+  "assistent": {
+    "messageError": "An error occurred while processing message. Please try again",
+    "browserSupport": "Your browser does not support speech recognition",
+    "listening": "I'm listening you...",
+    "generat": "Generating response...",
+    "space": "Used space",
+    "files": "Files"
   }
 }
