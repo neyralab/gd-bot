@@ -34,7 +34,11 @@
     "inviteFriendCapitalize": "Invitez un ami",
     "yourFriends": "Vos amis",
     "inviteFriend": "Inviter un ami",
-    "invitePremiumFriend": "Invite 25 amis Premium"
+    "invitePremiumFriend": "Invite 25 amis Premium",
+    "inviteSome": "Invitez {count} ami",
+    "rewards": "Récompenses supplémentaires",
+    "rewardStorage": "Chaque ami invité reçoit 1 Go de stockage gratuit.",
+    "secureAndEncrypted": "Sécurisé et Chiffré : Leurs données sont protégées par un cryptage de premier ordre."
   },
   "earn": {
     "earn": "Gagner plus de points",

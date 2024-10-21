@@ -34,7 +34,11 @@
     "inviteFriendCapitalize": "Mời bạn",
     "yourFriends": "Bạn bè của bạn",
     "inviteFriend": "Mời một người bạn",
-    "invitePremiumFriend": "Mời 25 bạn Premium"
+    "invitePremiumFriend": "Mời 25 bạn Premium",
+    "inviteSome": "Mời {count} Bạn",
+    "rewards": "Phần thưởng bổ sung",
+    "rewardStorage": "Mỗi bạn bè được mời sẽ nhận được 1 GB dung lượng lưu trữ miễn phí.",
+    "secureAndEncrypted": "An toàn và Được mã hóa: Dữ liệu của họ được bảo vệ bằng mã hóa hàng đầu."
   },
   "earn": {
     "earn": "Kiếm thêm điểm",

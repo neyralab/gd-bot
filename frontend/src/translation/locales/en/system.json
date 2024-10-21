@@ -24,7 +24,9 @@
     "track": "Track",
     "sendGift": "Sent a gift",
     "gift": "Gift",
-    "premium": "Premium"
+    "premium": "Premium",
+    "earn": "Earn",
+    "stats": "Stats"
   },
   "banner": {
     "upload": "Upload & Store your files",
@@ -179,6 +181,10 @@
     "listening": "I'm listening you...",
     "generat": "Generating response...",
     "space": "Used space",
-    "files": "Files"
+    "files": "Files",
+    "fullSpace": "Space",
+    "rank": "Rank",
+    "point": "Point",
+    "stars": "Stars"
   }
 }

@@ -34,7 +34,11 @@
     "inviteFriendCapitalize": "友達を招待",
     "yourFriends": "あなたの友達",
     "inviteFriend": "友達を招待する",
-    "invitePremiumFriend": "25人のプレミアムフレンドを招待"
+    "invitePremiumFriend": "25人のプレミアムフレンドを招待",
+    "inviteSome": "{count} 人の友達を招待",
+    "rewards": "追加報酬",
+    "rewardStorage": "招待された友達には、1 GBの無料ストレージが提供されます。",
+    "secureAndEncrypted": "安全かつ暗号化されています：彼らのデータは最高水準の暗号化で保護されています。"
   },
   "earn": {
     "earn": "もっとポイントを稼ぐ",

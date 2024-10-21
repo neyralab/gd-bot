@@ -34,7 +34,11 @@
     "inviteFriendCapitalize": "Undang Seorang teman",
     "yourFriends": "Teman Anda",
     "inviteFriend": "Undang Seorang teman",
-    "invitePremiumFriend": "Undang 25 teman Premium"
+    "invitePremiumFriend": "Undang 25 teman Premium",
+    "inviteSome": "Undang {count} Teman",
+    "rewards": "Hadiah tambahan",
+    "rewardStorage": "Setiap teman yang diundang mendapatkan 1 GB penyimpanan gratis.",
+    "secureAndEncrypted": "Aman dan Terenkripsi: Data mereka dilindungi dengan enkripsi tingkat atas."
   },
   "earn": {
     "earn": "Hasilkan lebih banyak poin",

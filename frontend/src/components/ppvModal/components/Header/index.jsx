@@ -8,6 +8,7 @@ const Header = ({ onClose, onAction, title, leftText = 'Back', rightText }) => {
 
   return (
     <header className={styles.header}>
+      { onClose ? (
       <button
         className={styles.button}
         onClick={onClose}
@@ -15,6 +16,7 @@ const Header = ({ onClose, onAction, title, leftText = 'Back', rightText }) => {
       >
         {leftText}
       </button>
+      ) : (<span></span>) }
       <h1 className={styles.title}>{title ||t('ppv.ppv')}</h1>
       <button
         className={CN(styles.button, styles.right)}

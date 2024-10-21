@@ -34,7 +34,11 @@
     "inviteFriendCapitalize": "邀请朋友",
     "yourFriends": "你的朋友们",
     "inviteFriend": "邀请朋友",
-    "invitePremiumFriend": "邀请25位高级好友"
+    "invitePremiumFriend": "邀请25位高级好友",
+    "inviteSome": "邀请 {count} 位朋友",
+    "rewards": "额外奖励",
+    "rewardStorage": "每位受邀朋友将获得 1 GB 的免费存储空间。",
+    "secureAndEncrypted": "安全和加密：他们的数据通过顶级加密技术得到保护。"
   },
   "earn": {
     "earn": "赚取更多积分",
