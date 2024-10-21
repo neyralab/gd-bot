@@ -14,7 +14,7 @@ import {
 import { assignFilesQueryData } from '../reducers/drive/drive.thunks';
 import { useTelegramBackButton } from '../../utils/useTelegramBackButton';
 import { isMobilePlatform } from '../../utils/client';
-import { useAppDispatch } from '../hooks';
+import { useAppDispatch, useAppSelector } from '../hooks';
 
 interface NavigationHistoryContextType {
   history: string[];
@@ -34,8 +34,8 @@ export const NavigationHistoryProvider: React.FC<
 > = ({ children }) => {
   const [history, setHistory] = useState<string[]>([]);
   const [isInitialRoute, setIsInitialRoute] = useState(true);
-  const mediaSliderIsOpen = useSelector(
-    (state: any) => state.drive.mediaSlider.isOpen
+  const mediaSliderIsOpen = useAppSelector(
+    (state) => state.drive.mediaSlider.isOpen
   );
   const queryData = useSelector((state: any) => state.drive.filesQueryData);
   const removedElement = useRef<boolean>(false);
