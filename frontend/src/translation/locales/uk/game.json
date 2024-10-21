@@ -34,7 +34,11 @@
     "inviteFriendCapitalize": "Запросіть Друга",
     "yourFriends": "Ваші Друзі",
     "inviteFriend": "Запросіть друга",
-    "invitePremiumFriend": "Запросіть 25 друзів з Premium"
+    "invitePremiumFriend": "Запросіть 25 друзів з Premium",
+    "inviteSome": "Запросіть {count} друга",
+    "rewards": "Додаткові нагороди",
+    "rewardStorage": "Кожен запрошений друг отримує 1 ГБ безкоштовного сховища.",
+    "secureAndEncrypted": "Безпечно та зашифровано: Їхні дані захищені найкращим шифруванням."
   },
   "earn": {
     "earn": "Заробляйте більше балів",

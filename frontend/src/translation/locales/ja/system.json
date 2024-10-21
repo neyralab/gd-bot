@@ -24,7 +24,9 @@
     "track": "追跡する",
     "sendGift": "ギフトを送った",
     "gift": "ギフト",
-    "premium": "プレミアム"
+    "premium": "プレミアム",
+    "earn": "稼ぐ",
+    "stats": "統計"
   },
   "banner": {
     "upload": "ファイルをアップロードして保存",
@@ -179,6 +181,10 @@
     "listening": "聞いています...",
     "generat": "応答を生成しています...",
     "space": "使用済みスペース",
-    "files": "ファイル"
+    "files": "ファイル",
+    "fullSpace": "スペース",
+    "rank": "ランク",
+    "point": "ポイント",
+    "stars": "星"
   }  
 }

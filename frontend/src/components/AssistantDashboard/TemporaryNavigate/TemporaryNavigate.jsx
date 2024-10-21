@@ -1,11 +1,14 @@
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useSelector, useDispatch } from 'react-redux';
 import { vibrate } from '../../../utils/vibration';
+import { transformSize } from '../../../utils/storage';
+import { formatLargeNumberExtended } from '../../../utils/number';
 import { useAssistantAudio } from '../AssistantAudio/AssistantAudio';
 import { NavigationHistoryContext } from '../../../store/context/NavigationHistoryProvider';
 import { fetchTypesCount } from '../../../store/reducers/driveSlice';
+import { getPaidShareFilesEffect } from '../../../effects/filesEffects';
 import { ReactComponent as TopIcon } from '../../../assets/top.svg';
 import { ReactComponent as CreditCardIcon } from '../../../assets/credit-card.svg';
 
@@ -16,6 +19,7 @@ export default function TemporaryControls() {
   const { audio, loadAudio, playAudio, loading, stopAudio } = useAssistantAudio();
   const fileTypes = useSelector((store) => store.drive.fileTypesCount)
   const user = useSelector((state) => state.user.data);
+  const [ ernedCount, setErnedCount ] = useState(0);
   const { t } = useTranslation('system');
   const dispatch = useDispatch();
 
@@ -23,6 +27,10 @@ export default function TemporaryControls() {
     if (!Object.keys(fileTypes).length) {
       dispatch(fetchTypesCount({ useLoader: false }));
     }
+    getPaidShareFilesEffect(1)
+      .then((data) => {
+        setErnedCount(data.earned);
+      })
   }, [])
 
   // useEffect(() => {
@@ -44,16 +52,14 @@ export default function TemporaryControls() {
 
   return (
     <header>
-      <Link
-        to="/leadboard/league"
-        className={styles['top-button']}
-        onClick={() => {vibrate('soft')}}>
-        <TopIcon />
-      </Link>
+      <span />
       {user && !!Object.keys(fileTypes).length && (
         <div className={styles.info}>
-          <p>{t('assistent.space')}:<span>{parseInt((user.space_used/user.space_actual) * 100)} %</span></p>
           <p>{t('assistent.files')}:<span>{fileTypes?.total || 0}</span></p>
+          <p>{t('assistent.fullSpace')}: <span>{transformSize(user.space_actual)}</span></p>
+          <p>{t('assistent.rank')}: <span>{user.rank}</span></p>
+          <p>{t('assistent.point')}: <span>{formatLargeNumberExtended(user.points)}</span></p>
+          <p>{t('assistent.stars')}: {ernedCount}</p>
         </div>
       )}
       <Link

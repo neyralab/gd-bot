@@ -24,7 +24,9 @@
     "track": "Lacak",
     "sendGift": "Kirim hadiah",
     "gift": "Hadiah",
-    "premium": "Premium"
+    "premium": "Premium",
+    "earn": "Dapatkan",
+    "stats": "Statistik"
   },
   "banner": {
     "upload": "Unggah & Simpan file Anda",
@@ -179,6 +181,10 @@
     "listening": "Saya mendengarkan...",
     "generat": "Sedang membuat respons...",
     "space": "Ruang terpakai",
-    "files": "Berkas"
+    "files": "Berkas",
+    "fullSpace": "Ruang",
+    "rank": "Peringkat",
+    "point": "Poin",
+    "stars": "Bintang"
   }  
 }

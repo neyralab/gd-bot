@@ -24,7 +24,9 @@
     "track": "Rastrear",
     "sendGift": "Envié un regalo",
     "gift": "Regalo",
-    "premium": "Premium"
+    "premium": "Premium",
+    "earn": "Ganar",
+    "stats": "Estadísticas"
   },
   "banner": {
     "upload": "Sube y almacena tus archivos",
@@ -179,6 +181,10 @@
     "listening": "Te estoy escuchando...",
     "generat": "Generando respuesta...",
     "space": "Espacio usado",
-    "files": "Archivos"
+    "files": "Archivos",
+    "fullSpace": "Espacio",
+    "rank": "Rango",
+    "point": "Punto",
+    "stars": "Estrellas"
   }  
 }

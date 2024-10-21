@@ -24,7 +24,9 @@
     "track": "跟踪",
     "sendGift": "发送了礼物",
     "gift": "礼物",
-    "premium": "高级"
+    "premium": "高级",
+    "earn": "赚取",
+    "stats": "统计"
   },
   "banner": {
     "upload": "上传并存储您的文件",
@@ -179,6 +181,10 @@
     "listening": "我在听你说...",
     "generat": "正在生成回复...",
     "space": "已用空间",
-    "files": "文件"
+    "files": "文件",
+    "fullSpace": "空间",
+    "rank": "排名",
+    "point": "分",
+    "stars": "星星"
   }  
 }
