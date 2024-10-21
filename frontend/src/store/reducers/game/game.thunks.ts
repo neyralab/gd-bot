@@ -68,6 +68,7 @@ import {
   levelSubThemes
 } from '../../../pages/game/themes';
 import { selectLevel, selectPendingGames } from './game.selectors';
+import { Timeout } from '../../../types';
 
 const lockTimerCountdown = (
   dispatch: ThunkDispatch<unknown, unknown, UnknownAction>,
@@ -496,7 +497,7 @@ export const startCountdown = createAsyncThunk(
 
     let innerCount = seconds;
 
-    let intervalId: NodeJS.Timeout;
+    let intervalId: Timeout;
 
     intervalId = setInterval(() => {
       let prevCount = innerCount;

@@ -27,6 +27,40 @@ const FRIEND_TASK = {
   translatePath: 'friends.invitePremiumFriend'
 };
 
+const ADDITIONAL_REWARDS = (t) => [
+  {
+    title: 'Invite {count} Friend',
+    points: 1000,
+    count: 1,
+  },
+  {
+    title: 'Invite {count} Friend',
+    points: 100000,
+    count: 10,
+
+  },
+  {
+    title: 'Invite {count} Friend',
+    points: 1000000,
+    count: 100,
+  },
+  {
+    title: 'Invite {count} Friend',
+    points: 10000000,
+    count: '1,000',
+  },
+  {
+    title: 'Invite {count} Friend',
+    points: 100000000,
+    count: '10,000',
+  },
+  {
+    title: 'Invite {count} Friend',
+    points: 1000000000,
+    count: '100,000',
+  },
+];
+
 export default function FriendsPage() {
   const link = useSelector((state) => state.user.link);
   const { t } = useTranslation('game');
@@ -147,6 +181,31 @@ export default function FriendsPage() {
           </div> */}
         </>
       )}
+
+      <h2
+        data-animation="friends-animation-3"
+        className={CN(
+          styles['initial-state-for-animation'],
+          styles['title-block'],
+          styles['title-revard'],
+        )}>
+        {t('friends.rewards')}
+      </h2>
+
+      <div className={styles['friends-list']}>
+        {ADDITIONAL_REWARDS(t).map((option) => {
+          return (
+            <Person
+              key={option.username}
+              title={option.title.replace('{count}', option.count)}
+              points={option.points}
+              className={styles['initial-state-for-animation']}
+            />
+          );
+        })}
+      </div>
+      <p className={styles['subtext-top']}>{t('friends.rewardStorage')}</p>
+      <p className={styles['subtext-bot']}>{t('friends.secureAndEncrypted')}</p>
     </div>
   );
 }

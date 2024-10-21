@@ -5,7 +5,6 @@ import { useTranslation } from 'react-i18next';
 import { getQueryParamValue } from '../../../utils/string';
 import { transformSize } from '../../../utils/storage';
 import { ReactComponent as UsertShieldIcon } from '../../../assets/user-shield.svg';
-import { ReactComponent as CreditCardIcon } from '../../../assets/credit-card.svg';
 
 import styles from './UserCard.module.scss';
 
@@ -25,9 +24,6 @@ const UserCard = ({ ...rest }) => {
           </p>
         </div>
       </div>
-      <button className={styles['profile']}>
-        <CreditCardIcon />
-      </button>
     </div>
   )
 }

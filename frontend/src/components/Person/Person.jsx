@@ -1,9 +1,13 @@
 import React from 'react';
 import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
+
+import { formatLargeNumberExtended } from '../../utils/number';
+import TelegramIconLink from '../../../public/assets/telegram.png'
+
 import styles from './Person.module.css';
 
-export default function Person({ isDone, title, points, onClick, className }) {
+export default function Person({ isDone, title, points, onClick, className, icon }) {
   const { t } = useTranslation('game');
   return (
     <div
@@ -11,11 +15,12 @@ export default function Person({ isDone, title, points, onClick, className }) {
       className={classNames(styles.container, isDone && styles.done, className)}
       onClick={onClick}>
       <div className={styles.name}>
+        { icon || <img src={TelegramIconLink} alt='Telegram' /> }
         <strong>{title}</strong>
       </div>
 
       <div className={styles.points}>
-        <span>+{points}</span>
+        <span>+{formatLargeNumberExtended(points)}</span>
         <img
           src="/assets/token.png"
           alt={`+ ${points} ${t('leadboard.points')}`}

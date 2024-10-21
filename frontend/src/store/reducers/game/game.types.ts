@@ -9,6 +9,7 @@ import {
   GameTheme,
   NextThemeDirection
 } from '../../../pages/game/game.types';
+import { Timeout } from '../../../types';
 
 export interface Balance {
   value: number; // taps
@@ -33,9 +34,9 @@ export interface InitialState {
   maxLevel: number;
   reachedNewLevel: boolean;
   roundTimerTimestamp: number | null;
-  roundTimeoutId: NodeJS.Timeout | null;
+  roundTimeoutId: Timeout | null;
   lockTimerTimestamp: number | null;
-  lockIntervalId: NodeJS.Timeout | null;
+  lockIntervalId: Timeout | null;
   counter: {
     isActive: boolean;
     count: number | null;

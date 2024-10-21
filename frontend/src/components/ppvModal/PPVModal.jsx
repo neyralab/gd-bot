@@ -56,7 +56,7 @@ const PPVModal = () => {
         const body = {
           priceView: state.view,
           currency: 1,
-          priceDownload: state.download,
+          priceDownload: state.download || 0,
           description: state.description,
           file: file.id
         }
@@ -101,7 +101,11 @@ const PPVModal = () => {
   };
 
   return (
-    <Modal isOpen={isOpen} className={styles.modal}>
+    <Modal
+      isOpen={isOpen}
+      className={styles.modal}
+      overlayClassName={styles.overlay}
+    >
       {isProccess ? (
         <Preloader onClose={onClose} />
       ) : (

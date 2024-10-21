@@ -14,6 +14,18 @@
   overflow-y: auto;
 }
 
+.overlay {
+  position: fixed;
+  inset: 0px;
+  background-color: rgba(255, 255, 255, 0.75);
+  z-index: 2;
+}
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+}
+
 .form {
   display: flex;
   flex-direction: column;
@@ -84,7 +96,7 @@
   font-weight: 300;
   line-height: 18px;
   color: #ffffff;
-  margin-bottom: 14px;
+  margin-top: 14px;
 }
 
 .footerButton {

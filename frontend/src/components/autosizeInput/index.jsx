@@ -11,7 +11,7 @@ const AutosizeInput = forwardRef(function MyInput({
 
   useEffect(() => {
     if (spanRef.current) {
-      ref.current.style.width = `${spanRef.current.offsetWidth}px`;
+      ref.current.style.width = `${spanRef.current.offsetWidth+2}px`;
       ref.current.value = value;
     }
   }, [value, spanRef, ref]);

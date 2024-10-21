@@ -35,7 +35,11 @@
     "inviteFriendCapitalize": "Lade einen Freund ein",
     "yourFriends": "Deine Freunde",
     "inviteFriend": "Einen Freund einladen",
-    "invitePremiumFriend": "Lade 25 Premium-Freunde ein"
+    "invitePremiumFriend": "Lade 25 Premium-Freunde ein",
+    "inviteSome": "Lade {count} Freund ein",
+    "rewards": "Zusätzliche Belohnungen",
+    "rewardStorage": "Jeder eingeladene Freund erhält 1 GB kostenlosen Speicherplatz.",
+    "secureAndEncrypted": "Sicher und verschlüsselt: Ihre Daten sind mit erstklassiger Verschlüsselung geschützt."
   },
   "earn": {
     "earn": "Mehr Punkte verdienen",

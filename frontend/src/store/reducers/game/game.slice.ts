@@ -12,6 +12,7 @@ import {
 import { Game, GameLevel, PendingGame } from '../../../effects/types/games';
 import { initialState } from './game.state';
 import { Balance } from './game.types';
+import { Timeout } from '../../../types';
 
 const gameSlice = createSlice({
   name: 'game',
@@ -70,7 +71,7 @@ const gameSlice = createSlice({
     },
     setRoundTimeoutId: (
       state,
-      { payload }: PayloadAction<NodeJS.Timeout | null>
+      { payload }: PayloadAction<Timeout | null>
     ) => {
       if (state.roundTimeoutId) {
         clearTimeout(state.roundTimeoutId);
@@ -85,7 +86,7 @@ const gameSlice = createSlice({
     },
     setLockIntervalId: (
       state,
-      { payload }: PayloadAction<NodeJS.Timeout | null>
+      { payload }: PayloadAction<Timeout | null>
     ) => {
       if (state.lockIntervalId) {
         clearInterval(state.lockIntervalId);

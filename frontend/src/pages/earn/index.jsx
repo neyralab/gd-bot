@@ -16,12 +16,13 @@ import { getAllTasks } from '../../effects/balanceEffect';
 import { handleTasks } from '../../store/reducers/taskSlice';
 import { runInitAnimation } from './animations';
 
-import Friends from '../friends'
+import Friends from '../friends';
 import Tasks from './Tasks/index';
 import Partners from './Partners';
 import Mission from './Mission';
 import EarnModal from './EarnModal/EarnModal';
 import Segmented from '../../components/segmented';
+import TemporaryControls from '../../components/AssistantDashboard/TemporaryControls/TemporaryControls';
 
 import styles from './styles.module.css';
 
@@ -149,7 +150,7 @@ export default function EarnPage() {
         onClick: () => {
           setActiveSegment('partner');
         }
-      },
+      }
     ].filter((tab) => !disabledTabs.includes(tab.name));
   }, [t]);
 
@@ -180,9 +181,7 @@ export default function EarnPage() {
           />
         );
       case 'friends':
-        return (
-          <Friends />
-        );
+        return <Friends />;
       default:
         <Friends />;
     }
@@ -205,7 +204,7 @@ export default function EarnPage() {
       {renderList()}
 
       <EarnModal ref={earnModalRef} item={modalSelectedTask} />
-
+      <TemporaryControls />
     </div>
   );
 }
