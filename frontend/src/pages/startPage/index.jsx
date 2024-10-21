@@ -233,7 +233,6 @@ export const StartPage = ({ tariffs }) => {
         storage={storage}
         human={human}
         openDisconnectModal={setDisconnectWalletModal}
-        tasks={tasks}
         onOpenShareModal={onOpenShareModal}
         storageSize={user.space_total}
       />
