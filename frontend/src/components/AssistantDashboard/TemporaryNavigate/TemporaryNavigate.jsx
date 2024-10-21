@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { vibrate } from '../../../utils/vibration';
 import { useAssistantAudio } from '../AssistantAudio/AssistantAudio';
 import { NavigationHistoryContext } from '../../../store/context/NavigationHistoryProvider';
-import { fetchTypesCount } from '../../../store/reducers/driveSlice';
+import { fetchTypesCount } from '../../../store/reducers/drive/drive.thunks';
 import { ReactComponent as TopIcon } from '../../../assets/top.svg';
 import { ReactComponent as CreditCardIcon } from '../../../assets/credit-card.svg';
 

@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import classNames from 'classnames';
 
-import { uploadFile } from '../../../../../store/reducers/driveSlice';
+import { uploadFile } from '../../../../../store/reducers/drive/drive.thunks';
 import { vibrate } from '../../../../../utils/vibration';
 import UploadLoader from './UploadLoader';
 import { ReactComponent as CircleIcon } from '../../../../../../public/assets/assistant/neon-circle.svg';
