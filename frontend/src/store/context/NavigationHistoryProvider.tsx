@@ -6,7 +6,6 @@ import React, {
   ReactNode
 } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
 import {
   setMediaSliderOpen,
   setMediaSliderCurrentFile
@@ -37,7 +36,7 @@ export const NavigationHistoryProvider: React.FC<
   const mediaSliderIsOpen = useAppSelector(
     (state) => state.drive.mediaSlider.isOpen
   );
-  const queryData = useSelector((state: any) => state.drive.filesQueryData);
+  const queryData = useAppSelector((state) => state.drive.filesQueryData);
   const removedElement = useRef<boolean>(false);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
