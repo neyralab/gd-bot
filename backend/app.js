@@ -277,7 +277,7 @@ Don't forget to follow us on socials for exclusive updates, events, and more!
 }
 
 function buildButtons(userRefCode) {
-  const dashboardButton = Markup.button.webApp('🎮 Play & Earn', `${process.env.APP_FRONTEND_URL}/start`);
+  const dashboardButton = Markup.button.webApp('🎮 Play & Earn', `${process.env.APP_FRONTEND_URL}/game-3d`);
   const followNewsButton = Markup.button.url('🎙 GhostDrive News', 'https://t.me/ghostdrive_web3');
   const chatButton = Markup.button.url('💬 Chat', 'https://t.me/ghostdrive_web3_chat');
   const followXButton = Markup.button.url('🐦 X', 'https://x.com/GhostDrive_Web3');
