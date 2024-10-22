@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-import { handlePPVModal } from '../../../../store/reducers/modalSlice';
+import { handlePPVModal } from '../../../../store/reducers/uiSlice';
 import {
   setPPVFile,
   setFileMenuModal,

@@ -8,15 +8,12 @@ import {
   selectAllWorkspaces,
   selectCurrentWorkspace
 } from '../../store/reducers/workspaceSlice';
-import { getAllTasks } from '../../effects/balanceEffect';
-import {
-  getStorageNotificationsEffect,
-  readNotificationEffect
-} from '../../effects/storageEffects';
+import { readNotificationEffect } from '../../effects/storageEffects';
 import { DEFAULT_TARIFFS_NAMES } from '../upgradeStorage';
 import { fromByteToGb } from '../../utils/storage';
 import { transformSize } from '../../utils/transformSize';
-import { isMobilePlatform } from '../../utils/client';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { getNotifications } from '../../store/reducers/userSlice';
 
 import GhostLoader from '../../components/ghostLoader';
 import FortuneWheel from './FortuneWheel';
@@ -37,55 +34,38 @@ import { tg } from '../../App';
 import style from './style.module.css';
 import navigatorStyle from './Navigator/Navigator.module.scss';
 
-const initialNotificationState = {
-  sender: { unread: [], readed: [] },
-  recipient: []
-};
-
 export const StartPage = ({ tariffs }) => {
+  const { t } = useTranslation('system');
   const location = useLocation();
+  const navigate = useNavigate();
+
+  const dispatch = useAppDispatch();
+  const notifications = useAppSelector((state) => state.user.notifications);
+  const currentWorkspace = useAppSelector(selectCurrentWorkspace);
+  const user = useAppSelector((state) => state.user.data);
+  const allWorkspaces = useAppSelector(selectAllWorkspaces);
+
+  const [showShareModal, setShowShareModal] = useState(false);
+  const [disconnectWalletModal, setDisconnectWalletModal] = useState(false);
+
   const systemModalRef = useRef(null);
   const wrapperRef = useRef(null);
-  const { t } = useTranslation('system');
-  const [tasks, setTasks] = useState([]);
-  const [showShareModal, setShowShareModal] = useState(false);
-  const [notifications, setNotifications] = useState(initialNotificationState);
-  const [disconnectWalletModal, setDisconnectWalletModal] = useState(false);
-  const allWorkspaces = useSelector(selectAllWorkspaces);
-  const currentWorkspace = useSelector(selectCurrentWorkspace);
-  const user = useSelector((state) => state?.user?.data);
-  const navigate = useNavigate();
+
   const giftToken = useMemo(() => {
     const params = new URLSearchParams(location.search);
     return params.get('storageGift');
   }, [location]);
 
-  const getTasks = useCallback(async () => {
-    try {
-      const allTasks = await getAllTasks();
-      setTasks(allTasks);
-    } catch (error) {
-      console.error('Error fetching tasks:', error);
-      setTasks([]);
-    }
-  }, []);
-
-  const getStorageNotifications = useCallback(async () => {
-    try {
-      const data = await getStorageNotificationsEffect();
-      setNotifications(data);
-    } catch (error) {
-      setNotifications(initialNotificationState);
-    }
-  }, []);
-
   useEffect(() => {
-    getTasks();
-    getStorageNotifications();
-  }, [getTasks, getStorageNotifications]);
+    if (!notifications) {
+      dispatch(getNotifications());
+    }
 
-  useEffect(() => {
-    if (!!notifications?.sender?.unread?.length && wrapperRef.current) {
+    if (
+      notifications &&
+      !!notifications?.sender?.unread?.length &&
+      wrapperRef.current
+    ) {
       const notification = notifications?.sender?.unread[0];
       if (notification.text.includes('rejected')) {
         handleRejectNotification(notification);
@@ -93,7 +73,7 @@ export const StartPage = ({ tariffs }) => {
         handleAcceptNotification(notification);
       }
     }
-  }, [notifications, wrapperRef.current]);
+  }, [notifications]);
 
   useEffect(() => {
     if (!allWorkspaces && !currentWorkspace) return;
@@ -248,11 +228,11 @@ export const StartPage = ({ tariffs }) => {
         className={style[`point-counter`]}
         rank={user?.rank}
       />
+
       <Navigator
         storage={storage}
         human={human}
         openDisconnectModal={setDisconnectWalletModal}
-        tasks={tasks}
         onOpenShareModal={onOpenShareModal}
         storageSize={user.space_total}
       />
@@ -285,7 +265,9 @@ export const StartPage = ({ tariffs }) => {
           </span>
           <span
             onClick={() => {
-              openInNewTab('https://telegra.ph/Ghostdrive-Giveaway-Program-09-29');
+              openInNewTab(
+                'https://telegra.ph/Ghostdrive-Giveaway-Program-09-29'
+              );
             }}>
             {' | Help | '}
           </span>
@@ -300,14 +282,13 @@ export const StartPage = ({ tariffs }) => {
         <Link className={style['hidden-button']} to="/assistant" ></Link>
       </footer> */}
 
-
-
       {disconnectWalletModal && (
         <DisconnectWalletModal
           isOpen={disconnectWalletModal}
           onClose={() => setDisconnectWalletModal(false)}
         />
       )}
+
       {(showShareModal || giftToken) && (
         <ShareStorage
           giftToken={giftToken}
@@ -316,6 +297,7 @@ export const StartPage = ({ tariffs }) => {
           systemModalRef={systemModalRef}
         />
       )}
+
       <SystemModal handleClose={handleCloseNotification} ref={systemModalRef} />
     </div>
   );

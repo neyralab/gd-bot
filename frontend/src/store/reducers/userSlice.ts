@@ -1,5 +1,7 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Me } from '../../effects/types/users';
+import { Notification } from '../../effects/types/notifications';
+import { getStorageNotificationsEffect } from '../../effects/storageEffects';
 
 interface UserLinks {
   copy: string;
@@ -7,10 +9,20 @@ interface UserLinks {
   label: string;
 }
 
+interface Notifications {
+  all: Notification[];
+  sender: {
+    read: Notification[];
+    unread: Notification[];
+  };
+  recipient: Notification[];
+}
+
 interface InitialState {
   data: Me | null;
   link: UserLinks;
   initData: string | null;
+  notifications: Notifications | null;
 }
 
 const initialState: InitialState = {
@@ -20,7 +32,8 @@ const initialState: InitialState = {
     send: '',
     label: ''
   },
-  initData: null
+  initData: null,
+  notifications: null
 };
 
 const userSlice = createSlice({
@@ -50,9 +63,48 @@ const userSlice = createSlice({
       if (state?.data) {
         state.data.space_used += payload;
       }
+    },
+    setNotifications: (state, { payload }: PayloadAction<Notification[]>) => {
+      const senderRead: Notification[] = [];
+      const senderUnread: Notification[] = [];
+      const recipient: Notification[] = [];
+
+      payload.forEach((notification) => {
+        if (
+          notification.text.includes('accept') ||
+          notification.text.includes('rejected')
+        ) {
+          if (notification.viewed) {
+            senderRead.push(notification);
+          } else {
+            senderUnread.push(notification);
+          }
+        } else {
+          recipient.push(notification);
+        }
+      });
+
+      state.notifications = {
+        all: payload,
+        sender: {
+          read: senderRead,
+          unread: senderUnread
+        },
+        recipient: recipient
+      };
     }
   }
 });
+
+export const getNotifications = createAsyncThunk(
+  'user/getNotifications',
+  async (_, { dispatch }) => {
+    const res = await getStorageNotificationsEffect();
+    if (res) {
+      dispatch(setNotifications(res));
+    }
+  }
+);
 
 export const {
   setUser,
@@ -60,6 +112,7 @@ export const {
   setLink,
   updatePoints,
   decreaseUsedSpace,
-  increaseUsedSpace
+  increaseUsedSpace,
+  setNotifications
 } = userSlice.actions;
 export default userSlice.reducer;

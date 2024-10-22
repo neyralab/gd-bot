@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   selectPPVModal,
   handlePPVModal
-} from '../../store/reducers/modalSlice';
+} from '../../store/reducers/uiSlice';
 import { selectPaymenttByKey } from '../../store/reducers/paymentSlice';
 import { setPPVFile, updateFileProperty } from '../../store/reducers/drive/drive.slice';
 import { makeInvoice } from '../../effects/paymentEffect';

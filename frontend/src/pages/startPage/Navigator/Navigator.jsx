@@ -30,7 +30,6 @@ export default function Navigator({
   storageSize,
   storage,
   human,
-  tasks,
 }) {
   const { t, i18n } = useTranslation('system');
   const navigate = useNavigate();
@@ -123,7 +122,6 @@ export default function Navigator({
     return list.filter((item) => !HIDDEN_OPTION.includes(item.id));
   }, [
     storage,
-    tasks,
     human,
     navigate,
     isDev,
