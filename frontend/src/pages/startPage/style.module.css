@@ -126,6 +126,7 @@
 
 .assistent-controller {
   display: flex;
+  position: initial;
   margin-top: auto;
   padding-top: 16px;
   animation: AppearAnim 0.5s ease-out forwards;
