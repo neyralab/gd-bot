@@ -12,7 +12,7 @@ import { readNotificationEffect } from '../../effects/storageEffects';
 import { DEFAULT_TARIFFS_NAMES } from '../upgradeStorage';
 import { fromByteToGb } from '../../utils/storage';
 import { transformSize } from '../../utils/transformSize';
-import { useAppDispatch } from '../../store/hooks';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { getNotifications } from '../../store/reducers/userSlice';
 
 import GhostLoader from '../../components/ghostLoader';
@@ -40,10 +40,10 @@ export const StartPage = ({ tariffs }) => {
   const navigate = useNavigate();
 
   const dispatch = useAppDispatch();
-  const notifications = useSelector((state) => state.user.notifications);
-  const currentWorkspace = useSelector(selectCurrentWorkspace);
-  const user = useSelector((state) => state?.user?.data);
-  const allWorkspaces = useSelector(selectAllWorkspaces);
+  const notifications = useAppSelector((state) => state.user.notifications);
+  const currentWorkspace = useAppSelector(selectCurrentWorkspace);
+  const user = useAppSelector((state) => state.user.data);
+  const allWorkspaces = useAppSelector(selectAllWorkspaces);
 
   const [showShareModal, setShowShareModal] = useState(false);
   const [disconnectWalletModal, setDisconnectWalletModal] = useState(false);
