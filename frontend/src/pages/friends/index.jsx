@@ -30,7 +30,7 @@ const FRIEND_TASK = {
 const ADDITIONAL_REWARDS = (t) => [
   {
     title: 'Invite {count} Friend',
-    points: 1000,
+    points: 10000,
     count: 1,
   },
   {
@@ -138,7 +138,7 @@ export default function FriendsPage() {
         </div>
       )}
 
-      {showContent && (
+      {/* {showContent && (
         <>
           <div className={styles['tasks-list']}>
             {tasks.map((task) => {
@@ -156,7 +156,7 @@ export default function FriendsPage() {
             })}
           </div>
 
-          {/* <div className={styles['friends-container']}>
+          <div className={styles['friends-container']}>
             <h2
               data-animation="friends-animation-3"
               className={styles['initial-state-for-animation']}>
@@ -178,11 +178,11 @@ export default function FriendsPage() {
                 })}
               </div>
             )}
-          </div> */}
+          </div>
         </>
-      )}
+      )} */}
 
-      <h2
+      {/* <h2
         data-animation="friends-animation-3"
         className={CN(
           styles['initial-state-for-animation'],
@@ -190,22 +190,26 @@ export default function FriendsPage() {
           styles['title-revard'],
         )}>
         {t('friends.rewards')}
-      </h2>
+      </h2> */}
 
-      <div className={styles['friends-list']}>
-        {ADDITIONAL_REWARDS(t).map((option) => {
-          return (
-            <Person
-              key={option.username}
-              title={option.title.replace('{count}', option.count)}
-              points={option.points}
-              className={styles['initial-state-for-animation']}
-            />
-          );
-        })}
-      </div>
-      <p className={styles['subtext-top']}>{t('friends.rewardStorage')}</p>
-      <p className={styles['subtext-bot']}>{t('friends.secureAndEncrypted')}</p>
+      { showContent && (
+        <>
+          <div className={styles['friends-list']}>
+            {ADDITIONAL_REWARDS(t).map((option) => {
+              return (
+                <Person
+                  key={option.username}
+                  title={option.title.replace('{count}', option.count)}
+                  points={option.points}
+                  className={styles['initial-state-for-animation']}
+                />
+              );
+            })}
+          </div>
+          <p className={styles['subtext-top']}>{t('friends.rewardStorage')}</p>
+          <p className={styles['subtext-bot']}>{t('friends.secureAndEncrypted')}</p>
+        </>
+      ) }
     </div>
   );
 }
