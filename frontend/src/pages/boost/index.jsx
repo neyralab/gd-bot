@@ -38,6 +38,7 @@ import {
   isAllPaymentEnabled
 } from '../../utils/paymentChecker';
 import { tg } from '../../App';
+import TemporaryControls from '../../components/AssistantDashboard/TemporaryControls/TemporaryControls';
 
 import styles from './styles.module.css';
 
@@ -181,7 +182,7 @@ export const BoostPage = ({ tariffs, setTariffs }) => {
         dispatch,
         callback: invoiceCallback,
         type: INVOICE_TYPE.boost,
-        theme,
+        theme
       });
     }
     onClosePaymentModal();
@@ -193,15 +194,17 @@ export const BoostPage = ({ tariffs, setTariffs }) => {
   };
 
   const goToTerms = () => {
-    tg?.openLink('https://telegra.ph/Terms-of-Service-GhostDrive-09-29', { try_instant_view: true });
+    tg?.openLink('https://telegra.ph/Terms-of-Service-GhostDrive-09-29', {
+      try_instant_view: true
+    });
   };
 
   const handleSelect = (el) => {
     if (isAnyPaymentEnabled && !isAllPaymentEnabled) {
       const body = isStarsPaymentEnabled
         ? { action: 'star', path: 'stars' }
-        : { action: 'ton', path: 'ton_price' }
-      handleStartPayment({ ...el, ...body })
+        : { action: 'ton', path: 'ton_price' };
+      handleStartPayment({ ...el, ...body });
     } else if (isAllPaymentEnabled) {
       setSelectedPayment(el);
       dispatch(handlePaymentSelectModal(true));
@@ -248,7 +251,10 @@ export const BoostPage = ({ tariffs, setTariffs }) => {
                   <p className={styles.cost_value}>
                     {currentPrice?.stars || '0'}
                   </p>
-                  <Star className={styles.current_diamond} viewBox="0 0 21 21" />
+                  <Star
+                    className={styles.current_diamond}
+                    viewBox="0 0 21 21"
+                  />
                 </div>
               </div>
             </div>
@@ -269,7 +275,9 @@ export const BoostPage = ({ tariffs, setTariffs }) => {
                     data-animation="boost-animation-1"
                     className={styles['initial-state-for-animation']}
                     key={index}
-                    onClick={() => {vibrate('soft')}}>
+                    onClick={() => {
+                      vibrate('soft');
+                    }}>
                     <button
                       disabled={currentPrice?.storage === el?.storage}
                       onClick={() => {
@@ -293,11 +301,20 @@ export const BoostPage = ({ tariffs, setTariffs }) => {
                       </div>
                       {isAnyPaymentEnabled ? (
                         <div className={styles.cost}>
-                          <p className={styles.cost_value}>{ isStarsPaymentEnabled ? el?.stars : el.ton_price}</p>
-                          { isStarsPaymentEnabled ? (
-                            <Star className={styles.cost_svg} viewBox="0 0 21 21" /> ) : (
-                            <Ton className={styles.cost_svg} viewBox="0 0 25 28" /> )
-                          }
+                          <p className={styles.cost_value}>
+                            {isStarsPaymentEnabled ? el?.stars : el.ton_price}
+                          </p>
+                          {isStarsPaymentEnabled ? (
+                            <Star
+                              className={styles.cost_svg}
+                              viewBox="0 0 21 21"
+                            />
+                          ) : (
+                            <Ton
+                              className={styles.cost_svg}
+                              viewBox="0 0 25 28"
+                            />
+                          )}
                         </div>
                       ) : null}
                     </button>
@@ -311,6 +328,8 @@ export const BoostPage = ({ tariffs, setTariffs }) => {
       <footer className={styles.footer}>
         <span onClick={goToTerms}>Terms of use</span>
       </footer>
+
+      <TemporaryControls />
 
       <SlidingModal
         onClose={onClosePaymentModal}
