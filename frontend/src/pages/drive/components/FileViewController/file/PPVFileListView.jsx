@@ -29,7 +29,7 @@ export default function PPVFileListView({
               height={40}
             />
           ) : isFolder ? (
-            <CustomFolderIcon viewType={view} color={file?.color[0]?.hex} />
+            <CustomFolderIcon viewType={viewType} color={file?.color[0]?.hex} />
           ) : (
             <CustomFileSmallIcon type={file.extension} />
           )}

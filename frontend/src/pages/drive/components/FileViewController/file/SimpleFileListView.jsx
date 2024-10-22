@@ -30,7 +30,7 @@ export default function SimpleFileListView({
               className={styles['preview-image']}
             />
           ) : isFolder ? (
-            <CustomFolderIcon viewType={view} color={file?.color[0]?.hex} />
+            <CustomFolderIcon viewType={viewType} color={file?.color[0]?.hex} />
           ) : (
             <CustomFileSmallIcon type={file.extension} />
           )}
