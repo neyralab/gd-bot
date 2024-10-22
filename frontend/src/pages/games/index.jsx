@@ -2,16 +2,18 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 
-import { Header } from '../../components/header';
+import { runInitAnimation, runListAnimation } from './animations';
 import { getAllPartners } from '../../effects/EarnEffect';
-import { SearchInput } from './SearchInput';
-import Game from './GameItem';
 import { handlePartners, selectPartners } from '../../store/reducers/taskSlice';
 import { isMobilePlatform } from '../../utils/client';
 
-import styles from './styles.module.css';
-import { runInitAnimation, runListAnimation } from './animations';
+import { Header } from '../../components/header';
 import GhostLoader from '../../components/ghostLoader';
+import TemporaryControls from '../../components/AssistantDashboard/TemporaryControls/TemporaryControls';
+import { SearchInput } from './SearchInput';
+import Game from './GameItem';
+
+import styles from './styles.module.css';
 
 export const GamesPage = () => {
   const dispatch = useDispatch();
@@ -81,6 +83,7 @@ export const GamesPage = () => {
           ))}
         </ul>
       )}
+      <TemporaryControls/>
     </div>
   );
 };

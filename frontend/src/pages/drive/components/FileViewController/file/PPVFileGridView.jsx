@@ -27,7 +27,7 @@ export default function PPVFileGridView({
               className={styles['preview-image']}
             />
           ) : isFolder ? (
-            <CustomFolderIcon viewType={view} color={file?.color[0]?.hex} />
+            <CustomFolderIcon viewType={viewType} color={file?.color[0]?.hex} />
           ) : (
             <CustomFileIcon
               extension={file.extension}
