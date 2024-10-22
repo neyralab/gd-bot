@@ -15,6 +15,7 @@ import { Header } from '../../components/header';
 import { Button } from '../../components/button';
 import { InfoBox } from '../../components/info';
 import { Range } from '../../components/range';
+import TemporaryControls from '../../components/AssistantDashboard/TemporaryControls/TemporaryControls';
 
 import styles from './styles.module.css';
 
@@ -119,7 +120,6 @@ export const Balance = () => {
           className={styles['info-title']}>
           {t('convert.mineSpace')}
         </h2>
-        
         {detail(t).map((item, index) => (
           <div key={`detail-${index}`} data-animation="balance-animation-1">
             <p className={styles['option-title']}>{item.title}</p>
@@ -127,6 +127,7 @@ export const Balance = () => {
           </div>
         ))}
       </div>
+      <TemporaryControls />
     </div>
   );
 };

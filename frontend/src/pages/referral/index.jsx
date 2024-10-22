@@ -6,6 +6,7 @@ import { getBalanceEffect } from '../../effects/balanceEffect';
 import { Header } from '../../components/header';
 import { Tab } from '../../components/tab';
 import { History } from '../../components/history';
+import TemporaryControls from '../../components/AssistantDashboard/TemporaryControls/TemporaryControls';
 import { runInitAnimation } from './animations';
 import { isMobilePlatform } from '../../utils/client';
 import styles from './styles.module.css';
@@ -24,7 +25,7 @@ export const Referral = () => {
         const { data } = await referralEffect();
         const totalUsers = data?.data?.reduce(
           (acc, item) => acc + item?.current_usage,
-          0,
+          0
         );
         setUsers(totalUsers || 0);
         console.log({ referralEffect: data });
@@ -82,6 +83,7 @@ export const Referral = () => {
       </div>
 
       <History />
+      <TemporaryControls />
     </div>
   );
 };

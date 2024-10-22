@@ -1,12 +1,16 @@
 import { useEffect, useState, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import moment from 'moment';
-import { Header } from '../../components/header';
-import { ReactComponent as CheckIcon } from '../../assets/check.svg';
-import SearchInput from './SearchInput';
+
 import { runInitAnimation, runListAnimation } from './animations';
 import { debounce } from '../../utils/debounce';
 import { isMobilePlatform } from '../../utils/client';
+
+import { Header } from '../../components/header';
+import SearchInput from './SearchInput';
+import TemporaryControls from '../../components/AssistantDashboard/TemporaryControls/TemporaryControls';
+import { ReactComponent as CheckIcon } from '../../assets/check.svg';
+
 import styles from './styles.module.scss';
 
 export const LANGUAGE_LIST = [
@@ -167,6 +171,7 @@ export const LanguagePage = () => {
           ))}
         </ul>
       )}
+      <TemporaryControls />
     </div>
   );
 };
