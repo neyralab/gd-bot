@@ -3,7 +3,7 @@ import React from 'react';
 // import { DeleteFileModal } from '../deleteFileModal';
 import { ToastContainer } from 'react-toastify';
 import PPVModal from '../ppvModal/PPVModal';
-import { AssistantAudioProvider } from '../AssistantDashboard/AssistantAudio/AssistantAudio';
+import { AssistantAudioProvider } from '../../pages/assistant/AssistantAudio/AssistantAudio';
 
 import { ReactComponent as CancelIcon } from '../../assets/cancel.svg';
 

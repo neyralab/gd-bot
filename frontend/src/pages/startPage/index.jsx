@@ -25,7 +25,7 @@ import SystemModal from '../../components/SystemModal/SystemModal';
 import NavigatItem from './Navigator/NavigatItem';
 import Navigator from './Navigator/Navigator';
 import UserCard from './UserCard/UserCard';
-import AssistantDashboard from '../../components/AssistantDashboard/AssistantDashboard';
+import MenuControls from '../../components/MenuControls/MenuControls';
 import { runInitAnimation } from './animations';
 import { tg } from '../../App';
 
@@ -235,7 +235,7 @@ export const StartPage = ({ tariffs }) => {
         storageSize={user.space_total}
       />
 
-      <AssistantDashboard className={style['assistant-controller']} />
+      <MenuControls />
 
       {/* <ul className={CN(navigatorStyle['navigator'])}>
         <NavigatItem

@@ -11,7 +11,7 @@ import { useLongPress } from 'use-long-press';
 
 import { sendMessageToAi } from '../../effects/ai/neyraChatEffect';
 import { unrealSpeechStream } from '../../effects/ai/unrealSpeechEffect';
-import { useAssistantAudio } from '../AssistantDashboard/AssistantAudio/AssistantAudio';
+import { useAssistantAudio } from '../../pages/assistant/AssistantAudio/AssistantAudio';
 
 import UploadAction from '../../pages/drive/components/Actions/UploadAction/UploadAction';
 import { ReactComponent as RectIcon } from '../../../public/assets/assistant/neon-rect.svg';

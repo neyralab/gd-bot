@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
@@ -14,7 +14,6 @@ import { ReactComponent as CreditCardIcon } from '../../../assets/credit-card.sv
 
 import styles from './Navigation.module.scss';
 
-
 export default function Navigation() {
   const { history } = useContext(NavigationHistoryContext);
   const { audio, loadAudio, playAudio, loading, stopAudio } =
@@ -25,10 +24,16 @@ export default function Navigation() {
   const { t } = useTranslation('system');
   const dispatch = useAppDispatch();
 
+  const fileTypesFetched = useMemo(
+    () => !!Object.keys(fileTypes).length,
+    [fileTypes]
+  );
+
   useEffect(() => {
-    if (!Object.keys(fileTypes).length) {
+    if (!fileTypesFetched) {
       dispatch(fetchTypesCount({ useLoader: false }));
     }
+
     getPaidShareFilesEffect(1).then((data) => {
       setErnedCount(data.earned);
     });
@@ -37,7 +42,7 @@ export default function Navigation() {
   return (
     <header>
       <span />
-      {user && !!Object.keys(fileTypes).length && (
+      {user && fileTypesFetched && (
         <div className={styles.info}>
           <p>
             {t('assistant.files')}:<span>{fileTypes?.total || 0}</span>
