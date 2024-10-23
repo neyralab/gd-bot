@@ -175,7 +175,7 @@
     "tryAgain": "Coba lagi",
     "ok": "OK"
   },
-  "assistent": {
+  "assistant": {
     "messageError": "Terjadi kesalahan saat memproses pesan. Silakan coba lagi",
     "browserSupport": "Browser Anda tidak mendukung pengenalan suara",
     "listening": "Saya mendengarkan...",

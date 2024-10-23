@@ -6,7 +6,7 @@ import { getBalanceEffect } from '../../effects/balanceEffect';
 import { Header } from '../../components/header';
 import { Tab } from '../../components/tab';
 import { History } from '../../components/history';
-import TemporaryControls from '../../components/AssistantDashboard/TemporaryControls/TemporaryControls';
+import MenuControls from '../../components/MenuControls/MenuControls';
 import { runInitAnimation } from './animations';
 import { isMobilePlatform } from '../../utils/client';
 import styles from './styles.module.css';
@@ -83,7 +83,8 @@ export const Referral = () => {
       </div>
 
       <History />
-      <TemporaryControls />
+
+      <MenuControls />
     </div>
   );
 };

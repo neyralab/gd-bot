@@ -2,8 +2,8 @@ import React from 'react';
 import Assistant from './Assistant/Assistant';
 import Background from './Background/Background';
 import CirclularPanel from './CirclularPanel/CirclularPanel';
-import TemporaryControls from './TemporaryControls/TemporaryControls';
-import TemporaryNavigate from './TemporaryNavigate/TemporaryNavigate';
+import MenuControls from '../MenuControls/MenuControls';
+import Navigation from './Navigation/Navigation';
 
 import styles from './AssistantDashboard.module.scss';
 
@@ -19,8 +19,8 @@ export default function AssistantDashboard() {
         </div>
       </div>
 
-      <TemporaryControls />
-      <TemporaryNavigate />
+      <MenuControls />
+      <Navigation />
     </>
   );
 }

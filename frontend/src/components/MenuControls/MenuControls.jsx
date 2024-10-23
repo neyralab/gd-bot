@@ -9,19 +9,19 @@ import SpeechRecognition, {
 import CN from 'classnames';
 import { useLongPress } from 'use-long-press';
 
-import { sendMessageToAi } from '../../../effects/ai/neyraChatEffect';
-import { unrealSpeechStream } from '../../../effects/ai/unrealSpeechEffect';
-import { useAssistantAudio } from '../AssistantAudio/AssistantAudio';
+import { sendMessageToAi } from '../../effects/ai/neyraChatEffect';
+import { unrealSpeechStream } from '../../effects/ai/unrealSpeechEffect';
+import { useAssistantAudio } from '../AssistantDashboard/AssistantAudio/AssistantAudio';
 
-import UploadAction from '../../../pages/drive/components/Actions/UploadAction/UploadAction';
-import { ReactComponent as RectIcon } from '../../../../public/assets/assistant/neon-rect.svg';
-import { ReactComponent as TriangleIcon } from '../../../../public/assets/assistant/neon-triangle.svg';
-import { ReactComponent as CircleIcon } from '../../../../public/assets/assistant/neon-circle.svg';
-import { ReactComponent as StopRecordIcon } from '../../../../public/assets/assistant/stop-record.svg';
+import UploadAction from '../../pages/drive/components/Actions/UploadAction/UploadAction';
+import { ReactComponent as RectIcon } from '../../../public/assets/assistant/neon-rect.svg';
+import { ReactComponent as TriangleIcon } from '../../../public/assets/assistant/neon-triangle.svg';
+import { ReactComponent as CircleIcon } from '../../../public/assets/assistant/neon-circle.svg';
+import { ReactComponent as StopRecordIcon } from '../../../public/assets/assistant/stop-record.svg';
 
-import styles from './TemporaryControls.module.scss';
+import styles from './MenuControls.module.scss';
 
-export default function TemporaryControls({ className }) {
+export default function MenuControls({ className }) {
   const {
     startRecording,
     stopRecording,
@@ -86,12 +86,12 @@ export default function TemporaryControls({ className }) {
       </button>
       {isRecording && (
         <div className={styles['listening-tooltip']}>
-          {t('assistent.listening')}
+          {t('assistant.listening')}
         </div>
       )}
       {isResponseGenerating && (
         <div className={styles['listening-tooltip']}>
-          {t('assistent.generat')}
+          {t('assistant.generat')}
         </div>
       )}
     </div>

@@ -175,7 +175,7 @@
     "tryAgain": "Réessayer",
     "ok": "OK"
   },
-  "assistent": {
+  "assistant": {
     "messageError": "Ocurrió un error al procesar el mensaje. Por favor, inténtelo de nuevo",
     "browserSupport": "Su navegador no admite reconocimiento de voz",
     "listening": "Te estoy escuchando...",

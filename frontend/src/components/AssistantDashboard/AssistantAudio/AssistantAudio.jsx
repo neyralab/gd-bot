@@ -117,7 +117,7 @@ export const AssistantAudioProvider = ({ children }) => {
       loadAudio(audioUrl, playAudio);
     } catch (error) {
       console.error('Error:', error);
-      toast.error(t('assistent.messageError'));
+      toast.error(t('assistant.messageError'));
     } finally {
       setIsResponseGenerating(false);
     }
@@ -132,7 +132,7 @@ export const AssistantAudioProvider = ({ children }) => {
 
   const startRecording = () => {
     if (!browserSupportsSpeechRecognition) {
-      toast.error(t('assistent.browserSupport'));
+      toast.error(t('assistant.browserSupport'));
       return;
     }
     setIsRecording(true);

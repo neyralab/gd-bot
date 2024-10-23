@@ -6,7 +6,7 @@ import Header from '../assets/Header/Header';
 import Statistic from '../assets/Statistic/Statistic';
 import Table from '../assets/Table/Table';
 import { ReactComponent as LoaderIcon } from '../../../assets/loader.svg';
-import TemporaryControls from '../../../components/AssistantDashboard/TemporaryControls/TemporaryControls';
+import MenuControls from '../../../components/MenuControls/MenuControls';
 
 import style from '../style.module.css';
 
@@ -58,7 +58,8 @@ export const LeaderboardLeague = () => {
           <Table items={leaderboard} totalUsers={info.totalUsers} />
         </>
       )}
-      <TemporaryControls />
+
+      <MenuControls />
     </div>
   );
 };

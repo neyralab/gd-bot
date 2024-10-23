@@ -38,7 +38,7 @@ import {
   isAllPaymentEnabled
 } from '../../utils/paymentChecker';
 import { tg } from '../../App';
-import TemporaryControls from '../../components/AssistantDashboard/TemporaryControls/TemporaryControls';
+import MenuControls from '../../components/MenuControls/MenuControls';
 
 import styles from './styles.module.css';
 
@@ -329,7 +329,7 @@ export const BoostPage = ({ tariffs, setTariffs }) => {
         <span onClick={goToTerms}>Terms of use</span>
       </footer>
 
-      <TemporaryControls />
+      <MenuControls />
 
       <SlidingModal
         onClose={onClosePaymentModal}

@@ -175,7 +175,7 @@
     "tryAgain": "Thử lại",
     "ok": "OK"
   },
-  "assistent": {
+  "assistant": {
     "messageError": "Đã xảy ra lỗi khi xử lý tin nhắn. Vui lòng thử lại",
     "browserSupport": "Trình duyệt của bạn không hỗ trợ nhận dạng giọng nói",
     "listening": "Tôi đang nghe bạn...",

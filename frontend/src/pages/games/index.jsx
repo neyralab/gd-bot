@@ -9,7 +9,7 @@ import { isMobilePlatform } from '../../utils/client';
 
 import { Header } from '../../components/header';
 import GhostLoader from '../../components/ghostLoader';
-import TemporaryControls from '../../components/AssistantDashboard/TemporaryControls/TemporaryControls';
+import MenuControls from '../../components/MenuControls/MenuControls';
 import { SearchInput } from './SearchInput';
 import Game from './GameItem';
 
@@ -83,7 +83,8 @@ export const GamesPage = () => {
           ))}
         </ul>
       )}
-      <TemporaryControls/>
+
+      <MenuControls />
     </div>
   );
 };

@@ -15,7 +15,7 @@ import { Header } from '../../components/header';
 import { Button } from '../../components/button';
 import { InfoBox } from '../../components/info';
 import { Range } from '../../components/range';
-import TemporaryControls from '../../components/AssistantDashboard/TemporaryControls/TemporaryControls';
+import MenuControls from '../../components/MenuControls/MenuControls';
 
 import styles from './styles.module.css';
 
@@ -127,7 +127,8 @@ export const Balance = () => {
           </div>
         ))}
       </div>
-      <TemporaryControls />
+
+      <MenuControls />
     </div>
   );
 };
