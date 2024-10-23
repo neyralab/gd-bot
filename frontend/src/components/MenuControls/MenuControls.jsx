@@ -5,10 +5,7 @@ import { toast } from 'react-toastify';
 import CN from 'classnames';
 import { useLongPress } from 'use-long-press';
 
-import { sendMessageToAi } from '../../effects/ai/neyraChatEffect';
-import { unrealSpeechStream } from '../../effects/ai/unrealSpeechEffect';
 import { useAssistantAudio } from '../../pages/assistant/AssistantAudio/AssistantAudio';
-
 import UploadAction from '../../pages/drive/components/Actions/UploadAction/UploadAction';
 import { ReactComponent as RectIcon } from '../../../public/assets/assistant/neon-rect.svg';
 import { ReactComponent as TriangleIcon } from '../../../public/assets/assistant/neon-triangle.svg';
