@@ -6,6 +6,12 @@
   left: 0;
   overflow: hidden;
   user-select: none;
+
+  * {
+    user-select: none;
+    touch-action: none;
+    pointer-events: none;
+  }
 }
 
 .assistant-wrapper {

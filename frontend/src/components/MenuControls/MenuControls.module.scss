@@ -10,7 +10,12 @@
   justify-content: center;
   align-items: center;
   justify-items: center;
+
   user-select: none;
+
+  * {
+    user-select: none;
+  }
 }
 
 .navigate-button {
@@ -56,4 +61,8 @@
   font-style: normal;
   font-weight: 200;
   line-height: normal;
+
+  user-select: none;
+  touch-action: none;
+  pointer-events: none;
 }
