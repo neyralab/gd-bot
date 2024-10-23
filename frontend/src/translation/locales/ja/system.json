@@ -175,7 +175,7 @@
     "tryAgain": "もう一度試す",
     "ok": "OK"
   },
-  "assistent": {
+  "assistant": {
     "messageError": "メッセージ処理中にエラーが発生しました。もう一度お試しください",
     "browserSupport": "お使いのブラウザは音声認識をサポートしていません",
     "listening": "聞いています...",

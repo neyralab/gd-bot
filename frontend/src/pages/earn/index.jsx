@@ -23,7 +23,7 @@ import Partners from './Partners';
 import Mission from './Mission';
 import EarnModal from './EarnModal/EarnModal';
 import Segmented from '../../components/segmented';
-import TemporaryControls from '../../components/AssistantDashboard/TemporaryControls/TemporaryControls';
+import MenuControls from '../../components/MenuControls/MenuControls';
 import { BackButton } from '../../components/backButton';
 
 import styles from './styles.module.css';
@@ -207,7 +207,8 @@ export default function EarnPage() {
       {renderList()}
 
       <EarnModal ref={earnModalRef} item={modalSelectedTask} />
-      <TemporaryControls />
+
+      <MenuControls />
     </div>
   );
 }

@@ -175,7 +175,7 @@
     "tryAgain": "다시 시도",
     "ok": "확인"
   },
-  "assistent": {
+  "assistant": {
     "messageError": "메시지를 처리하는 중에 오류가 발생했습니다. 다시 시도해주세요",
     "browserSupport": "브라우저가 음성 인식을 지원하지 않습니다",
     "listening": "듣고 있어요...",

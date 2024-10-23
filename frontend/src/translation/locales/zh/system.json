@@ -175,7 +175,7 @@
     "tryAgain": "再试一次",
     "ok": "好的"
   },
-  "assistent": {
+  "assistant": {
     "messageError": "处理消息时发生错误。请再试一次",
     "browserSupport": "您的浏览器不支持语音识别",
     "listening": "我在听你说...",

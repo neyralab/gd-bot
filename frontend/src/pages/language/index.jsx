@@ -8,7 +8,7 @@ import { isMobilePlatform } from '../../utils/client';
 
 import { Header } from '../../components/header';
 import SearchInput from './SearchInput';
-import TemporaryControls from '../../components/AssistantDashboard/TemporaryControls/TemporaryControls';
+import MenuControls from '../../components/MenuControls/MenuControls';
 import { ReactComponent as CheckIcon } from '../../assets/check.svg';
 
 import styles from './styles.module.scss';
@@ -171,7 +171,8 @@ export const LanguagePage = () => {
           ))}
         </ul>
       )}
-      <TemporaryControls />
+
+      <MenuControls />
     </div>
   );
 };

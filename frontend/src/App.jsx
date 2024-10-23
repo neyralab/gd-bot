@@ -22,9 +22,7 @@ import { isValidEnvVariable } from './utils/string';
 
 import SharedLayout from './components/sharedLayout';
 import { StartPage } from './pages/startPage';
-// import { FilesSystemPage } from './pages/filesSystemPage';
 import { UpgradeStoragePage } from './pages/upgradeStorage';
-// import { FilesPage } from './pages/filesPage';
 import { Balance } from './pages/balance';
 import { Referral } from './pages/referral';
 import { LeaderboardLeague } from './pages/leaderboard/league';
@@ -40,7 +38,7 @@ import FriendsPage from './pages/friends';
 import NodesWelcomePage from './pages/nodes-welcome';
 import NodesPage from './pages/nodes';
 import DrivePage from './pages/drive';
-import AssistantDashboard from './components/AssistantDashboard/AssistantDashboard';
+import AssistantPage from './pages/assistant/AssistantPage';
 
 import './App.css';
 
@@ -125,9 +123,6 @@ function App() {
               element={<StartPage onClose={onClose} tariffs={tariffs} />}
             />
             <Route path="/drive" exact element={<DrivePage />} />
-            {/* <Route path="/file-upload" exact element={<FilesSystemPage />} /> */}
-            {/* <Route path="/ghostdrive-upload" exact element={<FilesPage />} /> */}
-            {/* <Route path="/files" exact element={<FilesPage />} /> */}
             <Route path="/paid-view/:id" exact element={<PaidView />} />
             <Route
               path="/upgrade"
@@ -157,7 +152,7 @@ function App() {
             <Route path="/earn" exact element={<EarnPage />} />
             <Route path="/nodes-welcome" exact element={<NodesWelcomePage />} />
             <Route path="/nodes" exact element={<NodesPage />} />
-            <Route path="/assistant" exact element={<AssistantDashboard />} />
+            <Route path="/assistant" exact element={<AssistantPage />} />
           </Routes>
         </SharedLayout>
       </WalletProvider>

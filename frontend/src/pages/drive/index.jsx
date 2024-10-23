@@ -1,6 +1,9 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { clearDriveState, initDrive } from '../../store/reducers/drive/drive.thunks';
+import {
+  clearDriveState,
+  initDrive
+} from '../../store/reducers/drive/drive.thunks';
 import {
   MediaSliderCacheProvider,
   useMediaSliderCache
@@ -8,7 +11,7 @@ import {
 import Header from './components/Header/Header';
 import Storage from './components/Storage/Storage';
 import Content from './components/Content/Content';
-import TemporaryControls from '../../components/AssistantDashboard/TemporaryControls/TemporaryControls';
+import MenuControls from '../../components/MenuControls/MenuControls';
 import Actions from './components/Actions/Actions';
 import { FileMenuModal } from './components/FileMenuModal/FileMenuModal';
 import FileInfoModal from './components/FileInfoModal/FileInfoModal';
@@ -53,8 +56,8 @@ export default function DrivePage() {
         <Content />
       </div>
 
-      <TemporaryControls />
-      
+      <MenuControls />
+
       {fileMenuModal && <FileMenuModal />}
       {fileInfoModal && <FileInfoModal />}
 

@@ -14,7 +14,6 @@ import { fromByteToGb } from '../../utils/storage';
 import { transformSize } from '../../utils/transformSize';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { getNotifications } from '../../store/reducers/userSlice';
-
 import GhostLoader from '../../components/ghostLoader';
 import FortuneWheel from './FortuneWheel';
 import { Banner } from './Banner';
@@ -26,8 +25,7 @@ import SystemModal from '../../components/SystemModal/SystemModal';
 import NavigatItem from './Navigator/NavigatItem';
 import Navigator from './Navigator/Navigator';
 import UserCard from './UserCard/UserCard';
-import AssistantControls from '../../components/AssistantDashboard/TemporaryControls/TemporaryControls';
-
+import MenuControls from '../../components/MenuControls/MenuControls';
 import { runInitAnimation } from './animations';
 import { tg } from '../../App';
 
@@ -236,7 +234,9 @@ export const StartPage = ({ tariffs }) => {
         onOpenShareModal={onOpenShareModal}
         storageSize={user.space_total}
       />
-      <AssistantControls className={style['assistent-controller']} />
+
+      <MenuControls />
+
       {/* <ul className={CN(navigatorStyle['navigator'])}>
         <NavigatItem
           name={t('dashboard.mining')}

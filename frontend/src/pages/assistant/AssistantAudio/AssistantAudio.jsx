@@ -5,6 +5,14 @@ import React, {
   useRef,
   useEffect
 } from 'react';
+import 'regenerator-runtime/runtime'; // this thing is important for speech recognition to be imported before react-speech-recognition
+import SpeechRecognition, {
+  useSpeechRecognition
+} from 'react-speech-recognition';
+import { useTranslation } from 'react-i18next';
+
+import { sendMessageToAi } from '../../../effects/ai/neyraChatEffect';
+import { unrealSpeechStream } from '../../../effects/ai/unrealSpeechEffect';
 
 const AssistantAudioContext = createContext();
 
@@ -14,8 +22,20 @@ export const AssistantAudioProvider = ({ children }) => {
   const [audio, setAudio] = useState(null);
   const [status, setStatus] = useState('stopped'); // 'playing', 'paused', 'stopped'
   const [loading, setLoading] = useState(false); // 'loading' status
+  const [isRecording, setIsRecording] = useState(false);
+  const [isResponseGenerating, setIsResponseGenerating] = useState(false);
   const audioContextRef = useRef(null);
   const analyserRef = useRef(null);
+  const {
+    transcript,
+    listening,
+    resetTranscript,
+    browserSupportsSpeechRecognition
+  } = useSpeechRecognition({
+    clearTranscriptOnListen: true,
+    transcribing: true
+  });
+  const { t } = useTranslation('system');
 
   const loadAudio = (src, onLoad) => {
     if (audio) {
@@ -45,7 +65,7 @@ export const AssistantAudioProvider = ({ children }) => {
       setAudio(newAudio);
       setStatus('stopped');
       setLoading(false);
-      onLoad?.();
+      onLoad?.(newAudio);
     });
 
     newAudio.addEventListener('error', (e) => {
@@ -54,9 +74,9 @@ export const AssistantAudioProvider = ({ children }) => {
     });
   };
 
-  const playAudio = () => {
-    if (audio) {
-      audio.play();
+  const playAudio = (newAudio) => {
+    if (newAudio) {
+      newAudio.play();
       setStatus('playing');
     }
   };
@@ -88,6 +108,43 @@ export const AssistantAudioProvider = ({ children }) => {
     }
   }, [audio]);
 
+  const getNeyraResponse = async (text) => {
+    try {
+      setIsResponseGenerating(true);
+      const res = await sendMessageToAi(transcript);
+      const message = res.data.data.response;
+      const audioUrl = await unrealSpeechStream(message);
+      loadAudio(audioUrl, playAudio);
+    } catch (error) {
+      console.error('Error:', error);
+      toast.error(t('assistant.messageError'));
+    } finally {
+      setIsResponseGenerating(false);
+    }
+  };
+
+  useEffect(() => {
+    if (!listening && transcript.trim()) {
+      setIsRecording(false);
+      getNeyraResponse();
+    }
+  }, [transcript, listening]);
+
+  const startRecording = () => {
+    if (!browserSupportsSpeechRecognition) {
+      toast.error(t('assistant.browserSupport'));
+      return;
+    }
+    setIsRecording(true);
+    resetTranscript();
+    SpeechRecognition.startListening({ language: 'en-EN', continuous: false });
+  };
+
+  const stopRecording = () => {
+    SpeechRecognition.stopListening();
+    setIsRecording(false);
+  };
+
   return (
     <AssistantAudioContext.Provider
       value={{
@@ -98,7 +155,12 @@ export const AssistantAudioProvider = ({ children }) => {
         playAudio,
         pauseAudio,
         stopAudio,
-        analyserRef
+        analyserRef,
+        startRecording,
+        stopRecording,
+        isRecording,
+        isResponseGenerating,
+        listening
       }}>
       {children}
     </AssistantAudioContext.Provider>
