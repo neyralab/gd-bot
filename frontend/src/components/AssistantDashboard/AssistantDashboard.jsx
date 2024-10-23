@@ -1,5 +1,4 @@
 import React from 'react';
-import { AssistantAudioProvider } from './AssistantAudio/AssistantAudio';
 import Assistant from './Assistant/Assistant';
 import Background from './Background/Background';
 import CirclularPanel from './CirclularPanel/CirclularPanel';
@@ -10,7 +9,7 @@ import styles from './AssistantDashboard.module.scss';
 
 export default function AssistantDashboard() {
   return (
-    <AssistantAudioProvider>
+    <>
       <div className={styles.container}>
         <Background />
 
@@ -22,6 +21,6 @@ export default function AssistantDashboard() {
 
       <TemporaryControls />
       <TemporaryNavigate />
-    </AssistantAudioProvider>
+    </>
   );
 }
