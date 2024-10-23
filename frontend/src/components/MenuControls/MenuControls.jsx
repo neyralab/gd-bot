@@ -2,10 +2,6 @@ import { useEffect, useRef, useState, useMemo } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
-import 'regenerator-runtime/runtime'; // this thing is important for speech recognition to be imported before react-speech-recognition
-import SpeechRecognition, {
-  useSpeechRecognition
-} from 'react-speech-recognition';
 import CN from 'classnames';
 import { useLongPress } from 'use-long-press';
 
