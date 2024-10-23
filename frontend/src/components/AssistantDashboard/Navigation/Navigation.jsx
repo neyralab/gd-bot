@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { useSelector, useDispatch } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '../../../store/hooks';
 import { vibrate } from '../../../utils/vibration';
 import { transformSize } from '../../../utils/storage';
 import { formatLargeNumberExtended } from '../../../utils/number';
@@ -14,15 +14,16 @@ import { ReactComponent as CreditCardIcon } from '../../../assets/credit-card.sv
 
 import styles from './Navigation.module.scss';
 
+
 export default function Navigation() {
   const { history } = useContext(NavigationHistoryContext);
   const { audio, loadAudio, playAudio, loading, stopAudio } =
     useAssistantAudio();
-  const fileTypes = useSelector((store) => store.drive.fileTypesCount);
-  const user = useSelector((state) => state.user.data);
+  const fileTypes = useAppSelector((store) => store.drive.fileTypesCount);
+  const user = useAppSelector((state) => state.user.data);
   const [ernedCount, setErnedCount] = useState(0);
   const { t } = useTranslation('system');
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     if (!Object.keys(fileTypes).length) {
