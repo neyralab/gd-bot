@@ -69,6 +69,7 @@ export default function MenuControls({ className }) {
         onClick={goToDrive}>
         <RectIcon width="100%" height="100%" viewBox="0 0 34 34" />
       </button>
+
       <button className={styles['main-button']} {...bind()}>
         {isRecording ? (
           <StopRecordIcon width="70" height="70" viewBox="0 0 70 70" />
@@ -76,6 +77,7 @@ export default function MenuControls({ className }) {
           <UploadAction />
         )}
       </button>
+
       <button
         className={CN(
           styles['navigate-button'],
@@ -84,11 +86,13 @@ export default function MenuControls({ className }) {
         onClick={goToGame}>
         <TriangleIcon width="100%" height="100%" viewBox="0 0 34 34" />
       </button>
+
       {isRecording && (
         <div className={styles['listening-tooltip']}>
           {t('assistant.listening')}
         </div>
       )}
+      
       {isResponseGenerating && (
         <div className={styles['listening-tooltip']}>
           {t('assistant.generat')}
