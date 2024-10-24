@@ -31,7 +31,8 @@ export const AssistantAudioProvider = ({ children }) => {
     transcript,
     listening,
     resetTranscript,
-    browserSupportsSpeechRecognition
+    browserSupportsSpeechRecognition,
+    browserSupportsContinuousListening,
   } = useSpeechRecognition({
     clearTranscriptOnListen: true
   });
@@ -121,8 +122,11 @@ export const AssistantAudioProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    if (!listening && transcript.trim()) {
+    if (!listening) {
       setIsRecording(false);
+    }
+
+    if (!listening && transcript.trim()) {
       getNeyraResponse();
     }
   }, [transcript, listening]);

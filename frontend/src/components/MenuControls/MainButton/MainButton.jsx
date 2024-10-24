@@ -1,14 +1,16 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useLongPress } from 'use-long-press';
 import classNames from 'classnames';
+import { useLocation } from 'react-router-dom';
 
 import { useAssistantAudio } from '../../../pages/assistant/AssistantAudio/AssistantAudio';
 import UploadAction from '../../UploadAction/UploadAction';
 import { ReactComponent as StopRecordIcon } from '../../../assets/stop-record.svg';
 import LoadingSvg from './LoadingSvg';
+import { vibrate } from '../../../utils/vibration';
+import RecordButtonEqualizer from './RecordButtonEqualizer/RecordButtonEqualizer';
 
 import styles from './MainButton.module.scss';
-import RecordButtonEqualizer from './RecordButtonEqualizer/RecordButtonEqualizer';
 
 export default function MainButton() {
   const {
@@ -20,8 +22,15 @@ export default function MainButton() {
     stopAudio,
     audioPlayerRef
   } = useAssistantAudio();
+  const location = useLocation();
+
+  const isAssistantPage = useMemo(
+    () => location.pathname === '/assistant',
+    [location]
+  );
 
   const stopAllAudioActions = () => {
+    vibrate();
     if (isRecording) {
       stopRecording();
     }
@@ -31,6 +40,7 @@ export default function MainButton() {
   };
 
   const runRecording = () => {
+    vibrate();
     audioPlayerRef.current.load();
     startRecording();
   };
@@ -41,6 +51,22 @@ export default function MainButton() {
     captureEvent: true,
     cancelOnMovement: true
   });
+
+  /** Unfortunately, these are the tasks requirements:
+   * If AI assistant page:
+   * simple tap - audio controls
+   * long tap - upload file
+   * If NOT AI assistant page:
+   * simple tap - upload file
+   * long tap - audio controls
+   */
+  const clickProps = useMemo(
+    () =>
+      isAssistantPage
+        ? { onClick: isRecording ? stopRecording : startRecording }
+        : { ...bind() },
+    [isRecording, isAssistantPage]
+  );
 
   return (
     <div
@@ -59,7 +85,7 @@ export default function MainButton() {
           <LoadingSvg />
         </button>
       ) : (
-        <button className={styles['main-button']} {...bind()}>
+        <button className={styles['main-button']} {...clickProps}>
           <UploadAction />
         </button>
       )}
