@@ -22,8 +22,8 @@ export default function MainButton() {
     stopAudio,
     audioPlayerRef
   } = useAssistantAudio();
-  const location = useLocation();
   const uploadRef = useRef(null);
+  const location = useLocation();
   const isAssistantPage = useMemo(
     () => location.pathname === '/assistant',
     [location]
@@ -49,24 +49,8 @@ export default function MainButton() {
     uploadRef.current.triggerUpload();
   };
 
-  /** Unfortunately, these are the tasks requirements:
-   * If AI assistant page:
-   * simple tap - audio controls
-   * long tap - upload file
-   * If NOT AI assistant page:
-   * simple tap - upload file
-   * long tap - audio controls
-   */
-
   const bindPage = useLongPress(runRecording, {
     onCancel: uploadFile,
-    threshold: 500,
-    captureEvent: true,
-    cancelOnMovement: true
-  });
-
-  const bindAssistantPage = useLongPress(uploadFile, {
-    onCancel: runRecording,
     threshold: 500,
     captureEvent: true,
     cancelOnMovement: true
@@ -81,7 +65,7 @@ export default function MainButton() {
       )}>
       {isRecording || isSpeaking ? (
         <button className={styles['main-button']} onClick={stopAllAudioActions}>
-          {isRecording && <RecordButtonEqualizer />}
+          {/* {isRecording && <RecordButtonEqualizer />} */}
           <StopRecordIcon />
         </button>
       ) : isResponseGenerating ? (
@@ -89,12 +73,12 @@ export default function MainButton() {
           <LoadingSvg />
         </button>
       ) : isAssistantPage ? (
-        <button className={styles['main-button']} {...bindAssistantPage()}>
+        <button className={styles['main-button']} onClick={runRecording}>
           <UploadAction ref={uploadRef} />
           <div className={styles.overlay}></div>
         </button>
       ) : (
-        <button className={styles['main-button']} {...bindPage()}>
+        <button className={styles['main-button']} onClick={uploadFile}>
           <UploadAction ref={uploadRef} />
           <div className={styles.overlay}></div>
         </button>
