@@ -1,6 +1,7 @@
 import React, { useMemo, useRef } from 'react';
 import { useLongPress } from 'use-long-press';
 import classNames from 'classnames';
+import { useLocation } from 'react-router-dom';
 
 import { useAssistantAudio } from '../../../pages/assistant/AssistantAudio/AssistantAudio';
 import UploadAction from '../../UploadAction/UploadAction';
@@ -22,6 +23,11 @@ export default function MainButton() {
     audioPlayerRef
   } = useAssistantAudio();
   const uploadRef = useRef(null);
+  const location = useLocation();
+  const isAssistantPage = useMemo(
+    () => location.pathname === '/assistant',
+    [location]
+  );
 
   const stopAllAudioActions = () => {
     vibrate();
@@ -66,8 +72,13 @@ export default function MainButton() {
         <button className={styles['main-button']}>
           <LoadingSvg />
         </button>
+      ) : isAssistantPage ? (
+        <button className={styles['main-button']} onClick={runRecording}>
+          <UploadAction ref={uploadRef} />
+          <div className={styles.overlay}></div>
+        </button>
       ) : (
-        <button className={styles['main-button']} {...bindPage()}>
+        <button className={styles['main-button']} onClick={uploadFile}>
           <UploadAction ref={uploadRef} />
           <div className={styles.overlay}></div>
         </button>
