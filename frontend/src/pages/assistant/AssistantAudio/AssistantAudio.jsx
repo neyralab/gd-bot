@@ -31,8 +31,7 @@ export const AssistantAudioProvider = ({ children }) => {
     transcript,
     listening,
     resetTranscript,
-    browserSupportsSpeechRecognition,
-    browserSupportsContinuousListening,
+    browserSupportsSpeechRecognition
   } = useSpeechRecognition({
     clearTranscriptOnListen: true
   });
@@ -122,28 +121,27 @@ export const AssistantAudioProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    if (!listening) {
-      setIsRecording(false);
-    }
-
     if (!listening && transcript.trim()) {
       getNeyraResponse();
     }
   }, [transcript, listening]);
+
+  useEffect(() => {
+    setIsRecording(listening);
+  }, [listening]);
 
   const startRecording = () => {
     if (!browserSupportsSpeechRecognition) {
       toast.error(t('assistant.browserSupport'));
       return;
     }
-    setIsRecording(true);
+
     resetTranscript();
     SpeechRecognition.startListening({ language: 'en-EN', continuous: false });
   };
 
   const stopRecording = () => {
     SpeechRecognition.stopListening();
-    setIsRecording(false);
   };
 
   return (

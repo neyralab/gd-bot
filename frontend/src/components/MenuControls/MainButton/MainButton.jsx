@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useRef } from 'react';
 import { useLongPress } from 'use-long-press';
 import classNames from 'classnames';
 import { useLocation } from 'react-router-dom';
@@ -23,7 +23,7 @@ export default function MainButton() {
     audioPlayerRef
   } = useAssistantAudio();
   const location = useLocation();
-
+  const uploadRef = useRef(null);
   const isAssistantPage = useMemo(
     () => location.pathname === '/assistant',
     [location]
@@ -45,12 +45,9 @@ export default function MainButton() {
     startRecording();
   };
 
-  const bind = useLongPress(runRecording, {
-    onCancel: stopAllAudioActions,
-    threshold: 500,
-    captureEvent: true,
-    cancelOnMovement: true
-  });
+  const uploadFile = () => {
+    uploadRef.current.triggerUpload();
+  };
 
   /** Unfortunately, these are the tasks requirements:
    * If AI assistant page:
@@ -60,13 +57,20 @@ export default function MainButton() {
    * simple tap - upload file
    * long tap - audio controls
    */
-  const clickProps = useMemo(
-    () =>
-      isAssistantPage
-        ? { onClick: isRecording ? stopRecording : startRecording }
-        : { ...bind() },
-    [isRecording, isAssistantPage]
-  );
+
+  const bindPage = useLongPress(runRecording, {
+    onCancel: uploadFile,
+    threshold: 500,
+    captureEvent: true,
+    cancelOnMovement: true
+  });
+
+  const bindAssistantPage = useLongPress(uploadFile, {
+    onCancel: runRecording,
+    threshold: 500,
+    captureEvent: true,
+    cancelOnMovement: true
+  });
 
   return (
     <div
@@ -84,9 +88,15 @@ export default function MainButton() {
         <button className={styles['main-button']}>
           <LoadingSvg />
         </button>
+      ) : isAssistantPage ? (
+        <button className={styles['main-button']} {...bindAssistantPage()}>
+          <UploadAction ref={uploadRef} />
+          <div className={styles.overlay}></div>
+        </button>
       ) : (
-        <button className={styles['main-button']} {...clickProps}>
-          <UploadAction />
+        <button className={styles['main-button']} {...bindPage()}>
+          <UploadAction ref={uploadRef} />
+          <div className={styles.overlay}></div>
         </button>
       )}
     </div>
