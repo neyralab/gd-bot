@@ -122,24 +122,26 @@ export const AssistantAudioProvider = ({ children }) => {
 
   useEffect(() => {
     if (!listening && transcript.trim()) {
-      setIsRecording(false);
       getNeyraResponse();
     }
   }, [transcript, listening]);
+
+  useEffect(() => {
+    setIsRecording(listening);
+  }, [listening]);
 
   const startRecording = () => {
     if (!browserSupportsSpeechRecognition) {
       toast.error(t('assistant.browserSupport'));
       return;
     }
-    setIsRecording(true);
+
     resetTranscript();
     SpeechRecognition.startListening({ language: 'en-EN', continuous: false });
   };
 
   const stopRecording = () => {
     SpeechRecognition.stopListening();
-    setIsRecording(false);
   };
 
   return (

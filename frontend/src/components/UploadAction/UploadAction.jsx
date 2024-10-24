@@ -1,24 +1,35 @@
-import React, { useRef } from 'react';
+import React, {
+  useRef,
+  useEffect,
+  forwardRef,
+  useImperativeHandle
+} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import classNames from 'classnames';
-
 import { uploadFile } from '../../store/reducers/drive/drive.thunks';
 import { vibrate } from '../../utils/vibration';
 import UploadLoader from './UploadLoader';
 import { ReactComponent as PlusIcon } from '../../assets/plus.svg';
-
 import styles from './UploadAction.module.scss';
 
-export default function UploadAction() {
+const UploadAction = forwardRef((props, ref) => {
   const dispatch = useDispatch();
   const fileRef = useRef(null);
   const isUploading = useSelector(
     (state) => state.drive.uploadFile.isUploading
   );
 
+  useImperativeHandle(ref, () => ({
+    triggerUpload: () => {
+      if (fileRef.current) {
+        vibrate('soft');
+        fileRef.current.click();
+      }
+    }
+  }));
+
   const handleFileUpload = async (event) => {
     const files = event.target.files;
-
     const onUploadCallback = () => {
       if (fileRef.current) {
         fileRef.current.value = '';
@@ -36,7 +47,7 @@ export default function UploadAction() {
         )}>
         <UploadLoader />
       </div>
-
+      
       <input
         disabled={isUploading}
         name="file"
@@ -56,4 +67,6 @@ export default function UploadAction() {
       </label>
     </div>
   );
-}
+});
+
+export default UploadAction;

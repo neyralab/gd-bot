@@ -9,10 +9,20 @@
     border: 2px solid white;
     border-radius: 50%;
     color: white;
+    position: relative;
 
     svg {
       width: 32px;
       height: 32px;
+      // animation: SVGAppearAnimation 0.3s ease-out forwards;
+    }
+
+    .overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
     }
   }
 
@@ -20,5 +30,14 @@
     .main-button {
       filter: drop-shadow(0px 0px 5px #00d1ff) drop-shadow(0px 1px 6px #00d1ff);
     }
+  }
+}
+
+@keyframes SVGAppearAnimation {
+  0% {
+    transform: scale(0);
+  }
+  100% {
+    transform: scale(1);
   }
 }

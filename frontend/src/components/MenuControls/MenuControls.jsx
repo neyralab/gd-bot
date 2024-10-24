@@ -1,13 +1,12 @@
-import { useEffect, useRef, useState, useMemo } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import CN from 'classnames';
-import { useLongPress } from 'use-long-press';
 
 import { useAssistantAudio } from '../../pages/assistant/AssistantAudio/AssistantAudio';
 import MainButton from './MainButton/MainButton';
 import { ReactComponent as RectIcon } from '../../assets/neon-rect.svg';
 import { ReactComponent as TriangleIcon } from '../../assets/neon-triangle.svg';
+import { vibrate } from '../../utils/vibration';
 
 import styles from './MenuControls.module.scss';
 
@@ -17,16 +16,13 @@ export default function MenuControls({ className }) {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const isAssistantPage = useMemo(
-    () => location.pathname === '/assistant',
-    [location]
-  );
-
   const goToDrive = () => {
+    vibrate();
     navigate(location.pathname === '/drive' ? '/assistant' : '/drive');
   };
 
   const goToGame = () => {
+    vibrate();
     navigate(location.pathname === '/game-3d' ? '/assistant' : '/game-3d');
   };
 
