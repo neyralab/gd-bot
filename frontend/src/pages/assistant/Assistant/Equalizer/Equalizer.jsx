@@ -3,7 +3,7 @@ import { useAssistantAudio } from '../../AssistantAudio/AssistantAudio';
 import styles from './Equalizer.module.scss';
 
 export default function Equalizer() {
-  const { status, analyserRef } = useAssistantAudio();
+  const { isSpeaking, analyserRef } = useAssistantAudio();
   const canvasRef = useRef(null);
   const animationIdRef = useRef(null);
 
@@ -54,7 +54,7 @@ export default function Equalizer() {
   };
 
   useEffect(() => {
-    if (status === 'playing') {
+    if (isSpeaking) {
       draw();
     } else {
       const canvas = canvasRef.current;
@@ -62,7 +62,7 @@ export default function Equalizer() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       cancelAnimationFrame(animationIdRef.current);
     }
-  }, [status]);
+  }, [isSpeaking]);
 
   return (
     <div className={styles.equalizer}>

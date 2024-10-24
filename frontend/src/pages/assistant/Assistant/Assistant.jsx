@@ -5,7 +5,7 @@ import Equalizer from './Equalizer/Equalizer';
 import styles from './Assistant.module.scss';
 
 export default function Assistant() {
-  const { status, analyserRef } = useAssistantAudio();
+  const { isSpeaking, analyserRef } = useAssistantAudio();
   const soundReflectRef = useRef(null);
   const animationIdRef = useRef(null);
 
@@ -31,7 +31,7 @@ export default function Assistant() {
   };
 
   useEffect(() => {
-    if (status === 'playing') {
+    if (isSpeaking) {
       scaleSoundReflect();
     } else {
       if (soundReflectRef.current) {
@@ -39,7 +39,7 @@ export default function Assistant() {
       }
       cancelAnimationFrame(animationIdRef.current);
     }
-  }, [status]);
+  }, [isSpeaking]);
 
   return (
     <div className={styles.container}>

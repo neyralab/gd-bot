@@ -5,7 +5,7 @@ import { useAssistantAudio } from '../AssistantAudio/AssistantAudio';
 import styles from './CirclularPanel.module.scss';
 
 export default function CirclularPanel() {
-  const { status } = useAssistantAudio();
+  const { isSpeaking } = useAssistantAudio();
 
   const layer1Ref = useRef(null);
   const layer2Ref = useRef(null);
@@ -67,11 +67,11 @@ export default function CirclularPanel() {
   }, []);
 
   useEffect(() => {
-    const speedFactor = status === 'playing' ? 3 : 1;
+    const speedFactor = isSpeaking ? 3 : 1;
     layerTimelines.current.forEach((timeline) =>
       timeline.timeScale(speedFactor)
     );
-  }, [status]);
+  }, [isSpeaking]);
 
   return (
     <div className={styles.container}>

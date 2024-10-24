@@ -19,7 +19,9 @@ export default function MenuControls({ className }) {
     stopRecording,
     isRecording,
     isResponseGenerating,
-    listening
+    isSpeaking,
+    stopAudio,
+    audioPlayerRef
   } = useAssistantAudio();
   const { t } = useTranslation('system');
   const navigate = useNavigate();
@@ -30,14 +32,22 @@ export default function MenuControls({ className }) {
     [location]
   );
 
-  const handleRegularClick = () => {
-    if (listening) {
+  const stopAllAudioActions = () => {
+    if (isRecording) {
       stopRecording();
+    }
+    if (isSpeaking) {
+      stopAudio();
     }
   };
 
-  const bind = useLongPress(startRecording, {
-    onCancel: handleRegularClick,
+  const runRecording = () => {
+    audioPlayerRef.current.load();
+    startRecording();
+  }
+
+  const bind = useLongPress(runRecording, {
+    onCancel: stopAllAudioActions,
     threshold: 500,
     captureEvent: true,
     cancelOnMovement: true
@@ -62,13 +72,17 @@ export default function MenuControls({ className }) {
         <RectIcon width="100%" height="100%" viewBox="0 0 34 34" />
       </button>
 
-      <button className={styles['main-button']} {...bind()}>
-        {isRecording ? (
-          <StopRecordIcon width="70" height="70" viewBox="0 0 70 70" />
-        ) : (
+      {!isRecording && !isSpeaking && (
+        <button className={styles['main-button']} {...bind()}>
           <UploadAction />
-        )}
-      </button>
+        </button>
+      )}
+
+      {(isRecording || isSpeaking) && (
+        <button className={styles['main-button']} onClick={stopAllAudioActions}>
+          <StopRecordIcon width="70" height="70" viewBox="0 0 70 70" />
+        </button>
+      )}
 
       <button
         className={CN(
@@ -84,7 +98,7 @@ export default function MenuControls({ className }) {
           {t('assistant.listening')}
         </div>
       )}
-      
+
       {isResponseGenerating && (
         <div className={styles['listening-tooltip']}>
           {t('assistant.generat')}

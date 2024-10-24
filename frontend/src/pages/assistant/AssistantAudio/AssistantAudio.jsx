@@ -21,11 +21,11 @@ export const AssistantAudioProvider = ({ children }) => {
   const audioPlayerRef = useRef();
   const audioContextRef = useRef(null);
   const analyserRef = useRef(null);
+  const sourceRef = useRef(null);
 
-  const [status, setStatus] = useState('stopped'); // 'playing', 'paused', 'stopped'
-  const [loading, setLoading] = useState(false);
-  const [isRecording, setIsRecording] = useState(false);
-  const [isResponseGenerating, setIsResponseGenerating] = useState(false);
+  const [isRecording, setIsRecording] = useState(false); // user's speach recording
+  const [isResponseGenerating, setIsResponseGenerating] = useState(false); // request is sent to get assistant response
+  const [isSpeaking, setIsSpeaking] = useState(false); // assistant is speaking
 
   const {
     transcript,
@@ -33,8 +33,7 @@ export const AssistantAudioProvider = ({ children }) => {
     resetTranscript,
     browserSupportsSpeechRecognition
   } = useSpeechRecognition({
-    clearTranscriptOnListen: true,
-    transcribing: true
+    clearTranscriptOnListen: true
   });
   const { t } = useTranslation('system');
 
@@ -45,26 +44,23 @@ export const AssistantAudioProvider = ({ children }) => {
 
     audioContextRef.current = audioContext;
     analyserRef.current = analyser;
+
+    audioPlayerRef.current = new Audio();
   }, []);
 
   const loadAudio = (src) => {
     // Set the audio source to the new URL
-    audioPlayerRef.current = new Audio();
     audioPlayerRef.current.src = src;
+    audioPlayerRef.current.load();
 
-    // Create the source node and connect it to the analyser and destination
-    const track = audioContextRef.current.createMediaElementSource(
-      audioPlayerRef.current
-    );
-
-    // Disconnect any previous track if it exists
-    if (analyserRef.current) {
-      track.disconnect();
+    // Create the source node and connect it to the analyser and destination if not already connected
+    if (!sourceRef.current) {
+      sourceRef.current = audioContextRef.current.createMediaElementSource(
+        audioPlayerRef.current
+      );
+      sourceRef.current.connect(analyserRef.current);
+      analyserRef.current.connect(audioContextRef.current.destination);
     }
-
-    // Connect the new track to the analyser and destination
-    track.connect(analyserRef.current);
-    analyserRef.current.connect(audioContextRef.current.destination);
 
     // Play the audio
     playAudio();
@@ -76,6 +72,7 @@ export const AssistantAudioProvider = ({ children }) => {
       const res = await sendMessageToAi(transcript);
       const message = res.data.data.response;
       const audioUrl = await unrealSpeechStream(message);
+      // alert(audioUrl);
       loadAudio(audioUrl); // Load the new audio URL
     } catch (error) {
       console.error('Error:', error);
@@ -92,21 +89,23 @@ export const AssistantAudioProvider = ({ children }) => {
 
       // Add an event listener to update status when audio ends
       audioPlayerRef.current.addEventListener('ended', () => {
-        setStatus('stopped');
+        setIsSpeaking(false);
       });
 
-      setStatus('playing');
+      setIsSpeaking(true);
     } catch (error) {
       console.error('Error playing audio:', error);
+      setIsSpeaking(false);
     }
   };
 
   const pauseAudio = async () => {
     try {
       await audioPlayerRef.current.pause();
-      setStatus('paused');
+      setIsSpeaking(false);
     } catch (error) {
       console.error('Error pausing audio:', error);
+      setIsSpeaking(false);
     }
   };
 
@@ -114,9 +113,10 @@ export const AssistantAudioProvider = ({ children }) => {
     try {
       await audioPlayerRef.current.pause();
       audioPlayerRef.current.currentTime = 0; // Reset playback position
-      setStatus('stopped');
+      setIsSpeaking(false);
     } catch (error) {
       cconsole.error('Error stopping audio:', error);
+      setIsSpeaking(false);
     }
   };
 
@@ -145,18 +145,17 @@ export const AssistantAudioProvider = ({ children }) => {
   return (
     <AssistantAudioContext.Provider
       value={{
-        status,
-        loading,
         loadAudio,
         playAudio,
         pauseAudio,
         stopAudio,
         analyserRef,
+        audioPlayerRef,
         startRecording,
         stopRecording,
         isRecording,
         isResponseGenerating,
-        listening
+        isSpeaking
       }}>
       {children}
     </AssistantAudioContext.Provider>
