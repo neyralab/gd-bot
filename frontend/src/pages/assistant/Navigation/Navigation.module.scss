@@ -1,11 +1,5 @@
 .header {
   user-select: none;
-  
-  * {
-    user-select: none;
-    touch-action: none;
-    pointer-events: none;
-  }
 }
 
 .top-button {
