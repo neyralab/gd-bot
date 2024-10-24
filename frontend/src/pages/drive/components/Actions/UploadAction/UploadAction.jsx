@@ -52,7 +52,7 @@ export default function UploadAction() {
           vibrate('soft');
         }}
         className={classNames(styles.button, isUploading && styles.uploading)}>
-        <CircleIcon width="100%" height="100%" viewBox="0 0 70 70" />
+        <CircleIcon />
       </label>
     </div>
   );

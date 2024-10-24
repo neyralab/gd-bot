@@ -20,6 +20,8 @@
 
   svg {
     transition: 0.25s;
+    width: 70px !important;
+    height: 70px !important;
   }
 
   &.uploading {
@@ -39,8 +41,13 @@
   opacity: 0;
   transition: 1s;
 
+  svg {
+    width: 70px;
+    height: 70px;
+  }
+
   &.uploading {
-    transform: translate(-50%, -50%) scale(1.4);
+    transform: translate(-50%, -50%) scale(1.3);
     opacity: 1;
   }
 }
