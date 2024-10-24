@@ -3,7 +3,7 @@ import { useLongPress } from 'use-long-press';
 import classNames from 'classnames';
 
 import { useAssistantAudio } from '../../../pages/assistant/AssistantAudio/AssistantAudio';
-import UploadAction from '../../../pages/drive/components/Actions/UploadAction/UploadAction';
+import UploadAction from '../../UploadAction/UploadAction';
 import { ReactComponent as StopRecordIcon } from '../../../assets/stop-record.svg';
 import LoadingSvg from './LoadingSvg';
 

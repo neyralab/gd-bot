@@ -1,5 +1,5 @@
 import React from 'react';
-import UploadAction from './UploadAction/UploadAction';
+import UploadAction from '../../../../components/UploadAction/UploadAction';
 import styles from './Actions.module.scss';
 
 export default function Actions() {
