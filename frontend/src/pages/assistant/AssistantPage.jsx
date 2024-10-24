@@ -4,6 +4,7 @@ import Background from './Background/Background';
 import CirclularPanel from './CirclularPanel/CirclularPanel';
 import MenuControls from '../../components/MenuControls/MenuControls';
 import Navigation from './Navigation/Navigation';
+import Hints from './Hints/Hints';
 
 import styles from './AssistantPage.module.scss';
 
@@ -19,8 +20,9 @@ export default function AssistantPage() {
         </div>
       </div>
 
-      <MenuControls />
       <Navigation />
+      <Hints />
+      <MenuControls />
     </>
   );
 }

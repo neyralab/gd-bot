@@ -3,7 +3,6 @@ import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
 
 import { formatLargeNumberExtended } from '../../utils/number';
-import TelegramIconLink from '../../../public/assets/telegram.png'
 
 import styles from './Person.module.css';
 
@@ -15,7 +14,7 @@ export default function Person({ isDone, title, points, onClick, className, icon
       className={classNames(styles.container, isDone && styles.done, className)}
       onClick={onClick}>
       <div className={styles.name}>
-        { icon || <img src={TelegramIconLink} alt='Telegram' /> }
+        { icon || <img src='/assets/telegram.png' alt='Telegram' /> }
         <strong>{title}</strong>
       </div>
 
