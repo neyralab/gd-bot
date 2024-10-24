@@ -6,10 +6,10 @@ import { useLongPress } from 'use-long-press';
 
 import { useAssistantAudio } from '../../pages/assistant/AssistantAudio/AssistantAudio';
 import UploadAction from '../../pages/drive/components/Actions/UploadAction/UploadAction';
-import { ReactComponent as RectIcon } from '../../../public/assets/assistant/neon-rect.svg';
-import { ReactComponent as TriangleIcon } from '../../../public/assets/assistant/neon-triangle.svg';
-import { ReactComponent as CircleIcon } from '../../../public/assets/assistant/neon-circle.svg';
-import { ReactComponent as StopRecordIcon } from '../../../public/assets/assistant/stop-record.svg';
+import { ReactComponent as RectIcon } from '../../assets/neon-rect.svg';
+import { ReactComponent as TriangleIcon } from '../../assets/neon-triangle.svg';
+import { ReactComponent as CircleIcon } from '../../assets/neon-circle.svg';
+import { ReactComponent as StopRecordIcon } from '../../assets/stop-record.svg';
 
 import styles from './MenuControls.module.scss';
 
