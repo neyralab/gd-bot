@@ -5,7 +5,7 @@ import classNames from 'classnames';
 import { uploadFile } from '../../../../../store/reducers/drive/drive.thunks';
 import { vibrate } from '../../../../../utils/vibration';
 import UploadLoader from './UploadLoader';
-import { ReactComponent as CircleIcon } from '../../../../../assets/neon-circle.svg';
+import { ReactComponent as PlusIcon } from '../../../../../assets/plus.svg';
 
 import styles from './UploadAction.module.scss';
 
@@ -52,7 +52,7 @@ export default function UploadAction() {
           vibrate('soft');
         }}
         className={classNames(styles.button, isUploading && styles.uploading)}>
-        <CircleIcon />
+        <PlusIcon />
       </label>
     </div>
   );

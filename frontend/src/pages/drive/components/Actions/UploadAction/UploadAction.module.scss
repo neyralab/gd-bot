@@ -14,14 +14,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 70px;
-  height: 70px;
   position: relative;
 
   svg {
     transition: 0.25s;
-    width: 70px !important;
-    height: 70px !important;
   }
 
   &.uploading {
@@ -42,8 +38,8 @@
   transition: 1s;
 
   svg {
-    width: 70px;
-    height: 70px;
+    width: 70px !important;
+    height: 70px !important;
   }
 
   &.uploading {

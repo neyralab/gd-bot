@@ -5,24 +5,14 @@ import CN from 'classnames';
 import { useLongPress } from 'use-long-press';
 
 import { useAssistantAudio } from '../../pages/assistant/AssistantAudio/AssistantAudio';
-import UploadAction from '../../pages/drive/components/Actions/UploadAction/UploadAction';
+import MainButton from './MainButton/MainButton';
 import { ReactComponent as RectIcon } from '../../assets/neon-rect.svg';
 import { ReactComponent as TriangleIcon } from '../../assets/neon-triangle.svg';
-import { ReactComponent as CircleIcon } from '../../assets/neon-circle.svg';
-import { ReactComponent as StopRecordIcon } from '../../assets/stop-record.svg';
 
 import styles from './MenuControls.module.scss';
 
 export default function MenuControls({ className }) {
-  const {
-    startRecording,
-    stopRecording,
-    isRecording,
-    isResponseGenerating,
-    isSpeaking,
-    stopAudio,
-    audioPlayerRef
-  } = useAssistantAudio();
+  const { isRecording, isResponseGenerating } = useAssistantAudio();
   const { t } = useTranslation('system');
   const navigate = useNavigate();
   const location = useLocation();
@@ -31,27 +21,6 @@ export default function MenuControls({ className }) {
     () => location.pathname === '/assistant',
     [location]
   );
-
-  const stopAllAudioActions = () => {
-    if (isRecording) {
-      stopRecording();
-    }
-    if (isSpeaking) {
-      stopAudio();
-    }
-  };
-
-  const runRecording = () => {
-    audioPlayerRef.current.load();
-    startRecording();
-  }
-
-  const bind = useLongPress(runRecording, {
-    onCancel: stopAllAudioActions,
-    threshold: 500,
-    captureEvent: true,
-    cancelOnMovement: true
-  });
 
   const goToDrive = () => {
     navigate(location.pathname === '/drive' ? '/assistant' : '/drive');
@@ -72,17 +41,7 @@ export default function MenuControls({ className }) {
         <RectIcon width="100%" height="100%" viewBox="0 0 34 34" />
       </button>
 
-      {!isRecording && !isSpeaking && (
-        <button className={styles['main-button']} {...bind()}>
-          <UploadAction />
-        </button>
-      )}
-
-      {(isRecording || isSpeaking) && (
-        <button className={styles['main-button']} onClick={stopAllAudioActions}>
-          <StopRecordIcon width="70" height="70" viewBox="0 0 70 70" />
-        </button>
-      )}
+      <MainButton />
 
       <button
         className={CN(
@@ -92,18 +51,6 @@ export default function MenuControls({ className }) {
         onClick={goToGame}>
         <TriangleIcon width="100%" height="100%" viewBox="0 0 34 34" />
       </button>
-
-      {isRecording && (
-        <div className={styles['listening-tooltip']}>
-          {t('assistant.listening')}
-        </div>
-      )}
-
-      {isResponseGenerating && (
-        <div className={styles['listening-tooltip']}>
-          {t('assistant.generat')}
-        </div>
-      )}
     </div>
   );
 }
