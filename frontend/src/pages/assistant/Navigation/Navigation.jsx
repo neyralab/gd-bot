@@ -40,7 +40,7 @@ export default function Navigation() {
   }, []);
 
   return (
-    <header>
+    <header className={styles.header}>
       <span />
       {user && fileTypesFetched && (
         <div className={styles.info}>
@@ -52,7 +52,7 @@ export default function Navigation() {
             <span>{transformSize(user.space_actual)}</span>
           </p>
           <p>
-            {t('assistant.rank')}: <span>{user.rank}</span>
+            {t('assistant.rank')}: <span>{user.rank || 0}</span>
           </p>
           <p>
             {t('assistant.point')}:{' '}
@@ -63,6 +63,7 @@ export default function Navigation() {
           </p>
         </div>
       )}
+
       <Link
         to="/start"
         className={styles['profile-button']}

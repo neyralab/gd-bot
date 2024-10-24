@@ -5,121 +5,118 @@ import React, {
   useRef,
   useEffect
 } from 'react';
-import 'regenerator-runtime/runtime'; // this thing is important for speech recognition to be imported before react-speech-recognition
+import 'regenerator-runtime/runtime'; // important for speech recognition to be imported before react-speech-recognition
 import SpeechRecognition, {
   useSpeechRecognition
 } from 'react-speech-recognition';
 import { useTranslation } from 'react-i18next';
-
+import { toast } from 'react-toastify';
 import { sendMessageToAi } from '../../../effects/ai/neyraChatEffect';
 import { unrealSpeechStream } from '../../../effects/ai/unrealSpeechEffect';
 
 const AssistantAudioContext = createContext();
-
 export const useAssistantAudio = () => useContext(AssistantAudioContext);
 
 export const AssistantAudioProvider = ({ children }) => {
-  const [audio, setAudio] = useState(null);
-  const [status, setStatus] = useState('stopped'); // 'playing', 'paused', 'stopped'
-  const [loading, setLoading] = useState(false); // 'loading' status
-  const [isRecording, setIsRecording] = useState(false);
-  const [isResponseGenerating, setIsResponseGenerating] = useState(false);
+  const audioPlayerRef = useRef();
   const audioContextRef = useRef(null);
   const analyserRef = useRef(null);
+  const sourceRef = useRef(null);
+
+  const [isRecording, setIsRecording] = useState(false); // user's speach recording
+  const [isResponseGenerating, setIsResponseGenerating] = useState(false); // request is sent to get assistant response
+  const [isSpeaking, setIsSpeaking] = useState(false); // assistant is speaking
+
   const {
     transcript,
     listening,
     resetTranscript,
     browserSupportsSpeechRecognition
   } = useSpeechRecognition({
-    clearTranscriptOnListen: true,
-    transcribing: true
+    clearTranscriptOnListen: true
   });
   const { t } = useTranslation('system');
 
-  const loadAudio = (src, onLoad) => {
-    if (audio) {
-      audio.pause();
-      audio.src = ''; // Destroy the previous audio
-      setAudio(null);
-      audioContextRef.current = null;
-    }
-    if (audioContextRef.current) {
-      audioContextRef.current.close();
-    }
-
-    setLoading(true);
-    const newAudio = new Audio(src);
-    const audioContext = new (window.AudioContext ||
-      window.webkitAudioContext)();
-    audioContextRef.current = audioContext;
+  useEffect(() => {
+    const audioContext = new AudioContext();
     const analyser = audioContext.createAnalyser();
-    analyserRef.current = analyser;
     analyser.fftSize = 512;
 
-    const source = audioContextRef.current.createMediaElementSource(newAudio);
-    source.connect(analyserRef.current);
-    analyserRef.current.connect(audioContextRef.current.destination);
+    audioContextRef.current = audioContext;
+    analyserRef.current = analyser;
 
-    newAudio.addEventListener('canplaythrough', () => {
-      setAudio(newAudio);
-      setStatus('stopped');
-      setLoading(false);
-      onLoad?.(newAudio);
-    });
+    audioPlayerRef.current = new Audio();
+  }, []);
 
-    newAudio.addEventListener('error', (e) => {
-      console.error('Error loading audio:', e);
-      setLoading(false);
-    });
+  const loadAudio = (src) => {
+    // Set the audio source to the new URL
+    audioPlayerRef.current.src = src;
+    audioPlayerRef.current.load();
+
+    // Create the source node and connect it to the analyser and destination if not already connected
+    if (!sourceRef.current) {
+      sourceRef.current = audioContextRef.current.createMediaElementSource(
+        audioPlayerRef.current
+      );
+      sourceRef.current.connect(analyserRef.current);
+      analyserRef.current.connect(audioContextRef.current.destination);
+    }
+
+    // Play the audio
+    playAudio();
   };
 
-  const playAudio = (newAudio) => {
-    if (newAudio) {
-      newAudio.play();
-      setStatus('playing');
-    }
-  };
-
-  const pauseAudio = () => {
-    if (audio) {
-      audio.pause();
-      setStatus('paused');
-    }
-  };
-
-  const stopAudio = () => {
-    if (audio) {
-      audio.pause();
-      audio.currentTime = 0;
-      setStatus('stopped');
-    }
-  };
-
-  useEffect(() => {
-    if (audio) {
-      const handleEnded = () => {
-        setStatus('stopped');
-      };
-      audio.addEventListener('ended', handleEnded);
-      return () => {
-        audio.removeEventListener('ended', handleEnded);
-      };
-    }
-  }, [audio]);
-
-  const getNeyraResponse = async (text) => {
+  const getNeyraResponse = async () => {
     try {
       setIsResponseGenerating(true);
       const res = await sendMessageToAi(transcript);
       const message = res.data.data.response;
       const audioUrl = await unrealSpeechStream(message);
-      loadAudio(audioUrl, playAudio);
+      // alert(audioUrl);
+      loadAudio(audioUrl); // Load the new audio URL
     } catch (error) {
       console.error('Error:', error);
       toast.error(t('assistant.messageError'));
     } finally {
       setIsResponseGenerating(false);
+    }
+  };
+
+  const playAudio = async () => {
+    try {
+      await audioContextRef.current.resume(); // Ensure the audio context is running
+      await audioPlayerRef.current.play();
+
+      // Add an event listener to update status when audio ends
+      audioPlayerRef.current.addEventListener('ended', () => {
+        setIsSpeaking(false);
+      });
+
+      setIsSpeaking(true);
+    } catch (error) {
+      console.error('Error playing audio:', error);
+      setIsSpeaking(false);
+    }
+  };
+
+  const pauseAudio = async () => {
+    try {
+      await audioPlayerRef.current.pause();
+      setIsSpeaking(false);
+    } catch (error) {
+      console.error('Error pausing audio:', error);
+      setIsSpeaking(false);
+    }
+  };
+
+  const stopAudio = async () => {
+    try {
+      await audioPlayerRef.current.pause();
+      audioPlayerRef.current.currentTime = 0; // Reset playback position
+      setIsSpeaking(false);
+    } catch (error) {
+      cconsole.error('Error stopping audio:', error);
+      setIsSpeaking(false);
     }
   };
 
@@ -148,19 +145,17 @@ export const AssistantAudioProvider = ({ children }) => {
   return (
     <AssistantAudioContext.Provider
       value={{
-        audio,
-        status,
-        loading,
         loadAudio,
         playAudio,
         pauseAudio,
         stopAudio,
         analyserRef,
+        audioPlayerRef,
         startRecording,
         stopRecording,
         isRecording,
         isResponseGenerating,
-        listening
+        isSpeaking
       }}>
       {children}
     </AssistantAudioContext.Provider>
